@@ -1,0 +1,55 @@
+﻿@inherits LayoutComponentBase
+
+@code
+{
+    bool collapsed;
+    string ImgStr = "./Images/logo.PNG";
+
+    void toggle()
+    {
+        collapsed = !collapsed;
+        if (collapsed)
+        {
+            ImgStr = "./Images/logo-Ico.PNG";
+        }
+        else
+        {
+            ImgStr = "./Images/logo.PNG";
+        }
+    }
+}
+
+<Layout Style="min-height:100vh;">
+    <Sider Collapsible Collapsed=@collapsed NoTrigger Breakpoint="@BreakpointType.Lg">
+        <div class="logo" align="center">
+            <img src="@ImgStr" height="32"/>
+        </div>
+        <NavMenu></NavMenu>
+    </Sider>
+    <Layout Class="site-layout">
+        <Header Class="site-layout-background" Style="padding:0;">
+            @if (collapsed)
+            {
+                <Icon Type="menu-unfold" Theme="outline" Class="trigger" OnClick="toggle" />
+            }
+            else
+            {
+                <Icon Type="menu-fold" Theme="outline" Class="trigger" OnClick="toggle" />
+            }
+        </Header>
+        <Content Class="site-layout-background" Style="margin: 24px 16px;padding: 24px;min-height: 280px;">
+            @Body
+        </Content>
+    </Layout>
+</Layout>
+
+
+
+@code{
+
+    void OnCollapse(bool isCollapsed)
+    {
+        Console.WriteLine($"Collapsed: {isCollapsed}");
+    }
+
+}
