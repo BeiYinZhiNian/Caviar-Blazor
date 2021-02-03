@@ -70,3 +70,9 @@ a, .btn-link {
 .site-layout .site-layout-background {
     background: #fff;
 }
+
+.site-layout-right {
+    float: right;
+    margin-right: 60px;
+    margin-top: 0px
+}

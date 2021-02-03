@@ -1,56 +1,32 @@
 ﻿@inherits LayoutComponentBase
 
-@code
-{
-    bool collapsed;
-    string ImgStr = "./Images/logo.PNG";
-
-    void toggle()
-    {
-        collapsed = !collapsed;
-        if (collapsed)
-        {
-            ImgStr = "./Images/logo-Ico.PNG";
-        }
-        else
-        {
-            ImgStr = "./Images/logo.PNG";
-        }
-    }
-}
-
 <Layout Style="min-height:100vh;">
-    <Sider Collapsible Collapsed=@collapsed NoTrigger Breakpoint="@BreakpointType.Lg">
+    <Sider Collapsible Collapsed=@Collapsed OnCollapse=@OnCollapse NoTrigger Breakpoint="@BreakpointType.Lg">
         <div class="logo" align="center">
-            <img src="@ImgStr" height="32" />
+            <img src="@LogoImgSrc" height="32" />
         </div>
-        <NavMenu></NavMenu>
+        <NavMenu InlineCollapsed="@Collapsed"></NavMenu>
     </Sider>
     <Layout Class="site-layout">
         <Header Class="site-layout-background" Style="padding:0;">
-            @if (collapsed)
+            @if (Collapsed)
             {
-                <Icon Type="menu-unfold" Theme="outline" Class="trigger" OnClick="toggle" />
+                <Icon Type="menu-unfold" Theme="outline" Class="trigger" OnClick="Toggle" />
             }
             else
             {
-                <Icon Type="menu-fold" Theme="outline" Class="trigger" OnClick="toggle" />
+                <Icon Type="menu-fold" Theme="outline" Class="trigger" OnClick="Toggle" />
             }
+            <div style="float:right;margin-right:40px;margin-top:0px">
+                <NavDropdown></NavDropdown>
+            </div>
         </Header>
-        <Content Class="site-layout-background" Style="margin: 24px 16px;padding: 24px;min-height: 280px;">
+        <div  style="margin: 12px 16px;">
+            <NavBreadcrumb></NavBreadcrumb>
+        </div>
+        <Content Class="site-layout-background" Style="margin: 6px 16px;padding: 24px;min-height: 280px;">
             @Body
         </Content>
         <Footer Style="text-align: center;">Caviar ©2021 Created by 北音执念</Footer>
     </Layout>
 </Layout>
-
-
-
-@code{
-
-    void OnCollapse(bool isCollapsed)
-    {
-        Console.WriteLine($"Collapsed: {isCollapsed}");
-    }
-
-}
