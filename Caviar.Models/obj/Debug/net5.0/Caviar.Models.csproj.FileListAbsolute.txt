@@ -1,0 +1,11 @@
+F:\桌面文件\我的\Code\Caviar\Caviar.Models\bin\Debug\net5.0\Caviar.Models.deps.json
+F:\桌面文件\我的\Code\Caviar\Caviar.Models\bin\Debug\net5.0\Caviar.Models.dll
+F:\桌面文件\我的\Code\Caviar\Caviar.Models\bin\Debug\net5.0\ref\Caviar.Models.dll
+F:\桌面文件\我的\Code\Caviar\Caviar.Models\bin\Debug\net5.0\Caviar.Models.pdb
+F:\桌面文件\我的\Code\Caviar\Caviar.Models\obj\Debug\net5.0\Caviar.Models.GeneratedMSBuildEditorConfig.editorconfig
+F:\桌面文件\我的\Code\Caviar\Caviar.Models\obj\Debug\net5.0\Caviar.Models.AssemblyInfoInputs.cache
+F:\桌面文件\我的\Code\Caviar\Caviar.Models\obj\Debug\net5.0\Caviar.Models.AssemblyInfo.cs
+F:\桌面文件\我的\Code\Caviar\Caviar.Models\obj\Debug\net5.0\Caviar.Models.csproj.CoreCompileInputs.cache
+F:\桌面文件\我的\Code\Caviar\Caviar.Models\obj\Debug\net5.0\Caviar.Models.dll
+F:\桌面文件\我的\Code\Caviar\Caviar.Models\obj\Debug\net5.0\ref\Caviar.Models.dll
+F:\桌面文件\我的\Code\Caviar\Caviar.Models\obj\Debug\net5.0\Caviar.Models.pdb

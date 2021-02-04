@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Caviar.Shared
+namespace Caviar.UI.Shared
 {
     partial class NavBreadcrumb
     {

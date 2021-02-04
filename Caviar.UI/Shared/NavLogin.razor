@@ -1,0 +1,14 @@
+﻿<Card Bordered="false" Title=@("Card title") Style="width: 400px">
+    <Body>
+        <FormItem>
+            <AntDesign.Input Placeholder="用户名: admin or user" Size="large" @bind-Value="@SysLoginUserData.UserName">
+                <Prefix><Icon Type="user" /></Prefix>
+            </AntDesign.Input>
+        </FormItem>
+        <FormItem>
+            <AntDesign.Input Placeholder="密码: ant.design" Size="large" @bind-Value="@SysLoginUserData.Password" Type="password">
+                <Prefix><Icon Type="lock" /></Prefix>
+            </AntDesign.Input>
+        </FormItem>
+    </Body>
+</Card>
