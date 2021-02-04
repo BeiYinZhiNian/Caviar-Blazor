@@ -1,21 +1,22 @@
 ﻿<Menu Mode="MenuMode.Inline"
-      Accordion
+      Accordion="true"
       Theme="MenuTheme.Dark"
-      SelectedKeys="@(new[] { "1"})"
-      OpenKeys="@(new[] { "sub1" })"
+      @bind-OpenKeys="@OpenKeysNav"
       InlineCollapsed="InlineCollapsed"
-      >
-    <SubMenu Key="sub1" TitleTemplate=@sub1Title>
-        <MenuItem Key="1">Option 1</MenuItem>
-        <MenuItem Key="2">Option 2</MenuItem>
-        <MenuItem Key="3">Option 3</MenuItem>
+      Selectable="false"
+      OnMenuItemClicked="OnMenuItemClickedNav">
+    <MenuItem Key="home" RouterLink="/">@sub1Title</MenuItem>
+    <SubMenu Key="Navigation One" TitleTemplate=@sub1Title>
+        <MenuItem Key="1">Index</MenuItem>
+        <MenuItem Key="2">Counter</MenuItem>
+        <MenuItem Key="FetchData" RouterLink="FetchData">FetchData</MenuItem>
         <MenuItem Key="4">Option 4</MenuItem>
     </SubMenu>
-    <SubMenu Key="sub2" TitleTemplate=@sub2Title>
+    <SubMenu Key="Navigation Two" TitleTemplate=@sub2Title>
         <MenuItem Key="5">Option 5</MenuItem>
         <MenuItem Key="6">Option 6</MenuItem>
-        <SubMenu Key="sub3" Title="Submenu">
-            <MenuItem Key="7">Option 7</MenuItem>
+        <SubMenu Key="Submenu" Title="Submenu">
+            <MenuItem Key="Option 7" RouterLink="Counter">Option 7</MenuItem>
             <MenuItem Key="8">Option 8</MenuItem>
         </SubMenu>
     </SubMenu>
@@ -45,4 +46,5 @@ RenderFragment sub4Title =
     <Icon Type="setting" Theme="outline"></Icon>
     <span>Navigation Three</span>
 </span>;
+
 }

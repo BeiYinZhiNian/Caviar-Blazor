@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using AntDesign;
 
 namespace Caviar.Shared
 {
@@ -20,6 +21,11 @@ namespace Caviar.Shared
 
         string LogoImg;
         string LogoImgIco;
+
+        /// <summary>
+        /// 面包屑数据同步
+        /// </summary>
+        public MenuItem BreadcrumbItemNav;
 
         protected override void OnInitialized()
         {
@@ -59,7 +65,6 @@ namespace Caviar.Shared
         void OnCollapse(bool collapsed)
         {
             this.Collapsed = collapsed;
-
         }
     }
 }
