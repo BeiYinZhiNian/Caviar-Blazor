@@ -14,6 +14,9 @@ namespace Caviar.UI.Shared
     {
         [Inject]
         IConfiguration Configuration { get; set; }
+
+        [Inject]
+        NavigationManager NavigationManager { get; set; }
         /// <summary>
         /// logo图片地址
         /// </summary>

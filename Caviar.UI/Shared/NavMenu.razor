@@ -12,8 +12,8 @@
         <MenuItem Key="FetchData" RouterLink="FetchData">FetchData</MenuItem>
         <MenuItem Key="4">Option 4</MenuItem>
     </SubMenu>
-    <SubMenu Key="Navigation Two" TitleTemplate=@sub2Title>
-        <MenuItem Key="5">Option 5</MenuItem>
+    <SubMenu Key="页面" TitleTemplate=@sub2Title>
+        <MenuItem Key="登录页面" RouterLink="User/Login">登录页面</MenuItem>
         <MenuItem Key="6">Option 6</MenuItem>
         <SubMenu Key="Submenu" Title="Submenu">
             <MenuItem Key="Option 7" RouterLink="Counter">Option 7</MenuItem>
@@ -38,7 +38,7 @@
 RenderFragment sub2Title =
 @<span>
     <Icon Type="appstore" Theme="outline"></Icon>
-    <span>Navigation Two</span>
+    <span>页面</span>
 </span>;
 
 RenderFragment sub4Title =

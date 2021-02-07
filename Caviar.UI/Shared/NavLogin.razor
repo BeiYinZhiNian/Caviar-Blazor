@@ -1,14 +1,31 @@
-﻿<Card Bordered="false" Title=@("Card title") Style="width: 400px">
-    <Body>
-        <FormItem>
-            <AntDesign.Input Placeholder="用户名: admin or user" Size="large" @bind-Value="@SysLoginUserData.UserName">
-                <Prefix><Icon Type="user" /></Prefix>
-            </AntDesign.Input>
-        </FormItem>
-        <FormItem>
-            <AntDesign.Input Placeholder="密码: ant.design" Size="large" @bind-Value="@SysLoginUserData.Password" Type="password">
-                <Prefix><Icon Type="lock" /></Prefix>
-            </AntDesign.Input>
-        </FormItem>
-    </Body>
-</Card>
+﻿<div style="padding:30px">
+    <Card Bordered="true" Title=@("用户登录") Style="width:400px" Hoverable="true">
+        <Body>
+            <Form Model="@SysLoginUserData" OnFinish="HandleSubmit">
+                <FormItem>
+                    <AntDesign.Input Placeholder="请输入用户名" Size="large" @bind-Value="@context.UserName">
+                        <Prefix><Icon Type="user" /></Prefix>
+                    </AntDesign.Input>
+                </FormItem>
+                <FormItem>
+                    <AntDesign.Input Placeholder="请输入密码" Size="large" @bind-Value="@context.Password" Type="password">
+                        <Prefix><Icon Type="lock" /></Prefix>
+                    </AntDesign.Input>
+                </FormItem>
+                <Space Direction="vertical" Style="width:100%">
+                    <SpaceItem>
+                        <Button Type="primary" HtmlType="submit" Class="submit" Size="large" Block>登&nbsp;录</Button>
+                    </SpaceItem>
+                    <SpaceItem>
+                        <div class="other">
+                            <a class="register" href="#">注册账户</a>
+                            <a style="float: right;">
+                                忘记密码
+                            </a>
+                        </div>
+                    </SpaceItem>
+                </Space>
+            </Form>
+        </Body>
+    </Card>
+</div>
