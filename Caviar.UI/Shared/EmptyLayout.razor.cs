@@ -10,18 +10,30 @@ namespace Caviar.UI.Shared
     partial class EmptyLayout
     {
         [Parameter]
-        public string Style { get; set; }
-
-        [Inject]
-        IConfiguration Configuration { get; set; }
-
-        public string BackgroundImage { get; set; }
+        public string Style { get; set; } = "min-height:100vh;";
 
         protected override void OnInitialized()
         {
-            BackgroundImage = Configuration["Background:Image"];
-            Style = $"min-height:100vh;background-image: url({BackgroundImage});";
             base.OnInitialized();
         }
+        EventCallback _layoutStyleCallBack = EventCallback.Empty;
+        EventCallback LayoutStyleCallBack
+        {
+            get
+            {
+                if (_layoutStyleCallBack.Equals(EventCallback.Empty))
+                    _layoutStyleCallBack = EventCallback.Factory.Create(this, SetStyle);
+                return _layoutStyleCallBack;
+            }
+        }
+
+        public void SetStyle(object style)
+        {
+            if (style != null)
+            {
+                Style = style.ToString();
+            }
+        }
+
     }
 }
