@@ -1,13 +1,13 @@
 ﻿@inherits LayoutComponentBase
 
 <Layout Style="min-height:100vh;">
-    <Sider Collapsible Collapsed=@Collapsed OnCollapse=@OnCollapse NoTrigger Breakpoint="@BreakpointType.Lg">
+    <Sider Collapsible Collapsed=@Collapsed OnCollapse=@OnCollapse NoTrigger Breakpoint="@BreakpointType.Lg" Style="overflow: auto; height: 100vh; position: fixed; left: 0;">
         <div class="logo" align="center">
             <img src="@LogoImgSrc" height="32" />
         </div>
         <NavMenu InlineCollapsed="@Collapsed" @bind-BreadcrumbItemNav="BreadcrumbItemNav"></NavMenu>
     </Sider>
-    <Layout Class="site-layout">
+    <Layout Class="site-layout" Style="@HeaderStyle">
         <Header Class="site-layout-background" Style="padding:0;">
             @if (Collapsed)
             {

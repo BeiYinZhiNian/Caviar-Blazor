@@ -25,6 +25,8 @@ namespace Caviar.UI.Shared
         string LogoImg;
         string LogoImgIco;
 
+        string HeaderStyle { get; set; }
+
         /// <summary>
         /// 面包屑数据同步
         /// </summary>
@@ -43,14 +45,7 @@ namespace Caviar.UI.Shared
         {
             set
             {
-                if (value)
-                {
-                    LogoImgSrc = LogoImgIco;
-                }
-                else
-                {
-                    LogoImgSrc = LogoImg;
-                }
+                CollapseCallback(value);
                 _collapsed = value;
             }
             get
@@ -59,15 +54,39 @@ namespace Caviar.UI.Shared
             }
         }
         
-
+        /// <summary>
+        /// 按钮点击时触发
+        /// </summary>
         void Toggle()
         {
             Collapsed = !Collapsed;
         }
 
+        /// <summary>
+        /// 只有熔断触发，Toggle不触发
+        /// </summary>
+        /// <param name="collapsed"></param>
         void OnCollapse(bool collapsed)
         {
             this.Collapsed = collapsed;
+        }
+
+        /// <summary>
+        /// 菜单栏缩放时百分百触发
+        /// </summary>
+        /// <param name="collapsed"></param>
+        void CollapseCallback(bool collapsed)
+        {
+            if (collapsed)
+            {
+                HeaderStyle = "margin-left: 80px";
+                LogoImgSrc = LogoImgIco;
+            }
+            else
+            {
+                HeaderStyle = "margin-left: 200px";
+                LogoImgSrc = LogoImg;
+            }
         }
     }
 }

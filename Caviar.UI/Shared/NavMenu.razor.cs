@@ -10,8 +10,18 @@ namespace Caviar.UI.Shared
 {
     partial class NavMenu
     {
+        bool _inlineCollapsed;
         [Parameter]
-        public bool InlineCollapsed { get; set; }
+        public bool InlineCollapsed
+        {
+            get { return _inlineCollapsed; }
+            set
+            {
+                OnCollapsed(value);
+                _inlineCollapsed = value;
+            }
+        }
+
         [Parameter]
         public MenuItem BreadcrumbItemNav { get; set; }
         [Parameter]
@@ -19,7 +29,8 @@ namespace Caviar.UI.Shared
 
         public string[] OpenKeysNav { get; set; } = Array.Empty<string>();
 
-        
+        string[] _openKeysNae;
+
 
         public async void OnMenuItemClickedNav(MenuItem menuItem)
         {
@@ -30,7 +41,23 @@ namespace Caviar.UI.Shared
             }
         }
 
-
+        /// <summary>
+        /// 当收缩时候将打开的菜单关闭，防止出现第二菜单。
+        /// </summary>
+        /// <param name="collapsed"></param>
+        public void OnCollapsed(bool collapsed)
+        {
+            if (collapsed == _inlineCollapsed) return;
+            if (collapsed)
+            {
+                _openKeysNae = OpenKeysNav;
+                OpenKeysNav = Array.Empty<string>();
+            }
+            else
+            {
+                OpenKeysNav = _openKeysNae;
+            }
+        }
     }
 
 
