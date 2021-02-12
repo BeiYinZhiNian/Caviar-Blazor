@@ -7,11 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Caviar.UI.Pages.User
+namespace Caviar.UI.Pages.SystemPages.User
 {
     partial class Login
     {
-        public Sys_LoginUserData SysLoginUserData { get; set; } = new Sys_LoginUserData();
+        public Sys_User_LoginData SysLoginUserData { get; set; } = new Sys_User_LoginData();
         [Inject] public NavigationManager NavigationManager { get; set; }
 
         [Inject]

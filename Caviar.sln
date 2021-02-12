@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.UI", "Caviar.UI\Cavi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.Models", "Caviar.Models\Caviar.Models.csproj", "{1345B5AB-97A3-407E-A938-867E8AA6DC8F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caviar.WebAPI", "Caviar.WebAPI\Caviar.WebAPI.csproj", "{632F1BC9-FE83-44A0-81A9-53C1D6347808}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{1345B5AB-97A3-407E-A938-867E8AA6DC8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1345B5AB-97A3-407E-A938-867E8AA6DC8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1345B5AB-97A3-407E-A938-867E8AA6DC8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{632F1BC9-FE83-44A0-81A9-53C1D6347808}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{632F1BC9-FE83-44A0-81A9-53C1D6347808}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{632F1BC9-FE83-44A0-81A9-53C1D6347808}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{632F1BC9-FE83-44A0-81A9-53C1D6347808}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
