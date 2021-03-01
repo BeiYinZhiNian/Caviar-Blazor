@@ -1,3 +1,5 @@
+using Caviar.Control;
+using Caviar.Models.SystemData.Template;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -25,8 +27,12 @@ namespace Caviar.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddSession();
             services.AddControllers();
+            services.AddCaviar(new SqlConfig { 
+                Connections = Configuration["Connections:Value"],
+                DBTypeEnum = (DBTypeEnum)Enum.Parse(typeof(DBTypeEnum), Configuration["Connections:DBType"])
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Caviar.WebAPI", Version = "v1" });
@@ -42,9 +48,9 @@ namespace Caviar.WebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Caviar.WebAPI v1"));
             }
-
+            app.UserCaviar();
             app.UseRouting();
-
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

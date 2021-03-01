@@ -9,3 +9,4 @@ F:\桌面文件\我的\Code\Caviar\Caviar.Models\obj\Debug\net5.0\Caviar.Models.
 F:\桌面文件\我的\Code\Caviar\Caviar.Models\obj\Debug\net5.0\Caviar.Models.dll
 F:\桌面文件\我的\Code\Caviar\Caviar.Models\obj\Debug\net5.0\ref\Caviar.Models.dll
 F:\桌面文件\我的\Code\Caviar\Caviar.Models\obj\Debug\net5.0\Caviar.Models.pdb
+F:\桌面文件\我的\Code\Caviar\Caviar.Models\obj\Debug\net5.0\Caviar.Models.csprojAssemblyReference.cache
