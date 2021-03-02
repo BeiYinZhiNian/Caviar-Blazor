@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ namespace Caviar.Control
         {
             SqlConfig = sqlConfig;
             services.AddDbContext<DataContext>();
+            services.AddDistributedMemoryCache();
             services.AddSession();
             return services;
         }
@@ -58,6 +60,19 @@ namespace Caviar.Control
                 .Append(request.QueryString)
                 .ToString();
         }
+
+        #region session扩展
+        public static void Set<T>(this ISession session, string key, T value)
+        {
+            session.SetString(key, JsonConvert.SerializeObject(value));
+        }
+
+        public static T Get<T>(this ISession session, string key)
+        {
+            var value = session.GetString(key);
+            return value == null ? default : JsonConvert.DeserializeObject<T>(value);
+        }
+        #endregion
 
     }
 

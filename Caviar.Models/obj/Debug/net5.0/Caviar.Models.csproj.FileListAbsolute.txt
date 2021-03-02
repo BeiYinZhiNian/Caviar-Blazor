@@ -10,3 +10,15 @@ F:\桌面文件\我的\Code\Caviar\Caviar.Models\obj\Debug\net5.0\Caviar.Models.
 F:\桌面文件\我的\Code\Caviar\Caviar.Models\obj\Debug\net5.0\ref\Caviar.Models.dll
 F:\桌面文件\我的\Code\Caviar\Caviar.Models\obj\Debug\net5.0\Caviar.Models.pdb
 F:\桌面文件\我的\Code\Caviar\Caviar.Models\obj\Debug\net5.0\Caviar.Models.csprojAssemblyReference.cache
+E:\最近工作\我的文件\code\Caviar\Caviar.Models\bin\Debug\net5.0\Caviar.Models.deps.json
+E:\最近工作\我的文件\code\Caviar\Caviar.Models\bin\Debug\net5.0\Caviar.Models.dll
+E:\最近工作\我的文件\code\Caviar\Caviar.Models\bin\Debug\net5.0\ref\Caviar.Models.dll
+E:\最近工作\我的文件\code\Caviar\Caviar.Models\bin\Debug\net5.0\Caviar.Models.pdb
+E:\最近工作\我的文件\code\Caviar\Caviar.Models\obj\Debug\net5.0\Caviar.Models.csprojAssemblyReference.cache
+E:\最近工作\我的文件\code\Caviar\Caviar.Models\obj\Debug\net5.0\Caviar.Models.GeneratedMSBuildEditorConfig.editorconfig
+E:\最近工作\我的文件\code\Caviar\Caviar.Models\obj\Debug\net5.0\Caviar.Models.AssemblyInfoInputs.cache
+E:\最近工作\我的文件\code\Caviar\Caviar.Models\obj\Debug\net5.0\Caviar.Models.AssemblyInfo.cs
+E:\最近工作\我的文件\code\Caviar\Caviar.Models\obj\Debug\net5.0\Caviar.Models.csproj.CoreCompileInputs.cache
+E:\最近工作\我的文件\code\Caviar\Caviar.Models\obj\Debug\net5.0\Caviar.Models.dll
+E:\最近工作\我的文件\code\Caviar\Caviar.Models\obj\Debug\net5.0\ref\Caviar.Models.dll
+E:\最近工作\我的文件\code\Caviar\Caviar.Models\obj\Debug\net5.0\Caviar.Models.pdb

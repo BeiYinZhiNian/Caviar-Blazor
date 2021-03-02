@@ -71,7 +71,8 @@ namespace Caviar.Control
             //获取请求路径
             Base_Current_Action = context.HttpContext.Request.Path.Value;
 
-            //Sys_User_Info sys_User_Info = context.HttpContext.Session["sys_User_Info"];
+            Sys_User_Info sys_User_Info = context.HttpContext.Session.Get<Sys_User_Info>("Sys_User_Info");
+
             OnInfoVerification();
         }
 
