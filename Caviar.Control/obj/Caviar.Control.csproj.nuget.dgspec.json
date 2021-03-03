@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "E:\\最近工作\\我的文件\\code\\Caviar\\Caviar.Control\\Caviar.Control.csproj": {}
+    "F:\\桌面文件\\我的\\Code\\Caviar\\Caviar.Control\\Caviar.Control.csproj": {}
   },
   "projects": {
-    "E:\\最近工作\\我的文件\\code\\Caviar\\Caviar.Control\\Caviar.Control.csproj": {
+    "F:\\桌面文件\\我的\\Code\\Caviar\\Caviar.Control\\Caviar.Control.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\最近工作\\我的文件\\code\\Caviar\\Caviar.Control\\Caviar.Control.csproj",
+        "projectUniqueName": "F:\\桌面文件\\我的\\Code\\Caviar\\Caviar.Control\\Caviar.Control.csproj",
         "projectName": "Caviar.Control",
-        "projectPath": "E:\\最近工作\\我的文件\\code\\Caviar\\Caviar.Control\\Caviar.Control.csproj",
-        "packagesPath": "C:\\Users\\wz\\.nuget\\packages\\",
-        "outputPath": "E:\\最近工作\\我的文件\\code\\Caviar\\Caviar.Control\\obj\\",
+        "projectPath": "F:\\桌面文件\\我的\\Code\\Caviar\\Caviar.Control\\Caviar.Control.csproj",
+        "packagesPath": "C:\\Users\\asus\\.nuget\\packages\\",
+        "outputPath": "F:\\桌面文件\\我的\\Code\\Caviar\\Caviar.Control\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\wz\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\asus\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -31,8 +31,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "E:\\最近工作\\我的文件\\code\\Caviar\\Caviar.Models\\Caviar.Models.csproj": {
-                "projectPath": "E:\\最近工作\\我的文件\\code\\Caviar\\Caviar.Models\\Caviar.Models.csproj"
+              "F:\\桌面文件\\我的\\Code\\Caviar\\Caviar.Models\\Caviar.Models.csproj": {
+                "projectPath": "F:\\桌面文件\\我的\\Code\\Caviar\\Caviar.Models\\Caviar.Models.csproj"
               }
             }
           }
@@ -131,24 +131,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.200-preview.20614.14\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\最近工作\\我的文件\\code\\Caviar\\Caviar.Models\\Caviar.Models.csproj": {
+    "F:\\桌面文件\\我的\\Code\\Caviar\\Caviar.Models\\Caviar.Models.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\最近工作\\我的文件\\code\\Caviar\\Caviar.Models\\Caviar.Models.csproj",
+        "projectUniqueName": "F:\\桌面文件\\我的\\Code\\Caviar\\Caviar.Models\\Caviar.Models.csproj",
         "projectName": "Caviar.Models",
-        "projectPath": "E:\\最近工作\\我的文件\\code\\Caviar\\Caviar.Models\\Caviar.Models.csproj",
-        "packagesPath": "C:\\Users\\wz\\.nuget\\packages\\",
-        "outputPath": "E:\\最近工作\\我的文件\\code\\Caviar\\Caviar.Models\\obj\\",
+        "projectPath": "F:\\桌面文件\\我的\\Code\\Caviar\\Caviar.Models\\Caviar.Models.csproj",
+        "packagesPath": "C:\\Users\\asus\\.nuget\\packages\\",
+        "outputPath": "F:\\桌面文件\\我的\\Code\\Caviar\\Caviar.Models\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\wz\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\asus\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -198,7 +198,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.200-preview.20614.14\\RuntimeIdentifierGraph.json"
         }
       }
     }
