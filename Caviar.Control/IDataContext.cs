@@ -20,13 +20,13 @@ namespace Caviar.Control
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public Task<int> AddEntity<T>(T entity, bool isSaveChange = true) where T : class,IBaseModel;
+        Task<int> AddEntity<T>(T entity, bool isSaveChange = true) where T : class,IBaseModel;
         /// <summary>
         /// 修改实体
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public Task<int> UpdateEntity<T>(T entity, bool isSaveChange = true) where T : class,IBaseModel;
+        protected Task<int> UpdateEntity<T>(T entity, bool isSaveChange = true) where T : class,IBaseModel;
         /// <summary>
         /// 修改部分实体
         /// </summary>
@@ -35,40 +35,40 @@ namespace Caviar.Control
         /// <param name="updatePropertyList"></param>
         /// <param name="modified"></param>
         /// <returns></returns>
-        public Task<int> UpdateAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class,IBaseModel;
+        protected Task<int> UpdateAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class,IBaseModel;
         /// <summary>
         /// 删除实体
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="IsDelete">是否彻底删除，默认不彻底删除</param>
         /// <returns></returns>
-        public Task<int> DeleteEntity<T>(T entity, bool isSaveChange = true, bool IsDelete = false) where T : class,IBaseModel;
+        protected Task<int> DeleteEntity<T>(T entity, bool isSaveChange = true, bool IsDelete = false) where T : class,IBaseModel;
         /// <summary>
         /// 异步获取所有数据
         /// </summary>
         /// <returns></returns>
-        public IQueryable<T> GetAllAsync<T>() where T : class,IBaseModel;
+        protected IQueryable<T> GetAllAsync<T>() where T : class,IBaseModel;
         /// <summary>
         /// 根据条件获取实体
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public IQueryable<T> GetEntity<T>(Expression<Func<T, bool>> where) where T : class, IBaseModel;
+        protected IQueryable<T> GetEntity<T>(Expression<Func<T, bool>> where) where T : class, IBaseModel;
         /// <summary>
         /// 根据id获取实体
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Task<T> GetEntity<T>(int id) where T : class, IBaseModel;
+        protected Task<T> GetEntity<T>(int id) where T : class, IBaseModel;
         /// <summary>
         /// 根据uid获取实体
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="uid"></param>
         /// <returns></returns>
-        public Task<T> GetEntity<T>(Guid uid) where T : class, IBaseModel;
+        protected Task<T> GetEntity<T>(Guid uid) where T : class, IBaseModel;
         /// <summary>
         /// 分页查询异步
         /// </summary>
@@ -78,7 +78,7 @@ namespace Caviar.Control
         /// <param name="pageSize">每页大小</param>
         /// <param name="isOrder">排序正反</param>
         /// <returns></returns>
-        public Task<PageData<T>> GetPageAsync<T,TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true) where T:class,IBaseModel;
+        protected Task<PageData<T>> GetPageAsync<T,TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true) where T:class,IBaseModel;
 
     }
 }

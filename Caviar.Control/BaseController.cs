@@ -1,5 +1,6 @@
 ﻿using Caviar.Models.SystemData.Template;
 using Caviar.Models.SystemData.Template.User;
+using Caviar.Models.SystemData;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -13,35 +14,20 @@ namespace Caviar.Control
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public partial class BaseController: Controller
+    public partial class BaseController : Controller
     {
         ILogger<BaseController> _logger;
-        protected ILogger<BaseController> Base_Logger 
-        { 
-            get 
+        protected ILogger<BaseController> Base_Logger
+        {
+            get
             {
                 if (_logger == null)
                 {
                     _logger = CaviarConfig.ApplicationServices.GetRequiredService<ILogger<BaseController>>();
                 }
                 return _logger;
-            } 
-            set { _logger = value; } 
-        }
-
-        DataContext _dataContext;
-
-        protected DataContext Base_DataContext 
-        { 
-            get 
-            {
-                if (_dataContext == null)
-                {
-                    _dataContext = CaviarConfig.ApplicationServices.GetRequiredService<DataContext>();
-                }
-                return _dataContext; 
-            } 
-            set { _dataContext = value; }
+            }
+            set { _logger = value; }
         }
         /// <summary>
         /// 当前请求路径
@@ -60,8 +46,6 @@ namespace Caviar.Control
         /// </summary>
         protected Sys_User_Info Sys_User_Info { get; set; }
 
-        
-
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             //获取ip地址
@@ -73,6 +57,7 @@ namespace Caviar.Control
 
             Sys_User_Info sys_User_Info = context.HttpContext.Session.Get<Sys_User_Info>("Sys_User_Info");
 
+            
             OnInfoVerification();
         }
 

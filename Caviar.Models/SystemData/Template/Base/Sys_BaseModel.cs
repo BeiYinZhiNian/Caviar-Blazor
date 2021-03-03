@@ -39,7 +39,7 @@ namespace Caviar.Models.SystemData
         /// 根据配置确定删除后是否保留条目
         /// </summary>
         [DisplayName("是否删除")]
-        public bool IsDelete { get; set; }
+        public bool IsDelete { get; set; } = false;
         /// <summary>
         /// 创建操作员的名称
         /// </summary>

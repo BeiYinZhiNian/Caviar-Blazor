@@ -16,6 +16,7 @@ namespace Caviar.Control
         {
             SqlConfig = sqlConfig;
             services.AddDbContext<DataContext>();
+            services.AddScoped<DataContext>();
             services.AddDistributedMemoryCache();
             services.AddSession();
             return services;

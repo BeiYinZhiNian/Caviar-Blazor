@@ -27,7 +27,8 @@ namespace Caviar.Models.SystemData.Template
         /// </summary>
         public DateTime UpdateTime { get; set; }
         /// <summary>
-        /// 根据配置确定删除后是否保留条目
+        /// 第一次并不会引发删除，只是隐藏，第二次会真正的删除数据
+        /// 当IsDelete为false时，删除会将IsDelete值改为true，当IsDelete值为true时将删除数据
         /// </summary>
         public bool IsDelete { get; set; }
         /// <summary>
@@ -35,7 +36,7 @@ namespace Caviar.Models.SystemData.Template
         /// </summary>
         public string OperatorCare { get; set; }
         /// <summary>
-        /// 创建操作员的名称
+        /// 更新操作员的名称
         /// </summary>
         public string OperatorUp { get; set; }
         /// <summary>
