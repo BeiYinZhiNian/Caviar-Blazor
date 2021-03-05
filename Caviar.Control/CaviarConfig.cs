@@ -1,6 +1,7 @@
 ﻿using Caviar.Models.SystemData.Template;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
@@ -12,13 +13,23 @@ namespace Caviar.Control
     {
         public static SqlConfig SqlConfig { get; set; }
 
-        public static IServiceCollection AddCaviar(this IServiceCollection services,SqlConfig sqlConfig)
+        public static IConfiguration Configuration { get; set; }
+
+        public static string NoLoginRole { get; set; }
+        public static string SysAdminRole { get; set; }
+
+        public static IServiceCollection AddCaviar(this IServiceCollection services,SqlConfig sqlConfig,IConfiguration configuration)
         {
             SqlConfig = sqlConfig;
             services.AddDbContext<DataContext>();
-            services.AddScoped<DataContext>();
             services.AddDistributedMemoryCache();
             services.AddSession();
+            Configuration = configuration;
+
+            NoLoginRole = Configuration["Caviar:Role:NoLoginRole"];
+            if (string.IsNullOrEmpty(NoLoginRole)) NoLoginRole = "未登录用户";
+            SysAdminRole = Configuration["Caviar:Role:SysAdminRole"];
+            if (string.IsNullOrEmpty(SysAdminRole)) NoLoginRole = "管理员";
             return services;
         }
 

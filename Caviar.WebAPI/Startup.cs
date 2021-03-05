@@ -31,7 +31,7 @@ namespace Caviar.WebAPI
             services.AddCaviar(new SqlConfig { 
                 Connections = Configuration["Connections:Value"],
                 DBTypeEnum = (DBTypeEnum)Enum.Parse(typeof(DBTypeEnum), Configuration["Connections:DBType"])
-            });
+            }, Configuration);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Caviar.WebAPI", Version = "v1" });

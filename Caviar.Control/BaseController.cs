@@ -56,7 +56,25 @@ namespace Caviar.Control
             Base_Current_Action = context.HttpContext.Request.Path.Value;
 
             Sys_User_Info sys_User_Info = context.HttpContext.Session.Get<Sys_User_Info>("Sys_User_Info");
-
+            if (sys_User_Info == null)
+            {
+                sys_User_Info = new Sys_User_Info()
+                {
+                    Sys_User_Login = new Sys_User_Login()
+                    {
+                        UserName = CaviarConfig.NoLoginRole,
+                    },
+                    Sys_Roles = new List<Sys_Role>(),
+                    Sys_Power_Menus = new List<Sys_Power_Menu>(),
+                };
+                var role = GetEntity<Sys_Role>(u => u.RoleName == CaviarConfig.NoLoginRole);
+                sys_User_Info.Sys_Roles.AddRange(role);
+            }
+            foreach (var item in sys_User_Info.Sys_Roles)
+            {
+                var menus = GetEntity<Sys_Role_Menu>(u => u.RoleId == item.Id).FirstOrDefault();
+                sys_User_Info.Sys_Power_Menus.Add(menus.Menu);
+            }
             
             OnInfoVerification();
         }

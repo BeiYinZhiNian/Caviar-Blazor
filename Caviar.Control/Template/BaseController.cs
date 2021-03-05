@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -27,7 +28,7 @@ namespace Caviar.Control
             }
             set { _dataContext = value; }
         }
-        protected virtual async Task<int> AddEntity<T>(T entity, bool isSaveChange = true) where T : class, IBaseModel
+        protected virtual async Task<int> AddEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IBaseModel
         {
             entity.OperatorCare = Sys_User_Info.Sys_User_Login.UserName;
             Base_DataContext.Entry(entity).State = EntityState.Added;
@@ -38,7 +39,23 @@ namespace Caviar.Control
             return 0;
         }
 
-        protected virtual async Task<int> UpdateEntity<T>(T entity, bool isSaveChange = true) where T : class, IBaseModel
+        protected virtual async Task<int> AddRangeAsync<T>(List<T> entities, bool isSaveChange = true) where T : class, IBaseModel
+        {
+            var set = Base_DataContext.Set<T>();
+            await set.AddRangeAsync(entities);
+            if (isSaveChange)
+            {
+                return await Base_DataContext.SaveChangesAsync();
+            }
+            return 0;
+        }
+
+        protected virtual async Task<int> SaveChangesAsync()
+        {
+            return await Base_DataContext.SaveChangesAsync();
+        }
+
+        protected virtual async Task<int> UpdateEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IBaseModel
         {
             entity.OperatorUp = Sys_User_Info.Sys_User_Login.UserName;
             Base_DataContext.Entry(entity).State = EntityState.Modified;
@@ -60,7 +77,7 @@ namespace Caviar.Control
             return 0;
         }
 
-        protected virtual async Task<int> DeleteEntity<T>(T entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IBaseModel
+        protected virtual async Task<int> DeleteEntityAsync<T>(T entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IBaseModel
         {
             if (entity.IsDelete)
             {
@@ -109,13 +126,13 @@ namespace Caviar.Control
             return set.Where(where);
         }
 
-        protected Task<T> GetEntity<T>(int id) where T : class, IBaseModel
+        protected Task<T> GetEntityAsync<T>(int id) where T : class, IBaseModel
         {
             var set = Base_DataContext.Set<T>();
             return set.FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        protected Task<T> GetEntity<T>(Guid uid) where T : class, IBaseModel
+        protected Task<T> GetEntityAsync<T>(Guid uid) where T : class, IBaseModel
         {
             var set = Base_DataContext.Set<T>();
             return set.FirstOrDefaultAsync(u => u.Uid == uid);
@@ -133,24 +150,48 @@ namespace Caviar.Control
             bool IsExistence = await Base_DataContext.Database.EnsureCreatedAsync();
             if (IsExistence)
             {
+                //创建初始角色
                 Sys_User_Login Login = new Sys_User_Login()
                 {
                     UserName = "admin",
                     Password = CommonHelper.GetMD5("123456"),
                     PhoneNumber = "11111111111",
                 };
-                await AddEntity(Login);
-                Sys_Role role = new Sys_Role()
+                await AddEntityAsync(Login);
+                //创建基础角色
+                var roleList = new List<Sys_Role>();
+                roleList.Add(new Sys_Role
                 {
-                    RoleName = "管理员",
+                    RoleName = CaviarConfig.NoLoginRole,
+                });
+                
+                await AddRangeAsync(roleList);
+                var role = new Sys_Role()
+                {
+                    RoleName = CaviarConfig.SysAdminRole,
                 };
-                await AddEntity(role);
+                await AddEntityAsync(role);
+                //默认角色加入管理员角色
                 Sys_Role_Login sys_Role_Login = new Sys_Role_Login()
                 {
                     RoleId = role.Id,
                     UserId = Login.Id
                 };
-                await AddEntity(sys_Role_Login);
+                await AddEntityAsync(sys_Role_Login);
+                //创建基础菜单
+                Sys_Power_Menu sys_Power_Menu = new Sys_Power_Menu()
+                {
+                    MenuType = MenuType.Catalog,
+                    TargetType = TargetType.CurrentPage,
+                    MenuName = "系统管理",
+                };
+                await AddEntityAsync(sys_Role_Login);
+                //基础菜单加入管理员角色
+                Sys_Role_Menu sys_Role_Menu = new Sys_Role_Menu()
+                {
+                    MenuId = sys_Power_Menu.Id,
+                    RoleId = role.Id,
+                };
             }
             return IsExistence;
         }

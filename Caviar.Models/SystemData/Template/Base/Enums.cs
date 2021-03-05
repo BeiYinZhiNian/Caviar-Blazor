@@ -18,7 +18,9 @@ namespace Caviar.Models.SystemData.Template
         [Display(Name = "菜单")]
         Menu,
         [Display(Name = "按钮")]
-        Button
+        Button,
+        [Display(Name = "页面")]
+        Page,
     }
 
     public enum TargetType

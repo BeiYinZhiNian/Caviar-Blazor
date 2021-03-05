@@ -10,8 +10,8 @@ namespace Caviar.Models.SystemData.Template.User
     {
         public Sys_User_Login Sys_User_Login { get; set; }
 
-        public Sys_Role[] Sys_Roles { get; set; }
+        public List<Sys_Role> Sys_Roles { get; set; }
 
-        public Sys_Power_Menu[] Sys_Power_Menus { get; set; }
+        public List<Sys_Power_Menu> Sys_Power_Menus { get; set; }
     }
 }
