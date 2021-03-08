@@ -14,9 +14,11 @@ namespace Caviar.Control
     public class DataContext : DbContext
     {
         #region 表对象
-        public virtual DbSet<Sys_Role_Login> Sys_Role_Login { get; set; }
-        public virtual DbSet<Sys_User_Login> Sys_User_Login { get; set; }
-        public virtual DbSet<Sys_Role> Sys_Role { get; set; }
+        public virtual DbSet<SysRoleLogin> SysRoleLogin { get; set; }
+        public virtual DbSet<SysUserLogin> SysUserLogin { get; set; }
+        public virtual DbSet<SysRole> SysRole { get; set; }
+        public virtual DbSet<SysPowerMenu> SysPowerMenu { get; set; }
+        public virtual DbSet<SysRoleMenu> SysRoleMenu { get; set; }
 
         #endregion
 

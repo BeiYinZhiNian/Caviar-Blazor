@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData.Template
 {
-    public partial class Sys_Role_Login : Sys_BaseModel
+    public partial class SysRoleMenu:SysBaseModel
     {
-        public Sys_Role Role { get; set; }
+        public SysRole Role { get; set; }
 
-        public Sys_User_Login User { get; set; }
+        public SysPowerMenu Menu { get; set; }
 
-        public int UserId { get; set; }
+        public int MenuId { get; set; }
 
         public int RoleId { get; set; }
     }

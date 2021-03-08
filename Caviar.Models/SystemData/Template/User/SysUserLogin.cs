@@ -12,7 +12,7 @@ namespace Caviar.Models.SystemData
     /// <summary>
     /// 系统用户
     /// </summary>
-    public partial class Sys_User_Login : Sys_BaseModel
+    public partial class SysUserLogin : SysBaseModel
     {
         /// <summary>
         /// 用户名
@@ -38,6 +38,6 @@ namespace Caviar.Models.SystemData
         public string PhoneNumber { get; set; }
 
         [Display(Name = "角色")]
-        public List<Sys_Role_Login> UserRoles { get; set; }
+        public List<SysRoleLogin> UserRoles { get; set; }
     }
 }

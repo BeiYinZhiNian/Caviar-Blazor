@@ -16,7 +16,7 @@ namespace Caviar.WebAPI.Controllers
         [HttpGet]
         public string Login()
         {
-            var str = GetAllAsync<Sys_User_Login>();
+            var str = GetAllAsync<SysUserLogin>();
             Base_Logger.LogDebug("测试11");
             Base_Logger.LogInformation("测试2");
             Base_Logger.LogWarning("测试3");

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
-    public partial class Sys_Role:Sys_BaseModel
+    public partial class SysRole:SysBaseModel
     {
         /// <summary>
         /// 角色名称
@@ -20,7 +20,7 @@ namespace Caviar.Models.SystemData
         public string RoleName { get; set; }
 
         [Display(Name = "用户")]
-        public List<Sys_Role_Login> UserRoles { get; set; }
+        public List<SysRoleLogin> UserRoles { get; set; }
 
     }
 }

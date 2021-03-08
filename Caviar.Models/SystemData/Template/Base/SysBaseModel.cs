@@ -12,7 +12,7 @@ namespace Caviar.Models.SystemData
     /// <summary>
     /// 数据基础类
     /// </summary>
-    partial class Sys_BaseModel : IBaseModel
+    partial class SysBaseModel : IBaseModel
     {
         /// <summary>
         /// id

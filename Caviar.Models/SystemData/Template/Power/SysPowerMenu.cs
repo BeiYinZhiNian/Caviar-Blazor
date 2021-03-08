@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData.Template
 {
-    public partial class Sys_Power_Menu:Sys_BaseModel
+    public partial class SysPowerMenu:SysBaseModel
     {
         [DisplayName("类型")]
         public MenuType MenuType { get; set; }

@@ -11,7 +11,7 @@ namespace Caviar.UI.Pages.SystemPages.User
 {
     partial class Login
     {
-        public Sys_User_Login SysLoginUserData { get; set; } = new Sys_User_Login();
+        public SysUserLogin SysLoginUserData { get; set; } = new SysUserLogin();
         [Inject] public NavigationManager NavigationManager { get; set; }
 
         [Inject]

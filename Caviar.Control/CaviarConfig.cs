@@ -24,6 +24,7 @@ namespace Caviar.Control
             services.AddDbContext<DataContext>();
             services.AddDistributedMemoryCache();
             services.AddSession();
+            services.AddScoped<SysDataContext>();
             Configuration = configuration;
 
             NoLoginRole = Configuration["Caviar:Role:NoLoginRole"];

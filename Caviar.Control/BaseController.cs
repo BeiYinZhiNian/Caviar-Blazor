@@ -10,12 +10,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
 namespace Caviar.Control
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
     public partial class BaseController : Controller
     {
+        IDataContext _iDataContext;
+        protected IDataContext IDataContext 
+        {
+            get 
+            {
+                if (_iDataContext == null)
+                {
+                    _iDataContext = CaviarConfig.ApplicationServices.GetRequiredService<SysDataContext>();
+                }
+                return _iDataContext; 
+            }
+        }
+
         ILogger<BaseController> _logger;
         protected ILogger<BaseController> Base_Logger
         {
@@ -44,10 +59,11 @@ namespace Caviar.Control
         /// <summary>
         /// 当前用户信息
         /// </summary>
-        protected Sys_User_Info Sys_User_Info { get; set; }
+        protected SysUserInfo SysUserInfo { get; set; }
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
+            base.OnActionExecuting(context);
             //获取ip地址
             Base_Current_Ipaddress = context.HttpContext.GetUserIp();
             //获取完整Url
@@ -55,47 +71,61 @@ namespace Caviar.Control
             //获取请求路径
             Base_Current_Action = context.HttpContext.Request.Path.Value;
 
-            Sys_User_Info sys_User_Info = context.HttpContext.Session.Get<Sys_User_Info>("Sys_User_Info");
-            if (sys_User_Info == null)
+            SysUserInfo = context.HttpContext.Session.Get<SysUserInfo>("SysUserInfo");
+            if (SysUserInfo == null)
             {
-                sys_User_Info = new Sys_User_Info()
+                SysUserInfo = new SysUserInfo()
                 {
-                    Sys_User_Login = new Sys_User_Login()
+                    SysUserLogin = new SysUserLogin()
                     {
                         UserName = CaviarConfig.NoLoginRole,
                     },
-                    Sys_Roles = new List<Sys_Role>(),
-                    Sys_Power_Menus = new List<Sys_Power_Menu>(),
+                    SysRoles = new List<SysRole>(),
+                    SysPowerMenus = new List<SysPowerMenu>(),
+                    IsLogin = false
                 };
-                var role = GetEntity<Sys_Role>(u => u.RoleName == CaviarConfig.NoLoginRole);
-                sys_User_Info.Sys_Roles.AddRange(role);
             }
-            foreach (var item in sys_User_Info.Sys_Roles)
+
+            
+
+
+            if (SysUserInfo.IsLogin)
             {
-                var menus = GetEntity<Sys_Role_Menu>(u => u.RoleId == item.Id).FirstOrDefault();
-                sys_User_Info.Sys_Power_Menus.Add(menus.Menu);
+                var sysRoleLogins = IDataContext.GetEntity<SysRoleLogin>(u => u.UserId == SysUserInfo.SysUserLogin.Id);
+                foreach (var item in sysRoleLogins)
+                {
+                    SysUserInfo.SysRoles.Add(item.Role);
+                }
             }
-            
-            OnInfoVerification();
+            else
+            {
+                //获取未登录角色
+                var role = IDataContext.GetEntity<SysRole>(u => u.RoleName == CaviarConfig.NoLoginRole);
+                SysUserInfo.SysRoles.AddRange(role);
+            }
+            foreach (var item in SysUserInfo.SysRoles)
+            {
+                var menus = IDataContext.GetEntity<SysRoleMenu>(u => u.RoleId == item.Id).FirstOrDefault();
+                SysUserInfo.SysPowerMenus.Add(menus.Menu);
+            }
+            var menu = SysUserInfo.SysPowerMenus.Where(u => u.Url == Base_Current_Action).FirstOrDefault();
+            if (menu == null)
+            {
+                
+                return;
+            }
+
         }
 
 
-        /// <summary>
-        /// 信息验证
-        /// </summary>
-        /// <returns></returns>
-        protected virtual bool OnInfoVerification()
-        {
-            
-            return true;
-        }
-        /// <summary>
-        /// 验证完毕
-        /// </summary>
-        protected virtual void OnInfoOk()
-        {
 
-        }
+        #region 消息回复
+
+
+
+
+        #endregion
+
 
     }
 }
