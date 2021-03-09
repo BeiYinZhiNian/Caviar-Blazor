@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
+using Renci.SshNet.Messages.Authentication;
 
 namespace Caviar.Control
 {
@@ -82,32 +83,14 @@ namespace Caviar.Control
                     SysPowerMenus = new List<SysPowerMenu>(),
                     IsLogin = false
                 };
-            }
-            else
-            {
-                SysUserInfo.IsLogin = true;
-            }
-            
-
-
-            if (SysUserInfo.IsLogin)
-            {
-                var sysRoleLogins = IDataContext.GetEntity<SysRoleLogin>(u => u.UserId == SysUserInfo.SysUserLogin.Id);
-                foreach (var item in sysRoleLogins)
-                {
-                    SysUserInfo.SysRoles.Add(item.Role);
-                }
-            }
-            else
-            {
                 //获取未登录角色
                 var role = IDataContext.GetEntity<SysRole>(u => u.RoleName == CaviarConfig.NoLoginRole);
                 SysUserInfo.SysRoles.AddRange(role);
-            }
-            foreach (var item in SysUserInfo.SysRoles)
-            {
-                var menus = IDataContext.GetEntity<SysRoleMenu>(u => u.RoleId == item.Id).FirstOrDefault();
-                SysUserInfo.SysPowerMenus.Add(menus.Menu);
+                foreach (var item in SysUserInfo.SysRoles)
+                {
+                    var menus = IDataContext.GetEntity<SysRoleMenu>(u => u.RoleId == item.Id).FirstOrDefault();
+                    //SysUserInfo.SysPowerMenus.Add(menus.Menu);
+                }
             }
             var menu = SysUserInfo.SysPowerMenus.Where(u => u.Url == Base_Current_Action).FirstOrDefault();
             if (menu == null)
@@ -123,8 +106,30 @@ namespace Caviar.Control
         #region 消息回复
 
 
+        protected virtual IActionResult ResultOK()
+        {
+            var result = new ResultMsg();
+            return Ok(result);
+        }
+
+        protected virtual IActionResult ResultOK(string msg)
+        {
+            var result = new ResultMsg() { Msg = msg };
+            return Ok(result);
+        }
+
+        protected virtual IActionResult ResultError()
+        {
+            var result = new ResultMsg();
+            return BadRequest(result);
+        }
 
 
+        protected virtual IActionResult Result400()
+        {
+            var result = new ResultMsg();
+            return BadRequest(result);
+        }
         #endregion
 
 

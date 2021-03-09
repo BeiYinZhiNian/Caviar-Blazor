@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
-    [Inject]
+
     public class PageData<T>
     {
         public List<T> Rows { get; set; }

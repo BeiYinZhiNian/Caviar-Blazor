@@ -13,7 +13,7 @@ namespace Caviar.WebAPI.Controllers
     public class User : BaseController
     {
         [HttpGet]
-        public string Login()
+        public IActionResult Login()
         {
             var str = IDataContext.GetAllAsync<SysUserLogin>();
             Base_Logger.LogDebug("测试11");
@@ -22,7 +22,7 @@ namespace Caviar.WebAPI.Controllers
             Base_Logger.LogTrace("测试4");
             Base_Logger.LogCritical("测试5");
             Base_Logger.LogError("测试");
-            return "11";
+            return ResultError();
         }
 
 

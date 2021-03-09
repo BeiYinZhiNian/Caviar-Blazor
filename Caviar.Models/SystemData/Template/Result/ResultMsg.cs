@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
-    [Inject]
+
     public class ResultMsg
     {
-        public int Code { get; set; }
-        public string Msg { get; set; }
+        public int Code { get; set; } = 200;
+        public string Msg { get; set; } = "操作完成";
         
     }
-    [Inject]
+
     public class ResultMsg<T>:ResultMsg
     {
         public T Data { get; set; }
