@@ -1,6 +1,4 @@
-﻿using Caviar.Models.SystemData.Template;
-using Caviar.Models.SystemData.Template.User;
-using Caviar.Models.SystemData;
+﻿using Caviar.Models.SystemData;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -85,7 +83,10 @@ namespace Caviar.Control
                     IsLogin = false
                 };
             }
-
+            else
+            {
+                SysUserInfo.IsLogin = true;
+            }
             
 
 

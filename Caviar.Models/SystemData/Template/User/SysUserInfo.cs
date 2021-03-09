@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.Models.SystemData.Template.User
+namespace Caviar.Models.SystemData
 {
     public class SysUserInfo
     {

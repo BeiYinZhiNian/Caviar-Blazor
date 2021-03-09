@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.Models.SystemData.Template
+namespace Caviar.Models.SystemData
 {
+    [Inject]
     public class PageData<T>
     {
         public List<T> Rows { get; set; }

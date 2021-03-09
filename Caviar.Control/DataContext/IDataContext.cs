@@ -1,4 +1,4 @@
-﻿using Caviar.Models.SystemData.Template;
+﻿using Caviar.Models.SystemData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;

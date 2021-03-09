@@ -1,5 +1,4 @@
 ﻿using Caviar.Models.SystemData;
-using Caviar.Models.SystemData.Template;
 using Microsoft.EntityFrameworkCore;
 using System;
 using Microsoft.Extensions.Logging;
@@ -62,6 +61,7 @@ namespace Caviar.Control
                     default:
                         break;
                 }
+                CaviarConfig.SqlConfig.Connections = "";
             }
         }
 

@@ -1,5 +1,4 @@
 ﻿using Caviar.Models.SystemData;
-using Caviar.Models.SystemData.Template;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.Models.SystemData.Template
+namespace Caviar.Models.SystemData
 {
     /// <summary>
     /// 数据库类型
