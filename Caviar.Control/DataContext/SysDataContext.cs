@@ -35,6 +35,9 @@ namespace Caviar.Control
             }
             set { _dataContext = value; }
         }
+
+        public SysUserInfo SysUserInfo { get; set; }
+
         /// <summary>
         /// 添加实体
         /// </summary>
@@ -47,7 +50,7 @@ namespace Caviar.Control
             Base_DataContext.Entry(entity).State = EntityState.Added;
             if (isSaveChange)
             {
-                return await Base_DataContext.SaveChangesAsync();
+                return await SaveChangesAsync();
             }
             return 0;
         }
@@ -64,7 +67,7 @@ namespace Caviar.Control
             await set.AddRangeAsync(entities);
             if (isSaveChange)
             {
-                return await Base_DataContext.SaveChangesAsync();
+                return await SaveChangesAsync();
             }
             return 0;
         }
@@ -74,6 +77,33 @@ namespace Caviar.Control
         /// <returns></returns>
         public virtual async Task<int> SaveChangesAsync()
         {
+            Base_DataContext.ChangeTracker.DetectChanges(); // Important!
+            Base_DataContext.ChangeTracker
+                .Entries()
+                .Where(u => u.State == EntityState.Modified)
+                .Select(u => u.Entity)
+                .ToList()
+                .ForEach(u=> {
+                    var baseEntity = u as IBaseModel;
+                    if (baseEntity != null)
+                    {
+                        baseEntity.UpdateTime = DateTime.Now;
+                        baseEntity.OperatorUp = SysUserInfo?.SysUserLogin?.UserName;
+                    }
+                });
+            Base_DataContext.ChangeTracker
+                .Entries()
+                .Where(u => u.State == EntityState.Added)
+                .Select(u => u.Entity)
+                .ToList()
+                .ForEach(u => {
+                    var baseEntity = u as IBaseModel;
+                    if (baseEntity != null)
+                    {
+                        baseEntity.CreatTime = DateTime.Now;
+                        baseEntity.OperatorCare = SysUserInfo?.SysUserLogin?.UserName;
+                    }
+                });
             return await Base_DataContext.SaveChangesAsync();
         }
         /// <summary>
@@ -88,7 +118,7 @@ namespace Caviar.Control
             Base_DataContext.Entry(entity).State = EntityState.Modified;
             if (isSaveChange)
             {
-                return await Base_DataContext.SaveChangesAsync();
+                return await SaveChangesAsync();
             }
             return 0;
         }
@@ -105,7 +135,7 @@ namespace Caviar.Control
             Base_DataContext.Entry(entity).Property(fieldExp).IsModified = true;
             if (isSaveChange)
             {
-                return await Base_DataContext.SaveChangesAsync();
+                return await SaveChangesAsync();
             }
             return 0;
         }
@@ -125,7 +155,7 @@ namespace Caviar.Control
                 set.Remove(entity);
                 if (isSaveChange)
                 {
-                    return await Base_DataContext.SaveChangesAsync();
+                    return await SaveChangesAsync();
                 }
             }
             else
@@ -229,13 +259,11 @@ namespace Caviar.Control
                 };
                 await AddEntityAsync(Login);
                 //创建基础角色
-                var roleList = new List<SysRole>();
-                roleList.Add(new SysRole
+                var NoLoginRole = new SysRole
                 {
                     RoleName = CaviarConfig.NoLoginRole,
-                });
-                
-                await AddRangeAsync(roleList);
+                };
+                await AddEntityAsync(NoLoginRole);
                 var role = new SysRole()
                 {
                     RoleName = CaviarConfig.SysAdminRole,

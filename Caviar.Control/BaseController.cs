@@ -89,8 +89,10 @@ namespace Caviar.Control
                 foreach (var item in SysUserInfo.SysRoles)
                 {
                     var menus = IDataContext.GetEntity<SysRoleMenu>(u => u.RoleId == item.Id).FirstOrDefault();
-                    //SysUserInfo.SysPowerMenus.Add(menus.Menu);
+                    if (menus == null) continue;
+                    SysUserInfo.SysPowerMenus.Add(menus.Menu);
                 }
+                context.HttpContext.Session.Set("SysUserInfo", SysUserInfo);
             }
             var menu = SysUserInfo.SysPowerMenus.Where(u => u.Url == Base_Current_Action).FirstOrDefault();
             if (menu == null)
