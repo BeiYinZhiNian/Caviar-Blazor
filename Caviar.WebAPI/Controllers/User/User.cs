@@ -22,7 +22,7 @@ namespace Caviar.WebAPI.Controllers
             Base_Logger.LogTrace("测试4");
             Base_Logger.LogCritical("测试5");
             Base_Logger.LogError("测试");
-            return ResultError();
+            return Result400("测试错误");
         }
 
 

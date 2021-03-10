@@ -118,18 +118,43 @@ namespace Caviar.Control
             return Ok(result);
         }
 
-        protected virtual IActionResult ResultError()
+        protected virtual IActionResult ResultOk<T>(T data)
         {
-            var result = new ResultMsg();
-            return BadRequest(result);
+            var result = new ResultMsg<T>() { Data = data};
+            return Ok(result);
         }
 
+        protected virtual IActionResult ResultOk<T>(string msg,T data)
+        {
+            var result = new ResultMsg<T>() { Data = data,Msg = msg };
+            return Ok(result);
+        }
 
         protected virtual IActionResult Result400()
         {
-            var result = new ResultMsg();
+            var result = new ResultMsg() { Code = 400,Msg = "操作失败，请检查重试" };
             return BadRequest(result);
         }
+
+
+        protected virtual IActionResult Result400(string msg)
+        {
+            var result = new ResultMsg() { Msg = msg,Code = 400};
+            return BadRequest(result);
+        }
+
+        protected virtual IActionResult Result400<T>(T data)
+        {
+            var result = new ResultMsg<T>{ Msg = "操作失败，请检查重试", Code = 400,Data = data };
+            return BadRequest(result);
+        }
+
+        protected virtual IActionResult Result400<T>(string msg,T data)
+        {
+            var result = new ResultMsg<T> { Msg = msg, Code = 400, Data = data };
+            return BadRequest(result);
+        }
+
         #endregion
 
 
