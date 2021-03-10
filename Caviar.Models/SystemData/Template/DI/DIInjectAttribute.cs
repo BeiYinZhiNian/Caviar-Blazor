@@ -11,13 +11,13 @@ namespace Caviar.Models.SystemData
     /// 允许被继承
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
-    public class InjectAttribute : Attribute
+    public class DIInjectAttribute : Attribute
     {
-        public InjectAttribute(InjectType injectType)
+        public DIInjectAttribute(InjectType injectType)
         {
             this.InjectType = injectType;
         }
-        public InjectAttribute()
+        public DIInjectAttribute()
         {
             InjectType = InjectType.SCOPED;
         }

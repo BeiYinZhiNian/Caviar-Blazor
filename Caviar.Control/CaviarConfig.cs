@@ -149,7 +149,7 @@ namespace Caviar.Control
                         //获取所有对象
                         t.GetTypes()
                             //查找是否包含DI特性并且查看是否是抽象类
-                            .Where(a => a.GetCustomAttributes(true).Select(t => t.GetType()).Contains(typeof(InjectAttribute)) && !a.IsAbstract)
+                            .Where(a => a.GetCustomAttributes(true).Select(t => t.GetType()).Contains(typeof(DIInjectAttribute)) && !a.IsAbstract)
                             //判断是否是类
                             .Where(u => u.IsClass)
                             //转换成list
@@ -157,7 +157,7 @@ namespace Caviar.Control
                             //循环,并添注入
                             .ForEach(t =>
                             {
-                                var inject = (InjectAttribute)t.GetCustomAttributes(true).FirstOrDefault(d => d.GetType() == typeof(InjectAttribute));
+                                var inject = (DIInjectAttribute)t.GetCustomAttributes(true).FirstOrDefault(d => d.GetType() == typeof(DIInjectAttribute));
                                 switch (inject.InjectType)
                                 {
                                     case InjectType.SINGLETON:
