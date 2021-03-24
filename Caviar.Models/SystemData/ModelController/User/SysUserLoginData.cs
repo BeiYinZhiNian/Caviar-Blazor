@@ -8,5 +8,9 @@ namespace Caviar.Models.SystemData
 {
     public partial class SysUserLogin
     {
+        public SysUserInfo Login()
+        {
+            return null;
+        }
     }
 }
