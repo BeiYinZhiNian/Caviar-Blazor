@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 namespace Caviar.Control
 {
     public static class CaviarConfig
@@ -18,6 +19,8 @@ namespace Caviar.Control
 
         public static string NoLoginRole { get; set; }
         public static string SysAdminRole { get; set; }
+
+        public static bool IsDebug { get; set; }
 
         public static IServiceCollection AddCaviar(this IServiceCollection services,SqlConfig sqlConfig,IConfiguration configuration)
         {
@@ -36,10 +39,9 @@ namespace Caviar.Control
             if (string.IsNullOrEmpty(NoLoginRole)) NoLoginRole = "未登录用户";
             SysAdminRole = Configuration["Caviar:Role:SysAdminRole"];
             if (string.IsNullOrEmpty(SysAdminRole)) NoLoginRole = "管理员";
+            IsDebug = bool.Parse(Configuration["Caviar:IsDebug"]);
             return services;
         }
-
-        
 
 
         public static IServiceProvider ApplicationServices { get; set; }

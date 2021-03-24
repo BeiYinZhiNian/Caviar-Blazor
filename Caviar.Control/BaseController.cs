@@ -94,15 +94,30 @@ namespace Caviar.Control
                 }
                 context.HttpContext.Session.Set("SysUserInfo", SysUserInfo);
             }
+            var IsVerification = ActionVerification();
+            if (!IsVerification)
+            {
+                context.Result = ResultForbidden();
+                return;
+            }
+        }
+
+        protected virtual IActionResult ResultForbidden()
+        {
+            return ResultError(403, "对不起，您没有该页面的访问权限！");
+        }
+
+
+        protected virtual bool ActionVerification()
+        {
+            if (CaviarConfig.IsDebug) return true;
             var menu = SysUserInfo.SysPowerMenus.Where(u => u.Url == Base_Current_Action).FirstOrDefault();
             if (menu == null)
             {
-                
-                return;
+                return false;
             }
-
+            return true;
         }
-
 
 
         #region 消息回复
@@ -132,31 +147,17 @@ namespace Caviar.Control
             return Ok(result);
         }
 
-        protected virtual IActionResult Result400()
+        protected virtual IActionResult ResultError<T>(int code,string msg, T data)
         {
-            var result = new ResultMsg() { Code = 400,Msg = "操作失败，请检查重试" };
-            return BadRequest(result);
+            var result = new ResultMsg<T>() { Code = code,Data = data, Msg = msg };
+            return StatusCode(code,result);
         }
 
-
-        protected virtual IActionResult Result400(string msg)
+        protected virtual IActionResult ResultError(int code, string msg)
         {
-            var result = new ResultMsg() { Msg = msg,Code = 400};
-            return BadRequest(result);
+            var result = new ResultMsg() { Code = code, Msg = msg };
+            return StatusCode(code, result);
         }
-
-        protected virtual IActionResult Result400<T>(T data)
-        {
-            var result = new ResultMsg<T>{ Msg = "操作失败，请检查重试", Code = 400,Data = data };
-            return BadRequest(result);
-        }
-
-        protected virtual IActionResult Result400<T>(string msg,T data)
-        {
-            var result = new ResultMsg<T> { Msg = msg, Code = 400, Data = data };
-            return BadRequest(result);
-        }
-
         #endregion
 
 
