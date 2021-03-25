@@ -19,7 +19,7 @@ namespace Caviar.Models.SystemData
         }
         public DIInjectAttribute()
         {
-            InjectType = InjectType.SCOPED;
+            InjectType = InjectType.TRANSIENT;
         }
         public InjectType InjectType { get; }
 

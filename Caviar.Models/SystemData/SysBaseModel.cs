@@ -8,5 +8,6 @@ namespace Caviar.Models.SystemData
 {
     public partial class SysBaseModel
     {
+        protected BaseControllerModel Model { get; set; }
     }
 }

@@ -10,6 +10,10 @@ namespace Caviar.Models.SystemData
     {
         public SysUserInfo Login()
         {
+            var userLogin = Model.DataContext.GetEntity<SysUserLogin>(u => u.UserName == UserName && u.Password == Password).FirstOrDefault();
+            if (userLogin == null) return null;
+            Model.SysUserInfo.SysUserLogin = userLogin;
+            Model.SysUserInfo.IsLogin = true;
             return null;
         }
     }

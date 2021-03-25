@@ -1,5 +1,4 @@
-﻿using Caviar.Models.SystemData;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
@@ -11,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Caviar.Control
+namespace Caviar.Models.SystemData
 {
     public partial interface IDataContext
     {

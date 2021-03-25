@@ -17,82 +17,45 @@ namespace Caviar.Control
     [ApiController]
     public partial class BaseController : Controller
     {
-        IDataContext _iDataContext;
-        protected IDataContext IDataContext 
-        {
-            get 
-            {
-                if (_iDataContext == null)
-                {
-                    _iDataContext = CaviarConfig.ApplicationServices.GetRequiredService<SysDataContext>();
-                }
-                return _iDataContext; 
-            }
-        }
-
-        ILogger<BaseController> _logger;
-        protected ILogger<BaseController> Base_Logger
+        BaseControllerModel _model;
+        public BaseControllerModel Model 
         {
             get
             {
-                if (_logger == null)
+                if (_model == null)
                 {
-                    _logger = CaviarConfig.ApplicationServices.GetRequiredService<ILogger<BaseController>>();
+                    _model = CaviarConfig.ApplicationServices.GetRequiredService<BaseControllerModel>();
+                    _model.DataContext = CaviarConfig.ApplicationServices.GetRequiredService<SysDataContext>();
+                    _model.Logger = CaviarConfig.ApplicationServices.GetRequiredService<ILogger<BaseController>>();
                 }
-                return _logger;
+                return _model;
             }
-            set { _logger = value; }
         }
-        /// <summary>
-        /// 当前请求路径
-        /// </summary>
-        protected string Base_Current_Action { get; private set; }
-        /// <summary>
-        /// 当前请求ip地址
-        /// </summary>
-        protected string Base_Current_Ipaddress { get; private set; }
-        /// <summary>
-        /// 当前请求的完整Url
-        /// </summary>
-        protected string Base_Current_AbsoluteUri { get; private set; }
-        /// <summary>
-        /// 当前用户信息
-        /// </summary>
-        protected SysUserInfo SysUserInfo { get; set; }
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
             //获取ip地址
-            Base_Current_Ipaddress = context.HttpContext.GetUserIp();
+            Model.Current_Ipaddress = context.HttpContext.GetUserIp();
             //获取完整Url
-            Base_Current_AbsoluteUri = context.HttpContext.Request.GetAbsoluteUri();
+            Model.Current_AbsoluteUri = context.HttpContext.Request.GetAbsoluteUri();
             //获取请求路径
-            Base_Current_Action = context.HttpContext.Request.Path.Value;
+            Model.Current_Action = context.HttpContext.Request.Path.Value;
 
-            SysUserInfo = context.HttpContext.Session.Get<SysUserInfo>("SysUserInfo");
-            if (SysUserInfo == null)
+            var sysUserInfo = context.HttpContext.Session.Get<SysUserInfo>("SysUserInfo");
+            if (sysUserInfo == null)
             {
-                SysUserInfo = new SysUserInfo()
-                {
-                    SysUserLogin = new SysUserLogin()
-                    {
-                        UserName = CaviarConfig.NoLoginRole,
-                    },
-                    SysRoles = new List<SysRole>(),
-                    SysPowerMenus = new List<SysPowerMenu>(),
-                    IsLogin = false
-                };
+                Model.SysUserInfo.SysUserLogin.UserName = CaviarConfig.NoLoginRole;
                 //获取未登录角色
-                var role = IDataContext.GetEntity<SysRole>(u => u.RoleName == CaviarConfig.NoLoginRole);
-                SysUserInfo.SysRoles.AddRange(role);
-                foreach (var item in SysUserInfo.SysRoles)
+                var role = Model.DataContext.GetEntity<SysRole>(u => u.RoleName == CaviarConfig.NoLoginRole);
+                Model.SysUserInfo.SysRoles.AddRange(role);
+                foreach (var item in Model.SysUserInfo.SysRoles)
                 {
-                    var menus = IDataContext.GetEntity<SysRoleMenu>(u => u.RoleId == item.Id).FirstOrDefault();
+                    var menus = Model.DataContext.GetEntity<SysRoleMenu>(u => u.RoleId == item.Id).FirstOrDefault();
                     if (menus == null) continue;
-                    SysUserInfo.SysPowerMenus.Add(menus.Menu);
+                    Model.SysUserInfo.SysPowerMenus.Add(menus.Menu);
                 }
-                context.HttpContext.Session.Set("SysUserInfo", SysUserInfo);
+                context.HttpContext.Session.Set("SysUserInfo", Model.SysUserInfo);
             }
             var IsVerification = ActionVerification();
             if (!IsVerification)
@@ -111,7 +74,7 @@ namespace Caviar.Control
         protected virtual bool ActionVerification()
         {
             if (CaviarConfig.IsDebug) return true;
-            var menu = SysUserInfo.SysPowerMenus.Where(u => u.Url == Base_Current_Action).FirstOrDefault();
+            var menu = Model.SysUserInfo.SysPowerMenus.Where(u => u.Url == Model.Current_Action).FirstOrDefault();
             if (menu == null)
             {
                 return false;
