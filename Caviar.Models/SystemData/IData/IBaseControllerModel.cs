@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
-    [DIInject(InjectType.SCOPED)]
-    public class BaseControllerModel:IBaseControllerModel
+    public interface IBaseControllerModel
     {
         /// <summary>
         /// 数据上下文
@@ -17,7 +16,7 @@ namespace Caviar.Models.SystemData
         /// <summary>
         /// 日志记录
         /// </summary>
-        public ILogger Logger { get; set; } 
+        public ILogger Logger { get; set; }
         /// <summary>
         /// 当前请求路径
         /// </summary>
@@ -31,30 +30,9 @@ namespace Caviar.Models.SystemData
         /// </summary>
         public string Current_AbsoluteUri { get; set; }
 
-        SysUserInfo _sysUserInfo;
         /// <summary>
         /// 当前用户信息
         /// </summary>
-        public SysUserInfo SysUserInfo 
-        {
-            get 
-            {
-                if (_sysUserInfo == null)
-                {
-                    _sysUserInfo = new SysUserInfo
-                    {
-                        SysUserLogin = new SysUserLogin(),
-                        SysRoles = new List<SysRole>(),
-                        SysPowerMenus = new List<SysPowerMenu>(),
-                        IsLogin = false
-                    };
-                }
-                return _sysUserInfo;
-            }
-            set 
-            {
-                _sysUserInfo = value;
-            } 
-        }
+        public SysUserInfo SysUserInfo { get; set; }
     }
 }

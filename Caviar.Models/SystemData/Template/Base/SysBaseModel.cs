@@ -60,6 +60,5 @@ namespace Caviar.Models.SystemData
         /// </summary>
         [DisplayName("是否禁用")]
         public bool IsDisable { get; set; }
-
     }
 }
