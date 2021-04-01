@@ -57,8 +57,6 @@ namespace Caviar.Control
                 }
                 context.HttpContext.Session.Set("SysUserInfo", Model.SysUserInfo);
             }
-            Console.WriteLine("测试");
-            Console.WriteLine("123");
             var IsVerification = ActionVerification();
             if (!IsVerification)
             {
