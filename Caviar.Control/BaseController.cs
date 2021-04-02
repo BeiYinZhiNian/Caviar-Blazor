@@ -26,8 +26,14 @@ namespace Caviar.Control
                 if (_model == null)
                 {
                     _model = CaviarConfig.ApplicationServices.GetRequiredService<BaseControllerModel>();
-                    _model.DataContext = CaviarConfig.ApplicationServices.GetRequiredService<SysDataContext>();
-                    _model.Logger = CaviarConfig.ApplicationServices.GetRequiredService<ILogger<BaseController>>();
+                    if(_model.DataContext==null) 
+                    {
+                        _model.DataContext = CaviarConfig.ApplicationServices.GetRequiredService<SysDataContext>();
+                    }
+                    if(_model.Logger==null)
+                    {
+                        _model.Logger = CaviarConfig.ApplicationServices.GetRequiredService<ILogger<BaseController>>();
+                    }
                 }
                 return _model;
             }
