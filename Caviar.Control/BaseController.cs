@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using Renci.SshNet.Messages.Authentication;
+using System.Linq.Expressions;
 
 namespace Caviar.Control
 {
@@ -47,11 +48,11 @@ namespace Caviar.Control
             {
                 Model.SysUserInfo.SysUserLogin.UserName = CaviarConfig.NoLoginRole;
                 //获取未登录角色
-                var role = Model.DataContext.GetEntity<SysRole>(u => u.RoleName == CaviarConfig.NoLoginRole);
+                var role = Model.DataContext.GetEntityAsync<SysRole>(u => u.RoleName == CaviarConfig.NoLoginRole);
                 Model.SysUserInfo.SysRoles.AddRange(role);
                 foreach (var item in Model.SysUserInfo.SysRoles)
                 {
-                    var menus = Model.DataContext.GetEntity<SysRoleMenu>(u => u.RoleId == item.Id).FirstOrDefault();
+                    var menus = Model.DataContext.GetEntityAsync<SysRoleMenu>(u => u.RoleId == item.Id).FirstOrDefault();
                     if (menus == null) continue;
                     Model.SysUserInfo.SysPowerMenus.Add(menus.Menu);
                 }
@@ -66,12 +67,33 @@ namespace Caviar.Control
 
         }
 
-        protected virtual T CreatModel<T>() where T:IBaseModel
+        protected virtual T CreatEntity<T>() where T:class,IBaseModel
         {
-            var icoModel = CaviarConfig.ApplicationServices.GetRequiredService<T>();
-            icoModel.Model = Model;
-            return icoModel;
+            var entity = CaviarConfig.ApplicationServices.GetRequiredService<T>();
+            entity.Model = Model;
+            return entity;
         }
+
+        protected virtual T CreatEntity<T>(int id) where T:class,IBaseModel
+        {
+            var entity = Model.DataContext.GetEntityAsync<T>(id).Result;
+            if(entity!=null) entity.Model = Model;
+            return entity;
+        }
+        protected virtual T CreatEntity<T>(Guid guid) where T:class,IBaseModel
+        {
+            var entity = Model.DataContext.GetEntityAsync<T>(guid).Result;
+            if(entity!=null) entity.Model = Model;
+            return entity;
+        }
+        protected virtual T CreatEntity<T>(Expression<Func<T, bool>> whereLambda) where T:class,IBaseModel
+        {
+            var entity = Model.DataContext.GetEntityAsync<T>(whereLambda).FirstOrDefault();
+            if(entity!=null) entity.Model = Model;
+            return entity;
+        }
+
+
 
         protected virtual IActionResult ResultForbidden()
         {

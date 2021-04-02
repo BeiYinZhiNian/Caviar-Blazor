@@ -53,7 +53,7 @@ namespace Caviar.Models.SystemData
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public IQueryable<T> GetEntity<T>(Expression<Func<T, bool>> where) where T : class, IBaseModel;
+        public IQueryable<T> GetEntityAsync<T>(Expression<Func<T, bool>> where) where T : class, IBaseModel;
         /// <summary>
         /// 根据id获取实体
         /// </summary>

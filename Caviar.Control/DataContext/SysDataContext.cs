@@ -210,7 +210,7 @@ namespace Caviar.Control
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public IQueryable<T> GetEntity<T>(Expression<Func<T, bool>> where) where T : class, IBaseModel
+        public IQueryable<T> GetEntityAsync<T>(Expression<Func<T, bool>> where) where T : class, IBaseModel
         {
             var set = Base_DataContext.Set<T>();
             return set.Where(where);
