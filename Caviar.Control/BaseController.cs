@@ -63,7 +63,14 @@ namespace Caviar.Control
                 context.Result = ResultForbidden();
                 return;
             }
-            
+
+        }
+
+        protected virtual T CreatModel<T>() where T:IBaseModel
+        {
+            var icoModel = CaviarConfig.ApplicationServices.GetRequiredService<T>();
+            icoModel.Model = Model;
+            return icoModel;
         }
 
         protected virtual IActionResult ResultForbidden()
