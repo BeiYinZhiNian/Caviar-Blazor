@@ -14,7 +14,7 @@ namespace Caviar.Models.SystemData
             if (userLogin == null) return null;
             Model.SysUserInfo.SysUserLogin = userLogin;
             Model.SysUserInfo.IsLogin = true;
-            return null;
+            return Model.SysUserInfo;
         }
     }
 }
