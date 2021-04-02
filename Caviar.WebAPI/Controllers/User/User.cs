@@ -15,6 +15,7 @@ namespace Caviar.WebAPI.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            var user = CreatModel<SysUserLogin>();
             var str = Model.DataContext.GetAllAsync<SysUserLogin>();
             Model.Logger.LogDebug(Model.SysUserInfo.SysUserLogin.UserName + "测试11");
             Model.Logger.LogInformation(Model.SysUserInfo.SysUserLogin.UserName + "测试2");
