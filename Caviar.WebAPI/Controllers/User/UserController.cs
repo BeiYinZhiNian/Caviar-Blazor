@@ -12,11 +12,11 @@ namespace Caviar.WebAPI.Controllers
 {
     public class UserController : BaseController
     {
-        [HttpGet]
-        public IActionResult Login(string userName,string psw)
+        [HttpPost]
+        public IActionResult Login(string nameOrPhone,string psw)
         {
             var user = CreatEntity<SysUserLogin>();
-            user.UserName = userName;
+            user.UserName = nameOrPhone;
             user.Password = psw;
             var userInfo = user.Login();
             if(userInfo==null)
@@ -25,18 +25,6 @@ namespace Caviar.WebAPI.Controllers
             }
             return ResultOK("登录成功，欢迎回来");
         }
-        [HttpPost]
-        public IActionResult Test(SysUserLogin userLogin)
-        {
-            Model.Logger.LogDebug(Model.SysUserInfo.SysUserLogin.UserName + "测试11");
-            Model.Logger.LogInformation(Model.SysUserInfo.SysUserLogin.UserName + "测试2");
-            Model.Logger.LogWarning(Model.SysUserInfo.SysUserLogin.UserName + "测试3");
-            Model.Logger.LogTrace(Model.SysUserInfo.SysUserLogin.UserName + "测试4");
-            Model.Logger.LogCritical(Model.SysUserInfo.SysUserLogin.UserName + "测试5");
-            Model.Logger.LogError(Model.SysUserInfo.SysUserLogin.UserName + "测试");
-            return ResultOK();
-        }
-
 
     }
 }
