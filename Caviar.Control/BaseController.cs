@@ -19,18 +19,18 @@ namespace Caviar.Control
     public partial class BaseController : Controller
     {
         BaseControllerModel _model;
-        public BaseControllerModel Model 
+        public BaseControllerModel Model
         {
             get
             {
                 if (_model == null)
                 {
                     _model = CaviarConfig.ApplicationServices.GetRequiredService<BaseControllerModel>();
-                    if(_model.DataContext==null) 
+                    if (_model.DataContext == null)
                     {
                         _model.DataContext = CaviarConfig.ApplicationServices.GetRequiredService<SysDataContext>();
                     }
-                    if(_model.Logger==null)
+                    if (_model.Logger == null)
                     {
                         _model.Logger = CaviarConfig.ApplicationServices.GetRequiredService<ILogger<BaseController>>();
                     }
@@ -73,29 +73,29 @@ namespace Caviar.Control
 
         }
 
-        protected virtual T CreatEntity<T>() where T:class,IBaseModel
+        protected virtual T CreatEntity<T>() where T : class, IBaseModel
         {
             var entity = CaviarConfig.ApplicationServices.GetRequiredService<T>();
             entity.Model = Model;
             return entity;
         }
 
-        protected virtual T CreatEntity<T>(int id) where T:class,IBaseModel
+        protected virtual T CreatEntity<T>(int id) where T : class, IBaseModel
         {
             var entity = Model.DataContext.GetEntityAsync<T>(id).Result;
-            if(entity!=null) entity.Model = Model;
+            if (entity != null) entity.Model = Model;
             return entity;
         }
-        protected virtual T CreatEntity<T>(Guid guid) where T:class,IBaseModel
+        protected virtual T CreatEntity<T>(Guid guid) where T : class, IBaseModel
         {
             var entity = Model.DataContext.GetEntityAsync<T>(guid).Result;
-            if(entity!=null) entity.Model = Model;
+            if (entity != null) entity.Model = Model;
             return entity;
         }
-        protected virtual T CreatEntity<T>(Expression<Func<T, bool>> whereLambda) where T:class,IBaseModel
+        protected virtual T CreatEntity<T>(Expression<Func<T, bool>> whereLambda) where T : class, IBaseModel
         {
             var entity = Model.DataContext.GetEntityAsync<T>(whereLambda).FirstOrDefault();
-            if(entity!=null) entity.Model = Model;
+            if (entity != null) entity.Model = Model;
             return entity;
         }
 
@@ -120,42 +120,63 @@ namespace Caviar.Control
 
 
         #region 消息回复
-
+        private ResultMsg _resultMsg;
+        protected ResultMsg ResultMsg 
+        {
+            get 
+            {
+                if (_resultMsg == null)
+                {
+                    _resultMsg = CaviarConfig.ApplicationServices.GetRequiredService<ResultMsg>();
+                }
+                return _resultMsg;
+            }
+        }
 
         protected virtual IActionResult ResultOK()
         {
-            var result = new ResultMsg();
-            return Ok(result);
+            return Ok(ResultMsg);
         }
 
-        protected virtual IActionResult ResultOK(string msg)
+        protected virtual IActionResult ResultOK(string title)
         {
-            var result = new ResultMsg() { Msg = msg };
-            return Ok(result);
+            ResultMsg.Title = title;
+            return Ok(ResultMsg);
         }
 
-        protected virtual IActionResult ResultOk<T>(T data)
+        protected virtual IActionResult ResultOK(ResultMsg resultMsg)
         {
-            var result = new ResultMsg<T>() { Data = data};
-            return Ok(result);
+            return Ok(resultMsg);
         }
 
-        protected virtual IActionResult ResultOk<T>(string msg,T data)
+
+
+        protected virtual IActionResult ResultError(int status, string title, string detail)
         {
-            var result = new ResultMsg<T>() { Data = data,Msg = msg };
-            return Ok(result);
+            ResultMsg.Status = status;
+            ResultMsg.Title = title;
+            ResultMsg.Detail = detail;
+            return StatusCode(status, ResultMsg);
+        }
+        protected virtual IActionResult ResultError(int status, string title, string detail, IDictionary<string, string[]> errors)
+        {
+            ResultMsg.Status = status;
+            ResultMsg.Title = title;
+            ResultMsg.Detail = detail;
+            ResultMsg.Errors = errors;
+            return StatusCode(status, ResultMsg);
         }
 
-        protected virtual IActionResult ResultError<T>(int code,string msg, T data)
+        protected virtual IActionResult ResultError(int status, string title)
         {
-            var result = new ResultMsg<T>() { Code = code,Data = data, Msg = msg };
-            return StatusCode(code,result);
+            ResultMsg.Status = status;
+            ResultMsg.Title = title;
+            return StatusCode(status, ResultMsg);
         }
 
-        protected virtual IActionResult ResultError(int code, string msg)
+        protected virtual IActionResult ResultError(ResultMsg resultMsg)
         {
-            var result = new ResultMsg() { Code = code, Msg = msg };
-            return StatusCode(code, result);
+            return StatusCode(resultMsg.Status, resultMsg);
         }
         #endregion
 

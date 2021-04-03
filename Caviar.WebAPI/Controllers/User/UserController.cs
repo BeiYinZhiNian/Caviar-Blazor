@@ -23,9 +23,9 @@ namespace Caviar.WebAPI.Controllers
             {
                 return ResultError(403,"用户名或密码错误");
             }
-            return ResultOK(Model.SysUserInfo.SysUserLogin.UserName + "测试错误");
+            return ResultOK("登录成功，欢迎回来");
         }
-        [HttpGet]
+        [HttpPost]
         public IActionResult Test(SysUserLogin userLogin)
         {
             Model.Logger.LogDebug(Model.SysUserInfo.SysUserLogin.UserName + "测试11");

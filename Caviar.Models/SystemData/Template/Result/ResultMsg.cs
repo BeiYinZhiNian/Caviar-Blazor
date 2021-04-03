@@ -6,16 +6,30 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
-
+    [DIInject]
     public class ResultMsg
     {
-        public int Code { get; set; } = 200;
-        public string Msg { get; set; } = "操作完成";
-        
-    }
+        /// <summary>
+        /// HTTP 状态代码
+        /// </summary>
+        public int Status { get; set; } = 200;
+        /// <summary>
+        /// 问题类型的简短、可读的摘要
+        /// </summary>
+        public string Title { get; set; } = "操作完成";
+        /// <summary>
+        /// 标识问题类型的 URI 引用
+        /// </summary>
+        public string Type { get; set; } = "";
 
-    public class ResultMsg<T>:ResultMsg
-    {
-        public T Data { get; set; }
+        public Guid TraceId { get; set; } = Guid.NewGuid();
+        /// <summary>
+        /// 此问题特定的可读说明。
+        /// </summary>
+        public string Detail { get; set; } = "";
+        /// <summary>
+        /// 获取与此实例关联的验证错误
+        /// </summary>
+        public IDictionary<string, string[]> Errors { get; set; }
     }
 }
