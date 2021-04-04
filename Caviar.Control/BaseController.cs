@@ -18,8 +18,8 @@ namespace Caviar.Control
     [ApiController]
     public partial class BaseController : Controller
     {
-        BaseControllerModel _model;
-        public BaseControllerModel Model
+        IBaseControllerModel _model;
+        public IBaseControllerModel Model
         {
             get
             {

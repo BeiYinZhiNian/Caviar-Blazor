@@ -9,7 +9,5 @@ namespace Caviar.Models.SystemData
 {
     public partial class SysBaseModel
     {
-        [NotMapped]
-        public IBaseControllerModel Model { get; set; }
     }
 }

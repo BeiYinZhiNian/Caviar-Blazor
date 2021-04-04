@@ -97,6 +97,14 @@ namespace Caviar.Control
         }
         #endregion
 
+        #region IBaseModelExtend扩展
+        public static IBaseControllerModel GetBaseModel<T>(this T example) where T : IBaseModel
+        {
+            var model = ApplicationServices.GetRequiredService<BaseControllerModel>();
+            return model;
+        }
+
+        #endregion
 
 
         class CaviarDynamicConfig

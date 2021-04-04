@@ -10,8 +10,6 @@ namespace Caviar.Models.SystemData
 {
     public partial interface IBaseModel
     {
-        [NotMapped]
-        public IBaseControllerModel Model { get; set; }
         /// <summary>
         /// id
         /// </summary>
