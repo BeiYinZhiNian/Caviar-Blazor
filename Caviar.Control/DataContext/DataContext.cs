@@ -33,7 +33,6 @@ namespace Caviar.Control
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-
             base.OnConfiguring(optionsBuilder);
             if (!optionsBuilder.IsConfigured)
             {
@@ -61,8 +60,9 @@ namespace Caviar.Control
                     default:
                         break;
                 }
-                CaviarConfig.SqlConfig.Connections = "";
+                
             }
+            CaviarConfig.SqlConfig.Connections = "";
         }
 
     }

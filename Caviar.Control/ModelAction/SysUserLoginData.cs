@@ -9,16 +9,29 @@ namespace Caviar.Control
 {
     public partial class SysUserLoginAction : SysUserLogin
     {
+        IBaseControllerModel _controllerModel;
+        public SysUserLoginAction()
+        {
+            _controllerModel = this.GetControllerModel();
+        }
         public SysUserInfo Login()
         {
-            if(string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password)) return null;
-            if(Password.Length!=32) return null;
-            var controllerModel = this.GetControllerModel();
-            var userLogin = controllerModel.DataContext.GetEntityAsync<SysUserLogin>(u => u.UserName == UserName && u.Password == Password).FirstOrDefault();
+
+            if(string.IsNullOrEmpty(Password) || Password.Length != 32) return null;
+            SysUserLogin userLogin = null;
+            if (!string.IsNullOrEmpty(UserName))
+            {
+                userLogin = _controllerModel.DataContext.GetEntityAsync<SysUserLogin>(u => u.UserName == UserName && u.Password == Password).FirstOrDefault();
+            }
+            else if (!string.IsNullOrEmpty(PhoneNumber))
+            {
+                userLogin = _controllerModel.DataContext.GetEntityAsync<SysUserLogin>(u => u.PhoneNumber == PhoneNumber && u.Password == Password).FirstOrDefault();
+            }
             if (userLogin == null) return null;
-            controllerModel.SysUserInfo.SysUserLogin = userLogin;
-            controllerModel.SysUserInfo.IsLogin = true;
-            return controllerModel.SysUserInfo;
+            _controllerModel.SysUserInfo.SysUserLogin = userLogin;
+            _controllerModel.SysUserInfo.IsLogin = true;
+            _controllerModel.HttpContext.Session.Set(CaviarConfig.SessionUserInfoName, _controllerModel.SysUserInfo);
+            return _controllerModel.SysUserInfo;
         }
     }
 }

@@ -18,5 +18,9 @@ namespace Caviar.Models.SystemData
         /// 用户是否登录
         /// </summary>
         public bool IsLogin { get; set; }
+        /// <summary>
+        /// 是否进进行过登录初始化
+        /// </summary>
+        public bool IsInit { get; set; }
     }
 }

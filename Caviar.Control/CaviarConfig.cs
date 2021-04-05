@@ -19,6 +19,7 @@ namespace Caviar.Control
 
         public static string NoLoginRole { get; set; }
         public static string SysAdminRole { get; set; }
+        public static string SessionUserInfoName { get; set; } = "SysUserInfo";
 
         public static bool IsDebug { get; set; }
 

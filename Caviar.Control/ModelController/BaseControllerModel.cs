@@ -1,11 +1,14 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Caviar.Models.SystemData;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.Models.SystemData
+namespace Caviar.Control
 {
     [DIInject(InjectType.SCOPED)]
     public class BaseControllerModel:IBaseControllerModel
@@ -13,11 +16,11 @@ namespace Caviar.Models.SystemData
         /// <summary>
         /// 数据上下文
         /// </summary>
-        public IDataContext DataContext { get; set; }
+        public IDataContext DataContext => CaviarConfig.ApplicationServices.GetRequiredService<SysDataContext>();
         /// <summary>
         /// 日志记录
         /// </summary>
-        public ILogger Logger { get; set; } 
+        public ILogger Logger => CaviarConfig.ApplicationServices.GetRequiredService<Logger<BaseController>>();
         /// <summary>
         /// 当前请求路径
         /// </summary>
@@ -56,5 +59,7 @@ namespace Caviar.Models.SystemData
                 _sysUserInfo = value;
             } 
         }
+
+        public HttpContext HttpContext { get; set; }
     }
 }

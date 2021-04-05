@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Caviar.Models.SystemData;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -6,19 +8,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.Models.SystemData
+namespace Caviar.Control
 {
     public interface IBaseControllerModel
     {
-        public HttpContext HttpContext { get; }
+        public HttpContext HttpContext { get; set; }
         /// <summary>
         /// 数据上下文
         /// </summary>
-        public IDataContext DataContext { get; set; }
+        public IDataContext DataContext { get; }
         /// <summary>
         /// 日志记录
         /// </summary>
-        public ILogger Logger { get; set; }
+        public ILogger Logger { get; }
         /// <summary>
         /// 当前请求路径
         /// </summary>

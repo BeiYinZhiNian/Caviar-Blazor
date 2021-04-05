@@ -16,6 +16,7 @@ namespace Caviar.Models.SystemData
         /// <summary>
         /// 用户名
         /// </summary>
+        
         [Required(ErrorMessage = "请输入您的用户名")]
         [DisplayName("用户名")]
         [StringLength(50, ErrorMessage = "用户名请不要超过{1}个字符")]

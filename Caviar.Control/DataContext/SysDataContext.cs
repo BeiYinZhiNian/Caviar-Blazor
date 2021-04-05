@@ -245,7 +245,7 @@ namespace Caviar.Control
         /// <param name="allModules"></param>
         /// <param name="IsSpa"></param>
         /// <returns>返回true表示需要进行初始化数据操作，返回false即数据库已经存在或不需要初始化数据</returns>
-        public async Task<bool> DataInit()
+        public virtual async Task<bool> DataInit()
         {
             bool IsExistence = await Base_DataContext.Database.EnsureCreatedAsync();
             if (IsExistence)

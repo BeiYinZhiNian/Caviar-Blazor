@@ -26,14 +26,6 @@ namespace Caviar.Control
                 if (_controllerModel == null)
                 {
                     _controllerModel = CaviarConfig.ApplicationServices.GetRequiredService<BaseControllerModel>();
-                    if (_controllerModel.DataContext == null)
-                    {
-                        _controllerModel.DataContext = CaviarConfig.ApplicationServices.GetRequiredService<SysDataContext>();
-                    }
-                    if (_controllerModel.Logger == null)
-                    {
-                        _controllerModel.Logger = CaviarConfig.ApplicationServices.GetRequiredService<ILogger<BaseController>>();
-                    }
                 }
                 return _controllerModel;
             }
@@ -48,21 +40,31 @@ namespace Caviar.Control
             ControllerModel.Current_AbsoluteUri = context.HttpContext.Request.GetAbsoluteUri();
             //获取请求路径
             ControllerModel.Current_Action = context.HttpContext.Request.Path.Value;
-
-            var sysUserInfo = context.HttpContext.Session.Get<SysUserInfo>("SysUserInfo");
-            if (sysUserInfo == null)
+            //设置请求上下文
+            ControllerModel.HttpContext = context.HttpContext;
+            if (!ControllerModel.SysUserInfo.IsInit)
             {
-                ControllerModel.SysUserInfo.SysUserLogin.UserName = CaviarConfig.NoLoginRole;
-                //获取未登录角色
-                var role = ControllerModel.DataContext.GetEntityAsync<SysRole>(u => u.RoleName == CaviarConfig.NoLoginRole);
-                ControllerModel.SysUserInfo.SysRoles.AddRange(role);
-                foreach (var item in ControllerModel.SysUserInfo.SysRoles)
+                var session = HttpContext.Session.Get<SysUserInfo>(CaviarConfig.SessionUserInfoName);
+                if (session == null)
                 {
-                    var menus = ControllerModel.DataContext.GetEntityAsync<SysRoleMenu>(u => u.RoleId == item.Id).FirstOrDefault();
-                    if (menus == null) continue;
-                    ControllerModel.SysUserInfo.SysPowerMenus.Add(menus.Menu);
+                    ControllerModel.SysUserInfo.IsInit = true;
+                    ControllerModel.SysUserInfo.SysUserLogin.UserName = CaviarConfig.NoLoginRole;
+                    //获取未登录角色
+                    var role = ControllerModel.DataContext.GetEntityAsync<SysRole>(u => u.RoleName == CaviarConfig.NoLoginRole);
+                    ControllerModel.SysUserInfo.SysRoles.AddRange(role);
+                    foreach (var item in ControllerModel.SysUserInfo.SysRoles)
+                    {
+                        var menus = ControllerModel.DataContext.GetEntityAsync<SysRoleMenu>(u => u.RoleId == item.Id).FirstOrDefault();
+                        if (menus == null) continue;
+                        ControllerModel.SysUserInfo.SysPowerMenus.Add(menus.Menu);
+                    }
+                    HttpContext.Session.Set(CaviarConfig.SessionUserInfoName, ControllerModel.SysUserInfo);
                 }
-                context.HttpContext.Session.Set("SysUserInfo", ControllerModel.SysUserInfo);
+                else
+                {
+                    ControllerModel.SysUserInfo = session;
+                }
+                ControllerModel.SysUserInfo.IsInit = true;
             }
             var IsVerification = ActionVerification();
             if (!IsVerification)

@@ -13,11 +13,12 @@ namespace Caviar.WebAPI.Controllers
     public class UserController : BaseController
     {
         [HttpPost]
-        public IActionResult Login(string nameOrPhone,string psw)
+        public IActionResult Login(string userName,string phoneNumber,string password)
         {
             var user = CreateModel<SysUserLoginAction>();
-            user.UserName = nameOrPhone;
-            user.Password = psw;
+            user.UserName = userName;
+            user.PhoneNumber = phoneNumber;
+            user.Password = password;
             var userInfo = user.Login();
             if(userInfo==null)
             {
