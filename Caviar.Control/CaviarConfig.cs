@@ -98,10 +98,10 @@ namespace Caviar.Control
         #endregion
 
         #region IBaseModelExtend扩展
-        public static IBaseControllerModel GetBaseModel<T>(this T example) where T : IBaseModel
+        public static IBaseControllerModel GetControllerModel<T>(this T example) where T : IBaseModel
         {
-            var model = ApplicationServices.GetRequiredService<BaseControllerModel>();
-            return model;
+            var controllerModel = ApplicationServices.GetRequiredService<BaseControllerModel>();
+            return controllerModel;
         }
 
         #endregion
@@ -122,7 +122,7 @@ namespace Caviar.Control
             }
             /// <summary>
             /// 遍历所有的类，筛选实现IService接口的类，并过判断是否是类,并按照注解方式自动注入类
-            /// 自动注入所有继承IBaseModel接口的类，注入类型为AddTransient
+            /// 自动注入所有继承IDIinjectAtteribute接口的类
             /// </summary>
             public void AddIBaseModel(IServiceCollection services)
             {
@@ -133,7 +133,7 @@ namespace Caviar.Control
                     //获取所有对象
                     t.GetTypes()
                         //查找是否包含IService接口的类
-                        .Where(u => u.GetInterfaces().Contains(typeof(IBaseModel)))
+                        .Where(u => u.GetInterfaces().Contains(typeof(IDIinjectAtteribute)))
                         //判断是否是类
                         .Where(u => u.IsClass)
                         //转换成list

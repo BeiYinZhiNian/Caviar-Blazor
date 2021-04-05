@@ -15,7 +15,7 @@ namespace Caviar.WebAPI.Controllers
         [HttpPost]
         public IActionResult Login(string nameOrPhone,string psw)
         {
-            var user = CreatEntity<SysUserLoginAction>();
+            var user = CreateModel<SysUserLoginAction>();
             user.UserName = nameOrPhone;
             user.Password = psw;
             var userInfo = user.Login();

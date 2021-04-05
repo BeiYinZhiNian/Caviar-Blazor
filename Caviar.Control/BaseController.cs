@@ -18,24 +18,24 @@ namespace Caviar.Control
     [ApiController]
     public partial class BaseController : Controller
     {
-        IBaseControllerModel _model;
-        public IBaseControllerModel Model
+        IBaseControllerModel _controllerModel;
+        public IBaseControllerModel ControllerModel
         {
             get
             {
-                if (_model == null)
+                if (_controllerModel == null)
                 {
-                    _model = CaviarConfig.ApplicationServices.GetRequiredService<BaseControllerModel>();
-                    if (_model.DataContext == null)
+                    _controllerModel = CaviarConfig.ApplicationServices.GetRequiredService<BaseControllerModel>();
+                    if (_controllerModel.DataContext == null)
                     {
-                        _model.DataContext = CaviarConfig.ApplicationServices.GetRequiredService<SysDataContext>();
+                        _controllerModel.DataContext = CaviarConfig.ApplicationServices.GetRequiredService<SysDataContext>();
                     }
-                    if (_model.Logger == null)
+                    if (_controllerModel.Logger == null)
                     {
-                        _model.Logger = CaviarConfig.ApplicationServices.GetRequiredService<ILogger<BaseController>>();
+                        _controllerModel.Logger = CaviarConfig.ApplicationServices.GetRequiredService<ILogger<BaseController>>();
                     }
                 }
-                return _model;
+                return _controllerModel;
             }
         }
 
@@ -43,26 +43,26 @@ namespace Caviar.Control
         {
             base.OnActionExecuting(context);
             //获取ip地址
-            Model.Current_Ipaddress = context.HttpContext.GetUserIp();
+            ControllerModel.Current_Ipaddress = context.HttpContext.GetUserIp();
             //获取完整Url
-            Model.Current_AbsoluteUri = context.HttpContext.Request.GetAbsoluteUri();
+            ControllerModel.Current_AbsoluteUri = context.HttpContext.Request.GetAbsoluteUri();
             //获取请求路径
-            Model.Current_Action = context.HttpContext.Request.Path.Value;
+            ControllerModel.Current_Action = context.HttpContext.Request.Path.Value;
 
             var sysUserInfo = context.HttpContext.Session.Get<SysUserInfo>("SysUserInfo");
             if (sysUserInfo == null)
             {
-                Model.SysUserInfo.SysUserLogin.UserName = CaviarConfig.NoLoginRole;
+                ControllerModel.SysUserInfo.SysUserLogin.UserName = CaviarConfig.NoLoginRole;
                 //获取未登录角色
-                var role = Model.DataContext.GetEntityAsync<SysRole>(u => u.RoleName == CaviarConfig.NoLoginRole);
-                Model.SysUserInfo.SysRoles.AddRange(role);
-                foreach (var item in Model.SysUserInfo.SysRoles)
+                var role = ControllerModel.DataContext.GetEntityAsync<SysRole>(u => u.RoleName == CaviarConfig.NoLoginRole);
+                ControllerModel.SysUserInfo.SysRoles.AddRange(role);
+                foreach (var item in ControllerModel.SysUserInfo.SysRoles)
                 {
-                    var menus = Model.DataContext.GetEntityAsync<SysRoleMenu>(u => u.RoleId == item.Id).FirstOrDefault();
+                    var menus = ControllerModel.DataContext.GetEntityAsync<SysRoleMenu>(u => u.RoleId == item.Id).FirstOrDefault();
                     if (menus == null) continue;
-                    Model.SysUserInfo.SysPowerMenus.Add(menus.Menu);
+                    ControllerModel.SysUserInfo.SysPowerMenus.Add(menus.Menu);
                 }
-                context.HttpContext.Session.Set("SysUserInfo", Model.SysUserInfo);
+                context.HttpContext.Session.Set("SysUserInfo", ControllerModel.SysUserInfo);
             }
             var IsVerification = ActionVerification();
             if (!IsVerification)
@@ -73,29 +73,25 @@ namespace Caviar.Control
 
         }
 
-        protected virtual T CreatEntity<T>() where T : class, IBaseModel
+        protected virtual T CreateModel<T>() where T : class, IBaseModel
         {
             var entity = CaviarConfig.ApplicationServices.GetRequiredService<T>();
-            entity.Model = Model;
             return entity;
         }
 
-        protected virtual T CreatEntity<T>(int id) where T : class, IBaseModel
+        protected virtual T CreateModel<T>(int id) where T : class, IBaseModel
         {
-            var entity = Model.DataContext.GetEntityAsync<T>(id).Result;
-            if (entity != null) entity.Model = Model;
+            var entity = ControllerModel.DataContext.GetEntityAsync<T>(id).Result;
             return entity;
         }
-        protected virtual T CreatEntity<T>(Guid guid) where T : class, IBaseModel
+        protected virtual T CreateModel<T>(Guid guid) where T : class, IBaseModel
         {
-            var entity = Model.DataContext.GetEntityAsync<T>(guid).Result;
-            if (entity != null) entity.Model = Model;
+            var entity = ControllerModel.DataContext.GetEntityAsync<T>(guid).Result;
             return entity;
         }
-        protected virtual T CreatEntity<T>(Expression<Func<T, bool>> whereLambda) where T : class, IBaseModel
+        protected virtual T CreateModel<T>(Expression<Func<T, bool>> whereLambda) where T : class, IBaseModel
         {
-            var entity = Model.DataContext.GetEntityAsync<T>(whereLambda).FirstOrDefault();
-            if (entity != null) entity.Model = Model;
+            var entity = ControllerModel.DataContext.GetEntityAsync<T>(whereLambda).FirstOrDefault();
             return entity;
         }
 
@@ -110,7 +106,7 @@ namespace Caviar.Control
         protected virtual bool ActionVerification()
         {
             if (CaviarConfig.IsDebug) return true;
-            var menu = Model.SysUserInfo.SysPowerMenus.Where(u => u.Url == Model.Current_Action).FirstOrDefault();
+            var menu = ControllerModel.SysUserInfo.SysPowerMenus.Where(u => u.Url == ControllerModel.Current_Action).FirstOrDefault();
             if (menu == null)
             {
                 return false;
