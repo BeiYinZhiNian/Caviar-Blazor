@@ -13,14 +13,33 @@ namespace Caviar.Control
     [DIInject(InjectType.SCOPED)]
     public class BaseControllerModel:IBaseControllerModel
     {
+        IDataContext _dataContext;
         /// <summary>
         /// 数据上下文
         /// </summary>
-        public IDataContext DataContext => CaviarConfig.ApplicationServices.GetRequiredService<SysDataContext>();
+        public IDataContext DataContext 
+        {
+            get
+            {
+                if(_dataContext==null)
+                {
+                    _dataContext = CaviarConfig.ApplicationServices.GetRequiredService<SysDataContext>();
+                }
+                return _dataContext;
+            }
+        }
+        ILogger _logger;
         /// <summary>
         /// 日志记录
         /// </summary>
-        public ILogger Logger => CaviarConfig.ApplicationServices.GetRequiredService<Logger<BaseController>>();
+        public ILogger GetLogger<T>()
+        {
+            if(_logger==null)
+            {
+                _logger = CaviarConfig.ApplicationServices.GetRequiredService<ILogger<T>>();
+            }
+            return _logger;
+        }
         /// <summary>
         /// 当前请求路径
         /// </summary>

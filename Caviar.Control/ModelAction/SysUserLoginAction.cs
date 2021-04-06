@@ -14,10 +14,9 @@ namespace Caviar.Control
         {
             _controllerModel = this.GetControllerModel();
         }
-        public SysUserInfo Login()
+        public virtual string Login()
         {
-
-            if(string.IsNullOrEmpty(Password) || Password.Length != 32) return null;
+            if(string.IsNullOrEmpty(Password) || Password.Length != 32) return "您的密码不能为空";
             SysUserLogin userLogin = null;
             if (!string.IsNullOrEmpty(UserName))
             {
@@ -27,11 +26,19 @@ namespace Caviar.Control
             {
                 userLogin = _controllerModel.DataContext.GetEntityAsync<SysUserLogin>(u => u.PhoneNumber == PhoneNumber && u.Password == Password).FirstOrDefault();
             }
-            if (userLogin == null) return null;
+            if (userLogin == null) return "用户名或密码错误";
+            this.AutoAssign(userLogin,this);
             _controllerModel.SysUserInfo.SysUserLogin = userLogin;
             _controllerModel.SysUserInfo.IsLogin = true;
+            _controllerModel.SysUserInfo.IsInit = true;
             _controllerModel.HttpContext.Session.Set(CaviarConfig.SessionUserInfoName, _controllerModel.SysUserInfo);
-            return _controllerModel.SysUserInfo;
+            return "登录成功，欢迎回来";
+        }
+
+        public virtual SysUserInfo Register()
+        {
+            
+            return null;
         }
     }
 }

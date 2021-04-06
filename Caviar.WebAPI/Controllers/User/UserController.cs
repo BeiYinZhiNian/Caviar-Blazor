@@ -19,12 +19,13 @@ namespace Caviar.WebAPI.Controllers
             user.UserName = userName;
             user.PhoneNumber = phoneNumber;
             user.Password = password;
-            var userInfo = user.Login();
-            if(userInfo==null)
+            var msg = user.Login();
+            ControllerModel.GetLogger<UserController>().LogInformation($"用户：{user.UserName} 进行登录，手机号：{user.PhoneNumber}，登录消息：{msg}，登录结果：{ControllerModel.SysUserInfo.IsLogin}");
+            if(ControllerModel.SysUserInfo.IsLogin)
             {
-                return ResultError(403,"用户名或密码错误");
+                return ResultOK(msg);
             }
-            return ResultOK("登录成功，欢迎回来");
+            return ResultError(403,msg);
         }
 
     }

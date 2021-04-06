@@ -99,10 +99,28 @@ namespace Caviar.Control
         #endregion
 
         #region IBaseModelExtend扩展
+        /// <summary>
+        /// 获取控制器下的model实例进行控制器交互
+        /// </summary>
+        /// <returns></returns>
         public static IBaseControllerModel GetControllerModel<T>(this T example) where T : IBaseModel
         {
             var controllerModel = ApplicationServices.GetRequiredService<BaseControllerModel>();
             return controllerModel;
+        }
+
+        /// <summary>
+        /// 自动分配当前属性值
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
+        public static void AutoAssign<T>(this T example,object from ,object to) where T : IBaseModel
+        {
+            foreach (var item in from.GetType().GetProperties())
+            {
+                item.SetValue(to,item.GetValue(from,null),null);
+            }
         }
 
         #endregion
