@@ -11,17 +11,17 @@ using System.Threading.Tasks;
 namespace Caviar.Control
 {
     [DIInject(InjectType.SCOPED)]
-    public class BaseControllerModel:IBaseControllerModel
+    public class BaseControllerModel : IBaseControllerModel
     {
         IDataContext _dataContext;
         /// <summary>
         /// 数据上下文
         /// </summary>
-        public IDataContext DataContext 
+        public IDataContext DataContext
         {
             get
             {
-                if(_dataContext==null)
+                if (_dataContext == null)
                 {
                     _dataContext = CaviarConfig.ApplicationServices.GetRequiredService<SysDataContext>();
                 }
@@ -44,12 +44,10 @@ namespace Caviar.Control
         /// 当前请求的完整Url
         /// </summary>
         public string Current_AbsoluteUri { get; set; }
-
-        SysUserInfo _sysUserInfo;
         /// <summary>
         /// 当前用户信息
         /// </summary>
-        public SysUserInfo SysUserInfo {get;set;}
+        public SysUserInfo SysUserInfo { get; set; }
 
         public HttpContext HttpContext { get; set; }
     }
