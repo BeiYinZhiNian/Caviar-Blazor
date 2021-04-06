@@ -27,7 +27,7 @@ namespace Caviar.Control
                 userLogin = _controllerModel.DataContext.GetEntityAsync<SysUserLogin>(u => u.PhoneNumber == PhoneNumber && u.Password == Password).FirstOrDefault();
             }
             if (userLogin == null) return "用户名或密码错误";
-            this.AutoAssign(userLogin,this);
+            this.AutoAssign(userLogin);
             _controllerModel.SysUserInfo.SysUserLogin = userLogin;
             _controllerModel.SysUserInfo.IsLogin = true;
             _controllerModel.SysUserInfo.IsInit = true;

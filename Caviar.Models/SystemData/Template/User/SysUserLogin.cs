@@ -38,6 +38,6 @@ namespace Caviar.Models.SystemData
         public string PhoneNumber { get; set; }
 
         [Display(Name = "角色")]
-        public List<SysRoleLogin> UserRoles { get; set; }
+        public virtual List<SysRoleLogin> UserRoles { get; set; }
     }
 }

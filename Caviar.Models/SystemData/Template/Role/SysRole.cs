@@ -19,7 +19,7 @@ namespace Caviar.Models.SystemData
         public string RoleName { get; set; }
 
         [Display(Name = "用户")]
-        public List<SysRoleLogin> UserRoles { get; set; }
+        public virtual List<SysRoleLogin> UserRoles { get; set; }
 
     }
 }

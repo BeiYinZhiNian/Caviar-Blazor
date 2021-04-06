@@ -8,9 +8,9 @@ namespace Caviar.Models.SystemData
 {
     public partial class SysRoleMenu:SysBaseModel
     {
-        public SysRole Role { get; set; }
+        public virtual SysRole Role { get; set; }
 
-        public SysPowerMenu Menu { get; set; }
+        public virtual SysPowerMenu Menu { get; set; }
 
         public int MenuId { get; set; }
 

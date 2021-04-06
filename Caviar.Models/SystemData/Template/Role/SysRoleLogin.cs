@@ -8,9 +8,9 @@ namespace Caviar.Models.SystemData
 {
     public partial class SysRoleLogin : SysBaseModel
     {
-        public SysRole Role { get; set; }
+        public virtual SysRole Role { get; set; }
 
-        public SysUserLogin User { get; set; }
+        public virtual SysUserLogin User { get; set; }
 
         public int UserId { get; set; }
 
