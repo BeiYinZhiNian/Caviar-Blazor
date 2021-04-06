@@ -28,18 +28,10 @@ namespace Caviar.Control
                 return _dataContext;
             }
         }
-        ILogger _logger;
         /// <summary>
-        /// 日志记录
+        /// 获取日志记录
         /// </summary>
-        public ILogger GetLogger<T>()
-        {
-            if(_logger==null)
-            {
-                _logger = CaviarConfig.ApplicationServices.GetRequiredService<ILogger<T>>();
-            }
-            return _logger;
-        }
+        public ILogger<T> GetLogger<T>() => CaviarConfig.ApplicationServices.GetRequiredService<ILogger<T>>();
         /// <summary>
         /// 当前请求路径
         /// </summary>

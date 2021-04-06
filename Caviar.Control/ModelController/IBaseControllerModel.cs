@@ -20,7 +20,7 @@ namespace Caviar.Control
         /// <summary>
         /// 日志记录
         /// </summary>
-        public ILogger GetLogger<T>();
+        public ILogger<T> GetLogger<T>();
         /// <summary>
         /// 当前请求路径
         /// </summary>
