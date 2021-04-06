@@ -32,10 +32,28 @@ namespace Caviar.Control
             return "登录成功，欢迎回来";
         }
 
-        public virtual SysUserInfo Register()
+        public virtual bool Register(out string msg)
         {
-
-            return null;
+            var count = _controllerModel.DataContext.GetEntityAsync<SysUserLogin>(u => u.UserName == UserName).Count();
+            if (count > 0)
+            {
+                msg = "该用户名已经被注册！";
+                return false;
+            }
+            count = _controllerModel.DataContext.GetEntityAsync<SysUserLogin>(u => u.PhoneNumber == PhoneNumber).Count();
+            if (count > 0)
+            {
+                msg = "该手机号已经被注册！";
+                return false;
+            }
+            count = _controllerModel.DataContext.AddEntityAsync(this).Result;
+            if (count <= 0)
+            {
+                msg = "注册账号失败！";
+                return false;
+            }
+            msg = "账号注册成功";
+            return true;
         }
     }
 }

@@ -27,6 +27,7 @@ namespace Caviar.Models.SystemData
         /// </summary>
         [Required(ErrorMessage = "请输入您的密码")]
         [DisplayName("密码")]
+        [RegularExpression("^[A-Za-z0-9]{32}", ErrorMessage = "密码验证错误")]
         [StringLength(32, ErrorMessage = "密码请不要超过{1}个字符")]
         public string Password { get; set; }
         /// <summary>
@@ -34,7 +35,6 @@ namespace Caviar.Models.SystemData
         /// </summary>
         [Required(ErrorMessage = "请输入您的手机号码")]
         [RegularExpression("^[1][3-9]\\d{9}$", ErrorMessage = "请输入正确的手机号")]
-        [StringLength(11, ErrorMessage = "手机号码请不要超过{1}个字符")]
         [DisplayName("手机号码")]
         public string PhoneNumber { get; set; }
 

@@ -13,7 +13,7 @@ namespace Caviar.WebAPI.Controllers
     public class UserController : BaseController
     {
         [HttpPost]
-        public IActionResult Login(string userName,string phoneNumber,string password)
+        public IActionResult Login(string userName, string phoneNumber, string password)
         {
             var user = CreateModel<SysUserLoginAction>();
             user.UserName = userName;
@@ -21,11 +21,22 @@ namespace Caviar.WebAPI.Controllers
             user.Password = password;
             var msg = user.Login();
             ControllerModel.GetLogger<UserController>().LogInformation($"用户：{user.UserName} 进行登录，手机号：{user.PhoneNumber}，登录消息：{msg}，登录结果：{ControllerModel.SysUserInfo.IsLogin}");
-            if(ControllerModel.SysUserInfo.IsLogin)
+            if (ControllerModel.SysUserInfo.IsLogin)
             {
                 return ResultOK(msg);
             }
-            return ResultError(403,msg);
+            return ResultError(403, msg);
+        }
+
+        [HttpPost]
+        public IActionResult Register(SysUserLoginAction userLogin)
+        {
+            var IsRegister = userLogin.Register(out string msg);
+            if (IsRegister)
+            {
+                return ResultOK(msg);
+            }
+            return ResultError(400, msg);
         }
 
     }
