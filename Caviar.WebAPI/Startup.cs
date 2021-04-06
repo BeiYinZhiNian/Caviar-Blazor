@@ -28,7 +28,8 @@ namespace Caviar.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddCaviar(new SqlConfig { 
+            services.AddCaviar(new SqlConfig
+            {
                 Connections = Configuration["Connections:Value"],
                 DBTypeEnum = (DBTypeEnum)Enum.Parse(typeof(DBTypeEnum), Configuration["Connections:DBType"])
             }, Configuration);
@@ -49,7 +50,7 @@ namespace Caviar.WebAPI
             }
             app.UserCaviar();
             app.UseRouting();
-            
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

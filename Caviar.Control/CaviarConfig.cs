@@ -24,7 +24,7 @@ namespace Caviar.Control
 
         public static bool IsDebug { get; set; }
 
-        public static IServiceCollection AddCaviar(this IServiceCollection services,SqlConfig sqlConfig,IConfiguration configuration)
+        public static IServiceCollection AddCaviar(this IServiceCollection services, SqlConfig sqlConfig, IConfiguration configuration)
         {
             SqlConfig = sqlConfig;
             services.AddDbContext<DataContext>();
@@ -89,13 +89,19 @@ namespace Caviar.Control
         #region session扩展
         public static void Set<T>(this ISession session, string key, T value)
         {
-            session.SetString(key, JsonConvert.SerializeObject(value));
+            var setting = new JsonSerializerSettings();
+            setting.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+            setting.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
+            session.SetString(key, JsonConvert.SerializeObject(value, setting));
         }
 
         public static T Get<T>(this ISession session, string key)
         {
             var value = session.GetString(key);
-            return value == null ? default : JsonConvert.DeserializeObject<T>(value);
+            var setting = new JsonSerializerSettings();
+            setting.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+            setting.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
+            return value == null ? default : JsonConvert.DeserializeObject<T>(value, setting);
         }
         #endregion
 
@@ -115,20 +121,20 @@ namespace Caviar.Control
         /// </summary>
         /// <param name="target">拷贝目标</param>
         /// <returns></returns>
-        public static void AutoAssign<T,K>(this T example,K target) where T : IBaseModel
+        public static void AutoAssign<T, K>(this T example, K target) where T : IBaseModel
         {
             var targetType = target.GetType();//获得类型
-                var exampleType = typeof(T);
-                foreach(PropertyInfo  sp in targetType.GetProperties())//获得类型的属性字段
+            var exampleType = typeof(T);
+            foreach (PropertyInfo sp in targetType.GetProperties())//获得类型的属性字段
+            {
+                foreach (PropertyInfo dp in exampleType.GetProperties())
                 {
-                    foreach (PropertyInfo dp in exampleType.GetProperties())
+                    if (dp.Name == sp.Name)//判断属性名是否相同
                     {
-                        if(dp.Name==sp.Name)//判断属性名是否相同
-                        {
-                            dp.SetValue(example, sp.GetValue(target, null), null);//获得s对象属性的值复制给d对象的属性
-                        }
+                        dp.SetValue(example, sp.GetValue(target, null), null);//获得s对象属性的值复制给d对象的属性
                     }
                 }
+            }
         }
 
         #endregion
@@ -157,19 +163,19 @@ namespace Caviar.Control
                     //遍历查找
                     .ForEach((t =>
                     {
-                    //获取所有对象
-                    t.GetTypes()
-                        //查找是否包含IService接口的类
-                        .Where(u => u.GetInterfaces().Contains(typeof(IDIinjectAtteribute)))
-                        //判断是否是类
-                        .Where(u => u.IsClass)
-                        //转换成list
-                        .ToList()
-                        //循环,并添注入
-                        .ForEach(t =>
-                        {
-                            services.AddTransient(t);
-                        });
+                        //获取所有对象
+                        t.GetTypes()
+                            //查找是否包含IService接口的类
+                            .Where(u => u.GetInterfaces().Contains(typeof(IDIinjectAtteribute)))
+                            //判断是否是类
+                            .Where(u => u.IsClass)
+                            //转换成list
+                            .ToList()
+                            //循环,并添注入
+                            .ForEach(t =>
+                            {
+                                services.AddTransient(t);
+                            });
                     }));
 
             }
@@ -183,37 +189,37 @@ namespace Caviar.Control
                    //遍历查找
                    .ForEach((t =>
                    {
-                        //获取所有对象
-                        t.GetTypes()
-                            //查找是否包含DI特性并且查看是否是抽象类
-                            .Where(a => a.GetCustomAttributes(true).Select(t => t.GetType()).Contains(typeof(DIInjectAttribute)) && !a.IsAbstract)
-                            //判断是否是类
-                            .Where(u => u.IsClass)
-                            //转换成list
-                            .ToList()
-                            //循环,并添注入
-                            .ForEach(t =>
-                            {
-                                var inject = (DIInjectAttribute)t.GetCustomAttributes(true).FirstOrDefault(d => d.GetType() == typeof(DIInjectAttribute));
-                                switch (inject.InjectType)
-                                {
-                                    case InjectType.SINGLETON:
-                                        services.AddSingleton(t);
-                                        break;
-                                    case InjectType.SCOPED:
-                                        services.AddScoped(t);
-                                        break;
-                                    case InjectType.TRANSIENT:
-                                        services.AddTransient(t);
-                                        break;
-                                }
-                            });
+                       //获取所有对象
+                       t.GetTypes()
+                           //查找是否包含DI特性并且查看是否是抽象类
+                           .Where(a => a.GetCustomAttributes(true).Select(t => t.GetType()).Contains(typeof(DIInjectAttribute)) && !a.IsAbstract)
+                           //判断是否是类
+                           .Where(u => u.IsClass)
+                           //转换成list
+                           .ToList()
+                           //循环,并添注入
+                           .ForEach(t =>
+                           {
+                               var inject = (DIInjectAttribute)t.GetCustomAttributes(true).FirstOrDefault(d => d.GetType() == typeof(DIInjectAttribute));
+                               switch (inject.InjectType)
+                               {
+                                   case InjectType.SINGLETON:
+                                       services.AddSingleton(t);
+                                       break;
+                                   case InjectType.SCOPED:
+                                       services.AddScoped(t);
+                                       break;
+                                   case InjectType.TRANSIENT:
+                                       services.AddTransient(t);
+                                       break;
+                               }
+                           });
                    }));
             }
         }
     }
 
-    
+
 
     public class SqlConfig
     {

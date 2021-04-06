@@ -49,27 +49,7 @@ namespace Caviar.Control
         /// <summary>
         /// 当前用户信息
         /// </summary>
-        public SysUserInfo SysUserInfo 
-        {
-            get 
-            {
-                if (_sysUserInfo == null)
-                {
-                    _sysUserInfo = new SysUserInfo
-                    {
-                        SysUserLogin = new SysUserLogin(),
-                        SysRoles = new List<SysRole>(),
-                        SysPowerMenus = new List<SysPowerMenu>(),
-                        IsLogin = false
-                    };
-                }
-                return _sysUserInfo;
-            }
-            set 
-            {
-                _sysUserInfo = value;
-            } 
-        }
+        public SysUserInfo SysUserInfo {get;set;}
 
         public HttpContext HttpContext { get; set; }
     }

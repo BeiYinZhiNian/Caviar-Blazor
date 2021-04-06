@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
-    public partial class SysPowerMenu:SysBaseModel
+    public partial class SysPowerMenu : SysBaseModel
     {
         [DisplayName("类型")]
         public MenuType MenuType { get; set; }
@@ -31,6 +31,8 @@ namespace Caviar.Models.SystemData
 
         [DisplayName("上层id")]
         public int UpLayerId { get; set; }
+
+        public virtual List<SysRoleMenu> RoleMenus { get; set; }
     }
 
 

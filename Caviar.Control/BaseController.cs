@@ -42,29 +42,14 @@ namespace Caviar.Control
             ControllerModel.Current_Action = context.HttpContext.Request.Path.Value;
             //设置请求上下文
             ControllerModel.HttpContext = context.HttpContext;
-            if (!ControllerModel.SysUserInfo.IsInit)
+            var session = HttpContext.Session.Get<SysUserInfo>(CaviarConfig.SessionUserInfoName);
+            if (session == null)
             {
-                var session = HttpContext.Session.Get<SysUserInfo>(CaviarConfig.SessionUserInfoName);
-                if (session == null)
-                {
-                    ControllerModel.SysUserInfo.IsInit = true;
-                    ControllerModel.SysUserInfo.SysUserLogin.UserName = CaviarConfig.NoLoginRole;
-                    //获取未登录角色
-                    var role = ControllerModel.DataContext.GetEntityAsync<SysRole>(u => u.RoleName == CaviarConfig.NoLoginRole);
-                    ControllerModel.SysUserInfo.SysRoles.AddRange(role);
-                    foreach (var item in ControllerModel.SysUserInfo.SysRoles)
-                    {
-                        var menus = ControllerModel.DataContext.GetEntityAsync<SysRoleMenu>(u => u.RoleId == item.Id).FirstOrDefault();
-                        if (menus == null) continue;
-                        ControllerModel.SysUserInfo.SysPowerMenus.Add(menus.Menu);
-                    }
-                    HttpContext.Session.Set(CaviarConfig.SessionUserInfoName, ControllerModel.SysUserInfo);
-                }
-                else
-                {
-                    ControllerModel.SysUserInfo = session;
-                }
-                ControllerModel.SysUserInfo.IsInit = true;
+                ControllerModel.SysUserInfo = CaviarConfig.ApplicationServices.GetRequiredService<SysUserInfo>();
+            }
+            else
+            {
+                ControllerModel.SysUserInfo = session;
             }
             var IsVerification = ActionVerification();
             if (!IsVerification)
@@ -119,9 +104,9 @@ namespace Caviar.Control
 
         #region 消息回复
         private ResultMsg _resultMsg;
-        protected ResultMsg ResultMsg 
+        protected ResultMsg ResultMsg
         {
-            get 
+            get
             {
                 if (_resultMsg == null)
                 {
