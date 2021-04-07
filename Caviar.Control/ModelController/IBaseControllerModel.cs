@@ -38,5 +38,13 @@ namespace Caviar.Control
         /// 当前用户信息
         /// </summary>
         public SysUserInfo SysUserInfo { get; set; }
+
+        public string UserName => SysUserInfo.SysUserLogin.UserName;
+
+        public int Id => SysUserInfo.SysUserLogin.Id;
+
+        public bool IsLogin => SysUserInfo.IsLogin;
+
+        public string PhoneNumber => SysUserInfo.SysUserLogin.PhoneNumber;
     }
 }

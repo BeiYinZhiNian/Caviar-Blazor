@@ -11,7 +11,7 @@ namespace Caviar.Models.SystemData
     /// <summary>
     /// 数据基础类
     /// </summary>
-    partial class SysBaseModel : IBaseModel,IDIinjectAtteribute
+    public partial class SysBaseModel : IBaseModel, IDIinjectAtteribute
     {
         /// <summary>
         /// id

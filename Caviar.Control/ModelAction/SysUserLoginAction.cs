@@ -16,6 +16,7 @@ namespace Caviar.Control
         }
         public virtual string Login()
         {
+
             if (string.IsNullOrEmpty(Password) || Password.Length != 32) return "您的密码不能为空";
             SysUserLogin userLogin = null;
             if (!string.IsNullOrEmpty(UserName))

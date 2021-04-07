@@ -9,5 +9,6 @@ namespace Caviar.Models.SystemData
 {
     public partial class SysBaseModel
     {
+
     }
 }

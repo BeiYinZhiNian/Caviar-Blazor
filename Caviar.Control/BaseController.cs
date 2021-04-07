@@ -60,6 +60,13 @@ namespace Caviar.Control
 
         }
 
+        public override void OnActionExecuted(ActionExecutedContext context)
+        {
+            base.OnActionExecuted(context);
+            var actionResult = (ObjectResult)context.Result;
+            var actionValue = actionResult.Value;
+        }
+
         protected virtual T CreateModel<T>() where T : class, IBaseModel
         {
             var entity = CaviarConfig.ApplicationServices.GetRequiredService<T>();
@@ -100,6 +107,13 @@ namespace Caviar.Control
             }
             return true;
         }
+
+        #region  日志消息
+        protected void LoggerMsg<T>(string msg, string action = "", LogLevel logLevel = LogLevel.Information, bool IsSucc = true)
+        {
+
+        }
+        #endregion
 
 
         #region 消息回复

@@ -20,7 +20,7 @@ namespace Caviar.WebAPI.Controllers
             user.PhoneNumber = phoneNumber;
             user.Password = password;
             var msg = user.Login();
-            ControllerModel.GetLogger<UserController>().LogInformation($"用户：{user.UserName} 进行登录，手机号：{user.PhoneNumber}，登录消息：{msg}，登录结果：{ControllerModel.SysUserInfo.IsLogin}");
+            LoggerMsg<UserController>(msg, IsSucc: ControllerModel.SysUserInfo.IsLogin);
             if (ControllerModel.SysUserInfo.IsLogin)
             {
                 return ResultOK(msg);
@@ -32,6 +32,7 @@ namespace Caviar.WebAPI.Controllers
         public IActionResult Register(SysUserLoginAction userLogin)
         {
             var IsRegister = userLogin.Register(out string msg);
+            LoggerMsg<UserController>(msg, IsSucc: IsRegister);
             if (IsRegister)
             {
                 return ResultOK(msg);
