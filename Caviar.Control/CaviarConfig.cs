@@ -20,6 +20,9 @@ namespace Caviar.Control
 
         public static string NoLoginRole { get; set; }
         public static string SysAdminRole { get; set; }
+
+        public static Guid NoLoginRoleGuid { get; set; }
+        public static Guid SysAdminRoleGuid { get; set; }
         public static string SessionUserInfoName { get; set; } = "SysUserInfo";
 
         public static bool IsDebug { get; set; }
@@ -36,13 +39,48 @@ namespace Caviar.Control
             var caviarDynamicConfig = new CaviarDynamicConfig();
             caviarDynamicConfig.AddIBaseModel(services);
             caviarDynamicConfig.AddInject(services);
+            JoinAppsettings();
+            return services;
+        }
 
+        static void JoinAppsettings()
+        {
             NoLoginRole = Configuration["Caviar:Role:NoLoginRole"];
             if (string.IsNullOrEmpty(NoLoginRole)) NoLoginRole = "未登录用户";
             SysAdminRole = Configuration["Caviar:Role:SysAdminRole"];
-            if (string.IsNullOrEmpty(SysAdminRole)) NoLoginRole = "管理员";
-            IsDebug = bool.Parse(Configuration["Caviar:IsDebug"]);
-            return services;
+            if (string.IsNullOrEmpty(SysAdminRole)) SysAdminRole = "管理员";
+
+            var configStr = Configuration["Caviar:IsDebug"];
+            if (string.IsNullOrEmpty(configStr))
+            {
+                IsDebug = false;
+            }
+            else
+            {
+                IsDebug = bool.Parse(configStr);
+            }
+
+            configStr = Configuration["Caviar:Guid:NoLoginRole"];
+            if (string.IsNullOrEmpty(configStr))
+            {
+                NoLoginRoleGuid = Guid.NewGuid();
+
+            }
+            else
+            {
+                NoLoginRoleGuid = Guid.Parse(configStr);
+            }
+
+            configStr = Configuration["Caviar:Guid:SysAdminRole"];
+            if (string.IsNullOrEmpty(configStr))
+            {
+                SysAdminRoleGuid = Guid.NewGuid();
+
+            }
+            else
+            {
+                SysAdminRoleGuid = Guid.Parse(configStr);
+            }
         }
 
 
