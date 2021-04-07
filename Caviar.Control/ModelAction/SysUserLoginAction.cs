@@ -30,6 +30,7 @@ namespace Caviar.Control
             if (userLogin == null) return "用户名或密码错误";
             this.AutoAssign(userLogin);
             _controllerModel.SysUserInfo.SysUserLogin = userLogin;
+            _controllerModel.HttpContext.Session.Set(CaviarConfig.SessionUserInfoName, _controllerModel.SysUserInfo);
             return "登录成功，欢迎回来";
         }
 

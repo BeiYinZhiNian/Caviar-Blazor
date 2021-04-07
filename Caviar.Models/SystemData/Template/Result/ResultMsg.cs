@@ -30,6 +30,10 @@ namespace Caviar.Models.SystemData
         /// <summary>
         /// 获取与此实例关联的验证错误
         /// </summary>
-        public IDictionary<string, string[]> Errors { get; set; }
+        public IDictionary<string, string[]> Errors { get; set; } = new Dictionary<string, string[]>();
+        /// <summary>
+        /// 用于存放附加数据
+        /// </summary>
+        public object data { get; set; }
     }
 }

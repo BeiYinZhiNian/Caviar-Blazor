@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using Renci.SshNet.Messages.Authentication;
 using System.Linq.Expressions;
+using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace Caviar.Control
 {
@@ -30,9 +32,11 @@ namespace Caviar.Control
                 return _controllerModel;
             }
         }
+        Stopwatch stopwatch = new Stopwatch();
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
+            stopwatch.Start();
             base.OnActionExecuting(context);
             //获取ip地址
             ControllerModel.Current_Ipaddress = context.HttpContext.GetUserIp();
@@ -46,6 +50,7 @@ namespace Caviar.Control
             if (session == null)
             {
                 ControllerModel.SysUserInfo = CaviarConfig.ApplicationServices.GetRequiredService<SysUserInfo>();
+                ControllerModel.HttpContext.Session.Set(CaviarConfig.SessionUserInfoName, ControllerModel.SysUserInfo);
             }
             else
             {
@@ -64,7 +69,10 @@ namespace Caviar.Control
         {
             base.OnActionExecuted(context);
             var actionResult = (ObjectResult)context.Result;
-            var actionValue = actionResult.Value;
+            var json = JsonConvert.SerializeObject(actionResult.Value);
+            var resultMsg = JsonConvert.DeserializeObject<ResultMsg>(json);
+            stopwatch.Stop();
+            LoggerMsg<BaseController>(resultMsg.Title, IsSucc: resultMsg.Status == 200);
         }
 
         protected virtual T CreateModel<T>() where T : class, IBaseModel
@@ -111,7 +119,7 @@ namespace Caviar.Control
         #region  日志消息
         protected void LoggerMsg<T>(string msg, string action = "", LogLevel logLevel = LogLevel.Information, bool IsSucc = true)
         {
-
+            ControllerModel.GetLogger<T>().LogInformation($"用户：{ControllerModel.UserName} 手机号：{ControllerModel.PhoneNumber} 访问地址：{ControllerModel.Current_AbsoluteUri} 访问ip：{ControllerModel.Current_Ipaddress} 执行时间：{stopwatch.Elapsed} 执行结果：{IsSucc} 执行消息：{msg}");
         }
         #endregion
 

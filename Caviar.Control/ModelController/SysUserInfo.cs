@@ -15,7 +15,7 @@ namespace Caviar.Control
         public SysUserInfo()
         {
             _controllerModel = CaviarConfig.ApplicationServices.GetRequiredService<BaseControllerModel>();
-            GetRoleJurisdiction();
+            GetRoleJurisdiction(null);
         }
         SysUserLogin _sysUserLogin;
         public SysUserLogin SysUserLogin
@@ -40,9 +40,9 @@ namespace Caviar.Control
             SysPowerMenus = new List<SysPowerMenu>();
             if (sysUserLogin != null && sysUserLogin.Id > 0)
             {
-                if (SysUserLogin.UserRoles != null)
+                if (sysUserLogin.UserRoles != null)
                 {
-                    foreach (var role in SysUserLogin.UserRoles)
+                    foreach (var role in sysUserLogin.UserRoles)
                     {
                         SysRoles.Add(role.Role);
                         if (role.Role.RoleMenus != null)
@@ -55,7 +55,6 @@ namespace Caviar.Control
                     }
                 }
                 _sysUserLogin = sysUserLogin;
-                IsLogin = true;
             }
             else
             {
@@ -70,9 +69,7 @@ namespace Caviar.Control
                     if (menus == null) continue;
                     SysPowerMenus.Add(menus.Menu);
                 }
-                IsLogin = false;
             }
-            _controllerModel.HttpContext.Session.Set(CaviarConfig.SessionUserInfoName, _sysUserLogin);
         }
 
         public List<SysRole> SysRoles { get; private set; }
@@ -83,6 +80,6 @@ namespace Caviar.Control
         /// <summary>
         /// 用户是否登录
         /// </summary>
-        public bool IsLogin { get; private set; }
+        public bool IsLogin => SysUserLogin.Id > 0;
     }
 }

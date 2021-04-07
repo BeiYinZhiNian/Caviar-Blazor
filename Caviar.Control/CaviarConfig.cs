@@ -99,9 +99,7 @@ namespace Caviar.Control
         {
             var value = session.GetString(key);
             var setting = new JsonSerializerSettings();
-            setting.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
-            setting.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
-            return value == null ? default : JsonConvert.DeserializeObject<T>(value, setting);
+            return value == null ? default : JsonConvert.DeserializeObject<T>(value);
         }
         #endregion
 
