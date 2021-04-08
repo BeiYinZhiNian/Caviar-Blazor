@@ -44,7 +44,11 @@ namespace Caviar.Control
         static void LoadAppsettings()
         {
             var appsettingPath = "appsettings.json";
-            var appsettings = File.ReadAllText(appsettingPath);
+            string appsettings = "{}";
+            if (File.Exists(appsettingPath))
+            {
+                appsettings = File.ReadAllText(appsettingPath);
+            }
             var json = JObject.Parse(appsettings);
             PaseAppsettingsJson(ref json);
 
