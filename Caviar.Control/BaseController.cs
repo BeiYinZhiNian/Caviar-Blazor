@@ -69,12 +69,15 @@ namespace Caviar.Control
         {
             base.OnActionExecuted(context);
             var actionResult = (ObjectResult)context.Result;
-            var json = JsonConvert.SerializeObject(actionResult.Value);
+            var setting = new JsonSerializerSettings();
+            setting.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+            setting.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
+            var json = JsonConvert.SerializeObject(actionResult.Value, setting);
             var resultMsg = JsonConvert.DeserializeObject<ResultMsg>(json);
             stopwatch.Stop();
             LoggerMsg<BaseController>(resultMsg.Title, IsSucc: resultMsg.Status == 200);
         }
-
+        #region 创建模型
         protected virtual T CreateModel<T>() where T : class, IBaseModel
         {
             var entity = CaviarConfig.ApplicationServices.GetRequiredService<T>();
@@ -96,7 +99,7 @@ namespace Caviar.Control
             var entity = ControllerModel.DataContext.GetEntityAsync<T>(whereLambda).FirstOrDefault();
             return entity;
         }
-
+        #endregion
 
 
         protected virtual IActionResult ResultForbidden()
