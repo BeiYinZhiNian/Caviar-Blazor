@@ -6,10 +6,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-
+using Newtonsoft.Json.Linq;
 namespace Caviar.Control
 {
     public static class CaviarConfig
@@ -17,9 +18,6 @@ namespace Caviar.Control
         public static SqlConfig SqlConfig { get; set; }
 
         public static IConfiguration Configuration { get; set; }
-
-        public static string NoLoginRole { get; set; }
-        public static string SysAdminRole { get; set; }
 
         public static Guid NoLoginRoleGuid { get; set; }
         public static Guid SysAdminRoleGuid { get; set; }
@@ -39,48 +37,32 @@ namespace Caviar.Control
             var caviarDynamicConfig = new CaviarDynamicConfig();
             caviarDynamicConfig.AddIBaseModel(services);
             caviarDynamicConfig.AddInject(services);
-            JoinAppsettings();
+            LoadAppsettings();
             return services;
         }
 
-        static void JoinAppsettings()
+        static void LoadAppsettings()
         {
-            NoLoginRole = Configuration["Caviar:Role:NoLoginRole"];
-            if (string.IsNullOrEmpty(NoLoginRole)) NoLoginRole = "未登录用户";
-            SysAdminRole = Configuration["Caviar:Role:SysAdminRole"];
-            if (string.IsNullOrEmpty(SysAdminRole)) SysAdminRole = "管理员";
+            var appsettingPath = "appsettings.json";
+            var appsettings = File.ReadAllText(appsettingPath);
+            var json = JObject.Parse(appsettings);
+            PaseAppsettingsJson(ref json);
 
-            var configStr = Configuration["Caviar:IsDebug"];
-            if (string.IsNullOrEmpty(configStr))
-            {
-                IsDebug = false;
-            }
-            else
-            {
-                IsDebug = bool.Parse(configStr);
-            }
+            IsDebug = bool.Parse(json["Caviar"]["IsDebug"].ToString());
+            var guid = json["Caviar"]["Role"]["NoLoginRole"].ToString();
+            NoLoginRoleGuid = Guid.Parse(guid);
+            SysAdminRoleGuid = Guid.Parse(json["Caviar"]["Role"]["SysAdminRole"].ToString());
+            var paseJson = json.ToString();
+            File.WriteAllText(appsettingPath, paseJson);
+        }
 
-            configStr = Configuration["Caviar:Guid:NoLoginRole"];
-            if (string.IsNullOrEmpty(configStr))
-            {
-                NoLoginRoleGuid = Guid.NewGuid();
-
-            }
-            else
-            {
-                NoLoginRoleGuid = Guid.Parse(configStr);
-            }
-
-            configStr = Configuration["Caviar:Guid:SysAdminRole"];
-            if (string.IsNullOrEmpty(configStr))
-            {
-                SysAdminRoleGuid = Guid.NewGuid();
-
-            }
-            else
-            {
-                SysAdminRoleGuid = Guid.Parse(configStr);
-            }
+        static void PaseAppsettingsJson(ref JObject json)
+        {
+            if (json["Caviar"] == null) json["Caviar"] = new JObject();
+            if (json["Caviar"]["IsDebug"] == null) json["Caviar"]["IsDebug"] = false;
+            if (json["Caviar"]["Role"] == null) json["Caviar"]["Role"] = new JObject();
+            if (json["Caviar"]["Role"]["NoLoginRole"] == null) json["Caviar"]["Role"]["NoLoginRole"] = Guid.NewGuid();
+            if (json["Caviar"]["Role"]["SysAdminRole"] == null) json["Caviar"]["Role"]["SysAdminRole"] = Guid.NewGuid();
         }
 
 

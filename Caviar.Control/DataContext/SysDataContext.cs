@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Control
 {
-    public partial class SysDataContext:IDataContext
+    public partial class SysDataContext : IDataContext
     {
 
         public SysDataContext()
@@ -83,7 +83,8 @@ namespace Caviar.Control
                 .Where(u => u.State == EntityState.Modified)
                 .Select(u => u.Entity)
                 .ToList()
-                .ForEach(u=> {
+                .ForEach(u =>
+                {
                     var baseEntity = u as IBaseModel;
                     if (baseEntity != null)
                     {
@@ -96,7 +97,8 @@ namespace Caviar.Control
                 .Where(u => u.State == EntityState.Added)
                 .Select(u => u.Entity)
                 .ToList()
-                .ForEach(u => {
+                .ForEach(u =>
+                {
                     var baseEntity = u as IBaseModel;
                     if (baseEntity != null)
                     {
@@ -261,12 +263,14 @@ namespace Caviar.Control
                 //创建基础角色
                 var NoLoginRole = new SysRole
                 {
-                    RoleName = CaviarConfig.NoLoginRole,
+                    RoleName = "未登录角色",
+                    Uid = CaviarConfig.NoLoginRoleGuid
                 };
                 await AddEntityAsync(NoLoginRole);
                 var role = new SysRole()
                 {
-                    RoleName = CaviarConfig.SysAdminRole,
+                    RoleName = "系统管理员",
+                    Uid = CaviarConfig.SysAdminRoleGuid
                 };
                 await AddEntityAsync(role);
                 //默认角色加入管理员角色
@@ -297,7 +301,7 @@ namespace Caviar.Control
                     MenuType = MenuType.Catalog,
                     TargetType = TargetType.CurrentPage,
                     MenuName = "系统管理",
-                    
+
                 };
                 await AddEntityAsync(sysPowerMenu);
                 //基础菜单加入管理员角色

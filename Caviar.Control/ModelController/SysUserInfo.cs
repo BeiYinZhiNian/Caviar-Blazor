@@ -60,8 +60,8 @@ namespace Caviar.Control
             {
                 _sysUserLogin = new SysUserLogin();
                 //获取未登录角色权限
-                _sysUserLogin.UserName = CaviarConfig.NoLoginRole;
-                var role = _controllerModel.DataContext.GetEntityAsync<SysRole>(u => u.RoleName == CaviarConfig.NoLoginRole);
+                _sysUserLogin.UserName = "未登录用户";
+                var role = _controllerModel.DataContext.GetEntityAsync<SysRole>(u => u.Uid == CaviarConfig.NoLoginRoleGuid);
                 SysRoles.AddRange(role);
                 foreach (var item in SysRoles)
                 {
