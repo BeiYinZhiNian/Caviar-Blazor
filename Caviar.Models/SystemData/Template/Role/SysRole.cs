@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
@@ -17,9 +18,9 @@ namespace Caviar.Models.SystemData
         [DisplayName("角色名名称")]
         [StringLength(50, ErrorMessage = "角色名称请不要超过{1}个字符")]
         public string RoleName { get; set; }
-
+        [JsonIgnore]
         public virtual List<SysRoleMenu> RoleMenus { get; set; }
-
+        [JsonIgnore]
         public virtual List<SysRoleLogin> UserLogins { get; set; }
 
     }

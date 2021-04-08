@@ -38,6 +38,7 @@ namespace Caviar.Models.SystemData
         public string PhoneNumber { get; set; }
 
         [Display(Name = "角色")]
+        [JsonIgnore]
         public virtual List<SysRoleLogin> UserRoles { get; set; }
     }
 }

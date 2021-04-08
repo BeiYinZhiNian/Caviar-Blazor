@@ -3,15 +3,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Newtonsoft.Json.Linq;
-
+using System.Text.Json.Serialization;
+using System.Text.Json;
 namespace Caviar.Control
 {
     public static class CaviarConfig
@@ -51,24 +50,26 @@ namespace Caviar.Control
             {
                 appsettings = File.ReadAllText(appsettingPath);
             }
-            var json = JObject.Parse(appsettings);
+            var json = JsonDocument.Parse(appsettings);
             PaseAppsettingsJson(ref json);
 
-            IsDebug = bool.Parse(json["Caviar"]["IsDebug"].ToString());
-            var guid = json["Caviar"]["Role"]["NoLoginRole"].ToString();
-            NoLoginRoleGuid = Guid.Parse(guid);
-            SysAdminRoleGuid = Guid.Parse(json["Caviar"]["Role"]["SysAdminRole"].ToString());
+            IsDebug = json.RootElement.GetProperty("Caviar").GetProperty("IsDebug").GetBoolean();
+            // var guid = json["Caviar"]["Role"]["NoLoginRole"].ToString();
+            // NoLoginRoleGuid = Guid.Parse(guid);
+            // SysAdminRoleGuid = Guid.Parse(json["Caviar"]["Role"]["SysAdminRole"].ToString());
             var paseJson = json.ToString();
             File.WriteAllText(appsettingPath, paseJson);
         }
 
-        static void PaseAppsettingsJson(ref JObject json)
+        static void PaseAppsettingsJson(ref JsonDocument json)
         {
-            if (json["Caviar"] == null) json["Caviar"] = new JObject();
-            if (json["Caviar"]["IsDebug"] == null) json["Caviar"]["IsDebug"] = false;
-            if (json["Caviar"]["Role"] == null) json["Caviar"]["Role"] = new JObject();
-            if (json["Caviar"]["Role"]["NoLoginRole"] == null) json["Caviar"]["Role"]["NoLoginRole"] = Guid.NewGuid();
-            if (json["Caviar"]["Role"]["SysAdminRole"] == null) json["Caviar"]["Role"]["SysAdminRole"] = Guid.NewGuid();
+            //if (!json.RootElement.TryGetProperty("Caviar", out JsonElement value))
+            //var test = obj.ValueKind.CompareTo();
+
+            // if (json["Caviar"]["IsDebug"] == null) json["Caviar"]["IsDebug"] = false;
+            // if (json["Caviar"]["Role"] == null) json["Caviar"]["Role"] = new JObject();
+            // if (json["Caviar"]["Role"]["NoLoginRole"] == null) json["Caviar"]["Role"]["NoLoginRole"] = Guid.NewGuid();
+            // if (json["Caviar"]["Role"]["SysAdminRole"] == null) json["Caviar"]["Role"]["SysAdminRole"] = Guid.NewGuid();
         }
 
 
@@ -115,17 +116,13 @@ namespace Caviar.Control
         #region session扩展
         public static void Set<T>(this ISession session, string key, T value)
         {
-            var setting = new JsonSerializerSettings();
-            setting.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
-            setting.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
-            session.SetString(key, JsonConvert.SerializeObject(value, setting));
+            session.SetString(key, JsonSerializer.Serialize(value));
         }
 
         public static T Get<T>(this ISession session, string key)
         {
             var value = session.GetString(key);
-            var setting = new JsonSerializerSettings();
-            return value == null ? default : JsonConvert.DeserializeObject<T>(value);
+            return value == null ? default : JsonSerializer.Deserialize<T>(value);
         }
         #endregion
 
