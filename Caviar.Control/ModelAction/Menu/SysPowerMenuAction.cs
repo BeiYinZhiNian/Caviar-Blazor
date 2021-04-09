@@ -15,9 +15,9 @@ namespace Caviar.Control
         {
             _controllerModel = this.GetControllerModel();
         }
-        public virtual List<SysPowerMenu> GetMenus()
+        public virtual List<SysPowerMenu> GetLeftSideMenus()
         {
-            var menuList = _controllerModel.DataContext.GetAllAsync<SysPowerMenu>();
+            var menuList = _controllerModel.DataContext.GetEntityAsync<SysPowerMenu>(u => u.MenuType == MenuType.Menu || u.MenuType == MenuType.Catalog);
             return menuList.ToList();
         }
     }

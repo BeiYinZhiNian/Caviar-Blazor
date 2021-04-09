@@ -8,10 +8,10 @@ namespace Caviar.WebAPI.Controllers
     public class MenuController : BaseController
     {
         [HttpGet]
-        public IActionResult GetMenus()
+        public IActionResult GetLeftSideMenus()
         {
             var menuAction = CreateModel<SysPowerMenuAction>();
-            ResultMsg.data = menuAction.GetMenus();
+            ResultMsg.data = menuAction.GetLeftSideMenus();
             return ResultOK();
         }
     }
