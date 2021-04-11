@@ -25,7 +25,9 @@
             <NavBreadcrumb BreadcrumbItemNav="@BreadcrumbItemNav"></NavBreadcrumb>
         </div>
         <Content Class="site-layout-background" Style="margin: 6px 16px;padding: 24px;min-height: 280px;">
-            @Body
+            <Spin Spinning=@Loading Size="large">
+                @Body
+            </Spin>
         </Content>
         <NavFooter></NavFooter>
     </Layout>

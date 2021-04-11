@@ -16,8 +16,6 @@ namespace Caviar.UI.Shared
     partial class NavMenu
     {
         [Inject]
-        HttpClient Http { get; set; }
-        [Inject]
         IConfiguration Configuration { get; set; }
         bool _inlineCollapsed;
         [Parameter]

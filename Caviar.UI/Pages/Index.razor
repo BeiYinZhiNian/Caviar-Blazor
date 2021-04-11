@@ -2,5 +2,11 @@
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
-<Button Type="primary">Hello World!</Button>
+    Welcome to your new app.
+<Button Type="primary" OnClick="testc">Hello World!</Button>
+@code{
+    public void testc()
+    {
+        MainLayout.Loading = !MainLayout.Loading;
+    }
+}

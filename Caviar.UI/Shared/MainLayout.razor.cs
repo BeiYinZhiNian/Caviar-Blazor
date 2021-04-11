@@ -17,6 +17,8 @@ namespace Caviar.UI.Shared
 
         [Inject]
         NavigationManager NavigationManager { get; set; }
+
+        public static bool Loading { get; set; }
         /// <summary>
         /// logo图片地址
         /// </summary>
