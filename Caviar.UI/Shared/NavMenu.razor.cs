@@ -1,15 +1,24 @@
 ﻿using AntDesign;
+using Caviar.Models.SystemData;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Caviar.UI.Shared
 {
     partial class NavMenu
     {
+        [Inject]
+        HttpClient Http { get; set; }
+        [Inject]
+        IConfiguration Configuration { get; set; }
         bool _inlineCollapsed;
         [Parameter]
         public bool InlineCollapsed
@@ -57,6 +66,13 @@ namespace Caviar.UI.Shared
             {
                 OpenKeysNav = _openKeysNae;
             }
+        }
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+            
+
         }
     }
 
