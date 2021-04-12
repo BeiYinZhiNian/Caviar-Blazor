@@ -6,15 +6,17 @@ using Microsoft.Extensions.Configuration;
 using System;
 using Caviar.Models.SystemData;
 using Caviar.UI.Shared;
+using AntDesign;
 
 namespace Caviar.UI.Helper
 {
     public partial class HttpHelper
     {
-
-        public HttpHelper(HttpClient http)
+        NotificationService _notificationService;
+        public HttpHelper(HttpClient http, NotificationService _notice)
         {
             Http = http;
+            _notificationService = _notice;
         }
         public HttpClient Http { get; }
         public async Task<ResultMsg<T>> GetJson<T>(string address, EventCallback eventCallback = default)
@@ -70,6 +72,32 @@ namespace Caviar.UI.Helper
             }
             mainLayoutStyle.Loading = false;
             await eventCallback.InvokeAsync(mainLayoutStyle);
+            if (result.Status != 200)
+            {
+                string msg = "";
+                if (!string.IsNullOrEmpty(result.Detail))
+                {
+                    msg += "错误详细信息：" + result.Detail;
+                }
+                if (result.Errors!=null && result.Errors.Count!=0)
+                {
+                    msg += "错误提示：";
+                    foreach (var item in result.Errors)
+                    {
+                        msg += "<br>" + item.Key + ":" ;
+                        foreach (var value in item.Value)
+                        {
+                            msg +=  value + "<br>";
+                        }
+                    }
+                }
+                _notificationService.Open(new NotificationConfig()
+                {
+                    Message = result.Title,
+                    Description = msg,
+                    NotificationType = NotificationType.Error
+                });
+            }
             return result;
         }
     }

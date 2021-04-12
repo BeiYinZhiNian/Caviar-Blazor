@@ -1,5 +1,6 @@
 ﻿using AntDesign;
 using Caviar.Models.SystemData;
+using Caviar.UI.Helper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -11,6 +12,7 @@ namespace Caviar.UI.Pages.SystemPages.User
 {
     partial class Login
     {
+        bool Loading { get; set; }
         public SysUserLogin SysLoginUserData { get; set; } = new SysUserLogin();
         [Inject] public NavigationManager NavigationManager { get; set; }
 
@@ -22,18 +24,21 @@ namespace Caviar.UI.Pages.SystemPages.User
 
         [CascadingParameter]
         public EventCallback LayoutStyleCallBack { get; set; }
-
-        public void SubmitLogin()
+        [Inject]
+        HttpHelper http { get; set; }
+        public async void SubmitLogin()
         {
-            if (SysLoginUserData.UserName == "admin" && SysLoginUserData.Password == "123456")
+            Loading = true;
+            SysLoginUserData.Password = CommonHelper.SHA256EncryptString(SysLoginUserData.Password);
+            var result = await http.PostJson("User/Login", SysLoginUserData);
+            SysLoginUserData.Password = "";
+            Loading = false;
+            if (result.Status==200)
             {
                 NavigationManager.NavigateTo("/");
                 return;
             }
-            else
-            {
-                _message.Error("登录失败，请检查用户名或密码");
-            }
+            this.StateHasChanged();
         }
 
         protected override void OnInitialized()

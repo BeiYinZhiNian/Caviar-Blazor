@@ -22,7 +22,7 @@ namespace Caviar.Models.SystemData
         /// </summary>
         public string Type { get; set; } = "";
 
-        public Guid TraceId { get; set; } = Guid.NewGuid();
+        public string TraceId { get; set; } = Guid.NewGuid().ToString();
         /// <summary>
         /// 此问题特定的可读说明。
         /// </summary>

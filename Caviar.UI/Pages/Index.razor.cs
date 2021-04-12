@@ -14,22 +14,10 @@ namespace Caviar.UI.Pages
         [CascadingParameter]
         public EventCallback LayoutStyleCallBack { get; set; }
 
-        [Inject]
-        HttpHelper http { get; set; }
+        
         public async Task Test()
         {
-            Console.WriteLine("开始请求");
-            if (http == null)
-            {
-                Console.WriteLine("请求失败");
-            }
-            //await http.GetJson("Menu/GetLeftSideMenus", LayoutStyleCallBack);
-            SysUserLogin sysUserLogin = new SysUserLogin() 
-            {
-                UserName = "admin",
-                Password = CommonHelper.SHA256EncryptString("123456"),
-            };
-            await http.PostJson("User/Login", sysUserLogin, LayoutStyleCallBack);
+
         }
     }
 
