@@ -11,7 +11,7 @@ namespace Caviar.WebAPI.Controllers
         public IActionResult GetLeftSideMenus()
         {
             var menuAction = CreateModel<SysPowerMenuAction>();
-            ResultMsg.data = menuAction.GetLeftSideMenus();
+            ResultMsg.Data = menuAction.GetLeftSideMenus();
             return ResultOK();
         }
     }

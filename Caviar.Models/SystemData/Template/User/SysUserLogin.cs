@@ -27,13 +27,12 @@ namespace Caviar.Models.SystemData
         /// </summary>
         [Required(ErrorMessage = "请输入您的密码")]
         [DisplayName("密码")]
-        [RegularExpression("[0-9a-z]{32}", ErrorMessage = "密码验证错误")]
+        [RegularExpression("[0-9a-z]{64}", ErrorMessage = "密码验证错误")]
         public string Password { get; set; }
         /// <summary>
         /// 手机号码
         /// </summary>
-        [Required(ErrorMessage = "请输入您的手机号码")]
-        [RegularExpression("^[1][3-9]\\d{9}$", ErrorMessage = "请输入正确的手机号")]
+        [RegularExpression("^$|^[1][3-9]\\d{9}$", ErrorMessage = "请输入正确的手机号")]
         [DisplayName("手机号码")]
         public string PhoneNumber { get; set; }
 

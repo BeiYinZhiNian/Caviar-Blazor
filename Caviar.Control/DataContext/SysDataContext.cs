@@ -1,4 +1,5 @@
-﻿using Caviar.Models.SystemData;
+﻿using Caviar.Models;
+using Caviar.Models.SystemData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -256,7 +257,7 @@ namespace Caviar.Control
                 SysUserLogin Login = new SysUserLogin()
                 {
                     UserName = "admin",
-                    Password = CommonHelper.GetMD5("123456"),
+                    Password = CommonHelper.SHA256EncryptString("123456"),
                     PhoneNumber = "11111111111",
                 };
                 await AddEntityAsync(Login);

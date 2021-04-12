@@ -8,14 +8,9 @@ namespace Caviar.WebAPI.Controllers
     public class UserController : BaseController
     {
         [HttpPost]
-        public IActionResult Login(string userName, string phoneNumber, string password)
+        public IActionResult Login(SysUserLoginAction userLogin)
         {
-            var user = CreateModel<SysUserLoginAction>();
-            user.UserName = userName;
-            user.PhoneNumber = phoneNumber;
-            user.Password = password;
-            var msg = user.Login();
-            LoggerMsg<UserController>(msg, IsSucc: ControllerModel.SysUserInfo.IsLogin);
+            var msg = userLogin.Login();
             if (ControllerModel.SysUserInfo.IsLogin)
             {
                 return ResultOK(msg);

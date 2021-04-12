@@ -34,11 +34,11 @@ namespace Caviar.Models.SystemData
         /// <summary>
         /// 用于存放附加数据
         /// </summary>
-        public object data { get; set; }
+        public object Data { get; set; }
     }
 
     public class ResultMsg<T> : ResultMsg
     {
-        public new T data { get; set; }
+        public new T Data { get; set; }
     }
 }

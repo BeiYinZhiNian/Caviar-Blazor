@@ -11,6 +11,9 @@ namespace Caviar.UI.Pages
     partial class Index
     {
 
+        [CascadingParameter]
+        public EventCallback LayoutStyleCallBack { get; set; }
+
         [Inject]
         HttpHelper http { get; set; }
         public async Task Test()
@@ -20,7 +23,13 @@ namespace Caviar.UI.Pages
             {
                 Console.WriteLine("请求失败");
             }
-            var data = await http.GetJson<List<SysPowerMenu>>("Menu/GetLeftSideMenus");
+            //await http.GetJson("Menu/GetLeftSideMenus", LayoutStyleCallBack);
+            SysUserLogin sysUserLogin = new SysUserLogin() 
+            {
+                UserName = "admin",
+                Password = CommonHelper.SHA256EncryptString("123456"),
+            };
+            await http.PostJson("User/Login", sysUserLogin, LayoutStyleCallBack);
         }
     }
 
