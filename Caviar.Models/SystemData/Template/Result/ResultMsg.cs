@@ -36,4 +36,9 @@ namespace Caviar.Models.SystemData
         /// </summary>
         public object data { get; set; }
     }
+
+    public class ResultMsg<T> : ResultMsg
+    {
+        public new T data { get; set; }
+    }
 }

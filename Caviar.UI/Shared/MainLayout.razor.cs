@@ -18,7 +18,7 @@ namespace Caviar.UI.Shared
         [Inject]
         NavigationManager NavigationManager { get; set; }
 
-        public static bool Loading { get; set; }
+        public bool Loading { get; set; }
         /// <summary>
         /// logo图片地址
         /// </summary>
@@ -55,7 +55,7 @@ namespace Caviar.UI.Shared
                 return _collapsed;
             }
         }
-        
+
         /// <summary>
         /// 按钮点击时触发
         /// </summary>
@@ -90,5 +90,30 @@ namespace Caviar.UI.Shared
                 LogoImgSrc = LogoImg;
             }
         }
+
+        EventCallback _layoutStyleCallBack = EventCallback.Empty;
+        EventCallback LayoutStyleCallBack
+        {
+            get
+            {
+                if (_layoutStyleCallBack.Equals(EventCallback.Empty))
+                    _layoutStyleCallBack = EventCallback.Factory.Create(this, SetStyle);
+                return _layoutStyleCallBack;
+            }
+        }
+
+        public void SetStyle(object style)
+        {
+            if (style != null)
+            {
+                var layoutStyle = (MainLayoutStyle)style;
+                Loading = layoutStyle.Loading;
+            }
+        }
+    }
+
+    public class MainLayoutStyle
+    {
+        public bool Loading { get; set; }
     }
 }
