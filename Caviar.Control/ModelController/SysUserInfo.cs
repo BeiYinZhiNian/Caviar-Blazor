@@ -45,13 +45,6 @@ namespace Caviar.Control
                     foreach (var role in sysUserLogin.UserRoles)
                     {
                         SysRoles.Add(role.Role);
-                        if (role.Role.RoleMenus != null)
-                        {
-                            foreach (var menu in role.Role.RoleMenus)
-                            {
-                                SysPowerMenus.Add(menu.Menu);
-                            }
-                        }
                     }
                 }
                 _sysUserLogin = sysUserLogin;
@@ -63,12 +56,6 @@ namespace Caviar.Control
                 _sysUserLogin.UserName = "未登录用户";
                 var role = _controllerModel.DataContext.GetEntityAsync<SysRole>(u => u.Uid == CaviarConfig.NoLoginRoleGuid);
                 SysRoles.AddRange(role);
-                foreach (var item in SysRoles)
-                {
-                    var menus = _controllerModel.DataContext.GetEntityAsync<SysRoleMenu>(u => u.RoleId == item.Id).FirstOrDefault();
-                    if (menus == null) continue;
-                    SysPowerMenus.Add(menus.Menu);
-                }
             }
         }
 

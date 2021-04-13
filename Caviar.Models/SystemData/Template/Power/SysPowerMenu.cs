@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
+    /// <summary>
+    /// 菜单表
+    /// </summary>
     public partial class SysPowerMenu : SysBaseModel
     {
         [DisplayName("类型")]
@@ -30,10 +33,10 @@ namespace Caviar.Models.SystemData
         [DisplayName("顺序")]
         public int Order { get; set; }
 
-        [DisplayName("上层id")]
+        [DisplayName("父id")]
         public int UpLayerId { get; set; }
         [JsonIgnore]
-        public virtual List<SysRoleMenu> RoleMenus { get; set; }
+        public virtual List<SysPermissionMenu> RoleMenus { get; set; }
     }
 
 

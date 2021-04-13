@@ -284,18 +284,12 @@ namespace Caviar.Control
                 //创建基础访问页面
                 SysPowerMenu homePage = new SysPowerMenu()
                 {
-                    MenuType = MenuType.Page,
+                    MenuType = MenuType.Menu,
                     TargetType = TargetType.CurrentPage,
                     MenuName = "首页",
                     Url = "/"
                 };
                 await AddEntityAsync(homePage);
-                SysRoleMenu homePageRole = new SysRoleMenu()
-                {
-                    MenuId = homePage.Id,
-                    RoleId = role.Id,
-                };
-                await AddEntityAsync(homePageRole);
                 //创建基础菜单
                 SysPowerMenu sysPowerMenu = new SysPowerMenu()
                 {
@@ -305,13 +299,6 @@ namespace Caviar.Control
 
                 };
                 await AddEntityAsync(sysPowerMenu);
-                //基础菜单加入管理员角色
-                SysRoleMenu sysRoleMenu = new SysRoleMenu()
-                {
-                    MenuId = sysPowerMenu.Id,
-                    RoleId = role.Id,
-                };
-                await AddEntityAsync(sysRoleMenu);
             }
             return IsExistence;
         }

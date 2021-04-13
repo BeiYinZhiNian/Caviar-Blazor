@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
+    /// <summary>
+    /// 角色表
+    /// </summary>
     public partial class SysRole : SysBaseModel
     {
         /// <summary>
@@ -18,8 +21,7 @@ namespace Caviar.Models.SystemData
         [DisplayName("角色名名称")]
         [StringLength(50, ErrorMessage = "角色名称请不要超过{1}个字符")]
         public string RoleName { get; set; }
-        [JsonIgnore]
-        public virtual List<SysRoleMenu> RoleMenus { get; set; }
+
         [JsonIgnore]
         public virtual List<SysRoleLogin> UserLogins { get; set; }
 

@@ -5,20 +5,20 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Caviar.Models.SystemData
+namespace Caviar.Models.SystemData.Template.Role
 {
     /// <summary>
-    /// 用户角色关联表
+    /// 权限角色关联表
     /// </summary>
-    public partial class SysRoleLogin : SysBaseModel
+    public class SysRolePermission : SysBaseModel
     {
+        public int RoleId { get; set; }
+
+        public int PermissionId { get; set; }
+
         [JsonIgnore]
         public virtual SysRole Role { get; set; }
         [JsonIgnore]
-        public virtual SysUserLogin User { get; set; }
-
-        public int UserId { get; set; }
-
-        public int RoleId { get; set; }
+        public virtual SysPermission Permission { get; set; }
     }
 }

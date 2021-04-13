@@ -60,5 +60,11 @@ namespace Caviar.Models.SystemData
         /// </summary>
         [DisplayName("是否禁用")]
         public bool IsDisable { get; set; }
+        /// <summary>
+        /// 编号
+        /// </summary>
+        [DisplayName("编号")]
+        [StringLength(50, ErrorMessage = "备注请不要超过{1}个字符")]
+        public string Number { get; set; }
     }
 }
