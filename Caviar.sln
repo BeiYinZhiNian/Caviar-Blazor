@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.Models", "Caviar.Mod
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.WebAPI", "Caviar.WebAPI\Caviar.WebAPI.csproj", "{632F1BC9-FE83-44A0-81A9-53C1D6347808}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caviar.Control", "Caviar.Control\Caviar.Control.csproj", "{51CE65F4-D347-4D90-B571-FA20A7BEA7DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.Control", "Caviar.Control\Caviar.Control.csproj", "{51CE65F4-D347-4D90-B571-FA20A7BEA7DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
