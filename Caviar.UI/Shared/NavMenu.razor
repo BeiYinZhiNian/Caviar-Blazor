@@ -5,44 +5,45 @@
       InlineCollapsed="InlineCollapsed"
       Selectable="false"
       OnMenuItemClicked="OnMenuItemClickedNav">
-    <MenuItem Key="home" RouterLink="/">@sub1Title</MenuItem>
-    <SubMenu Key="Navigation One" TitleTemplate=@sub1Title>
-        <MenuItem Key="1">Index</MenuItem>
-        <MenuItem Key="2">Counter</MenuItem>
-        <MenuItem Key="FetchData" RouterLink="FetchData">FetchData</MenuItem>
-        <MenuItem Key="4">Option 4</MenuItem>
-    </SubMenu>
-    <SubMenu Key="页面" TitleTemplate=@sub2Title>
-        <MenuItem Key="登录页面" RouterLink="User/Login">登录页面</MenuItem>
-        <MenuItem Key="未找到页面" RouterLink="Exception/404">404</MenuItem>
-        <MenuItem Key="没有访问权限" RouterLink="Exception/403">403</MenuItem>
-        <MenuItem Key="服务器发生错误" RouterLink="Exception/500">500</MenuItem>
-    </SubMenu>
-    <SubMenu Key="sub4" TitleTemplate=@sub4Title>
-        <MenuItem Key="9">Option 9</MenuItem>
-        <MenuItem Key="10">Option 10</MenuItem>
-        <MenuItem Key="11">Option 11</MenuItem>
-        <MenuItem Key="12">Option 12</MenuItem>
-    </SubMenu>
+    @if (SysPowerMenus != null)
+    {
+        var menu = GetSubMenu(SysPowerMenus);
+        @menu
+    }
 </Menu>
 
 @code {
-    RenderFragment sub1Title =
-    @<span>
-        <Icon Type="mail" Theme="outline"></Icon>
-        <span>Navigation One</span>
-    </span>;
-
-RenderFragment sub2Title =
-@<span>
-    <Icon Type="appstore" Theme="outline"></Icon>
-    <span>页面</span>
-</span>;
-
-RenderFragment sub4Title =
-@<span>
-    <Icon Type="setting" Theme="outline"></Icon>
-    <span>Navigation Three</span>
-</span>;
-
+    RenderFragment GetSubMenu(List<ViewPowerMenu> viewPowerMenus)
+    {
+        RenderFragment ViewSubMenu = null;
+        if (viewPowerMenus == null || viewPowerMenus.Count == 0) return ViewSubMenu;
+        foreach (var item in viewPowerMenus)
+        {
+            RenderFragment subTitle =
+            @<span>
+            @if (!string.IsNullOrEmpty(item.Icon))
+            {
+                <Icon Type="@item.Icon" Theme="outline"></Icon>
+            }
+            <span>@item.MenuName</span>
+            </span>;
+            switch (item.MenuType)
+            {
+                case MenuType.Catalog:
+                     ViewSubMenu +=
+                     @<SubMenu TitleTemplate="subTitle">
+                     @GetSubMenu(item.SonMenu)
+                     </SubMenu>;
+                     break;
+                case MenuType.Menu:
+                ViewSubMenu += @<MenuItem Key="@item.MenuName" RouterLink="@item.Url">@subTitle</MenuItem>;
+                break;
+                default:
+                break;
+            }
+        };
+        return ViewSubMenu;
+    }
 }
+
+

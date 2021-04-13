@@ -14,9 +14,12 @@ namespace Caviar.UI.Pages
         [CascadingParameter]
         public EventCallback LayoutStyleCallBack { get; set; }
 
-        
+        [Inject]
+        HttpHelper Http { get; set; }
         public async Task Test()
         {
+            
+
 
         }
     }

@@ -1,5 +1,6 @@
 ﻿using AntDesign;
 using Caviar.Models.SystemData;
+using Caviar.UI.Helper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Configuration;
@@ -15,8 +16,6 @@ namespace Caviar.UI.Shared
 {
     partial class NavMenu
     {
-        [Inject]
-        IConfiguration Configuration { get; set; }
         bool _inlineCollapsed;
         [Parameter]
         public bool InlineCollapsed
@@ -37,6 +36,9 @@ namespace Caviar.UI.Shared
         public string[] OpenKeysNav { get; set; } = Array.Empty<string>();
 
         string[] _openKeysNae;
+
+        [Inject]
+        HttpHelper Http { get; set; }
 
 
         public async void OnMenuItemClickedNav(MenuItem menuItem)
@@ -66,13 +68,38 @@ namespace Caviar.UI.Shared
             }
         }
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
-            base.OnInitialized();
-            
-
+            SysPowerMenus = await GetPowerMenus();
         }
+
+        private List<ViewPowerMenu> SysPowerMenus;
+
+        async Task<List<ViewPowerMenu>> GetPowerMenus()
+        {
+            var result = await Http.GetJson<List<ViewPowerMenu>>("Menu/GetLeftSideMenus");
+            var viewPowerMenus = new List<ViewPowerMenu>();
+            result.Data.OrderBy(u => u.Id);
+            foreach (var item in result.Data)
+            {
+                if (item.UpLayerId == 0)
+                {
+                    viewPowerMenus.Add(item);
+                }
+                else
+                {
+                    viewPowerMenus.SingleOrDefault(u => u.Id == item.UpLayerId)?.SonMenu.Add(item);
+                }
+            }
+            return viewPowerMenus;
+        }
+
+
     }
 
+    public class ViewPowerMenu:SysPowerMenu
+    {
+        public List<ViewPowerMenu> SonMenu { get; set; }
+    }
 
 }

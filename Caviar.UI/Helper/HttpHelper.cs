@@ -57,7 +57,7 @@ namespace Caviar.UI.Helper
                 else
                 {
                     var response = await Http.PostAsJsonAsync(address,data);
-                    result = response.Content.ReadFromJsonAsync<ResultMsg<T>>().Result;
+                    result = await response.Content.ReadFromJsonAsync<ResultMsg<T>>();
                 }
             }
             catch(Exception e)
