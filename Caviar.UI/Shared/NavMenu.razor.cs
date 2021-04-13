@@ -88,7 +88,7 @@ namespace Caviar.UI.Shared
                 }
                 else
                 {
-                    viewPowerMenus.SingleOrDefault(u => u.Id == item.UpLayerId)?.SonMenu.Add(item);
+                    result.Data.SingleOrDefault(u => u.Id == item.UpLayerId)?.SonMenu.Add(item);
                 }
             }
             return viewPowerMenus;
@@ -99,7 +99,7 @@ namespace Caviar.UI.Shared
 
     public class ViewPowerMenu:SysPowerMenu
     {
-        public List<ViewPowerMenu> SonMenu { get; set; }
+        public List<ViewPowerMenu> SonMenu { get; set; } = new List<ViewPowerMenu>();
     }
 
 }

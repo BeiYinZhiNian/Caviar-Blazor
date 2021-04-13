@@ -2,10 +2,7 @@
 
 
 @*<Table DataSource="_data" TreeChildren="item=>item.Children">
-    <Selection CheckStrictly />
-    <Column @bind-Field="@context.Name" />
-    <Column @bind-Field="@context.Age" Width="12%" />
-    <Column @bind-Field="@context.Address" Width="30%" />
+    <Column Title="Name" DataIndex="name" TData="string" />
 </Table>*@
 
 
