@@ -139,7 +139,8 @@ namespace Caviar.Control
             var setting = new JsonSerializerSettings();
             setting.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
             setting.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
-            session.SetString(key, JsonConvert.SerializeObject(value, setting));
+            var json = JsonConvert.SerializeObject(value, setting);
+            session.SetString(key, json);
         }
 
         public static T Get<T>(this ISession session, string key)

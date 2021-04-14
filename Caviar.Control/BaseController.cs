@@ -46,9 +46,11 @@ namespace Caviar.Control
             ControllerModel.Current_AbsoluteUri = context.HttpContext.Request.GetAbsoluteUri();
             //获取请求路径
             ControllerModel.Current_Action = context.HttpContext.Request.Path.Value;
+            ControllerModel.SysUserInfo = HttpContext.Session.Get<SysUserInfo>(CaviarConfig.SessionUserInfoName);
             if (ControllerModel.SysUserInfo == null)
             {
                 ControllerModel.SysUserInfo = CaviarConfig.ApplicationServices.GetRequiredService<SysUserInfo>();
+                HttpContext.Session.Set(CaviarConfig.SessionUserInfoName, ControllerModel.SysUserInfo);
             }
             var IsVerification = ActionVerification();
             if (!IsVerification)
