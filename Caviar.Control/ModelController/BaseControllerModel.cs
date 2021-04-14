@@ -13,21 +13,10 @@ namespace Caviar.Control
     [DIInject(InjectType.SCOPED)]
     public class BaseControllerModel : IBaseControllerModel
     {
-        IDataContext _dataContext;
         /// <summary>
         /// 数据上下文
         /// </summary>
-        public IDataContext DataContext
-        {
-            get
-            {
-                if (_dataContext == null)
-                {
-                    _dataContext = CaviarConfig.ApplicationServices.GetRequiredService<SysDataContext>();
-                }
-                return _dataContext;
-            }
-        }
+        public IDataContext DataContext => CaviarConfig.ApplicationServices.GetRequiredService<SysDataContext>();
         /// <summary>
         /// 获取日志记录
         /// </summary>

@@ -99,7 +99,6 @@ namespace Caviar.Control
                     var typeName = item.PropertyType.Name;
                     var dispLayName = item.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
                     viewModelNames.Add(new ViewModelName() { TypeName = item.Name, ModelType = typeName,DispLayName=dispLayName });
-                    Console.WriteLine(typeName);
                 }
             }
             ResultMsg.Data = viewModelNames;
