@@ -46,17 +46,9 @@ namespace Caviar.Control
             ControllerModel.Current_AbsoluteUri = context.HttpContext.Request.GetAbsoluteUri();
             //获取请求路径
             ControllerModel.Current_Action = context.HttpContext.Request.Path.Value;
-            //设置请求上下文
-            ControllerModel.HttpContext = context.HttpContext;
-            var session = HttpContext.Session.Get<SysUserInfo>(CaviarConfig.SessionUserInfoName);
-            if (session == null)
+            if (ControllerModel.SysUserInfo == null)
             {
                 ControllerModel.SysUserInfo = CaviarConfig.ApplicationServices.GetRequiredService<SysUserInfo>();
-                ControllerModel.HttpContext.Session.Set(CaviarConfig.SessionUserInfoName, ControllerModel.SysUserInfo);
-            }
-            else
-            {
-                ControllerModel.SysUserInfo = session;
             }
             var IsVerification = ActionVerification();
             if (!IsVerification)

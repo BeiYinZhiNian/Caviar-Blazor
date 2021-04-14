@@ -12,7 +12,7 @@ namespace Caviar.Control
 {
     public interface IBaseControllerModel
     {
-        public HttpContext HttpContext { get; set; }
+        //public HttpContext HttpContext { get; set; }
         /// <summary>
         /// 数据上下文
         /// </summary>
