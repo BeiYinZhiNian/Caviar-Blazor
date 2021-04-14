@@ -303,8 +303,8 @@ namespace Caviar.Control
                 {
                     MenuType = MenuType.Menu,
                     TargetType = TargetType.CurrentPage,
-                    MenuName = "首页",
-                    Url = "/",
+                    MenuName = "菜单管理",
+                    Url = "/Menu/Index",
                     UpLayerId = management.Id,
                 };
                 await AddEntityAsync(menuManage);

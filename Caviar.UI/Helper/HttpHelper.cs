@@ -50,15 +50,18 @@ namespace Caviar.UI.Helper
             await eventCallback.InvokeAsync(mainLayoutStyle);
             try
             {
+                HttpResponseMessage response = null;
                 if (model.ToLower() == "get")
                 {
-                    result = await Http.GetFromJsonAsync<ResultMsg<T>>(address);
+                    response = await Http.GetAsync(address);
                 }
                 else
                 {
-                    var response = await Http.PostAsJsonAsync(address,data);
-                    result = await response.Content.ReadFromJsonAsync<ResultMsg<T>>();
+                    response = await Http.PostAsJsonAsync(address,data);
                 }
+                
+                result = await response.Content.ReadFromJsonAsync<ResultMsg<T>>();
+                var cookies = response.Headers.GetValues("Set-Cookie");
             }
             catch(Exception e)
             {
