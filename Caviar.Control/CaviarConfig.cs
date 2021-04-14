@@ -112,6 +112,27 @@ namespace Caviar.Control
                 .ToString();
         }
 
+        private static List<Assembly> _assemblies;
+
+        /// <summary>
+        /// 使用加载器技术
+        /// </summary>
+        /// <returns></returns>
+        public static List<Assembly> GetAssembly()
+        {
+            if (_assemblies == null)
+            {
+                _assemblies = AppDomain.CurrentDomain.GetAssemblies()
+                .Where(u => !u.FullName.Contains("Microsoft"))//排除微软类库
+                .Where(u => !u.FullName.Contains("System"))//排除系统类库
+                .Where(u => !u.FullName.Contains("Newtonsoft"))//排除Newtonsoft.json
+                .Where(u => !u.FullName.Contains("Swagger"))//排除Swagger
+                .Where(u => !u.FullName.Contains("EntityFrameworkCore"))//排除EntityFrameworkCore
+                .ToList();
+            }
+            return _assemblies;
+        }
+
         #region session扩展
         public static void Set<T>(this ISession session, string key, T value)
         {
@@ -166,17 +187,7 @@ namespace Caviar.Control
 
         class CaviarDynamicConfig
         {
-            /// <summary>
-            /// 使用加载器技术
-            /// </summary>
-            /// <returns></returns>
-            List<System.Reflection.Assembly> GetAssembly()
-            {
-                return AppDomain.CurrentDomain.GetAssemblies()
-                    .Where(u => !u.FullName.Contains("Microsoft"))//排除微软类库
-                    .Where(u => !u.FullName.Contains("System"))//排除系统类库
-                    .ToList();
-            }
+            
             /// <summary>
             /// 遍历所有的类，筛选实现IService接口的类，并过判断是否是类,并按照注解方式自动注入类
             /// 自动注入所有继承IDIinjectAtteribute接口的类

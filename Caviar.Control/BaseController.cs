@@ -13,6 +13,8 @@ using Renci.SshNet.Messages.Authentication;
 using System.Linq.Expressions;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Reflection;
+using System.ComponentModel;
 
 namespace Caviar.Control
 {
@@ -77,6 +79,32 @@ namespace Caviar.Control
             stopwatch.Stop();
             LoggerMsg<BaseController>(resultMsg.Title, IsSucc: resultMsg.Status == 200);
         }
+
+        [HttpGet]
+        public IActionResult GetModelName(string name)
+        {
+            if (string.IsNullOrEmpty(name)) return ResultError(400,"请输入需要获取的数据名称");
+            var assemblyList = CaviarConfig.GetAssembly();
+            Type type = null;
+            foreach (var item in assemblyList)
+            {
+                type = item.GetTypes().SingleOrDefault(u => u.Name.ToLower() == name.ToLower());
+                if (type != null) break;
+            }
+            List<ViewModelName> viewModelNames = new List<ViewModelName>();
+            if (type != null)
+            {
+                foreach (var item in type.GetRuntimeProperties())
+                {
+                    var typeName = item.PropertyType.Name;
+                    var dispLayName = item.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
+                    viewModelNames.Add(new ViewModelName() { TypeName = item.Name, ModelType = typeName,DispLayName=dispLayName });
+                    Console.WriteLine(typeName);
+                }
+            }
+            ResultMsg.Data = viewModelNames;
+            return ResultOK();
+        }
         #region 创建模型
         protected virtual T CreateModel<T>() where T : class, IBaseModel
         {
@@ -101,6 +129,7 @@ namespace Caviar.Control
         }
         #endregion
 
+        
 
         protected virtual IActionResult ResultForbidden()
         {

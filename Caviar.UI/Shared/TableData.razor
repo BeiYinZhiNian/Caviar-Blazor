@@ -1,0 +1,49 @@
+﻿@typeparam TData
+
+<Table DataSource="DataSource" TItem="TData" Style="background-color: #fff1f0;">
+    @if (ViewPowerMenus != null)
+    {
+        foreach (var item in ViewPowerMenus)
+        {
+            var typeNmae = item.ModelType.ToLower();
+            switch (typeNmae)
+            {
+                case "string":
+                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="string" />
+                    break;
+                case "int32":
+                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="int" />
+                    break;
+                case "boolean":
+                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="bool">
+                        
+                    </Column>
+                    break;
+                case "guid":
+                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="Guid" />
+                    break;
+                case "datetime":
+                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="DateTime" />
+                    break;
+                case "double":
+                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="double">
+                    </Column>
+                    break;
+                case "float":
+                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="float" />
+                    break;
+                case "short":
+                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="short" />
+                    break;
+                case "byte":
+                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="byte" />
+                    break;
+                default:
+                    break;
+            }
+
+        }
+    }
+</Table>
+
+

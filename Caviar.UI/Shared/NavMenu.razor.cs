@@ -97,9 +97,5 @@ namespace Caviar.UI.Shared
 
     }
 
-    public class ViewPowerMenu:SysPowerMenu
-    {
-        public List<ViewPowerMenu> SonMenu { get; set; } = new List<ViewPowerMenu>();
-    }
 
 }

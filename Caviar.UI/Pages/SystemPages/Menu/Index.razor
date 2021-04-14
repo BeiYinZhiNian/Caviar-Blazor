@@ -1,11 +1,19 @@
 ﻿@page "/Menu/index"
+@using Caviar.UI.Helper;
+
+<TableData TData="SysPowerMenu" DataSource="DataSource"></TableData>
 
 
-@*<Table DataSource="_data" TreeChildren="item=>item.Children">
-    <Column Title="Name" DataIndex="name" TData="string" />
-</Table>*@
+@code{   
 
+    [Inject]
+    HttpHelper Http { get; set; }
 
-@code {
+    public List<SysPowerMenu> DataSource { get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+        var powerList = await Http.GetJson<List<SysPowerMenu>>("Menu/GetLeftSideMenus");
+        DataSource = powerList.Data;
+    }
 }

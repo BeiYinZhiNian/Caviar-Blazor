@@ -33,5 +33,36 @@ namespace Caviar.Models.SystemData
         {
             return Regex.IsMatch(number, @"^[1][3-9]\\d{9}");
         }
+
+
+        public static string GetRightText(this string text, string contrastText, int index = 0,bool IsLastIndex = false)
+        {
+            if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(contrastText)) return "";
+            if (IsLastIndex)
+            {
+                index = text.LastIndexOf(contrastText, index);
+            }
+            else
+            {
+                index = text.IndexOf(contrastText, index);
+            }
+            if (index == -1) return "";
+            return text.Substring(index + contrastText.Length, text.Length - index - contrastText.Length);
+        }
+
+        public static string GetLeftText(this string text, string contrastText, int index = 0, bool IsLastIndex = false)
+        {
+            if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(contrastText)) return "";
+            if (IsLastIndex)
+            {
+                index = text.LastIndexOf(contrastText, index);
+            }
+            else
+            {
+                index = text.IndexOf(contrastText, index);
+            }
+            if (index == -1) return "";
+            return text.Substring(0, index);
+        }
     }
 }

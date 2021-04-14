@@ -291,14 +291,23 @@ namespace Caviar.Control
                 };
                 await AddEntityAsync(homePage);
                 //创建基础菜单
-                SysPowerMenu sysPowerMenu = new SysPowerMenu()
+                SysPowerMenu management = new SysPowerMenu()
                 {
                     MenuType = MenuType.Catalog,
                     TargetType = TargetType.CurrentPage,
                     MenuName = "系统管理",
 
                 };
-                await AddEntityAsync(sysPowerMenu);
+                await AddEntityAsync(management);
+                SysPowerMenu menuManage = new SysPowerMenu()
+                {
+                    MenuType = MenuType.Menu,
+                    TargetType = TargetType.CurrentPage,
+                    MenuName = "首页",
+                    Url = "/",
+                    UpLayerId = management.Id,
+                };
+                await AddEntityAsync(menuManage);
             }
             return IsExistence;
         }
