@@ -48,5 +48,10 @@ namespace Caviar.Models.SystemData
         /// 是否禁用
         /// </summary>
         public bool IsDisable { get; set; }
+        /// <summary>
+        /// 用来获取控制器里一些操作
+        /// </summary>
+        [NotMapped]
+        public IBaseControllerModel BaseControllerModel { get; set; }
     }
 }

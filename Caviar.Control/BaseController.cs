@@ -15,6 +15,9 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Reflection;
 using System.ComponentModel;
+using System.IO;
+using System.Text;
+using Caviar.Models;
 
 namespace Caviar.Control
 {
@@ -29,7 +32,7 @@ namespace Caviar.Control
             {
                 if (_controllerModel == null)
                 {
-                    _controllerModel = CaviarConfig.ApplicationServices.GetRequiredService<BaseControllerModel>();
+                    _controllerModel = HttpContext.RequestServices.GetService<BaseControllerModel>();
                 }
                 return _controllerModel;
             }
@@ -46,12 +49,21 @@ namespace Caviar.Control
             ControllerModel.Current_AbsoluteUri = context.HttpContext.Request.GetAbsoluteUri();
             //获取请求路径
             ControllerModel.Current_Action = context.HttpContext.Request.Path.Value;
-            ControllerModel.SysUserInfo = HttpContext.Session.Get<SysUserInfo>(CaviarConfig.SessionUserInfoName);
-            if (ControllerModel.SysUserInfo == null)
+            //请求上下文
+            ControllerModel.HttpContext = HttpContext;
+
+            if (context.ActionArguments.Count > 0)
             {
-                ControllerModel.SysUserInfo = CaviarConfig.ApplicationServices.GetRequiredService<SysUserInfo>();
-                HttpContext.Session.Set(CaviarConfig.SessionUserInfoName, ControllerModel.SysUserInfo);
+                var assemblyList = CaviarConfig.GetAssembly();
+                foreach (var ArgumentsItem in context.ActionArguments)
+                {
+                    if(ArgumentsItem.Value is IBaseModel)
+                    {
+                        ((IBaseModel)ArgumentsItem.Value).BaseControllerModel = ControllerModel;
+                    }
+                }
             }
+
             var IsVerification = ActionVerification();
             if (!IsVerification)
             {
@@ -101,7 +113,8 @@ namespace Caviar.Control
         #region 创建模型
         protected virtual T CreateModel<T>() where T : class, IBaseModel
         {
-            var entity = CaviarConfig.ApplicationServices.GetRequiredService<T>();
+            var entity = ControllerModel.HttpContext.RequestServices.GetRequiredService<T>();
+            entity.BaseControllerModel = ControllerModel;
             return entity;
         }
 
@@ -133,11 +146,7 @@ namespace Caviar.Control
         protected virtual bool ActionVerification()
         {
             if (CaviarConfig.IsDebug) return true;
-            var menu = ControllerModel.SysUserInfo.SysPowerMenus.Where(u => u.Url == ControllerModel.Current_Action).FirstOrDefault();
-            if (menu == null)
-            {
-                return false;
-            }
+
             return true;
         }
 
@@ -157,7 +166,7 @@ namespace Caviar.Control
             {
                 if (_resultMsg == null)
                 {
-                    _resultMsg = CaviarConfig.ApplicationServices.GetRequiredService<ResultMsg>();
+                    _resultMsg = HttpContext.RequestServices.GetRequiredService<ResultMsg>();
                 }
                 return _resultMsg;
             }

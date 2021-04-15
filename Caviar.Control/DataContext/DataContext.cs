@@ -65,7 +65,6 @@ namespace Caviar.Control
                 }
                 
             }
-            CaviarConfig.SqlConfig.Connections = "";
         }
 
     }

@@ -10,14 +10,9 @@ namespace Caviar.Control
 {
     public partial class SysPowerMenuAction : SysPowerMenu
     {
-        IBaseControllerModel _controllerModel;
-        public SysPowerMenuAction()
-        {
-            _controllerModel = this.GetControllerModel();
-        }
         public virtual List<SysPowerMenu> GetLeftSideMenus()
         {
-            var menuList = _controllerModel.DataContext.GetEntityAsync<SysPowerMenu>(u => u.MenuType == MenuType.Menu || u.MenuType == MenuType.Catalog);
+            var menuList = BaseControllerModel.DataContext.GetEntityAsync<SysPowerMenu>(u => u.MenuType == MenuType.Menu || u.MenuType == MenuType.Catalog);
             return menuList.ToList();
         }
     }

@@ -8,19 +8,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.Control
+namespace Caviar.Models
 {
-    public interface IBaseControllerModel
+    [DIInject(InjectType.SCOPED)]
+    public class BaseControllerModel : IBaseControllerModel
     {
-        //public HttpContext HttpContext { get; set; }
         /// <summary>
         /// 数据上下文
         /// </summary>
-        public IDataContext DataContext { get; }
+        public IDataContext DataContext => HttpContext.RequestServices.GetRequiredService<IDataContext>();
         /// <summary>
-        /// 日志记录
+        /// 获取日志记录
         /// </summary>
-        public ILogger<T> GetLogger<T>();
+        public ILogger<T> GetLogger<T>() => HttpContext.RequestServices.GetRequiredService<ILogger<T>>();
         /// <summary>
         /// 当前请求路径
         /// </summary>
@@ -34,17 +34,14 @@ namespace Caviar.Control
         /// </summary>
         public string Current_AbsoluteUri { get; set; }
 
-        /// <summary>
-        /// 当前用户信息
-        /// </summary>
-        public SysUserInfo SysUserInfo { get; set; }
+        public HttpContext HttpContext { get; set; }
 
-        public string UserName => SysUserInfo.SysUserLogin.UserName;
+        public string UserName { get; set; } = "未登录用户";
 
-        public int Id => SysUserInfo.SysUserLogin.Id;
+        public int Id { get; set; }
 
-        public bool IsLogin => SysUserInfo.IsLogin;
+        public bool IsLogin { get; set; } = false;
 
-        public string PhoneNumber => SysUserInfo.SysUserLogin.PhoneNumber;
+        public string PhoneNumber { get; set; }
     }
 }

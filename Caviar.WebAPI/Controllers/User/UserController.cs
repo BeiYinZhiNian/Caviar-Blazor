@@ -11,7 +11,7 @@ namespace Caviar.WebAPI.Controllers
         public IActionResult Login(SysUserLoginAction userLogin)
         {
             var msg = userLogin.Login();
-            if (ControllerModel.SysUserInfo.IsLogin)
+            if (ControllerModel.IsLogin)
             {
                 return ResultOK(msg);
             }

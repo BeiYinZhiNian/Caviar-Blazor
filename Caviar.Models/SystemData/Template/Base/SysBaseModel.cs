@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,5 +67,7 @@ namespace Caviar.Models.SystemData
         [DisplayName("编号")]
         [StringLength(50, ErrorMessage = "备注请不要超过{1}个字符")]
         public string Number { get; set; }
+        [NotMapped]
+        public IBaseControllerModel BaseControllerModel { get; set; }
     }
 }

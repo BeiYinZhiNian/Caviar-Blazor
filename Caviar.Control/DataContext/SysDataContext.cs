@@ -15,8 +15,10 @@ namespace Caviar.Control
     public partial class SysDataContext : IDataContext
     {
 
-        public SysDataContext()
+        public SysDataContext(DataContext dataContext,BaseControllerModel baseControllerModel)
         {
+            _dataContext = dataContext;
+            _baseControllerModel = baseControllerModel;
             if (IsDataInit)//判断数据库是否初始化
             {
                 IsDataInit = DataInit().Result;
@@ -24,20 +26,9 @@ namespace Caviar.Control
         }
         DataContext _dataContext;
 
-        private DataContext Base_DataContext
-        {
-            get
-            {
-                if (_dataContext == null)
-                {
-                    _dataContext = CaviarConfig.ApplicationServices.GetRequiredService<DataContext>();
-                }
-                return _dataContext;
-            }
-            set { _dataContext = value; }
-        }
+        private DataContext Base_DataContext => _dataContext;
 
-        public SysUserInfo SysUserInfo { get; set; }
+        IBaseControllerModel _baseControllerModel;
 
         /// <summary>
         /// 添加实体
@@ -90,7 +81,7 @@ namespace Caviar.Control
                     if (baseEntity != null)
                     {
                         baseEntity.UpdateTime = DateTime.Now;
-                        baseEntity.OperatorUp = SysUserInfo?.SysUserLogin?.UserName;
+                        baseEntity.OperatorUp = _baseControllerModel.UserName;
                     }
                 });
             Base_DataContext.ChangeTracker
@@ -104,7 +95,7 @@ namespace Caviar.Control
                     if (baseEntity != null)
                     {
                         baseEntity.CreatTime = DateTime.Now;
-                        baseEntity.OperatorCare = SysUserInfo?.SysUserLogin?.UserName;
+                        baseEntity.OperatorCare = _baseControllerModel.UserName;
                     }
                 });
             return await Base_DataContext.SaveChangesAsync();

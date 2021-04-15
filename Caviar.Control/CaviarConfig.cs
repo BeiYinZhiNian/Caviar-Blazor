@@ -32,7 +32,7 @@ namespace Caviar.Control
             services.AddDbContext<DataContext>();
             services.AddDistributedMemoryCache();
             services.AddSession();
-            services.AddScoped<SysDataContext>();
+            services.AddScoped<IDataContext, SysDataContext>();
 
             Configuration = configuration;
 
@@ -152,15 +152,7 @@ namespace Caviar.Control
         #endregion
 
         #region IBaseModelExtend扩展
-        /// <summary>
-        /// 获取控制器下的model实例进行控制器交互
-        /// </summary>
-        /// <returns></returns>
-        public static IBaseControllerModel GetControllerModel<T>(this T example) where T : IBaseModel
-        {
-            var controllerModel = ApplicationServices.GetRequiredService<BaseControllerModel>();
-            return controllerModel;
-        }
+
 
         /// <summary>
         /// 自动分配当前属性值
@@ -175,6 +167,7 @@ namespace Caviar.Control
             {
                 foreach (PropertyInfo dp in exampleType.GetProperties())
                 {
+                    if (dp.Name.ToLower() == "BaseControllerModel".ToLower()) continue;
                     if (dp.Name == sp.Name)//判断属性名是否相同
                     {
                         dp.SetValue(example, sp.GetValue(target, null), null);//获得s对象属性的值复制给d对象的属性
