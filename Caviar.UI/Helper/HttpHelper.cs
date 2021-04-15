@@ -13,10 +13,12 @@ namespace Caviar.UI.Helper
     public partial class HttpHelper
     {
         NotificationService _notificationService;
-        public HttpHelper(HttpClient http, NotificationService _notice)
+        UserState _userState;
+        public HttpHelper(HttpClient http, NotificationService _notice, UserState userState)
         {
             Http = http;
             _notificationService = _notice;
+            _userState = userState;
         }
         public HttpClient Http { get; }
         public async Task<ResultMsg<T>> GetJson<T>(string address, EventCallback eventCallback = default)

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Caviar.Models
 {
     [DIInject(InjectType.SCOPED)]
-    public class BaseControllerModel : IBaseControllerModel
+    public partial class BaseControllerModel : IBaseControllerModel
     {
         /// <summary>
         /// 数据上下文

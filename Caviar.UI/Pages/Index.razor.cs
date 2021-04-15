@@ -16,10 +16,13 @@ namespace Caviar.UI.Pages
 
         [Inject]
         HttpHelper Http { get; set; }
+        [Inject]
+        UserState UserState { get; set; }
         public async Task Test()
         {
-            
 
+            UserState.Id += 1;
+            Console.WriteLine(UserState.Id);
 
         }
     }

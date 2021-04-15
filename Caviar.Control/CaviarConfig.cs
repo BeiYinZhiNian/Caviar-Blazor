@@ -30,8 +30,6 @@ namespace Caviar.Control
         {
             SqlConfig = sqlConfig;
             services.AddDbContext<DataContext>();
-            services.AddDistributedMemoryCache();
-            services.AddSession();
             services.AddScoped<IDataContext, SysDataContext>();
 
             Configuration = configuration;
@@ -77,7 +75,6 @@ namespace Caviar.Control
         public static IApplicationBuilder UserCaviar(this IApplicationBuilder app)
         {
             ApplicationServices = app.ApplicationServices;
-            app.UseSession();
             return app;
         }
 
@@ -132,24 +129,6 @@ namespace Caviar.Control
             }
             return _assemblies;
         }
-
-        #region session扩展
-        public static void Set<T>(this ISession session, string key, T value)
-        {
-            var setting = new JsonSerializerSettings();
-            setting.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
-            setting.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
-            var json = JsonConvert.SerializeObject(value, setting);
-            session.SetString(key, json);
-        }
-
-        public static T Get<T>(this ISession session, string key)
-        {
-            var value = session.GetString(key);
-            var setting = new JsonSerializerSettings();
-            return value == null ? default : JsonConvert.DeserializeObject<T>(value);
-        }
-        #endregion
 
         #region IBaseModelExtend扩展
 

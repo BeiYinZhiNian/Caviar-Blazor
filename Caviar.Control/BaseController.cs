@@ -54,7 +54,6 @@ namespace Caviar.Control
 
             if (context.ActionArguments.Count > 0)
             {
-                var assemblyList = CaviarConfig.GetAssembly();
                 foreach (var ArgumentsItem in context.ActionArguments)
                 {
                     if(ArgumentsItem.Value is IBaseModel)

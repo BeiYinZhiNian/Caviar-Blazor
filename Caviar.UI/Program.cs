@@ -28,6 +28,7 @@ namespace Caviar
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(ServerUrl) });
             builder.Services.AddScoped(typeof(HttpHelper));
             builder.Services.AddAntDesign();
+            builder.Services.AddSingleton<UserState>();
         }
     }
 }
