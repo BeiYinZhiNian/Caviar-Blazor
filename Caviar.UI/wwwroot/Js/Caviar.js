@@ -6,7 +6,7 @@ value:cookie 值
 function setCookie(name, value, Days) {
 	var exp = new Date();
 	exp.setTime(exp.getTime() + Days * 60 * 1000);//60*1000=1分钟
-	document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
+	document.cookie = name + "=" + escape(value) + ";path=/;expires=" + exp.toGMTString();
 }
 
 ///删除cookie
@@ -14,7 +14,7 @@ function delCookie(name) {
 	var exp = new Date();
 	exp.setTime(exp.getTime() - 1);
 	var cval = getCookie(name);
-	if (cval != null) document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+	if (cval != null) document.cookie = name + "=" + cval + ";path=/;expires=" + exp.toGMTString();
 }
 
 // 获取指定名称的cookie
