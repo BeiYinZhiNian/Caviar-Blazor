@@ -12,16 +12,23 @@ namespace Caviar.UI.Shared
     {
         [Parameter]
         public List<TData> DataSource { get; set; }
+        [Parameter]
+        public string ModelName { get; set; }
+        [Parameter]
+        public Func<TData, IEnumerable<TData>> TreeChildren { get; set; } = _ => Enumerable.Empty<TData>();
 
         [Inject]
         HttpHelper Http { get; set; }
 
-        List<ViewModelName> ViewPowerMenus { get; set; }
+        List<ViewModelName> ViewModelName { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            var modelNameList = await Http.GetJson<List<ViewModelName>>("Base/GetModelName?name=SyspowerMenu");
-            ViewPowerMenus = modelNameList.Data;
+            var modelNameList = await Http.GetJson<List<ViewModelName>>("Base/GetModelName?name=" + ModelName);
+            if (modelNameList.Status == 200)
+            {
+                ViewModelName = modelNameList.Data;
+            }
         }
     }
 }

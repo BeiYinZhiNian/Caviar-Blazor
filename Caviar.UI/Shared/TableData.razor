@@ -1,9 +1,11 @@
 ﻿@typeparam TData
-
-<Table DataSource="DataSource" TItem="TData" Style="background-color: #fff1f0;">
-    @if (ViewPowerMenus != null)
+<Button Type="primary" Style="margin-bottom:16px">
+    新增
+</Button>
+<Table DataSource="DataSource" TItem="TData" TreeChildren="TreeChildren">
+    @if (ViewModelName != null)
     {
-        foreach (var item in ViewPowerMenus)
+        foreach (var item in ViewModelName)
         {
             var typeNmae = item.ModelType.ToLower();
             switch (typeNmae)
@@ -16,6 +18,22 @@
                     break;
                 case "boolean":
                     <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="bool">
+                        @{
+                            var obj = context.GetObjValue(item.TypeName);
+                            if (obj != null)
+                            {
+                                var value = (bool)obj;
+                        if (value)
+                        {
+                                    <Tag Color="green">是</Tag>
+                        }
+                        else
+                        {
+                                    <Tag Color="pink">否</Tag>
+                        }
+                                
+                            }
+                        }
                         
                     </Column>
                     break;

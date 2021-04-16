@@ -32,7 +32,7 @@
                 case MenuType.Catalog:
                      ViewSubMenu +=
                      @<SubMenu Key="@item.MenuName" TitleTemplate="subTitle">
-                     @GetSubMenu(item.SonMenu)
+                     @GetSubMenu(item.Children)
                      </SubMenu>;
                      break;
                 case MenuType.Menu:

@@ -89,7 +89,7 @@ namespace Caviar.UI.Shared
                 }
                 else
                 {
-                    result.Data.SingleOrDefault(u => u.Id == item.UpLayerId)?.SonMenu.Add(item);
+                    result.Data.SingleOrDefault(u => u.Id == item.UpLayerId)?.Children.Add(item);
                 }
             }
             return viewPowerMenus;

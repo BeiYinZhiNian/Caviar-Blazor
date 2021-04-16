@@ -88,5 +88,24 @@ namespace Caviar.Models.SystemData
                 }
             }
         }
+        /// <summary>
+        /// 获取泛型某一属性值
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="example"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static object? GetObjValue<T>(this T example,string name)
+        {
+            var exampleType = example.GetType();//获得类型
+            foreach (PropertyInfo sp in exampleType.GetProperties())//获得类型的属性字段
+            {
+                if (sp.Name.ToLower() == name.ToLower())
+                {
+                    return sp.GetValue(example, null);
+                }
+            }
+            return null;
+        }
     }
 }

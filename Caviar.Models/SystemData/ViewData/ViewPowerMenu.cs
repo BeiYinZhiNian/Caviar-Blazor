@@ -8,6 +8,6 @@ namespace Caviar.Models.SystemData
 {
     public partial class ViewPowerMenu : SysPowerMenu
     {
-        public List<ViewPowerMenu> SonMenu { get; set; } = new List<ViewPowerMenu>();
+        public List<ViewPowerMenu> Children { get; set; } = new List<ViewPowerMenu>();
     }
 }

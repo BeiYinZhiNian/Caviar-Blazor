@@ -18,14 +18,12 @@ namespace Caviar.UI.Helper
     public partial class HttpHelper
     {
         NotificationService _notificationService;
-        UserToken _userToken;
         NavigationManager _navigationManager;
         MessageService _message;
         public HttpHelper(HttpClient http, NotificationService _notice, UserToken userToken, NavigationManager navigationManager, MessageService message)
         {
             Http = http;
             _notificationService = _notice;
-            _userToken = userToken;
             _navigationManager = navigationManager;
             _message = message;
             var tokenName = "UsreToken";
