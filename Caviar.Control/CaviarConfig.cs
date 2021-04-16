@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Caviar.Control
 {
@@ -32,7 +33,7 @@ namespace Caviar.Control
             SqlConfig = sqlConfig;
             services.AddDbContext<DataContext>();
             services.AddScoped<IDataContext, SysDataContext>();
-
+            services.AddSingleton<IMemoryCache, MemoryCache>();
             Configuration = configuration;
 
             var caviarDynamicConfig = new CaviarDynamicConfig();

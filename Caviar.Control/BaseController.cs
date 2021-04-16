@@ -19,6 +19,7 @@ using System.IO;
 using System.Text;
 using Caviar.Models;
 using Microsoft.Extensions.Primitives;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Caviar.Control
 {
@@ -38,6 +39,9 @@ namespace Caviar.Control
                 return _controllerModel;
             }
         }
+        
+
+
         Stopwatch stopwatch = new Stopwatch();
 
         public override void OnActionExecuting(ActionExecutingContext context)

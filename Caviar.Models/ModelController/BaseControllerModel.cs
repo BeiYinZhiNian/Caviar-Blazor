@@ -1,5 +1,6 @@
 ﻿using Caviar.Models.SystemData;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -21,6 +22,9 @@ namespace Caviar.Models
         /// 获取日志记录
         /// </summary>
         public ILogger<T> GetLogger<T>() => HttpContext.RequestServices.GetRequiredService<ILogger<T>>();
+
+        public IMemoryCache Cache => HttpContext.RequestServices.GetRequiredService<IMemoryCache>();
+
         /// <summary>
         /// 当前请求路径
         /// </summary>

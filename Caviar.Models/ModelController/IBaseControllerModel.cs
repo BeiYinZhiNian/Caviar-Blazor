@@ -1,5 +1,6 @@
 ﻿using Caviar.Models.SystemData;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -43,5 +44,7 @@ namespace Caviar.Models
         public string PhoneNumber { get; set; }
 
         public UserToken UserToken { get; set; }
+
+        public IMemoryCache Cache { get; }
     }
 }
