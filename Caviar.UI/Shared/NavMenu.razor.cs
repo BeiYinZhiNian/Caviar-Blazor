@@ -79,6 +79,7 @@ namespace Caviar.UI.Shared
         {
             var result = await Http.GetJson<List<ViewPowerMenu>>("Menu/GetLeftSideMenus");
             var viewPowerMenus = new List<ViewPowerMenu>();
+            if (result.Status != 200) return viewPowerMenus;
             result.Data.OrderBy(u => u.Id);
             foreach (var item in result.Data)
             {

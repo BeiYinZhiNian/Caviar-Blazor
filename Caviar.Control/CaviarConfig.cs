@@ -23,10 +23,13 @@ namespace Caviar.Control
 
         public static Guid NoLoginRoleGuid { get; private set; }
         public static Guid SysAdminRoleGuid { get; private set; }
-        static Guid TokenKey;
+        public static int TokenDuration { get; private set; }
+        
         public static string SessionUserInfoName { get; private set; } = "SysUserInfo";
 
         public static bool IsDebug { get; set; }
+
+        static Guid TokenKey;
 
         public static IServiceCollection AddCaviar(this IServiceCollection services, SqlConfig sqlConfig, IConfiguration configuration)
         {
@@ -58,7 +61,8 @@ namespace Caviar.Control
             var guid = json["Caviar"]["Role"]["NoLoginRole"].ToString();
             NoLoginRoleGuid = Guid.Parse(guid);
             SysAdminRoleGuid = Guid.Parse(json["Caviar"]["Role"]["SysAdminRole"].ToString());
-            TokenKey = Guid.Parse(json["Caviar"]["TokenKey"].ToString());
+            TokenKey = Guid.Parse(json["Caviar"]["Token"]["Key"].ToString());
+            TokenDuration = int.Parse(json["Caviar"]["Token"]["Duration"].ToString());
             var paseJson = json.ToString();
             File.WriteAllText(appsettingPath, paseJson);
         }
@@ -70,7 +74,10 @@ namespace Caviar.Control
             if (json["Caviar"]["Role"] == null) json["Caviar"]["Role"] = new JObject();
             if (json["Caviar"]["Role"]["NoLoginRole"] == null) json["Caviar"]["Role"]["NoLoginRole"] = Guid.NewGuid();
             if (json["Caviar"]["Role"]["SysAdminRole"] == null) json["Caviar"]["Role"]["SysAdminRole"] = Guid.NewGuid();
-            if (json["Caviar"]["TokenKey"] == null) json["Caviar"]["TokenKey"] = Guid.NewGuid();
+            if (json["Caviar"]["Token"] == null) json["Caviar"]["Token"] = new JObject();
+            if (json["Caviar"]["Token"]["Duration"] == null) json["Caviar"]["Token"]["Duration"] = 60 * 2;
+            if (json["Caviar"]["Token"]["Key"] == null) json["Caviar"]["Token"]["Key"] = Guid.NewGuid();
+
         }
 
 

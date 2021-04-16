@@ -63,10 +63,24 @@ namespace Caviar.Control
                 string json = Encoding.UTF8.GetString(Convert.FromBase64String(base64));
                 UserToken userToken = JsonConvert.DeserializeObject<UserToken>(json);
                 var token = CaviarConfig.GetUserToken(userToken);
-                if (token == userToken.Token)
+                if (token != userToken.Token)
                 {
-                    ControllerModel.UserToken = userToken;
+                    context.Result = ResultUnauthorized("您的登录已过期，请重新登录");
+                    return;
                 }
+                var outTime = (userToken.CreateTime.AddMinutes(CaviarConfig.TokenDuration) - DateTime.Now);
+                if (outTime.TotalSeconds <= 0)
+                {
+                    context.Result = ResultUnauthorized("您的登录已过期，请重新登录");
+                    return;
+                }
+                ControllerModel.UserToken = userToken;
+            }
+            var IsVerification = ActionVerification();
+            if (!IsVerification)
+            {
+                context.Result = ResultUnauthorized("对不起，您还没有获得改页面权限");
+                return;
             }
 
             if (context.ActionArguments.Count > 0)
@@ -79,14 +93,6 @@ namespace Caviar.Control
                     }
                 }
             }
-
-            var IsVerification = ActionVerification();
-            if (!IsVerification)
-            {
-                context.Result = ResultForbidden();
-                return;
-            }
-
         }
 
         public override void OnActionExecuted(ActionExecutedContext context)
@@ -151,12 +157,6 @@ namespace Caviar.Control
         }
         #endregion
 
-        
-
-        protected virtual IActionResult ResultForbidden()
-        {
-            return ResultError(403, "对不起，您没有该页面的访问权限！");
-        }
 
 
         protected virtual bool ActionVerification()
@@ -211,7 +211,7 @@ namespace Caviar.Control
             ResultMsg.Status = status;
             ResultMsg.Title = title;
             ResultMsg.Detail = detail;
-            return StatusCode(status, ResultMsg);
+            return Ok(ResultMsg);
         }
         protected virtual IActionResult ResultError(int status, string title, string detail, IDictionary<string, string[]> errors)
         {
@@ -219,19 +219,47 @@ namespace Caviar.Control
             ResultMsg.Title = title;
             ResultMsg.Detail = detail;
             ResultMsg.Errors = errors;
-            return StatusCode(status, ResultMsg);
+            return Ok(ResultMsg);
         }
 
         protected virtual IActionResult ResultError(int status, string title)
         {
             ResultMsg.Status = status;
             ResultMsg.Title = title;
-            return StatusCode(status, ResultMsg);
+            return Ok(ResultMsg);
         }
 
         protected virtual IActionResult ResultError(ResultMsg resultMsg)
         {
-            return StatusCode(resultMsg.Status, resultMsg);
+            return Ok(resultMsg);
+        }
+
+
+        /// <summary>
+        /// 返回此结果定位到403界面（无权限）
+        /// </summary>
+        /// <returns></returns>
+        protected virtual IActionResult ResultForbidden(string title)
+        {
+            return ResultError(403, title);
+        }
+        /// <summary>
+        /// 返回此结果定位到登录界面（登录失效）
+        /// </summary>
+        /// <param name="title"></param>
+        /// <returns></returns>
+        protected virtual IActionResult ResultUnauthorized(string title)
+        {
+            return ResultError(401, title);
+        }
+
+        protected virtual IActionResult ResultErrorMsg(string title, string detail)
+        {
+            return ResultError(406, title, detail);
+        }
+        protected virtual IActionResult ResultErrorMsg(string title)
+        {
+            return ResultError(406, title);
         }
         #endregion
 

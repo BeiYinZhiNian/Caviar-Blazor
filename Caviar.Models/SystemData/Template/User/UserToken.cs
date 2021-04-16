@@ -19,7 +19,7 @@ namespace Caviar.Models.SystemData
 
         public DateTime CreateTime { get; set; } = DateTime.Now;
 
-        public Guid Uid { get; set; }
+        public Guid Uid { get; set; } = Guid.NewGuid();
 
     }
 }

@@ -16,7 +16,7 @@ namespace Caviar.WebAPI.Controllers
                 ResultMsg.Data = ControllerModel.UserToken;
                 return ResultOK("登录成功，欢迎回来");
             }
-            return ResultError(403, loginMsg);
+            return ResultErrorMsg(loginMsg);
         }
 
         [HttpPost]
@@ -28,7 +28,7 @@ namespace Caviar.WebAPI.Controllers
             {
                 return ResultOK(msg);
             }
-            return ResultError(400, msg);
+            return ResultErrorMsg(msg);
         }
 
     }

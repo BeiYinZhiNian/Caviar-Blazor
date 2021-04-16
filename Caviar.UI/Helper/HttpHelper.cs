@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using System.Text;
+using System.Web;
 
 namespace Caviar.UI.Helper
 {
@@ -18,11 +19,15 @@ namespace Caviar.UI.Helper
     {
         NotificationService _notificationService;
         UserToken _userToken;
-        public HttpHelper(HttpClient http, NotificationService _notice, UserToken userToken)
+        NavigationManager _navigationManager;
+        MessageService _message;
+        public HttpHelper(HttpClient http, NotificationService _notice, UserToken userToken, NavigationManager navigationManager, MessageService message)
         {
             Http = http;
             _notificationService = _notice;
             _userToken = userToken;
+            _navigationManager = navigationManager;
+            _message = message;
             var tokenName = "UsreToken";
             Http.DefaultRequestHeaders.TryGetValues(tokenName, out IEnumerable<string>? values);
             if(Http.DefaultRequestHeaders.Contains(tokenName))
@@ -82,39 +87,65 @@ namespace Caviar.UI.Helper
             {
                 result = new ResultMsg<T>()
                 {
-                    Title = "请求失败，请检查网络",
-                    Type = address,
+                    Title = "请求失败，发生请求错误",
+                    Type = "http://www.baidu.com/s?wd=" + HttpUtility.UrlEncode(e.Message),
                     Detail = e.Message,
-                    Status = 400,
+                    Status = 500,
                 };
             }
             mainLayoutStyle.Loading = false;
             await eventCallback.InvokeAsync(mainLayoutStyle);
-            if (result.Status != 200)
+            switch (result.Status)
             {
-                string msg = "";
-                if (!string.IsNullOrEmpty(result.Detail))
-                {
-                    msg += "错误详细信息：" + result.Detail;
-                }
-                if (result.Errors!=null && result.Errors.Count!=0)
-                {
-                    msg += "错误提示：";
-                    foreach (var item in result.Errors)
+                case 200:
+                    break;
+                case 401:
+                    _navigationManager.NavigateTo("/User/Login");
+                    _message.Warn(result.Title);
+                    break;
+                case 403:
+                    _navigationManager.NavigateTo("/Exception/403");
+                    _message.Warn(result.Title);
+                    break;
+                case 404:
+                    _navigationManager.NavigateTo("/Exception/404");
+                    _message.Warn(result.Title);
+                    break;
+                case 400:
+                    _navigationManager.NavigateTo("/Exception/400");
+                    _message.Warn(result.Title);
+                    break;
+                default:
+                    string msg = "";
+                    if (!string.IsNullOrEmpty(result.Detail))
                     {
-                        msg += "<br>" + item.Key + ":" ;
-                        foreach (var value in item.Value)
+                        msg += "错误详细信息：" + result.Detail + "<br>";
+                    }
+                    if (result.Errors != null && result.Errors.Count != 0)
+                    {
+                        msg += "错误提示：";
+                        foreach (var item in result.Errors)
                         {
-                            msg +=  value + "<br>";
+                            msg += "<br>" + item.Key + ":";
+                            foreach (var value in item.Value)
+                            {
+                                msg += value + "<br>";
+                            }
                         }
                     }
-                }
-                _notificationService.Open(new NotificationConfig()
-                {
-                    Message = result.Title,
-                    Description = msg,
-                    NotificationType = NotificationType.Error
-                });
+                    if (!string.IsNullOrEmpty(result.Type))
+                    {
+                        msg += $"<a target='_Blank' href='{result.Type}'>点击查看解决办法</a><br>";
+                    }
+                    #pragma warning disable CS4014 // 由于此调用不会等待，因此在调用完成前将继续执行当前方法
+                    _notificationService.Open(new NotificationConfig()
+                    {
+                        Message = result.Title,
+                        Description = msg,
+                        NotificationType = NotificationType.Error
+                    });
+                    #pragma warning restore CS4014 // 由于此调用不会等待，因此在调用完成前将继续执行当前方法
+                    break;
             }
             return result;
         }

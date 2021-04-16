@@ -1,11 +1,11 @@
 ﻿@namespace AntDesign.Pro.Template.Pages.Exception
-@page "/exception/500"
+@page "/exception/400"
 @inject NavigationManager NavigationManager
 @layout EmptyLayout
 
-<Result Status="500"
-        Title="500"
-        SubTitle="抱歉，您访问的页面不存在。">
+<Result Status="400"
+        Title="400"
+        SubTitle="抱歉，该请求无效 。">
     <Extra>
         <Button Type="primary" OnClick="BackHome">回到首页</Button>
     </Extra>
