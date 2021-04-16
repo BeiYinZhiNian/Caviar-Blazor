@@ -33,6 +33,7 @@ namespace Caviar.Control
             BaseControllerModel.UserToken.AutoAssign(this);
             BaseControllerModel.UserToken.CreateTime = DateTime.Now;
             BaseControllerModel.UserToken.Token = CaviarConfig.GetUserToken(BaseControllerModel.UserToken);
+            BaseControllerModel.UserToken.Duration = CaviarConfig.TokenDuration;
             BaseControllerModel.IsLogin = true;
             return BaseControllerModel.UserToken.Token;
         }

@@ -14,6 +14,7 @@ namespace Caviar
 {
     public class Program
     {
+        public static string CookieName { get; set; } = "token";
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -27,7 +28,7 @@ namespace Caviar
             builder.RootComponents.Add<App>("#app");
             var ServerUrl = builder.Configuration["Caviar:ServerUrl"];
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(ServerUrl) });
-            builder.Services.AddTransient(typeof(HttpHelper));
+            builder.Services.AddScoped(typeof(HttpHelper));
             builder.Services.AddAntDesign();
             builder.Services.AddSingleton<UserToken>();
         }

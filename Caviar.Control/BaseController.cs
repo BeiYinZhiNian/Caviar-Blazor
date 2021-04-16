@@ -20,6 +20,7 @@ using System.Text;
 using Caviar.Models;
 using Microsoft.Extensions.Primitives;
 using Microsoft.Extensions.Caching.Memory;
+using System.Web;
 
 namespace Caviar.Control
 {
@@ -59,7 +60,8 @@ namespace Caviar.Control
 
             if (HttpContext.Request.Headers.TryGetValue("UsreToken", out StringValues value))
             {
-                string base64 = value[0];
+                string base64url = value[0];
+                string base64 = HttpUtility.UrlDecode(base64url);
                 string json = Encoding.UTF8.GetString(Convert.FromBase64String(base64));
                 UserToken userToken = JsonConvert.DeserializeObject<UserToken>(json);
                 var token = CaviarConfig.GetUserToken(userToken);

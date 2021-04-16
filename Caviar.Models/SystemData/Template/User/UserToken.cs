@@ -17,9 +17,19 @@ namespace Caviar.Models.SystemData
 
         public string Token { get; set; } = "";
 
+        /// <summary>
+        /// token使用时长
+        /// </summary>
+        public int Duration { get; set; }
+
         public DateTime CreateTime { get; set; } = DateTime.Now;
 
         public Guid Uid { get; set; } = Guid.NewGuid();
+
+        public bool IsLogin()
+        {
+            return Id > 0 && Token != "";
+        }
 
     }
 }

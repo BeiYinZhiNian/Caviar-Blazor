@@ -12,6 +12,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using System.Text;
 using System.Web;
+using Microsoft.JSInterop;
 
 namespace Caviar.UI.Helper
 {
@@ -20,24 +21,14 @@ namespace Caviar.UI.Helper
         NotificationService _notificationService;
         NavigationManager _navigationManager;
         MessageService _message;
-        public HttpHelper(HttpClient http, NotificationService _notice, UserToken userToken, NavigationManager navigationManager, MessageService message)
+        IJSRuntime _jSRuntime;
+        public HttpHelper(HttpClient http, NotificationService _notice,NavigationManager navigationManager, MessageService message,IJSRuntime JsRuntime)
         {
             Http = http;
             _notificationService = _notice;
             _navigationManager = navigationManager;
             _message = message;
-            var tokenName = "UsreToken";
-            Http.DefaultRequestHeaders.TryGetValues(tokenName, out IEnumerable<string>? values);
-            if(Http.DefaultRequestHeaders.Contains(tokenName))
-            {
-                Http.DefaultRequestHeaders.Remove(tokenName);
-            }
-            if (userToken.Token != "" && userToken.Id > 0)
-            {
-                var json = JsonConvert.SerializeObject(userToken);
-                var base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
-                Http.DefaultRequestHeaders.Add(tokenName, base64);
-            }
+            _jSRuntime = JsRuntime;
         }
         public HttpClient Http { get; }
         public async Task<ResultMsg<T>> GetJson<T>(string address, EventCallback eventCallback = default)
@@ -66,6 +57,19 @@ namespace Caviar.UI.Helper
 
         async Task<ResultMsg<T>> HttpRequest<K,T>(string address,string model, K data, EventCallback eventCallback)
         {
+
+            var tokenName = "UsreToken";
+            Http.DefaultRequestHeaders.TryGetValues(tokenName, out IEnumerable<string>? values);
+            if (Http.DefaultRequestHeaders.Contains(tokenName))
+            {
+                Http.DefaultRequestHeaders.Remove(tokenName);
+            }
+            var cookie = await _jSRuntime.InvokeAsync<string>("getCookie", Program.CookieName);
+            if (!string.IsNullOrEmpty(cookie))
+            {
+                Http.DefaultRequestHeaders.Add(tokenName, cookie);
+            }
+
             ResultMsg<T> result = default;
             var mainLayoutStyle = new MainLayoutStyle() { Loading = true };
             await eventCallback.InvokeAsync(mainLayoutStyle);

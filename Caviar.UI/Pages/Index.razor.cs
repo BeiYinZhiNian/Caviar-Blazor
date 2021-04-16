@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Caviar.Models.SystemData;
 using Caviar.UI.Helper;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace Caviar.UI.Pages
 {
@@ -17,9 +18,14 @@ namespace Caviar.UI.Pages
         [Inject]
         HttpHelper Http { get; set; }
 
+
+        [Inject]
+        IJSRuntime JsRuntime { get; set; }
+
         public async Task Test()
         {
-
+            var str = await JsRuntime.InvokeAsync<string>("getCookie",Program.CookieName);
+            Console.WriteLine(str);
         }
     }
 

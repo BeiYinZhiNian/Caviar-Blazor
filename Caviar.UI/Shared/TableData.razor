@@ -23,18 +23,16 @@
                             if (obj != null)
                             {
                                 var value = (bool)obj;
-                        if (value)
-                        {
+                                if (value)
+                                {
                                     <Tag Color="green">是</Tag>
-                        }
-                        else
-                        {
+                                }
+                                else
+                                {
                                     <Tag Color="pink">否</Tag>
-                        }
-                                
+                                }
                             }
                         }
-                        
                     </Column>
                     break;
                 case "guid":
@@ -55,6 +53,17 @@
                     break;
                 case "byte":
                     <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="byte" />
+                    break;
+                case "icon":
+                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="string">
+                        @{
+                            var obj = context.GetObjValue(item.TypeName);
+                            if (obj != null)
+                            {
+                                <Icon Type="@obj.ToString()" Theme="outline"/>
+                            }
+                        }
+                    </Column>
                     break;
                 default:
                     break;
