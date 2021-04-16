@@ -18,6 +18,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Text;
 using Caviar.Models;
+using Microsoft.Extensions.Primitives;
 
 namespace Caviar.Control
 {
@@ -51,6 +52,18 @@ namespace Caviar.Control
             ControllerModel.Current_Action = context.HttpContext.Request.Path.Value;
             //请求上下文
             ControllerModel.HttpContext = HttpContext;
+
+            if (HttpContext.Request.Headers.TryGetValue("UsreToken", out StringValues value))
+            {
+                string base64 = value[0];
+                string json = Encoding.UTF8.GetString(Convert.FromBase64String(base64));
+                UserToken userToken = JsonConvert.DeserializeObject<UserToken>(json);
+                var token = CaviarConfig.GetUserToken(userToken);
+                if (token == userToken.Token)
+                {
+                    ControllerModel.UserToken = userToken;
+                }
+            }
 
             if (context.ActionArguments.Count > 0)
             {

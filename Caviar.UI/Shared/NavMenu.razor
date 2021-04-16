@@ -7,13 +7,8 @@
       OnMenuItemClicked="OnMenuItemClickedNav">
     @if (SysPowerMenus != null)
     {
-        Console.WriteLine("构建菜单：");
         var menu = GetSubMenu(SysPowerMenus);
         @menu
-    }
-    else
-    {
-        Console.WriteLine("等待数据：");
     }
 </Menu>
 

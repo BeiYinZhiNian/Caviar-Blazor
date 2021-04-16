@@ -10,12 +10,13 @@ namespace Caviar.WebAPI.Controllers
         [HttpPost]
         public IActionResult Login(SysUserLoginAction userLogin)
         {
-            var msg = userLogin.Login();
+            var loginMsg = userLogin.Login();
             if (ControllerModel.IsLogin)
             {
-                return ResultOK(msg);
+                ResultMsg.Data = ControllerModel.UserToken;
+                return ResultOK("登录成功，欢迎回来");
             }
-            return ResultError(403, msg);
+            return ResultError(403, loginMsg);
         }
 
         [HttpPost]

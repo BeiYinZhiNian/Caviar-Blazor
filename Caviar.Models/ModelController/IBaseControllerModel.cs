@@ -34,12 +34,14 @@ namespace Caviar.Models
         /// </summary>
         public string Current_AbsoluteUri { get; set; }
 
-        public string UserName { get; set; }
+        public string UserName { get; }
 
-        public int Id { get; set; }
+        public int Id { get; }
 
         public bool IsLogin { get; set; }
 
         public string PhoneNumber { get; set; }
+
+        public UserToken UserToken { get; set; }
     }
 }

@@ -26,16 +26,20 @@ namespace Caviar.UI.Pages.SystemPages.User
         public EventCallback LayoutStyleCallBack { get; set; }
         [Inject]
         HttpHelper http { get; set; }
+        [Inject]
+        UserToken UserToken { get; set; }
         public async void SubmitLogin()
         {
             Loading = true;
             SysLoginUserData.Password = CommonHelper.SHA256EncryptString(SysLoginUserData.Password);
-            var result = await http.PostJson("User/Login", SysLoginUserData);
+            var result = await http.PostJson<SysUserLogin,UserToken>("User/Login", SysLoginUserData);
             SysLoginUserData.Password = "";
             Loading = false;
             if (result.Status==200)
             {
+                UserToken.AutoAssign(result.Data);
                 NavigationManager.NavigateTo("/");
+                _message.Success(result.Title);
                 return;
             }
             this.StateHasChanged();

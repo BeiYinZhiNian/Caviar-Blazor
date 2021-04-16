@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -63,6 +64,29 @@ namespace Caviar.Models.SystemData
             }
             if (index == -1) return "";
             return text.Substring(0, index);
+        }
+
+
+        /// <summary>
+        /// 自动分配当前属性值
+        /// </summary>
+        /// <param name="target">拷贝目标</param>
+        /// <returns></returns>
+        public static void AutoAssign<T, K>(this T example, K target)
+        {
+            var targetType = target.GetType();//获得类型
+            var exampleType = typeof(T);
+            foreach (PropertyInfo sp in targetType.GetProperties())//获得类型的属性字段
+            {
+                foreach (PropertyInfo dp in exampleType.GetProperties())
+                {
+                    if (dp.Name.ToLower() == "BaseControllerModel".ToLower()) continue;
+                    if (dp.Name == sp.Name)//判断属性名是否相同
+                    {
+                        dp.SetValue(example, sp.GetValue(target, null), null);//获得s对象属性的值复制给d对象的属性
+                    }
+                }
+            }
         }
     }
 }

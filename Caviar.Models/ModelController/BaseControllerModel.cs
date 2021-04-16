@@ -36,12 +36,14 @@ namespace Caviar.Models
 
         public HttpContext HttpContext { get; set; }
 
-        public string UserName { get; set; } = "未登录用户";
+        public string UserName => UserToken.UserName;
 
-        public int Id { get; set; }
+        public int Id => UserToken.Id;
 
         public bool IsLogin { get; set; } = false;
 
         public string PhoneNumber { get; set; }
+
+        public UserToken UserToken { get; set; } = new UserToken();
     }
 }

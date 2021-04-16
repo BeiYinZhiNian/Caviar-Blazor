@@ -8,6 +8,7 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Caviar.UI.Helper;
+using Caviar.Models.SystemData;
 
 namespace Caviar
 {
@@ -26,9 +27,9 @@ namespace Caviar
             builder.RootComponents.Add<App>("#app");
             var ServerUrl = builder.Configuration["Caviar:ServerUrl"];
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(ServerUrl) });
-            builder.Services.AddScoped(typeof(HttpHelper));
+            builder.Services.AddTransient(typeof(HttpHelper));
             builder.Services.AddAntDesign();
-            builder.Services.AddSingleton<UserState>();
+            builder.Services.AddSingleton<UserToken>();
         }
     }
 }

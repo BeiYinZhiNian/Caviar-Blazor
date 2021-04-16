@@ -16,13 +16,14 @@ namespace Caviar.Control
 {
     public static class CaviarConfig
     {
-        public static SqlConfig SqlConfig { get; set; }
+        public static SqlConfig SqlConfig { get; private set; }
 
-        public static IConfiguration Configuration { get; set; }
+        public static IConfiguration Configuration { get; private set; }
 
-        public static Guid NoLoginRoleGuid { get; set; }
-        public static Guid SysAdminRoleGuid { get; set; }
-        public static string SessionUserInfoName { get; set; } = "SysUserInfo";
+        public static Guid NoLoginRoleGuid { get; private set; }
+        public static Guid SysAdminRoleGuid { get; private set; }
+        static Guid TokenKey;
+        public static string SessionUserInfoName { get; private set; } = "SysUserInfo";
 
         public static bool IsDebug { get; set; }
 
@@ -56,6 +57,7 @@ namespace Caviar.Control
             var guid = json["Caviar"]["Role"]["NoLoginRole"].ToString();
             NoLoginRoleGuid = Guid.Parse(guid);
             SysAdminRoleGuid = Guid.Parse(json["Caviar"]["Role"]["SysAdminRole"].ToString());
+            TokenKey = Guid.Parse(json["Caviar"]["TokenKey"].ToString());
             var paseJson = json.ToString();
             File.WriteAllText(appsettingPath, paseJson);
         }
@@ -67,6 +69,7 @@ namespace Caviar.Control
             if (json["Caviar"]["Role"] == null) json["Caviar"]["Role"] = new JObject();
             if (json["Caviar"]["Role"]["NoLoginRole"] == null) json["Caviar"]["Role"]["NoLoginRole"] = Guid.NewGuid();
             if (json["Caviar"]["Role"]["SysAdminRole"] == null) json["Caviar"]["Role"]["SysAdminRole"] = Guid.NewGuid();
+            if (json["Caviar"]["TokenKey"] == null) json["Caviar"]["TokenKey"] = Guid.NewGuid();
         }
 
 
@@ -76,6 +79,11 @@ namespace Caviar.Control
         {
             ApplicationServices = app.ApplicationServices;
             return app;
+        }
+
+        public static string GetUserToken(UserToken userToken)
+        {
+            return CommonHelper.SHA256EncryptString(userToken.Id + userToken.UserName + userToken.Uid.ToString() + userToken.CreateTime + TokenKey.ToString());
         }
 
         /// <summary>
@@ -133,27 +141,7 @@ namespace Caviar.Control
         #region IBaseModelExtend扩展
 
 
-        /// <summary>
-        /// 自动分配当前属性值
-        /// </summary>
-        /// <param name="target">拷贝目标</param>
-        /// <returns></returns>
-        public static void AutoAssign<T, K>(this T example, K target) where T : IBaseModel
-        {
-            var targetType = target.GetType();//获得类型
-            var exampleType = typeof(T);
-            foreach (PropertyInfo sp in targetType.GetProperties())//获得类型的属性字段
-            {
-                foreach (PropertyInfo dp in exampleType.GetProperties())
-                {
-                    if (dp.Name.ToLower() == "BaseControllerModel".ToLower()) continue;
-                    if (dp.Name == sp.Name)//判断属性名是否相同
-                    {
-                        dp.SetValue(example, sp.GetValue(target, null), null);//获得s对象属性的值复制给d对象的属性
-                    }
-                }
-            }
-        }
+
 
         #endregion
 

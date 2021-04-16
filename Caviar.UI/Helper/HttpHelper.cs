@@ -7,45 +7,61 @@ using System;
 using Caviar.Models.SystemData;
 using Caviar.UI.Shared;
 using AntDesign;
+using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace Caviar.UI.Helper
 {
     public partial class HttpHelper
     {
         NotificationService _notificationService;
-        UserState _userState;
-        public HttpHelper(HttpClient http, NotificationService _notice, UserState userState)
+        UserToken _userToken;
+        public HttpHelper(HttpClient http, NotificationService _notice, UserToken userToken)
         {
             Http = http;
             _notificationService = _notice;
-            _userState = userState;
+            _userToken = userToken;
+            var tokenName = "UsreToken";
+            Http.DefaultRequestHeaders.TryGetValues(tokenName, out IEnumerable<string>? values);
+            if(Http.DefaultRequestHeaders.Contains(tokenName))
+            {
+                Http.DefaultRequestHeaders.Remove(tokenName);
+            }
+            if (userToken.Token != "" && userToken.Id > 0)
+            {
+                var json = JsonConvert.SerializeObject(userToken);
+                var base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
+                Http.DefaultRequestHeaders.Add(tokenName, base64);
+            }
         }
         public HttpClient Http { get; }
         public async Task<ResultMsg<T>> GetJson<T>(string address, EventCallback eventCallback = default)
         {
-            var result = await HttpRequest<T>(address,"get",default,eventCallback);
+            var result = await HttpRequest<T,T>(address,"get",default,eventCallback);
             return result;
         }
 
         public async Task<ResultMsg> GetJson(string address, EventCallback eventCallback = default)
         {
-            var result = await HttpRequest<object>(address, "get", default, eventCallback);
+            var result = await HttpRequest<object,object>(address, "get", default, eventCallback);
             return result;
         }
 
-        public async Task<ResultMsg<T>> PostJson<T>(string address,T data, EventCallback eventCallback = default)
+        public async Task<ResultMsg<T>> PostJson<K, T>(string address,K data, EventCallback eventCallback = default)
         {
-            var result = await HttpRequest(address, "post", data, eventCallback);
+            var result = await HttpRequest<K,T>(address, "post", data, eventCallback);
             return result;
         }
 
         public async Task<ResultMsg> PostJson(string address, string data, EventCallback eventCallback = default)
         {
-            var result = await HttpRequest<object>(address, "post", data, eventCallback);
+            var result = await HttpRequest<object, object>(address, "post", data, eventCallback);
             return result;
         }
 
-        async Task<ResultMsg<T>> HttpRequest<T>(string address,string model,T data, EventCallback eventCallback)
+        async Task<ResultMsg<T>> HttpRequest<K,T>(string address,string model, K data, EventCallback eventCallback)
         {
             ResultMsg<T> result = default;
             var mainLayoutStyle = new MainLayoutStyle() { Loading = true };

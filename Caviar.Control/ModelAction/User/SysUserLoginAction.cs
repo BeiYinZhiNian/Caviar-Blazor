@@ -11,7 +11,10 @@ namespace Caviar.Control
 {
     public partial class SysUserLoginAction : SysUserLogin
     {
-
+        /// <summary>
+        /// 登录成功返回token，失败返回错误原因
+        /// </summary>
+        /// <returns></returns>
         public virtual string Login()
         {
 
@@ -27,10 +30,11 @@ namespace Caviar.Control
             }
             if (userLogin == null) return "用户名或密码错误";
             this.AutoAssign(userLogin);
-            BaseControllerModel.UserName = UserName;
-            BaseControllerModel.Id = Id;
+            BaseControllerModel.UserToken.AutoAssign(this);
+            BaseControllerModel.UserToken.CreateTime = DateTime.Now;
+            BaseControllerModel.UserToken.Token = CaviarConfig.GetUserToken(BaseControllerModel.UserToken);
             BaseControllerModel.IsLogin = true;
-            return "登录成功，欢迎回来";
+            return BaseControllerModel.UserToken.Token;
         }
 
         public virtual bool Register(out string msg)
