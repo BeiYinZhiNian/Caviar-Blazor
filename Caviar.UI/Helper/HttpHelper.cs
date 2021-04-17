@@ -24,22 +24,40 @@ namespace Caviar.UI.Helper
         IJSRuntime _jSRuntime;
         public HttpHelper(HttpClient http, NotificationService _notice,NavigationManager navigationManager, MessageService message,IJSRuntime JsRuntime)
         {
-            //var tokenName = "UsreToken";
-            //http.DefaultRequestHeaders.TryGetValues(tokenName, out IEnumerable<string>? values);
-            //if (http.DefaultRequestHeaders.Contains(tokenName))
-            //{
-            //    http.DefaultRequestHeaders.Remove(tokenName);
-            //}
-            //var cookie = _jSRuntime.InvokeAsync<string>("getCookie", Program.CookieName);
-            //if (!string.IsNullOrEmpty(cookie))
-            //{
-            //    Http.DefaultRequestHeaders.Add(tokenName, cookie);
-            //}
+            
             Http = http;
             _notificationService = _notice;
             _navigationManager = navigationManager;
             _message = message;
             _jSRuntime = JsRuntime;
+            
+        }
+
+        static object cookiesOb = new object();
+        /// <summary>
+        /// 设置为false 用于更新cookies
+        /// </summary>
+        public bool IsSetCookie { get; set; } = false;
+        async Task SetCookies()
+        {
+            if (IsSetCookie) return;
+            var cookie = await _jSRuntime.InvokeAsync<string>("getCookie", Program.CookieName);
+            //这里为什么要用双锁呢，被逼的~
+            lock (cookiesOb)
+            {
+                if (IsSetCookie) return;
+                var tokenName = "UsreToken";
+                Http.DefaultRequestHeaders.TryGetValues(tokenName, out IEnumerable<string>? values);
+                if (Http.DefaultRequestHeaders.Contains(tokenName))
+                {
+                    Http.DefaultRequestHeaders.Remove(tokenName);
+                }
+                if (!string.IsNullOrEmpty(cookie))
+                {
+                    Http.DefaultRequestHeaders.Add(tokenName, cookie);
+                    IsSetCookie = true;
+                }
+            }
             
         }
 
@@ -71,6 +89,7 @@ namespace Caviar.UI.Helper
 
         async Task<ResultMsg<T>> HttpRequest<K,T>(string address,string model, K data, EventCallback eventCallback)
         {
+            await SetCookies();
             ResultMsg<T> result = default;
             var mainLayoutStyle = new MainLayoutStyle() { Loading = true };
             await eventCallback.InvokeAsync(mainLayoutStyle);

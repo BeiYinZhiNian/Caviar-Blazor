@@ -46,6 +46,7 @@ namespace Caviar.UI.Pages.SystemPages.User
                 var json = JsonConvert.SerializeObject(UserToken);
                 var base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
                 await JsRuntime.InvokeVoidAsync("setCookie", Program.CookieName, base64, UserToken.Duration);
+                http.IsSetCookie = false;//更新cookies
                 NavigationManager.NavigateTo("/");
                 _message.Success(result.Title);
                 return;
