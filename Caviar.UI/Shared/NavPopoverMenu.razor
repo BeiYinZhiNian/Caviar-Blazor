@@ -1,0 +1,42 @@
+﻿@using Helper;
+<Menu>
+    <MenuItem @key="0">
+        <a>
+            个人中心
+        </a>
+    </MenuItem>
+    <MenuItem @key="1">
+        <a>
+            修改密码
+        </a>
+    </MenuItem>
+    <MenuItem @key="2">
+        <a>
+            设置
+        </a>
+    </MenuItem>
+    <MenuDivider />
+    <MenuItem @key="3" OnClick="UserOut">
+        退出登录
+    </MenuItem>
+</Menu>
+@code {
+
+
+    [Inject]
+    IJSRuntime jSRuntime { get; set; }
+    [Inject]
+    NavigationManager navigationManager { get; set; }
+    [Inject]
+    HttpHelper Http { get; set; }
+    [Inject]
+    MessageService messageService { get; set; }
+
+    public async void UserOut()
+    {
+        await jSRuntime.InvokeVoidAsync("delCookie", Program.CookieName);
+        Http.IsSetCookie = false;
+        navigationManager.NavigateTo("/",true);
+        messageService.Success("退出登录成功");
+    }
+}
