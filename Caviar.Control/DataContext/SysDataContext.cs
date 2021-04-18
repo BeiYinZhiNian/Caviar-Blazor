@@ -278,6 +278,7 @@ namespace Caviar.Control
                     MenuType = MenuType.Menu,
                     TargetType = TargetType.CurrentPage,
                     MenuName = "首页",
+                    Icon ="home",
                     Url = "/"
                 };
                 await AddEntityAsync(homePage);
@@ -287,6 +288,7 @@ namespace Caviar.Control
                     MenuType = MenuType.Catalog,
                     TargetType = TargetType.CurrentPage,
                     MenuName = "系统管理",
+                    Icon = "windows"
 
                 };
                 await AddEntityAsync(management);
@@ -296,6 +298,7 @@ namespace Caviar.Control
                     TargetType = TargetType.CurrentPage,
                     MenuName = "菜单管理",
                     Url = "/Menu/Index",
+                    Icon = "menu",
                     UpLayerId = management.Id,
                 };
                 await AddEntityAsync(menuManage);

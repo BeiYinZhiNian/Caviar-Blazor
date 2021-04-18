@@ -25,4 +25,15 @@
         </MenuItem>
     </Menu>
     ;
+
+    [Inject]
+    IJSRuntime jSRuntime { get; set; }
+    [Inject]
+    NavigationManager navigationManager { get; set; }
+
+    public async void UserOut()
+    {
+        await jSRuntime.InvokeVoidAsync("delCookie", Program.CookieName);
+        navigationManager.NavigateTo("/");
+    }
 }
