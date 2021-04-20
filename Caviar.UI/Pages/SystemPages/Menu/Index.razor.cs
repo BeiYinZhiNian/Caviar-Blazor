@@ -26,21 +26,8 @@ namespace Caviar.UI.Pages.SystemPages.Menu
         async Task<List<ViewPowerMenu>> GetPowerMenus()
         {
             var result = await Http.GetJson<List<ViewPowerMenu>>("Menu/GetLeftSideMenus");
-            var viewPowerMenus = new List<ViewPowerMenu>();
-            if (result.Status != 200) return viewPowerMenus;
-            result.Data.OrderBy(u => u.Id);
-            foreach (var item in result.Data)
-            {
-                if (item.UpLayerId == 0)
-                {
-                    viewPowerMenus.Add(item);
-                }
-                else
-                {
-                    result.Data.SingleOrDefault(u => u.Id == item.UpLayerId)?.Children.Add(item);
-                }
-            }
-            return viewPowerMenus;
+            if (result.Status != 200) return new List<ViewPowerMenu>();
+            return result.Data;
         }
 
         async Task<List<ViewModelName>> GetViewModelNames()

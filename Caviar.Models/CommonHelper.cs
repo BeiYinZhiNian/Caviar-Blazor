@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -69,10 +70,11 @@ namespace Caviar.Models.SystemData
 
         /// <summary>
         /// 自动分配当前属性值
+        /// 不进行深度分配
         /// </summary>
         /// <param name="target">拷贝目标</param>
         /// <returns></returns>
-        public static void AutoAssign<T, K>(this T example, K target)
+        public static T AutoAssign<T, K>(this T example, K target)
         {
             var targetType = target.GetType();//获得类型
             var exampleType = typeof(T);
@@ -87,7 +89,27 @@ namespace Caviar.Models.SystemData
                     }
                 }
             }
+            return example;
         }
+        /// <summary>
+        /// 自动将target添加到example并进行类型转换
+        /// 不进行深度转换
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="K"></typeparam>
+        /// <param name="example"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public static IList<T> ListAutoAssign<T, K>(this IList<T> example, IList<K> target) where T:class, new()
+        {
+            foreach (var item in target)
+            {
+                example.Add(new T().AutoAssign(item));
+            }
+            return example;
+        }
+
+
         /// <summary>
         /// 获取泛型某一属性值
         /// </summary>
