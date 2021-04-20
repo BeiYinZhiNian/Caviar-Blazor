@@ -1,3 +1,33 @@
 ﻿@page "/Menu/index"
 
+
+<Button Type="@ButtonType.Primary" Style="margin-bottom:16px" OnClick="@(()=>{ _visible = true; })">
+    新增
+</Button>
 <TableData TData="ViewPowerMenu" DataSource="DataSource" ViewModelHeader="ViewModelHeaders" TreeChildren="u=>u.Children"></TableData>
+
+
+<Modal Title="@title"
+       Visible="@_visible"
+       DestroyOnClose="true"
+       OnOk="@HandleOk"
+       OnCancel="@HandleCancel">
+    <Add></Add>
+</Modal>
+
+@code{
+    string title = "新增";
+    bool _visible = false;
+
+    private void HandleOk(MouseEventArgs e)
+    {
+        Console.WriteLine(e);
+        _visible = false;
+    }
+
+    private void HandleCancel(MouseEventArgs e)
+    {
+        Console.WriteLine(e);
+        _visible = false;
+    }
+}
