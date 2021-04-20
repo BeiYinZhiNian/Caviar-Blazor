@@ -3,9 +3,9 @@
     新增
 </Button>
 <Table DataSource="DataSource" TItem="TData" TreeChildren="TreeChildren">
-    @if (ViewModelName != null)
+    @if (ViewModelHeader != null)
     {
-        foreach (var item in ViewModelName)
+        foreach (var item in ViewModelHeader)
         {
             var typeNmae = item.ModelType.ToLower();
             switch (typeNmae)

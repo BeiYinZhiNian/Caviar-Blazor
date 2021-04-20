@@ -106,7 +106,7 @@ namespace Caviar.Control
         }
 
         [HttpGet]
-        public IActionResult GetModelName(string name)
+        public IActionResult GetModelHeader(string name)
         {
             if (string.IsNullOrEmpty(name)) return ResultError(400,"请输入需要获取的数据名称");
             var assemblyList = CaviarConfig.GetAssembly();
@@ -116,14 +116,14 @@ namespace Caviar.Control
                 type = item.GetTypes().SingleOrDefault(u => u.Name.ToLower() == name.ToLower());
                 if (type != null) break;
             }
-            List<ViewModelName> viewModelNames = new List<ViewModelName>();
+            List<ViewModelHeader> viewModelNames = new List<ViewModelHeader>();
             if (type != null)
             {
                 foreach (var item in type.GetRuntimeProperties())
                 {
                     var typeName = item.PropertyType.Name;
                     var dispLayName = item.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
-                    viewModelNames.Add(new ViewModelName() { TypeName = item.Name, ModelType = typeName,DispLayName=dispLayName });
+                    viewModelNames.Add(new ViewModelHeader() { TypeName = item.Name, ModelType = typeName,DispLayName=dispLayName });
                 }
             }
             ResultMsg.Data = viewModelNames;

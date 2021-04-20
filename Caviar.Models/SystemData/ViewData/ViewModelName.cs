@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
-    public partial class ViewModelName
+    public partial class ViewModelHeader
     {
         /// <summary>
         /// 类型名称

@@ -13,23 +13,23 @@ namespace Caviar.UI.Shared
         [Parameter]
         public List<TData> DataSource { get; set; }
         [Parameter]
-        public string ModelName { get; set; }
+        public string ModelHeaderName { get; set; }
         [Parameter]
         public Func<TData, IEnumerable<TData>> TreeChildren { get; set; } = _ => Enumerable.Empty<TData>();
         [Parameter]
-        public List<ViewModelName> ViewModelName { get; set; }
+        public List<ViewModelHeader> ViewModelHeader { get; set; }
         [Inject]
         HttpHelper Http { get; set; }
         
 
         protected override async Task OnInitializedAsync()
         {
-            if (!string.IsNullOrEmpty(ModelName))
+            if (!string.IsNullOrEmpty(ModelHeaderName))
             {
-                var modelNameList = await Http.GetJson<List<ViewModelName>>("Base/GetModelName?name=" + ModelName);
+                var modelNameList = await Http.GetJson<List<ViewModelHeader>>("Base/GetModelHeader?name=" + ModelHeaderName);
                 if (modelNameList.Status == 200)
                 {
-                    ViewModelName = modelNameList.Data;
+                    ViewModelHeader = modelNameList.Data;
                 }
             }
             

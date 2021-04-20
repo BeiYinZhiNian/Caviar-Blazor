@@ -15,12 +15,12 @@ namespace Caviar.UI.Pages.SystemPages.Menu
 
         public List<ViewPowerMenu> DataSource { get; set; }
 
-        List<ViewModelName> ViewModelNames { get; set; }
+        List<ViewModelHeader> ViewModelHeaders { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             DataSource = await GetPowerMenus();
-            ViewModelNames = await GetViewModelNames();
+            ViewModelHeaders = await GetViewModelNames();
         }
 
         async Task<List<ViewPowerMenu>> GetPowerMenus()
@@ -30,16 +30,16 @@ namespace Caviar.UI.Pages.SystemPages.Menu
             return result.Data;
         }
 
-        async Task<List<ViewModelName>> GetViewModelNames()
+        async Task<List<ViewModelHeader>> GetViewModelNames()
         {
-            var modelNameList = await Http.GetJson<List<ViewModelName>>("Base/GetModelName?name=SyspowerMenu");
+            var modelNameList = await Http.GetJson<List<ViewModelHeader>>("Base/GetModelHeader?name=SyspowerMenu");
             if (modelNameList.Status == 200)
             {
                 var item = modelNameList.Data.SingleOrDefault(u => u.TypeName.ToLower() == "icon");
                 if (item != null) item.ModelType = "icon";
                 return modelNameList.Data;
             }
-            return new List<ViewModelName>();
+            return new List<ViewModelHeader>();
         }
 
     }
