@@ -3,13 +3,51 @@
 
 <Form Model="@model">
     <FormItem Label="菜单名称">
-        <Input @bind-Value="@context.MenuName"/>
+        <Input @bind-Value="@context.MenuName" />
     </FormItem>
     <FormItem Label="菜单类型">
-        <RadioGroup @bind-Value="@context.MenuType">
-            <Radio Value="(MenuType)1">目录</Radio>
-            <Radio Value="(MenuType)2">菜单</Radio>
-            <Radio Value="(MenuType)3">按钮</Radio>
+        <RadioGroup @bind-Value="@context.MenuType" OnChange="Callback">
+            <Radio Value="(MenuType)0">目录</Radio>
+            <Radio Value="(MenuType)1">菜单</Radio>
+            <Radio Value="(MenuType)2">按钮</Radio>
         </RadioGroup>
     </FormItem>
+    <FormItem Label="请求地址" Style="@visibility">
+        <Input @bind-Value="@context.Url">
+    </FormItem>
+    <FormItem Label="打开方式">
+        <RadioGroup @bind-Value="@context.TargetType">
+            <Radio Value="(TargetType)0">当前页面</Radio>
+            <Radio Value="(TargetType)1">弹出窗口</Radio>
+            <Radio Value="(TargetType)2">新建页面</Radio>
+        </RadioGroup>
+    </FormItem>
+    <FormItem Label="图标">
+        <Popover ContentTemplate="@_content" Title="请选择图标">
+            <Button type="@ButtonType.Primary">图标库</Button>
+        </Popover>
+    </FormItem>
 </Form>
+@code{
+    string visibility = "display:none;";
+    EventCallback<MenuType> Callback => EventCallback.Factory.Create<MenuType>(this, CheckMenuType);
+
+    public void CheckMenuType()
+    {
+        if (model.MenuType == 0)
+        {
+            visibility = "display:none;";
+            model.Url = "";
+        }
+        else
+        {
+            visibility = "";
+        }
+    }
+
+    RenderFragment _content =
+    @<div>
+        <p>Content</p>
+        <p>Content</p>
+    </div>;
+}
