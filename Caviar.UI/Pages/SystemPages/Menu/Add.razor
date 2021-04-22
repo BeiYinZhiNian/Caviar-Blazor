@@ -23,12 +23,20 @@
         </RadioGroup>
     </FormItem>
     <FormItem Label="图标">
-        <Popover ContentTemplate="@_content" Title="请选择图标">
-            <Button type="@ButtonType.Primary">图标库</Button>
-        </Popover>
+        <Button type="@ButtonType.Primary" OnClick="OpenIconModal">图标库</Button>
     </FormItem>
 </Form>
+
+
+<Modal Visible="@_visible"
+       OnOk="HandleOk"
+       OnCancel="HandleCancel"
+       Title="请选择图标">
+    <IconPanel></IconPanel>
+</Modal>
 @code{
+    bool _visible = false;
+
     string visibility = "display:none;";
     EventCallback<MenuType> Callback => EventCallback.Factory.Create<MenuType>(this, CheckMenuType);
 
@@ -45,9 +53,23 @@
         }
     }
 
+    public void OpenIconModal()
+    {
+        _visible = true;
+    }
+
+    private void HandleOk(MouseEventArgs e)
+    {
+        Console.WriteLine(e);
+        _visible = false;
+    }
+
+    private void HandleCancel(MouseEventArgs e)
+    {
+        Console.WriteLine(e);
+        _visible = false;
+    }
+
     RenderFragment _content =
-    @<div>
-        <p>Content</p>
-        <p>Content</p>
-    </div>;
+    @<IconPanel></IconPanel>;
 }
