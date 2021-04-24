@@ -3,7 +3,23 @@
 
 <Form Model="@model">
     <FormItem Label="菜单名称">
-        <Input @bind-Value="@context.MenuName" />
+        <Input @bind-Value="@context.MenuName" Style="width:50%"/>
+    </FormItem>
+    <FormItem Label="上层目录">
+        <Dropdown>
+            <Overlay>
+                <Menu>
+                    @if (SysPowerMenus != null)
+                    {
+                        var menu = GetSubMenu(SysPowerMenus);
+                        @menu
+                    }
+                </Menu>
+            </Overlay>
+            <ChildContent>
+                <Button>无上层目录</Button>
+            </ChildContent>
+        </Dropdown>
     </FormItem>
     <FormItem Label="菜单类型">
         <RadioGroup @bind-Value="@context.MenuType" OnChange="Callback">
@@ -24,9 +40,6 @@
     </FormItem>
     <FormItem Label="图标">
         <Button type="@ButtonType.Primary" OnClick="OpenIconModal">图标库</Button>
-    </FormItem>
-    <FormItem Label="上层目录">
-
     </FormItem>
     <FormItem Label="排列顺序">
         <Input @bind-Value="@context.Order" Style="width: 20%;">
@@ -78,4 +91,37 @@
 
     RenderFragment _content =
     @<IconPanel></IconPanel>;
+
+
+    RenderFragment GetSubMenu(List<ViewPowerMenu> viewPowerMenus)
+    {
+        RenderFragment ViewSubMenu = null;
+        if (viewPowerMenus == null || viewPowerMenus.Count == 0) return ViewSubMenu;
+        foreach (var item in viewPowerMenus)
+        {
+            RenderFragment subTitle =
+            @<span>
+            @if (!string.IsNullOrEmpty(item.Icon))
+            {
+                <Icon Type="@item.Icon" Theme="outline"></Icon>
+            }
+            <span>@item.MenuName</span>
+            </span>;
+            switch (item.MenuType)
+            {
+                case MenuType.Catalog:
+                     ViewSubMenu +=
+                     @<SubMenu Key="@item.MenuName" TitleTemplate="subTitle">
+                     @GetSubMenu(item.Children)
+                     </SubMenu>;
+                     break;
+                case MenuType.Menu:
+                ViewSubMenu += @<MenuItem Key="@item.MenuName" RouterLink="@item.Url">@subTitle</MenuItem>;
+                    break;
+                default:
+                    break;
+            }
+        };
+        return ViewSubMenu;
+    }
 }

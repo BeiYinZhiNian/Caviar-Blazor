@@ -11,7 +11,15 @@ namespace Caviar.WebAPI.Controllers
         public IActionResult GetLeftSideMenus()
         {
             var menuAction = CreateModel<SysPowerMenuAction>();
-            ResultMsg.Data = menuAction.GetLeftSideMenus();
+            ResultMsg.Data = menuAction.GetMenus(u => u.MenuType == MenuType.Catalog || u.MenuType == MenuType.Menu);
+            return ResultOK();
+        }
+
+        [HttpGet]
+        public IActionResult GetCatalogMenus()
+        {
+            var menuAction = CreateModel<SysPowerMenuAction>();
+            ResultMsg.Data = menuAction.GetMenus(u => u.MenuType == MenuType.Catalog);
             return ResultOK();
         }
     }
