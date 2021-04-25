@@ -11,6 +11,50 @@ namespace Caviar.Control
 {
     public partial class SysPowerMenuAction : SysPowerMenu
     {
+        public virtual async Task<int> AddEntity()
+        {
+            var count = await BaseControllerModel.DataContext.AddEntityAsync(this);
+            return count;
+        }
+
+        public virtual async Task<int> DeleteEntity()
+        {
+            var count = await BaseControllerModel.DataContext.DeleteEntityAsync(this);
+            return count;
+        }
+
+        /// <summary>
+        /// 批量删除
+        /// </summary>
+        /// <param name="menus"></param>
+        /// <returns></returns>
+        public virtual async Task<int> DeleteEntity(List<SysPowerMenu> menus)
+        {
+            var transaction = BaseControllerModel.DataContext.BeginTransaction();
+            foreach (var item in menus)
+            {
+                await BaseControllerModel.DataContext.DeleteEntityAsync(item, false);
+            }
+            var count = await BaseControllerModel.DataContext.SaveChangesAsync();
+            transaction.Commit();
+            return count;
+        }
+        /// <summary>
+        /// 批量修改
+        /// </summary>
+        /// <param name="menus"></param>
+        /// <returns></returns>
+        public virtual async Task<int> UpdateEntity(List<SysPowerMenu> menus)
+        {
+            var transaction = BaseControllerModel.DataContext.BeginTransaction();
+            foreach (var item in menus)
+            {
+                await BaseControllerModel.DataContext.UpdateEntityAsync(item, false);
+            }
+            var count = await BaseControllerModel.DataContext.SaveChangesAsync();
+            transaction.Commit();
+            return count;
+        }
 
         public virtual List<ViewPowerMenu> GetMenus(Expression<Func<SysPowerMenu, bool>> where)
         {
@@ -19,10 +63,10 @@ namespace Caviar.Control
         }
 
 
-        protected virtual List<ViewPowerMenu> ModelToView(List<SysPowerMenu> sysPowerMenus)
+        protected virtual List<ViewPowerMenu> ModelToView(List<SysPowerMenu> menus)
         {
             //将获取到的sys转为view
-            var viewMenus = new List<ViewPowerMenu>().ListAutoAssign(sysPowerMenus);
+            var viewMenus = new List<ViewPowerMenu>().ListAutoAssign(menus);
             var resultViewMenuList = new List<ViewPowerMenu>();
             foreach (var item in viewMenus)
             {
@@ -36,6 +80,19 @@ namespace Caviar.Control
                 }
             }
             return resultViewMenuList;
+        }
+
+
+        public void RecursionGetMenu(ViewPowerMenu data, List<ViewPowerMenu> menus)
+        {
+            foreach (var item in data.Children)
+            {
+                menus.Add(item);
+                if (item.Children != null && item.Children.Count != 0)
+                {
+                    RecursionGetMenu(item, menus);
+                }
+            }
         }
     }
 }

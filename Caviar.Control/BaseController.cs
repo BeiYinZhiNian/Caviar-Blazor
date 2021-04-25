@@ -16,6 +16,8 @@ using System.Text;
 using Caviar.Models;
 using Microsoft.Extensions.Primitives;
 using System.Web;
+using System.Collections;
+using System.Threading.Tasks;
 
 namespace Caviar.Control
 {
@@ -88,6 +90,17 @@ namespace Caviar.Control
                     {
                         ((IBaseModel)ArgumentsItem.Value).BaseControllerModel = ControllerModel;
                     }
+                    //此处可以向IEnumerable中注入上下文
+                    //else if(ArgumentsItem.Value is IEnumerable)
+                    //{
+                    //    foreach (var item in (IEnumerable)ArgumentsItem.Value)
+                    //    {
+                    //        if (item is IBaseModel)
+                    //        {
+                    //            ((IBaseModel)ArgumentsItem.Value).BaseControllerModel = ControllerModel;
+                    //        }
+                    //    }
+                    //}
                 }
             }
         }
@@ -96,13 +109,22 @@ namespace Caviar.Control
         {
             base.OnActionExecuted(context);
             var actionResult = (ObjectResult)context.Result;
-            var setting = new JsonSerializerSettings();
-            setting.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
-            setting.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
-            var json = JsonConvert.SerializeObject(actionResult.Value, setting);
-            var resultMsg = JsonConvert.DeserializeObject<ResultMsg>(json);
             stopwatch.Stop();
-            LoggerMsg<BaseController>(resultMsg.Title, IsSucc: resultMsg.Status == 200);
+            if (actionResult != null)
+            {
+                var setting = new JsonSerializerSettings();
+                setting.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+                setting.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
+                var json = JsonConvert.SerializeObject(actionResult.Value, setting);
+                var resultMsg = JsonConvert.DeserializeObject<ResultMsg>(json);
+                LoggerMsg<BaseController>(resultMsg.Title, IsSucc: resultMsg.Status == 200);
+            }
+            else
+            {
+                LoggerMsg<BaseController>("发生严重错误："+context.Exception.Message, IsSucc: false);
+            }
+            
+            
         }
 
         [HttpGet]
@@ -134,22 +156,6 @@ namespace Caviar.Control
         {
             var entity = ControllerModel.HttpContext.RequestServices.GetRequiredService<T>();
             entity.BaseControllerModel = ControllerModel;
-            return entity;
-        }
-
-        protected virtual T CreateModel<T>(int id) where T : class, IBaseModel
-        {
-            var entity = ControllerModel.DataContext.GetEntityAsync<T>(id).Result;
-            return entity;
-        }
-        protected virtual T CreateModel<T>(Guid guid) where T : class, IBaseModel
-        {
-            var entity = ControllerModel.DataContext.GetEntityAsync<T>(guid).Result;
-            return entity;
-        }
-        protected virtual T CreateModel<T>(Expression<Func<T, bool>> whereLambda) where T : class, IBaseModel
-        {
-            var entity = ControllerModel.DataContext.GetEntityAsync<T>(whereLambda).FirstOrDefault();
             return entity;
         }
         #endregion

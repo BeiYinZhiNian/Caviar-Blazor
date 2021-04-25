@@ -1,6 +1,7 @@
 ﻿using Caviar.Models;
 using Caviar.Models.SystemData;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -124,7 +125,7 @@ namespace Caviar.Control
         /// <param name="fieldExp"></param>
         /// <param name="isSaveChange">默认为立刻保存</param>
         /// <returns></returns>
-        public virtual async Task<int> UpdateAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class, IBaseModel
+        public virtual async Task<int> UpdateEntityAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class, IBaseModel
         {
             Base_DataContext.Entry(entity).Property(fieldExp).IsModified = true;
             if (isSaveChange)
@@ -138,12 +139,12 @@ namespace Caviar.Control
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="entity"></param>
-        /// <param name="isSaveChange"></param>
-        /// <param name="IsDelete">默认立刻保存</param>
+        /// <param name="isSaveChange">默认立刻保存</param>
+        /// <param name="IsDelete">是否立刻删除，默认不删除，只修改IsDelete,设为true则立刻删除</param>
         /// <returns></returns>
         public virtual async Task<int> DeleteEntityAsync<T>(T entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IBaseModel
         {
-            if (entity.IsDelete)
+            if (entity.IsDelete || IsDelete)
             {
                 var set = Base_DataContext.Set<T>();
                 set.Remove(entity);
@@ -155,6 +156,7 @@ namespace Caviar.Control
             else
             {
                 entity.IsDelete = true;
+                return await UpdateEntityAsync(entity,isSaveChange);
             }
             return 0;
         }
@@ -166,7 +168,7 @@ namespace Caviar.Control
         public virtual IQueryable<T> GetAllAsync<T>() where T : class, IBaseModel
         {
             var set = Base_DataContext.Set<T>();
-            return set.Where(u => true);
+            return set.Where(u => u.IsDelete == false);
         }
         /// <summary>
         /// 获取指定页数据
@@ -186,7 +188,7 @@ namespace Caviar.Control
             IQueryable<T> data = isOrder ?
                 set.OrderBy(orderBy) :
                 set.OrderByDescending(orderBy);
-
+            data.Where(u => u.IsDelete == false);
             if (whereLambda != null)
             {
                 data = isNoTracking ? data.Where(whereLambda).AsNoTracking() : data.Where(whereLambda);
@@ -207,7 +209,7 @@ namespace Caviar.Control
         public IQueryable<T> GetEntityAsync<T>(Expression<Func<T, bool>> where) where T : class, IBaseModel
         {
             var set = Base_DataContext.Set<T>();
-            return set.Where(where);
+            return set.Where(u => u.IsDelete == false).Where(where);
         }
         /// <summary>
         /// 根据id获取实体
@@ -218,7 +220,7 @@ namespace Caviar.Control
         public Task<T> GetEntityAsync<T>(int id) where T : class, IBaseModel
         {
             var set = Base_DataContext.Set<T>();
-            return set.FirstOrDefaultAsync(u => u.Id == id);
+            return set.Where(u => u.IsDelete == false).FirstOrDefaultAsync(u => u.Id == id);
         }
         /// <summary>
         /// 根据guid获取实体
@@ -229,8 +231,19 @@ namespace Caviar.Control
         public Task<T> GetEntityAsync<T>(Guid uid) where T : class, IBaseModel
         {
             var set = Base_DataContext.Set<T>();
-            return set.FirstOrDefaultAsync(u => u.Uid == uid);
+            return set.Where(u => u.IsDelete == false).FirstOrDefaultAsync(u => u.Uid == uid);
         }
+
+        /// <summary>
+        /// 开启事务
+        /// </summary>
+        /// <returns></returns>
+        public IDbContextTransaction BeginTransaction()
+        {
+            var transaction = Base_DataContext.Database.BeginTransaction();
+            return transaction;
+        }
+
 
         static bool IsDataInit = true;
         /// <summary>

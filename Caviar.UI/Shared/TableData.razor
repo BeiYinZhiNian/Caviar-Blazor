@@ -58,7 +58,7 @@
                             var obj = context.GetObjValue(item.TypeName);
                             if (obj != null)
                             {
-                                <Icon Type="@obj.ToString()" Theme="outline"/>
+                                <Icon Type="@obj.ToString()" Theme="outline" />
                             }
                         }
                     </Column>
@@ -68,7 +68,17 @@
             }
 
         }
+
+
+        <ActionColumn>
+            <Space>
+                <Popconfirm Title="确认删除该条数据吗?"
+                            OnConfirm="()=>Delete(context)"
+                            OkText="确认"
+                            CancelText="取消">
+                    <SpaceItem><Button Danger>删除</Button></SpaceItem>
+                </Popconfirm>
+            </Space>
+        </ActionColumn>
     }
 </Table>
-
-

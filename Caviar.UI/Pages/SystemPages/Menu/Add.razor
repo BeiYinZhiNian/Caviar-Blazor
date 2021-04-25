@@ -1,23 +1,26 @@
 ﻿@page "/Menu/add"
 
 
-<Form Model="@model">
+<Form @ref="_meunForm" Model="@model" OnFinish="FormSubmit">
     <FormItem Label="菜单名称">
         <Input @bind-Value="@context.MenuName" Style="width:50%"/>
     </FormItem>
     <FormItem Label="上层目录">
         <Dropdown>
             <Overlay>
-                <Menu>
-                    @if (SysPowerMenus != null)
-                    {
-                        var menu = GetSubMenu(SysPowerMenus);
-                        @menu
-                    }
-                </Menu>
+                <Tree 
+                      ShowIcon DataSource="SysPowerMenus"
+                      TitleExpression="x => x.DataItem.MenuName"
+                      ChildrenExpression="x => x.DataItem.Children"
+                      IconExpression="x => x.DataItem.Icon"
+                      IsLeafExpression="x => x.DataItem.Children?.Count == 0"
+                      KeyExpression="x => x.DataItem.Id.ToString()"
+                      OnClick='e=>EventRecord(e)'
+                      TItem="ViewPowerMenu">
+                </Tree>
             </Overlay>
             <ChildContent>
-                <Button>无上层目录</Button>
+                <Button>@UpPowerMenuName</Button>
             </ChildContent>
         </Dropdown>
     </FormItem>
@@ -38,8 +41,8 @@
             <Radio Value="(TargetType)2">新建页面</Radio>
         </RadioGroup>
     </FormItem>
-    <FormItem Label="图标">
-        <Button type="@ButtonType.Primary" OnClick="OpenIconModal">图标库</Button>
+    <FormItem>
+        <Button OnClick="OpenIconModal">图标库</Button>
     </FormItem>
     <FormItem Label="排列顺序">
         <Input @bind-Value="@context.Order" Style="width: 20%;">
@@ -51,7 +54,7 @@
        OnOk="HandleOk"
        OnCancel="HandleCancel"
        Title="请选择图标">
-    <IconPanel></IconPanel>
+    <IconPanel @bind-RadioValue="model.Icon"></IconPanel>
 </Modal>
 @code{
     bool _visible = false;
@@ -91,37 +94,4 @@
 
     RenderFragment _content =
     @<IconPanel></IconPanel>;
-
-
-    RenderFragment GetSubMenu(List<ViewPowerMenu> viewPowerMenus)
-    {
-        RenderFragment ViewSubMenu = null;
-        if (viewPowerMenus == null || viewPowerMenus.Count == 0) return ViewSubMenu;
-        foreach (var item in viewPowerMenus)
-        {
-            RenderFragment subTitle =
-            @<span>
-            @if (!string.IsNullOrEmpty(item.Icon))
-            {
-                <Icon Type="@item.Icon" Theme="outline"></Icon>
-            }
-            <span>@item.MenuName</span>
-            </span>;
-            switch (item.MenuType)
-            {
-                case MenuType.Catalog:
-                     ViewSubMenu +=
-                     @<SubMenu Key="@item.MenuName" TitleTemplate="subTitle">
-                     @GetSubMenu(item.Children)
-                     </SubMenu>;
-                     break;
-                case MenuType.Menu:
-                ViewSubMenu += @<MenuItem Key="@item.MenuName" RouterLink="@item.Url">@subTitle</MenuItem>;
-                    break;
-                default:
-                    break;
-            }
-        };
-        return ViewSubMenu;
-    }
 }

@@ -34,5 +34,17 @@ namespace Caviar.UI.Shared
             }
             
         }
+
+        [Parameter]
+        public EventCallback<TData> DeleteCallback { get; set; }
+
+        async void Delete(TData data)
+        {
+            if (DeleteCallback.HasDelegate)
+            {
+                await DeleteCallback.InvokeAsync(data);
+            }
+            
+        }
     }
 }

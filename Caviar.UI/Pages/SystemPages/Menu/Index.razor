@@ -4,7 +4,13 @@
 <Button Type="@ButtonType.Primary" Style="margin-bottom:16px" OnClick="@(()=>{ _visible = true; })">
     新增
 </Button>
-<TableData TData="ViewPowerMenu" DataSource="DataSource" ViewModelHeader="ViewModelHeaders" TreeChildren="u=>u.Children"></TableData>
+<TableData TData="ViewPowerMenu" 
+           DataSource="DataSource" 
+           ViewModelHeader="ViewModelHeaders" 
+           TreeChildren="u=>u.Children"
+           DeleteCallback="DeleteCallback">
+
+</TableData>
 
 
 <Modal Title="@title"
@@ -12,22 +18,25 @@
        DestroyOnClose="true"
        OnOk="@HandleOk"
        OnCancel="@HandleCancel">
-    <Add></Add>
+    <Add @ref="menuAdd"></Add>
 </Modal>
 
 @code{
     string title = "新增";
     bool _visible = false;
+    [Inject] public NavigationManager NavigationManager { get; set; }
+    Add menuAdd;
 
-    private void HandleOk(MouseEventArgs e)
+    private async void HandleOk(MouseEventArgs e)
     {
-        Console.WriteLine(e);
-        _visible = false;
+        var res = await menuAdd.Submit();
+        _visible = !res;
+        await OnInitializedAsync();
+        StateHasChanged();
     }
 
     private void HandleCancel(MouseEventArgs e)
     {
-        Console.WriteLine(e);
         _visible = false;
     }
 }

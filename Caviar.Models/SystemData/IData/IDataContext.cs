@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,17 +16,23 @@ namespace Caviar.Models.SystemData
     public partial interface IDataContext
     {
         /// <summary>
+        /// 保存操作
+        /// </summary>
+        /// <returns></returns>
+        Task<int> SaveChangesAsync();
+
+        /// <summary>
         /// 添加实体
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        Task<int> AddEntityAsync<T>(T entity, bool isSaveChange = true) where T : class,IBaseModel;
+        Task<int> AddEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IBaseModel;
         /// <summary>
         /// 修改实体
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public Task<int> UpdateEntityAsync<T>(T entity, bool isSaveChange = true) where T : class,IBaseModel;
+        public Task<int> UpdateEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IBaseModel;
         /// <summary>
         /// 修改部分实体
         /// </summary>
@@ -34,19 +41,19 @@ namespace Caviar.Models.SystemData
         /// <param name="updatePropertyList"></param>
         /// <param name="modified"></param>
         /// <returns></returns>
-        public Task<int> UpdateAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class,IBaseModel;
+        public Task<int> UpdateEntityAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class, IBaseModel;
         /// <summary>
         /// 删除实体
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="IsDelete">是否彻底删除，默认不彻底删除</param>
         /// <returns></returns>
-        public Task<int> DeleteEntityAsync<T>(T entity, bool isSaveChange = true, bool IsDelete = false) where T : class,IBaseModel;
+        public Task<int> DeleteEntityAsync<T>(T entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IBaseModel;
         /// <summary>
         /// 异步获取所有数据
         /// </summary>
         /// <returns></returns>
-        public IQueryable<T> GetAllAsync<T>() where T : class,IBaseModel;
+        public IQueryable<T> GetAllAsync<T>() where T : class, IBaseModel;
         /// <summary>
         /// 根据条件获取实体
         /// </summary>
@@ -77,7 +84,12 @@ namespace Caviar.Models.SystemData
         /// <param name="pageSize">每页大小</param>
         /// <param name="isOrder">排序正反</param>
         /// <returns></returns>
-        public Task<PageData<T>> GetPageAsync<T,TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true) where T:class,IBaseModel;
+        public Task<PageData<T>> GetPageAsync<T, TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true) where T : class, IBaseModel;
 
+        /// <summary>
+        /// 开启事务
+        /// </summary>
+        /// <returns></returns>
+        public IDbContextTransaction BeginTransaction();
     }
 }
