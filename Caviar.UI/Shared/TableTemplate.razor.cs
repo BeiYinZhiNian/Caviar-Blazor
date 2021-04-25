@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.UI.Shared
 {
-    public partial class TableData<TData>
+    public partial class TableTemplate<TData>
     {
         [Parameter]
         public List<TData> DataSource { get; set; }

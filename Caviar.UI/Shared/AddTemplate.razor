@@ -1,0 +1,22 @@
+﻿@typeparam TData
+
+<Form Model="model">
+    @if (ViewModelHeader != null)
+    {
+        foreach (var item in ViewModelHeader)
+        {
+            var typeNmae = item.ModelType.ToLower();
+            switch (typeNmae)
+            {
+                case "string":
+                    <FormItem Label="菜单名称">
+                        <Input @bind-Value="@context.SetObjValue()" Style="width:50%" />
+                    </FormItem>
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+</Form>

@@ -64,5 +64,11 @@ namespace Caviar.UI.Pages.SystemPages.Menu
             UpPowerMenuName = args.Node.Title;
             model.UpLayerId = int.Parse(args.Node.Key);
         }
+
+        void RemoveRecord()
+        {
+            UpPowerMenuName = "无上层目录";
+            model.UpLayerId = 0;
+        }
     }
 }

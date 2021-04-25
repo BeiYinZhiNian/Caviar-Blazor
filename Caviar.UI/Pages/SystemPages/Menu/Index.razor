@@ -4,13 +4,13 @@
 <Button Type="@ButtonType.Primary" Style="margin-bottom:16px" OnClick="@(()=>{ _visible = true; })">
     新增
 </Button>
-<TableData TData="ViewPowerMenu" 
+<TableTemplate TData="ViewPowerMenu" 
            DataSource="DataSource" 
            ViewModelHeader="ViewModelHeaders" 
            TreeChildren="u=>u.Children"
            DeleteCallback="DeleteCallback">
 
-</TableData>
+</TableTemplate>
 
 
 <Modal Title="@title"

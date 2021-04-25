@@ -129,5 +129,15 @@ namespace Caviar.Models.SystemData
             }
             return null;
         }
+        /// <summary>
+        /// 设置泛型某一属性
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="example"></param>
+        /// <param name="name"></param>
+        public static void SetObjValue<T>(this T example, object value)
+        {
+
+        }
     }
 }
