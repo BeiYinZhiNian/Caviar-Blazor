@@ -42,7 +42,17 @@
         </RadioGroup>
     </FormItem>
     <FormItem>
-        <Button OnClick="OpenIconModal">图标库</Button>
+        <Space>
+            <SpaceItem>
+                <Button OnClick="OpenIconModal">图标库</Button>
+            </SpaceItem>
+            <SpaceItem>
+                @if (!string.IsNullOrEmpty(model.Icon))
+                {
+                    <Icon Type="@model.Icon" Theme="outline"></Icon>
+                }
+            </SpaceItem>
+        </Space>
     </FormItem>
     <FormItem Label="排列顺序">
         <Input @bind-Value="@context.Order" Style="width: 20%;">
@@ -53,7 +63,9 @@
 <Modal Visible="@_visible"
        OnOk="HandleOk"
        OnCancel="HandleCancel"
-       Title="请选择图标">
+       Title="请选择图标"
+       Draggable="true"
+       DragInViewport="true">
     <IconPanel @bind-RadioValue="model.Icon"></IconPanel>
 </Modal>
 @code{
@@ -82,13 +94,12 @@
 
     private void HandleOk(MouseEventArgs e)
     {
-        Console.WriteLine(e);
         _visible = false;
+        StateHasChanged();
     }
 
     private void HandleCancel(MouseEventArgs e)
     {
-        Console.WriteLine(e);
         _visible = false;
     }
 
