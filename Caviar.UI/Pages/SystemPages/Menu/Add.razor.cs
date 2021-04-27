@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace Caviar.UI.Pages.SystemPages.Menu
 {
-    public partial class Add
+    public partial class Add: ITableTemplate
     {
         private Form<SysPowerMenu> _meunForm;
-        public SysPowerMenu model = new SysPowerMenu();
+        public SysPowerMenu model = new SysPowerMenu() { Number = "999" };
 
         [Inject]
         HttpHelper Http { get; set; }
@@ -37,7 +37,8 @@ namespace Caviar.UI.Pages.SystemPages.Menu
 
         [Inject]
         MessageService _message { get; set; }
-
+        [Parameter]
+        public bool Visible { get; set; }
 
         public async Task<bool> Submit()
         {

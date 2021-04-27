@@ -3,13 +3,12 @@
 
 <Form @ref="_meunForm" Model="@model" OnFinish="FormSubmit">
     <FormItem Label="菜单名称">
-        <Input @bind-Value="@context.MenuName" Style="width:50%"/>
+        <Input @bind-Value="@context.MenuName" Style="width:50%" />
     </FormItem>
     <FormItem Label="上层目录">
         <Dropdown>
             <Overlay>
-                <Tree 
-                      ShowIcon DataSource="SysPowerMenus"
+                <Tree ShowIcon DataSource="SysPowerMenus"
                       TitleExpression="x => x.DataItem.MenuName"
                       ChildrenExpression="x => x.DataItem.Children"
                       IconExpression="x => x.DataItem.Icon"
@@ -25,23 +24,36 @@
         </Dropdown>
     </FormItem>
     <FormItem Label="菜单类型">
-        <RadioGroup @bind-Value="@context.MenuType" OnChange="Callback">
+        <RadioGroup @bind-Value="@context.MenuType" OnChange="MenuTypeCallback">
             <Radio Value="(MenuType)0">目录</Radio>
             <Radio Value="(MenuType)1">菜单</Radio>
             <Radio Value="(MenuType)2">按钮</Radio>
         </RadioGroup>
     </FormItem>
+    <FormItem Label="按钮位置" Style="@buttonStrle">
+        <RadioGroup @bind-Value="@context.ButtonPosition" OnChange="ButtonPositionCallback">
+            <Tooltip Title="@("主要用于加载请求")">
+                <Radio Value="(ButtonPosition)0">表头</Radio>
+            </Tooltip>
+            <Tooltip Title="@("主要用于数据行的回调")">
+                <Radio Value="(ButtonPosition)1">行</Radio>
+            </Tooltip>
+        </RadioGroup>
+    </FormItem>
     <FormItem Label="请求地址" Style="@visibility">
         <Input @bind-Value="@context.Url">
     </FormItem>
-    <FormItem Label="打开方式">
+    <FormItem Label="打开方式" Style="@visibility">
         <RadioGroup @bind-Value="@context.TargetType">
             <Radio Value="(TargetType)0">当前页面</Radio>
             <Radio Value="(TargetType)1">弹出窗口</Radio>
             <Radio Value="(TargetType)2">新建页面</Radio>
         </RadioGroup>
     </FormItem>
-    <FormItem>
+    <FormItem Style="@buttonStrle">
+        <Checkbox @bind-Value="@context.IsDoubleTrue">需要二次确认</Checkbox>
+    </FormItem>
+    <FormItem Label="图标">
         <Space>
             <SpaceItem>
                 <Button OnClick="OpenIconModal">图标库</Button>
@@ -69,21 +81,47 @@
     <IconPanel @bind-RadioValue="model.Icon"></IconPanel>
 </Modal>
 @code{
+
     bool _visible = false;
 
     string visibility = "display:none;";
-    EventCallback<MenuType> Callback => EventCallback.Factory.Create<MenuType>(this, CheckMenuType);
-
+    string buttonStrle = "display:none;";
+    EventCallback<MenuType> MenuTypeCallback => EventCallback.Factory.Create<MenuType>(this, CheckMenuType);
+    EventCallback<ButtonPosition> ButtonPositionCallback => EventCallback.Factory.Create<ButtonPosition>(this, CheckButtonPosition);
     public void CheckMenuType()
     {
-        if (model.MenuType == 0)
+        switch (model.MenuType)
         {
-            visibility = "display:none;";
-            model.Url = "";
+            case MenuType.Catalog:
+                visibility = "display:none;";
+                buttonStrle = "display:none;";
+                model.Url = "";
+                break;
+            case MenuType.Menu:
+                buttonStrle = "display:none;";
+                visibility = "";
+                break;
+            case MenuType.Button:
+                visibility = "";
+                buttonStrle = "";
+                break;
+            default:
+                break;
         }
-        else
+    }
+
+    public void CheckButtonPosition()
+    {
+        switch (model.ButtonPosition)
         {
-            visibility = "";
+            case ButtonPosition.Header:
+                visibility = "";
+                break;
+            case ButtonPosition.Row:
+                visibility = "display:none;";
+                break;
+            default:
+                break;
         }
     }
 

@@ -51,25 +51,18 @@ namespace Caviar.Models.SystemData
         /// 新建页面
         /// </summary>
         [Display(Name = "新建页面")]
-        NewLabel
+        NewLabel,
     }
 
     /// <summary>
-    /// 权限类型
+    /// 按钮位置
     /// </summary>
-    public enum PermissionType
+    public enum ButtonPosition
     {
-        /// <summary>
-        /// 查看权限
-        /// </summary>
-        [Display(Name = "查看")]
-        Select,
-        [Display(Name = "新增")]
-        Add,
-        [Display(Name = "修改")]
-        Update,
-        [Display(Name = "删除")]
-        Delete,
+        [Display(Name = "表头")]
+        Header,
+        [Display(Name = "行")]
+        Row,
     }
 
 }

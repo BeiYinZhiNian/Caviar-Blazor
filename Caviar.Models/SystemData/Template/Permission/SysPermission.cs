@@ -14,11 +14,6 @@ namespace Caviar.Models.SystemData
     /// </summary>
     public class SysPermission : SysBaseModel
     {
-        /// <summary>
-        /// 权限类型
-        /// </summary>
-        [DisplayName("权限类型")]
-        public PermissionType PermissionType { get; set; }
         [JsonIgnore]
         public virtual List<SysPermissionMenu> SysPermissionMenus { get; set; }
     }

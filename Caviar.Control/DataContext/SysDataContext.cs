@@ -301,8 +301,8 @@ namespace Caviar.Control
                     MenuType = MenuType.Catalog,
                     TargetType = TargetType.CurrentPage,
                     MenuName = "系统管理",
-                    Icon = "windows"
-
+                    Icon = "windows",
+                    Number = "999"
                 };
                 await AddEntityAsync(management);
                 SysPowerMenu menuManage = new SysPowerMenu()
@@ -313,6 +313,7 @@ namespace Caviar.Control
                     Url = "/Menu/Index",
                     Icon = "menu",
                     UpLayerId = management.Id,
+                    Number = "999"
                 };
                 await AddEntityAsync(menuManage);
             }

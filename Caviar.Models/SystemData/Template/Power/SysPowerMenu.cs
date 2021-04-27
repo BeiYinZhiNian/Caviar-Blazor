@@ -36,6 +36,12 @@ namespace Caviar.Models.SystemData
 
         [DisplayName("父id")]
         public int UpLayerId { get; set; }
+
+        [DisplayName("按钮位置")]
+        public ButtonPosition ButtonPosition { get; set; }
+
+        [DisplayName("二次确认")]
+        public bool IsDoubleTrue { get; set; }
         [JsonIgnore]
         public virtual List<SysPermissionMenu> RoleMenus { get; set; }
     }

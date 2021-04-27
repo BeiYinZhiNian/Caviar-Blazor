@@ -17,6 +17,7 @@
     {
         RenderFragment ViewSubMenu = null;
         if (viewPowerMenus == null || viewPowerMenus.Count == 0) return ViewSubMenu;
+        viewPowerMenus = viewPowerMenus.OrderBy(u => u.Number).ToList();
         foreach (var item in viewPowerMenus)
         {
             RenderFragment subTitle =

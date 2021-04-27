@@ -24,8 +24,14 @@ namespace Caviar.UI.Pages
 
         public async Task Test()
         {
-            var str = await JsRuntime.InvokeAsync<string>("getCookie",Program.CookieName);
-            Console.WriteLine(str);
+            var test = typeof(Program).Assembly.GetTypes();
+            foreach (var item in test)
+            {
+                if (item.Name.ToLower().IndexOf("add") != -1)
+                {
+
+                }
+            }
         }
     }
 

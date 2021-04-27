@@ -1,45 +1,12 @@
 ﻿@page "/Menu/index"
 
 
-<Button Type="@ButtonType.Primary" Style="margin-bottom:16px" OnClick="@(()=>{ _visible = true; })">
-    新增
-</Button>
-<TableTemplate TData="ViewPowerMenu" 
-           DataSource="DataSource" 
-           ViewModelHeader="ViewModelHeaders" 
-           TreeChildren="u=>u.Children"
-           DeleteCallback="DeleteCallback">
+
+<TableTemplate TData="ViewPowerMenu"
+               DataSource="DataSource"
+               ViewModelHeader="ViewModelHeaders"
+               TreeChildren="u=>u.Children"
+               DeleteCallback="DeleteCallback">
 
 </TableTemplate>
 
-
-<Modal Title="@title"
-       Visible="@_visible"
-       DestroyOnClose="true"
-       MaskClosable ="false"
-       OnOk="@HandleOk"
-       OnCancel="@HandleCancel"
-       Draggable="true"
-       DragInViewport="true">
-    <Add @ref="menuAdd"></Add>
-</Modal>
-
-@code{
-    string title = "新增";
-    bool _visible = false;
-    [Inject] public NavigationManager NavigationManager { get; set; }
-    Add menuAdd;
-
-    private async void HandleOk(MouseEventArgs e)
-    {
-        var res = await menuAdd.Submit();
-        _visible = !res;
-        await OnInitializedAsync();
-        StateHasChanged();
-    }
-
-    private void HandleCancel(MouseEventArgs e)
-    {
-        _visible = false;
-    }
-}

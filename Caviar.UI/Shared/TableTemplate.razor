@@ -1,5 +1,40 @@
 ﻿@typeparam TData
 
+<Space>
+    @if (Buttons != null)
+    {
+        foreach (var item in Buttons)
+        {
+            if (item.ButtonPosition == ButtonPosition.Header)
+            {
+                <SpaceItem>
+
+                    @if (item.IsDoubleTrue)
+                    {
+                        string title = $"确认执行{item.MenuName}吗";
+                        <Popconfirm Title="@title"
+                                    OkText="确认"
+                                    CancelText="取消"
+                                    OnConfirm="() => ButtonClick(item, default)">
+                            <Button Type="@ButtonType.Primary" Danger Style="margin-bottom:16px">
+                                @item.MenuName
+                            </Button>
+                        </Popconfirm>
+                    }
+                    else
+                    {
+                        <Button Type="@ButtonType.Primary" Style="margin-bottom:16px" OnClick="()=>ButtonClick(item,default)">
+                            @item.MenuName
+                        </Button>
+                    }
+                </SpaceItem>
+            }
+        }
+    }
+</Space>
+
+
+
 <Table DataSource="DataSource" TItem="TData" TreeChildren="TreeChildren">
     @if (ViewModelHeader != null)
     {
@@ -72,13 +107,55 @@
 
         <ActionColumn>
             <Space>
-                <Popconfirm Title="确认删除该条数据吗?"
-                            OnConfirm="()=>Delete(context)"
-                            OkText="确认"
-                            CancelText="取消">
-                    <SpaceItem><Button Danger>删除</Button></SpaceItem>
-                </Popconfirm>
+                @if (Buttons != null)
+                {
+                    foreach (var item in Buttons)
+                    {
+                        if (item.ButtonPosition == ButtonPosition.Row)
+                        {
+                            <SpaceItem>
+                                @if (item.IsDoubleTrue)
+                                {
+                                    string title = $"确认{item.MenuName}该数据吗";
+                                    <Popconfirm Title="@title"
+                                                OkText="确认"
+                                                CancelText="取消"
+                                                OnConfirm="()=>ButtonClick(item,context)">
+                                        <Button Type="@ButtonType.Primary" Danger Style="margin-bottom:16px">
+                                            @item.MenuName
+                                        </Button>
+                                    </Popconfirm>
+                                }
+                                else
+                                {
+                                    <Button Type="@ButtonType.Primary" Style="margin-bottom:16px" OnClick="()=>ButtonClick(item,context)">
+                                        @item.MenuName
+                                    </Button>
+                                }
+                            </SpaceItem>
+                        }
+                    }
+                }
             </Space>
         </ActionColumn>
     }
 </Table>
+
+
+
+
+<Modal Title="@title"
+       Visible="@_visible"
+       DestroyOnClose="true"
+       MaskClosable="false"
+       OnOk="@HandleOk"
+       OnCancel="@HandleCancel"
+       Draggable="true"
+       DragInViewport="true">
+    @CreateDynamicComponent()
+</Modal>
+
+@code{
+
+
+}

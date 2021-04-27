@@ -14,11 +14,6 @@ namespace Caviar.UI.Shared
     {
         [Inject]
         IConfiguration Configuration { get; set; }
-
-        [Inject]
-        NavigationManager NavigationManager { get; set; }
-
-        public bool Loading { get; set; }
         /// <summary>
         /// logo图片地址
         /// </summary>
@@ -88,26 +83,6 @@ namespace Caviar.UI.Shared
             {
                 HeaderStyle = "margin-left: 200px";
                 LogoImgSrc = LogoImg;
-            }
-        }
-
-        EventCallback _layoutStyleCallBack = EventCallback.Empty;
-        EventCallback LayoutStyleCallBack
-        {
-            get
-            {
-                if (_layoutStyleCallBack.Equals(EventCallback.Empty))
-                    _layoutStyleCallBack = EventCallback.Factory.Create(this, SetStyle);
-                return _layoutStyleCallBack;
-            }
-        }
-
-        public void SetStyle(object style)
-        {
-            if (style != null)
-            {
-                var layoutStyle = (MainLayoutStyle)style;
-                Loading = layoutStyle.Loading;
             }
         }
     }
