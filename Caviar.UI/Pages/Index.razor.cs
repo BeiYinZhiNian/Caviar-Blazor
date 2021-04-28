@@ -28,13 +28,24 @@ namespace Caviar.UI.Pages
         {
             var a = UserConfig.Router.GetObjValue("Routes");
             var json = JsonConvert.SerializeObject(a);
-            var test = (IEnumerable)a;
-            foreach (var item in test)
-            {
-                
-            }
+            Console.WriteLine(json);
+
+            
+
+            
         }
     }
 
+
+    public class Routes
+    {
+        public Type Handle { get; set; }
+        public RouteTemplate Temptle { get; set; }
+    }
+
+    public class RouteTemplate
+    {
+        public string TemptleText { get; set; }
+    }
 
 }
