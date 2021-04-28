@@ -1,4 +1,4 @@
-<Router @ref="Router" AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
+<Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
     </Found>
@@ -9,8 +9,4 @@
     </NotFound>
 </Router>
 
-<AntContainer /> 
-
-@code{
-    public static Router Router { get; set; }
-}
+<AntContainer />

@@ -25,6 +25,18 @@ namespace Caviar.WebAPI.Controllers
             ResultMsg.Data = menuAction.GetMenus(u => u.MenuType == MenuType.Catalog);
             return ResultOK();
         }
+        /// <summary>
+        /// 获取该页面的按钮
+        /// </summary>
+        /// <param name="menuId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult GetButtons(int menuId)
+        {
+            var menuAction = CreateModel<SysPowerMenuAction>();
+            ResultMsg.Data = menuAction.GetButtons(u => u.MenuType == MenuType.Button && u.UpLayerId == menuId);
+            return ResultOK();
+        }
 
         [HttpPost]
         public async Task<IActionResult> AddEntity(SysPowerMenuAction action)

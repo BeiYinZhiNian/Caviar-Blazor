@@ -1,6 +1,7 @@
 ﻿using AntDesign;
 using Caviar.Models.SystemData;
 using Caviar.UI.Helper;
+using Caviar.UI.Shared;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -15,20 +16,29 @@ namespace Caviar.UI.Pages.SystemPages.Menu
         HttpHelper Http { get; set; }
         [Inject]
         MessageService _messageService { get; set; }
-
+        [Inject]
+        UserConfigHelper UserConfig { get; set; }
         public List<ViewPowerMenu> DataSource { get; set; }
 
         List<ViewModelHeader> ViewModelHeaders { get; set; }
-
+        List<ViewPowerMenu> Buttons { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            DataSource = await GetPowerMenus();
-            ViewModelHeaders = await GetViewModelNames();
+            DataSource = await GetPowerMenus();//获取数据源
+            ViewModelHeaders = await GetViewModelNames();//获取表头
+            Buttons = await GetPowerButtons();//获取按钮
         }
 
         async Task<List<ViewPowerMenu>> GetPowerMenus()
         {
             var result = await Http.GetJson<List<ViewPowerMenu>>("Menu/GetLeftSideMenus");
+            if (result.Status != 200) return new List<ViewPowerMenu>();
+            return result.Data;
+        }
+
+        async Task<List<ViewPowerMenu>> GetPowerButtons()
+        {
+            var result = await Http.GetJson<List<ViewPowerMenu>>("Menu/GetButtons?menuId=" + UserConfig.CurrentMenuId);
             if (result.Status != 200) return new List<ViewPowerMenu>();
             return result.Data;
         }

@@ -62,6 +62,12 @@ namespace Caviar.Control
             return ModelToView(menus);
         }
 
+        public virtual List<SysPowerMenu> GetButtons(Expression<Func<SysPowerMenu, bool>> where)
+        {
+            var menus = BaseControllerModel.DataContext.GetEntityAsync(where).OrderBy(u => u.Id).ToList();
+            return menus;
+        }
+
 
         protected virtual List<ViewPowerMenu> ModelToView(List<SysPowerMenu> menus)
         {

@@ -316,6 +316,19 @@ namespace Caviar.Control
                     Number = "999"
                 };
                 await AddEntityAsync(menuManage);
+                SysPowerMenu AddButton = new SysPowerMenu()
+                {
+                    MenuType = MenuType.Button,
+                    TargetType = TargetType.EjectPage,
+                    MenuName = "新增",
+                    ButtonPosition = ButtonPosition.Header,
+                    Url = "/Menu/Add",
+                    Icon = "menu",
+                    UpLayerId = menuManage.Id,
+                    IsDoubleTrue = false,
+                    Number = "999"
+                };
+                await AddEntityAsync(AddButton);
             }
             return IsExistence;
         }

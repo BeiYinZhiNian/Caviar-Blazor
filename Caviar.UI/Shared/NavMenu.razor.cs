@@ -39,15 +39,24 @@ namespace Caviar.UI.Shared
 
         [Inject]
         HttpHelper Http { get; set; }
-
-
+        [Inject]
+        UserConfigHelper UserConfig { get; set; }
+        [Inject] public NavigationManager NavigationManager { get; set; }
         public async void OnMenuItemClickedNav(MenuItem menuItem)
         {
             BreadcrumbItemNav = menuItem;
             if (BreadcrumbItemNavChanged.HasDelegate)
             {
                 await BreadcrumbItemNavChanged.InvokeAsync(BreadcrumbItemNav);
+                
             }
+        }
+
+
+        public void MenuItemClick(ViewPowerMenu menu)
+        {
+            UserConfig.CurrentMenuId = menu.Id;
+            NavigationManager.NavigateTo(menu.Url);
         }
 
         /// <summary>
