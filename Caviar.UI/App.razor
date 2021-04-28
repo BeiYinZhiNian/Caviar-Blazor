@@ -1,4 +1,5 @@
-<Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
+@using Helper;
+<Router @ref="UserConfig.Router" AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
     </Found>
@@ -10,3 +11,9 @@
 </Router>
 
 <AntContainer />
+
+@code{
+    [Inject]
+    UserConfigHelper UserConfig { get; set; }
+
+}

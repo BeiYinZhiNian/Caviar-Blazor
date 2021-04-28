@@ -120,7 +120,7 @@ namespace Caviar.Models.SystemData
         public static object? GetObjValue<T>(this T example,string name)
         {
             var exampleType = example.GetType();//获得类型
-            foreach (PropertyInfo sp in exampleType.GetProperties())//获得类型的属性字段
+            foreach (PropertyInfo sp in exampleType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic))//获得类型的属性字段
             {
                 if (sp.Name.ToLower() == name.ToLower())
                 {

@@ -65,8 +65,8 @@ namespace Caviar.UI.Shared
                             NavigationManager.NavigateTo(menu.Url);
                             break;
                         case TargetType.EjectPage:
+                            ModalUrl = menu.Url;
                             _visible = true;
-
                             break;
                         case TargetType.NewLabel:
                             JSRuntime.InvokeAsync<object>("open", menu.Url, "_blank");
@@ -83,12 +83,16 @@ namespace Caviar.UI.Shared
             }
         }
 
+        
 
-
-
+        [Inject]
+        UserConfigHelper UserConfig { get; set; }
         #region Modal
+        string ModalUrl = "";
         RenderFragment CreateDynamicComponent() => builder =>
         {
+            var routes = UserConfig.Router.GetObjValue("Routes");
+            
             builder.OpenComponent(0, typeof(Program));
             builder.AddComponentReferenceCapture(1, SetComponent);
             builder.CloseComponent();
