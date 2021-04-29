@@ -1,6 +1,7 @@
 ﻿using Caviar.Models.SystemData;
 using Caviar.UI.Helper;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using System;
@@ -66,7 +67,7 @@ namespace Caviar.UI.Shared
                             break;
                         case TargetType.EjectPage:
                             ModalUrl = menu.Url;
-                            _visible = true;
+                            // _visible = true;
                             break;
                         case TargetType.NewLabel:
                             JSRuntime.InvokeAsync<object>("open", menu.Url, "_blank");
@@ -89,21 +90,35 @@ namespace Caviar.UI.Shared
         UserConfigHelper UserConfig { get; set; }
         #region Modal
         string ModalUrl = "";
-        RenderFragment CreateDynamicComponent() => builder =>
+        string UpUrl = "";
+        RenderFragment UpRenderFragment;
+        RenderFragment CreateDynamicComponent()
         {
-            var routes = UserConfig.Routes;
-            foreach (var item in routes)
+            RenderTreeBuilder builder = new RenderTreeBuilder();
+            if (UpUrl == ModalUrl)
             {
-                var page = (string)item.GetObjValue("Template").GetObjValue("TemplateText");
-                if(page.ToLower() == ModalUrl.ToLower() || "/"+page.ToLower() == ModalUrl.ToLower())
-                {
-                    var type = (Type)item.GetObjValue("Handler");
-                    builder.OpenComponent(0, type);
-                    builder.AddComponentReferenceCapture(1, SetComponent);
-                    builder.CloseComponent();
-                }
+                return UpRenderFragment;
             }
-        };
+            UpUrl = ModalUrl;
+            UpRenderFragment = Render();
+            return UpRenderFragment;
+        }
+        RenderFragment Render() => builder =>
+         {
+             var routes = UserConfig.Routes;
+             foreach (var item in routes)
+             {
+                 var page = (string)item.GetObjValue("Template").GetObjValue("TemplateText");
+                 if (page.ToLower() == ModalUrl.ToLower() || "/" + page.ToLower() == ModalUrl.ToLower())
+                 {
+                     var type = (Type)item.GetObjValue("Handler");
+                     builder.OpenComponent(0, type);
+                     builder.AddComponentReferenceCapture(1, SetComponent);
+                     builder.CloseComponent();
+                 }
+             }
+
+         };
 
         void SetComponent(object e)
         {
