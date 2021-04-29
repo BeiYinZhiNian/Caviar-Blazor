@@ -91,11 +91,18 @@ namespace Caviar.UI.Shared
         string ModalUrl = "";
         RenderFragment CreateDynamicComponent() => builder =>
         {
-            var routes = UserConfig.Router.GetObjValue("Routes");
-            
-            builder.OpenComponent(0, typeof(Program));
-            builder.AddComponentReferenceCapture(1, SetComponent);
-            builder.CloseComponent();
+            var routes = UserConfig.Routes;
+            foreach (var item in routes)
+            {
+                var page = (string)item.GetObjValue("Template").GetObjValue("TemplateText");
+                if(page.ToLower() == ModalUrl.ToLower() || "/"+page.ToLower() == ModalUrl.ToLower())
+                {
+                    var type = (Type)item.GetObjValue("Handler");
+                    builder.OpenComponent(0, type);
+                    builder.AddComponentReferenceCapture(1, SetComponent);
+                    builder.CloseComponent();
+                }
+            }
         };
 
         void SetComponent(object e)
