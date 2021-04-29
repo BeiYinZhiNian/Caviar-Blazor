@@ -67,7 +67,8 @@ namespace Caviar.UI.Shared
                             break;
                         case TargetType.EjectPage:
                             ModalUrl = menu.Url;
-                            // _visible = true;
+                            ModalTitle = menu.MenuName;
+                            _visible = true;
                             break;
                         case TargetType.NewLabel:
                             JSRuntime.InvokeAsync<object>("open", menu.Url, "_blank");
@@ -94,7 +95,6 @@ namespace Caviar.UI.Shared
         RenderFragment UpRenderFragment;
         RenderFragment CreateDynamicComponent()
         {
-            RenderTreeBuilder builder = new RenderTreeBuilder();
             if (UpUrl == ModalUrl)
             {
                 return UpRenderFragment;
@@ -125,7 +125,7 @@ namespace Caviar.UI.Shared
             menuAdd = (ITableTemplate)e;
         }
 
-        string title = "";
+        string ModalTitle = "";
         bool _visible = false;
         [Inject] public NavigationManager NavigationManager { get; set; }
         ITableTemplate menuAdd;

@@ -144,7 +144,7 @@
 
 
 
-<Modal Title="@title"
+<Modal Title="@ModalTitle"
        Visible="@_visible"
        DestroyOnClose="true"
        MaskClosable="false"
@@ -152,7 +152,7 @@
        OnCancel="@HandleCancel"
        Draggable="true"
        DragInViewport="true">
-
+    @CreateDynamicComponent()
 </Modal>
 
 @code{
