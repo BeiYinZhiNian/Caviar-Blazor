@@ -37,7 +37,7 @@
                      </SubMenu>;
                      break;
                 case MenuType.Menu:
-                ViewSubMenu += @<MenuItem Key="@item.MenuName" Id="@item.Id.ToString()" OnClick="()=>MenuItemClick(item)">@subTitle</MenuItem>;
+                ViewSubMenu += @<MenuItem Key="@item.MenuName" RouterLink="@item.Url">@subTitle</MenuItem>;
                     break;
                 default:
                     break;

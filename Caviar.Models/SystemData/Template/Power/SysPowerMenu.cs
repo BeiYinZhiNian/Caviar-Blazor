@@ -31,9 +31,6 @@ namespace Caviar.Models.SystemData
         [DisplayName("图标")]
         public string Icon { get; set; }
 
-        [DisplayName("顺序")]
-        public int Order { get; set; }
-
         [DisplayName("父id")]
         public int UpLayerId { get; set; }
 
