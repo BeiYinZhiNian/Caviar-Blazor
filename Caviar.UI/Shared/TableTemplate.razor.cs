@@ -1,4 +1,5 @@
-﻿using Caviar.Models.SystemData;
+﻿using AntDesign;
+using Caviar.Models.SystemData;
 using Caviar.UI.Helper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
@@ -170,6 +171,21 @@ namespace Caviar.UI.Shared
                 await HandleCancelCallback.InvokeAsync(CurrentMenu);
             }
         }
+        #endregion
+
+        #region 查询条件
+        [Parameter]
+        public bool IsOpenQuery { get; set; } = true;
+
+
+        ViewQuery<TData> Query = new ViewQuery<TData>();
+
+        void OnRangeChange(DateRangeChangedEventArgs args)
+        {
+            Query.StartTime = args.Dates[0];
+            Query.EndTime = args.Dates[1];
+        }
+
         #endregion
     }
 }

@@ -1,37 +1,64 @@
 ﻿@typeparam TData
 
-<Space>
-    @if (Buttons != null)
+<Space Direction="@DirectionVHType.Vertical" Size="@("large")">
+    @if (IsOpenQuery)
     {
-        foreach (var item in Buttons)
-        {
-            if (item.ButtonPosition == ButtonPosition.Header)
-            {
+        <SpaceItem>
+            <Space>
                 <SpaceItem>
-
-                    @if (item.IsDoubleTrue)
-                    {
-                        string title = $"确认执行{item.MenuName}吗";
-                        <Popconfirm Title="@title"
-                                    OkText="确认"
-                                    CancelText="取消"
-                                    OnConfirm="() => ButtonClick(item, default)">
-                            <Button Icon="@item.Icon" Type="@ButtonType.Primary" Danger Style="margin-bottom:16px">
-                                @item.MenuName
-                            </Button>
-                        </Popconfirm>
-                    }
-                    else
-                    {
-                        <Button Icon="@item.Icon" Type="@ButtonType.Primary" Style="margin-bottom:16px;" OnClick="()=>ButtonClick(item,default)">
-                            @item.MenuName
-                        </Button>
-                    }
+                    <Input Placeholder="请输入搜索内容" @bind-Value="@Query.QueryStr" />
                 </SpaceItem>
-            }
-        }
+                <SpaceItem>
+                    <RangePicker TValue="DateTime?[]" ShowTime='@("HH:mm")' OnChange="OnRangeChange" />
+                </SpaceItem>
+                <SpaceItem>
+                    <Button Type="@ButtonType.Primary">查询</Button>
+                </SpaceItem>
+            </Space>
+        </SpaceItem>
     }
+    <SpaceItem>
+
+        <Space>
+            @if (Buttons != null)
+            {
+                foreach (var item in Buttons)
+                {
+                    if (item.ButtonPosition == ButtonPosition.Header)
+                    {
+                        <SpaceItem>
+                            @if (item.IsDoubleTrue)
+                            {
+                                string title = $"确认执行{item.MenuName}吗";
+                                <Popconfirm Title="@title"
+                                            OkText="确认"
+                                            CancelText="取消"
+                                            OnConfirm="() => ButtonClick(item, default)">
+                                    <Button Icon="@item.Icon" Type="@ButtonType.Primary" Danger Style="margin-bottom:16px">
+                                        @item.MenuName
+                                    </Button>
+                                </Popconfirm>
+                            }
+                            else
+                            {
+                                <Button Icon="@item.Icon" Type="@ButtonType.Primary" Style="margin-bottom:16px;" OnClick="()=>ButtonClick(item,default)">
+                                    @item.MenuName
+                                </Button>
+                            }
+                        </SpaceItem>
+                    }
+                }
+            }
+        </Space>
+
+    </SpaceItem>
 </Space>
+
+
+
+
+
+
 
 
 
@@ -154,7 +181,3 @@
        DragInViewport="true">
     @CreateDynamicComponent()
 </Modal>
-
-@code{
-
-}
