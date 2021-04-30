@@ -32,7 +32,7 @@ namespace Caviar.UI.Pages.SystemPages.Menu
 
         async Task<List<ViewPowerMenu>> GetPowerMenus()
         {
-            var result = await Http.GetJson<List<ViewPowerMenu>>("Menu/GetCatalogMenus");
+            var result = await Http.GetJson<List<ViewPowerMenu>>("Menu/GetLeftSideMenus");
             if (result.Status != 200) return new List<ViewPowerMenu>();
             return result.Data;
         }

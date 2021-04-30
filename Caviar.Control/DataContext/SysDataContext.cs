@@ -323,12 +323,39 @@ namespace Caviar.Control
                     MenuName = "新增",
                     ButtonPosition = ButtonPosition.Header,
                     Url = "/Menu/Add",
-                    Icon = "menu",
+                    Icon = "appstore-add",
                     UpLayerId = menuManage.Id,
                     IsDoubleTrue = false,
                     Number = "999"
                 };
                 await AddEntityAsync(AddButton);
+                AddButton = new SysPowerMenu()
+                {
+                    MenuType = MenuType.Button,
+                    MenuName = "删除",
+                    ButtonPosition = ButtonPosition.Row,
+                    Icon = "delete",
+                    UpLayerId = menuManage.Id,
+                    IsDoubleTrue = true,
+                    Number = "999"
+                };
+                await AddEntityAsync(AddButton);
+
+
+
+
+
+                SysPowerMenu codePage = new SysPowerMenu()
+                {
+                    MenuType = MenuType.Menu,
+                    TargetType = TargetType.CurrentPage,
+                    MenuName = "代码生成",
+                    Url = "/Code/Index",
+                    Icon = "code",
+                    UpLayerId = management.Id,
+                    Number = "999"
+                };
+                await AddEntityAsync(codePage);
             }
             return IsExistence;
         }

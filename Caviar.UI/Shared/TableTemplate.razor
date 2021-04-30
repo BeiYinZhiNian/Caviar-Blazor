@@ -16,14 +16,14 @@
                                     OkText="确认"
                                     CancelText="取消"
                                     OnConfirm="() => ButtonClick(item, default)">
-                            <Button Type="@ButtonType.Primary" Danger Style="margin-bottom:16px">
+                            <Button Icon="@item.Icon" Type="@ButtonType.Primary" Danger Style="margin-bottom:16px">
                                 @item.MenuName
                             </Button>
                         </Popconfirm>
                     }
                     else
                     {
-                        <Button Type="@ButtonType.Primary" Style="margin-bottom:16px" OnClick="()=>ButtonClick(item,default)">
+                        <Button Icon="@item.Icon" Type="@ButtonType.Primary" Style="margin-bottom:16px;" OnClick="()=>ButtonClick(item,default)">
                             @item.MenuName
                         </Button>
                     }
@@ -121,14 +121,14 @@
                                                 OkText="确认"
                                                 CancelText="取消"
                                                 OnConfirm="()=>ButtonClick(item,context)">
-                                        <Button Type="@ButtonType.Primary" Danger Style="margin-bottom:16px">
+                                        <Button Icon="@item.Icon" Type="@ButtonType.Primary" Danger Style="margin-bottom:16px">
                                             @item.MenuName
                                         </Button>
                                     </Popconfirm>
                                 }
                                 else
                                 {
-                                    <Button Type="@ButtonType.Primary" Style="margin-bottom:16px" OnClick="()=>ButtonClick(item,context)">
+                                    <Button Icon="@item.Icon" Type="@ButtonType.Primary" Style="margin-bottom:16px" OnClick="()=>ButtonClick(item,context)">
                                         @item.MenuName
                                     </Button>
                                 }

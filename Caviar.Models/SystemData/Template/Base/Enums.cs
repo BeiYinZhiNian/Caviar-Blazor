@@ -52,6 +52,11 @@ namespace Caviar.Models.SystemData
         /// </summary>
         [Display(Name = "新建页面")]
         NewLabel,
+        /// <summary>
+        /// 回调
+        /// </summary>
+        [Display(Name = "回调")]
+        Callback,
     }
 
     /// <summary>

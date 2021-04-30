@@ -43,9 +43,9 @@ namespace Caviar.UI.Shared
         }
 
         [Parameter]
-        public EventCallback<TData> RowCallback { get; set; }
+        public EventCallback<RowCallbackData<TData>> RowCallback { get; set; }
 
-        async void RoleAction(TData data)
+        async void RoleAction(RowCallbackData<TData> data)
         {
             if (RowCallback.HasDelegate)
             {
@@ -55,8 +55,10 @@ namespace Caviar.UI.Shared
         }
         [Inject]
         IJSRuntime JSRuntime { get; set; }
+        ViewPowerMenu CurrentMenu { get; set; }
         void ButtonClick(ViewPowerMenu menu, TData data)
         {
+            CurrentMenu = menu;
             switch (menu.ButtonPosition)
             {
                 case ButtonPosition.Header:
@@ -71,14 +73,22 @@ namespace Caviar.UI.Shared
                             _visible = true;
                             break;
                         case TargetType.NewLabel:
-                            JSRuntime.InvokeAsync<object>("open", menu.Url, "_blank");
+                            JSRuntime.InvokeVoidAsync("open", menu.Url, "_blank");
+                            break;
+                        case TargetType.Callback:
+                            HandleOk(null);
                             break;
                         default:
                             break;
                     }
                     break;
                 case ButtonPosition.Row:
-                    RoleAction(data);
+                    RowCallbackData<TData> row = new RowCallbackData<TData>()
+                    {
+                        Menu = menu,
+                        Data = data,
+                    };
+                    RoleAction(row);
                     break;
                 default:
                     break;
@@ -95,6 +105,7 @@ namespace Caviar.UI.Shared
         RenderFragment UpRenderFragment;
         RenderFragment CreateDynamicComponent()
         {
+            if (ModalUrl == null) ModalUrl = "";
             if (UpUrl == ModalUrl)
             {
                 return UpRenderFragment;
@@ -115,6 +126,7 @@ namespace Caviar.UI.Shared
                      builder.OpenComponent(0, type);
                      builder.AddComponentReferenceCapture(1, SetComponent);
                      builder.CloseComponent();
+                     return;
                  }
              }
 
@@ -129,18 +141,34 @@ namespace Caviar.UI.Shared
         bool _visible = false;
         [Inject] public NavigationManager NavigationManager { get; set; }
         ITableTemplate menuAdd;
-
+        [Parameter]
+        public EventCallback<ViewPowerMenu> HandleOkCallback { get; set; }
+        [Parameter]
+        public EventCallback<ViewPowerMenu> HandleCancelCallback { get; set; }
         private async void HandleOk(MouseEventArgs e)
         {
-            var res = await menuAdd.Submit();
+            var res = true;
+            if (menuAdd != null)
+            {
+                res = await menuAdd.Submit();
+            }
             _visible = !res;
-            await OnInitializedAsync();
-            StateHasChanged();
+            if (res)
+            {
+                if (HandleOkCallback.HasDelegate)
+                {
+                    await HandleOkCallback.InvokeAsync(CurrentMenu);
+                }
+            }
         }
 
-        private void HandleCancel(MouseEventArgs e)
+        private async void HandleCancel(MouseEventArgs e)
         {
             _visible = false;
+            if (HandleCancelCallback.HasDelegate)
+            {
+                await HandleCancelCallback.InvokeAsync(CurrentMenu);
+            }
         }
         #endregion
     }

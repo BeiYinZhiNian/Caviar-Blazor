@@ -3,6 +3,7 @@ using Caviar.Models.SystemData;
 using Caviar.UI.Helper;
 using Caviar.UI.Shared;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace Caviar.UI.Pages.SystemPages.Menu
         MessageService _messageService { get; set; }
         [Inject]
         UserConfigHelper UserConfig { get; set; }
+        [Inject]
+        NavigationManager NavigationManager { get; set; }
         public List<ViewPowerMenu> DataSource { get; set; }
 
         List<ViewModelHeader> ViewModelHeaders { get; set; }
@@ -31,14 +34,15 @@ namespace Caviar.UI.Pages.SystemPages.Menu
 
         async Task<List<ViewPowerMenu>> GetPowerMenus()
         {
-            var result = await Http.GetJson<List<ViewPowerMenu>>("Menu/GetLeftSideMenus");
+            var result = await Http.GetJson<List<ViewPowerMenu>>("Menu/GetMenus");
             if (result.Status != 200) return new List<ViewPowerMenu>();
             return result.Data;
         }
 
         async Task<List<ViewPowerMenu>> GetPowerButtons()
         {
-            var result = await Http.GetJson<List<ViewPowerMenu>>("Menu/GetButtons?menuId=" + UserConfig.CurrentMenuId);
+            string url = NavigationManager.Uri.Replace(NavigationManager.BaseUri,"");
+            var result = await Http.GetJson<List<ViewPowerMenu>>("Menu/GetButtons?url=" + url);
             if (result.Status != 200) return new List<ViewPowerMenu>();
             return result.Data;
         }
@@ -54,12 +58,34 @@ namespace Caviar.UI.Pages.SystemPages.Menu
             }
             return new List<ViewModelHeader>();
         }
-
-        EventCallback<ViewPowerMenu> DeleteCallback => EventCallback.Factory.Create<ViewPowerMenu>(this, Delete);
-
-        async void Delete(object e)
+        public async void HandleOk(ViewPowerMenu e)
         {
-            var data = (ViewPowerMenu)e;
+            switch (e.MenuName)
+            {
+                case "新增":
+                    await OnInitializedAsync();
+                    StateHasChanged();
+                    break;
+                default:
+                    break;
+            }
+            
+        }
+
+        void RowCallback(RowCallbackData<ViewPowerMenu> row)
+        {
+            switch (row.Menu.MenuName)
+            {
+                case "删除":
+                    Delete(row.Data);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        async void Delete(ViewPowerMenu data)
+        {
             if(data.Children!=null && data.Children.Count > 0)
             {
                 var confirm = await ShowConfirm(data.MenuName, data.Children.Count);

@@ -21,10 +21,10 @@
         foreach (var item in viewPowerMenus)
         {
             RenderFragment subTitle =
-            @<span>
+            @<span style="font-size:15px">
             @if (!string.IsNullOrEmpty(item.Icon))
             {
-                <Icon Type="@item.Icon" Theme="outline"></Icon>
+                <Icon Style="font-size:15px" Type="@item.Icon" Theme="outline"></Icon>
             }
             <span>@item.MenuName</span>
             </span>;

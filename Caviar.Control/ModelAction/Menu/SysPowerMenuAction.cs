@@ -56,13 +56,13 @@ namespace Caviar.Control
             return count;
         }
 
-        public virtual List<ViewPowerMenu> GetMenus(Expression<Func<SysPowerMenu, bool>> where)
+        public virtual List<ViewPowerMenu> GetViewMenus(Expression<Func<SysPowerMenu, bool>> where)
         {
-            var menus = BaseControllerModel.DataContext.GetEntityAsync(where).OrderBy(u => u.Id).ToList();
+            var menus = GetMenus(where);
             return ModelToView(menus);
         }
 
-        public virtual List<SysPowerMenu> GetButtons(Expression<Func<SysPowerMenu, bool>> where)
+        public virtual List<SysPowerMenu> GetMenus(Expression<Func<SysPowerMenu, bool>> where)
         {
             var menus = BaseControllerModel.DataContext.GetEntityAsync(where).OrderBy(u => u.Id).ToList();
             return menus;

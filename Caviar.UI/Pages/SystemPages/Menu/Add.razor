@@ -43,11 +43,12 @@
     <FormItem Label="请求地址" Style="@visibility">
         <Input @bind-Value="@context.Url">
     </FormItem>
-    <FormItem Label="打开方式" Style="@visibility">
+    <FormItem Label="打开方式" Style="@buttonStrle">
         <RadioGroup @bind-Value="@context.TargetType">
             <Radio Value="(TargetType)0">当前页面</Radio>
             <Radio Value="(TargetType)1">弹出窗口</Radio>
-            <Radio Value="(TargetType)2">新建页面</Radio>
+            <Radio Value="(TargetType)2" Disabled="true">新建页面</Radio>
+            <Radio Value="(TargetType)3">回调</Radio>
         </RadioGroup>
     </FormItem>
     <FormItem Style="@buttonStrle">

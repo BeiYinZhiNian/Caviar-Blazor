@@ -10,19 +10,36 @@ namespace Caviar.WebAPI.Controllers
 {
     public class MenuController : BaseController
     {
+        SysPowerMenuAction _action;
+        SysPowerMenuAction Action 
+        {
+            get 
+            {
+                if (_action == null)
+                {
+                    _action = CreateModel<SysPowerMenuAction>();
+                }
+                return _action;
+            }
+            set
+            {
+                _action = value;
+            }
+        }
+
         [HttpGet]
         public IActionResult GetLeftSideMenus()
         {
-            var menuAction = CreateModel<SysPowerMenuAction>();
-            ResultMsg.Data = menuAction.GetMenus(u => u.MenuType == MenuType.Catalog || u.MenuType == MenuType.Menu);
+            
+            ResultMsg.Data = Action.GetViewMenus(u => u.MenuType == MenuType.Catalog || u.MenuType == MenuType.Menu);
             return ResultOK();
         }
 
         [HttpGet]
-        public IActionResult GetCatalogMenus()
+        public IActionResult GetMenus()
         {
-            var menuAction = CreateModel<SysPowerMenuAction>();
-            ResultMsg.Data = menuAction.GetMenus(u => u.MenuType == MenuType.Catalog);
+            
+            ResultMsg.Data = Action.GetViewMenus(u => true);
             return ResultOK();
         }
         /// <summary>
@@ -31,17 +48,28 @@ namespace Caviar.WebAPI.Controllers
         /// <param name="menuId"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult GetButtons(int menuId)
+        public IActionResult GetButtons(string url)
         {
-            var menuAction = CreateModel<SysPowerMenuAction>();
-            ResultMsg.Data = menuAction.GetButtons(u => u.MenuType == MenuType.Button && u.UpLayerId == menuId);
+            if(url == null)
+            {
+                return ResultErrorMsg("请输入正确地址");
+            }
+            var Slash = url.Replace("/","").ToLower();
+            var menus = Action.GetMenus(u => u.Url.Replace("/", "").ToLower() == Slash).FirstOrDefault();
+            if (menus == null)
+            {
+                ResultMsg.Data = new List<SysPowerMenu>();
+                return ResultOK();
+            }
+            var buttons = Action.GetMenus(u => u.MenuType == MenuType.Button && u.UpLayerId == menus.Id);
+            ResultMsg.Data = buttons;
             return ResultOK();
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddEntity(SysPowerMenuAction action)
+        public async Task<IActionResult> AddEntity(SysPowerMenuAction MenuAction)
         {
-            var count = await action.AddEntity();
+            var count = await MenuAction.AddEntity();
             if (count > 0)
             {
                 return ResultOK();
@@ -56,10 +84,9 @@ namespace Caviar.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> MoveEntity(ViewPowerMenu viewMen)
         {
-            var menuAction = CreateModel<SysPowerMenuAction>();
-            menuAction.AutoAssign(viewMen);
+            Action.AutoAssign(viewMen);
             List<ViewPowerMenu> viewMenuList = new List<ViewPowerMenu>();
-            menuAction.RecursionGetMenu(viewMen, viewMenuList);
+            Action.RecursionGetMenu(viewMen, viewMenuList);
             var count = 0;
             if(viewMenuList!=null && viewMenuList.Count != 0)
             {
@@ -72,13 +99,13 @@ namespace Caviar.WebAPI.Controllers
                         item.UpLayerId = viewMen.UpLayerId;
                     }
                 }
-                count = await menuAction.UpdateEntity(menus);
+                count = await Action.UpdateEntity(menus);
                 if(count != viewMenuList.Count)
                 {
                     return ResultErrorMsg("删除菜单失败,子菜单移动失败");
                 }
             }
-            count = await menuAction.DeleteEntity();
+            count = await Action.DeleteEntity();
             if (count > 0)
             {
                 return ResultOK();
@@ -109,14 +136,12 @@ namespace Caviar.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteAllEntity(ViewPowerMenu viewMen)
         {
-            var menuAction = CreateModel<SysPowerMenuAction>();
-
             List<ViewPowerMenu> viewMenuList = new List<ViewPowerMenu>();
-            menuAction.RecursionGetMenu(viewMen, viewMenuList);//获取子菜单集合
+            Action.RecursionGetMenu(viewMen, viewMenuList);//获取子菜单集合
             viewMenuList.Add(viewMen);//将自己添加入删除集合
             List<SysPowerMenu> menus = new List<SysPowerMenu>();
             menus.ListAutoAssign(viewMenuList);//将view转为sys
-            var count = await menuAction.DeleteEntity(menus);
+            var count = await Action.DeleteEntity(menus);
             if(count == menus.Count)
             {
                 return ResultOK();
