@@ -118,5 +118,12 @@ namespace Caviar.Models.SystemData
         /// </summary>
         /// <returns></returns>
         public IDbContextTransaction BeginTransaction();
+        /// <summary>
+        /// 执行sql，请注意参数的检查防止sql注入
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public DataTable SqlQuery(string sql, params object[] parameters);
     }
 }

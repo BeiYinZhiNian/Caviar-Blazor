@@ -32,6 +32,8 @@ namespace Caviar.UI.Shared
 
         protected override async Task OnInitializedAsync()
         {
+            Query.QueryObj = GetBaseType(typeof(TData))?.Name;
+
             if (!string.IsNullOrEmpty(ModelHeaderName))
             {
                 var modelNameList = await Http.GetJson<List<ViewModelHeader>>("Base/GetModelHeader?name=" + ModelHeaderName);
@@ -41,6 +43,23 @@ namespace Caviar.UI.Shared
                 }
             }
             
+        }
+
+        Type GetBaseType(Type type)
+        {
+            var baseType = type.BaseType;
+            if (baseType == null)
+            {
+                return null;
+            }
+            else if(baseType.Name.ToLower() == "SysBaseModel".ToLower())
+            {
+                return type;
+            }
+            else
+            {
+                return GetBaseType(baseType);
+            }
         }
 
         [Parameter]
@@ -174,11 +193,12 @@ namespace Caviar.UI.Shared
         #endregion
 
         #region 查询条件
+        IEnumerable<string> _selectedValues;
         [Parameter]
         public bool IsOpenQuery { get; set; } = true;
 
 
-        ViewQuery<TData> Query = new ViewQuery<TData>();
+        ViewQuery Query = new ViewQuery();
 
         void OnRangeChange(DateRangeChangedEventArgs args)
         {
@@ -186,6 +206,12 @@ namespace Caviar.UI.Shared
             Query.EndTime = args.Dates[1];
         }
 
+
+        public async void FuzzyQuery()
+        {
+            Query.QueryField = _selectedValues?.ToList();
+            var result = await Http.PostJson<ViewQuery, ResultMsg>("Base/FuzzyQuery", Query);
+        }
         #endregion
     }
 }

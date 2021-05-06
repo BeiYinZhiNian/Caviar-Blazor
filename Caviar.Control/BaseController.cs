@@ -18,6 +18,7 @@ using Microsoft.Extensions.Primitives;
 using System.Web;
 using System.Collections;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 
 namespace Caviar.Control
 {
@@ -126,7 +127,7 @@ namespace Caviar.Control
             
             
         }
-
+        #region API
         [HttpGet]
         public IActionResult GetModelHeader(string name)
         {
@@ -151,6 +152,37 @@ namespace Caviar.Control
             ResultMsg.Data = viewModelNames;
             return ResultOK();
         }
+        /// <summary>
+        /// 模糊查询，暂未使用权限
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult FuzzyQuery(ViewQuery query)
+        {
+            if (string.IsNullOrEmpty(query.QueryObj)) return ResultErrorMsg("查询对象不可为空");
+            if (query.QueryField==null || query.QueryField.Count == 0 ) return ResultErrorMsg("查询字段不可为空");
+            List<SqlParameter> parameters = new List<SqlParameter>() 
+            {
+                new SqlParameter("queryStr", query.QueryStr),
+            };
+            var queryField = "";
+            var fieldCount = query.QueryField.Count + 1;
+            for (int i = 0; i < query.QueryField.Count; i++)
+            {
+                queryField += $"{query.QueryField[i]} LIKE N'%queryStr%'";
+                //parameters.Add(new SqlParameter("@field" + i, query.QueryField[i]));
+                if(++i < query.QueryField.Count)
+                {
+                    queryField += " or ";
+                }
+            }
+            string sql = $"select top(100)* from {query.QueryObj} where " + queryField;
+            var data = BC.DC.SqlQuery(sql, parameters.ToArray());
+            return ResultOK();
+        }
+
+        #endregion
         #region 创建模型
         protected virtual T CreateModel<T>() where T : class, IBaseModel
         {

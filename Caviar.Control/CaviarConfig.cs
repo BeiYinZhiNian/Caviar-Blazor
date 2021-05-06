@@ -169,7 +169,7 @@ namespace Caviar.Control
                     {
                         //获取所有对象
                         t.GetTypes()
-                            //查找是否包含IService接口的类
+                            //查找是否包含IDIinjectAtteribute接口的类
                             .Where(u => u.GetInterfaces().Contains(typeof(IDIinjectAtteribute)))
                             //判断是否是类
                             .Where(u => u.IsClass)

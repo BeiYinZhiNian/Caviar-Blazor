@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
-    public class ViewQuery<T>
+    public class ViewQuery
     {
         /// <summary>
         /// 查询字符串
@@ -27,6 +27,10 @@ namespace Caviar.Models.SystemData
         /// <summary>
         /// 查询对象
         /// </summary>
-        public T QueryObj { get; set; }
+        public string QueryObj { get; set; }
+        /// <summary>
+        /// 查询字段集合
+        /// </summary>
+        public List<string> QueryField { get; set; }
     }
 }

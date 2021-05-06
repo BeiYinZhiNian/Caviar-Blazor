@@ -1,10 +1,12 @@
 ﻿using Caviar.Models;
 using Caviar.Models.SystemData;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
@@ -30,7 +32,6 @@ namespace Caviar.Control
         private DataContext DC => _dataContext;
 
         IBaseControllerModel _baseControllerModel;
-
         /// <summary>
         /// 添加实体
         /// </summary>
@@ -313,7 +314,16 @@ namespace Caviar.Control
             var transaction = DC.Database.BeginTransaction();
             return transaction;
         }
-
+        /// <summary>
+        /// 执行sql，请注意参数的检查防止sql注入
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public DataTable SqlQuery(string sql, params object[] parameters)
+        {
+            return DC.Database.SqlQuery(sql, parameters);
+        }
 
         static bool IsDataInit = true;
         /// <summary>

@@ -6,13 +6,34 @@
         <SpaceItem>
             <Space>
                 <SpaceItem>
+                    <Select Mode="multiple"
+                            Placeholder="选择查询的字段"
+                            @bind-Values="@_selectedValues"
+                            TItemValue="string"
+                            TItem="string"
+                            Style="width: 200px;"
+                            EnableSearch
+                            AllowClear>
+                        <SelectOptions>
+                            @if (ViewModelHeader != null)
+                            {
+                                @foreach (var item in ViewModelHeader)
+                                {
+                                    if (string.IsNullOrEmpty(item.DispLayName)) continue;
+                                    <SelectOption TItemValue="string" TItem="string" Value=@item.TypeName Label=@item.DispLayName />
+                                }
+                            }
+                        </SelectOptions>
+                    </Select>
+                </SpaceItem>
+                <SpaceItem>
                     <Input Placeholder="请输入搜索内容" @bind-Value="@Query.QueryStr" />
                 </SpaceItem>
                 <SpaceItem>
                     <RangePicker TValue="DateTime?[]" ShowTime='@("HH:mm")' OnChange="OnRangeChange" />
                 </SpaceItem>
                 <SpaceItem>
-                    <Button Type="@ButtonType.Primary">查询</Button>
+                    <Button Type="@ButtonType.Primary" OnClick="FuzzyQuery">查询</Button>
                 </SpaceItem>
             </Space>
         </SpaceItem>
