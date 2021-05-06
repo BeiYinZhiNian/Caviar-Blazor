@@ -22,37 +22,37 @@ namespace Caviar.Control
             SysUserLogin userLogin = null;
             if (!string.IsNullOrEmpty(UserName))
             {
-                userLogin = BaseControllerModel.DataContext.GetEntityAsync<SysUserLogin>(u => u.UserName == UserName && u.Password == Password).FirstOrDefault();
+                userLogin = BC.DC.GetEntityAsync<SysUserLogin>(u => u.UserName == UserName && u.Password == Password).FirstOrDefault();
             }
             else if (!string.IsNullOrEmpty(PhoneNumber))
             {
-                userLogin = BaseControllerModel.DataContext.GetEntityAsync<SysUserLogin>(u => u.PhoneNumber == PhoneNumber && u.Password == Password).FirstOrDefault();
+                userLogin = BC.DC.GetEntityAsync<SysUserLogin>(u => u.PhoneNumber == PhoneNumber && u.Password == Password).FirstOrDefault();
             }
             if (userLogin == null) return "用户名或密码错误";
             this.AutoAssign(userLogin);
-            BaseControllerModel.UserToken.AutoAssign(this);
-            BaseControllerModel.UserToken.CreateTime = DateTime.Now;
-            BaseControllerModel.UserToken.Token = CaviarConfig.GetUserToken(BaseControllerModel.UserToken);
-            BaseControllerModel.UserToken.Duration = CaviarConfig.TokenDuration;
-            BaseControllerModel.IsLogin = true;
-            return BaseControllerModel.UserToken.Token;
+            BC.UserToken.AutoAssign(this);
+            BC.UserToken.CreateTime = DateTime.Now;
+            BC.UserToken.Token = CaviarConfig.GetUserToken(BC.UserToken);
+            BC.UserToken.Duration = CaviarConfig.TokenDuration;
+            BC.IsLogin = true;
+            return BC.UserToken.Token;
         }
 
         public virtual bool Register(out string msg)
         {
-            var count = BaseControllerModel.DataContext.GetEntityAsync<SysUserLogin>(u => u.UserName == UserName).Count();
+            var count = BC.DC.GetEntityAsync<SysUserLogin>(u => u.UserName == UserName).Count();
             if (count > 0)
             {
                 msg = "该用户名已经被注册！";
                 return false;
             }
-            count = BaseControllerModel.DataContext.GetEntityAsync<SysUserLogin>(u => u.PhoneNumber == PhoneNumber).Count();
+            count = BC.DC.GetEntityAsync<SysUserLogin>(u => u.PhoneNumber == PhoneNumber).Count();
             if (count > 0)
             {
                 msg = "该手机号已经被注册！";
                 return false;
             }
-            count = BaseControllerModel.DataContext.AddEntityAsync(this).Result;
+            count = BC.DC.AddEntityAsync(this).Result;
             if (count <= 0)
             {
                 msg = "注册账号失败！";

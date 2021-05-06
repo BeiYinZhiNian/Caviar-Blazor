@@ -55,13 +55,13 @@ namespace Caviar.WebAPI.Controllers
                 return ResultErrorMsg("请输入正确地址");
             }
             var Slash = url.Replace("/","").ToLower();
-            var menus = Action.GetMenus(u => u.Url.Replace("/", "").ToLower() == Slash).FirstOrDefault();
+            var menus = Action.GetEntitys(u => u.Url.Replace("/", "").ToLower() == Slash).FirstOrDefault();
             if (menus == null)
             {
                 ResultMsg.Data = new List<SysPowerMenu>();
                 return ResultOK();
             }
-            var buttons = Action.GetMenus(u => u.MenuType == MenuType.Button && u.UpLayerId == menus.Id);
+            var buttons = Action.GetEntitys(u => u.MenuType == MenuType.Button && u.UpLayerId == menus.Id);
             ResultMsg.Data = buttons;
             return ResultOK();
         }
@@ -86,7 +86,7 @@ namespace Caviar.WebAPI.Controllers
         {
             Action.AutoAssign(viewMen);
             List<ViewPowerMenu> viewMenuList = new List<ViewPowerMenu>();
-            Action.RecursionGetMenu(viewMen, viewMenuList);
+            Action.ViewToModel(viewMen, viewMenuList);
             var count = 0;
             if(viewMenuList!=null && viewMenuList.Count != 0)
             {
@@ -137,7 +137,7 @@ namespace Caviar.WebAPI.Controllers
         public async Task<IActionResult> DeleteAllEntity(ViewPowerMenu viewMen)
         {
             List<ViewPowerMenu> viewMenuList = new List<ViewPowerMenu>();
-            Action.RecursionGetMenu(viewMen, viewMenuList);//获取子菜单集合
+            Action.ViewToModel(viewMen, viewMenuList);//获取子菜单集合
             viewMenuList.Add(viewMen);//将自己添加入删除集合
             List<SysPowerMenu> menus = new List<SysPowerMenu>();
             menus.ListAutoAssign(viewMenuList);//将view转为sys

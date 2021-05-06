@@ -17,7 +17,7 @@ namespace Caviar.Models
         /// <summary>
         /// 数据上下文
         /// </summary>
-        public IDataContext DataContext => HttpContext.RequestServices.GetRequiredService<IDataContext>();
+        public IDataContext DC => HttpContext.RequestServices.GetRequiredService<IDataContext>();
         /// <summary>
         /// 获取日志记录
         /// </summary>

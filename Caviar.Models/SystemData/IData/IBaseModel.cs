@@ -52,6 +52,6 @@ namespace Caviar.Models.SystemData
         /// 用来获取控制器里一些操作
         /// </summary>
         [NotMapped]
-        public IBaseControllerModel BaseControllerModel { get; set; }
+        public IBaseControllerModel BC { get; set; }
     }
 }

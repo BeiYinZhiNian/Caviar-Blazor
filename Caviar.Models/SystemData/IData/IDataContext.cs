@@ -28,6 +28,14 @@ namespace Caviar.Models.SystemData
         /// <returns></returns>
         Task<int> AddEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IBaseModel;
         /// <summary>
+        /// 批量添加
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entity"></param>
+        /// <param name="isSaveChange"></param>
+        /// <returns></returns>
+        Task<int> AddEntityAsync<T>(List<T> entity, bool isSaveChange = true) where T : class, IBaseModel;
+        /// <summary>
         /// 修改实体
         /// </summary>
         /// <param name="entity"></param>
@@ -43,12 +51,31 @@ namespace Caviar.Models.SystemData
         /// <returns></returns>
         public Task<int> UpdateEntityAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class, IBaseModel;
         /// <summary>
+        /// 批量修改
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entity"></param>
+        /// <param name="fieldExp"></param>
+        /// <param name="isSaveChange"></param>
+        /// <returns></returns>
+        public Task<int> UpdateEntityAsync<T>(List<T> entity, bool isSaveChange = true) where T : class, IBaseModel;
+
+        /// <summary>
         /// 删除实体
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="IsDelete">是否彻底删除，默认不彻底删除</param>
         /// <returns></returns>
         public Task<int> DeleteEntityAsync<T>(T entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IBaseModel;
+        /// <summary>
+        /// 批量删除
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entity"></param>
+        /// <param name="isSaveChange"></param>
+        /// <param name="IsDelete"></param>
+        /// <returns></returns>
+        public Task<int> DeleteEntityAsync<T>(List<T> entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IBaseModel;
         /// <summary>
         /// 异步获取所有数据
         /// </summary>

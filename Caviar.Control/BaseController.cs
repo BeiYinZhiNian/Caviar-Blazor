@@ -26,7 +26,7 @@ namespace Caviar.Control
     public partial class BaseController : Controller
     {
         IBaseControllerModel _controllerModel;
-        public IBaseControllerModel ControllerModel
+        public IBaseControllerModel BC
         {
             get
             {
@@ -47,13 +47,13 @@ namespace Caviar.Control
             stopwatch.Start();
             base.OnActionExecuting(context);
             //获取ip地址
-            ControllerModel.Current_Ipaddress = context.HttpContext.GetUserIp();
+            BC.Current_Ipaddress = context.HttpContext.GetUserIp();
             //获取完整Url
-            ControllerModel.Current_AbsoluteUri = context.HttpContext.Request.GetAbsoluteUri();
+            BC.Current_AbsoluteUri = context.HttpContext.Request.GetAbsoluteUri();
             //获取请求路径
-            ControllerModel.Current_Action = context.HttpContext.Request.Path.Value;
+            BC.Current_Action = context.HttpContext.Request.Path.Value;
             //请求上下文
-            ControllerModel.HttpContext = HttpContext;
+            BC.HttpContext = HttpContext;
 
             if (HttpContext.Request.Headers.TryGetValue("UsreToken", out StringValues value))
             {
@@ -73,7 +73,7 @@ namespace Caviar.Control
                     context.Result = ResultUnauthorized("您的登录已过期，请重新登录");
                     return;
                 }
-                ControllerModel.UserToken = userToken;
+                BC.UserToken = userToken;
             }
             var IsVerification = ActionVerification();
             if (!IsVerification)
@@ -88,7 +88,7 @@ namespace Caviar.Control
                 {
                     if(ArgumentsItem.Value is IBaseModel)
                     {
-                        ((IBaseModel)ArgumentsItem.Value).BaseControllerModel = ControllerModel;
+                        ((IBaseModel)ArgumentsItem.Value).BC = BC;
                     }
                     //此处可以向IEnumerable中注入上下文
                     //else if(ArgumentsItem.Value is IEnumerable)
@@ -154,8 +154,8 @@ namespace Caviar.Control
         #region 创建模型
         protected virtual T CreateModel<T>() where T : class, IBaseModel
         {
-            var entity = ControllerModel.HttpContext.RequestServices.GetRequiredService<T>();
-            entity.BaseControllerModel = ControllerModel;
+            var entity = BC.HttpContext.RequestServices.GetRequiredService<T>();
+            entity.BC = BC;
             return entity;
         }
         #endregion
@@ -172,7 +172,7 @@ namespace Caviar.Control
         #region  日志消息
         protected void LoggerMsg<T>(string msg, string action = "", LogLevel logLevel = LogLevel.Information, bool IsSucc = true)
         {
-            ControllerModel.GetLogger<T>().LogInformation($"用户：{ControllerModel.UserName} 手机号：{ControllerModel.PhoneNumber} 访问地址：{ControllerModel.Current_AbsoluteUri} 访问ip：{ControllerModel.Current_Ipaddress} 执行时间：{stopwatch.Elapsed} 执行结果：{IsSucc} 执行消息：{msg}");
+            BC.GetLogger<T>().LogInformation($"用户：{BC.UserName} 手机号：{BC.PhoneNumber} 访问地址：{BC.Current_AbsoluteUri} 访问ip：{BC.Current_Ipaddress} 执行时间：{stopwatch.Elapsed} 执行结果：{IsSucc} 执行消息：{msg}");
         }
         #endregion
 

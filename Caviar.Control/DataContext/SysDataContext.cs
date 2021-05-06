@@ -27,7 +27,7 @@ namespace Caviar.Control
         }
         DataContext _dataContext;
 
-        private DataContext Base_DataContext => _dataContext;
+        private DataContext DC => _dataContext;
 
         IBaseControllerModel _baseControllerModel;
 
@@ -40,12 +40,34 @@ namespace Caviar.Control
         /// <returns></returns>
         public virtual async Task<int> AddEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IBaseModel
         {
-            Base_DataContext.Entry(entity).State = EntityState.Added;
+            DC.Entry(entity).State = EntityState.Added;
             if (isSaveChange)
             {
                 return await SaveChangesAsync();
             }
             return 0;
+        }
+        /// <summary>
+        /// 批量添加
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entity"></param>
+        /// <param name="isSaveChange"></param>
+        /// <returns></returns>
+        public virtual async Task<int> AddEntityAsync<T>(List<T> entity, bool isSaveChange) where T : class, IBaseModel
+        {
+            var transaction = BeginTransaction();
+            foreach (var item in entity)
+            {
+                await AddEntityAsync(item, false);
+            }
+            var count = 0;
+            if (isSaveChange)
+            {
+                count = await SaveChangesAsync();
+            }
+            transaction.Commit();
+            return count;
         }
         /// <summary>
         /// 添加多个实体
@@ -56,7 +78,7 @@ namespace Caviar.Control
         /// <returns></returns>
         public virtual async Task<int> AddRangeAsync<T>(List<T> entities, bool isSaveChange = true) where T : class, IBaseModel
         {
-            var set = Base_DataContext.Set<T>();
+            var set = DC.Set<T>();
             await set.AddRangeAsync(entities);
             if (isSaveChange)
             {
@@ -70,8 +92,8 @@ namespace Caviar.Control
         /// <returns></returns>
         public virtual async Task<int> SaveChangesAsync()
         {
-            Base_DataContext.ChangeTracker.DetectChanges(); // Important!
-            Base_DataContext.ChangeTracker
+            DC.ChangeTracker.DetectChanges(); // Important!
+            DC.ChangeTracker
                 .Entries()
                 .Where(u => u.State == EntityState.Modified)
                 .Select(u => u.Entity)
@@ -85,7 +107,7 @@ namespace Caviar.Control
                         baseEntity.OperatorUp = _baseControllerModel.UserName;
                     }
                 });
-            Base_DataContext.ChangeTracker
+            DC.ChangeTracker
                 .Entries()
                 .Where(u => u.State == EntityState.Added)
                 .Select(u => u.Entity)
@@ -99,7 +121,7 @@ namespace Caviar.Control
                         baseEntity.OperatorCare = _baseControllerModel.UserName;
                     }
                 });
-            return await Base_DataContext.SaveChangesAsync();
+            return await DC.SaveChangesAsync();
         }
         /// <summary>
         /// 修改指定实体
@@ -110,7 +132,7 @@ namespace Caviar.Control
         /// <returns></returns>
         public virtual async Task<int> UpdateEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IBaseModel
         {
-            Base_DataContext.Entry(entity).State = EntityState.Modified;
+            DC.Entry(entity).State = EntityState.Modified;
             if (isSaveChange)
             {
                 return await SaveChangesAsync();
@@ -127,13 +149,38 @@ namespace Caviar.Control
         /// <returns></returns>
         public virtual async Task<int> UpdateEntityAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class, IBaseModel
         {
-            Base_DataContext.Entry(entity).Property(fieldExp).IsModified = true;
+            DC.Entry(entity).Property(fieldExp).IsModified = true;
             if (isSaveChange)
             {
                 return await SaveChangesAsync();
             }
             return 0;
         }
+        /// <summary>
+        /// 批量修改
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entity"></param>
+        /// <param name="fieldExp"></param>
+        /// <param name="isSaveChange"></param>
+        /// <returns></returns>
+        public virtual async Task<int> UpdateEntityAsync<T>(List<T> entity, bool isSaveChange = true) where T : class, IBaseModel
+        {
+            var transaction = BeginTransaction();
+            foreach (var item in entity)
+            {
+                await UpdateEntityAsync(item, false);
+            }
+            var count = 0;
+            if (isSaveChange)
+            {
+                count = await SaveChangesAsync();
+            }
+            transaction.Commit();
+            return count;
+        }
+
+
         /// <summary>
         /// 删除实体
         /// </summary>
@@ -146,7 +193,7 @@ namespace Caviar.Control
         {
             if (entity.IsDelete || IsDelete)
             {
-                var set = Base_DataContext.Set<T>();
+                var set = DC.Set<T>();
                 set.Remove(entity);
                 if (isSaveChange)
                 {
@@ -161,13 +208,36 @@ namespace Caviar.Control
             return 0;
         }
         /// <summary>
+        /// 批量删除
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entity"></param>
+        /// <param name="isSaveChange"></param>
+        /// <param name="IsDelete"></param>
+        /// <returns></returns>
+        public virtual async Task<int> DeleteEntityAsync<T>(List<T> entity, bool isSaveChange, bool IsDelete) where T : class, IBaseModel
+        {
+            var transaction = BeginTransaction();
+            foreach (var item in entity)
+            {
+                await DeleteEntityAsync(item, false, IsDelete);
+            }
+            var count = 0;
+            if (isSaveChange)
+            {
+                count = await SaveChangesAsync();
+            }
+            transaction.Commit();
+            return count;
+        }
+        /// <summary>
         /// 获取所有实体
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public virtual IQueryable<T> GetAllAsync<T>() where T : class, IBaseModel
         {
-            var set = Base_DataContext.Set<T>();
+            var set = DC.Set<T>();
             return set.Where(u => u.IsDelete == false);
         }
         /// <summary>
@@ -184,7 +254,7 @@ namespace Caviar.Control
         /// <returns></returns>
         public virtual async Task<PageData<T>> GetPageAsync<T, TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true) where T : class, IBaseModel
         {
-            var set = Base_DataContext.Set<T>();
+            var set = DC.Set<T>();
             IQueryable<T> data = isOrder ?
                 set.OrderBy(orderBy) :
                 set.OrderByDescending(orderBy);
@@ -206,9 +276,9 @@ namespace Caviar.Control
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public IQueryable<T> GetEntityAsync<T>(Expression<Func<T, bool>> where) where T : class, IBaseModel
+        public virtual IQueryable<T> GetEntityAsync<T>(Expression<Func<T, bool>> where) where T : class, IBaseModel
         {
-            var set = Base_DataContext.Set<T>();
+            var set = DC.Set<T>();
             return set.Where(u => u.IsDelete == false).Where(where);
         }
         /// <summary>
@@ -217,9 +287,9 @@ namespace Caviar.Control
         /// <typeparam name="T"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Task<T> GetEntityAsync<T>(int id) where T : class, IBaseModel
+        public virtual Task<T> GetEntityAsync<T>(int id) where T : class, IBaseModel
         {
-            var set = Base_DataContext.Set<T>();
+            var set = DC.Set<T>();
             return set.Where(u => u.IsDelete == false).FirstOrDefaultAsync(u => u.Id == id);
         }
         /// <summary>
@@ -228,9 +298,9 @@ namespace Caviar.Control
         /// <typeparam name="T"></typeparam>
         /// <param name="uid"></param>
         /// <returns></returns>
-        public Task<T> GetEntityAsync<T>(Guid uid) where T : class, IBaseModel
+        public virtual Task<T> GetEntityAsync<T>(Guid uid) where T : class, IBaseModel
         {
-            var set = Base_DataContext.Set<T>();
+            var set = DC.Set<T>();
             return set.Where(u => u.IsDelete == false).FirstOrDefaultAsync(u => u.Uid == uid);
         }
 
@@ -238,9 +308,9 @@ namespace Caviar.Control
         /// 开启事务
         /// </summary>
         /// <returns></returns>
-        public IDbContextTransaction BeginTransaction()
+        public virtual IDbContextTransaction BeginTransaction()
         {
-            var transaction = Base_DataContext.Database.BeginTransaction();
+            var transaction = DC.Database.BeginTransaction();
             return transaction;
         }
 
@@ -254,7 +324,7 @@ namespace Caviar.Control
         /// <returns>返回true表示需要进行初始化数据操作，返回false即数据库已经存在或不需要初始化数据</returns>
         public virtual async Task<bool> DataInit()
         {
-            bool IsExistence = await Base_DataContext.Database.EnsureCreatedAsync();
+            bool IsExistence = await DC.Database.EnsureCreatedAsync();
             if (IsExistence)
             {
                 //创建初始角色
@@ -359,5 +429,9 @@ namespace Caviar.Control
             }
             return IsExistence;
         }
+
+
+
+
     }
 }

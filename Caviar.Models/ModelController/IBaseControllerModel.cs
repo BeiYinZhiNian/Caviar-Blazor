@@ -17,7 +17,7 @@ namespace Caviar.Models
         /// <summary>
         /// 数据上下文
         /// </summary>
-        public IDataContext DataContext { get; }
+        public IDataContext DC { get; }
         /// <summary>
         /// 日志记录
         /// </summary>

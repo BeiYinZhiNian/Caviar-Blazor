@@ -13,13 +13,13 @@ namespace Caviar.Control
     {
         public virtual async Task<int> AddEntity()
         {
-            var count = await BaseControllerModel.DataContext.AddEntityAsync(this);
+            var count = await BC.DC.AddEntityAsync(this);
             return count;
         }
 
         public virtual async Task<int> DeleteEntity()
         {
-            var count = await BaseControllerModel.DataContext.DeleteEntityAsync(this);
+            var count = await BC.DC.DeleteEntityAsync(this);
             return count;
         }
 
@@ -30,13 +30,7 @@ namespace Caviar.Control
         /// <returns></returns>
         public virtual async Task<int> DeleteEntity(List<SysPowerMenu> menus)
         {
-            var transaction = BaseControllerModel.DataContext.BeginTransaction();
-            foreach (var item in menus)
-            {
-                await BaseControllerModel.DataContext.DeleteEntityAsync(item, false);
-            }
-            var count = await BaseControllerModel.DataContext.SaveChangesAsync();
-            transaction.Commit();
+            var count = await BC.DC.DeleteEntityAsync(menus);
             return count;
         }
         /// <summary>
@@ -46,27 +40,23 @@ namespace Caviar.Control
         /// <returns></returns>
         public virtual async Task<int> UpdateEntity(List<SysPowerMenu> menus)
         {
-            var transaction = BaseControllerModel.DataContext.BeginTransaction();
-            foreach (var item in menus)
-            {
-                await BaseControllerModel.DataContext.UpdateEntityAsync(item, false);
-            }
-            var count = await BaseControllerModel.DataContext.SaveChangesAsync();
-            transaction.Commit();
+            var count = await BC.DC.UpdateEntityAsync(menus);
             return count;
+        }
+
+        public virtual List<SysPowerMenu> GetEntitys(Expression<Func<SysPowerMenu, bool>> where)
+        {
+            var menus = BC.DC.GetEntityAsync(where).OrderBy(u => u.Id).ToList();
+            return menus;
         }
 
         public virtual List<ViewPowerMenu> GetViewMenus(Expression<Func<SysPowerMenu, bool>> where)
         {
-            var menus = GetMenus(where);
+            var menus = GetEntitys(where);
             return ModelToView(menus);
         }
 
-        public virtual List<SysPowerMenu> GetMenus(Expression<Func<SysPowerMenu, bool>> where)
-        {
-            var menus = BaseControllerModel.DataContext.GetEntityAsync(where).OrderBy(u => u.Id).ToList();
-            return menus;
-        }
+        
 
 
         protected virtual List<ViewPowerMenu> ModelToView(List<SysPowerMenu> menus)
@@ -89,14 +79,14 @@ namespace Caviar.Control
         }
 
 
-        public void RecursionGetMenu(ViewPowerMenu data, List<ViewPowerMenu> menus)
+        public void ViewToModel(ViewPowerMenu data, List<ViewPowerMenu> menus)
         {
             foreach (var item in data.Children)
             {
                 menus.Add(item);
                 if (item.Children != null && item.Children.Count != 0)
                 {
-                    RecursionGetMenu(item, menus);
+                    ViewToModel(item, menus);
                 }
             }
         }
