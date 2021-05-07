@@ -153,7 +153,7 @@ namespace Caviar.Control
             return ResultOK();
         }
         /// <summary>
-        /// 模糊查询，暂未使用权限
+        /// 模糊查询，暂未使用权限,需要使用权限验证sql的正确性
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
@@ -161,24 +161,49 @@ namespace Caviar.Control
         public IActionResult FuzzyQuery(ViewQuery query)
         {
             if (string.IsNullOrEmpty(query.QueryObj)) return ResultErrorMsg("查询对象不可为空");
-            if (query.QueryField==null || query.QueryField.Count == 0 ) return ResultErrorMsg("查询字段不可为空");
+            var assemblyList = CaviarConfig.GetAssembly();
+            Type type = null;
+            foreach (var item in assemblyList)
+            {
+                type = item.GetTypes().SingleOrDefault(u => u.Name.ToLower() == query.QueryObj.ToLower());
+                if (type != null) break;
+            }
+            if(type==null) return ResultErrorMsg("没有对该对象的查询权限");
+
+
             List<SqlParameter> parameters = new List<SqlParameter>() 
             {
-                new SqlParameter("queryStr", query.QueryStr),
+                new SqlParameter("@queryStr", "%" + query.QueryStr + "%"),
             };
             var queryField = "";
-            var fieldCount = query.QueryField.Count + 1;
-            for (int i = 0; i < query.QueryField.Count; i++)
+            if (query.QueryField!=null && query.QueryField.Count > 0)
             {
-                queryField += $"{query.QueryField[i]} LIKE N'%queryStr%'";
-                //parameters.Add(new SqlParameter("@field" + i, query.QueryField[i]));
-                if(++i < query.QueryField.Count)
+                queryField = "and (";
+                for (int i = 0; i < query.QueryField.Count; i++)
                 {
-                    queryField += " or ";
+                    queryField += $" {query.QueryField[i]} LIKE @queryStr ";
+                    var index = i + 1;
+                    if (index < query.QueryField.Count)
+                    {
+                        queryField += " or ";
+                    }
                 }
+                queryField += ")";
             }
-            string sql = $"select top(100)* from {query.QueryObj} where " + queryField;
+            
+            string sql = $"select top(20)* from {query.QueryObj} where IsDelete=0 " + queryField;
+            if (query.StartTime != null)
+            {
+                sql += $" and CreatTime>=@StartTime ";
+                parameters.Add(new SqlParameter("@StartTime", query.StartTime));
+            }
+            if (query.EndTime != null)
+            {
+                sql += $" and CreatTime<=@EndTime ";
+                parameters.Add(new SqlParameter("@EndTime", query.EndTime));
+            }
             var data = BC.DC.SqlQuery(sql, parameters.ToArray());
+            ResultMsg.Data = data.ToList(type);
             return ResultOK();
         }
 

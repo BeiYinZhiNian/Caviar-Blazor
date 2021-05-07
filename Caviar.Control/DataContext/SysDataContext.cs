@@ -71,23 +71,6 @@ namespace Caviar.Control
             return count;
         }
         /// <summary>
-        /// 添加多个实体
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="entities"></param>
-        /// <param name="isSaveChange">默认为立刻保存</param>
-        /// <returns></returns>
-        public virtual async Task<int> AddRangeAsync<T>(List<T> entities, bool isSaveChange = true) where T : class, IBaseModel
-        {
-            var set = DC.Set<T>();
-            await set.AddRangeAsync(entities);
-            if (isSaveChange)
-            {
-                return await SaveChangesAsync();
-            }
-            return 0;
-        }
-        /// <summary>
         /// 保存所有更改
         /// </summary>
         /// <returns></returns>
@@ -194,8 +177,7 @@ namespace Caviar.Control
         {
             if (entity.IsDelete || IsDelete)
             {
-                var set = DC.Set<T>();
-                set.Remove(entity);
+                DC.Entry(entity).State = EntityState.Deleted;
                 if (isSaveChange)
                 {
                     return await SaveChangesAsync();

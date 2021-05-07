@@ -38,19 +38,14 @@ namespace Caviar.Control
 			return dt;
 		}
 
-		public static List<T> SqlQuery<T>(this DatabaseFacade facade, string sql, params object[] parameters) where T : class, new()
+		public static List<object> ToList(this DataTable dt,Type type)
 		{
-			var dt = SqlQuery(facade, sql, parameters);
-			return dt.ToList<T>();
-		}
-
-		public static List<T> ToList<T>(this DataTable dt) where T : class, new()
-		{
-			var propertyInfos = typeof(T).GetProperties();
-			var list = new List<T>();
+			var propertyInfos = type.GetProperties();
+			var list = new List<object>();
 			foreach (DataRow row in dt.Rows)
 			{
-				var t = new T();
+				
+				var t = Activator.CreateInstance(type);
 				foreach (PropertyInfo p in propertyInfos)
 				{
 					if (dt.Columns.IndexOf(p.Name) != -1 && row[p.Name] != DBNull.Value)

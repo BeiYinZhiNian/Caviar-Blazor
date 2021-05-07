@@ -210,7 +210,9 @@ namespace Caviar.UI.Shared
         public async void FuzzyQuery()
         {
             Query.QueryField = _selectedValues?.ToList();
-            var result = await Http.PostJson<ViewQuery, ResultMsg>("Base/FuzzyQuery", Query);
+            var result = await Http.PostJson<ViewQuery, List<TData>>("Base/FuzzyQuery", Query);
+            DataSource = result.Data;
+            StateHasChanged();
         }
         #endregion
     }
