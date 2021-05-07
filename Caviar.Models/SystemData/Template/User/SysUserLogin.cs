@@ -9,9 +9,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
-    /// <summary>
-    /// 系统用户
-    /// </summary>
+    [DisplayName("用户登录")]
     public partial class SysUserLogin : SysBaseModel
     {
         /// <summary>

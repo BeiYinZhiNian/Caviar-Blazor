@@ -136,15 +136,26 @@ namespace Caviar.Models.SystemData
             }
             return null;
         }
-        /// <summary>
-        /// 设置泛型某一属性
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="example"></param>
-        /// <param name="name"></param>
-        public static void SetObjValue<T>(this T example, object value)
-        {
 
+        private static List<Assembly> _assemblies;
+
+        /// <summary>
+        /// 使用加载器技术
+        /// </summary>
+        /// <returns></returns>
+        public static List<Assembly> GetAssembly()
+        {
+            if (_assemblies == null)
+            {
+                _assemblies = AppDomain.CurrentDomain.GetAssemblies()
+                .Where(u => !u.FullName.Contains("Microsoft"))//排除微软类库
+                .Where(u => !u.FullName.Contains("System"))//排除系统类库
+                .Where(u => !u.FullName.Contains("Newtonsoft"))//排除Newtonsoft.json
+                .Where(u => !u.FullName.Contains("Swagger"))//排除Swagger
+                .Where(u => !u.FullName.Contains("EntityFrameworkCore"))//排除EntityFrameworkCore
+                .ToList();
+            }
+            return _assemblies;
         }
     }
 }

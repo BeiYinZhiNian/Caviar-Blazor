@@ -12,6 +12,7 @@ namespace Caviar.Models.SystemData
     /// <summary>
     /// 角色表
     /// </summary>
+    [DisplayName("角色")]
     public partial class SysRole : SysBaseModel
     {
         /// <summary>

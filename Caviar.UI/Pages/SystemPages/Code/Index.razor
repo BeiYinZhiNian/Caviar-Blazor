@@ -1,4 +1,14 @@
 ﻿@page "/Code/Index"
+<pre>
+<code class="lang-javascript">
+        function init(){
+            $scope.req.getArticle();
+            $('pre code').each(function(i, block) {
+                hljs.highlightBlock(block);
+            });
+        }
+</code>
+</pre>
 
 <div>
     <Steps Current="current">
@@ -9,7 +19,46 @@
     </Steps>
 
     <div class="steps-content">
-        @steps[current].Content
+        @switch (current)
+        {
+            case 0:
+                <Table TItem="ModelData" DataSource="@Models">
+                    <Selection CheckStrictly />
+                    <Column @bind-Field="@context.Name">
+                    </Column>
+                    <Column @bind-Field="@context.DisplayName">
+                    </Column>
+                </Table>
+                break;
+            case 1:
+                <CheckboxGroup Style="margin-bottom:16px;margin-top:16px;" Options="@plainOptions" Value="@(new[]{"Apple"})" OnChange="OnChange" />
+                break;
+            case 2:
+                <pre>
+                <code class="lang-javascript">
+        function init(){
+            $scope.req.getArticle();
+            $('pre code').each(function(i, block) {
+                hljs.highlightBlock(block);
+            });
+        }
+                </code>
+            </pre>
+                break;
+            case 3:
+                <Result Status="success"
+                        Title="代码生成完毕"
+                        SubTitle="代码生效需要关闭程序重新编译运行">
+                    <Extra>
+                        <Button Type="primary" OnClick='()=> { navigation.NavigateTo("/"); }'>返回首页</Button>
+                        <Button OnClick='()=> { current = 0; }'>继续生成</Button>
+                    </Extra>
+
+                </Result>
+                break;
+            default:
+                break;
+        }
     </div>
     <div class="steps-action">
         <Space>
@@ -28,7 +77,7 @@
             <SpaceItem>
                 @if (current == steps.Length - 2)
                 {
-                    <Button Type="primary" OnClick=@(() => { OnNextClick(); })>
+                    <Button Type="primary" Danger OnClick=@(() => { OnNextClick(); })>
                         生成
                     </Button>
                 }
@@ -48,7 +97,6 @@
         border-radius: 6px;
         background-color: #fafafa;
         text-align: center;
-        padding-top: 80px;
     }
 
     .steps-action {
@@ -56,7 +104,7 @@
     }
 </style>
 
-@inject MessageService message
+@inject NavigationManager navigation
 @code {
 
     public class StepItem
@@ -70,7 +118,7 @@
     public StepItem[] steps =
     {
         new StepItem {Title = "选择生成模块", Content = ""},
-        new StepItem {Title = "选择查询字段", Content = ""},
+        new StepItem {Title = "选择需要的功能", Content = ""},
         new StepItem {Title = "查看代码", Content = ""},
         new StepItem {Title = "生成结果", Content = ""}
     };
@@ -79,10 +127,10 @@
     {
         current--;
     }
-
     void OnNextClick()
     {
         current++;
+        JSRuntime.InvokeVoidAsync("test");
     }
 
 }

@@ -132,7 +132,7 @@ namespace Caviar.Control
         public IActionResult GetModelHeader(string name)
         {
             if (string.IsNullOrEmpty(name)) return ResultError(400,"请输入需要获取的数据名称");
-            var assemblyList = CaviarConfig.GetAssembly();
+            var assemblyList = CommonHelper.GetAssembly();
             Type type = null;
             foreach (var item in assemblyList)
             {
@@ -161,7 +161,7 @@ namespace Caviar.Control
         public IActionResult FuzzyQuery(ViewQuery query)
         {
             if (string.IsNullOrEmpty(query.QueryObj)) return ResultErrorMsg("查询对象不可为空");
-            var assemblyList = CaviarConfig.GetAssembly();
+            var assemblyList = CommonHelper.GetAssembly();
             Type type = null;
             foreach (var item in assemblyList)
             {

@@ -9,9 +9,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
-    /// <summary>
-    /// 菜单表
-    /// </summary>
+    [DisplayName("系统菜单")]
     public partial class SysPowerMenu : SysBaseModel
     {
         [DisplayName("类型")]

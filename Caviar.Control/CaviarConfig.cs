@@ -125,27 +125,6 @@ namespace Caviar.Control
                 .ToString();
         }
 
-        private static List<Assembly> _assemblies;
-
-        /// <summary>
-        /// 使用加载器技术
-        /// </summary>
-        /// <returns></returns>
-        public static List<Assembly> GetAssembly()
-        {
-            if (_assemblies == null)
-            {
-                _assemblies = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(u => !u.FullName.Contains("Microsoft"))//排除微软类库
-                .Where(u => !u.FullName.Contains("System"))//排除系统类库
-                .Where(u => !u.FullName.Contains("Newtonsoft"))//排除Newtonsoft.json
-                .Where(u => !u.FullName.Contains("Swagger"))//排除Swagger
-                .Where(u => !u.FullName.Contains("EntityFrameworkCore"))//排除EntityFrameworkCore
-                .ToList();
-            }
-            return _assemblies;
-        }
-
         #region IBaseModelExtend扩展
 
 
@@ -163,7 +142,7 @@ namespace Caviar.Control
             /// </summary>
             public void AddIBaseModel(IServiceCollection services)
             {
-                GetAssembly()
+                CommonHelper.GetAssembly()
                     //遍历查找
                     .ForEach((t =>
                     {
@@ -189,7 +168,7 @@ namespace Caviar.Control
             /// <param name="services"></param>
             public void AddInject(IServiceCollection services)
             {
-                GetAssembly()
+                CommonHelper.GetAssembly()
                    //遍历查找
                    .ForEach((t =>
                    {
