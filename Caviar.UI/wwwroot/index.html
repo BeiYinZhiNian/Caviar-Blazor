@@ -21,11 +21,16 @@
     <link href="_content/AntDesign/css/ant-design-blazor.css" rel="stylesheet">
     <script src="_content/AntDesign/js/ant-design-blazor.js"></script>
     <script src="Js/Caviar.js"></script>
-    <link href="highlight/styles/dark.css" rel="stylesheet">
-    <script src="highlight/highlight.pack.js"></script>
+    <script src="Js/prism.js"></script>
+    <link href="Js/prism.css" rel="stylesheet" />
     <script>
-        function test() {
-            hljs.initHighlightingOnLoad();
+        window.AntDesign.Prism = {};
+        window.AntDesign.Prism.highlight = function (code, language) {
+            return Prism.highlight(code, Prism.languages[language], language);
+        }
+
+        window.AntDesign.Prism.highlightAll = function () {
+            Prism.highlightAll();
         }
     </script>
 </body>

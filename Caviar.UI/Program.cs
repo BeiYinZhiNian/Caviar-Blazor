@@ -32,6 +32,7 @@ namespace Caviar
             builder.Services.AddAntDesign();
             builder.Services.AddSingleton(typeof(UserConfigHelper));
             builder.Services.AddSingleton<UserToken>();
+            builder.Services.AddScoped<IPrismHighlighter, PrismHighlighter>();
         }
     }
 }

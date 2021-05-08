@@ -1,14 +1,4 @@
 ﻿@page "/Code/Index"
-<pre>
-<code class="lang-javascript">
-        function init(){
-            $scope.req.getArticle();
-            $('pre code').each(function(i, block) {
-                hljs.highlightBlock(block);
-            });
-        }
-</code>
-</pre>
 
 <div>
     <Steps Current="current">
@@ -34,16 +24,7 @@
                 <CheckboxGroup Style="margin-bottom:16px;margin-top:16px;" Options="@plainOptions" Value="@(new[]{"Apple"})" OnChange="OnChange" />
                 break;
             case 2:
-                <pre>
-                <code class="lang-javascript">
-        function init(){
-            $scope.req.getArticle();
-            $('pre code').each(function(i, block) {
-                hljs.highlightBlock(block);
-            });
-        }
-                </code>
-            </pre>
+                <HighlightedCode Code="@(@"<Button Type='primary' Danger OnClick=@(() => { OnNextClick(); })>下一个</Button>")" CanLoad="true" Language="csharp"></HighlightedCode>
                 break;
             case 3:
                 <Result Status="success"
@@ -106,7 +87,9 @@
 
 @inject NavigationManager navigation
 @code {
-
+    string Code = @"<Button Type='primary' Danger OnClick=@(() => { OnNextClick(); })>
+                        生成
+                    </Button>";
     public class StepItem
     {
         public string Title { get; set; }
