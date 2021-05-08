@@ -19,6 +19,7 @@ using System.Web;
 using System.Collections;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using System.IO;
 
 namespace Caviar.Control
 {
@@ -207,6 +208,37 @@ namespace Caviar.Control
             return ResultOK();
         }
 
+
+        [HttpPost]
+        public IActionResult CodeGenerate(CodeGenerateData generate)
+        {
+            List<TabItem> lstTabs = new List<TabItem>();
+            foreach (var item in generate.Page)
+            {
+                string name = "";
+                switch (item)
+                {
+                    case "新增":
+                        name = "Add";
+                        break;
+                    case "列表":
+                        name = "Index";
+                        break;
+                    default:
+                        continue;
+                }
+                CreateFile(ref lstTabs, name + ".razor.cs");
+                CreateFile(ref lstTabs, name + ".razor");
+            }
+            ResultMsg.Data = lstTabs;
+            return ResultOK();
+        }
+
+        private void CreateFile(ref List<TabItem> lstTabs,string name)
+        {
+            string txt = System.IO.File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}/Template/{name}.temp");
+            lstTabs.Add(new TabItem() { KeyName = name, TabName = name,Content = txt });
+        }
         #endregion
         #region 创建模型
         protected virtual T CreateModel<T>() where T : class, IBaseModel

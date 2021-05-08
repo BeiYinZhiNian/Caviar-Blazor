@@ -1,0 +1,147 @@
+﻿@page "/Menu/add"
+
+
+<Form @ref="_meunForm" Model="@model" OnFinish="FormSubmit">
+    <FormItem Label="菜单名称">
+        <Input @bind-Value="@context.MenuName" Style="width:50%" />
+    </FormItem>
+    <FormItem Label="上层目录">
+        <Dropdown>
+            <Overlay>
+                <Tree ShowIcon DataSource="SysPowerMenus"
+                      TitleExpression="x => x.DataItem.MenuName"
+                      ChildrenExpression="x => x.DataItem.Children"
+                      IconExpression="x => x.DataItem.Icon"
+                      IsLeafExpression="x => x.DataItem.Children?.Count == 0"
+                      KeyExpression="x => x.DataItem.Id.ToString()"
+                      OnClick='e=>EventRecord(e)'
+                      TItem="ViewPowerMenu">
+                </Tree>
+            </Overlay>
+            <ChildContent>
+                <Button OnClick="RemoveRecord">@UpPowerMenuName</Button>
+            </ChildContent>
+        </Dropdown>
+    </FormItem>
+    <FormItem Label="菜单类型">
+        <RadioGroup @bind-Value="@context.MenuType" OnChange="MenuTypeCallback">
+            <Radio Value="(MenuType)0">目录</Radio>
+            <Radio Value="(MenuType)1">菜单</Radio>
+            <Radio Value="(MenuType)2">按钮</Radio>
+        </RadioGroup>
+    </FormItem>
+    <FormItem Label="按钮位置" Style="@buttonStrle">
+        <RadioGroup @bind-Value="@context.ButtonPosition" OnChange="ButtonPositionCallback">
+            <Tooltip Title="@("主要用于加载请求")">
+                <Radio Value="(ButtonPosition)0">表头</Radio>
+            </Tooltip>
+            <Tooltip Title="@("主要用于数据行的回调")">
+                <Radio Value="(ButtonPosition)1">行</Radio>
+            </Tooltip>
+        </RadioGroup>
+    </FormItem>
+    <FormItem Label="请求地址" Style="@visibility">
+        <Input @bind-Value="@context.Url">
+    </FormItem>
+    <FormItem Label="打开方式" Style="@buttonStrle">
+        <RadioGroup @bind-Value="@context.TargetType">
+            <Radio Value="(TargetType)0">当前页面</Radio>
+            <Radio Value="(TargetType)1">弹出窗口</Radio>
+            <Radio Value="(TargetType)2" Disabled="true">新建页面</Radio>
+            <Radio Value="(TargetType)3">回调</Radio>
+        </RadioGroup>
+    </FormItem>
+    <FormItem Style="@buttonStrle">
+        <Checkbox @bind-Value="@context.IsDoubleTrue">需要二次确认</Checkbox>
+    </FormItem>
+    <FormItem Label="图标">
+        <Space>
+            <SpaceItem>
+                <Button OnClick="OpenIconModal">图标库</Button>
+            </SpaceItem>
+            <SpaceItem>
+                @if (!string.IsNullOrEmpty(model.Icon))
+                {
+                    <Icon Type="@model.Icon" Theme="outline"></Icon>
+                }
+            </SpaceItem>
+        </Space>
+    </FormItem>
+    <FormItem Label="编号">
+        <Input @bind-Value="@context.Number" Style="width: 20%;">
+    </FormItem>
+</Form>
+
+
+<Modal Visible="@_visible"
+       OnOk="HandleOk"
+       OnCancel="HandleCancel"
+       Title="请选择图标"
+       Draggable="true"
+       DragInViewport="true">
+    <IconPanel @bind-RadioValue="model.Icon"></IconPanel>
+</Modal>
+@code{
+
+    bool _visible = false;
+
+    string visibility = "display:none;";
+    string buttonStrle = "display:none;";
+    EventCallback<MenuType> MenuTypeCallback => EventCallback.Factory.Create<MenuType>(this, CheckMenuType);
+    EventCallback<ButtonPosition> ButtonPositionCallback => EventCallback.Factory.Create<ButtonPosition>(this, CheckButtonPosition);
+    public void CheckMenuType()
+    {
+        switch (model.MenuType)
+        {
+            case MenuType.Catalog:
+                visibility = "display:none;";
+                buttonStrle = "display:none;";
+                model.Url = "";
+                break;
+            case MenuType.Menu:
+                buttonStrle = "display:none;";
+                visibility = "";
+                break;
+            case MenuType.Button:
+                visibility = "";
+                buttonStrle = "";
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void CheckButtonPosition()
+    {
+        switch (model.ButtonPosition)
+        {
+            case ButtonPosition.Header:
+                visibility = "";
+                break;
+            case ButtonPosition.Row:
+                visibility = "display:none;";
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void OpenIconModal()
+    {
+        _visible = true;
+    }
+
+    private void HandleOk(MouseEventArgs e)
+    {
+        _visible = false;
+        StateHasChanged();
+    }
+
+    private void HandleCancel(MouseEventArgs e)
+    {
+        _visible = false;
+    }
+
+    RenderFragment _content =
+    @<IconPanel></IconPanel>;
+}

@@ -1,0 +1,10 @@
+﻿@page "/Menu/index"
+
+<TableTemplate TData="ViewPowerMenu"
+               DataSource="DataSource"
+               ViewModelHeader="ViewModelHeaders"
+               TreeChildren="u => u.Children"
+               Buttons="Buttons"
+               HandleOkCallback="HandleOk"
+               RowCallback="RowCallback">
+</TableTemplate>

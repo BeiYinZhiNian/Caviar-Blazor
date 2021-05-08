@@ -1,4 +1,6 @@
-﻿using Caviar.Models.SystemData;
+﻿using AntDesign;
+using Caviar.Models.SystemData;
+using Caviar.UI.Helper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
@@ -14,10 +16,13 @@ namespace Caviar.UI.Pages.SystemPages.Code
     public partial class Index
     {
 
-        [Inject]
-        IJSRuntime JSRuntime { get; set; }
-
         List<ModelData> Models = new List<ModelData>();
+
+        [Inject]
+        HttpHelper Http { get; set; }
+        [Inject]
+        MessageService _message { get; set; }
+
 
         protected override void OnInitialized()
         {
@@ -48,12 +53,58 @@ namespace Caviar.UI.Pages.SystemPages.Code
                     }));
             
         }
-        string[] plainOptions = { "列表","新增", "删除", "查询" };
-
-        void OnChange(string[] checkedValues)
+        static string[] pageOptions = { "列表","新增" };
+        static string[] buttonOptions = { "新增", "删除", "查询" };
+        static string[] configOptions = { "覆盖" };
+        void OnPageChange(string[] checkedValues)
         {
-            Console.WriteLine($"checked = {JsonSerializer.Serialize(checkedValues)}");
+            Generate.Page = checkedValues;
         }
+
+        void OnButtonChange(string[] checkedValues)
+        {
+            Generate.Button = checkedValues;
+        }
+
+        void OnConfigChange(string[] checkedValues)
+        {
+            Generate.Config = checkedValues;
+        }
+
+
+
+        CodeGenerateData Generate = new CodeGenerateData() { Page = pageOptions, Button = buttonOptions };
+        void OnPreClick()
+        {
+            current--;
+        }
+
+        async void OnNextClick()
+        {
+            if (current == 1)
+            {
+                if(Generate.Page==null || Generate.Page.Length == 0)
+                {
+                    await _message.Error("请至少选择一个页面进行生成");
+                    return;
+                }
+                if (Generate.OutName == "")
+                {
+                    await _message.Error("生成目录不可为空");
+                    return;
+                }
+                var result = await Http.PostJson<CodeGenerateData,List<TabItem>>("Base/CodeGenerate",Generate);
+                if (result.Status == 200)
+                {
+                    lstTabs = result.Data;
+                }
+            }
+            current++;
+            StateHasChanged();
+        }
+        List<TabItem> lstTabs { get; set; } = new List<TabItem>();
+        string nKey { get; set; } = "1";
+
         class ModelData
         {
             [DisplayName("表名称")]

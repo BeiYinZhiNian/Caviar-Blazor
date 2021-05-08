@@ -13,18 +13,54 @@
         {
             case 0:
                 <Table TItem="ModelData" DataSource="@Models">
-                    <Selection CheckStrictly />
                     <Column @bind-Field="@context.Name">
                     </Column>
                     <Column @bind-Field="@context.DisplayName">
                     </Column>
+                    <ActionColumn Title="操作">
+                        <Space Size=@("middle")>
+                            <SpaceItem>
+                                <Button Type="@ButtonType.Primary" OnClick="()=> { Generate.EntityName = context.Name;Generate.OutName = context.Name ; OnNextClick(); }">选择</Button>
+                            </SpaceItem>
+                        </Space>
+                    </ActionColumn>
                 </Table>
                 break;
             case 1:
-                <CheckboxGroup Style="margin-bottom:16px;margin-top:16px;" Options="@plainOptions" Value="@(new[]{"Apple"})" OnChange="OnChange" />
+                <div style="margin-bottom:16px;margin-top:16px;">
+                    <Space Direction="DirectionVHType.Vertical" Size="@("large")">
+                        <SpaceItem>
+                            <span style="margin-right:8px">页面:</span>
+                            <CheckboxGroup Value="Generate.Page" Options="@pageOptions" OnChange="OnPageChange" />
+                        </SpaceItem>
+                        <SpaceItem>
+                            <span style="margin-right:8px">功能:</span>
+                            <CheckboxGroup Value="Generate.Button" Options="@buttonOptions" OnChange="OnButtonChange" />
+                        </SpaceItem>
+                        <SpaceItem>
+                            <span style="margin-right:8px">其他:</span>
+                            <CheckboxGroup Value="Generate.Config" Options="@configOptions" OnChange="OnConfigChange" />
+                        </SpaceItem>
+                        <SpaceItem>
+                            <AntDesign.Input Placeholder="请输入生成的文件名" @bind-Value="@Generate.OutName">
+                                <AddOnBefore>目录名://</AddOnBefore>
+                            </AntDesign.Input>
+                        </SpaceItem>
+                    </Space>
+                </div>
                 break;
             case 2:
-                <HighlightedCode Code="@(@"<Button Type='primary' Danger OnClick=@(() => { OnNextClick(); })>下一个</Button>")" CanLoad="true" Language="csharp"></HighlightedCode>
+                <Tabs DefaultActiveKey="1" @bind-ActiveKey="@nKey">
+                    @foreach (var item in lstTabs)
+                    {
+                        <TabPane Key="@item.KeyName">
+                            <Tab>@item.TabName</Tab>
+                            <ChildContent>
+                                <HighlightedCode Code="@item.Content" CanLoad="true" Language="csharp"></HighlightedCode>
+                            </ChildContent>
+                        </TabPane>
+                    }
+                </Tabs>
                 break;
             case 3:
                 <Result Status="success"
@@ -50,7 +86,7 @@
                 }
             </SpaceItem>
             <SpaceItem>
-                @if (current < steps.Length - 2)
+                @if (current < steps.Length - 2 && current>0)
                 {
                     <Button Type="primary" OnClick="OnNextClick">下一步</Button>
                 }
@@ -87,9 +123,7 @@
 
 @inject NavigationManager navigation
 @code {
-    string Code = @"<Button Type='primary' Danger OnClick=@(() => { OnNextClick(); })>
-                        生成
-                    </Button>";
+    string Code = "";
     public class StepItem
     {
         public string Title { get; set; }
@@ -101,19 +135,11 @@
     public StepItem[] steps =
     {
         new StepItem {Title = "选择生成模块", Content = ""},
-        new StepItem {Title = "选择需要的功能", Content = ""},
+        new StepItem {Title = "功能配置", Content = ""},
         new StepItem {Title = "查看代码", Content = ""},
         new StepItem {Title = "生成结果", Content = ""}
     };
 
-    void OnPreClick()
-    {
-        current--;
-    }
-    void OnNextClick()
-    {
-        current++;
-        JSRuntime.InvokeVoidAsync("test");
-    }
+
 
 }
