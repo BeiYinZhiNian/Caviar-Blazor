@@ -1,6 +1,6 @@
 ﻿using AntDesign;
 using Caviar.Models.SystemData;
-using Caviar.Pages.Helper;
+using Caviar.AntDesignPages.Helper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using Microsoft.JSInterop;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace Caviar.Pages.Pages.SystemPages.User
+namespace Caviar.AntDesignPages.Pages.SystemPages.User
 {
     partial class Login
     {

@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.Pages.Helper
+namespace Caviar.AntDesignPages.Helper
 {
     public static class Config
     {

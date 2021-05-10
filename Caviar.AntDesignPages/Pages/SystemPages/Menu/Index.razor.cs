@@ -1,7 +1,7 @@
 ﻿using AntDesign;
 using Caviar.Models.SystemData;
-using Caviar.Pages.Helper;
-using Caviar.Pages.Shared;
+using Caviar.AntDesignPages.Helper;
+using Caviar.AntDesignPages.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Caviar.Pages.Pages.SystemPages.Menu
+namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
 {
     public partial class Index
     {

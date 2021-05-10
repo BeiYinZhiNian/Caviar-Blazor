@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using System;
 using Caviar.Models.SystemData;
-using Caviar.Pages.Shared;
+using Caviar.AntDesignPages.Shared;
 using AntDesign;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ using System.Text;
 using System.Web;
 using Microsoft.JSInterop;
 
-namespace Caviar.Pages.Helper
+namespace Caviar.AntDesignPages.Helper
 {
     public partial class HttpHelper
     {

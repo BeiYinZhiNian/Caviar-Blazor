@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Caviar.Pages.Shared
+namespace Caviar.AntDesignPages.Shared
 {
     partial class NavBreadcrumb
     {

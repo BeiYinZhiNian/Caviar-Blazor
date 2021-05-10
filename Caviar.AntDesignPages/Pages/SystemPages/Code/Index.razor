@@ -20,7 +20,7 @@
                     <ActionColumn Title="操作">
                         <Space Size=@("middle")>
                             <SpaceItem>
-                                <Button Type="@ButtonType.Primary" OnClick="()=> { Generate.EntityName = context.Name;Generate.OutName = context.Name ; OnNextClick(); }">选择</Button>
+                                <Button Type="@ButtonType.Primary" OnClick="()=> { GenerateData.EntityName = context.Name;GenerateData.OutName = context.Name ; OnNextClick(); }">选择</Button>
                             </SpaceItem>
                         </Space>
                     </ActionColumn>
@@ -31,18 +31,18 @@
                     <Space Direction="DirectionVHType.Vertical" Size="@("large")">
                         <SpaceItem>
                             <span style="margin-right:8px">页面:</span>
-                            <CheckboxGroup Value="Generate.Page" Options="@pageOptions" OnChange="OnPageChange" />
+                            <CheckboxGroup Value="GenerateData.Page" Options="@pageOptions" OnChange="OnPageChange" />
                         </SpaceItem>
                         <SpaceItem>
                             <span style="margin-right:8px">功能:</span>
-                            <CheckboxGroup Value="Generate.Button" Options="@buttonOptions" OnChange="OnButtonChange" />
+                            <CheckboxGroup Value="GenerateData.Button" Options="@buttonOptions" OnChange="OnButtonChange" />
                         </SpaceItem>
                         <SpaceItem>
                             <span style="margin-right:8px">其他:</span>
-                            <CheckboxGroup Value="Generate.Config" Options="@configOptions" OnChange="OnConfigChange" />
+                            <CheckboxGroup Value="GenerateData.Config" Options="@configOptions" OnChange="OnConfigChange" />
                         </SpaceItem>
                         <SpaceItem>
-                            <AntDesign.Input Placeholder="请输入生成的文件名" @bind-Value="@Generate.OutName">
+                            <AntDesign.Input Placeholder="请输入生成的文件名" @bind-Value="@GenerateData.OutName">
                                 <AddOnBefore>目录名://</AddOnBefore>
                             </AntDesign.Input>
                         </SpaceItem>
@@ -94,7 +94,7 @@
             <SpaceItem>
                 @if (current == steps.Length - 2)
                 {
-                    <Button Type="primary" Danger OnClick=@(() => { OnNextClick(); })>
+                    <Button Type="primary" Danger OnClick=@(() => { OnGenerateClick(); })>
                         生成
                     </Button>
                 }

@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Caviar.AntDesignPages\Caviar.AntDesignPages.csproj" />
     <ProjectReference Include="..\Caviar.Models\Caviar.Models.csproj" />
-    <ProjectReference Include="..\Caviar.Pages\Caviar.Pages.csproj" />
   </ItemGroup>
 
   <ItemGroup>

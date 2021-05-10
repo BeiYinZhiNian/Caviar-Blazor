@@ -1,6 +1,6 @@
 ﻿using AntDesign;
 using Caviar.Models.SystemData;
-using Caviar.Pages.Helper;
+using Caviar.AntDesignPages.Helper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
@@ -11,7 +11,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Caviar.Pages.Pages.SystemPages.Code
+namespace Caviar.AntDesignPages.Pages.SystemPages.Code
 {
     public partial class Index
     {
@@ -58,22 +58,22 @@ namespace Caviar.Pages.Pages.SystemPages.Code
         static string[] configOptions = { "覆盖" };
         void OnPageChange(string[] checkedValues)
         {
-            Generate.Page = checkedValues;
+            GenerateData.Page = checkedValues;
         }
 
         void OnButtonChange(string[] checkedValues)
         {
-            Generate.Button = checkedValues;
+            GenerateData.Button = checkedValues;
         }
 
         void OnConfigChange(string[] checkedValues)
         {
-            Generate.Config = checkedValues;
+            GenerateData.Config = checkedValues;
         }
 
 
 
-        CodeGenerateData Generate = new CodeGenerateData() { Page = pageOptions, Button = buttonOptions };
+        CodeGenerateData GenerateData = new CodeGenerateData() { Page = pageOptions, Button = buttonOptions };
         void OnPreClick()
         {
             current--;
@@ -83,17 +83,17 @@ namespace Caviar.Pages.Pages.SystemPages.Code
         {
             if (current == 1)
             {
-                if(Generate.Page==null || Generate.Page.Length == 0)
+                if(GenerateData.Page==null || GenerateData.Page.Length == 0)
                 {
                     await _message.Error("请至少选择一个页面进行生成");
                     return;
                 }
-                if (Generate.OutName == "")
+                if (GenerateData.OutName == "")
                 {
                     await _message.Error("生成目录不可为空");
                     return;
                 }
-                var result = await Http.PostJson<CodeGenerateData,List<TabItem>>("Base/CodeGenerate",Generate);
+                var result = await Http.PostJson<CodeGenerateData,List<TabItem>>("Base/CodeGenerate",GenerateData);
                 if (result.Status == 200)
                 {
                     lstTabs = result.Data;
@@ -102,6 +102,16 @@ namespace Caviar.Pages.Pages.SystemPages.Code
             current++;
             StateHasChanged();
         }
+
+        async void OnGenerateClick()
+        {
+
+
+
+            OnNextClick();
+        }
+
+
         List<TabItem> lstTabs { get; set; } = new List<TabItem>();
         string nKey { get; set; } = "1";
 
