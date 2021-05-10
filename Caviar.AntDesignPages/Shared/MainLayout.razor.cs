@@ -31,8 +31,8 @@ namespace Caviar.AntDesignPages.Shared
 
         protected override void OnInitialized()
         {
-            LogoImg = Configuration["Logo:LogoPath:logo"];
-            LogoImgIco = Configuration["Logo:LogoPath:logo-Ico"];
+            LogoImg = "_content/Caviar.AntDesignPages/Images/logo.png";
+            LogoImgIco = "_content/Caviar.AntDesignPages/Images/logo-Ico.png";
             LogoImgSrc = LogoImg;
             base.OnInitialized();
         }

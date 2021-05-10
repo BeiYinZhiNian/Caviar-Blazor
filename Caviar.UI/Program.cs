@@ -25,7 +25,7 @@ namespace Caviar
         public static void ConfigureServices(WebAssemblyHostBuilder builder)
         {
             builder.RootComponents.Add<AntDesignPages.App>("#app");
-            var ServerUrl = builder.Configuration["Caviar:ServerUrl"];
+            var ServerUrl = "http://localhost:5215/api/";
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(ServerUrl) });
             builder.Services.AddCaviar(new Type[] { typeof(Program) });
         }
