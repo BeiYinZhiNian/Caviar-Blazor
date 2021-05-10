@@ -47,7 +47,7 @@
                     <ActionColumn Title="操作">
                         <Space Size=@("middle")>
                             <SpaceItem>
-                                <Button Type="@ButtonType.Primary" OnClick="()=> { GenerateData.EntityName = context.Name;GenerateData.OutName = context.Name ; OnNextClick(); }">选择</Button>
+                                <Button Type="@ButtonType.Primary" OnClick="()=> { GenerateData.EntityName = context.Name;GenerateData.EntityNamespace = context.FullName ;GenerateData.OutName = context.Name ; OnNextClick(); }">选择</Button>
                             </SpaceItem>
                         </Space>
                     </ActionColumn>

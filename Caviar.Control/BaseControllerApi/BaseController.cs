@@ -105,25 +105,45 @@ namespace Caviar.Control
         public IActionResult CodeFileGenerate(CodeGenerateData generate)
         {
             var data = CodeGenerate(generate);
-            var path = Directory.GetCurrentDirectory() + "/" + CaviarConfig.WebUIPath;
-
-            path = path + "/Pages/Template/" + generate.OutName + "/";
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
+            
 
             foreach (var item in data)
             {
-                if (item.KeyName.IndexOf("razor") != -1)
+                if (item.KeyName.IndexOf(".razor") != -1)
                 {
-                    if (System.IO.File.Exists(path + item.KeyName))
+                    var path = Directory.GetCurrentDirectory() + "/" + CaviarConfig.WebUIPath;
+
+                    path += generate.OutName + "/";
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    if (System.IO.File.Exists(path + item.TabName))
                     {
 
                     }
                     else
                     {
-                        System.IO.File.WriteAllText(path + item.KeyName, item.Content);
+                        System.IO.File.WriteAllText(path + item.TabName, item.Content);
+                    }
+                }
+                else if (item.KeyName.IndexOf(".viewModel") != -1)
+                {
+                    var path = Directory.GetCurrentDirectory() + "/" + CaviarConfig.ModelsPath;
+
+                    path += generate.OutName + "/";
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    var outName = path + generate.OutName + ".cs";
+                    if (System.IO.File.Exists(outName))
+                    {
+
+                    }
+                    else
+                    {
+                        System.IO.File.WriteAllText(outName, item.Content);
                     }
                 }
             }
@@ -134,6 +154,7 @@ namespace Caviar.Control
         private List<TabItem> CodeGenerate(CodeGenerateData generate)
         {
             List<TabItem> lstTabs = new List<TabItem>();
+            CreateModelFile(generate, ref lstTabs, "ViewModel", ".cs");
             foreach (var item in generate.Page)
             {
                 string name = "";
@@ -148,16 +169,41 @@ namespace Caviar.Control
                     default:
                         continue;
                 }
-                CreateFile(ref lstTabs, name + ".razor.cs");
-                CreateFile(ref lstTabs, name + ".razor");
+                CreateViewFile(generate,ref lstTabs, name , ".razor.cs");
+                CreateViewFile(generate,ref lstTabs, name , ".razor");
             }
             return lstTabs;
         }
 
-        private void CreateFile(ref List<TabItem> lstTabs, string name)
+        private void CreateViewFile(CodeGenerateData generate,ref List<TabItem> lstTabs, string name,string extend)
         {
-            string txt = System.IO.File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}/Template/{name}.temp");
-            lstTabs.Add(new TabItem() { KeyName = name, TabName = name, Content = txt });
+            string txt = System.IO.File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}/Template/{name}{extend}.temp");
+            txt = CreateFile(txt, generate);
+            txt = txt.Replace("{namespace}", CaviarConfig.WebUINamespace);
+            txt = txt.Replace("{page}", "/" +generate.OutName + "/" + name);
+            lstTabs.Add(new TabItem() { KeyName = name + extend, TabName = name + extend, Content = txt });
+        }
+
+        private void CreateModelFile(CodeGenerateData generate, ref List<TabItem> lstTabs, string name, string extend)
+        {
+            string txt = System.IO.File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}/Template/{name}{extend}.temp");
+            txt = CreateFile(txt, generate);
+            txt = txt.Replace("{namespace}", CaviarConfig.ModelsNamespace);
+            lstTabs.Add(new TabItem() { KeyName = name + extend + ".viewModel", TabName = "View" + generate.OutName + extend, Content = txt });
+        }
+
+
+        private string CreateFile(string txt,CodeGenerateData generate)
+        {
+            txt = txt.Replace("{Producer}", BC.UserToken.UserName);
+            txt = txt.Replace("{GenerationTime}", DateTime.Now.ToString());
+            txt = txt.Replace("{OutName}", $"View{generate.OutName}");
+            txt = txt.Replace("{EntityName}",  generate.EntityName);
+            txt = txt.Replace("{EntityNamespace}", generate.EntityNamespace);
+            txt = txt.Replace("{WebUINamespace}", CaviarConfig.WebUINamespace);
+            txt = txt.Replace("{ModelsNamespace}", CaviarConfig.ModelsNamespace);
+            txt = txt.Replace("{DataSourceWebApi}", $"{generate.OutName}/Get{generate.OutName}s");
+            return txt;
         }
         #endregion
     }

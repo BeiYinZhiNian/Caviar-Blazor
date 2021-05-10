@@ -1,9 +1,14 @@
-﻿@page "/Menu/index"
-
-<TableTemplate TData="ViewPowerMenu"
+﻿@*
+生成者：{Producer}
+生成时间：{GenerationTime}
+代码由代码生成器自动生成，更改的代码可能被进行替换
+*@
+@page "{page}"
+@using {ModelsNamespace}
+@namespace {WebUINamespace}
+<TableTemplate TData="{OutName}"
                DataSource="DataSource"
                ViewModelHeader="ViewModelHeaders"
-               TreeChildren="u => u.Children"
                Buttons="Buttons"
                HandleOkCallback="HandleOk"
                RowCallback="RowCallback">

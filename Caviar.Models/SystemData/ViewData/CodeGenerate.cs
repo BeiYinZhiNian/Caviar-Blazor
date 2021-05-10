@@ -12,6 +12,8 @@ namespace Caviar.Models.SystemData
 
         public string OutName { get; set; }
 
+        public string EntityNamespace { get; set; }
+
         public string[] Page { get; set; }
 
         public string[] Button { get; set; }

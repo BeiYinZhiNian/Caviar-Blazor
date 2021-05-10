@@ -49,7 +49,7 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Code
                             .ForEach(t =>
                             {
                                 var displayName = t.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
-                                Models.Add(new ModelData {Name = t.Name, DisplayName = displayName });
+                                Models.Add(new ModelData {Name = t.Name, DisplayName = displayName,FullName = t.FullName.Replace("."+t.Name,"") });
                             });
                     }));
             
@@ -135,6 +135,8 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Code
             public string Name { get; set; }
             [DisplayName("备注")]
             public string DisplayName { get; set; }
+            [DisplayName("命名空间")]
+            public string FullName { get; set; }
         }
     }
 }

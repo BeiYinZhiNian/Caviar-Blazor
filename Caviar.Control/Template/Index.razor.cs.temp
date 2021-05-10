@@ -8,13 +8,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using {ModelsNamespace};
 /// <summary>
 /// 生成者：{Producer}
 /// 生成时间：{GenerationTime}
 /// 代码由代码生成器自动生成，更改的代码可能被进行替换
 /// 可在上层目录使用partial关键字进行扩展
 /// </summary>
-namespace Caviar.UI.Pages.SystemPages.Menu
+namespace {WebUINamespace}
 {
     public partial class Index
     {
@@ -50,7 +51,7 @@ namespace Caviar.UI.Pages.SystemPages.Menu
         /// <summary>
         /// 数据源
         /// </summary>
-        List<{DataSource}> DataSource { get; set; }
+        List<{OutName}> DataSource { get; set; }
         /// <summary>
         /// 表头
         /// </summary>
@@ -66,10 +67,10 @@ namespace Caviar.UI.Pages.SystemPages.Menu
         /// 获取数据源
         /// </summary>
         /// <returns></returns>
-        async Task<List<{DataSource}>> GetPowerMenus()
+        async Task<List<{OutName}>> Get{OutName}()
         {
-            var result = await Http.GetJson<List<ViewPowerMenu>>("{DataSourceWebApi}");
-            if (result.Status != 200) return new List<{DataSource}>();
+            var result = await Http.GetJson<List<{OutName}>>("{DataSourceWebApi}");
+            if (result.Status != 200) return new List<{OutName}>();
             return result.Data;
         }
         /// <summary>
@@ -101,12 +102,10 @@ namespace Caviar.UI.Pages.SystemPages.Menu
         #endregion
 
         #region 回调
-        void RowCallback(RowCallbackData<ViewPowerMenu> row)
+        void RowCallback(RowCallbackData<{OutName}> row)
         {
             switch (row.Menu.MenuName)
             {
-                case "删除":
-                    break;
                 default:
                     break;
             }
@@ -116,10 +115,6 @@ namespace Caviar.UI.Pages.SystemPages.Menu
         {
             switch (e.MenuName)
             {
-                case "新增":
-                    await OnInitializedAsync();
-                    StateHasChanged();
-                    break;
                 default:
                     break;
             }
@@ -130,7 +125,7 @@ namespace Caviar.UI.Pages.SystemPages.Menu
         #region 重写
         protected override async Task OnInitializedAsync()
         {
-            DataSource = await GetPowerMenus();//获取数据源
+            DataSource = await Get{OutName}();//获取数据源
             ViewModelHeaders = await GetHeader();//获取表头
             Buttons = await GetPowerButtons();//获取按钮
         }
