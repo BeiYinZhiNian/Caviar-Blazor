@@ -7,7 +7,6 @@
   <ItemGroup>
     <None Remove=".gitattributes" />
     <None Remove=".gitignore" />
-    <None Remove="Shared\MainLayout.razor~RF54f880.TMP" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Caviar.Models\Caviar.Models.csproj" />
+    <ProjectReference Include="..\Caviar.Pages\Caviar.Pages.csproj" />
   </ItemGroup>
 
   <ItemGroup>

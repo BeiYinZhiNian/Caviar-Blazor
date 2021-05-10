@@ -1,6 +1,6 @@
 ﻿using AntDesign;
 using Caviar.Models.SystemData;
-using Caviar.UI.Helper;
+using Caviar.Pages.Helper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
@@ -11,7 +11,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Caviar.UI.Pages.SystemPages.Code
+namespace Caviar.Pages.Pages.SystemPages.Code
 {
     public partial class Index
     {

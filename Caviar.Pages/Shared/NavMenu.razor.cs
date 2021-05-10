@@ -1,6 +1,6 @@
 ﻿using AntDesign;
 using Caviar.Models.SystemData;
-using Caviar.UI.Helper;
+using Caviar.Pages.Helper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Configuration;
@@ -12,7 +12,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Caviar.UI.Shared
+namespace Caviar.Pages.Shared
 {
     partial class NavMenu
     {

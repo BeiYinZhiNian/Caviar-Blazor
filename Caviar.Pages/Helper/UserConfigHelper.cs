@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Caviar.UI.Helper
+namespace Caviar.Pages.Helper
 {
     public class UserConfigHelper
     {

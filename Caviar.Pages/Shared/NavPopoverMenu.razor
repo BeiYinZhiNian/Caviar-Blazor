@@ -34,7 +34,7 @@
 
     public async void UserOut()
     {
-        await jSRuntime.InvokeVoidAsync("delCookie", Program.CookieName);
+        await jSRuntime.InvokeVoidAsync("delCookie", Config.CookieName);
         Http.IsSetCookie = false;
         navigationManager.NavigateTo("/",true);
         messageService.Success("退出登录成功");

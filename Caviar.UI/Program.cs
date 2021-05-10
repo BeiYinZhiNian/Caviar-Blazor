@@ -7,9 +7,8 @@ using System;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Caviar.UI.Helper;
 using Caviar.Models.SystemData;
-
+using Caviar.Pages.Helper;
 namespace Caviar
 {
     public class Program
@@ -25,14 +24,10 @@ namespace Caviar
 
         public static void ConfigureServices(WebAssemblyHostBuilder builder)
         {
-            builder.RootComponents.Add<App>("#app");
+            builder.RootComponents.Add<Pages.App>("#app");
             var ServerUrl = builder.Configuration["Caviar:ServerUrl"];
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(ServerUrl) });
-            builder.Services.AddScoped(typeof(HttpHelper));
-            builder.Services.AddAntDesign();
-            builder.Services.AddSingleton(typeof(UserConfigHelper));
-            builder.Services.AddSingleton<UserToken>();
-            builder.Services.AddScoped<IPrismHighlighter, PrismHighlighter>();
+            builder.Services.AddCaviar(new Type[] { typeof(Program) });
         }
     }
 }

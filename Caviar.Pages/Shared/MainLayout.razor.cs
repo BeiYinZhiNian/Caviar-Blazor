@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using AntDesign;
 
-namespace Caviar.UI.Shared
+namespace Caviar.Pages.Shared
 {
     partial class MainLayout
     {

@@ -1,6 +1,6 @@
 ﻿using AntDesign;
 using Caviar.Models.SystemData;
-using Caviar.UI.Helper;
+using Caviar.Pages.Helper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using Microsoft.JSInterop;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace Caviar.UI.Pages.SystemPages.User
+namespace Caviar.Pages.Pages.SystemPages.User
 {
     partial class Login
     {
@@ -45,7 +45,7 @@ namespace Caviar.UI.Pages.SystemPages.User
                 UserToken.AutoAssign(result.Data);
                 var json = JsonConvert.SerializeObject(UserToken);
                 var base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
-                await JsRuntime.InvokeVoidAsync("setCookie", Program.CookieName, base64, UserToken.Duration);
+                await JsRuntime.InvokeVoidAsync("setCookie", Config.CookieName, base64, UserToken.Duration);
                 http.IsSetCookie = false;//更新cookies
                 NavigationManager.NavigateTo("/");
                 _message.Success(result.Title);

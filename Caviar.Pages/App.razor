@@ -1,5 +1,7 @@
-@using Helper;
-<Router @ref="UserConfig.Router" AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
+@using Caviar.Pages.Helper;
+<Router @ref="UserConfig.Router" AppAssembly="@typeof(Caviar.Pages.Helper.Config).Assembly"
+        AdditionalAssemblies="Config.AdditionalAssemblies"
+        PreferExactMatches="@true">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
     </Found>

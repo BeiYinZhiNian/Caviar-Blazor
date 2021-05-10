@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using System;
 using Caviar.Models.SystemData;
-using Caviar.UI.Shared;
+using Caviar.Pages.Shared;
 using AntDesign;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ using System.Text;
 using System.Web;
 using Microsoft.JSInterop;
 
-namespace Caviar.UI.Helper
+namespace Caviar.Pages.Helper
 {
     public partial class HttpHelper
     {
@@ -41,7 +41,7 @@ namespace Caviar.UI.Helper
         async Task SetCookies()
         {
             if (IsSetCookie) return;
-            var cookie = await _jSRuntime.InvokeAsync<string>("getCookie", Program.CookieName);
+            var cookie = await _jSRuntime.InvokeAsync<string>("getCookie", Config.CookieName);
             //这里为什么要用双锁呢，被逼的~
             lock (cookiesOb)
             {

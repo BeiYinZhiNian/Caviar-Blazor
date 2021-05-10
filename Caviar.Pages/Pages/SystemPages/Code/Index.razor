@@ -80,13 +80,13 @@
     <div class="steps-action">
         <Space>
             <SpaceItem>
-                @if (current > 0 && current<steps.Length-1)
+                @if (current > 0 && current < steps.Length - 1)
                 {
                     <Button Type="primary" OnClick="OnPreClick">上一步</Button>
                 }
             </SpaceItem>
             <SpaceItem>
-                @if (current < steps.Length - 2 && current>0)
+                @if (current < steps.Length - 2 && current > 0)
                 {
                     <Button Type="primary" OnClick="OnNextClick">下一步</Button>
                 }
@@ -101,9 +101,9 @@
 
             </SpaceItem>
         </Space>
-        
-        
-        
+
+
+
     </div>
 </div>
 

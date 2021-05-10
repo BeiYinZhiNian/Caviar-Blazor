@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-namespace Caviar.UI.Helper
+namespace Caviar.Pages.Helper
 {
     public class PrismHighlighter : IPrismHighlighter
     {

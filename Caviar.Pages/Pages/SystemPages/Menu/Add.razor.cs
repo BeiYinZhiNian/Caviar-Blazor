@@ -1,6 +1,6 @@
 ﻿using AntDesign;
 using Caviar.Models.SystemData;
-using Caviar.UI.Helper;
+using Caviar.Pages.Helper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
@@ -10,7 +10,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Caviar.UI.Pages.SystemPages.Menu
+namespace Caviar.Pages.Pages.SystemPages.Menu
 {
     [DisplayName("添加菜单")]
     public partial class Add: ITableTemplate
