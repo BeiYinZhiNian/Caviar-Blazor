@@ -1,53 +1,93 @@
 ﻿using AntDesign;
 using Caviar.Models.SystemData;
-using Caviar.UI.Helper;
-using Caviar.UI.Shared;
+using Caviar.AntDesignPages.Helper;
+using Caviar.AntDesignPages.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+/// <summary>
+/// 生成者：{Producer}
+/// 生成时间：{GenerationTime}
+/// 代码由代码生成器自动生成，更改的代码可能被进行替换
+/// 可在上层目录使用partial关键字进行扩展
+/// </summary>
 namespace Caviar.UI.Pages.SystemPages.Menu
 {
     public partial class Index
     {
+        #region 属性注入
+        /// <summary>
+        /// HttpClient
+        /// </summary>
         [Inject]
         HttpHelper Http { get; set; }
+        /// <summary>
+        /// 全局提示
+        /// </summary>
         [Inject]
-        MessageService _messageService { get; set; }
+        MessageService Message { get; set; }
+        /// <summary>
+        /// 用户配置
+        /// </summary>
         [Inject]
         UserConfigHelper UserConfig { get; set; }
+        /// <summary>
+        /// 导航管理器
+        /// </summary>
         [Inject]
         NavigationManager NavigationManager { get; set; }
-        public List<ViewPowerMenu> DataSource { get; set; }
+        /// <summary>
+        /// 确认框
+        /// </summary>
+        [Inject]
+        ConfirmService Confirm { get; set; }
+        #endregion
 
+        #region 属性
+        /// <summary>
+        /// 数据源
+        /// </summary>
+        List<{DataSource}> DataSource { get; set; }
+        /// <summary>
+        /// 表头
+        /// </summary>
         List<ViewModelHeader> ViewModelHeaders { get; set; }
+        /// <summary>
+        /// 按钮
+        /// </summary>
         List<ViewPowerMenu> Buttons { get; set; }
-        protected override async Task OnInitializedAsync()
-        {
-            DataSource = await GetPowerMenus();//获取数据源
-            ViewModelHeaders = await GetViewModelNames();//获取表头
-            Buttons = await GetPowerButtons();//获取按钮
-        }
+        #endregion
 
-        async Task<List<ViewPowerMenu>> GetPowerMenus()
+        #region 方法
+        /// <summary>
+        /// 获取数据源
+        /// </summary>
+        /// <returns></returns>
+        async Task<List<{DataSource}>> GetPowerMenus()
         {
-            var result = await Http.GetJson<List<ViewPowerMenu>>("Menu/GetMenus");
-            if (result.Status != 200) return new List<ViewPowerMenu>();
+            var result = await Http.GetJson<List<ViewPowerMenu>>("{DataSourceWebApi}");
+            if (result.Status != 200) return new List<{DataSource}>();
             return result.Data;
         }
-
+        /// <summary>
+        /// 获取按钮
+        /// </summary>
+        /// <returns></returns>
         async Task<List<ViewPowerMenu>> GetPowerButtons()
         {
-            string url = NavigationManager.Uri.Replace(NavigationManager.BaseUri,"");
+            string url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
             var result = await Http.GetJson<List<ViewPowerMenu>>("Menu/GetButtons?url=" + url);
             if (result.Status != 200) return new List<ViewPowerMenu>();
             return result.Data;
         }
-
-        async Task<List<ViewModelHeader>> GetViewModelNames()
+        /// <summary>
+        /// 获取表头
+        /// </summary>
+        /// <returns></returns>
+        async Task<List<ViewModelHeader>> GetHeader()
         {
             var modelNameList = await Http.GetJson<List<ViewModelHeader>>("Base/GetModelHeader?name=SyspowerMenu");
             if (modelNameList.Status == 200)
@@ -58,7 +98,21 @@ namespace Caviar.UI.Pages.SystemPages.Menu
             }
             return new List<ViewModelHeader>();
         }
-        public async void HandleOk(ViewPowerMenu e)
+        #endregion
+
+        #region 回调
+        void RowCallback(RowCallbackData<ViewPowerMenu> row)
+        {
+            switch (row.Menu.MenuName)
+            {
+                case "删除":
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        async void HandleOk(ViewPowerMenu e)
         {
             switch (e.MenuName)
             {
@@ -69,90 +123,18 @@ namespace Caviar.UI.Pages.SystemPages.Menu
                 default:
                     break;
             }
-            
-        }
 
-        void RowCallback(RowCallbackData<ViewPowerMenu> row)
+        }
+        #endregion
+
+        #region 重写
+        protected override async Task OnInitializedAsync()
         {
-            switch (row.Menu.MenuName)
-            {
-                case "删除":
-                    Delete(row.Data);
-                    break;
-                default:
-                    break;
-            }
+            DataSource = await GetPowerMenus();//获取数据源
+            ViewModelHeaders = await GetHeader();//获取表头
+            Buttons = await GetPowerButtons();//获取按钮
         }
-
-        async void Delete(ViewPowerMenu data)
-        {
-            if(data.Children!=null && data.Children.Count > 0)
-            {
-                var confirm = await ShowConfirm(data.MenuName, data.Children.Count);
-                if (confirm == ConfirmResult.Abort)//全部删除
-                {
-
-                    var result = await Http.PostJson<ViewPowerMenu, object>("Menu/DeleteAllEntity", data);
-                    if (result.Status == 200)
-                    {
-                        _messageService.Success("删除成功");
-                    }
-
-                }
-                else if(confirm == ConfirmResult.Retry)//移到上层
-                {
-                    var result = await Http.PostJson<ViewPowerMenu, object>("Menu/MoveEntity", data);
-                    if (result.Status == 200)
-                    {
-                        _messageService.Success("删除成功");
-                    }
-                }
-                else
-                {
-                    return;
-                }
-            }
-            else
-            {
-                //删除单条
-                var result = await Http.PostJson<ViewPowerMenu, object>("Menu/MoveEntity", data);
-                if (result.Status == 200)
-                {
-                    _messageService.Success("删除成功");
-                }
-            }
-            await OnInitializedAsync();
-            StateHasChanged();
-        }
-        [Inject]
-        ConfirmService _confirmService { get; set; }
-        private async Task<ConfirmResult> ShowConfirm(string menuName,int count)
-        {
-            return await _confirmService.Show(
-                $"检测到{menuName}菜单下,还有{count}条数据，请问如何处理？",
-                "警告",
-                ConfirmButtons.AbortRetryIgnore,
-                ConfirmIcon.Warning,
-                new ConfirmButtonOptions()
-                {
-                    Button1Props = new ButtonProps()
-                    {
-                        Type = ButtonType.Primary,
-                        Danger = true,
-                        ChildContent = "全部删除",
-                    },
-                    Button2Props = new ButtonProps()
-                    {
-                        Type = ButtonType.Primary,
-                        ChildContent = "移到上层"
-                    },
-                    Button3Props = new ButtonProps()
-                    {
-                        ChildContent = "取消"
-                    }
-                }
-                );
-        }
+        #endregion
 
     }
 }

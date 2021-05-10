@@ -16,7 +16,7 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
         [Inject]
         HttpHelper Http { get; set; }
         [Inject]
-        MessageService _messageService { get; set; }
+        MessageService Message { get; set; }
         [Inject]
         UserConfigHelper UserConfig { get; set; }
         [Inject]
@@ -95,7 +95,7 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
                     var result = await Http.PostJson<ViewPowerMenu, object>("Menu/DeleteAllEntity", data);
                     if (result.Status == 200)
                     {
-                        _messageService.Success("删除成功");
+                        Message.Success("删除成功");
                     }
 
                 }
@@ -104,7 +104,7 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
                     var result = await Http.PostJson<ViewPowerMenu, object>("Menu/MoveEntity", data);
                     if (result.Status == 200)
                     {
-                        _messageService.Success("删除成功");
+                        Message.Success("删除成功");
                     }
                 }
                 else
@@ -118,17 +118,17 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
                 var result = await Http.PostJson<ViewPowerMenu, object>("Menu/MoveEntity", data);
                 if (result.Status == 200)
                 {
-                    _messageService.Success("删除成功");
+                    Message.Success("删除成功");
                 }
             }
             await OnInitializedAsync();
             StateHasChanged();
         }
         [Inject]
-        ConfirmService _confirmService { get; set; }
+        ConfirmService Confirm { get; set; }
         private async Task<ConfirmResult> ShowConfirm(string menuName,int count)
         {
-            return await _confirmService.Show(
+            return await Confirm.Show(
                 $"检测到{menuName}菜单下,还有{count}条数据，请问如何处理？",
                 "警告",
                 ConfirmButtons.AbortRetryIgnore,

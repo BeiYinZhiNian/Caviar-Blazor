@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Caviar.WebAPI
+namespace Caviar.Demo.WebAPI
 {
     public class Startup
     {
@@ -42,7 +42,7 @@ namespace Caviar.WebAPI
             }, Configuration);
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Caviar.WebAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Caviar.Demo.WebAPI", Version = "v1" });
             });
         }
 
@@ -54,7 +54,7 @@ namespace Caviar.WebAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Caviar.WebAPI v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Caviar.Demo.WebAPI v1"));
             }
             app.UserCaviar();
             app.UseRouting();

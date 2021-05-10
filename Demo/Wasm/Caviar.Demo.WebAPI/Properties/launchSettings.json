@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Caviar.WebAPI": {
+    "Caviar.Demo.WebAPI": {
       "commandName": "Project",
       "launchUrl": "swagger",
       "environmentVariables": {

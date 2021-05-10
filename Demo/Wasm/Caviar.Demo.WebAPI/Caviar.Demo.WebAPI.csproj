@@ -11,13 +11,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Caviar.Control\Caviar.Control.csproj" />
-    <ProjectReference Include="..\Caviar.Models\Caviar.Models.csproj" />
+    <Folder Include="Controllers\Template\" />
+    <Folder Include="System\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Template\" />
-    <Folder Include="System\" />
+    <ProjectReference Include="..\..\..\Caviar.Control\Caviar.Control.csproj" />
+    <ProjectReference Include="..\..\..\Caviar.Models\Caviar.Models.csproj" />
+    <ProjectReference Include="..\Caviar.Demo.Models\Caviar.Demo.Models.csproj" />
   </ItemGroup>
 
 </Project>

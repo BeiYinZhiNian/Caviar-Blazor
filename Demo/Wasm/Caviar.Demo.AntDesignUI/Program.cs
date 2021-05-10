@@ -1,4 +1,4 @@
-using Caviar.UI;
+using Caviar.Demo.AntDesignUI;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

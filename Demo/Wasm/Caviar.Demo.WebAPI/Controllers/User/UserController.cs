@@ -3,7 +3,7 @@ using Caviar.Models.SystemData;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Caviar.WebAPI.Controllers
+namespace Caviar.Demo.WebAPI.Controllers
 {
     public class UserController : BaseController
     {

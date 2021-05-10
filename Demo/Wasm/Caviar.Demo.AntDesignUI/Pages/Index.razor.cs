@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-namespace Caviar.UI.Pages
+namespace Caviar.Demo.AntDesignUI.Pages
 {
     partial class Index
     {

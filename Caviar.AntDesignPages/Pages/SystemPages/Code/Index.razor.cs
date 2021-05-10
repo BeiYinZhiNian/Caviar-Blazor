@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Caviar.AntDesignPages.Pages.SystemPages.Code
 {
@@ -93,7 +94,7 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Code
                     await _message.Error("生成目录不可为空");
                     return;
                 }
-                var result = await Http.PostJson<CodeGenerateData,List<TabItem>>("Base/CodeGenerate",GenerateData);
+                var result = await Http.PostJson<CodeGenerateData,List<TabItem>>("Base/CodePreview", GenerateData);
                 if (result.Status == 200)
                 {
                     lstTabs = result.Data;
@@ -103,11 +104,24 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Code
             StateHasChanged();
         }
 
+        string ResultStatus = "";
+        string ReusltTitle = "";
+        string ResultSubTitle = "";
         async void OnGenerateClick()
         {
-
-
-
+            var result = await Http.PostJson<CodeGenerateData, List<TabItem>>("Base/CodeFileGenerate", GenerateData);
+            if (result.Status == 200)
+            {
+                ResultStatus = "success";
+                ReusltTitle = "代码生成完毕";
+                ResultSubTitle = "代码生效需要关闭程序重新编译运行";
+            }
+            else
+            {
+                ResultStatus = "error";
+                ReusltTitle = result.Title;
+                ResultSubTitle = result.Detail;
+            }
             OnNextClick();
         }
 

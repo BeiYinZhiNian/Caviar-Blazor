@@ -7,7 +7,34 @@
             <Step Title="@item.Title" Subtitle="@item.Content" />
         }
     </Steps>
+    <div class="steps-action">
+        <Space>
+            <SpaceItem>
+                @if (current > 0 && current < steps.Length - 1)
+                {
+                    <Button Type="primary" OnClick="OnPreClick">上一步</Button>
+                }
+            </SpaceItem>
+            <SpaceItem>
+                @if (current < steps.Length - 2 && current > 0)
+                {
+                    <Button Type="primary" OnClick="OnNextClick">下一步</Button>
+                }
+            </SpaceItem>
+            <SpaceItem>
+                @if (current == steps.Length - 2)
+                {
+                    <Button Type="primary" Danger OnClick=@(() => { OnGenerateClick(); })>
+                        生成
+                    </Button>
+                }
 
+            </SpaceItem>
+        </Space>
+
+
+
+    </div>
     <div class="steps-content">
         @switch (current)
         {
@@ -63,9 +90,9 @@
                 </Tabs>
                 break;
             case 3:
-                <Result Status="success"
-                        Title="代码生成完毕"
-                        SubTitle="代码生效需要关闭程序重新编译运行">
+                <Result Status="@ResultStatus"
+                        Title="@ReusltTitle"
+                        SubTitle="@ResultSubTitle">
                     <Extra>
                         <Button Type="primary" OnClick='()=> { navigation.NavigateTo("/"); }'>返回首页</Button>
                         <Button OnClick='()=> { current = 0; }'>继续生成</Button>
@@ -77,34 +104,7 @@
                 break;
         }
     </div>
-    <div class="steps-action">
-        <Space>
-            <SpaceItem>
-                @if (current > 0 && current < steps.Length - 1)
-                {
-                    <Button Type="primary" OnClick="OnPreClick">上一步</Button>
-                }
-            </SpaceItem>
-            <SpaceItem>
-                @if (current < steps.Length - 2 && current > 0)
-                {
-                    <Button Type="primary" OnClick="OnNextClick">下一步</Button>
-                }
-            </SpaceItem>
-            <SpaceItem>
-                @if (current == steps.Length - 2)
-                {
-                    <Button Type="primary" Danger OnClick=@(() => { OnGenerateClick(); })>
-                        生成
-                    </Button>
-                }
 
-            </SpaceItem>
-        </Space>
-
-
-
-    </div>
 </div>
 
 <style>
