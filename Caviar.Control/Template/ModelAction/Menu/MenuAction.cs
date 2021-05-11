@@ -49,7 +49,7 @@ namespace Caviar.Control
         /// <returns></returns>
         public virtual async Task<PageData<ViewMenu>> GetPages(Expression<Func<SysPowerMenu, bool>> where,int pageIndex,int pageSize, bool isOrder = true, bool isNoTracking = false)
         {
-            var pages = await BC.DC.GetPageAsync(where, u => u.Id, pageIndex, pageSize, isOrder, isNoTracking);
+            var pages = await BC.DC.GetPageAsync(where, u => u.Number, pageIndex, pageSize, isOrder, isNoTracking);
             var ViewPages = ModelToViewModel(pages);
             return ViewPages;
         }
