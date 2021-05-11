@@ -30,22 +30,25 @@
     <ProjectReference Include="..\Caviar.Models\Caviar.Models.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="Template\Index.razor.cs.temp">
+    <None Update="Template\File\Action.cs.temp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Template\Index.razor.temp">
+    <None Update="Template\File\Index.razor.cs.temp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Template\Controller.cs.temp">
+    <None Update="Template\File\Index.razor.temp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Template\Add.razor.cs.temp">
+    <None Update="Template\File\Controller.cs.temp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Template\Add.razor.temp">
+    <None Update="Template\File\Add.razor.cs.temp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Template\ViewModel.cs.temp">
+    <None Update="Template\File\Add.razor.temp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Template\File\ViewModel.cs.temp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

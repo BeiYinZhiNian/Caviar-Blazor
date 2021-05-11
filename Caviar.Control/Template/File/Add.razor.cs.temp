@@ -27,13 +27,13 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
             SysPowerMenus = await GetPowerMenus();
         }
 
-        private List<ViewPowerMenu> SysPowerMenus;
+        private List<ViewMenu> SysPowerMenus;
         string UpPowerMenuName { get; set; } = "无上层目录";
 
-        async Task<List<ViewPowerMenu>> GetPowerMenus()
+        async Task<List<ViewMenu>> GetPowerMenus()
         {
-            var result = await Http.GetJson<List<ViewPowerMenu>>("Menu/GetLeftSideMenus");
-            if (result.Status != 200) return new List<ViewPowerMenu>();
+            var result = await Http.GetJson<List<ViewMenu>>("Menu/GetLeftSideMenus");
+            if (result.Status != 200) return new List<ViewMenu>();
             return result.Data;
         }
 
@@ -62,7 +62,7 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
             return false;
         }
 
-        void EventRecord(TreeEventArgs<ViewPowerMenu> args)
+        void EventRecord(TreeEventArgs<ViewMenu> args)
         {
             UpPowerMenuName = args.Node.Title;
             model.UpLayerId = int.Parse(args.Node.Key);

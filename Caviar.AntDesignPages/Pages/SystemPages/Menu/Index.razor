@@ -1,7 +1,10 @@
 ﻿@page "/Menu/index"
 
-<TableTemplate TData="ViewPowerMenu"
+<TableTemplate TData="ViewMenu"
                DataSource="DataSource"
+               PageSize="PageSize"
+               PageIndex="PageIndex"
+               Total="Total"
                ViewModelHeader="ViewModelHeaders"
                TreeChildren="u => u.Children"
                Buttons="Buttons"

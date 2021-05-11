@@ -54,9 +54,10 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Code
                     }));
             
         }
-        static string[] pageOptions = { "列表","新增" };
-        static string[] buttonOptions = { "新增", "删除", "查询" };
-        static string[] configOptions = { "覆盖" };
+        static string[] _pageOptions = { "列表","新增" };
+        static string[] _buttonOptions = { "新增", "删除","修改", "查询" };
+        static string[] _webApi = { "控制器" ,"模型", "模型操作器" };
+        static string[] _configOptions = { "覆盖" };
         void OnPageChange(string[] checkedValues)
         {
             GenerateData.Page = checkedValues;
@@ -72,9 +73,13 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Code
             GenerateData.Config = checkedValues;
         }
 
+        void OnWebApiChange(string[] checkedValues)
+        {
+            GenerateData.WebApi = checkedValues;
+        }
 
 
-        CodeGenerateData GenerateData = new CodeGenerateData() { Page = pageOptions, Button = buttonOptions };
+        CodeGenerateData GenerateData = new CodeGenerateData() { Page = _pageOptions, Button = _buttonOptions ,WebApi = _webApi };
         void OnPreClick()
         {
             current--;
@@ -84,9 +89,9 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Code
         {
             if (current == 1)
             {
-                if(GenerateData.Page==null || GenerateData.Page.Length == 0)
+                if((GenerateData.Page == null || GenerateData.Page.Length == 0) && (GenerateData.WebApi == null || GenerateData.WebApi.Length == 0))
                 {
-                    await _message.Error("请至少选择一个页面进行生成");
+                    await _message.Error("请在前后端至少选择一个进行生成");
                     return;
                 }
                 if (GenerateData.OutName == "")

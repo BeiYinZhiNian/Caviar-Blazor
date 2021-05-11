@@ -5,14 +5,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\Template\**" />
+    <Compile Remove="System\**" />
+    <Content Remove="Controllers\Template\**" />
+    <Content Remove="System\**" />
+    <EmbeddedResource Remove="Controllers\Template\**" />
+    <EmbeddedResource Remove="System\**" />
+    <None Remove="Controllers\Template\**" />
+    <None Remove="System\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.1" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.1" NoWarn="NU1605" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Template\" />
-    <Folder Include="System\" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,5 +30,7 @@
     <ProjectReference Include="..\..\..\Caviar.Models\Caviar.Models.csproj" />
     <ProjectReference Include="..\Caviar.Demo.Models\Caviar.Demo.Models.csproj" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

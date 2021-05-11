@@ -28,6 +28,8 @@ namespace Caviar.Control
         public static string WebUINamespace { get; private set; }
         public static string ModelsNamespace { get; private set; }
         public static string ModelsPath { get; private set; }
+        public static string WebApiPath { get; private set; }
+        public static string WebApiNamespace { get; private set; }
         public static string SessionUserInfoName { get; private set; } = "SysUserInfo";
 
         public static bool IsDebug { get; set; }
@@ -70,6 +72,8 @@ namespace Caviar.Control
             WebUINamespace = json["Caviar"]["WebUI"]["namespace"].ToString();
             ModelsPath = json["Caviar"]["Models"]["Path"].ToString();
             ModelsNamespace = json["Caviar"]["Models"]["namespace"].ToString();
+            WebApiPath = json["Caviar"]["WebApi"]["Path"].ToString();
+            WebApiNamespace = json["Caviar"]["WebApi"]["namespace"].ToString();
             var paseJson = json.ToString();
             File.WriteAllText(appsettingPath, paseJson);
         }
@@ -84,12 +88,15 @@ namespace Caviar.Control
             if (json["Caviar"]["Token"] == null) json["Caviar"]["Token"] = new JObject();
             if (json["Caviar"]["Token"]["Duration"] == null) json["Caviar"]["Token"]["Duration"] = 60 * 2;
             if (json["Caviar"]["Token"]["Key"] == null) json["Caviar"]["Token"]["Key"] = Guid.NewGuid();
-            if(json["Caviar"]["WebUI"] == null) json["Caviar"]["WebUI"] = new JObject();
-            if (json["Caviar"]["WebUI"]["Path"] == null) json["Caviar"]["WebUI"]["Path"] = "../Caviar.Demo.AntDesignUI/Pages/Template/";
-            if (json["Caviar"]["WebUI"]["namespace"] == null) json["Caviar"]["WebUI"]["namespace"] = "Caviar.Demo.AntDesignUI";
+            if (json["Caviar"]["WebUI"] == null) json["Caviar"]["WebUI"] = new JObject();
+            if (json["Caviar"]["WebUI"]["Path"] == null) json["Caviar"]["WebUI"]["Path"] = "../Caviar.Demo.AntDesignUI/Template/";
+            if (json["Caviar"]["WebUI"]["namespace"] == null) json["Caviar"]["WebUI"]["namespace"] = "Caviar.Demo.AntDesignUI.Pages";
             if (json["Caviar"]["Models"] == null) json["Caviar"]["Models"] = new JObject();
             if (json["Caviar"]["Models"]["Path"] == null) json["Caviar"]["Models"]["Path"] = "../Caviar.Demo.Models/Template/";
             if (json["Caviar"]["Models"]["namespace"] == null) json["Caviar"]["Models"]["namespace"] = "Caviar.Demo.Models";
+            if (json["Caviar"]["WebApi"] == null) json["Caviar"]["WebApi"] = new JObject();
+            if (json["Caviar"]["WebApi"]["Path"] == null) json["Caviar"]["WebApi"]["Path"] = "/Template/";
+            if (json["Caviar"]["WebApi"]["namespace"] == null) json["Caviar"]["WebApi"]["namespace"] = "Caviar.Demo.WebAPI";
         }
 
 

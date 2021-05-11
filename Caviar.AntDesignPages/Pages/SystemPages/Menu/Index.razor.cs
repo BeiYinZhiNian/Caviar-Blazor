@@ -21,29 +21,38 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
         UserConfigHelper UserConfig { get; set; }
         [Inject]
         NavigationManager NavigationManager { get; set; }
-        public List<ViewPowerMenu> DataSource { get; set; }
+        public List<ViewMenu> DataSource { get; set; }
+        public int Total { get; set; }
+        public int PageIndex { get; set; }
+        public int PageSize { get; set; }
 
         List<ViewModelHeader> ViewModelHeaders { get; set; }
-        List<ViewPowerMenu> Buttons { get; set; }
+        List<ViewMenu> Buttons { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            DataSource = await GetPowerMenus();//获取数据源
+            await GetMenus();//获取数据源
             ViewModelHeaders = await GetViewModelNames();//获取表头
-            Buttons = await GetPowerButtons();//获取按钮
+            Buttons = await GetButtons();//获取按钮
         }
 
-        async Task<List<ViewPowerMenu>> GetPowerMenus()
+        async Task GetMenus()
         {
-            var result = await Http.GetJson<List<ViewPowerMenu>>("Menu/GetMenus");
-            if (result.Status != 200) return new List<ViewPowerMenu>();
-            return result.Data;
+            var result = await Http.GetJson<PageData<ViewMenu>>("Menu/GetPages?pageSize=100");
+            if (result.Status != 200) return;
+            if (result.Data != null)
+            {
+                DataSource = result.Data.Rows;
+                Total = result.Data.Total;
+                PageIndex = result.Data.PageIndex;
+                PageSize = result.Data.PageSize;
+            }
         }
 
-        async Task<List<ViewPowerMenu>> GetPowerButtons()
+        async Task<List<ViewMenu>> GetButtons()
         {
             string url = NavigationManager.Uri.Replace(NavigationManager.BaseUri,"");
-            var result = await Http.GetJson<List<ViewPowerMenu>>("Menu/GetButtons?url=" + url);
-            if (result.Status != 200) return new List<ViewPowerMenu>();
+            var result = await Http.GetJson<List<ViewMenu>>("Menu/GetButtons?url=" + url);
+            if (result.Status != 200) return new List<ViewMenu>();
             return result.Data;
         }
 
@@ -58,7 +67,7 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
             }
             return new List<ViewModelHeader>();
         }
-        public async void HandleOk(ViewPowerMenu e)
+        public async void HandleOk(ViewMenu e)
         {
             switch (e.MenuName)
             {
@@ -72,7 +81,7 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
             
         }
 
-        void RowCallback(RowCallbackData<ViewPowerMenu> row)
+        void RowCallback(RowCallbackData<ViewMenu> row)
         {
             switch (row.Menu.MenuName)
             {
@@ -84,7 +93,7 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
             }
         }
 
-        async void Delete(ViewPowerMenu data)
+        async void Delete(ViewMenu data)
         {
             if(data.Children!=null && data.Children.Count > 0)
             {
@@ -92,7 +101,7 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
                 if (confirm == ConfirmResult.Abort)//全部删除
                 {
 
-                    var result = await Http.PostJson<ViewPowerMenu, object>("Menu/DeleteAllEntity", data);
+                    var result = await Http.PostJson<ViewMenu, object>("Menu/DeleteAllEntity", data);
                     if (result.Status == 200)
                     {
                         Message.Success("删除成功");
@@ -101,7 +110,7 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
                 }
                 else if(confirm == ConfirmResult.Retry)//移到上层
                 {
-                    var result = await Http.PostJson<ViewPowerMenu, object>("Menu/MoveEntity", data);
+                    var result = await Http.PostJson<ViewMenu, object>("Menu/MoveEntity", data);
                     if (result.Status == 200)
                     {
                         Message.Success("删除成功");
@@ -115,7 +124,7 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
             else
             {
                 //删除单条
-                var result = await Http.PostJson<ViewPowerMenu, object>("Menu/MoveEntity", data);
+                var result = await Http.PostJson<ViewMenu, object>("Menu/MoveEntity", data);
                 if (result.Status == 200)
                 {
                     Message.Success("删除成功");

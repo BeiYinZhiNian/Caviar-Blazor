@@ -51,7 +51,19 @@ namespace {WebUINamespace}
         /// <summary>
         /// 数据源
         /// </summary>
-        List<{OutName}> DataSource { get; set; }
+        List<{ViewOutName}> DataSource { get; set; }
+        /// <summary>
+        /// 总计
+        /// </summary>
+        public int Total { get; set; }
+        /// <summary>
+        /// 页数
+        /// </summary>
+        public int PageIndex { get; set; }
+        /// <summary>
+        /// 页面大小
+        /// </summary>
+        public int PageSize { get; set; }
         /// <summary>
         /// 表头
         /// </summary>
@@ -59,7 +71,7 @@ namespace {WebUINamespace}
         /// <summary>
         /// 按钮
         /// </summary>
-        List<ViewPowerMenu> Buttons { get; set; }
+        List<ViewMenu> Buttons { get; set; }
         #endregion
 
         #region 方法
@@ -67,21 +79,27 @@ namespace {WebUINamespace}
         /// 获取数据源
         /// </summary>
         /// <returns></returns>
-        async Task<List<{OutName}>> Get{OutName}()
+        async Task Get{ViewOutName}()
         {
-            var result = await Http.GetJson<List<{OutName}>>("{DataSourceWebApi}");
-            if (result.Status != 200) return new List<{OutName}>();
-            return result.Data;
+            var result = await Http.GetJson<PageData<{ViewOutName}>>("{DataSourceWebApi}");
+            if (result.Status != 200) return;
+            if (result.Data != null)
+            {
+                DataSource = result.Data.Rows;
+                Total = result.Data.Total;
+                PageIndex = result.Data.PageIndex;
+                PageSize = result.Data.PageSize;
+            }
         }
         /// <summary>
         /// 获取按钮
         /// </summary>
         /// <returns></returns>
-        async Task<List<ViewPowerMenu>> GetPowerButtons()
+        async Task<List<ViewMenu>> GetPowerButtons()
         {
             string url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
-            var result = await Http.GetJson<List<ViewPowerMenu>>("Menu/GetButtons?url=" + url);
-            if (result.Status != 200) return new List<ViewPowerMenu>();
+            var result = await Http.GetJson<List<ViewMenu>>("Menu/GetButtons?url=" + url);
+            if (result.Status != 200) return new List<ViewMenu>();
             return result.Data;
         }
         /// <summary>
@@ -90,7 +108,7 @@ namespace {WebUINamespace}
         /// <returns></returns>
         async Task<List<ViewModelHeader>> GetHeader()
         {
-            var modelNameList = await Http.GetJson<List<ViewModelHeader>>("Base/GetModelHeader?name=SyspowerMenu");
+            var modelNameList = await Http.GetJson<List<ViewModelHeader>>("Base/GetModelHeader?name={EntityName}");
             if (modelNameList.Status == 200)
             {
                 var item = modelNameList.Data.SingleOrDefault(u => u.TypeName.ToLower() == "icon");
@@ -102,7 +120,7 @@ namespace {WebUINamespace}
         #endregion
 
         #region 回调
-        void RowCallback(RowCallbackData<{OutName}> row)
+        void RowCallback(RowCallbackData<{ViewOutName}> row)
         {
             switch (row.Menu.MenuName)
             {
@@ -111,7 +129,7 @@ namespace {WebUINamespace}
             }
         }
 
-        async void HandleOk(ViewPowerMenu e)
+        async void HandleOk(ViewMenu e)
         {
             switch (e.MenuName)
             {
@@ -125,7 +143,7 @@ namespace {WebUINamespace}
         #region 重写
         protected override async Task OnInitializedAsync()
         {
-            DataSource = await Get{OutName}();//获取数据源
+            Get{ViewOutName}();//获取数据源
             ViewModelHeaders = await GetHeader();//获取表头
             Buttons = await GetPowerButtons();//获取按钮
         }

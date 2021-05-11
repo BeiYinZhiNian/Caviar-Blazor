@@ -6,8 +6,11 @@
 @page "{page}"
 @using {ModelsNamespace}
 @namespace {WebUINamespace}
-<TableTemplate TData="{OutName}"
+<TableTemplate TData="{ViewOutName}"
                DataSource="DataSource"
+               PageSize="PageSize"
+               PageIndex="PageIndex"
+               Total="Total"
                ViewModelHeader="ViewModelHeaders"
                Buttons="Buttons"
                HandleOkCallback="HandleOk"

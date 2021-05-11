@@ -47,7 +47,14 @@
                     <ActionColumn Title="操作">
                         <Space Size=@("middle")>
                             <SpaceItem>
-                                <Button Type="@ButtonType.Primary" OnClick="()=> { GenerateData.EntityName = context.Name;GenerateData.EntityNamespace = context.FullName ;GenerateData.OutName = context.Name ; OnNextClick(); }">选择</Button>
+                                <Button Type="@ButtonType.Primary" OnClick="()=>
+                                                                            {
+                                                                                GenerateData.EntityName = context.Name;
+                                                                                GenerateData.EntityNamespace = context.FullName;
+                                                                                GenerateData.OutName = context.Name;
+                                                                                GenerateData.EntityDisplayName = context.DisplayName;
+                                                                                OnNextClick();
+                                                                            }">选择</Button>
                             </SpaceItem>
                         </Space>
                     </ActionColumn>
@@ -57,16 +64,20 @@
                 <div style="margin-bottom:16px;margin-top:16px;">
                     <Space Direction="DirectionVHType.Vertical" Size="@("large")">
                         <SpaceItem>
-                            <span style="margin-right:8px">页面:</span>
-                            <CheckboxGroup Value="GenerateData.Page" Options="@pageOptions" OnChange="OnPageChange" />
+                            <span style="margin-right:8px">前端:</span>
+                            <CheckboxGroup Value="GenerateData.Page" Options="@_pageOptions" OnChange="OnPageChange" />
+                        </SpaceItem>
+                        <SpaceItem>
+                            <span style="margin-right:8px">后端:</span>
+                            <CheckboxGroup Value="GenerateData.WebApi" Options="@_webApi" OnChange="OnWebApiChange" />
                         </SpaceItem>
                         <SpaceItem>
                             <span style="margin-right:8px">功能:</span>
-                            <CheckboxGroup Value="GenerateData.Button" Options="@buttonOptions" OnChange="OnButtonChange" />
+                            <CheckboxGroup Value="GenerateData.Button" Options="@_buttonOptions" OnChange="OnButtonChange" />
                         </SpaceItem>
                         <SpaceItem>
                             <span style="margin-right:8px">其他:</span>
-                            <CheckboxGroup Value="GenerateData.Config" Options="@configOptions" OnChange="OnConfigChange" />
+                            <CheckboxGroup Value="GenerateData.Config" Options="@_configOptions" OnChange="OnConfigChange" />
                         </SpaceItem>
                         <SpaceItem>
                             <AntDesign.Input Placeholder="请输入生成的文件名" @bind-Value="@GenerateData.OutName">

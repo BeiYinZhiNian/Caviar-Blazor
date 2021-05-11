@@ -53,7 +53,7 @@ namespace Caviar.AntDesignPages.Shared
         }
 
 
-        public void MenuItemClick(ViewPowerMenu menu)
+        public void MenuItemClick(ViewMenu menu)
         {
             UserConfig.CurrentMenuId = menu.Id;
             NavigationManager.NavigateTo(menu.Url);
@@ -82,12 +82,12 @@ namespace Caviar.AntDesignPages.Shared
             SysPowerMenus = await GetPowerMenus();
         }
 
-        private List<ViewPowerMenu> SysPowerMenus;
+        private List<ViewMenu> SysPowerMenus;
 
-        async Task<List<ViewPowerMenu>> GetPowerMenus()
+        async Task<List<ViewMenu>> GetPowerMenus()
         {
-            var result = await Http.GetJson<List<ViewPowerMenu>>("Menu/GetLeftSideMenus");
-            if (result.Status != 200) return new List<ViewPowerMenu>();
+            var result = await Http.GetJson<List<ViewMenu>>("Menu/GetLeftSideMenus");
+            if (result.Status != 200) return new List<ViewMenu>();
             return result.Data;
         }
 

@@ -109,6 +109,21 @@ namespace Caviar.Models.SystemData
             return example;
         }
 
+        /// <summary>
+        /// 两个类型进行转换，短小精悍
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="K"></typeparam>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static T AToB<T, K>(K value)
+        {
+            var setting = new JsonSerializerSettings();
+            setting.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+            setting.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
+            var json = JsonConvert.SerializeObject(value, setting);
+            return JsonConvert.DeserializeObject<T>(json, setting);
+        }
 
         /// <summary>
         /// 获取泛型某一属性值

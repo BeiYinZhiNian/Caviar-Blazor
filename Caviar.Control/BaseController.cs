@@ -99,22 +99,8 @@ namespace Caviar.Control
         public override void OnActionExecuted(ActionExecutedContext context)
         {
             base.OnActionExecuted(context);
-            var actionResult = (ObjectResult)context.Result;
             stopwatch.Stop();
-            if (actionResult != null)
-            {
-                var setting = new JsonSerializerSettings();
-                setting.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
-                setting.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
-                var json = JsonConvert.SerializeObject(actionResult.Value, setting);
-                var resultMsg = JsonConvert.DeserializeObject<ResultMsg>(json);
-                LoggerMsg<BaseController>(resultMsg.Title, IsSucc: resultMsg.Status == 200);
-            }
-            else
-            {
-                LoggerMsg<BaseController>("发生严重错误："+context.Exception.Message, IsSucc: false);
-            }
-            
+            //日志记录，这里应该想一个更好的办法
             
         }
         

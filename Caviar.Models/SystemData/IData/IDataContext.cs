@@ -111,7 +111,7 @@ namespace Caviar.Models.SystemData
         /// <param name="pageSize">每页大小</param>
         /// <param name="isOrder">排序正反</param>
         /// <returns></returns>
-        public Task<PageData<T>> GetPageAsync<T, TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true) where T : class, IBaseModel;
+        public Task<PageData<T>> GetPageAsync<T, TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = false) where T : class, IBaseModel;
 
         /// <summary>
         /// 开启事务

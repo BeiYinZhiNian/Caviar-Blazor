@@ -14,10 +14,14 @@ namespace Caviar.Models.SystemData
 
         public string EntityNamespace { get; set; }
 
+        public string EntityDisplayName { get; set; }
+
         public string[] Page { get; set; }
 
         public string[] Button { get; set; }
 
         public string[] Config { get; set; }
+
+        public string[] WebApi { get; set; }
     }
 }

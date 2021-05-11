@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
-    public partial class ViewPowerMenu : SysPowerMenu
+    public partial class ViewMenu : SysPowerMenu
     {
-        public List<ViewPowerMenu> Children { get; set; } = new List<ViewPowerMenu>();
+        public List<ViewMenu> Children { get; set; } = new List<ViewMenu>();
     }
 }

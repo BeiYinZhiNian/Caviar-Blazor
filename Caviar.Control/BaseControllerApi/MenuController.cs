@@ -8,38 +8,17 @@ using System.Threading.Tasks;
 
 namespace Caviar.Control
 {
-    public class MenuController : BaseController
+    public partial class MenuController : BaseController
     {
-        SysPowerMenuAction _action;
-        SysPowerMenuAction Action 
-        {
-            get 
-            {
-                if (_action == null)
-                {
-                    _action = CreateModel<SysPowerMenuAction>();
-                }
-                return _action;
-            }
-            set
-            {
-                _action = value;
-            }
-        }
-
+        /// <summary>
+        /// 获取左侧菜单
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult GetLeftSideMenus()
         {
             
             ResultMsg.Data = Action.GetViewMenus(u => u.MenuType == MenuType.Catalog || u.MenuType == MenuType.Menu);
-            return ResultOK();
-        }
-
-        [HttpGet]
-        public IActionResult GetMenus()
-        {
-            
-            ResultMsg.Data = Action.GetViewMenus(u => true);
             return ResultOK();
         }
         /// <summary>
@@ -66,26 +45,15 @@ namespace Caviar.Control
             return ResultOK();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddEntity(SysPowerMenuAction MenuAction)
-        {
-            var count = await MenuAction.AddEntity();
-            if (count > 0)
-            {
-                return ResultOK();
-            }
-            return ResultErrorMsg("添加菜单失败");
-        }
-
         /// <summary>
         /// 删除并将子菜单移动到上一层
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> MoveEntity(ViewPowerMenu viewMen)
+        public async Task<IActionResult> MoveEntity(ViewMenu viewMen)
         {
             Action.AutoAssign(viewMen);
-            List<ViewPowerMenu> viewMenuList = new List<ViewPowerMenu>();
+            List<ViewMenu> viewMenuList = new List<ViewMenu>();
             Action.ViewToModel(viewMen, viewMenuList);
             var count = 0;
             if(viewMenuList!=null && viewMenuList.Count != 0)
@@ -114,29 +82,14 @@ namespace Caviar.Control
         }
 
         /// <summary>
-        /// 删除
-        /// </summary>
-        /// <param name="Menu"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> DeleteEntity(SysPowerMenuAction Menu)
-        {
-            var count = await Menu.DeleteEntity();
-            if (count > 0)
-            {
-                return ResultOK();
-            }
-            return ResultErrorMsg("删除菜单失败");
-        }
-        /// <summary>
         /// 批量删除
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> DeleteAllEntity(ViewPowerMenu viewMen)
+        public async Task<IActionResult> DeleteAllEntity(ViewMenu viewMen)
         {
-            List<ViewPowerMenu> viewMenuList = new List<ViewPowerMenu>();
+            List<ViewMenu> viewMenuList = new List<ViewMenu>();
             Action.ViewToModel(viewMen, viewMenuList);//获取子菜单集合
             viewMenuList.Add(viewMen);//将自己添加入删除集合
             List<SysPowerMenu> menus = new List<SysPowerMenu>();

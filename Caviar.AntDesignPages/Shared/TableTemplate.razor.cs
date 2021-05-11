@@ -16,9 +16,15 @@ namespace Caviar.AntDesignPages.Shared
     {
         [Parameter]
         public List<TData> DataSource { get; set; }
+        [Parameter]
+        public int Total { get; set; }
+        [Parameter]
+        public int PageIndex { get; set; }
+        [Parameter]
+        public int PageSize { get; set; }
 
         [Parameter]
-        public List<ViewPowerMenu> Buttons { get; set; }
+        public List<ViewMenu> Buttons { get; set; }
 
         [Parameter]
         public string ModelHeaderName { get; set; }
@@ -28,7 +34,8 @@ namespace Caviar.AntDesignPages.Shared
         public List<ViewModelHeader> ViewModelHeader { get; set; }
         [Inject]
         HttpHelper Http { get; set; }
-        
+        [Parameter]
+        public EventCallback<PaginationEventArgs> PageIndexChanged { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -75,8 +82,8 @@ namespace Caviar.AntDesignPages.Shared
         }
         [Inject]
         IJSRuntime JSRuntime { get; set; }
-        ViewPowerMenu CurrentMenu { get; set; }
-        void ButtonClick(ViewPowerMenu menu, TData data)
+        ViewMenu CurrentMenu { get; set; }
+        void ButtonClick(ViewMenu menu, TData data)
         {
             CurrentMenu = menu;
             switch (menu.ButtonPosition)
@@ -162,9 +169,9 @@ namespace Caviar.AntDesignPages.Shared
         [Inject] public NavigationManager NavigationManager { get; set; }
         ITableTemplate menuAdd;
         [Parameter]
-        public EventCallback<ViewPowerMenu> HandleOkCallback { get; set; }
+        public EventCallback<ViewMenu> HandleOkCallback { get; set; }
         [Parameter]
-        public EventCallback<ViewPowerMenu> HandleCancelCallback { get; set; }
+        public EventCallback<ViewMenu> HandleCancelCallback { get; set; }
         private async void HandleOk(MouseEventArgs e)
         {
             var res = true;

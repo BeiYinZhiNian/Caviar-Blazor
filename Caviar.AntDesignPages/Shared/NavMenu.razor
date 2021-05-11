@@ -13,12 +13,12 @@
 </Menu>
 
 @code {
-    RenderFragment GetSubMenu(List<ViewPowerMenu> viewPowerMenus)
+    RenderFragment GetSubMenu(List<ViewMenu> ViewMenus)
     {
         RenderFragment ViewSubMenu = null;
-        if (viewPowerMenus == null || viewPowerMenus.Count == 0) return ViewSubMenu;
-        viewPowerMenus = viewPowerMenus.OrderBy(u => u.Number).ToList();
-        foreach (var item in viewPowerMenus)
+        if (ViewMenus == null || ViewMenus.Count == 0) return ViewSubMenu;
+        ViewMenus = ViewMenus.OrderBy(u => u.Number).ToList();
+        foreach (var item in ViewMenus)
         {
             RenderFragment subTitle =
             @<span style="font-size:15px">

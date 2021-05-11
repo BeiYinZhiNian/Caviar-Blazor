@@ -11,7 +11,7 @@ namespace Caviar.Models.SystemData
         /// <summary>
         /// 点击的菜单
         /// </summary>
-        public ViewPowerMenu Menu { get; set; }
+        public ViewMenu Menu { get; set; }
         /// <summary>
         /// 回调数据
         /// </summary>

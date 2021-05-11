@@ -1,0 +1,131 @@
+﻿using Caviar.Control;
+using Caviar.Models.SystemData;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
+using {ModelsNamespace};
+/// <summary>
+/// 生成者：{Producer}
+/// 生成时间：{GenerationTime}
+/// 代码由代码生成器自动生成，更改的代码可能被进行替换
+/// 可在上层目录使用partial关键字进行扩展
+/// </summary>
+namespace {WebApiNamespace}
+{
+    [DisplayName("{EntityDisplayName}控制器")]
+    public partial class {OutName}Controller : BaseController
+    {
+        #region 属性注入
+        {OutName}Action _action;
+        /// <summary>
+        /// 方法操作器
+        /// </summary>
+        {OutName}Action Action 
+        {
+            get 
+            {
+                if (_action == null)
+                {
+                    _action = CreateModel<{OutName}Action>();
+                }
+                return _action;
+            }
+            set
+            {
+                _action = value;
+            }
+        }
+        #endregion
+
+        #region 方法
+        /// <summary>
+        /// 添加{EntityDisplayName}
+        /// </summary>
+        /// <param name="{OutName}">方法操作器</param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> Add({OutName}Action {OutName})
+        {
+            try
+            {
+                var count = await {OutName}.AddEntity();
+                if (count > 0)
+                {
+                    return ResultOK();
+                }
+            }
+            catch(Exception e)
+            {
+                return ResultErrorMsg("添加失败", e.Message);
+            }
+            return ResultErrorMsg("添加失败");
+        }
+
+        /// <summary>
+        /// 修改{EntityDisplayName}
+        /// </summary>
+        /// <param name="{OutName}">方法操作器</param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> Update({OutName}Action {OutName})
+        {
+            try
+            {
+                var count = await {OutName}.UpdateEntity();
+                if (count > 0)
+                {
+                    return ResultOK();
+                }
+            }
+            catch(Exception e)
+            {
+                return ResultErrorMsg("修改失败", e.Message);
+            }
+            return ResultErrorMsg("修改失败");
+        }
+
+        /// <summary>
+        /// 删除{EntityDisplayName}
+        /// </summary>
+        /// <param name="{OutName}">方法操作器</param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> Delete({OutName}Action {OutName})
+        {
+            try
+            {
+                var count = await {OutName}.DeleteEntity();
+                if (count > 0)
+                {
+                    return ResultOK();
+                }
+            }
+            catch(Exception e)
+            {
+                return ResultErrorMsg("删除失败", e.Message);
+            }
+            return ResultErrorMsg("删除失败");
+        }
+        /// <summary>
+        /// 获取分页数据
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="isOrder"></param>
+        /// <param name="isNoTracking"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true, bool isNoTracking = false)
+        {
+            var pages = await Action.GetPages(u => true, pageIndex, pageSize, isOrder, isNoTracking);
+            ResultMsg.Data = pages;
+            return ResultOK();
+        }
+        #endregion
+
+    }
+}

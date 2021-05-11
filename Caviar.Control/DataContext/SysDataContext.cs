@@ -235,7 +235,7 @@ namespace Caviar.Control
         /// <param name="isOrder"></param>
         /// <param name="isNoTracking"></param>
         /// <returns></returns>
-        public virtual async Task<PageData<T>> GetPageAsync<T, TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true) where T : class, IBaseModel
+        public virtual async Task<PageData<T>> GetPageAsync<T, TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = false) where T : class, IBaseModel
         {
             var set = DC.Set<T>();
             IQueryable<T> data = isOrder ?
@@ -249,7 +249,9 @@ namespace Caviar.Control
             PageData<T> pageData = new PageData<T>
             {
                 Total = await data.CountAsync(),
-                Rows = await data.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync()
+                Rows = await data.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync(),
+                PageIndex = pageIndex,
+                PageSize = pageSize
             };
             return pageData;
         }

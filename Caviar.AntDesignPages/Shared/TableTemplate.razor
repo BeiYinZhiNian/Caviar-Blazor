@@ -76,14 +76,14 @@
 </Space>
 
 
-
-
-
-
-
-
-
-<Table DataSource="DataSource" TItem="TData" TreeChildren="TreeChildren">
+<Table DataSource="DataSource" 
+       Total="Total"
+       PageIndex="PageIndex"
+       PageSize="PageSize"
+       ScrollX="1300"
+       TItem="TData" 
+       OnPageIndexChange="PageIndexChanged"
+       TreeChildren="TreeChildren">
     @if (ViewModelHeader != null)
     {
         foreach (var item in ViewModelHeader)
