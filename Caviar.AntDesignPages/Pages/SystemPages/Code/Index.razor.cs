@@ -55,17 +55,11 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Code
             
         }
         static string[] _pageOptions = { "列表","新增" };
-        static string[] _buttonOptions = { "新增", "删除","修改", "查询" };
         static string[] _webApi = { "控制器" ,"模型", "模型操作器" };
         static string[] _configOptions = { "覆盖" };
         void OnPageChange(string[] checkedValues)
         {
             GenerateData.Page = checkedValues;
-        }
-
-        void OnButtonChange(string[] checkedValues)
-        {
-            GenerateData.Button = checkedValues;
         }
 
         void OnConfigChange(string[] checkedValues)
@@ -79,7 +73,7 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Code
         }
 
 
-        CodeGenerateData GenerateData = new CodeGenerateData() { Page = _pageOptions, Button = _buttonOptions ,WebApi = _webApi };
+        CodeGenerateData GenerateData = new CodeGenerateData() { Page = _pageOptions,WebApi = _webApi };
         void OnPreClick()
         {
             current--;
@@ -99,7 +93,7 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Code
                     await _message.Error("生成目录不可为空");
                     return;
                 }
-                var result = await Http.PostJson<CodeGenerateData,List<TabItem>>("Base/CodePreview", GenerateData);
+                var result = await Http.PostJson<CodeGenerateData,List<TabItem>>("CaviarBase/CodePreview", GenerateData);
                 if (result.Status == 200)
                 {
                     lstTabs = result.Data;
@@ -114,7 +108,7 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Code
         string ResultSubTitle = "";
         async void OnGenerateClick()
         {
-            var result = await Http.PostJson<CodeGenerateData, List<TabItem>>("Base/CodeFileGenerate", GenerateData);
+            var result = await Http.PostJson<CodeGenerateData, List<TabItem>>("CaviarBase/CodeFileGenerate", GenerateData);
             if (result.Status == 200)
             {
                 ResultStatus = "success";

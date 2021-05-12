@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Control
 {
-    public partial class MenuController : BaseController
+    public partial class MenuController : CaviarBaseController
     {
         /// <summary>
         /// »ñÈ¡×ó²à²Ëµ¥

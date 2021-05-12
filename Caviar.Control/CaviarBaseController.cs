@@ -25,7 +25,7 @@ namespace Caviar.Control
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public partial class BaseController : Controller
+    public partial class CaviarBaseController : Controller
     {
         IBaseControllerModel _controllerModel;
         public IBaseControllerModel BC

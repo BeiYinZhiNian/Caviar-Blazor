@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace Caviar.Control
 {
     [DisplayName("系统菜单控制器")]
-    public partial class MenuController : BaseController
+    public partial class MenuController : CaviarBaseController
     {
         #region 属性注入
         MenuAction _action;

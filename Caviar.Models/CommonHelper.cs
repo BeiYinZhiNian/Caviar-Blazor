@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -35,8 +36,6 @@ namespace Caviar.Models.SystemData
         {
             return Regex.IsMatch(number, @"^[1][3-9]\\d{9}");
         }
-
-
         public static string GetRightText(this string text, string contrastText, int index = 0,bool IsLastIndex = false)
         {
             if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(contrastText)) return "";

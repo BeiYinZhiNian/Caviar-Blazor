@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Caviar.Control
 {
-    public class UserController : BaseController
+    public class UserController : CaviarBaseController
     {
         [HttpPost]
         public IActionResult Login(SysUserLoginAction userLogin)

@@ -20,5 +20,21 @@ namespace Caviar.Models.SystemData
         /// 类型
         /// </summary>
         public string ModelType { get; set; }
+        /// <summary>
+        /// 字段需要的宽度
+        /// </summary>
+        public string Width { get; set; }
+        /// <summary>
+        /// 字段需要的高度
+        /// </summary>
+        public string Height { get; set; }
+        /// <summary>
+        /// 字段长度
+        /// </summary>
+        public int? ValueLen { get; set; }
+        /// <summary>
+        /// 是否为枚举
+        /// </summary>
+        public bool IsEnum { get; set; }
     }
 }

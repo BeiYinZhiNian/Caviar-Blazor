@@ -1,0 +1,42 @@
+@*
+生成者：未登录用户
+生成时间：2021/5/12 14:33:47
+代码由代码生成器自动生成，更改的代码可能被进行替换
+*@
+@page "/SysRole/Add"
+@using Caviar.Demo.Models
+@namespace Caviar.Demo.AntDesignUI
+
+<Form @ref="_meunForm" Model="@model" OnFinish="FormSubmit">
+    <FormItem Label='角色名称'>
+        <Input @bind-Value='@context.RoleName' Style='width:50%' />
+    </FormItem>
+    <FormItem Label='Id'>
+        <AntDesign.InputNumber @bind-Value='@context.Id' />
+    </FormItem>
+    <FormItem Label='创建时间'>
+        <DatePicker @bind-Value='@context.CreatTime'/>
+    </FormItem>
+    <FormItem Label='修改时间'>
+        <DatePicker @bind-Value='@context.UpdateTime'/>
+    </FormItem>
+    <FormItem Label='是否删除'>
+        <Switch @bind-Value='@context.IsDelete'/>
+    </FormItem>
+    <FormItem Label='创建操作员'>
+        <Input @bind-Value='@context.OperatorCare' Style='width:50%' />
+    </FormItem>
+    <FormItem Label='修改操作员'>
+        <Input @bind-Value='@context.OperatorUp' Style='width:50%' />
+    </FormItem>
+    <FormItem Label='备注'>
+        <TextArea @bind-Value='@context.Remark' />
+    </FormItem>
+    <FormItem Label='是否禁用'>
+        <Switch @bind-Value='@context.IsDisable'/>
+    </FormItem>
+    <FormItem Label='编号'>
+        <Input @bind-Value='@context.Number' Style='width:50%' />
+    </FormItem>
+
+</Form>

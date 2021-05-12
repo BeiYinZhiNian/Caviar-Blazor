@@ -92,7 +92,7 @@
             switch (typeNmae)
             {
                 case "string":
-                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="string" />
+                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="string" Width="@item.Width"/>
                     break;
                 case "int32":
                     <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="int" />
@@ -169,14 +169,14 @@
                                                 OkText="确认"
                                                 CancelText="取消"
                                                 OnConfirm="()=>ButtonClick(item,context)">
-                                        <Button Icon="@item.Icon" Type="@ButtonType.Primary" Danger Style="margin-bottom:16px">
+                                        <Button Icon="@item.Icon" Type="link" Danger Style="margin-bottom:16px">
                                             @item.MenuName
                                         </Button>
                                     </Popconfirm>
                                 }
                                 else
                                 {
-                                    <Button Icon="@item.Icon" Type="@ButtonType.Primary" Style="margin-bottom:16px" OnClick="()=>ButtonClick(item,context)">
+                                    <Button Icon="@item.Icon" Type="link" Style="margin-bottom:16px" OnClick="()=>ButtonClick(item,context)">
                                         @item.MenuName
                                     </Button>
                                 }

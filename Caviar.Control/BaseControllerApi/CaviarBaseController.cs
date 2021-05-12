@@ -4,6 +4,7 @@ using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -12,33 +13,17 @@ using System.Threading.Tasks;
 
 namespace Caviar.Control
 {
-    public partial class BaseController
+    public partial class CaviarBaseController
     {
         #region API
         [HttpGet]
         public IActionResult GetModelHeader(string name)
         {
             if (string.IsNullOrEmpty(name)) return ResultError(400, "请输入需要获取的数据名称");
-            var assemblyList = CommonHelper.GetAssembly();
-            Type type = null;
-            foreach (var item in assemblyList)
-            {
-                type = item.GetTypes().SingleOrDefault(u => u.Name.ToLower() == name.ToLower());
-                if (type != null) break;
-            }
-            List<ViewModelHeader> viewModelNames = new List<ViewModelHeader>();
-            if (type != null)
-            {
-                foreach (var item in type.GetRuntimeProperties())
-                {
-                    var typeName = item.PropertyType.Name;
-                    var dispLayName = item.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
-                    viewModelNames.Add(new ViewModelHeader() { TypeName = item.Name, ModelType = typeName, DispLayName = dispLayName });
-                }
-            }
-            ResultMsg.Data = viewModelNames;
+            ResultMsg.Data = GetViewModelHeaders(name);
             return ResultOK();
         }
+        
         /// <summary>
         /// 模糊查询，暂未使用权限,需要使用权限验证sql的正确性
         /// </summary>
@@ -106,7 +91,6 @@ namespace Caviar.Control
         {
             var data = CodeGenerate(generate);
             bool isCover = generate?.Config?.SingleOrDefault(u => u == "覆盖") == null ? false : true;
-
             foreach (var item in data)
             {
                 string outName = "";
@@ -135,7 +119,12 @@ namespace Caviar.Control
             return ResultOK();
         }
 
-        private void WriteCodeFile(string path,string outName,string content,bool isCover)
+        #endregion
+
+
+        #region 私有方法
+
+        private void WriteCodeFile(string path, string outName, string content, bool isCover)
         {
             if (!Directory.Exists(path))
             {
@@ -164,8 +153,8 @@ namespace Caviar.Control
                     default:
                         continue;
                 }
-                CreateViewFile(generate,ref lstTabs, name , ".razor.cs");
-                CreateViewFile(generate,ref lstTabs, name , ".razor");
+                CreateViewFile(generate, ref lstTabs, name, ".razor.cs");
+                CreateViewFile(generate, ref lstTabs, name, ".razor");
             }
             foreach (var item in generate?.WebApi)
             {
@@ -187,7 +176,7 @@ namespace Caviar.Control
             return lstTabs;
         }
 
-        private void CreateViewFile(CodeGenerateData generate,ref List<TabItem> lstTabs, string name,string extend)
+        private void CreateViewFile(CodeGenerateData generate, ref List<TabItem> lstTabs, string name, string extend)
         {
             var txt = CreateFile(generate, name, extend);
             lstTabs.Add(new TabItem() { KeyName = name + extend, TabName = name + extend, Content = txt });
@@ -195,7 +184,7 @@ namespace Caviar.Control
 
         private void CreateModelFile(CodeGenerateData generate, ref List<TabItem> lstTabs, string name, string extend)
         {
-            var txt = CreateFile(generate,name,extend);
+            var txt = CreateFile(generate, name, extend);
             lstTabs.Add(new TabItem() { KeyName = name + extend + ".viewModel", TabName = "View" + generate.OutName + extend, Content = txt });
         }
 
@@ -225,15 +214,101 @@ namespace Caviar.Control
             txt = txt.Replace("{GenerationTime}", DateTime.Now.ToString());
             txt = txt.Replace("{ViewOutName}", $"View{generate.OutName}");
             txt = txt.Replace("{OutName}", $"{generate.OutName}");
-            txt = txt.Replace("{EntityName}",  generate.EntityName);
+            txt = txt.Replace("{EntityName}", generate.EntityName);
             txt = txt.Replace("{EntityNamespace}", generate.EntityNamespace);
             txt = txt.Replace("{WebUINamespace}", CaviarConfig.WebUINamespace);
             txt = txt.Replace("{ModelsNamespace}", CaviarConfig.ModelsNamespace);
             txt = txt.Replace("{WebApiNamespace}", CaviarConfig.WebApiNamespace);
+            txt = txt.Replace("{BaseController}", CaviarConfig.BaseController);
             txt = txt.Replace("{page}", "/" + generate.OutName + "/" + name);
             txt = txt.Replace("{DataSourceWebApi}", $"{generate.OutName}/GetPages");
             txt = txt.Replace("{EntityDisplayName}", generate.EntityDisplayName);
+            txt = txt.Replace("{FormItem}", CreateFormItem(generate));
             return txt;
+        }
+        private List<ViewModelHeader> GetViewModelHeaders(string name)
+        {
+            var assemblyList = CommonHelper.GetAssembly();
+            Type type = null;
+            foreach (var item in assemblyList)
+            {
+                type = item.GetTypes().SingleOrDefault(u => u.Name.ToLower() == name.ToLower());
+                if (type != null) break;
+            }
+            List<ViewModelHeader> viewModelNames = new List<ViewModelHeader>();
+            if (type != null)
+            {
+                foreach (var item in type.GetRuntimeProperties())
+                {
+                    var typeName = item.PropertyType.Name;
+                    var dispLayName = item.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
+                    var valueLen = item.GetCustomAttributes<StringLengthAttribute>()?.Cast<StringLengthAttribute>().SingleOrDefault()?.MaximumLength;
+                    viewModelNames.Add(new ViewModelHeader() 
+                    { 
+                        TypeName = item.Name, 
+                        ModelType = typeName, 
+                        DispLayName = dispLayName ,
+                        ValueLen = valueLen,
+                        IsEnum = type.IsEnum
+                    });
+                }
+            }
+            return viewModelNames;
+        }
+        protected virtual string CreateFormItem(CodeGenerateData generate)
+        {
+            var headers = GetViewModelHeaders(generate.EntityName);
+            var html = "";
+            var filterField = GetFilterField();
+            foreach (var item in headers)
+            {
+                if (filterField.SingleOrDefault(u => u.ToLower() == item.TypeName.ToLower()) != null) continue;
+                var txt = "";
+                
+                txt += $"    <FormItem Label='{item.DispLayName}'>\r\n        ";
+                var IsWrite = CreateAssembly(item,ref txt);
+                txt += "\r\n    </FormItem>\r\n";
+                if (IsWrite) html += txt;
+            }
+            return html;
+        }
+
+        protected virtual bool CreateAssembly(ViewModelHeader item,ref string txt)
+        {
+            var IsWrite = true;
+            var typeNmae = item.ModelType.ToLower();
+            switch (typeNmae)
+            {
+                case "string":
+                    if (item.ValueLen != null && item.ValueLen >= 200)
+                    {
+                        txt += $"<TextArea @bind-Value='@context.{item.TypeName}' Style='width:50%'/>";
+                    }
+                    else
+                    {
+                        txt += $"<Input @bind-Value='@context.{item.TypeName}' Style='width:50%' />";
+                    }
+                    break;
+                case "int32":
+                    txt += $"<AntDesign.InputNumber @bind-Value='@context.{item.TypeName}' />";
+                    break;
+                case "boolean":
+                    txt += $"<Switch @bind-Value='@context.{item.TypeName}'/>";
+                    break;
+                case "datetime":
+                    txt += $"<DatePicker @bind-Value='@context.{item.TypeName}'/>";
+                    break;
+                default:
+                    IsWrite = false;
+                    break;
+            }
+            return IsWrite;
+        }
+
+        protected virtual string[] GetFilterField()
+        {
+            string[] violation = new string[] { "id", "Uid", "CreatTime", "UpdateTime", "IsDelete", "OperatorCare", "OperatorUp", "IsDisable" };
+            return violation;
         }
         #endregion
     }

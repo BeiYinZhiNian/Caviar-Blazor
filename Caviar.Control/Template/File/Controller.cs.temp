@@ -17,7 +17,7 @@ using {ModelsNamespace};
 namespace {WebApiNamespace}
 {
     [DisplayName("{EntityDisplayName}控制器")]
-    public partial class {OutName}Controller : BaseController
+    public partial class {OutName}Controller : {BaseController}
     {
         #region 属性注入
         {OutName}Action _action;

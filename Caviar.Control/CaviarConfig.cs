@@ -26,6 +26,7 @@ namespace Caviar.Control
         public static int TokenDuration { get; private set; }
         public static string WebUIPath { get; private set; }
         public static string WebUINamespace { get; private set; }
+        public static string BaseController { get; private set; }
         public static string ModelsNamespace { get; private set; }
         public static string ModelsPath { get; private set; }
         public static string WebApiPath { get; private set; }
@@ -74,6 +75,7 @@ namespace Caviar.Control
             ModelsNamespace = json["Caviar"]["Models"]["namespace"].ToString();
             WebApiPath = json["Caviar"]["WebApi"]["Path"].ToString();
             WebApiNamespace = json["Caviar"]["WebApi"]["namespace"].ToString();
+            BaseController = json["Caviar"]["WebApi"]["BaseController"].ToString();
             var paseJson = json.ToString();
             File.WriteAllText(appsettingPath, paseJson);
         }
@@ -97,6 +99,7 @@ namespace Caviar.Control
             if (json["Caviar"]["WebApi"] == null) json["Caviar"]["WebApi"] = new JObject();
             if (json["Caviar"]["WebApi"]["Path"] == null) json["Caviar"]["WebApi"]["Path"] = "/Template/";
             if (json["Caviar"]["WebApi"]["namespace"] == null) json["Caviar"]["WebApi"]["namespace"] = "Caviar.Demo.WebAPI";
+            if (json["Caviar"]["WebApi"]["BaseController"] == null) json["Caviar"]["WebApi"]["BaseController"] = "CaviarBaseController";
         }
 
 

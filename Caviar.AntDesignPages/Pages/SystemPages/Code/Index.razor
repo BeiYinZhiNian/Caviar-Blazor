@@ -72,10 +72,6 @@
                             <CheckboxGroup Value="GenerateData.WebApi" Options="@_webApi" OnChange="OnWebApiChange" />
                         </SpaceItem>
                         <SpaceItem>
-                            <span style="margin-right:8px">功能:</span>
-                            <CheckboxGroup Value="GenerateData.Button" Options="@_buttonOptions" OnChange="OnButtonChange" />
-                        </SpaceItem>
-                        <SpaceItem>
                             <span style="margin-right:8px">其他:</span>
                             <CheckboxGroup Value="GenerateData.Config" Options="@_configOptions" OnChange="OnConfigChange" />
                         </SpaceItem>
@@ -106,6 +102,7 @@
                         SubTitle="@ResultSubTitle">
                     <Extra>
                         <Button Type="primary" OnClick='()=> { navigation.NavigateTo("/"); }'>返回首页</Button>
+                        <Button>生成菜单</Button>
                         <Button OnClick='()=> { current = 0; }'>继续生成</Button>
                     </Extra>
 

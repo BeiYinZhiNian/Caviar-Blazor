@@ -58,7 +58,7 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
 
         async Task<List<ViewModelHeader>> GetViewModelNames()
         {
-            var modelNameList = await Http.GetJson<List<ViewModelHeader>>("Base/GetModelHeader?name=SyspowerMenu");
+            var modelNameList = await Http.GetJson<List<ViewModelHeader>>("CaviarBase/GetModelHeader?name=SyspowerMenu");
             if (modelNameList.Status == 200)
             {
                 var item = modelNameList.Data.SingleOrDefault(u => u.TypeName.ToLower() == "icon");
