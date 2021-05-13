@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -243,72 +244,143 @@ namespace Caviar.Control
                     var typeName = item.PropertyType.Name;
                     var dispLayName = item.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
                     var valueLen = item.GetCustomAttributes<StringLengthAttribute>()?.Cast<StringLengthAttribute>().SingleOrDefault()?.MaximumLength;
-                    viewModelNames.Add(new ViewModelHeader() 
-                    { 
-                        TypeName = item.Name, 
-                        ModelType = typeName, 
-                        DispLayName = dispLayName ,
+                    var filter = new ViewModelHeader()
+                    {
+                        TypeName = item.Name,
+                        ModelType = typeName,
+                        DispLayName = dispLayName,
                         ValueLen = valueLen,
-                        IsEnum = type.IsEnum
-                    });
+                        IsEnum = item.PropertyType.IsEnum
+                    };
+                    if (filter.IsEnum)
+                    {
+                        var enumFields = item.PropertyType.GetFields();
+                        if(enumFields!=null && enumFields.Length >= 2)//枚举有一个隐藏的int所以要从下一位置开始
+                        {
+                            filter.EnumValueName = new Dictionary<int, string>();
+                            for (int i = 1; i < enumFields.Length; i++)
+                            {
+                                var enumName = enumFields[i].GetCustomAttribute<DisplayAttribute>()?.Name;
+                                var value = (int)enumFields[i].GetValue(null);
+                                filter.EnumValueName.Add(value, enumName);
+                            }
+                        }
+                    }
+                    filter = TurnMeaning(filter);
+                    viewModelNames.Add(filter);
                 }
             }
             return viewModelNames;
         }
+        /// <summary>
+        /// 创建formItem
+        /// </summary>
+        /// <param name="generate"></param>
+        /// <returns></returns>
         protected virtual string CreateFormItem(CodeGenerateData generate)
         {
             var headers = GetViewModelHeaders(generate.EntityName);
+            headers = CreateOrUpFilterField(headers);
             var html = "";
-            var filterField = GetFilterField();
             foreach (var item in headers)
             {
-                if (filterField.SingleOrDefault(u => u.ToLower() == item.TypeName.ToLower()) != null) continue;
                 var txt = "";
-                
                 txt += $"    <FormItem Label='{item.DispLayName}'>\r\n        ";
-                var IsWrite = CreateAssembly(item,ref txt);
+                var IsWrite = CreateCurrencyAssembly(item,ref txt);
                 txt += "\r\n    </FormItem>\r\n";
                 if (IsWrite) html += txt;
             }
             return html;
         }
-
-        protected virtual bool CreateAssembly(ViewModelHeader item,ref string txt)
+        /// <summary>
+        /// 根据类型创建通用组件
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="txt"></param>
+        /// <returns></returns>
+        protected virtual bool CreateCurrencyAssembly(ViewModelHeader item,ref string txt)
         {
             var IsWrite = true;
-            var typeNmae = item.ModelType.ToLower();
-            switch (typeNmae)
+            if (item.IsEnum)
             {
-                case "string":
-                    if (item.ValueLen != null && item.ValueLen >= 200)
-                    {
-                        txt += $"<TextArea @bind-Value='@context.{item.TypeName}' Style='width:50%'/>";
-                    }
-                    else
-                    {
-                        txt += $"<Input @bind-Value='@context.{item.TypeName}' Style='width:50%' />";
-                    }
-                    break;
-                case "int32":
-                    txt += $"<AntDesign.InputNumber @bind-Value='@context.{item.TypeName}' />";
-                    break;
-                case "boolean":
-                    txt += $"<Switch @bind-Value='@context.{item.TypeName}'/>";
-                    break;
-                case "datetime":
-                    txt += $"<DatePicker @bind-Value='@context.{item.TypeName}'/>";
-                    break;
-                default:
-                    IsWrite = false;
-                    break;
+                GetEnumAssembly(item, ref txt);
+            }
+            else
+            {
+                var modelType = item.ModelType.ToLower();
+                switch (modelType)
+                {
+                    case "string":
+                        if (item.ValueLen != null && item.ValueLen >= 200)
+                        {
+                            txt += $"<TextArea @bind-Value='@context.{item.TypeName}' Style='width:50%'/>";
+                        }
+                        else
+                        {
+                            txt += $"<Input @bind-Value='@context.{item.TypeName}' Style='width:50%' />";
+                        }
+                        break;
+                    case "int32":
+                        txt += $"<AntDesign.InputNumber @bind-Value='@context.{item.TypeName}' />";
+                        break;
+                    case "boolean":
+                        txt += $"<Switch @bind-Value='@context.{item.TypeName}'/>";
+                        break;
+                    case "datetime":
+                        txt += $"<DatePicker @bind-Value='@context.{item.TypeName}'/>";
+                        break;
+                    default:
+                        IsWrite = false;
+                        break;
+                }
             }
             return IsWrite;
         }
-
-        protected virtual string[] GetFilterField()
+        protected virtual void GetEnumAssembly(ViewModelHeader item, ref string txt)
         {
-            string[] violation = new string[] { "id", "Uid", "CreatTime", "UpdateTime", "IsDelete", "OperatorCare", "OperatorUp", "IsDisable" };
-            return violation;
+            if (!item.IsEnum) return;
+            txt += $"<RadioGroup @bind-Value='@context.{item.TypeName}'>";
+            foreach (var keyValue in item.EnumValueName)
+            {
+                txt += $"\r\n            <Radio RadioButton Value='({item.ModelType}){keyValue.Key}'>{keyValue.Value}</Radio>";
+            }
+
+            txt += $"\r\n        </RadioGroup>";
+        }
+        /// <summary>
+        /// 创建或修改时过滤字段
+        /// </summary>
+        /// <param name="header"></param>
+        /// <returns></returns>
+        protected virtual List<ViewModelHeader> CreateOrUpFilterField(List<ViewModelHeader> headers)
+        {
+            if (headers == null) return null;
+            string[] violation = new string[] { "id", "Uid", "CreatTime", "UpdateTime", "IsDelete", "OperatorCare", "OperatorUp" };
+            var result = new List<ViewModelHeader>();
+            foreach (var item in headers)
+            {
+                if (violation.SingleOrDefault(u => u.ToLower() == item.TypeName.ToLower()) == null)
+                {
+                    result.Add(item);
+                }
+            }
+            return result;
+        }
+        /// <summary>
+        /// 字段类型转义
+        /// </summary>
+        /// <param name="headers"></param>
+        /// <returns></returns>
+        protected virtual ViewModelHeader TurnMeaning(ViewModelHeader headers)
+        {
+            string[] violation = new string[] { "icon","image" };
+            var typeName = violation.SingleOrDefault(u => u.ToLower() == headers.TypeName.ToLower());
+            if (typeName != null)
+            {
+                headers.ModelType = typeName;
+                return headers;
+            }
+            return headers;
         }
         #endregion
     }

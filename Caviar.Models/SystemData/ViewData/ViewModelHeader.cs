@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,5 +37,9 @@ namespace Caviar.Models.SystemData
         /// 是否为枚举
         /// </summary>
         public bool IsEnum { get; set; }
+        /// <summary>
+        /// 枚举 值-名称
+        /// </summary>
+        public Dictionary<int,string> EnumValueName { get; set; }
     }
 }

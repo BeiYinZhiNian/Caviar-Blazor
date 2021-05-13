@@ -43,7 +43,7 @@ namespace Caviar.AntDesignPages.Shared
 
             if (!string.IsNullOrEmpty(ModelHeaderName))
             {
-                var modelNameList = await Http.GetJson<List<ViewModelHeader>>("Base/GetModelHeader?name=" + ModelHeaderName);
+                var modelNameList = await Http.GetJson<List<ViewModelHeader>>("CaviarBase/GetModelHeader?name=" + ModelHeaderName);
                 if (modelNameList.Status == 200)
                 {
                     ViewModelHeader = modelNameList.Data;
@@ -217,7 +217,7 @@ namespace Caviar.AntDesignPages.Shared
         public async void FuzzyQuery()
         {
             Query.QueryField = _selectedValues?.ToList();
-            var result = await Http.PostJson<ViewQuery, List<TData>>("Base/FuzzyQuery", Query);
+            var result = await Http.PostJson<ViewQuery, List<TData>>("CaviarBase/FuzzyQuery", Query);
             DataSource = result.Data;
             StateHasChanged();
         }
