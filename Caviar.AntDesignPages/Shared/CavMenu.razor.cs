@@ -29,9 +29,9 @@ namespace Caviar.AntDesignPages.Shared
         }
 
         [Parameter]
-        public MenuItem BreadcrumbItemNav { get; set; }
+        public MenuItem BreadcrumbItemCav { get; set; }
         [Parameter]
-        public EventCallback<MenuItem> BreadcrumbItemNavChanged { get; set; }
+        public EventCallback<MenuItem> BreadcrumbItemCavChanged { get; set; }
 
         public string[] OpenKeysNav { get; set; } = Array.Empty<string>();
 
@@ -44,10 +44,10 @@ namespace Caviar.AntDesignPages.Shared
         [Inject] public NavigationManager NavigationManager { get; set; }
         public async void OnMenuItemClickedNav(MenuItem menuItem)
         {
-            BreadcrumbItemNav = menuItem;
-            if (BreadcrumbItemNavChanged.HasDelegate)
+            BreadcrumbItemCav = menuItem;
+            if (BreadcrumbItemCavChanged.HasDelegate)
             {
-                await BreadcrumbItemNavChanged.InvokeAsync(BreadcrumbItemNav);
+                await BreadcrumbItemCavChanged.InvokeAsync(BreadcrumbItemCav);
                 
             }
         }

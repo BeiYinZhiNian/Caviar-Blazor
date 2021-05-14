@@ -10,23 +10,23 @@ namespace Caviar.AntDesignPages.Shared
     partial class CavBreadcrumb
     {
         [Parameter]
-        public MenuItem BreadcrumbItemNav 
+        public MenuItem BreadcrumbItemCav
         {
             get {
-                return _breadcrumbItemNav;
+                return _breadcrumbItemCav;
             }
             set {
-                _breadcrumbItemNav = value;
-                CreatBreadcrumbItemNav(value);
+                _breadcrumbItemCav = value;
+                CreatBreadcrumbItemCav(value);
             } 
         }
 
-        MenuItem _breadcrumbItemNav;
+        MenuItem _breadcrumbItemCav;
         List<string> BreadcrumbItemArr { get; set; }
 
         string _homeTitle = "首页";
 
-        void CreatBreadcrumbItemNav(MenuItem menuItem)
+        void CreatBreadcrumbItemCav(MenuItem menuItem)
         {
             if (menuItem == null) return;
             Console.WriteLine(menuItem.RouterLink);

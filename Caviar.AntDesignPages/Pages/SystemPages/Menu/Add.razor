@@ -56,7 +56,8 @@
     <FormItem Label="图标">
         <Space>
             <SpaceItem>
-                <Button OnClick="OpenIconModal">图标库</Button>
+                <Button OnClick="()=> { _visible = true; }">图标库</Button>
+                <CavModalIcon @bind-IconValue="model.Icon" @bind-Visible="_visible"></CavModalIcon>
             </SpaceItem>
             <SpaceItem>
                 @if (!string.IsNullOrEmpty(model.Icon))
@@ -71,15 +72,6 @@
     </FormItem>
 </Form>
 
-
-<Modal Visible="@_visible"
-       OnOk="HandleOk"
-       OnCancel="HandleCancel"
-       Title="请选择图标"
-       Draggable="true"
-       DragInViewport="true">
-    <CavIconPanel @bind-RadioValue="model.Icon"></CavIconPanel>
-</Modal>
 @code{
 
     bool _visible = false;
@@ -125,22 +117,4 @@
         }
     }
 
-    public void OpenIconModal()
-    {
-        _visible = true;
-    }
-
-    private void HandleOk(MouseEventArgs e)
-    {
-        _visible = false;
-        StateHasChanged();
-    }
-
-    private void HandleCancel(MouseEventArgs e)
-    {
-        _visible = false;
-    }
-
-    RenderFragment _content =
-    @<IconPanel></IconPanel>;
 }

@@ -1,6 +1,6 @@
 @*
 生成者：未登录用户
-生成时间：2021/5/13 18:14:39
+生成时间：2021/5/14 15:46:09
 代码由代码生成器自动生成，更改的代码可能被进行替换
 *@
 @page "/SysPowerMenu/Add"
@@ -8,23 +8,23 @@
 @namespace Caviar.Demo.AntDesignUI
 
 <Form @ref="_meunForm" Model="@model" OnFinish="FormSubmit">
+    <FormItem Label='菜单名称'>
+        <Input @bind-Value='@context.MenuName' Style='width:50%' />
+    </FormItem>
     <FormItem Label='类型'>
         <RadioGroup @bind-Value='@context.MenuType'>
-            <Radio RadioButton Value='(MenuType)0'>目录</Radio>
-            <Radio RadioButton Value='(MenuType)1'>菜单</Radio>
-            <Radio RadioButton Value='(MenuType)2'>按钮</Radio>
+                <Radio RadioButton Value='(MenuType)0'>目录</Radio>
+                <Radio RadioButton Value='(MenuType)1'>菜单</Radio>
+                <Radio RadioButton Value='(MenuType)2'>按钮</Radio>
         </RadioGroup>
     </FormItem>
     <FormItem Label='打开方式'>
         <RadioGroup @bind-Value='@context.TargetType'>
-            <Radio RadioButton Value='(TargetType)0'>当前页面</Radio>
-            <Radio RadioButton Value='(TargetType)1'>弹出窗口</Radio>
-            <Radio RadioButton Value='(TargetType)2'>新建页面</Radio>
-            <Radio RadioButton Value='(TargetType)3'>回调</Radio>
+                <Radio RadioButton Value='(TargetType)0'>当前页面</Radio>
+                <Radio RadioButton Value='(TargetType)1'>弹出窗口</Radio>
+                <Radio RadioButton Value='(TargetType)2'>新建页面</Radio>
+                <Radio RadioButton Value='(TargetType)3'>回调</Radio>
         </RadioGroup>
-    </FormItem>
-    <FormItem Label='菜单名称'>
-        <Input @bind-Value='@context.MenuName' Style='width:50%' />
     </FormItem>
     <FormItem Label='请求地址'>
         <Input @bind-Value='@context.Url' Style='width:50%' />
@@ -34,8 +34,8 @@
     </FormItem>
     <FormItem Label='按钮位置'>
         <RadioGroup @bind-Value='@context.ButtonPosition'>
-            <Radio RadioButton Value='(ButtonPosition)0'>表头</Radio>
-            <Radio RadioButton Value='(ButtonPosition)1'>行</Radio>
+                <Radio RadioButton Value='(ButtonPosition)0'>表头</Radio>
+                <Radio RadioButton Value='(ButtonPosition)1'>行</Radio>
         </RadioGroup>
     </FormItem>
     <FormItem Label='二次确认'>
@@ -50,5 +50,4 @@
     <FormItem Label='编号'>
         <Input @bind-Value='@context.Number' Style='width:50%' />
     </FormItem>
-
 </Form>

@@ -12,17 +12,15 @@ namespace Caviar.Models.SystemData
     [DisplayName("系统菜单")]
     public partial class SysPowerMenu : SysBaseModel
     {
+        [DisplayName("菜单名称")]
+        [Required(ErrorMessage = "请输入菜单名称")]
+        [StringLength(50, ErrorMessage = "菜单名称请不要超过{1}个字符")]
+        public string MenuName { get; set; }
         [DisplayName("类型")]
         public MenuType MenuType { get; set; }
 
         [DisplayName("打开方式")]
         public TargetType TargetType { get; set; }
-
-        [DisplayName("菜单名称")]
-        [Required(ErrorMessage = "请输入菜单名称")]
-        [StringLength(50, ErrorMessage = "菜单名称请不要超过{1}个字符")]
-        public string MenuName { get; set; }
-
         [DisplayName("请求地址")]
         public string Url { get; set; }
 

@@ -43,6 +43,7 @@ namespace Caviar.Control
             services.AddDbContext<DataContext>();
             services.AddScoped<IDataContext, SysDataContext>();
             services.AddSingleton<IMemoryCache, MemoryCache>();
+            services.AddSingleton<IAssemblyDynamicCreation, AssemblyDynamicCreation>();
             Configuration = configuration;
 
             var caviarDynamicConfig = new CaviarDynamicConfig();

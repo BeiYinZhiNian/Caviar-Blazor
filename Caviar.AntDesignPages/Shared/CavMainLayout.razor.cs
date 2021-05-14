@@ -27,7 +27,7 @@ namespace Caviar.AntDesignPages.Shared
         /// <summary>
         /// 面包屑数据同步
         /// </summary>
-        public MenuItem BreadcrumbItemNav;
+        public MenuItem BreadcrumbItemCav;
 
         protected override void OnInitialized()
         {
