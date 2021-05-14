@@ -5,7 +5,7 @@
         <div class="logo" align="center">
             <img src="@LogoImgSrc" height="32" />
         </div>
-        <NavMenu InlineCollapsed="@Collapsed" @bind-BreadcrumbItemNav="BreadcrumbItemNav"></NavMenu>
+        <CavMenu InlineCollapsed="@Collapsed" @bind-BreadcrumbItemNav="BreadcrumbItemNav"></CavMenu>
     </Sider>
     <Layout Style="@HeaderStyle">
         <Header Style="padding:0;background:#ffffff">
@@ -18,15 +18,15 @@
                 <Icon Type="menu-fold" Theme="outline" Class="trigger" OnClick="Toggle" />
             }
             <div style="float:right;margin-right:20px;margin-top:10px">
-                <NavPopover></NavPopover>
+                <CavPopover></CavPopover>
             </div>
         </Header>
         <div style="margin: 12px 16px;">
-            <NavBreadcrumb BreadcrumbItemNav="@BreadcrumbItemNav"></NavBreadcrumb>
+            <CavBreadcrumb BreadcrumbItemNav="@BreadcrumbItemNav"></CavBreadcrumb>
         </div>
         <Content Style="margin: 6px 16px;padding: 24px;min-height: 280px;background:#ffffff">
             @Body
         </Content>
-        <NavFooter></NavFooter>
+        <CavFooter></CavFooter>
     </Layout>
 </Layout>

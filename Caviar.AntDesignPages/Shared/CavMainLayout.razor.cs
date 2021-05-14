@@ -10,7 +10,7 @@ using AntDesign;
 
 namespace Caviar.AntDesignPages.Shared
 {
-    partial class MainLayout
+    partial class CavMainLayout
     {
         [Inject]
         IConfiguration Configuration { get; set; }

@@ -6,7 +6,7 @@
 @page "{page}"
 @using {ModelsNamespace}
 @namespace {WebUINamespace}
-<TableTemplate TData="{ViewOutName}"
+<CavTableTemplate TData="{ViewOutName}"
                DataSource="DataSource"
                PageSize="PageSize"
                PageIndex="PageIndex"
@@ -15,4 +15,4 @@
                Buttons="Buttons"
                HandleOkCallback="HandleOk"
                RowCallback="RowCallback">
-</TableTemplate>
+</CavTableTemplate>

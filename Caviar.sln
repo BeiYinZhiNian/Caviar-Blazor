@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.Demo.WebAPI", "Demo\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.Control", "Caviar.Control\Caviar.Control.csproj", "{51CE65F4-D347-4D90-B571-FA20A7BEA7DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caviar.AntDesignPages", "Caviar.AntDesignPages\Caviar.AntDesignPages.csproj", "{A83FA87E-7494-4540-BE70-D40789388B1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.AntDesignPages", "Caviar.AntDesignPages\Caviar.AntDesignPages.csproj", "{A83FA87E-7494-4540-BE70-D40789388B1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caviar.Demo.Models", "Demo\Wasm\Caviar.Demo.Models\Caviar.Demo.Models.csproj", "{40D4218B-8F05-4832-AB5F-4B242683967C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.Demo.Models", "Demo\Wasm\Caviar.Demo.Models\Caviar.Demo.Models.csproj", "{40D4218B-8F05-4832-AB5F-4B242683967C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{3CE2E1D7-92D2-4A4D-B9BA-DC431B50CFDD}"
 EndProject

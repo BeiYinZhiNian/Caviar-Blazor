@@ -46,37 +46,34 @@
     <Content Update="Pages\SystemPages\User\Login.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Shared\EmptyLayout.razor">
+    <Content Update="Shared\CavEmptyLayout.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Shared\HighlightedCode.razor">
+    <Content Update="Shared\CavHighlightedCode.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Shared\IconPanel.razor">
+    <Content Update="Shared\CavIconPanel.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Shared\IframeTemplate.razor">
+    <Content Update="Shared\CavMainLayout.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Shared\MainLayout.razor">
+    <Content Update="Shared\CavBreadcrumb.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Shared\NavBreadcrumb.razor">
+    <Content Update="Shared\CavFooter.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Shared\NavFooter.razor">
+    <Content Update="Shared\CavMenu.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Shared\NavMenu.razor">
+    <Content Update="Shared\CavPopover.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Shared\NavPopover.razor">
+    <Content Update="Shared\CavPopoverMenu.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Shared\NavPopoverMenu.razor">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </Content>
-    <Content Update="Shared\TableTemplate.razor">
+    <Content Update="Shared\CavTableTemplate.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
     <Content Update="wwwroot\css\app.css">

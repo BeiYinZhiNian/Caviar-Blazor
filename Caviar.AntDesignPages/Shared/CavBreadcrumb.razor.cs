@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.AntDesignPages.Shared
 {
-    partial class NavBreadcrumb
+    partial class CavBreadcrumb
     {
         [Parameter]
         public MenuItem BreadcrumbItemNav 

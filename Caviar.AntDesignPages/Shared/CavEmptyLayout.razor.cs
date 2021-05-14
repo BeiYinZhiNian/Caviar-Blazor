@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.AntDesignPages.Shared
 {
-    partial class EmptyLayout
+    partial class CavEmptyLayout
     {
         [Parameter]
         public string Style { get; set; } = "min-height:100vh;";

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.AntDesignPages.Shared
 {
-    partial class NavMenu
+    partial class CavMenu
     {
         bool _inlineCollapsed;
         [Parameter]

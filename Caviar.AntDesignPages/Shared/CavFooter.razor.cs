@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.AntDesignPages.Shared
 {
-    partial class NavFooter
+    partial class CavFooter
     {
         [Parameter]
         public string Style { get; set; } = "text-align: center;";

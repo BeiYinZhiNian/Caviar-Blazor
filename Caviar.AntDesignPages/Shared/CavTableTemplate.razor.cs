@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.AntDesignPages.Shared
 {
-    public partial class TableTemplate<TData>
+    public partial class CavTableTemplate<TData>
     {
         [Parameter]
         public List<TData> DataSource { get; set; }
