@@ -13,7 +13,7 @@ namespace Caviar.Control
     {
         public MenuAction()
         {
-            TransformationEvent += MenuAction_TransformationEvent; ;
+            TransformationEvent += MenuAction_TransformationEvent;
         }
 
         private PageData<ViewMenu> MenuAction_TransformationEvent(PageData<SysPowerMenu> model)
