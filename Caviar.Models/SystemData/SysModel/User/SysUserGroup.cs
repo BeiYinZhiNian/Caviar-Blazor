@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
-    [DisplayName("用户组")]
+    [DisplayName("部门")]
     public partial class SysUserGroup:SysBaseModel
     {
     }

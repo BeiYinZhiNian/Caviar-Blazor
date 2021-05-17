@@ -31,7 +31,6 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
         protected override async Task OnInitializedAsync()
         {
             await GetMenus();//获取数据源
-            ViewModelHeaders = await GetViewModelNames();//获取表头
             Buttons = await GetButtons();//获取按钮
         }
 
@@ -54,16 +53,6 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
             var result = await Http.GetJson<List<ViewMenu>>("Menu/GetButtons?url=" + url);
             if (result.Status != 200) return new List<ViewMenu>();
             return result.Data;
-        }
-
-        async Task<List<ViewModelHeader>> GetViewModelNames()
-        {
-            var modelNameList = await Http.GetJson<List<ViewModelHeader>>("CaviarBase/GetModelHeader?name=SyspowerMenu");
-            if (modelNameList.Status == 200)
-            {
-                return modelNameList.Data;
-            }
-            return new List<ViewModelHeader>();
         }
         public async void HandleOk(ViewMenu e)
         {

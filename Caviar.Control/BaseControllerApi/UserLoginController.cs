@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Caviar.Control
 {
-    public class UserController : CaviarBaseController
+    public partial class UserLoginController : CaviarBaseController
     {
         [HttpPost]
-        public IActionResult Login(SysUserLoginAction userLogin)
+        public IActionResult Login(UserLoginAction userLogin)
         {
             var loginMsg = userLogin.Login();
             if (BC.IsLogin)
@@ -20,10 +20,10 @@ namespace Caviar.Control
         }
 
         [HttpPost]
-        public IActionResult Register(SysUserLoginAction userLogin)
+        public IActionResult Register(UserLoginAction userLogin)
         {
             var IsRegister = userLogin.Register(out string msg);
-            LoggerMsg<UserController>(msg, IsSucc: IsRegister);
+            LoggerMsg<UserLoginController>(msg, IsSucc: IsRegister);
             if (IsRegister)
             {
                 return ResultOK(msg);

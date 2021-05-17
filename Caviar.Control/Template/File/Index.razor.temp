@@ -12,7 +12,7 @@
                PageSize="PageSize"
                PageIndex="PageIndex"
                Total="Total"
-               ViewModelHeader="ViewModelHeaders"
+               ModelHeaderName="{EntityName}"
                Buttons="Buttons"
                HandleOkCallback="HandleOk"
                RowCallback="RowCallback">

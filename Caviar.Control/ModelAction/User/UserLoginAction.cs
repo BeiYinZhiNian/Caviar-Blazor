@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Control
 {
-    public partial class SysUserLoginAction : SysUserLogin
+    public partial class UserLoginAction : SysUserLogin
     {
         /// <summary>
         /// 登录成功返回token，失败返回错误原因

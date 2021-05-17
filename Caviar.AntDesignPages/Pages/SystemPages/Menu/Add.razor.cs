@@ -53,7 +53,7 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
 
         async Task<bool> FormSubmit()
         {
-            var result = await Http.PostJson<SysPowerMenu, object>("Menu/AddEntity", model);
+            var result = await Http.PostJson<SysPowerMenu, object>("Menu/Add", model);
             if (result.Status == 200)
             {
                 _message.Success("创建成功");

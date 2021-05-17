@@ -89,6 +89,7 @@ namespace {WebUINamespace}
                 Total = result.Data.Total;
                 PageIndex = result.Data.PageIndex;
                 PageSize = result.Data.PageSize;
+                StateHasChanged();
             }
         }
         /// <summary>
@@ -101,21 +102,6 @@ namespace {WebUINamespace}
             var result = await Http.GetJson<List<ViewMenu>>("Menu/GetButtons?url=" + url);
             if (result.Status != 200) return new List<ViewMenu>();
             return result.Data;
-        }
-        /// <summary>
-        /// 获取表头
-        /// </summary>
-        /// <returns></returns>
-        async Task<List<ViewModelHeader>> GetHeader()
-        {
-            var modelNameList = await Http.GetJson<List<ViewModelHeader>>("Base/GetModelHeader?name={EntityName}");
-            if (modelNameList.Status == 200)
-            {
-                var item = modelNameList.Data.SingleOrDefault(u => u.TypeName.ToLower() == "icon");
-                if (item != null) item.ModelType = "icon";
-                return modelNameList.Data;
-            }
-            return new List<ViewModelHeader>();
         }
         #endregion
 
@@ -144,7 +130,6 @@ namespace {WebUINamespace}
         protected override async Task OnInitializedAsync()
         {
             Get{ViewOutName}();//获取数据源
-            ViewModelHeaders = await GetHeader();//获取表头
             Buttons = await GetPowerButtons();//获取按钮
         }
         #endregion

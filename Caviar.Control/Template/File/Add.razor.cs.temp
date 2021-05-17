@@ -38,7 +38,7 @@ namespace {WebUINamespace}
 
         async Task<bool> FormSubmit()
         {
-            var result = await Http.PostJson<{OutName}, object>("{OutName}/AddEntity", model);
+            var result = await Http.PostJson<{ViewOutName}, object>("{OutName}/Add", model);
             if (result.Status == 200)
             {
                 _message.Success("创建成功");

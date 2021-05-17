@@ -220,8 +220,7 @@ namespace Caviar.Control
         /// <returns></returns>
         public virtual IQueryable<T> GetAllAsync<T>() where T : class, IBaseModel
         {
-            var set = DC.Set<T>();
-            return set.Where(u => u.IsDelete == false);
+            return GetContext<T>();
         }
         /// <summary>
         /// 获取指定页数据
@@ -237,11 +236,10 @@ namespace Caviar.Control
         /// <returns></returns>
         public virtual async Task<PageData<T>> GetPageAsync<T, TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = false) where T : class, IBaseModel
         {
-            var set = DC.Set<T>();
-            IQueryable<T> data = isOrder ?
-                set.OrderBy(orderBy) :
-                set.OrderByDescending(orderBy);
-            data.Where(u => u.IsDelete == false);
+            IQueryable<T> data = GetContext<T>();
+            data = isOrder ?
+                data.OrderBy(orderBy) :
+                data.OrderByDescending(orderBy);
             if (whereLambda != null)
             {
                 data = isNoTracking ? data.Where(whereLambda).AsNoTracking() : data.Where(whereLambda);
@@ -263,8 +261,7 @@ namespace Caviar.Control
         /// <returns></returns>
         public virtual IQueryable<T> GetEntityAsync<T>(Expression<Func<T, bool>> where) where T : class, IBaseModel
         {
-            var set = DC.Set<T>();
-            return set.Where(u => u.IsDelete == false).Where(where);
+            return GetContext<T>().Where(where);
         }
         /// <summary>
         /// 根据id获取实体
@@ -274,8 +271,7 @@ namespace Caviar.Control
         /// <returns></returns>
         public virtual Task<T> GetEntityAsync<T>(int id) where T : class, IBaseModel
         {
-            var set = DC.Set<T>();
-            return set.Where(u => u.IsDelete == false).FirstOrDefaultAsync(u => u.Id == id);
+            return GetContext<T>().FirstOrDefaultAsync(u => u.Id == id);
         }
         /// <summary>
         /// 根据guid获取实体
@@ -285,8 +281,13 @@ namespace Caviar.Control
         /// <returns></returns>
         public virtual Task<T> GetEntityAsync<T>(Guid uid) where T : class, IBaseModel
         {
+            return GetContext<T>().FirstOrDefaultAsync(u => u.Uid == uid);
+        }
+
+        private IQueryable<T> GetContext<T>() where T : class, IBaseModel
+        {
             var set = DC.Set<T>();
-            return set.Where(u => u.IsDelete == false).FirstOrDefaultAsync(u => u.Uid == uid);
+            return set.Where(u => u.IsDelete == false);
         }
 
         /// <summary>
