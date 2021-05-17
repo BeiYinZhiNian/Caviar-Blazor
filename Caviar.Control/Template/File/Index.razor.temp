@@ -6,7 +6,7 @@
 *@
 @page "{page}"
 @using {ModelsNamespace}
-@namespace {WebUINamespace}
+@namespace {WebUINamespace}.{OutName}
 <CavTableTemplate TData="{ViewOutName}"
                DataSource="DataSource"
                PageSize="PageSize"

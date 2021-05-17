@@ -13,7 +13,7 @@ using {ModelsNamespace};
 /// 可在上层目录使用partial关键字进行扩展
 /// {EntityDisplayName}模型操作器
 /// </summary>
-namespace {WebApiNamespace}
+namespace {WebApiNamespace}.{OutName}
 {
     public partial class {OutName}Action : {EntityName}
     {

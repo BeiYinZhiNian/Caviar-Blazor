@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace Caviar.AntDesignPages.Pages.SystemPages.User
+namespace Caviar.AntDesignPages.Pages.User
 {
     partial class Login
     {

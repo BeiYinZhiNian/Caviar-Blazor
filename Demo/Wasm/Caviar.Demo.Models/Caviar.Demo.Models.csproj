@@ -8,4 +8,8 @@
     <ProjectReference Include="..\..\..\Caviar.Models\Caviar.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Template\" />
+  </ItemGroup>
+
 </Project>

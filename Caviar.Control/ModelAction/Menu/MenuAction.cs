@@ -21,52 +21,23 @@ namespace Caviar.Control
             var pages = CommonHelper.AToB<PageData<ViewMenu>, PageData<SysPowerMenu>>(model);
             if (pages.Total != 0)
             {
-                pages.Rows = ModelToView(model.Rows);
+                var viewMenus = new List<ViewMenu>().ListAutoAssign(model.Rows);
+                pages.Rows = viewMenus.ListToTree();
             }
             return pages;
         }
 
-        public virtual List<SysPowerMenu> GetEntitys(Expression<Func<SysPowerMenu, bool>> where)
+        public virtual IQueryable<SysPowerMenu> GetEntitys(Expression<Func<SysPowerMenu, bool>> where)
         {
-            var menus = BC.DC.GetEntityAsync(where).OrderBy(u => u.Id).ToList();
+            var menus = BC.DC.GetEntityAsync(where).OrderBy(u => u.Id);
             return menus;
         }
 
         public virtual List<ViewMenu> GetViewMenus(Expression<Func<SysPowerMenu, bool>> where)
         {
-            var menus = GetEntitys(where);
-            return ModelToView(menus);
-        }
-        protected virtual List<ViewMenu> ModelToView(List<SysPowerMenu> menus)
-        {
-            //将获取到的sys转为view
+            var menus = GetEntitys(where).ToList();
             var viewMenus = new List<ViewMenu>().ListAutoAssign(menus);
-            var resultViewMenuList = new List<ViewMenu>();
-            foreach (var item in viewMenus)
-            {
-                if (item.UpLayerId == 0)
-                {
-                    resultViewMenuList.Add(item);
-                }
-                else
-                {
-                    viewMenus.SingleOrDefault(u => u.Id == item.UpLayerId)?.Children.Add(item);
-                }
-            }
-            return resultViewMenuList;
-        }
-
-
-        public void ViewToModel(ViewMenu data, List<ViewMenu> menus)
-        {
-            foreach (var item in data.Children)
-            {
-                menus.Add(item);
-                if (item.Children != null && item.Children.Count != 0)
-                {
-                    ViewToModel(item, menus);
-                }
-            }
+            return viewMenus.ListToTree();
         }
     }
 }

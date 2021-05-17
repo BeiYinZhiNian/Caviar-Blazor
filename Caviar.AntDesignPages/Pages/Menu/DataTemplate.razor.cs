@@ -10,21 +10,29 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
+namespace Caviar.AntDesignPages.Pages.Menu
 {
-    [DisplayName("添加菜单")]
-    public partial class Add: ITableTemplate
+    [DisplayName("数据模板")]
+    public partial class DataTemplate: ITableTemplate
     {
-        private Form<SysPowerMenu> _meunForm;
-        public SysPowerMenu model = new SysPowerMenu() { Number = "999" };
+        
+        [Parameter]
+        public SysPowerMenu DataSource { get; set; }
+        
+        [Parameter]
+        public string Url { get; set; }
+
+        [Parameter]
+        public string SuccMsg { get; set; } = "操作成功";
 
         [Inject]
         HttpHelper Http { get; set; }
 
-
+        private Form<SysPowerMenu> _meunForm;
         protected override async Task OnInitializedAsync()
         {
             SysPowerMenus = await GetPowerMenus();
+            CheckMenuType();
         }
 
         private List<ViewMenu> SysPowerMenus;
@@ -34,6 +42,16 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
         {
             var result = await Http.GetJson<List<ViewMenu>>("Menu/GetLeftSideMenus");
             if (result.Status != 200) return new List<ViewMenu>();
+            if (DataSource.ParentId > 0)
+            {
+                List<ViewMenu> listData = new List<ViewMenu>();
+                result.Data.TreeToList(listData);
+                var parent = listData.SingleOrDefault(u => u.Id == DataSource.ParentId);
+                if (parent != null)
+                {
+                    UpPowerMenuName = parent.MenuName;
+                }
+            }
             return result.Data;
         }
 
@@ -42,6 +60,7 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
         [Parameter]
         public bool Visible { get; set; }
 
+        
         public async Task<bool> Submit()
         {
             if(_meunForm.Validate())
@@ -53,10 +72,10 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
 
         async Task<bool> FormSubmit()
         {
-            var result = await Http.PostJson<SysPowerMenu, object>("Menu/Add", model);
+            var result = await Http.PostJson<SysPowerMenu, object>(Url, DataSource);
             if (result.Status == 200)
             {
-                _message.Success("创建成功");
+                _message.Success(SuccMsg);
                 return true;
             }
             return false;
@@ -65,13 +84,13 @@ namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
         void EventRecord(TreeEventArgs<ViewMenu> args)
         {
             UpPowerMenuName = args.Node.Title;
-            model.UpLayerId = int.Parse(args.Node.Key);
+            DataSource.ParentId = int.Parse(args.Node.Key);
         }
 
         void RemoveRecord()
         {
             UpPowerMenuName = "无上层目录";
-            model.UpLayerId = 0;
+            DataSource.ParentId = 0;
         }
     }
 }

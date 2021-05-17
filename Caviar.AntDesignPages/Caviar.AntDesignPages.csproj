@@ -34,16 +34,16 @@
     <Content Update="Pages\Exception\404\404.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Pages\SystemPages\Code\Index.razor">
+    <Content Update="Pages\Code\Index.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Pages\SystemPages\Menu\Add.razor">
+    <Content Update="Pages\Menu\DataTemplate.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Pages\SystemPages\Menu\Index.razor">
+    <Content Update="Pages\Menu\Index.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Pages\SystemPages\User\Login.razor">
+    <Content Update="Pages\User\Login.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
     <Content Update="Shared\CavEmptyLayout.razor">
@@ -85,10 +85,6 @@
     <Content Update="_Imports.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Template\" />
   </ItemGroup>
 
 </Project>

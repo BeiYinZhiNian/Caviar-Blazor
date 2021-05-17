@@ -171,5 +171,71 @@ namespace Caviar.Models.SystemData
             }
             return _assemblies;
         }
+        /// <summary>
+        /// 列表转树
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static List<T> ListToTree<T>(this IList<T> data) where T: class,ITree<T>
+        {
+            List<T> Tree = new List<T>();
+            foreach (var item in data)
+            {
+                if (item.ParentId == 0)
+                {
+                    Tree.Add(item);
+                }
+                else
+                {
+                    //查找源数据父节点
+                    var ParentNode = data.SingleOrDefault(u => u.Id == item.ParentId);
+                    if(ParentNode == null)
+                    {
+                        Tree.Add(item);//没有找到父节点，所以直接加入最上层节点
+                    }
+                    else
+                    {
+                        ParentNode.Children.Add(item);//加入父节点
+                    }
+                }
+            }
+            return Tree;
+        }
+
+        /// <summary>
+        /// 多个树转列表
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="data"></param>
+        /// <param name="list"></param>
+        public static void TreeToList<T>(this IList<T> data,IList<T> list) where T : class, ITree<T>
+        {
+            foreach (var item in data)
+            {
+                list.Add(item);
+                if (item.Children!=null && item.Children.Count > 0)
+                {
+                    TreeToList(item.Children,list);
+                }
+            }
+        }
+        /// <summary>
+        /// 单个树转列表
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="data"></param>
+        /// <param name="list"></param>
+        public static void TreeToList<T>(this T data, IList<T> list) where T : class, ITree<T>
+        {
+            foreach (var item in data.Children)
+            {
+                list.Add(item);
+                if (item.Children != null && item.Children.Count > 0)
+                {
+                    TreeToList(item, list);
+                }
+            }
+        }
     }
 }

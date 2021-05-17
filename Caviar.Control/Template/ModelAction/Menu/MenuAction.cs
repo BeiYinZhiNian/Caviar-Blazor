@@ -1,4 +1,4 @@
-using Caviar.Models.SystemData;
+﻿using Caviar.Models.SystemData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,11 +43,12 @@ namespace Caviar.Control
             var count = await BC.DC.UpdateEntityAsync(this);
             return count;
         }
+
         /// <summary>
         /// 获取分页数据
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<PageData<ViewMenu>> GetPages(Expression<Func<SysPowerMenu, bool>> where,int pageIndex,int pageSize, bool isOrder = true, bool isNoTracking = false)
+        public virtual async Task<PageData<ViewMenu>> GetPages(Expression<Func<SysPowerMenu, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = false)
         {
             var pages = await BC.DC.GetPageAsync(where, u => u.Number, pageIndex, pageSize, isOrder, isNoTracking);
             var ViewPages = ModelToViewModel(pages);
@@ -75,7 +76,7 @@ namespace Caviar.Control
             return count;
         }
 
-        protected delegate T Transformation<T,K>(K model);
+        protected delegate T Transformation<T, K>(K model);
 
         protected event Transformation<PageData<ViewMenu>, PageData<SysPowerMenu>> TransformationEvent;
 
@@ -88,15 +89,25 @@ namespace Caviar.Control
         /// <typeparam name="K"></typeparam>
         /// <param name="model"></param>
         /// <returns></returns>
-        private PageData<ViewMenu> ModelToViewModel(PageData<SysPowerMenu> model)
+        public PageData<ViewMenu> ModelToViewModel(PageData<SysPowerMenu> model)
         {
-            
+
             var viewModel = TransformationEvent?.Invoke(model);
             if (viewModel == null)
             {
                 viewModel = CommonHelper.AToB<PageData<ViewMenu>, PageData<SysPowerMenu>>(model);
             }
             return viewModel;
+        }
+
+        public ViewMenu ModelToViewModel(SysPowerMenu model)
+        {
+            if (model == null) return null;
+            PageData<SysPowerMenu> pages = new PageData<SysPowerMenu>();
+            pages.Rows = new List<SysPowerMenu>() { model };
+            pages.Total = 1;
+            var viewPages = ModelToViewModel(pages);
+            return viewPages.Rows.FirstOrDefault();
         }
     }
 }

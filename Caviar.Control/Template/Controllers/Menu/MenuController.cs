@@ -1,4 +1,4 @@
-using Caviar.Control;
+﻿using Caviar.Control;
 using Caviar.Models.SystemData;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,9 +23,9 @@ namespace Caviar.Control
         /// <summary>
         /// 方法操作器
         /// </summary>
-        MenuAction Action 
+        MenuAction Action
         {
-            get 
+            get
             {
                 if (_action == null)
                 {
@@ -57,7 +57,7 @@ namespace Caviar.Control
                     return ResultOK();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return ResultErrorMsg("添加失败", e.Message);
             }
@@ -80,7 +80,7 @@ namespace Caviar.Control
                     return ResultOK();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return ResultErrorMsg("修改失败", e.Message);
             }
@@ -103,7 +103,7 @@ namespace Caviar.Control
                     return ResultOK();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return ResultErrorMsg("删除失败", e.Message);
             }
@@ -122,6 +122,17 @@ namespace Caviar.Control
         {
             var pages = await Action.GetPages(u => true, pageIndex, pageSize, isOrder, isNoTracking);
             ResultMsg.Data = pages;
+            return ResultOK();
+        }
+
+        [HttpGet]
+        public IActionResult GetEntity(int Id)
+        {
+            var entity = Action.GetEntitys(u => u.Id == Id).FirstOrDefault();
+            if (entity != null)
+            {
+                ResultMsg.Data = Action.ModelToViewModel(entity);
+            }
             return ResultOK();
         }
         #endregion

@@ -28,7 +28,7 @@ namespace Caviar.Models.SystemData
         public string Icon { get; set; }
 
         [DisplayName("父id")]
-        public int UpLayerId { get; set; }
+        public int ParentId { get; set; }
 
         [DisplayName("按钮位置")]
         public ButtonPosition ButtonPosition { get; set; }

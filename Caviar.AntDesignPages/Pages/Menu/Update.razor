@@ -1,0 +1,14 @@
+﻿@page "/Menu/Update/{Id:int}"
+
+@namespace Caviar.AntDesignPages.Pages.Menu
+
+@if (Model != null)
+{
+    <DataTemplate Url="Menu/Update"
+                  SuccMsg="修改成功"
+                  DataSource="@Model"
+                  @ref="Template">
+
+    </DataTemplate>
+}
+

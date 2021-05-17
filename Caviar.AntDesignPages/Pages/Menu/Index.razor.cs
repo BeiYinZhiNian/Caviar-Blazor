@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Caviar.AntDesignPages.Pages.SystemPages.Menu
+namespace Caviar.AntDesignPages.Pages.Menu
 {
     public partial class Index
     {

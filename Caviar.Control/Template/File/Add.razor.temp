@@ -6,7 +6,7 @@
 *@
 @page "{page}"
 @using {ModelsNamespace}
-@namespace {WebUINamespace}
+@namespace {WebUINamespace}.{OutName}
 
 <Form @ref="_meunForm" Model="@model" OnFinish="FormSubmit">
 {FormItem}

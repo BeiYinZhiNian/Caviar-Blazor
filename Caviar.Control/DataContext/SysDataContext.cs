@@ -377,7 +377,7 @@ namespace Caviar.Control
                     MenuName = "菜单管理",
                     Url = "/Menu/Index",
                     Icon = "menu",
-                    UpLayerId = management.Id,
+                    ParentId = management.Id,
                     Number = "999"
                 };
                 await AddEntityAsync(menuManage);
@@ -389,7 +389,7 @@ namespace Caviar.Control
                     ButtonPosition = ButtonPosition.Header,
                     Url = "/Menu/Add",
                     Icon = "appstore-add",
-                    UpLayerId = menuManage.Id,
+                    ParentId = menuManage.Id,
                     IsDoubleTrue = false,
                     Number = "999"
                 };
@@ -400,7 +400,7 @@ namespace Caviar.Control
                     MenuName = "删除",
                     ButtonPosition = ButtonPosition.Row,
                     Icon = "delete",
-                    UpLayerId = menuManage.Id,
+                    ParentId = menuManage.Id,
                     IsDoubleTrue = true,
                     Number = "999"
                 };
@@ -417,7 +417,7 @@ namespace Caviar.Control
                     MenuName = "代码生成",
                     Url = "/Code/Index",
                     Icon = "code",
-                    UpLayerId = management.Id,
+                    ParentId = management.Id,
                     Number = "999"
                 };
                 await AddEntityAsync(codePage);

@@ -1,6 +1,6 @@
-﻿@page "/Menu/add"
+﻿@namespace Caviar.AntDesignPages.Pages.Menu
 
-<Form @ref="_meunForm" Model="@model" OnFinish="FormSubmit">
+<Form @ref="_meunForm" Model="@DataSource" OnFinish="FormSubmit">
     <FormItem Label='菜单名称'>
         <Input @bind-Value="@context.MenuName" Style="width:50%" />
     </FormItem>
@@ -42,7 +42,7 @@
     <FormItem Label="请求地址" Style="@visibility">
         <Input @bind-Value="@context.Url">
     </FormItem>
-    <FormItem Label="打开方式" Style="@buttonStrle">
+    <FormItem Label="打开方式" Style="@visibility">
         <RadioGroup @bind-Value="@context.TargetType">
             <Radio Value="(TargetType)0">当前页面</Radio>
             <Radio Value="(TargetType)1">弹出窗口</Radio>
@@ -57,12 +57,12 @@
         <Space>
             <SpaceItem>
                 <Button OnClick="()=> { _visible = true; }">图标库</Button>
-                <CavModalIcon @bind-IconValue="model.Icon" @bind-Visible="_visible"></CavModalIcon>
+                <CavModalIcon @bind-IconValue="DataSource.Icon" @bind-Visible="_visible"></CavModalIcon>
             </SpaceItem>
             <SpaceItem>
-                @if (!string.IsNullOrEmpty(model.Icon))
+                @if (!string.IsNullOrEmpty(DataSource.Icon))
                 {
-                    <Icon Type="@model.Icon" Theme="outline"></Icon>
+                    <Icon Type="@DataSource.Icon" Theme="outline"></Icon>
                 }
             </SpaceItem>
         </Space>
@@ -82,12 +82,12 @@
     EventCallback<ButtonPosition> ButtonPositionCallback => EventCallback.Factory.Create<ButtonPosition>(this, CheckButtonPosition);
     public void CheckMenuType()
     {
-        switch (model.MenuType)
+        switch (DataSource.MenuType)
         {
             case MenuType.Catalog:
                 visibility = "display:none;";
                 buttonStrle = "display:none;";
-                model.Url = "";
+                DataSource.Url = "";
                 break;
             case MenuType.Menu:
                 buttonStrle = "display:none;";
@@ -104,7 +104,7 @@
 
     public void CheckButtonPosition()
     {
-        switch (model.ButtonPosition)
+        switch (DataSource.ButtonPosition)
         {
             case ButtonPosition.Header:
                 visibility = "";

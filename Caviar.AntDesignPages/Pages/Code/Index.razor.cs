@@ -12,7 +12,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Caviar.AntDesignPages.Pages.SystemPages.Code
+namespace Caviar.AntDesignPages.Pages.Code
 {
     public partial class Index
     {

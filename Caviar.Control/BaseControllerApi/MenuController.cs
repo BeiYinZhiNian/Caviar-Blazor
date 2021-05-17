@@ -40,7 +40,7 @@ namespace Caviar.Control
                 ResultMsg.Data = new List<SysPowerMenu>();
                 return ResultOK();
             }
-            var buttons = Action.GetEntitys(u => u.MenuType == MenuType.Button && u.UpLayerId == menus.Id);
+            var buttons = Action.GetEntitys(u => u.MenuType == MenuType.Button && u.ParentId == menus.Id);
             ResultMsg.Data = buttons;
             return ResultOK();
         }
@@ -54,7 +54,7 @@ namespace Caviar.Control
         {
             Action.AutoAssign(viewMen);
             List<ViewMenu> viewMenuList = new List<ViewMenu>();
-            Action.ViewToModel(viewMen, viewMenuList);
+            viewMen.TreeToList(viewMenuList);
             var count = 0;
             if(viewMenuList!=null && viewMenuList.Count != 0)
             {
@@ -62,9 +62,9 @@ namespace Caviar.Control
                 menus.ListAutoAssign(viewMenuList);
                 foreach (var item in menus)
                 {
-                    if (item.UpLayerId == viewMen.Id)
+                    if (item.ParentId == viewMen.Id)
                     {
-                        item.UpLayerId = viewMen.UpLayerId;
+                        item.ParentId = viewMen.ParentId;
                     }
                 }
                 count = await Action.UpdateEntity(menus);
@@ -90,7 +90,7 @@ namespace Caviar.Control
         public async Task<IActionResult> DeleteAllEntity(ViewMenu viewMen)
         {
             List<ViewMenu> viewMenuList = new List<ViewMenu>();
-            Action.ViewToModel(viewMen, viewMenuList);//获取子菜单集合
+            viewMen.TreeToList(viewMenuList);
             viewMenuList.Add(viewMen);//将自己添加入删除集合
             List<SysPowerMenu> menus = new List<SysPowerMenu>();
             menus.ListAutoAssign(viewMenuList);//将view转为sys
