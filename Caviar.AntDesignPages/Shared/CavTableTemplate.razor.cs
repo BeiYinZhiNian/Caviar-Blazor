@@ -97,7 +97,7 @@ namespace Caviar.AntDesignPages.Shared
                         case TargetType.EjectPage:
                             ModalUrl = menu.Url;
                             ModalTitle = menu.MenuName;
-                            _visible = true;
+                            ModalVisible = true;
                             break;
                         case TargetType.NewLabel:
                             JSRuntime.InvokeVoidAsync("open", menu.Url, "_blank");
@@ -127,7 +127,11 @@ namespace Caviar.AntDesignPages.Shared
         [Inject]
         UserConfigHelper UserConfig { get; set; }
         #region Modal
-        string ModalUrl = "";
+        [Parameter]
+        public string ModalUrl { get;set; }
+        [Parameter]
+        public Dictionary<string,string> ModalParamenter { get; set; }
+
         string UpUrl = "";
         RenderFragment UpRenderFragment;
         RenderFragment CreateDynamicComponent()
@@ -149,9 +153,18 @@ namespace Caviar.AntDesignPages.Shared
                  var page = (string)item.GetObjValue("Template").GetObjValue("TemplateText");
                  if (page.ToLower() == ModalUrl.ToLower() || "/" + page.ToLower() == ModalUrl.ToLower())
                  {
+                     
                      var type = (Type)item.GetObjValue("Handler");
                      builder.OpenComponent(0, type);
                      builder.AddComponentReferenceCapture(1, SetComponent);
+                     //需要添加参数
+                     //if (ModalParamenter != null)
+                     //{
+                     //    foreach (var paramenter in ModalParamenter)
+                     //    {
+                     //        ModalUrl = ModalUrl.Replace(paramenter.Key, paramenter.Value);
+                     //    }
+                     //}
                      builder.CloseComponent();
                      return;
                  }
@@ -163,9 +176,10 @@ namespace Caviar.AntDesignPages.Shared
         {
             menuAdd = (ITableTemplate)e;
         }
-
-        string ModalTitle = "";
-        bool _visible = false;
+        [Parameter]
+        public string ModalTitle { get; set; }
+        [Parameter]
+        public bool ModalVisible { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
         ITableTemplate menuAdd;
         [Parameter]
@@ -179,7 +193,7 @@ namespace Caviar.AntDesignPages.Shared
             {
                 res = await menuAdd.Submit();
             }
-            _visible = !res;
+            ModalVisible = !res;
             if (res)
             {
                 if (HandleOkCallback.HasDelegate)
@@ -191,7 +205,7 @@ namespace Caviar.AntDesignPages.Shared
 
         private async void HandleCancel(MouseEventArgs e)
         {
-            _visible = false;
+            ModalVisible = false;
             if (HandleCancelCallback.HasDelegate)
             {
                 await HandleCancelCallback.InvokeAsync(CurrentMenu);

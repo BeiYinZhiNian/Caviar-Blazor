@@ -397,6 +397,16 @@ namespace Caviar.Control
                 AddButton = new SysPowerMenu()
                 {
                     MenuType = MenuType.Button,
+                    MenuName = "修改",
+                    ButtonPosition = ButtonPosition.Row,
+                    Icon = "edit",
+                    ParentId = menuManage.Id,
+                    Number = "999"
+                };
+                await AddEntityAsync(AddButton);
+                AddButton = new SysPowerMenu()
+                {
+                    MenuType = MenuType.Button,
                     MenuName = "删除",
                     ButtonPosition = ButtonPosition.Row,
                     Icon = "delete",
@@ -405,7 +415,7 @@ namespace Caviar.Control
                     Number = "999"
                 };
                 await AddEntityAsync(AddButton);
-
+                
 
 
 

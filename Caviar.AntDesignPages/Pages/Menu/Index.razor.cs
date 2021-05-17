@@ -25,7 +25,10 @@ namespace Caviar.AntDesignPages.Pages.Menu
         public int Total { get; set; }
         public int PageIndex { get; set; }
         public int PageSize { get; set; }
-
+        string ModalUrl = "";
+        string ModalTitle = "";
+        bool ModalVisible = false;
+        Dictionary<string, string> ModalParamenter;
         List<ViewModelHeader> ViewModelHeaders { get; set; }
         List<ViewMenu> Buttons { get; set; }
         protected override async Task OnInitializedAsync()
@@ -74,6 +77,13 @@ namespace Caviar.AntDesignPages.Pages.Menu
             {
                 case "删除":
                     Delete(row.Data);
+                    break;
+                case "修改":
+                    ModalUrl = "Menu/Update/{Id:int}";
+                    ModalParamenter = new Dictionary<string, string>();
+                    ModalParamenter.Add("{Id:int}", row.Menu.Id.ToString());
+                    ModalTitle = "修改";
+                    ModalVisible = true;
                     break;
                 default:
                     break;
