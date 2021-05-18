@@ -122,26 +122,24 @@ namespace Caviar.AntDesignPages.Shared
             }
         }
 
-        
 
+        #region Modal
         [Inject]
         UserConfigHelper UserConfig { get; set; }
-        #region Modal
         [Parameter]
         public string ModalUrl { get;set; }
         [Parameter]
-        public Dictionary<string,string> ModalParamenter { get; set; }
-
+        public IEnumerable<KeyValuePair<string, object?>> ModalParamenter { get; set; }
         string UpUrl = "";
         RenderFragment UpRenderFragment;
         RenderFragment CreateDynamicComponent()
         {
             if (ModalUrl == null) ModalUrl = "";
-            if (UpUrl == ModalUrl)
-            {
-                return UpRenderFragment;
-            }
-            UpUrl = ModalUrl;
+            //if (UpUrl == ModalUrl)
+            //{
+            //    return UpRenderFragment;
+            //}
+            //UpUrl = ModalUrl;
             UpRenderFragment = Render();
             return UpRenderFragment;
         }
@@ -153,24 +151,22 @@ namespace Caviar.AntDesignPages.Shared
                  var page = (string)item.GetObjValue("Template").GetObjValue("TemplateText");
                  if (page.ToLower() == ModalUrl.ToLower() || "/" + page.ToLower() == ModalUrl.ToLower())
                  {
-                     
-                     var type = (Type)item.GetObjValue("Handler");
-                     builder.OpenComponent(0, type);
-                     builder.AddComponentReferenceCapture(1, SetComponent);
-                     //需要添加参数
-                     //if (ModalParamenter != null)
-                     //{
-                     //    foreach (var paramenter in ModalParamenter)
-                     //    {
-                     //        ModalUrl = ModalUrl.Replace(paramenter.Key, paramenter.Value);
-                     //    }
-                     //}
+
+                     var ComponentType = (Type)item.GetObjValue("Handler");
+                     var index = 0;
+                     builder.OpenComponent(index++, ComponentType);
+                     if (ModalParamenter!=null && ModalParamenter.Any())
+                     {
+                         builder.AddMultipleAttributes(index++, ModalParamenter);
+                     }
+                     builder.AddComponentReferenceCapture(index++, SetComponent);
                      builder.CloseComponent();
                      return;
                  }
              }
-
          };
+
+
 
         void SetComponent(object e)
         {
@@ -210,6 +206,11 @@ namespace Caviar.AntDesignPages.Shared
             {
                 await HandleCancelCallback.InvokeAsync(CurrentMenu);
             }
+        }
+
+        private async Task AfterClose()
+        {
+            ModalParamenter = null;
         }
         #endregion
 

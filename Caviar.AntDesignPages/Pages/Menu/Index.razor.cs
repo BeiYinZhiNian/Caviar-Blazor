@@ -28,7 +28,7 @@ namespace Caviar.AntDesignPages.Pages.Menu
         string ModalUrl = "";
         string ModalTitle = "";
         bool ModalVisible = false;
-        Dictionary<string, string> ModalParamenter;
+        IEnumerable<KeyValuePair<string, object?>> ModalParamenter;
         List<ViewModelHeader> ViewModelHeaders { get; set; }
         List<ViewMenu> Buttons { get; set; }
         protected override async Task OnInitializedAsync()
@@ -80,8 +80,10 @@ namespace Caviar.AntDesignPages.Pages.Menu
                     break;
                 case "修改":
                     ModalUrl = "Menu/Update/{Id:int}";
-                    ModalParamenter = new Dictionary<string, string>();
-                    ModalParamenter.Add("{Id:int}", row.Menu.Id.ToString());
+                    ModalParamenter = new List<KeyValuePair<string, object?>>()
+                    {
+                        new KeyValuePair<string, object?>("Id", row.Data.Id)
+                    };
                     ModalTitle = "修改";
                     ModalVisible = true;
                     break;

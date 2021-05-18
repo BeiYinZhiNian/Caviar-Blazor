@@ -16,6 +16,7 @@ namespace Caviar.AntDesignPages.Pages.Menu
 
         DataTemplate Template { get; set; }
 
+        [CascadingParameter]
         public ViewMenu Model { get; set; }
 
         [Parameter]
@@ -26,6 +27,10 @@ namespace Caviar.AntDesignPages.Pages.Menu
             var result = await Http.GetJson<ViewMenu>("Menu/GetEntity?Id=" + Id);
             if (result.Status != 200) return;
             Model = result.Data;
+            if (Model == null)
+            {
+                Console.WriteLine("未获取到属性值");
+            }
         }
 
         public async Task<bool> Submit()
