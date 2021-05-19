@@ -33,6 +33,7 @@ namespace Caviar.AntDesignPages.Pages.Menu
         {
             SysPowerMenus = await GetPowerMenus();
             CheckMenuType();
+            CheckButtonPosition();
         }
 
         private List<ViewMenu> SysPowerMenus;

@@ -82,137 +82,51 @@ namespace Caviar.AntDesignPages.Shared
         }
         [Inject]
         IJSRuntime JSRuntime { get; set; }
-        ViewMenu CurrentMenu { get; set; }
-        void ButtonClick(ViewMenu menu, TData data)
+        [Inject]
+        NavigationManager Navigation { get; set; }
+        [Inject]
+        CavModal CavModal { get; set; }
+        RowCallbackData<TData> CurrRow { get; set; }
+        async void ButtonClick(ViewMenu menu, TData data)
         {
-            CurrentMenu = menu;
+            CurrRow = new RowCallbackData<TData>()
+            {
+                Menu = menu,
+                Data = data,
+            };
             switch (menu.ButtonPosition)
             {
                 case ButtonPosition.Header:
                     switch (menu.TargetType)
                     {
                         case TargetType.CurrentPage:
-                            NavigationManager.NavigateTo(menu.Url);
+                            Navigation.NavigateTo(menu.Url);
                             break;
                         case TargetType.EjectPage:
-                            ModalUrl = menu.Url;
-                            ModalTitle = menu.MenuName;
-                            ModalVisible = true;
+                            await CavModal.Create(menu.Url, menu.MenuName, HandleOk);
                             break;
                         case TargetType.NewLabel:
-                            JSRuntime.InvokeVoidAsync("open", menu.Url, "_blank");
+                            await JSRuntime.InvokeVoidAsync("open", menu.Url, "_blank");
                             break;
                         case TargetType.Callback:
-                            HandleOk(null);
+
                             break;
                         default:
                             break;
                     }
                     break;
                 case ButtonPosition.Row:
-                    RowCallbackData<TData> row = new RowCallbackData<TData>()
-                    {
-                        Menu = menu,
-                        Data = data,
-                    };
-                    RoleAction(row);
+                    RoleAction(CurrRow);
                     break;
                 default:
                     break;
             }
         }
 
-
-        #region Modal
-        [Inject]
-        UserConfigHelper UserConfig { get; set; }
-        [Parameter]
-        public string ModalUrl { get;set; }
-        [Parameter]
-        public IEnumerable<KeyValuePair<string, object?>> ModalParamenter { get; set; }
-        string UpUrl = "";
-        RenderFragment UpRenderFragment;
-        RenderFragment CreateDynamicComponent()
+        public async void HandleOk()
         {
-            if (ModalUrl == null) ModalUrl = "";
-            //if (UpUrl == ModalUrl)
-            //{
-            //    return UpRenderFragment;
-            //}
-            //UpUrl = ModalUrl;
-            UpRenderFragment = Render();
-            return UpRenderFragment;
+            RoleAction(CurrRow);
         }
-        RenderFragment Render() => builder =>
-         {
-             var routes = UserConfig.Routes;
-             foreach (var item in routes)
-             {
-                 var page = (string)item.GetObjValue("Template").GetObjValue("TemplateText");
-                 if (page.ToLower() == ModalUrl.ToLower() || "/" + page.ToLower() == ModalUrl.ToLower())
-                 {
-
-                     var ComponentType = (Type)item.GetObjValue("Handler");
-                     var index = 0;
-                     builder.OpenComponent(index++, ComponentType);
-                     if (ModalParamenter!=null && ModalParamenter.Any())
-                     {
-                         builder.AddMultipleAttributes(index++, ModalParamenter);
-                     }
-                     builder.AddComponentReferenceCapture(index++, SetComponent);
-                     builder.CloseComponent();
-                     return;
-                 }
-             }
-         };
-
-
-
-        void SetComponent(object e)
-        {
-            menuAdd = (ITableTemplate)e;
-        }
-        [Parameter]
-        public string ModalTitle { get; set; }
-        [Parameter]
-        public bool ModalVisible { get; set; }
-        [Inject] public NavigationManager NavigationManager { get; set; }
-        ITableTemplate menuAdd;
-        [Parameter]
-        public EventCallback<ViewMenu> HandleOkCallback { get; set; }
-        [Parameter]
-        public EventCallback<ViewMenu> HandleCancelCallback { get; set; }
-        private async void HandleOk(MouseEventArgs e)
-        {
-            var res = true;
-            if (menuAdd != null)
-            {
-                res = await menuAdd.Submit();
-            }
-            ModalVisible = !res;
-            if (res)
-            {
-                if (HandleOkCallback.HasDelegate)
-                {
-                    await HandleOkCallback.InvokeAsync(CurrentMenu);
-                }
-            }
-        }
-
-        private async void HandleCancel(MouseEventArgs e)
-        {
-            ModalVisible = false;
-            if (HandleCancelCallback.HasDelegate)
-            {
-                await HandleCancelCallback.InvokeAsync(CurrentMenu);
-            }
-        }
-
-        private async Task AfterClose()
-        {
-            ModalParamenter = null;
-        }
-        #endregion
 
         #region 查询条件
         IEnumerable<string> _selectedValues;

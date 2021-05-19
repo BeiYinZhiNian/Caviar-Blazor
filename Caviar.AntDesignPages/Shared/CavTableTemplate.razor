@@ -188,18 +188,3 @@
         </ActionColumn>
     }
 </Table>
-
-
-
-
-<Modal Title="@ModalTitle"
-       Visible="@ModalVisible"
-       DestroyOnClose="true"
-       MaskClosable="false"
-       OnOk="@HandleOk"
-       OnCancel="@HandleCancel"
-       Draggable="true"
-       DragInViewport="true"
-       AfterClose="@AfterClose">
-    @CreateDynamicComponent()
-</Modal>

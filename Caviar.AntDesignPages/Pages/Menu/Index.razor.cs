@@ -18,18 +18,11 @@ namespace Caviar.AntDesignPages.Pages.Menu
         [Inject]
         MessageService Message { get; set; }
         [Inject]
-        UserConfigHelper UserConfig { get; set; }
-        [Inject]
         NavigationManager NavigationManager { get; set; }
         public List<ViewMenu> DataSource { get; set; }
         public int Total { get; set; }
         public int PageIndex { get; set; }
         public int PageSize { get; set; }
-        string ModalUrl = "";
-        string ModalTitle = "";
-        bool ModalVisible = false;
-        IEnumerable<KeyValuePair<string, object?>> ModalParamenter;
-        List<ViewModelHeader> ViewModelHeaders { get; set; }
         List<ViewMenu> Buttons { get; set; }
         protected override async Task OnInitializedAsync()
         {
@@ -57,21 +50,9 @@ namespace Caviar.AntDesignPages.Pages.Menu
             if (result.Status != 200) return new List<ViewMenu>();
             return result.Data;
         }
-        public async void HandleOk(ViewMenu e)
-        {
-            switch (e.MenuName)
-            {
-                case "新增":
-                    await OnInitializedAsync();
-                    StateHasChanged();
-                    break;
-                default:
-                    break;
-            }
-            
-        }
-
-        void RowCallback(RowCallbackData<ViewMenu> row)
+        [Inject]
+        CavModal CavModal { get; set; }
+        async void RowCallback(RowCallbackData<ViewMenu> row)
         {
             switch (row.Menu.MenuName)
             {
@@ -79,15 +60,13 @@ namespace Caviar.AntDesignPages.Pages.Menu
                     Delete(row.Data);
                     break;
                 case "修改":
-                    ModalUrl = "Menu/Update/{Id:int}";
-                    ModalParamenter = new List<KeyValuePair<string, object?>>()
-                    {
-                        new KeyValuePair<string, object?>("Id", row.Data.Id)
-                    };
-                    ModalTitle = "修改";
-                    ModalVisible = true;
+                    await CavModal.Create("/Menu/Update/{Id:int}", row.Data.MenuName,Refresh,
+                        new List<KeyValuePair<string, object?>> { 
+                            new KeyValuePair<string, object?>("Id",row.Data.Id)
+                        });
                     break;
-                default:
+                case "新增":
+                    Refresh();
                     break;
             }
         }
@@ -129,9 +108,16 @@ namespace Caviar.AntDesignPages.Pages.Menu
                     Message.Success("删除成功");
                 }
             }
+            Refresh();
+        }
+
+        public async void Refresh()
+        {
             await OnInitializedAsync();
             StateHasChanged();
         }
+
+
         [Inject]
         ConfirmService Confirm { get; set; }
         private async Task<ConfirmResult> ShowConfirm(string menuName,int count)

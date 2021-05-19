@@ -1,4 +1,5 @@
-﻿using Caviar.Models.SystemData;
+﻿using AntDesign;
+using Caviar.Models.SystemData;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,8 @@ namespace Caviar.AntDesignPages.Helper
             services.AddSingleton(typeof(UserConfigHelper));
             services.AddSingleton<UserToken>();
             services.AddScoped<IPrismHighlighter, PrismHighlighter>();
+            services.AddSingleton<CavModal>();
+            services.AddSingleton<ModalService>();
             if (assemblies != null)
             {
                 AdditionalAssemblies = new List<Assembly>();
