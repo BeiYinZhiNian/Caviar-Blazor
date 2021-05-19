@@ -12,8 +12,9 @@
                PageSize="PageSize"
                PageIndex="PageIndex"
                Total="Total"
-               ModelHeaderName="{EntityName}"
+               TreeChildren="u => u.Children"
                Buttons="Buttons"
-               HandleOkCallback="HandleOk"
+               ModelHeaderName="SyspowerMenu"
                RowCallback="RowCallback">
+
 </CavTableTemplate>

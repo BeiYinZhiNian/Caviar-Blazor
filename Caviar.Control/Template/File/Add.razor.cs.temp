@@ -18,33 +18,16 @@ using {ModelsNamespace};
 /// </summary>
 namespace {WebUINamespace}.{OutName}
 {
-    public partial class Add: ITableTemplate
+    public partial class Add : ITableTemplate
     {
-        private Form<{ViewOutName}> _meunForm;
-        public {ViewOutName} model = new {ViewOutName}() { Number = "999" };
         [Inject]
         HttpHelper Http { get; set; }
-        [Inject]
-        MessageService _message { get; set; }
+
+        DataTemplate Template { get; set; }
 
         public async Task<bool> Submit()
         {
-            if(_meunForm.Validate())
-            {
-                return await FormSubmit();
-            }
-            return false;
-        }
-
-        async Task<bool> FormSubmit()
-        {
-            var result = await Http.PostJson<{ViewOutName}, object>("{OutName}/Add", model);
-            if (result.Status == 200)
-            {
-                _message.Success("创建成功");
-                return true;
-            }
-            return false;
+            return await Template.Submit();
         }
     }
 }

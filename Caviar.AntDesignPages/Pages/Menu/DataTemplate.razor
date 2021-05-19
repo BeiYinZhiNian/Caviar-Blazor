@@ -104,17 +104,21 @@
 
     public void CheckButtonPosition()
     {
-        switch (DataSource.ButtonPosition)
+        if (DataSource.MenuType != MenuType.Catalog)
         {
-            case ButtonPosition.Header:
-                visibility = "";
-                break;
-            case ButtonPosition.Row:
-                visibility = "display:none;";
-                break;
-            default:
-                break;
+            switch (DataSource.ButtonPosition)
+            {
+                case ButtonPosition.Header:
+                    visibility = "";
+                    break;
+                case ButtonPosition.Row:
+                    visibility = "display:none;";
+                    break;
+                default:
+                    break;
+            }
         }
+
     }
 
 }

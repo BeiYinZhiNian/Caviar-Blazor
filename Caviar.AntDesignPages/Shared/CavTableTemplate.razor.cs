@@ -109,7 +109,7 @@ namespace Caviar.AntDesignPages.Shared
                             await JSRuntime.InvokeVoidAsync("open", menu.Url, "_blank");
                             break;
                         case TargetType.Callback:
-
+                            RoleAction(CurrRow);
                             break;
                         default:
                             break;

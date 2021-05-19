@@ -8,6 +8,9 @@
 @using {ModelsNamespace}
 @namespace {WebUINamespace}.{OutName}
 
-<Form @ref="_meunForm" Model="@model" OnFinish="FormSubmit">
-{FormItem}
-</Form>
+<DataTemplate Url="{OutName}/Add"
+              SuccMsg="创建成功"
+              DataSource="@(new {ViewOutName}() { Number="999"})"
+              @ref="Template">
+
+</DataTemplate>
