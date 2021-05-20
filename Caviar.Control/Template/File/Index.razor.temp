@@ -12,7 +12,6 @@
                PageSize="PageSize"
                PageIndex="PageIndex"
                Total="Total"
-               TreeChildren="u => u.Children"
                Buttons="Buttons"
                ModelHeaderName="SyspowerMenu"
                RowCallback="RowCallback">

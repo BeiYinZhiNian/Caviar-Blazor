@@ -1,0 +1,68 @@
+﻿using AntDesign;
+using Caviar.Models.SystemData;
+using Caviar.AntDesignPages.Helper;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.AspNetCore.Components.Web;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
+using {ModelsNamespace};
+/// <summary>
+/// 生成者：{Producer}
+/// 生成时间：{GenerationTime}
+/// 代码由代码生成器自动生成，更改的代码可能被进行替换
+/// 可在上层目录使用partial关键字进行扩展
+/// </summary>
+namespace {WebUINamespace}.{OutName}
+{
+    [DisplayName("数据模板")]
+    public partial class DataTemplate: ITableTemplate
+    {
+        
+        [Parameter]
+        public {ViewOutName} DataSource { get; set; }
+        
+        [Parameter]
+        public string Url { get; set; }
+
+        [Parameter]
+        public string SuccMsg { get; set; } = "操作成功";
+
+        [Inject]
+        HttpHelper Http { get; set; }
+
+        private Form<{ViewOutName}> _meunForm;
+        protected override async Task OnInitializedAsync()
+        {
+            CheckMenuType();
+            CheckButtonPosition();
+        }
+        [Inject]
+        MessageService _message { get; set; }
+        [Parameter]
+        public bool Visible { get; set; }
+        public async Task<bool> Submit()
+        {
+            //数据效验
+            if(_meunForm.Validate())
+            {
+                return await FormSubmit();
+            }
+            return false;
+        }
+
+        async Task<bool> FormSubmit()
+        {
+            var result = await Http.PostJson<{ViewOutName}, object>(Url, DataSource);
+            if (result.Status == 200)
+            {
+                _message.Success(SuccMsg);
+                return true;
+            }
+            return false;
+        }
+    }
+}
