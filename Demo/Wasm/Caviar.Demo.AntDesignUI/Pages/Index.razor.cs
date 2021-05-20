@@ -45,9 +45,9 @@ namespace Caviar.Demo.AntDesignUI.Pages
             var ComponentType = typeof(Form<SysPowerMenu>);
             var index = 0;
             builder.OpenComponent(index++, ComponentType);
-            
             builder.AddAttribute(index++, "Model", menu);
-            builder.AddContent(index++, RederFormItem());
+            builder.AddAttribute(index++, "ChildContent ", RederFormItem());
+            builder.AddComponentReferenceCapture(index++, SetFormRef);
             builder.CloseComponent();
 
         };
@@ -58,14 +58,17 @@ namespace Caviar.Demo.AntDesignUI.Pages
         {
             form = obj;
         }
+        public RenderFragment<SysPowerMenu> RederFormItem() => builder =>
+        {
 
+            return RederFormData();
+        };
 
-        public RenderFragment RederFormItem() => builder =>
+        public RenderFragment RederFormData() => builder =>
         {
             var ComponentType = typeof(FormItem);
             var index = 0;
             builder.OpenComponent(index++, ComponentType);
-            builder.AddAttribute(index++, "Form", form);
             builder.AddAttribute(index++, "Label", "≤‚ ‘");
             builder.CloseComponent();
 
@@ -76,6 +79,18 @@ namespace Caviar.Demo.AntDesignUI.Pages
             var ComponentType = typeof(Input<string>);
             var index = 0;
             builder.OpenComponent(index++, ComponentType);
+            builder.CloseComponent();
+
+        };
+
+        public RenderFragment RederCascadingValue() => builder =>
+        {
+            var ComponentType = typeof(CascadingValue<Form<SysPowerMenu>>);
+            var index = 0;
+            builder.OpenComponent(index++, ComponentType);
+            builder.AddAttribute(index++, "Value", form);
+            builder.AddAttribute(index++, "Name", "Form");
+            builder.AddContent(index++, RederFormItem());
             builder.CloseComponent();
 
         };
