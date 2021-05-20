@@ -48,6 +48,12 @@
     <None Update="Template\File\Add.razor.temp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Template\File\Update.razor.cs.temp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Template\File\Update.razor.temp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Template\File\ViewModel.cs.temp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

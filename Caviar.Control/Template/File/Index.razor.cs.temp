@@ -106,23 +106,35 @@ namespace {WebUINamespace}.{OutName}
         #endregion
 
         #region 回调
-        void RowCallback(RowCallbackData<{ViewOutName}> row)
+        [Inject]
+        CavModal CavModal { get; set; }
+        async void RowCallback(RowCallbackData<{ViewOutName}> row)
         {
             switch (row.Menu.MenuName)
             {
-                default:
+                case "删除":
+                    Delete(row.Data);
+                    break;
+                case "修改":
+                    await CavModal.Create("/{OutName}/Update/{Id:int}", row.Menu.MenuName,Refresh,
+                        new List<KeyValuePair<string, object?>> { 
+                            new KeyValuePair<string, object?>("Id",row.Data.Id)
+                        });
+                    break;
+                case "新增":
+                    Refresh();
                     break;
             }
         }
-
-        async void HandleOk(ViewMenu e)
+        async void Delete({OutName} data)
         {
-            switch (e.MenuName)
+            //删除单条
+            var result = await Http.PostJson<ViewMenu, object>("Menu/MoveEntity", data);
+            if (result.Status == 200)
             {
-                default:
-                    break;
+                Message.Success("删除成功");
             }
-
+            Refresh();
         }
         #endregion
 
@@ -131,6 +143,15 @@ namespace {WebUINamespace}.{OutName}
         {
             Get{ViewOutName}();//获取数据源
             Buttons = await GetPowerButtons();//获取按钮
+        }
+        /// <summary>
+        /// 刷新
+        /// </summary>
+        /// <returns></returns>
+        public async void Refresh()
+        {
+            await OnInitializedAsync();
+            StateHasChanged();
         }
         #endregion
 

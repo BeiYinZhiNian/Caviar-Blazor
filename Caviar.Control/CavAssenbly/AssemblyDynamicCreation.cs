@@ -77,6 +77,10 @@ namespace Caviar.Control
                     fileName = "Add";
                     extend = ".razor";
                     break;
+                case "修改":
+                    fileName = "Update";
+                    extend = ".razor";
+                    break;
                 case "列表":
                     fileName = "Index";
                     extend = ".razor";

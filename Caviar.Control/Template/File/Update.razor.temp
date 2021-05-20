@@ -1,0 +1,20 @@
+﻿@*
+生成者：{Producer}
+生成时间：{GenerationTime}
+代码由代码生成器自动生成，更改的代码可能被进行替换
+界面如需更改，建议拷贝至自己的工作目录下进行修改
+*@
+@page "{page}"
+@using {ModelsNamespace}
+@namespace {WebUINamespace}.{OutName}
+
+@if (DataSource != null)
+{
+    <DataTemplate Url="{OutName}/Update"
+                  SuccMsg="修改成功"
+                  DataSource="@DataSource"
+                  @ref="TemplateRef">
+
+    </DataTemplate>
+}
+
