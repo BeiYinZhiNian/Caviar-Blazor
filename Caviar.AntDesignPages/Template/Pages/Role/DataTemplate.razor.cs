@@ -1,4 +1,4 @@
-﻿using AntDesign;
+using AntDesign;
 using Caviar.Models.SystemData;
 using Caviar.AntDesignPages.Helper;
 using Microsoft.AspNetCore.Components;
@@ -9,21 +9,21 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using {ModelsNamespace};
+using Caviar.Models.SystemData;
 /// <summary>
-/// 生成者：{Producer}
-/// 生成时间：{GenerationTime}
+/// 生成者：未登录用户
+/// 生成时间：2021/5/21 16:32:54
 /// 代码由代码生成器自动生成，更改的代码可能被进行替换
 /// 可在上层目录使用partial关键字进行扩展
 /// </summary>
-namespace {WebUINamespace}.{OutName}
+namespace Caviar.AntDesignPages.Pages.Role
 {
     [DisplayName("数据模板")]
     public partial class DataTemplate: ITableTemplate
     {
         
         [Parameter]
-        public {ViewOutName} DataSource { get; set; }
+        public ViewRole DataSource { get; set; }
         
         [Parameter]
         public string Url { get; set; }
@@ -34,7 +34,7 @@ namespace {WebUINamespace}.{OutName}
         [Inject]
         HttpHelper Http { get; set; }
 
-        private Form<{ViewOutName}> _meunForm;
+        private Form<ViewRole> _meunForm;
         protected override async Task OnInitializedAsync()
         {
 
@@ -55,7 +55,7 @@ namespace {WebUINamespace}.{OutName}
 
         async Task<bool> FormSubmit()
         {
-            var result = await Http.PostJson<{ViewOutName}, object>(Url, DataSource);
+            var result = await Http.PostJson<ViewRole, object>(Url, DataSource);
             if (result.Status == 200)
             {
                 _message.Success(SuccMsg);

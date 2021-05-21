@@ -1,4 +1,4 @@
-﻿using AntDesign;
+using AntDesign;
 using Caviar.Models.SystemData;
 using Caviar.AntDesignPages.Helper;
 using Caviar.AntDesignPages.Shared;
@@ -8,14 +8,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using {ModelsNamespace};
+using Caviar.Models.SystemData;
 /// <summary>
-/// 生成者：{Producer}
-/// 生成时间：{GenerationTime}
+/// 生成者：未登录用户
+/// 生成时间：2021/5/21 16:32:54
 /// 代码由代码生成器自动生成，更改的代码可能被进行替换
 /// 可在上层目录使用partial关键字进行扩展
 /// </summary>
-namespace {WebUINamespace}.{OutName}
+namespace Caviar.AntDesignPages.Pages.Role
 {
     public partial class Index
     {
@@ -51,7 +51,7 @@ namespace {WebUINamespace}.{OutName}
         /// <summary>
         /// 数据源
         /// </summary>
-        List<{ViewOutName}> DataSource { get; set; }
+        List<ViewRole> DataSource { get; set; }
         /// <summary>
         /// 总计
         /// </summary>
@@ -79,9 +79,9 @@ namespace {WebUINamespace}.{OutName}
         /// 获取数据源
         /// </summary>
         /// <returns></returns>
-        async Task Get{ViewOutName}()
+        async Task GetViewRole()
         {
-            var result = await Http.GetJson<PageData<{ViewOutName}>>("{DataSourceWebApi}");
+            var result = await Http.GetJson<PageData<ViewRole>>("Role/GetPages");
             if (result.Status != 200) return;
             if (result.Data != null)
             {
@@ -108,7 +108,7 @@ namespace {WebUINamespace}.{OutName}
         #region 回调
         [Inject]
         CavModal CavModal { get; set; }
-        async void RowCallback(RowCallbackData<{ViewOutName}> row)
+        async void RowCallback(RowCallbackData<ViewRole> row)
         {
             switch (row.Menu.MenuName)
             {
@@ -116,7 +116,7 @@ namespace {WebUINamespace}.{OutName}
                     Delete(row.Data);
                     break;
                 case "修改":
-                    await CavModal.Create("/{OutName}/Update/{Id:int}", row.Menu.MenuName,Refresh,
+                    await CavModal.Create("/Role/Update/{Id:int}", row.Menu.MenuName,Refresh,
                         new List<KeyValuePair<string, object?>> { 
                             new KeyValuePair<string, object?>("Id",row.Data.Id)
                         });
@@ -126,10 +126,10 @@ namespace {WebUINamespace}.{OutName}
                     break;
             }
         }
-        async void Delete({ViewOutName} data)
+        async void Delete(ViewRole data)
         {
             //删除单条
-            var result = await Http.PostJson<{ViewOutName}, object>("Menu/MoveEntity", data);
+            var result = await Http.PostJson<ViewRole, object>("Menu/MoveEntity", data);
             if (result.Status == 200)
             {
                 Message.Success("删除成功");
@@ -141,7 +141,7 @@ namespace {WebUINamespace}.{OutName}
         #region 重写
         protected override async Task OnInitializedAsync()
         {
-            Get{ViewOutName}();//获取数据源
+            await GetViewRole();//获取数据源
             Buttons = await GetPowerButtons();//获取按钮
         }
         /// <summary>

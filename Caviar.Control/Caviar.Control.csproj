@@ -33,6 +33,12 @@
     <None Update="Template\File\Action.cs.temp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Template\File\DataTemplate.razor.cs.temp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Template\File\DataTemplate.razor.temp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Template\File\Index.razor.cs.temp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

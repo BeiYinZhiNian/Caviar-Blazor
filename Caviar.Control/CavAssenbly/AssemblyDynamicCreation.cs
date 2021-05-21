@@ -81,6 +81,10 @@ namespace Caviar.Control
                     fileName = "Update";
                     extend = ".razor";
                     break;
+                case "数据模板":
+                    fileName = "DataTemplate";
+                    extend = ".razor";
+                    break;
                 case "列表":
                     fileName = "Index";
                     extend = ".razor";
