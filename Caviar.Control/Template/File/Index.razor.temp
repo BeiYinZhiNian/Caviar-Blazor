@@ -13,7 +13,7 @@
                PageIndex="PageIndex"
                Total="Total"
                Buttons="Buttons"
-               ModelHeaderName="SyspowerMenu"
+               ModelHeaderName="{EntityName}"
                RowCallback="RowCallback">
 
 </CavTableTemplate>
