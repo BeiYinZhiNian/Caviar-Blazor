@@ -124,8 +124,44 @@ namespace Caviar.Control
             }
             if (isCreateMenu)
             {
-                var menuUrl = "";
-                //BC.DC.GetEntityAsync<SysPowerMenu>(u => u.Url == item.Url).FirstOrDefault();
+                SysPowerMenu menu = new SysPowerMenu()
+                {
+                    MenuName = "新增",
+                    Url = $"/{generate.OutName}/Add",
+                    TargetType = TargetType.EjectPage,
+                    MenuType = MenuType.Button,
+                    ButtonPosition = ButtonPosition.Header,
+                    Icon = "appstore-add"
+                };
+                AddMenu(menu);
+                menu = new SysPowerMenu()
+                {
+                    MenuName = "修改",
+                    TargetType = TargetType.Callback,
+                    MenuType = MenuType.Button,
+                    ButtonPosition = ButtonPosition.Row,
+                    Icon = "edit"
+                };
+                AddMenu(menu);
+                menu = new SysPowerMenu()
+                {
+                    MenuName = "删除",
+                    TargetType = TargetType.Callback,
+                    MenuType = MenuType.Button,
+                    ButtonPosition = ButtonPosition.Row,
+                    Icon = "delete"
+                };
+                AddMenu(menu);
+                menu = new SysPowerMenu()
+                {
+                    MenuName = "测试",
+                    TargetType = TargetType.Callback,
+                    MenuType = MenuType.Menu,
+                    Url = $"/{generate.OutName}/Index",
+                    ButtonPosition = ButtonPosition.Row,
+                    Icon = "delete"
+                };
+                AddMenu(menu);
             }
             return ResultOK();
         }
@@ -137,7 +173,11 @@ namespace Caviar.Control
 
         private void AddMenu(SysPowerMenu menu)
         {
-            
+            var entity = BC.DC.GetEntityAsync<SysPowerMenu>(u => u.Url == menu.Url || u.MenuName == menu.MenuName).FirstOrDefault();
+            if (entity == null)
+            {
+                BC.DC.AddEntityAsync(menu);
+            }
         }
         #endregion
     }
