@@ -93,25 +93,27 @@ namespace Caviar.Control
         [HttpPost]
         public IActionResult CodeFileGenerate(CodeGenerateData generate)
         {
+            if (generate == null) return ResultErrorMsg("必要参数不可为空");
             var data = CavAssembly.CodeGenerate(generate, BC.UserName);
-            bool isCover = generate?.Config?.SingleOrDefault(u => u == "覆盖") == null ? false : true;
+            bool isCover = generate.Config?.SingleOrDefault(u => u == "覆盖") == null ? false : true;
+            bool isCreateMenu = generate.Config?.SingleOrDefault(u => u == "创建按钮") != null ? false : true;
             foreach (var item in data)
             {
                 string outName = "";
                 string path = "";
-                if (item.KeyName.IndexOf(".razor") != -1)
+                if (item.KeyName.Contains(".razor"))
                 {
                     path = Directory.GetCurrentDirectory() + "/" + CaviarConfig.WebUIPath + "/Pages/";
                 }
-                else if (item.KeyName.IndexOf("ViewModel.cs") != -1)
+                else if (item.KeyName.Contains("ViewModel.cs"))
                 {
                     path = Directory.GetCurrentDirectory() + "/" + CaviarConfig.ModelsPath + "/ViewModels/";
                 }
-                else if(item.KeyName.IndexOf("Action.cs") != -1)
+                else if(item.KeyName.Contains("Action.cs"))
                 {
                     path = Directory.GetCurrentDirectory() + "/" + CaviarConfig.WebApiPath + "/ModelAction/";
                 }
-                else if (item.KeyName.IndexOf("Controller.cs") != -1)
+                else if (item.KeyName.Contains("Controller.cs"))
                 {
                     path = Directory.GetCurrentDirectory() + "/" + CaviarConfig.WebApiPath + "/Controllers/";
                 }
@@ -120,7 +122,11 @@ namespace Caviar.Control
                 outName = path + item.TabName;
                 CavAssembly.WriteCodeFile(path, outName, item.Content, isCover);
             }
-
+            if (isCreateMenu)
+            {
+                var menuUrl = "";
+                //BC.DC.GetEntityAsync<SysPowerMenu>(u => u.Url == item.Url).FirstOrDefault();
+            }
             return ResultOK();
         }
 
@@ -129,7 +135,10 @@ namespace Caviar.Control
 
         #region 私有方法
 
-       
+        private void AddMenu(SysPowerMenu menu)
+        {
+            
+        }
         #endregion
     }
 }

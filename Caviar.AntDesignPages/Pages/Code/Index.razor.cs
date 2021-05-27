@@ -56,7 +56,7 @@ namespace Caviar.AntDesignPages.Pages.Code
         }
         static string[] _pageOptions = { "列表","新增","修改","数据模板" };
         static string[] _webApi = { "控制器" ,"模型", "模型操作器" };
-        static string[] _configOptions = { "覆盖" ,"菜单按钮"};
+        static string[] _configOptions = { "覆盖" , "创建按钮" };
         void OnPageChange(string[] checkedValues)
         {
             GenerateData.Page = checkedValues;
@@ -73,7 +73,7 @@ namespace Caviar.AntDesignPages.Pages.Code
         }
 
 
-        CodeGenerateData GenerateData = new CodeGenerateData() { Page = _pageOptions,WebApi = _webApi ,Config = new string[] { "菜单按钮"} };
+        CodeGenerateData GenerateData = new CodeGenerateData() { Page = _pageOptions,WebApi = _webApi ,Config = new string[] { "创建按钮" } };
         void OnPreClick()
         {
             current--;

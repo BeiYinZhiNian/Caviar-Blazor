@@ -54,11 +54,12 @@ namespace Caviar.Control
 
         private TabItem CreatTabItem(string outName,string fileName,string extend,string content)
         {
+            var item = new TabItem() { KeyName = fileName + extend, TabName = outName + fileName + extend, Content = content };
             if (extend.IndexOf(".razor") != -1)
             {
-                outName = "";
+                item.TabName = fileName + extend;
             }
-            return new TabItem() { KeyName = fileName + extend, TabName = outName + fileName + extend, Content = content };
+            return item;
         }
 
         /// <summary>
