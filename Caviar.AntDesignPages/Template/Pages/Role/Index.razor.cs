@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Caviar.Models.SystemData;
 /// <summary>
 /// 生成者：未登录用户
-/// 生成时间：2021/5/24 23:38:56
+/// 生成时间：2021/5/28 12:37:58
 /// 代码由代码生成器自动生成，更改的代码可能被进行替换
 /// 可在上层目录使用partial关键字进行扩展
 /// </summary>
@@ -81,7 +81,18 @@ namespace Caviar.AntDesignPages.Pages.Role
         /// <returns></returns>
         async Task GetViewRole()
         {
-            var result = await Http.GetJson<PageData<ViewRole>>("Role/GetPages");
+            await GetPages();
+        }
+        /// <summary>
+        /// 获取分页数据
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="isOrder"></param>
+        /// <returns></returns>
+        async Task GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
+        {
+            var result = await Http.GetJson<PageData<ViewRole>>($"Role/GetPages?pageIndex={pageIndex}&pageSize={pageSize}&isOrder={isOrder}");
             if (result.Status != 200) return;
             if (result.Data != null)
             {
@@ -116,10 +127,7 @@ namespace Caviar.AntDesignPages.Pages.Role
                     Delete(row.Data);
                     break;
                 case "修改":
-                    await CavModal.Create("/Role/Update/{Id:int}", row.Menu.MenuName,Refresh,
-                        new List<KeyValuePair<string, object?>> { 
-                            new KeyValuePair<string, object?>("Id",row.Data.Id)
-                        });
+                    Refresh();
                     break;
                 case "新增":
                     Refresh();
@@ -129,12 +137,20 @@ namespace Caviar.AntDesignPages.Pages.Role
         async void Delete(ViewRole data)
         {
             //删除单条
-            var result = await Http.PostJson<ViewRole, object>("Menu/MoveEntity", data);
+            var result = await Http.PostJson<ViewRole, object>("Role/Delete", data);
             if (result.Status == 200)
             {
                 Message.Success("删除成功");
             }
             Refresh();
+        }
+        /// <summary>
+        /// 分页回调
+        /// </summary>
+        /// <param name="args"></param>
+        async void PageIndexChanged(PaginationEventArgs args)
+        {
+            await GetPages(args.Page,args.PageSize);
         }
         #endregion
 

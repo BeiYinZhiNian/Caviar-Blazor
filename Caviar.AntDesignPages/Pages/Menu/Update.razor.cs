@@ -18,21 +18,12 @@ namespace Caviar.AntDesignPages.Pages.Menu
         /// <summary>
         /// 数据源
         /// </summary>
+        [Parameter]
         public ViewMenu DataSource { get; set; }
         /// <summary>
         /// 模板
         /// </summary>
         DataTemplate TemplateRef { get; set; }
-        /// <summary>
-        /// 数据初始化
-        /// </summary>
-        /// <returns></returns>
-        protected override async Task OnInitializedAsync()
-        {
-            var result = await Http.GetJson<ViewMenu>("Menu/GetEntity?Id=" + Id);
-            if (result.Status != 200) return;
-            DataSource = result.Data;
-        }
         /// <summary>
         /// 数据提交
         /// </summary>

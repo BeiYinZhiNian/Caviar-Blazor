@@ -30,7 +30,7 @@
         </RadioGroup>
     </FormItem>
     <FormItem Label="按钮位置" Style="@buttonStrle">
-        <RadioGroup @bind-Value="@context.ButtonPosition" OnChange="ButtonPositionCallback">
+        <RadioGroup @bind-Value="@context.ButtonPosition">
             <Tooltip Title="@("主要用于加载请求")">
                 <Radio Value="(ButtonPosition)0">表头</Radio>
             </Tooltip>
@@ -79,7 +79,7 @@
     string visibility = "display:none;";
     string buttonStrle = "display:none;";
     EventCallback<MenuType> MenuTypeCallback => EventCallback.Factory.Create<MenuType>(this, CheckMenuType);
-    EventCallback<ButtonPosition> ButtonPositionCallback => EventCallback.Factory.Create<ButtonPosition>(this, CheckButtonPosition);
+    
     public void CheckMenuType()
     {
         switch (DataSource.MenuType)
@@ -102,22 +102,5 @@
         }
     }
 
-    public void CheckButtonPosition()
-    {
-        if (DataSource.MenuType != MenuType.Catalog)
-        {
-            switch (DataSource.ButtonPosition)
-            {
-                case ButtonPosition.Header:
-                    visibility = "";
-                    break;
-                case ButtonPosition.Row:
-                    visibility = "display:none;";
-                    break;
-                default:
-                    break;
-            }
-        }
-
-    }
+    
 }

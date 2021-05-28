@@ -127,7 +127,7 @@ namespace Caviar.Control
             txt = txt.Replace("{BaseController}", CaviarConfig.BaseController);
             txt = txt.Replace("{page}", "/" + generate.OutName + "/" + fileName);
             txt = txt.Replace("{DataSourceWebApi}", $"{generate.OutName}/GetPages");
-            txt = txt.Replace("{EntityDisplayName}", generate.EntityDisplayName);
+            txt = txt.Replace("{EntityDisplayName}", generate.ModelName);
             txt = txt.Replace("{FormItem}", CreateFormItem(generate));
             return txt;
         }
@@ -358,8 +358,9 @@ namespace Caviar.Control
                         if (enumFields != null && enumFields.Length >= 2)//枚举有一个隐藏的int所以要从下一位置开始
                         {
                             filter.EnumValueName = new Dictionary<int, string>();
-                            for (int i = 1; i < enumFields.Length; i++)
+                            for (int i = 0; i < enumFields.Length; i++)
                             {
+                                if (enumFields[i].Name == "value__") continue;
                                 var enumName = enumFields[i].GetCustomAttribute<DisplayAttribute>()?.Name;
                                 var value = (int)enumFields[i].GetValue(null);
                                 filter.EnumValueName.Add(value, enumName);

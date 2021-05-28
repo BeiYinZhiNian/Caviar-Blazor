@@ -40,7 +40,7 @@ namespace Caviar.Control
                 ResultMsg.Data = new List<SysPowerMenu>();
                 return ResultOK();
             }
-            var buttons = Action.GetEntitys(u => u.MenuType == MenuType.Button && u.ParentId == menus.Id);
+            var buttons = Action.GetEntitys(u => u.MenuType == MenuType.Button && u.ParentId == menus.Id).OrderBy(u=>u.Number);
             ResultMsg.Data = buttons;
             return ResultOK();
         }

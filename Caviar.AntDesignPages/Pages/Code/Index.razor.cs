@@ -73,7 +73,11 @@ namespace Caviar.AntDesignPages.Pages.Code
         }
 
 
-        CodeGenerateData GenerateData = new CodeGenerateData() { Page = _pageOptions,WebApi = _webApi ,Config = new string[] { "创建按钮" } };
+        CodeGenerateData GenerateData = new CodeGenerateData() { 
+            Page = _pageOptions,
+            WebApi = _webApi ,Config = new string[] { "创建按钮" } 
+        };
+        Form<CodeGenerateData> GenerateFrom;
         void OnPreClick()
         {
             current--;
@@ -83,14 +87,13 @@ namespace Caviar.AntDesignPages.Pages.Code
         {
             if (current == 1)
             {
+                if (!GenerateFrom.Validate())
+                {
+                    return;
+                }
                 if((GenerateData.Page == null || GenerateData.Page.Length == 0) && (GenerateData.WebApi == null || GenerateData.WebApi.Length == 0))
                 {
                     await _message.Error("请在前后端至少选择一个进行生成");
-                    return;
-                }
-                if (GenerateData.OutName == "")
-                {
-                    await _message.Error("生成目录不可为空");
                     return;
                 }
                 var result = await Http.PostJson<CodeGenerateData,List<TabItem>>("CaviarBase/CodePreview", GenerateData);

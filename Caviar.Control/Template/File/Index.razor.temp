@@ -13,6 +13,7 @@
                PageIndex="PageIndex"
                Total="Total"
                Buttons="Buttons"
+               PageIndexChanged="PageIndexChanged"
                ModelHeaderName="{EntityName}"
                RowCallback="RowCallback">
 

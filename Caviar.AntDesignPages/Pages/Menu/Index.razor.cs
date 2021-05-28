@@ -50,8 +50,7 @@ namespace Caviar.AntDesignPages.Pages.Menu
             if (result.Status != 200) return new List<ViewMenu>();
             return result.Data;
         }
-        [Inject]
-        CavModal CavModal { get; set; }
+
         async void RowCallback(RowCallbackData<ViewMenu> row)
         {
             switch (row.Menu.MenuName)
@@ -60,10 +59,7 @@ namespace Caviar.AntDesignPages.Pages.Menu
                     Delete(row.Data);
                     break;
                 case "修改":
-                    await CavModal.Create("/Menu/Update/{Id:int}", row.Data.MenuName,Refresh,
-                        new List<KeyValuePair<string, object?>> { 
-                            new KeyValuePair<string, object?>("Id",row.Data.Id)
-                        });
+                    Refresh();
                     break;
                 case "新增":
                     Refresh();

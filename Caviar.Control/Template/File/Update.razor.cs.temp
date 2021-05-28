@@ -24,21 +24,12 @@ namespace {WebUINamespace}.{OutName}
         /// <summary>
         /// 数据源
         /// </summary>
+        [Parameter]
         public {ViewOutName} DataSource { get; set; }
         /// <summary>
         /// 模板
         /// </summary>
         DataTemplate TemplateRef { get; set; }
-        /// <summary>
-        /// 数据初始化
-        /// </summary>
-        /// <returns></returns>
-        protected override async Task OnInitializedAsync()
-        {
-            var result = await Http.GetJson<{ViewOutName}>("{OutName}/GetEntity?Id=" + Id);
-            if (result.Status != 200) return;
-            DataSource = result.Data;
-        }
         /// <summary>
         /// 数据提交
         /// </summary>

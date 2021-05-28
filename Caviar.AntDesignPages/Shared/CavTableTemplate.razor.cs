@@ -94,28 +94,23 @@ namespace Caviar.AntDesignPages.Shared
                 Menu = menu,
                 Data = data,
             };
-            switch (menu.ButtonPosition)
+            switch (menu.TargetType)
             {
-                case ButtonPosition.Header:
-                    switch (menu.TargetType)
-                    {
-                        case TargetType.CurrentPage:
-                            Navigation.NavigateTo(menu.Url);
-                            break;
-                        case TargetType.EjectPage:
-                            await CavModal.Create(menu.Url, menu.MenuName, HandleOk);
-                            break;
-                        case TargetType.NewLabel:
-                            await JSRuntime.InvokeVoidAsync("open", menu.Url, "_blank");
-                            break;
-                        case TargetType.Callback:
-                            RoleAction(CurrRow);
-                            break;
-                        default:
-                            break;
-                    }
+                case TargetType.CurrentPage:
+                    Navigation.NavigateTo(menu.Url);
                     break;
-                case ButtonPosition.Row:
+                case TargetType.EjectPage:
+                    List<KeyValuePair<string, object?>> paramenter = new List<KeyValuePair<string, object?>>();
+                    if (menu.ButtonPosition == ButtonPosition.Row)
+                    {
+                        paramenter.Add(new KeyValuePair<string, object?>("DataSource", CurrRow.Data));
+                    }
+                    await CavModal.Create(menu.Url, menu.MenuName, HandleOk, paramenter);
+                    break;
+                case TargetType.NewLabel:
+                    await JSRuntime.InvokeVoidAsync("open", menu.Url, "_blank");
+                    break;
+                case TargetType.Callback:
                     RoleAction(CurrRow);
                     break;
                 default:
