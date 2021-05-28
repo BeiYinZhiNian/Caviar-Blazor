@@ -124,75 +124,11 @@ namespace Caviar.Control
             }
             if (isCreateMenu)
             {
-                SysPowerMenu menu = new SysPowerMenu()
-                {
-                    MenuName = generate.ModelName + "管理",
-                    TargetType = TargetType.CurrentPage,
-                    MenuType = MenuType.Menu,
-                    Url = $"/{generate.OutName}/Index",
-                    ButtonPosition = ButtonPosition.Row,
-                    Icon = "border-outer",
-                    Number = "999"
-                };
-                menu = await AddMenu(menu);
-                var parentId = menu.Id;
-                menu = new SysPowerMenu()
-                {
-                    MenuName = "新增",
-                    Url = $"/{generate.OutName}/Add",
-                    TargetType = TargetType.EjectPage,
-                    MenuType = MenuType.Button,
-                    ButtonPosition = ButtonPosition.Header,
-                    Icon = "appstore-add",
-                    Number = "999",
-                    ParentId = parentId
-                };
-                await AddMenu(menu);
-                menu = new SysPowerMenu()
-                {
-                    MenuName = "修改",
-                    Url = $"/{generate.OutName}/Update",
-                    TargetType = TargetType.EjectPage,
-                    MenuType = MenuType.Button,
-                    ButtonPosition = ButtonPosition.Row,
-                    Icon = "edit",
-                    Number = "999",
-                    ParentId = parentId
-                };
-                await AddMenu(menu);
-                menu = new SysPowerMenu()
-                {
-                    MenuName = "删除",
-                    TargetType = TargetType.Callback,
-                    MenuType = MenuType.Button,
-                    ButtonPosition = ButtonPosition.Row,
-                    IsDoubleTrue = true,
-                    Icon = "delete",
-                    Number = "999",
-                    ParentId = parentId
-                };
-                await AddMenu(menu);
-                
+                await BC.DC.CreateButton(generate.ModelName, generate.OutName, 0);
             }
             return ResultOK();
         }
 
-        #endregion
-
-
-        #region 私有方法
-
-        private async Task<SysPowerMenu> AddMenu(SysPowerMenu menu)
-        {
-            var entity = BC.DC.GetEntityAsync<SysPowerMenu>(u => u.Url == menu.Url && u.MenuName == menu.MenuName && u.ParentId==menu.ParentId).FirstOrDefault();
-            var count = 0;
-            if (entity == null)
-            {
-                count = await BC.DC.AddEntityAsync(menu);
-                entity = menu;
-            }
-            return entity;
-        }
         #endregion
     }
 }

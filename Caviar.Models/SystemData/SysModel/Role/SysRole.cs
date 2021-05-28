@@ -23,6 +23,9 @@ namespace Caviar.Models.SystemData
         [StringLength(50, ErrorMessage = "角色名称请不要超过{1}个字符")]
         public string RoleName { get; set; }
 
+        [DisplayName("父id")]
+        public int ParentId { get; set; }
+
         [JsonIgnore]
         public virtual List<SysRoleLogin> UserLogins { get; set; }
 

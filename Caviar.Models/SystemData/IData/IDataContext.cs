@@ -125,5 +125,13 @@ namespace Caviar.Models.SystemData
         /// <param name="parameters"></param>
         /// <returns></returns>
         public DataTable SqlQuery(string sql, params object[] parameters);
+        /// <summary>
+        /// 创建基础按钮
+        /// </summary>
+        /// <param name="menuName"></param>
+        /// <param name="outName"></param>
+        /// <param name="parentId"></param>
+        /// <returns></returns>
+        public Task CreateButton(string menuName, string outName, int parentId);
     }
 }

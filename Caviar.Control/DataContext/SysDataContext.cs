@@ -370,55 +370,8 @@ namespace Caviar.Control
                     Number = "999"
                 };
                 await AddEntityAsync(management);
-                SysPowerMenu menuManage = new SysPowerMenu()
-                {
-                    MenuType = MenuType.Menu,
-                    TargetType = TargetType.CurrentPage,
-                    MenuName = "菜单管理",
-                    Url = "/Menu/Index",
-                    Icon = "menu",
-                    ParentId = management.Id,
-                    Number = "999"
-                };
-                await AddEntityAsync(menuManage);
-                SysPowerMenu AddButton = new SysPowerMenu()
-                {
-                    MenuType = MenuType.Button,
-                    TargetType = TargetType.EjectPage,
-                    MenuName = "新增",
-                    ButtonPosition = ButtonPosition.Header,
-                    Url = "/Menu/Add",
-                    Icon = "appstore-add",
-                    ParentId = menuManage.Id,
-                    IsDoubleTrue = false,
-                    Number = "999"
-                };
-                await AddEntityAsync(AddButton);
-                AddButton = new SysPowerMenu()
-                {
-                    MenuType = MenuType.Button,
-                    MenuName = "修改",
-                    ButtonPosition = ButtonPosition.Row,
-                    Icon = "edit",
-                    ParentId = menuManage.Id,
-                    Number = "999"
-                };
-                await AddEntityAsync(AddButton);
-                AddButton = new SysPowerMenu()
-                {
-                    MenuType = MenuType.Button,
-                    MenuName = "删除",
-                    ButtonPosition = ButtonPosition.Row,
-                    Icon = "delete",
-                    ParentId = menuManage.Id,
-                    IsDoubleTrue = true,
-                    Number = "999"
-                };
-                await AddEntityAsync(AddButton);
-                
-
-
-
+                await CreateButton("菜单", "Menu", management.Id);
+                await CreateButton("角色", "Role", management.Id);
 
                 SysPowerMenu codePage = new SysPowerMenu()
                 {
@@ -436,7 +389,70 @@ namespace Caviar.Control
         }
 
 
+        public async Task CreateButton(string menuName,string outName,int parentId)
+        {
+            SysPowerMenu menu = new SysPowerMenu()
+            {
+                MenuName = menuName + "管理",
+                TargetType = TargetType.CurrentPage,
+                MenuType = MenuType.Menu,
+                Url = $"/{outName}/Index",
+                Icon = "border-outer",
+                ParentId = parentId,
+                Number = "999"
+            };
+            menu = await AddMenu(menu);
+            parentId = menu.Id;
+            SysPowerMenu AddButton = new SysPowerMenu()
+            {
+                MenuType = MenuType.Button,
+                TargetType = TargetType.EjectPage,
+                MenuName = "新增",
+                ButtonPosition = ButtonPosition.Header,
+                Url = $"/{outName}/Add",
+                Icon = "appstore-add",
+                ParentId = parentId,
+                IsDoubleTrue = false,
+                Number = "999"
+            };
+            await AddMenu(AddButton);
+            AddButton = new SysPowerMenu()
+            {
+                MenuType = MenuType.Button,
+                Url = $"/{outName}/Update",
+                MenuName = "修改",
+                TargetType = TargetType.EjectPage,
+                ButtonPosition = ButtonPosition.Row,
+                Icon = "edit",
+                ParentId = parentId,
+                Number = "999"
+            };
+            await AddMenu(AddButton);
+            AddButton = new SysPowerMenu()
+            {
+                MenuType = MenuType.Button,
+                MenuName = "删除",
+                ButtonPosition = ButtonPosition.Row,
+                TargetType = TargetType.Callback,
+                Icon = "delete",
+                ParentId = parentId,
+                IsDoubleTrue = true,
+                Number = "999"
+            };
+            await AddMenu(AddButton);
+        }
 
 
+        private async Task<SysPowerMenu> AddMenu(SysPowerMenu menu)
+        {
+            var entity = GetEntityAsync<SysPowerMenu>(u => u.Url == menu.Url && u.MenuName == menu.MenuName && u.ParentId == menu.ParentId).FirstOrDefault();
+            var count = 0;
+            if (entity == null)
+            {
+                count = await AddEntityAsync(menu);
+                entity = menu;
+            }
+            return entity;
+        }
     }
 }
