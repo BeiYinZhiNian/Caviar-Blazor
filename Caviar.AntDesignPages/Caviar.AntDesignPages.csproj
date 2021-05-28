@@ -87,8 +87,4 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Template\Pages\" />
-  </ItemGroup>
-
 </Project>

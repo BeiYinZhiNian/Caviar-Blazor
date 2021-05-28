@@ -35,10 +35,6 @@ namespace {WebUINamespace}.{OutName}
         HttpHelper Http { get; set; }
 
         private Form<{ViewOutName}> _meunForm;
-        protected override async Task OnInitializedAsync()
-        {
-
-        }
         [Inject]
         MessageService _message { get; set; }
         [Parameter]

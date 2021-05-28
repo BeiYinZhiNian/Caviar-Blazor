@@ -299,7 +299,7 @@ namespace Caviar.Control
         protected virtual List<ViewModelHeader> CreateOrUpFilterField(List<ViewModelHeader> headers)
         {
             if (headers == null) return null;
-            string[] violation = new string[] { "id", "Uid", "CreatTime", "UpdateTime", "IsDelete", "OperatorCare", "OperatorUp" };
+            string[] violation = new string[] { "id", "Uid", "CreatTime", "UpdateTime", "IsDelete", "OperatorCare", "OperatorUp", "ParentId" };
             var result = new List<ViewModelHeader>();
             foreach (var item in headers)
             {
