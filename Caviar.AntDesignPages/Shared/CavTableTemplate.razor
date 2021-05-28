@@ -48,24 +48,7 @@
                     if (item.ButtonPosition == ButtonPosition.Header)
                     {
                         <SpaceItem>
-                            @if (item.IsDoubleTrue)
-                            {
-                                string title = $"确认执行{item.MenuName}吗";
-                                <Popconfirm Title="@title"
-                                            OkText="确认"
-                                            CancelText="取消"
-                                            OnConfirm="() => ButtonClick(item, default)">
-                                    <Button Icon="@item.Icon" Type="@ButtonType.Primary" Danger Style="margin-bottom:16px">
-                                        @item.MenuName
-                                    </Button>
-                                </Popconfirm>
-                            }
-                            else
-                            {
-                                <Button Icon="@item.Icon" Type="@ButtonType.Primary" Style="margin-bottom:16px;" OnClick="()=>ButtonClick(item,default)">
-                                    @item.MenuName
-                                </Button>
-                            }
+                            @CreatePackButton(item,default)
                         </SpaceItem>
                     }
                 }
@@ -76,12 +59,12 @@
 </Space>
 
 
-<Table DataSource="DataSource" 
+<Table DataSource="DataSource"
        Total="Total"
        PageIndex="PageIndex"
        PageSize="PageSize"
        ScrollX="1300"
-       TItem="TData" 
+       TItem="TData"
        OnPageIndexChange="PageIndexChanged"
        TreeChildren="TreeChildren">
     @if (ViewModelHeader != null)
@@ -92,7 +75,7 @@
             switch (typeNmae)
             {
                 case "string":
-                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="string" Width="@item.Width"/>
+                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="string" Width="@item.Width" />
                     break;
                 case "int32":
                     <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="int" />
@@ -153,7 +136,7 @@
         }
 
 
-        <ActionColumn>
+        <ActionColumn Title="操作">
             <Space>
                 @if (Buttons != null)
                 {
@@ -162,24 +145,7 @@
                         if (item.ButtonPosition == ButtonPosition.Row)
                         {
                             <SpaceItem>
-                                @if (item.IsDoubleTrue)
-                                {
-                                    string title = $"确认{item.MenuName}该数据吗";
-                                    <Popconfirm Title="@title"
-                                                OkText="确认"
-                                                CancelText="取消"
-                                                OnConfirm="()=>ButtonClick(item,context)">
-                                        <Button Icon="@item.Icon" Type="link" Danger Style="margin-bottom:16px">
-                                            @item.MenuName
-                                        </Button>
-                                    </Popconfirm>
-                                }
-                                else
-                                {
-                                    <Button Icon="@item.Icon" Type="link" Style="margin-bottom:16px" OnClick="()=>ButtonClick(item,context)">
-                                        @item.MenuName
-                                    </Button>
-                                }
+                                @CreatePackButton(item,context)
                             </SpaceItem>
                         }
                     }
@@ -188,3 +154,52 @@
         </ActionColumn>
     }
 </Table>
+
+
+
+@code{
+    RenderFragment CreatePackButton(ViewMenu menu,TData context)
+    {
+        RenderFragment render = null;
+        if (menu.IsDoubleTrue)
+        {
+            string title = $"确认{menu.MenuName}该数据吗";
+            render =@<Popconfirm Title='@title'
+                        OkText='确认'
+                        CancelText="取消"
+                        OnConfirm="()=>ButtonClick(menu,context)">
+                         @CreateButton(menu, context);
+                </Popconfirm>;
+        }
+        else
+        {
+            render = CreateButton(menu, context);
+        }
+        return render;
+    }
+
+    RenderFragment CreateButton(ViewMenu menu, TData context)
+    {
+
+        RenderFragment render = null;
+        string type = menu.ButtonPosition == ButtonPosition.Header ? "primary" : "link";
+        render =@<Button Icon="@menu.Icon" Type="@type" Style="margin-bottom:16px" OnClick="() => doubleTrueClick(menu, context)">
+                @if (menu.TargetType == TargetType.NewLabel)
+                {
+                    <a href="@menu.Url" target="_blank">@menu.MenuName</a>
+                }
+                else
+                {
+                    @menu.MenuName
+                }
+            </Button>;
+        return render;
+    }
+
+    void doubleTrueClick(ViewMenu menu, TData context)
+    {
+        if (menu.IsDoubleTrue) return;
+        ButtonClick(menu, context);
+    }
+
+}

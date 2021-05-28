@@ -13,8 +13,8 @@
                PageIndex="PageIndex"
                Total="Total"
                Buttons="Buttons"
-               PageIndexChanged="PageIndexChanged"
+               PageIndexChanged="_PageIndexChanged"
                ModelHeaderName="{EntityName}"
-               RowCallback="RowCallback">
+               RowCallback="_RowCallback">
 
 </CavTableTemplate>

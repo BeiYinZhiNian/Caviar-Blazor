@@ -445,7 +445,15 @@ namespace Caviar.Control
 
         private async Task<SysPowerMenu> AddMenu(SysPowerMenu menu)
         {
-            var entity = GetEntityAsync<SysPowerMenu>(u => u.Url == menu.Url && u.MenuName == menu.MenuName && u.ParentId == menu.ParentId).FirstOrDefault();
+            SysPowerMenu entity = null;
+            if (menu.MenuType != MenuType.Button)
+            {
+                entity = GetEntityAsync<SysPowerMenu>(u => u.MenuName == menu.MenuName).FirstOrDefault();
+            }
+            else
+            {
+                entity = GetEntityAsync<SysPowerMenu>(u => u.Url == menu.Url && u.MenuName == menu.MenuName && u.ParentId == menu.ParentId).FirstOrDefault();
+            }
             var count = 0;
             if (entity == null)
             {

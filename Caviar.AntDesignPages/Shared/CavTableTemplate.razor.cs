@@ -108,7 +108,7 @@ namespace Caviar.AntDesignPages.Shared
                     await CavModal.Create(menu.Url, menu.MenuName, HandleOk, paramenter);
                     break;
                 case TargetType.NewLabel:
-                    await JSRuntime.InvokeVoidAsync("open", menu.Url, "_blank");
+                    //await JSRuntime.InvokeVoidAsync("open", menu.Url, "_blank");
                     break;
                 case TargetType.Callback:
                     RoleAction(CurrRow);

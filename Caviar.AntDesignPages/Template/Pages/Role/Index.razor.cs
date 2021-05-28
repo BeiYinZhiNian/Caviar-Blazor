@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Caviar.Models.SystemData;
 /// <summary>
 /// 生成者：未登录用户
-/// 生成时间：2021/5/28 15:37:29
+/// 生成时间：2021/5/28 16:44:36
 /// 代码由代码生成器自动生成，更改的代码可能被进行替换
 /// 可在上层目录使用partial关键字进行扩展
 /// </summary>
@@ -114,12 +114,29 @@ namespace Caviar.AntDesignPages.Pages.Role
             if (result.Status != 200) return new List<ViewMenu>();
             return result.Data;
         }
+        /// <summary>
+        /// 删除数据
+        /// </summary>
+        /// <param name="data"></param>
+        async void Delete(ViewRole data)
+        {
+            //删除单条
+            var result = await Http.PostJson<ViewRole, object>("Role/Delete", data);
+            if (result.Status == 200)
+            {
+                Message.Success("删除成功");
+            }
+            Refresh();
+        }
         #endregion
 
         #region 回调
+        partial void RowCallback(RowCallbackData<ViewRole> row);
+        partial void PageIndexChanged(PaginationEventArgs args);
+
         [Inject]
         CavModal CavModal { get; set; }
-        async void RowCallback(RowCallbackData<ViewRole> row)
+        async void _RowCallback(RowCallbackData<ViewRole> row)
         {
             switch (row.Menu.MenuName)
             {
@@ -132,25 +149,19 @@ namespace Caviar.AntDesignPages.Pages.Role
                 case "新增":
                     Refresh();
                     break;
+                default:
+                    RowCallback(row);
+                    break;
             }
-        }
-        async void Delete(ViewRole data)
-        {
-            //删除单条
-            var result = await Http.PostJson<ViewRole, object>("Role/Delete", data);
-            if (result.Status == 200)
-            {
-                Message.Success("删除成功");
-            }
-            Refresh();
         }
         /// <summary>
         /// 分页回调
         /// </summary>
         /// <param name="args"></param>
-        async void PageIndexChanged(PaginationEventArgs args)
+        async void _PageIndexChanged(PaginationEventArgs args)
         {
             await GetPages(args.Page,args.PageSize);
+            PageIndexChanged(args);
         }
         #endregion
 

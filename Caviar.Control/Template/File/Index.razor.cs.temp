@@ -114,12 +114,29 @@ namespace {WebUINamespace}.{OutName}
             if (result.Status != 200) return new List<ViewMenu>();
             return result.Data;
         }
+        /// <summary>
+        /// 删除数据
+        /// </summary>
+        /// <param name="data"></param>
+        async void Delete({ViewOutName} data)
+        {
+            //删除单条
+            var result = await Http.PostJson<{ViewOutName}, object>("{OutName}/Delete", data);
+            if (result.Status == 200)
+            {
+                Message.Success("删除成功");
+            }
+            Refresh();
+        }
         #endregion
 
         #region 回调
+        partial void RowCallback(RowCallbackData<ViewRole> row);
+        partial void PageIndexChanged(PaginationEventArgs args);
+
         [Inject]
         CavModal CavModal { get; set; }
-        async void RowCallback(RowCallbackData<{ViewOutName}> row)
+        async void _RowCallback(RowCallbackData<{ViewOutName}> row)
         {
             switch (row.Menu.MenuName)
             {
@@ -132,25 +149,19 @@ namespace {WebUINamespace}.{OutName}
                 case "新增":
                     Refresh();
                     break;
+                default:
+                    RowCallback(row);
+                    break;
             }
-        }
-        async void Delete({ViewOutName} data)
-        {
-            //删除单条
-            var result = await Http.PostJson<{ViewOutName}, object>("{OutName}/Delete", data);
-            if (result.Status == 200)
-            {
-                Message.Success("删除成功");
-            }
-            Refresh();
         }
         /// <summary>
         /// 分页回调
         /// </summary>
         /// <param name="args"></param>
-        async void PageIndexChanged(PaginationEventArgs args)
+        async void _PageIndexChanged(PaginationEventArgs args)
         {
             await GetPages(args.Page,args.PageSize);
+            PageIndexChanged(args);
         }
         #endregion
 

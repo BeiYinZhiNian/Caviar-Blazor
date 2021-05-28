@@ -34,6 +34,10 @@ namespace Caviar.AntDesignPages.Helper
                 OkText = "确定",
                 CancelText = "取消"
             };
+            if (!string.IsNullOrEmpty(title))
+            {
+                options.Draggable = true;
+            }
             this.OnOK = OnOK;
             modalRef = await Modal.CreateModalAsync(options);
             return modalRef;
