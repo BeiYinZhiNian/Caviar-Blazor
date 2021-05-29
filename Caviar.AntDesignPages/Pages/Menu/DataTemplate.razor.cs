@@ -17,7 +17,7 @@ namespace Caviar.AntDesignPages.Pages.Menu
     {
         
         [Parameter]
-        public SysPowerMenu DataSource { get; set; }
+        public SysMenu DataSource { get; set; }
         
         [Parameter]
         public string Url { get; set; }
@@ -28,18 +28,18 @@ namespace Caviar.AntDesignPages.Pages.Menu
         [Inject]
         HttpHelper Http { get; set; }
 
-        private Form<SysPowerMenu> _meunForm;
+        private Form<SysMenu> _meunForm;
         protected override async Task OnInitializedAsync()
         {
-            SysPowerMenus = await GetPowerMenus();
+            SysMenus = await GetMenus();
             CheckMenuType();
 
         }
 
-        private List<ViewMenu> SysPowerMenus;
-        string UpPowerMenuName { get; set; } = "无上层目录";
+        private List<ViewMenu> SysMenus;
+        string ParentMenuName { get; set; } = "无上层目录";
 
-        async Task<List<ViewMenu>> GetPowerMenus()
+        async Task<List<ViewMenu>> GetMenus()
         {
             var result = await Http.GetJson<List<ViewMenu>>("Menu/GetLeftSideMenus");
             if (result.Status != 200) return new List<ViewMenu>();
@@ -50,7 +50,7 @@ namespace Caviar.AntDesignPages.Pages.Menu
                 var parent = listData.SingleOrDefault(u => u.Id == DataSource.ParentId);
                 if (parent != null)
                 {
-                    UpPowerMenuName = parent.MenuName;
+                    ParentMenuName = parent.MenuName;
                 }
             }
             return result.Data;
@@ -74,7 +74,7 @@ namespace Caviar.AntDesignPages.Pages.Menu
 
         async Task<bool> FormSubmit()
         {
-            var result = await Http.PostJson<SysPowerMenu, object>(Url, DataSource);
+            var result = await Http.PostJson<SysMenu, object>(Url, DataSource);
             if (result.Status == 200)
             {
                 _message.Success(SuccMsg);
@@ -85,13 +85,13 @@ namespace Caviar.AntDesignPages.Pages.Menu
 
         void EventRecord(TreeEventArgs<ViewMenu> args)
         {
-            UpPowerMenuName = args.Node.Title;
+            ParentMenuName = args.Node.Title;
             DataSource.ParentId = int.Parse(args.Node.Key);
         }
 
         void RemoveRecord()
         {
-            UpPowerMenuName = "无上层目录";
+            ParentMenuName = "无上层目录";
             DataSource.ParentId = 0;
         }
     }

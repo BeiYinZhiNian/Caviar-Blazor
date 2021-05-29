@@ -37,7 +37,7 @@ namespace Caviar.Control
             var menus = Action.GetEntitys(u => u.Url.Replace("/", "").ToLower() == Slash).FirstOrDefault();
             if (menus == null)
             {
-                ResultMsg.Data = new List<SysPowerMenu>();
+                ResultMsg.Data = new List<SysMenu>();
                 return ResultOK();
             }
             var buttons = Action.GetEntitys(u => u.MenuType == MenuType.Button && u.ParentId == menus.Id).OrderBy(u=>u.Number);
@@ -58,7 +58,7 @@ namespace Caviar.Control
             var count = 0;
             if(viewMenuList!=null && viewMenuList.Count != 0)
             {
-                List<SysPowerMenu> menus = new List<SysPowerMenu>();
+                List<SysMenu> menus = new List<SysMenu>();
                 menus.ListAutoAssign(viewMenuList);
                 foreach (var item in menus)
                 {
@@ -92,7 +92,7 @@ namespace Caviar.Control
             List<ViewMenu> viewMenuList = new List<ViewMenu>();
             viewMen.TreeToList(viewMenuList);
             viewMenuList.Add(viewMen);//将自己添加入删除集合
-            List<SysPowerMenu> menus = new List<SysPowerMenu>();
+            List<SysMenu> menus = new List<SysMenu>();
             menus.ListAutoAssign(viewMenuList);//将view转为sys
             var count = await Action.DeleteEntity(menus);
             if(count == menus.Count)

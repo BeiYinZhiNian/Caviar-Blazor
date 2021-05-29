@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace Caviar.Control
 {
-    public partial class MenuAction : SysPowerMenu
+    public partial class MenuAction : SysMenu
     {
         public MenuAction()
         {
             TransformationEvent += MenuAction_TransformationEvent;
         }
 
-        private PageData<ViewMenu> MenuAction_TransformationEvent(PageData<SysPowerMenu> model)
+        private PageData<ViewMenu> MenuAction_TransformationEvent(PageData<SysMenu> model)
         {
-            var pages = CommonHelper.AToB<PageData<ViewMenu>, PageData<SysPowerMenu>>(model);
+            var pages = CommonHelper.AToB<PageData<ViewMenu>, PageData<SysMenu>>(model);
             if (pages.Total != 0)
             {
                 var viewMenus = new List<ViewMenu>().ListAutoAssign(model.Rows);
@@ -27,13 +27,13 @@ namespace Caviar.Control
             return pages;
         }
 
-        public virtual IQueryable<SysPowerMenu> GetEntitys(Expression<Func<SysPowerMenu, bool>> where)
+        public virtual IQueryable<SysMenu> GetEntitys(Expression<Func<SysMenu, bool>> where)
         {
             var menus = BC.DC.GetEntityAsync(where).OrderBy(u => u.Id);
             return menus;
         }
 
-        public virtual List<ViewMenu> GetViewMenus(Expression<Func<SysPowerMenu, bool>> where)
+        public virtual List<ViewMenu> GetViewMenus(Expression<Func<SysMenu, bool>> where)
         {
             var menus = GetEntitys(where).ToList();
             var viewMenus = new List<ViewMenu>().ListAutoAssign(menus);

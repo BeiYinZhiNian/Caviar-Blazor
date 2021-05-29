@@ -351,7 +351,7 @@ namespace Caviar.Control
                 };
                 await AddEntityAsync(sysRoleLogin);
                 //创建基础访问页面
-                SysPowerMenu homePage = new SysPowerMenu()
+                SysMenu homePage = new SysMenu()
                 {
                     MenuType = MenuType.Menu,
                     TargetType = TargetType.CurrentPage,
@@ -361,7 +361,7 @@ namespace Caviar.Control
                 };
                 await AddEntityAsync(homePage);
                 //创建基础菜单
-                SysPowerMenu management = new SysPowerMenu()
+                SysMenu management = new SysMenu()
                 {
                     MenuType = MenuType.Catalog,
                     TargetType = TargetType.CurrentPage,
@@ -373,7 +373,7 @@ namespace Caviar.Control
                 await CreateButton("菜单", "Menu", management.Id);
                 await CreateButton("角色", "Role", management.Id);
 
-                SysPowerMenu codePage = new SysPowerMenu()
+                SysMenu codePage = new SysMenu()
                 {
                     MenuType = MenuType.Menu,
                     TargetType = TargetType.CurrentPage,
@@ -391,7 +391,7 @@ namespace Caviar.Control
 
         public async Task CreateButton(string menuName,string outName,int parentId)
         {
-            SysPowerMenu menu = new SysPowerMenu()
+            SysMenu menu = new SysMenu()
             {
                 MenuName = menuName + "管理",
                 TargetType = TargetType.CurrentPage,
@@ -403,7 +403,7 @@ namespace Caviar.Control
             };
             menu = await AddMenu(menu);
             parentId = menu.Id;
-            SysPowerMenu AddButton = new SysPowerMenu()
+            SysMenu AddButton = new SysMenu()
             {
                 MenuType = MenuType.Button,
                 TargetType = TargetType.EjectPage,
@@ -416,7 +416,7 @@ namespace Caviar.Control
                 Number = "999"
             };
             await AddMenu(AddButton);
-            AddButton = new SysPowerMenu()
+            AddButton = new SysMenu()
             {
                 MenuType = MenuType.Button,
                 Url = $"/{outName}/Update",
@@ -428,7 +428,7 @@ namespace Caviar.Control
                 Number = "999"
             };
             await AddMenu(AddButton);
-            AddButton = new SysPowerMenu()
+            AddButton = new SysMenu()
             {
                 MenuType = MenuType.Button,
                 MenuName = "删除",
@@ -443,16 +443,16 @@ namespace Caviar.Control
         }
 
 
-        private async Task<SysPowerMenu> AddMenu(SysPowerMenu menu)
+        private async Task<SysMenu> AddMenu(SysMenu menu)
         {
-            SysPowerMenu entity = null;
+            SysMenu entity = null;
             if (menu.MenuType != MenuType.Button)
             {
-                entity = GetEntityAsync<SysPowerMenu>(u => u.MenuName == menu.MenuName).FirstOrDefault();
+                entity = GetEntityAsync<SysMenu>(u => u.MenuName == menu.MenuName).FirstOrDefault();
             }
             else
             {
-                entity = GetEntityAsync<SysPowerMenu>(u => u.Url == menu.Url && u.MenuName == menu.MenuName && u.ParentId == menu.ParentId).FirstOrDefault();
+                entity = GetEntityAsync<SysMenu>(u => u.Url == menu.Url && u.MenuName == menu.MenuName && u.ParentId == menu.ParentId).FirstOrDefault();
             }
             var count = 0;
             if (entity == null)

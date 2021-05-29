@@ -15,9 +15,9 @@ namespace Caviar.Models.SystemData
         [JsonIgnore]
         public virtual SysPermission Permission { get; set; }
         [JsonIgnore]
-        public virtual SysPowerMenu PowerMenu { get; set; }
+        public virtual SysMenu Menu { get; set; }
 
-        public int PowerMenuId { get; set; }
+        public int MenuId { get; set; }
 
         public int PermissionId { get; set; }
     }

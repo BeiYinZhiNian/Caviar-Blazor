@@ -21,7 +21,7 @@ namespace Caviar.AntDesignPages.Shared
 
         public RenderFragment Render() => builder =>
         {
-            var ComponentType = typeof(Form<SysPowerMenu>);
+            var ComponentType = typeof(Form<SysMenu>);
             var index = 0;
             builder.OpenComponent(index++, ComponentType);
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
-    public partial class ViewMenu : SysPowerMenu
+    public partial class ViewMenu : SysMenu
     {
         
     }

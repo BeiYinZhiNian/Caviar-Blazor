@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 /// </summary>
 namespace Caviar.Control
 {
-    public partial class MenuAction : SysPowerMenu
+    public partial class MenuAction : SysMenu
     {
         /// <summary>
         /// 添加系统菜单
@@ -48,7 +48,7 @@ namespace Caviar.Control
         /// 获取分页数据
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<PageData<ViewMenu>> GetPages(Expression<Func<SysPowerMenu, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = false)
+        public virtual async Task<PageData<ViewMenu>> GetPages(Expression<Func<SysMenu, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = false)
         {
             var pages = await BC.DC.GetPageAsync(where, u => u.Number, pageIndex, pageSize, isOrder, isNoTracking);
             var ViewPages = ModelToViewModel(pages);
@@ -60,7 +60,7 @@ namespace Caviar.Control
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
-        public virtual async Task<int> DeleteEntity(List<SysPowerMenu> menus)
+        public virtual async Task<int> DeleteEntity(List<SysMenu> menus)
         {
             var count = await BC.DC.DeleteEntityAsync(menus);
             return count;
@@ -70,7 +70,7 @@ namespace Caviar.Control
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
-        public virtual async Task<int> UpdateEntity(List<SysPowerMenu> menus)
+        public virtual async Task<int> UpdateEntity(List<SysMenu> menus)
         {
             var count = await BC.DC.UpdateEntityAsync(menus);
             return count;
@@ -78,7 +78,7 @@ namespace Caviar.Control
 
         protected delegate T Transformation<T, K>(K model);
 
-        protected event Transformation<PageData<ViewMenu>, PageData<SysPowerMenu>> TransformationEvent;
+        protected event Transformation<PageData<ViewMenu>, PageData<SysMenu>> TransformationEvent;
 
         /// <summary>
         /// 魔法转换
@@ -89,22 +89,22 @@ namespace Caviar.Control
         /// <typeparam name="K"></typeparam>
         /// <param name="model"></param>
         /// <returns></returns>
-        public PageData<ViewMenu> ModelToViewModel(PageData<SysPowerMenu> model)
+        public PageData<ViewMenu> ModelToViewModel(PageData<SysMenu> model)
         {
 
             var viewModel = TransformationEvent?.Invoke(model);
             if (viewModel == null)
             {
-                viewModel = CommonHelper.AToB<PageData<ViewMenu>, PageData<SysPowerMenu>>(model);
+                viewModel = CommonHelper.AToB<PageData<ViewMenu>, PageData<SysMenu>>(model);
             }
             return viewModel;
         }
 
-        public ViewMenu ModelToViewModel(SysPowerMenu model)
+        public ViewMenu ModelToViewModel(SysMenu model)
         {
             if (model == null) return null;
-            PageData<SysPowerMenu> pages = new PageData<SysPowerMenu>();
-            pages.Rows = new List<SysPowerMenu>() { model };
+            PageData<SysMenu> pages = new PageData<SysMenu>();
+            pages.Rows = new List<SysMenu>() { model };
             pages.Total = 1;
             var viewPages = ModelToViewModel(pages);
             return viewPages.Rows.FirstOrDefault();

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Caviar.Models.SystemData
 {
     [DisplayName("系统菜单")]
-    public partial class SysPowerMenu : SysBaseModel
+    public partial class SysMenu : SysBaseModel
     {
         [DisplayName("菜单名称")]
         [Required(ErrorMessage = "请输入菜单名称")]

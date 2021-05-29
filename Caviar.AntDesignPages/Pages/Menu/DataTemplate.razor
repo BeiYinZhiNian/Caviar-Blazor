@@ -7,7 +7,7 @@
     <FormItem Label="上层目录">
         <Dropdown>
             <Overlay>
-                <Tree ShowIcon DataSource="SysPowerMenus"
+                <Tree ShowIcon DataSource="SysMenus"
                       TitleExpression="x => x.DataItem.MenuName"
                       ChildrenExpression="x => x.DataItem.Children"
                       IconExpression="x => x.DataItem.Icon"
@@ -18,7 +18,7 @@
                 </Tree>
             </Overlay>
             <ChildContent>
-                <Button OnClick="RemoveRecord">@UpPowerMenuName</Button>
+                <Button OnClick="RemoveRecord">@ParentMenuName</Button>
             </ChildContent>
         </Dropdown>
     </FormItem>

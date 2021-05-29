@@ -17,7 +17,7 @@ namespace Caviar.Control
         public virtual DbSet<SysRoleLogin> SysRoleLogin { get; set; }
         public virtual DbSet<SysUserLogin> SysUserLogin { get; set; }
         public virtual DbSet<SysRole> SysRole { get; set; }
-        public virtual DbSet<SysPowerMenu> SysPowerMenu { get; set; }
+        public virtual DbSet<SysMenu> SysMenu { get; set; }
         public virtual DbSet<SysPermission> SysPermission { get; set; }
         public virtual DbSet<SysPermissionMenu> SysPermissionMenu { get; set; }
 
