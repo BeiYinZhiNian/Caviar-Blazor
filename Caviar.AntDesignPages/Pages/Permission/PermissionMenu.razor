@@ -1,2 +1,37 @@
 ﻿@page "/Permission/Menu"
 
+@if (DataSource != null)
+{
+    <Tree Checkable BlockNode TItem="string">
+        <Nodes>
+            @CreateTree(DataSource)
+        </Nodes>
+    </Tree>
+
+}
+
+@code{
+    RenderFragment CreateTree(List<ViewMenu> viewMenus)
+    {
+        RenderFragment render = null;
+        foreach (var item in viewMenus)
+        {
+
+            if (item.Children != null)
+            {
+                render +=@<TreeNode Title="@item.MenuName" TItem="string">
+                                  <Nodes>
+                                      @CreateTree(item.Children)
+                                  </Nodes>
+                             </TreeNode>;    
+            }
+            else
+            {
+                render +=@<TreeNode Title="@item.MenuName" TItem="string">
+                         </TreeNode>;   
+            }
+        }
+        return render;
+    }
+
+}
