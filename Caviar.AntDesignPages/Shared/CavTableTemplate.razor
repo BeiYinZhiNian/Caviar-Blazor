@@ -168,7 +168,7 @@
                         OkText='确认'
                         CancelText="取消"
                         OnConfirm="()=>ButtonClick(menu,context)">
-                         @CreateButton(menu, context);
+                         @CreateButton(menu, context)
                 </Popconfirm>;
         }
         else
@@ -183,7 +183,8 @@
 
         RenderFragment render = null;
         string type = menu.ButtonPosition == ButtonPosition.Header ? "primary" : "link";
-        render =@<Button Icon="@menu.Icon" Type="@type" Style="margin-bottom:16px" OnClick="() => doubleTrueClick(menu, context)">
+        bool danger = menu.IsDoubleTrue == true ? true : false;
+        render =@<Button Icon="@menu.Icon" Type="@type" Danger="danger" Style="margin-bottom:16px" OnClick="() => doubleTrueClick(menu, context)">
                 @if (menu.TargetType == TargetType.NewLabel)
                 {
                     <a href="@menu.Url" target="_blank">@menu.MenuName</a>
