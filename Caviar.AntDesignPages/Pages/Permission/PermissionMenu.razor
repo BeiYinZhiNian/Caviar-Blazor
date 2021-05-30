@@ -1,10 +1,10 @@
 ﻿@page "/Permission/Menu"
 
-@if (DataSource != null)
+@if (ViewMenus != null)
 {
     <Tree Checkable BlockNode TItem="string">
         <Nodes>
-            @CreateTree(DataSource)
+            @CreateTree(ViewMenus)
         </Nodes>
     </Tree>
 

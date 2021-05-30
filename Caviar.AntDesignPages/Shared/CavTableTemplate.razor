@@ -137,20 +137,48 @@
 
 
         <ActionColumn Title="操作">
-            <Space>
+            
                 @if (Buttons != null)
                 {
-                    foreach (var item in Buttons)
+                    List<ViewMenu> but = Buttons.Where(u => u.ButtonPosition == ButtonPosition.Row).ToList();
+                    if (but.Count >= 3)
                     {
-                        if (item.ButtonPosition == ButtonPosition.Row)
-                        {
-                            <SpaceItem>
-                                @CreatePackButton(item,context)
-                            </SpaceItem>
-                        }
+                        <Dropdown>
+                            <Overlay>
+                                <Menu>
+                                    @foreach (var item in but)
+                                    {
+                                        <MenuItem>
+                                            @CreatePackButton(item, context)
+                                        </MenuItem>
+                                    }
+
+                                </Menu>
+                            </Overlay>
+                            <ChildContent>
+                                <a class="ant-dropdown-link" @onclick:preventDefault>
+                                    更多 <Icon Type="down" />
+                                </a>
+                            </ChildContent>
+                        </Dropdown>
+
                     }
+                    else
+                    {
+                        <Space>
+                            @foreach (var item in but)
+                            {
+                            <SpaceItem>
+                                    @CreatePackButton(item, context)
+                            </SpaceItem>
+                            }
+                        </Space>
+                        
+
+                    }
+
                 }
-            </Space>
+            
         </ActionColumn>
     }
 </Table>

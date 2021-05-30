@@ -371,7 +371,18 @@ namespace Caviar.Control
                 };
                 await AddEntityAsync(management);
                 await CreateButton("菜单", "Menu", management.Id);
-                await CreateButton("角色", "Role", management.Id);
+                var parentId = await CreateButton("角色", "Role", management.Id);
+                SysMenu permissionMenu = new SysMenu()
+                {
+                    MenuName = "菜单权限",
+                    TargetType = TargetType.EjectPage,
+                    ButtonPosition = ButtonPosition.Row,
+                    MenuType = MenuType.Button,
+                    Url = $"/Permission/menu",
+                    ParentId = parentId,
+                    Number = "999",
+                };
+                await AddEntityAsync(permissionMenu);
 
                 SysMenu codePage = new SysMenu()
                 {
@@ -389,7 +400,7 @@ namespace Caviar.Control
         }
 
 
-        public async Task CreateButton(string menuName,string outName,int parentId)
+        public async Task<int> CreateButton(string menuName,string outName,int parentId)
         {
             SysMenu menu = new SysMenu()
             {
@@ -437,9 +448,10 @@ namespace Caviar.Control
                 Icon = "delete",
                 ParentId = parentId,
                 IsDoubleTrue = true,
-                Number = "999"
+                Number = "9999"
             };
             await AddMenu(AddButton);
+            return parentId;
         }
 
 

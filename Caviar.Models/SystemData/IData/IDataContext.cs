@@ -131,7 +131,7 @@ namespace Caviar.Models.SystemData
         /// <param name="menuName"></param>
         /// <param name="outName"></param>
         /// <param name="parentId"></param>
-        /// <returns></returns>
-        public Task CreateButton(string menuName, string outName, int parentId);
+        /// <returns>返回indexId</returns>
+        public Task<int> CreateButton(string menuName, string outName, int parentId);
     }
 }

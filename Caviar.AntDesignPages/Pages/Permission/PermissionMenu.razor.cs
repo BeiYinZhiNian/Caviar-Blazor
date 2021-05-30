@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 
 namespace Caviar.AntDesignPages.Pages.Permission
 {
-    public partial class PermissionMenu
+    public partial class PermissionMenu: ITableTemplate
     {
         [Inject]
         HttpHelper Http { get; set; }
-        List<ViewMenu> DataSource { get; set; }
+        [Parameter]
+        public ViewRole DataSource { get; set; }
+        List<ViewMenu> ViewMenus { get; set; }
         protected override async Task OnInitializedAsync()
         {
             await GetMenus();//获取数据源
@@ -25,8 +27,13 @@ namespace Caviar.AntDesignPages.Pages.Permission
             if (result.Status != 200) return;
             if (result.Data != null)
             {
-                DataSource = result.Data.Rows;
+                ViewMenus = result.Data.Rows;
             }
+        }
+
+        public Task<bool> Submit()
+        {
+            throw new NotImplementedException();
         }
     }
 }
