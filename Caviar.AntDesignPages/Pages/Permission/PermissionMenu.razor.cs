@@ -15,6 +15,8 @@ namespace Caviar.AntDesignPages.Pages.Permission
         HttpHelper Http { get; set; }
         [Parameter]
         public ViewRole DataSource { get; set; }
+        [Parameter]
+        public string Url { get; set; }
         List<ViewMenu> ViewMenus { get; set; }
         protected override async Task OnInitializedAsync()
         {

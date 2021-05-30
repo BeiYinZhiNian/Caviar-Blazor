@@ -378,7 +378,7 @@ namespace Caviar.Control
                     TargetType = TargetType.EjectPage,
                     ButtonPosition = ButtonPosition.Row,
                     MenuType = MenuType.Button,
-                    Url = $"/Permission/menu",
+                    Url = $"Permission/menu",
                     ParentId = parentId,
                     Number = "999",
                 };
@@ -389,7 +389,7 @@ namespace Caviar.Control
                     MenuType = MenuType.Menu,
                     TargetType = TargetType.CurrentPage,
                     MenuName = "代码生成",
-                    Url = "/Code/Index",
+                    Url = "Code/Index",
                     Icon = "code",
                     ParentId = management.Id,
                     Number = "999"
@@ -407,7 +407,7 @@ namespace Caviar.Control
                 MenuName = menuName + "管理",
                 TargetType = TargetType.CurrentPage,
                 MenuType = MenuType.Menu,
-                Url = $"/{outName}/Index",
+                Url = $"{outName}/Index",
                 Icon = "border-outer",
                 ParentId = parentId,
                 Number = "999"
@@ -420,7 +420,7 @@ namespace Caviar.Control
                 TargetType = TargetType.EjectPage,
                 MenuName = "新增",
                 ButtonPosition = ButtonPosition.Header,
-                Url = $"/{outName}/Add",
+                Url = $"{outName}/Add",
                 Icon = "appstore-add",
                 ParentId = parentId,
                 IsDoubleTrue = false,
@@ -430,7 +430,7 @@ namespace Caviar.Control
             AddButton = new SysMenu()
             {
                 MenuType = MenuType.Button,
-                Url = $"/{outName}/Update",
+                Url = $"{outName}/Update",
                 MenuName = "修改",
                 TargetType = TargetType.EjectPage,
                 ButtonPosition = ButtonPosition.Row,
@@ -444,6 +444,7 @@ namespace Caviar.Control
                 MenuType = MenuType.Button,
                 MenuName = "删除",
                 ButtonPosition = ButtonPosition.Row,
+                Url = $"{outName}/Delete",
                 TargetType = TargetType.Callback,
                 Icon = "delete",
                 ParentId = parentId,

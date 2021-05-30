@@ -56,7 +56,7 @@ namespace Caviar.AntDesignPages.Pages.Menu
             switch (row.Menu.MenuName)
             {
                 case "删除":
-                    Delete(row.Data);
+                    Delete(row.Menu.Url,row.Data);
                     break;
                 case "修改":
                     Refresh();
@@ -67,7 +67,7 @@ namespace Caviar.AntDesignPages.Pages.Menu
             }
         }
 
-        async void Delete(ViewMenu data)
+        async void Delete(string url,ViewMenu data)
         {
             if(data.Children!=null && data.Children.Count > 0)
             {
@@ -84,7 +84,7 @@ namespace Caviar.AntDesignPages.Pages.Menu
                 }
                 else if(confirm == ConfirmResult.Retry)//移到上层
                 {
-                    var result = await Http.PostJson<ViewMenu, object>("Menu/MoveEntity", data);
+                    var result = await Http.PostJson<ViewMenu, object>(url, data);
                     if (result.Status == 200)
                     {
                         Message.Success("删除成功");
@@ -98,7 +98,7 @@ namespace Caviar.AntDesignPages.Pages.Menu
             else
             {
                 //删除单条
-                var result = await Http.PostJson<ViewMenu, object>("Menu/MoveEntity", data);
+                var result = await Http.PostJson<ViewMenu, object>(url, data);
                 if (result.Status == 200)
                 {
                     Message.Success("删除成功");

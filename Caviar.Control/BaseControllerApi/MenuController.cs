@@ -33,8 +33,7 @@ namespace Caviar.Control
             {
                 return ResultErrorMsg("请输入正确地址");
             }
-            var Slash = url.Replace("/","").ToLower();
-            var menus = Action.GetEntitys(u => u.Url.Replace("/", "").ToLower() == Slash).FirstOrDefault();
+            var menus = Action.GetEntitys(u => u.Url.ToLower() == url.ToLower()).FirstOrDefault();
             if (menus == null)
             {
                 ResultMsg.Data = new List<SysMenu>();

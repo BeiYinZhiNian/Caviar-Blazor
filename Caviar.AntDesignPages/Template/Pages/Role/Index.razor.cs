@@ -31,20 +31,10 @@ namespace Caviar.AntDesignPages.Pages.Role
         [Inject]
         MessageService Message { get; set; }
         /// <summary>
-        /// 用户配置
-        /// </summary>
-        [Inject]
-        UserConfigHelper UserConfig { get; set; }
-        /// <summary>
         /// 导航管理器
         /// </summary>
         [Inject]
         NavigationManager NavigationManager { get; set; }
-        /// <summary>
-        /// 确认框
-        /// </summary>
-        [Inject]
-        ConfirmService Confirm { get; set; }
         #endregion
 
         #region 属性
@@ -64,10 +54,6 @@ namespace Caviar.AntDesignPages.Pages.Role
         /// 页面大小
         /// </summary>
         public int PageSize { get; set; }
-        /// <summary>
-        /// 表头
-        /// </summary>
-        List<ViewModelHeader> ViewModelHeaders { get; set; }
         /// <summary>
         /// 按钮
         /// </summary>
@@ -92,7 +78,8 @@ namespace Caviar.AntDesignPages.Pages.Role
         /// <returns></returns>
         async Task GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
-            var result = await Http.GetJson<PageData<ViewRole>>($"Role/GetPages?pageIndex={pageIndex}&pageSize={pageSize}&isOrder={isOrder}");
+            var url = NavigationManager.Uri.Replace(NavigationManager.BaseUri,"");
+            var result = await Http.GetJson<PageData<ViewRole>>($"{url}?pageIndex={pageIndex}&pageSize={pageSize}&isOrder={isOrder}");
             if (result.Status != 200) return;
             if (result.Data != null)
             {
@@ -118,30 +105,27 @@ namespace Caviar.AntDesignPages.Pages.Role
         /// 删除数据
         /// </summary>
         /// <param name="data"></param>
-        async void Delete(ViewRole data)
+        async void Delete(string url,ViewRole data)
         {
             //删除单条
-            var result = await Http.PostJson<ViewRole, object>("Role/Delete", data);
+            var result = await Http.PostJson<ViewRole, object>(url, data);
             if (result.Status == 200)
             {
                 Message.Success("删除成功");
+                Refresh();
             }
-            Refresh();
         }
         #endregion
 
         #region 回调
-        partial void RowCallback(RowCallbackData<ViewRole> row);
-        partial void PageIndexChanged(PaginationEventArgs args);
-
-        [Inject]
-        CavModal CavModal { get; set; }
-        async void _RowCallback(RowCallbackData<ViewRole> row)
+        partial void RowCallbackPratial(RowCallbackData<ViewRole> row);
+        partial void PageIndexChangedPratial(PaginationEventArgs args);
+        void _RowCallback(RowCallbackData<ViewRole> row)
         {
             switch (row.Menu.MenuName)
             {
                 case "删除":
-                    Delete(row.Data);
+                    Delete(row.Menu.Url,row.Data);
                     break;
                 case "修改":
                     Refresh();
@@ -150,7 +134,7 @@ namespace Caviar.AntDesignPages.Pages.Role
                     Refresh();
                     break;
                 default:
-                    RowCallback(row);
+                    RowCallbackPratial(row);
                     break;
             }
         }
@@ -161,15 +145,17 @@ namespace Caviar.AntDesignPages.Pages.Role
         async void _PageIndexChanged(PaginationEventArgs args)
         {
             await GetPages(args.Page,args.PageSize);
-            PageIndexChanged(args);
+            PageIndexChangedPratial(args);
         }
         #endregion
 
         #region 重写
+        partial void OnInitializedAsyncPratial();
         protected override async Task OnInitializedAsync()
         {
-            GetViewRole();//获取数据源
+            await GetViewRole();//获取数据源
             Buttons = await GetPowerButtons();//获取按钮
+            OnInitializedAsyncPratial();
         }
         /// <summary>
         /// 刷新

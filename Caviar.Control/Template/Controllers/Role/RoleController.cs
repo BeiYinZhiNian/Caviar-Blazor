@@ -119,7 +119,7 @@ namespace Caviar.Control.Role
         /// <param name="isNoTracking"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true, bool isNoTracking = false)
+        public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10, bool isOrder = true, bool isNoTracking = false)
         {
             var pages = await Action.GetPages(u => true, pageIndex, pageSize, isOrder, isNoTracking);
             ResultMsg.Data = pages;

@@ -21,24 +21,37 @@ namespace Caviar.AntDesignPages.Pages.Role
     [DisplayName("数据模板")]
     public partial class DataTemplate: ITableTemplate
     {
-        
+        #region 属性注入
+        /// <summary>
+        /// HttpClient
+        /// </summary>
+        [Inject]
+        HttpHelper Http { get; set; }
+        /// <summary>
+        /// 全局提示
+        /// </summary>
+        [Inject]
+        MessageService Message { get; set; }
+        /// <summary>
+        /// 导航管理器
+        /// </summary>
+        [Inject]
+        NavigationManager NavigationManager { get; set; }
+        #endregion
+        #region 参数
         [Parameter]
-        public ViewRole DataSource { get; set; }
+        public ViewRole DataSource { get; set; } = new ViewRole() { Number = "999"};
         
         [Parameter]
         public string Url { get; set; }
 
         [Parameter]
         public string SuccMsg { get; set; } = "操作成功";
-
-        [Inject]
-        HttpHelper Http { get; set; }
-
-        private Form<ViewRole> _meunForm;
-        [Inject]
-        MessageService _message { get; set; }
         [Parameter]
         public bool Visible { get; set; }
+        #endregion
+
+        private Form<ViewRole> _meunForm;
         public async Task<bool> Submit()
         {
             //数据效验
@@ -54,10 +67,23 @@ namespace Caviar.AntDesignPages.Pages.Role
             var result = await Http.PostJson<ViewRole, object>(Url, DataSource);
             if (result.Status == 200)
             {
-                _message.Success(SuccMsg);
+                Message.Success(SuccMsg);
                 return true;
             }
             return false;
         }
+
+
+        #region 重写
+        partial void OnInitializedAsyncPratial();
+        protected override async Task OnInitializedAsync()
+        {
+            if (string.IsNullOrEmpty(Url))
+            {
+                Url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
+            }
+            OnInitializedAsyncPratial();
+        }
+        #endregion
     }
 }

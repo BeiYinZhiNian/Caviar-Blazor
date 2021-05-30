@@ -49,7 +49,7 @@ namespace Caviar.AntDesignPages.Helper
             foreach (var item in routes)
             {
                 var page = (string)item.GetObjValue("Template").GetObjValue("TemplateText");
-                if (page.ToLower() == url.ToLower() || "/" + page.ToLower() == url.ToLower())
+                if (page.ToLower() == url.ToLower())
                 {
 
                     var ComponentType = (Type)item.GetObjValue("Handler");

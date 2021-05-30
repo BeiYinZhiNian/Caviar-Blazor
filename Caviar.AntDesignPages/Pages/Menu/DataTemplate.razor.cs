@@ -15,9 +15,9 @@ namespace Caviar.AntDesignPages.Pages.Menu
     [DisplayName("数据模板")]
     public partial class DataTemplate: ITableTemplate
     {
-        
+
         [Parameter]
-        public SysMenu DataSource { get; set; }
+        public SysMenu DataSource { get; set; } = new SysMenu() { Number = "999" };
         
         [Parameter]
         public string Url { get; set; }

@@ -26,14 +26,15 @@ namespace Caviar.AntDesignPages.Pages.Role
 
         public List<ViewRole> ViewRoles { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        async partial void  OnInitializedAsyncPratial()
         {
             ViewRoles = await GetMenus();
         }
 
         async Task<List<ViewRole>> GetMenus()
         {
-            var result = await Http.GetJson<PageData<ViewRole>>($"Role/GetPages?pageSize=100");
+            string url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
+            var result = await Http.GetJson<PageData<ViewRole>>($"{url}?pageSize=100");
             if (result.Status != 200) return new List<ViewRole>();
             if (DataSource.ParentId > 0)
             {

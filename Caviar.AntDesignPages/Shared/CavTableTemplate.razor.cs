@@ -105,6 +105,7 @@ namespace Caviar.AntDesignPages.Shared
                     {
                         paramenter.Add(new KeyValuePair<string, object?>("DataSource", CurrRow.Data));
                     }
+                    paramenter.Add(new KeyValuePair<string, object?>("Url", menu.Url));
                     await CavModal.Create(menu.Url, menu.MenuName, HandleOk, paramenter);
                     break;
                 case TargetType.NewLabel:
