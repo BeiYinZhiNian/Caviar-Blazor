@@ -51,6 +51,8 @@ namespace Caviar.AntDesignPages.Shared
             }
         }
 
+        int CollapsedWidth { get; set; } = 0;
+
         /// <summary>
         /// 按钮点击时触发
         /// </summary>
@@ -76,7 +78,7 @@ namespace Caviar.AntDesignPages.Shared
         {
             if (collapsed)
             {
-                HeaderStyle = "margin-left: 80px";
+                HeaderStyle = "margin-left: 0px";
                 LogoImgSrc = LogoImgIco;
             }
             else
