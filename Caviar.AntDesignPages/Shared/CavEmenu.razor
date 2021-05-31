@@ -1,0 +1,24 @@
+﻿@*@typeparam TData
+
+<RadioGroup @bind-Value="Data" OnChange="MenuTypeCallback">
+    <Radio Value="(TData)0">目录</Radio>
+    <Radio Value="(MenuType)1">菜单</Radio>
+    <Radio Value="(MenuType)2">按钮</Radio>
+</RadioGroup>
+@code{
+    [Parameter]
+    public TData Data { get; set; }
+
+
+    public RenderFragment CreateEnemu()
+    {
+        var type = typeof(TData);
+        if (!type.IsEnum) throw new Exception("Only enumeration types can be entered");
+        var dic = CommonHelper.GetEnenuModelHeader(type);
+        RenderFragment render = null;
+        foreach (var item in dic)
+        {
+            render +=@<Radio Value="(TData)item.Key">@item.Value</Radio>;
+        }
+    }
+}*@

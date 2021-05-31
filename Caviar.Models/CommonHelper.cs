@@ -237,5 +237,24 @@ namespace Caviar.Models.SystemData
                 }
             }
         }
+
+        public static Dictionary<int, string> GetEnenuModelHeader(Type type)
+        {
+            if(!type.IsEnum) return null;
+            var enumFields = type.GetFields();
+            Dictionary<int, string> dic = null;
+            if (enumFields != null && enumFields.Length >= 2)//枚举有一个隐藏的int所以要从下一位置开始
+            {
+                dic = new Dictionary<int, string>();
+                for (int i = 0; i < enumFields.Length; i++)
+                {
+                    if (enumFields[i].Name == "value__") continue;
+                    var enumName = enumFields[i].GetCustomAttribute<DisplayAttribute>()?.Name;
+                    var value = (int)enumFields[i].GetValue(null);
+                    dic.Add(value, enumName);
+                }
+            }
+            return dic;
+        }
     }
 }
