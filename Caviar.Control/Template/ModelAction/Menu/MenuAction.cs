@@ -1,23 +1,26 @@
-﻿using Caviar.Models.SystemData;
+using Caviar.Models.SystemData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
+using Caviar.Models.SystemData;
 /// <summary>
 /// 生成者：未登录用户
-/// 生成时间：2021/5/11 17:57:45
+/// 生成时间：2021/5/31 11:39:35
 /// 代码由代码生成器自动生成，更改的代码可能被进行替换
 /// 可在上层目录使用partial关键字进行扩展
-/// 系统菜单模型操作器
+/// 菜单模型操作器
 /// </summary>
-namespace Caviar.Control
+namespace Caviar.Control.Menu
 {
+    [DisplayName("菜单方法")]
     public partial class MenuAction : SysMenu
     {
         /// <summary>
-        /// 添加系统菜单
+        /// 添加菜单
         /// </summary>
         /// <returns></returns>
         public virtual async Task<int> AddEntity()
@@ -26,7 +29,7 @@ namespace Caviar.Control
             return count;
         }
         /// <summary>
-        /// 删除系统菜单
+        /// 删除菜单
         /// </summary>
         /// <returns></returns>
         public virtual async Task<int> DeleteEntity()
@@ -35,7 +38,7 @@ namespace Caviar.Control
             return count;
         }
         /// <summary>
-        /// 修改系统菜单
+        /// 修改菜单
         /// </summary>
         /// <returns></returns>
         public virtual async Task<int> UpdateEntity()
@@ -43,12 +46,11 @@ namespace Caviar.Control
             var count = await BC.DC.UpdateEntityAsync(this);
             return count;
         }
-
         /// <summary>
         /// 获取分页数据
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<PageData<ViewMenu>> GetPages(Expression<Func<SysMenu, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = false)
+        public virtual async Task<PageData<ViewMenu>> GetPages(Expression<Func<SysMenu, bool>> where,int pageIndex,int pageSize, bool isOrder = true, bool isNoTracking = false)
         {
             var pages = await BC.DC.GetPageAsync(where, u => u.Number, pageIndex, pageSize, isOrder, isNoTracking);
             var ViewPages = ModelToViewModel(pages);
@@ -76,9 +78,7 @@ namespace Caviar.Control
             return count;
         }
 
-        protected delegate T Transformation<T, K>(K model);
-
-        protected event Transformation<PageData<ViewMenu>, PageData<SysMenu>> TransformationEvent;
+        partial void PartialModelToViewModel(ref bool isContinue, PageData<SysMenu> model,ref PageData<ViewMenu> outModel);
 
         /// <summary>
         /// 魔法转换
@@ -89,25 +89,15 @@ namespace Caviar.Control
         /// <typeparam name="K"></typeparam>
         /// <param name="model"></param>
         /// <returns></returns>
-        public PageData<ViewMenu> ModelToViewModel(PageData<SysMenu> model)
+        private PageData<ViewMenu> ModelToViewModel(PageData<SysMenu> model)
         {
-
-            var viewModel = TransformationEvent?.Invoke(model);
-            if (viewModel == null)
-            {
-                viewModel = CommonHelper.AToB<PageData<ViewMenu>, PageData<SysMenu>>(model);
-            }
-            return viewModel;
-        }
-
-        public ViewMenu ModelToViewModel(SysMenu model)
-        {
-            if (model == null) return null;
-            PageData<SysMenu> pages = new PageData<SysMenu>();
-            pages.Rows = new List<SysMenu>() { model };
-            pages.Total = 1;
-            var viewPages = ModelToViewModel(pages);
-            return viewPages.Rows.FirstOrDefault();
+            
+            bool isContinue = true;
+            PageData<ViewMenu> outModel = null;
+            PartialModelToViewModel(ref isContinue, model,ref outModel);
+            if (!isContinue) return outModel;
+            outModel = CommonHelper.AToB<PageData<ViewMenu>, PageData<SysMenu>>(model);
+            return outModel;
         }
     }
 }

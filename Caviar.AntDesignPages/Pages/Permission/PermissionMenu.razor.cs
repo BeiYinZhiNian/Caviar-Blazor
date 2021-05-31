@@ -13,6 +13,8 @@ namespace Caviar.AntDesignPages.Pages.Permission
     {
         [Inject]
         HttpHelper Http { get; set; }
+        [Inject]
+        NavigationManager NavigationManager { get; set; }
         [Parameter]
         public ViewRole DataSource { get; set; }
         [Parameter]
@@ -25,7 +27,7 @@ namespace Caviar.AntDesignPages.Pages.Permission
 
         async Task GetMenus()
         {
-            var result = await Http.GetJson<PageData<ViewMenu>>("Menu/GetPages?pageSize=100");
+            var result = await Http.GetJson<PageData<ViewMenu>>($"Menu/Index?pageSize=100");
             if (result.Status != 200) return;
             if (result.Data != null)
             {

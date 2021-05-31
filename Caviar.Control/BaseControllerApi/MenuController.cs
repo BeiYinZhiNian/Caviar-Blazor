@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Caviar.Control
+namespace Caviar.Control.Menu
 {
     public partial class MenuController : CaviarBaseController
     {

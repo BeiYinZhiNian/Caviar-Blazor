@@ -1,4 +1,4 @@
-﻿using Caviar.Control;
+using Caviar.Control;
 using Caviar.Models.SystemData;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,15 +7,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Caviar.Models.SystemData;
 /// <summary>
 /// 生成者：未登录用户
-/// 生成时间：2021/5/11 17:57:45
+/// 生成时间：2021/5/31 11:39:35
 /// 代码由代码生成器自动生成，更改的代码可能被进行替换
 /// 可在上层目录使用partial关键字进行扩展
 /// </summary>
-namespace Caviar.Control
+namespace Caviar.Control.Menu
 {
-    [DisplayName("系统菜单控制器")]
+    [DisplayName("菜单控制器")]
     public partial class MenuController : CaviarBaseController
     {
         #region 属性注入
@@ -23,9 +24,9 @@ namespace Caviar.Control
         /// <summary>
         /// 方法操作器
         /// </summary>
-        MenuAction Action
+        MenuAction Action 
         {
-            get
+            get 
             {
                 if (_action == null)
                 {
@@ -42,7 +43,7 @@ namespace Caviar.Control
 
         #region 方法
         /// <summary>
-        /// 添加系统菜单
+        /// 添加菜单
         /// </summary>
         /// <param name="Menu">方法操作器</param>
         /// <returns></returns>
@@ -57,7 +58,7 @@ namespace Caviar.Control
                     return ResultOK();
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 return ResultErrorMsg("添加失败", e.Message);
             }
@@ -65,7 +66,7 @@ namespace Caviar.Control
         }
 
         /// <summary>
-        /// 修改系统菜单
+        /// 修改菜单
         /// </summary>
         /// <param name="Menu">方法操作器</param>
         /// <returns></returns>
@@ -80,7 +81,7 @@ namespace Caviar.Control
                     return ResultOK();
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 return ResultErrorMsg("修改失败", e.Message);
             }
@@ -88,7 +89,7 @@ namespace Caviar.Control
         }
 
         /// <summary>
-        /// 删除系统菜单
+        /// 删除菜单
         /// </summary>
         /// <param name="Menu">方法操作器</param>
         /// <returns></returns>
@@ -103,7 +104,7 @@ namespace Caviar.Control
                     return ResultOK();
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 return ResultErrorMsg("删除失败", e.Message);
             }
@@ -118,21 +119,10 @@ namespace Caviar.Control
         /// <param name="isNoTracking"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true, bool isNoTracking = false)
+        public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10, bool isOrder = true, bool isNoTracking = false)
         {
             var pages = await Action.GetPages(u => true, pageIndex, pageSize, isOrder, isNoTracking);
             ResultMsg.Data = pages;
-            return ResultOK();
-        }
-
-        [HttpGet]
-        public IActionResult GetEntity(int Id)
-        {
-            var entity = Action.GetEntitys(u => u.Id == Id).FirstOrDefault();
-            if (entity != null)
-            {
-                ResultMsg.Data = Action.ModelToViewModel(entity);
-            }
             return ResultOK();
         }
         #endregion

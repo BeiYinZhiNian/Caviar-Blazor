@@ -68,6 +68,8 @@ namespace Caviar.Models.SystemData
         Header,
         [Display(Name = "行")]
         Row,
+        [Display(Name = "不可见")]
+        Invisible
     }
 
 }

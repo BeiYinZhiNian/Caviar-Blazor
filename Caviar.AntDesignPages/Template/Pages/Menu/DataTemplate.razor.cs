@@ -1,4 +1,4 @@
-﻿using AntDesign;
+using AntDesign;
 using Caviar.Models.SystemData;
 using Caviar.AntDesignPages.Helper;
 using Microsoft.AspNetCore.Components;
@@ -9,21 +9,21 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using {ModelsNamespace};
+using Caviar.Models.SystemData;
 /// <summary>
-/// 生成者：{Producer}
-/// 生成时间：{GenerationTime}
+/// 生成者：未登录用户
+/// 生成时间：2021/5/31 11:39:35
 /// 代码由代码生成器自动生成，更改的代码可能被进行替换
 /// 可在上层目录使用partial关键字进行扩展
 /// </summary>
-namespace {WebUINamespace}.{OutName}
+namespace Caviar.AntDesignPages.Pages.Menu
 {
-    [DisplayName("{EntityDisplayName}数据模板")]
+    [DisplayName("菜单数据模板")]
     public partial class DataTemplate: ITableTemplate
     {
         #region 参数
         [Parameter]
-        public {ViewOutName} DataSource { get; set; } = new {ViewOutName}() { Number = "999" };
+        public ViewMenu DataSource { get; set; } = new ViewMenu() { Number = "999" };
         
         [Parameter]
         public string Url { get; set; }
@@ -52,7 +52,7 @@ namespace {WebUINamespace}.{OutName}
 
         
         #region 回调
-        private Form<{ViewOutName}> _meunForm;
+        private Form<ViewMenu> _meunForm;
 
         
         public async Task<bool> Submit()
@@ -67,7 +67,7 @@ namespace {WebUINamespace}.{OutName}
 
         async Task<bool> FormSubmit()
         {
-            var result = await Http.PostJson<{ViewOutName}, object>(Url, DataSource);
+            var result = await Http.PostJson<ViewMenu, object>(Url, DataSource);
             if (result.Status == 200)
             {
                 Message.Success(SuccMsg);

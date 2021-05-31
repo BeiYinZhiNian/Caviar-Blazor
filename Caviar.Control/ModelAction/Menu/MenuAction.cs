@@ -7,24 +7,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Caviar.Control
+namespace Caviar.Control.Menu
 {
     public partial class MenuAction : SysMenu
     {
-        public MenuAction()
+        partial void PartialModelToViewModel(ref bool isContinue, PageData<SysMenu> model, ref PageData<ViewMenu> outModel)
         {
-            TransformationEvent += MenuAction_TransformationEvent;
-        }
-
-        private PageData<ViewMenu> MenuAction_TransformationEvent(PageData<SysMenu> model)
-        {
-            var pages = CommonHelper.AToB<PageData<ViewMenu>, PageData<SysMenu>>(model);
-            if (pages.Total != 0)
+            outModel = CommonHelper.AToB<PageData<ViewMenu>, PageData<SysMenu>>(model);
+            if (outModel.Total != 0)
             {
                 var viewMenus = new List<ViewMenu>().ListAutoAssign(model.Rows);
-                pages.Rows = viewMenus.ListToTree();
+                outModel.Rows = viewMenus.ListToTree();
             }
-            return pages;
+            isContinue = false;
         }
 
         public virtual IQueryable<SysMenu> GetEntitys(Expression<Func<SysMenu, bool>> where)

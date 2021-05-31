@@ -5,16 +5,18 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 using Caviar.Models.SystemData;
 /// <summary>
 /// 生成者：未登录用户
-/// 生成时间：2021/5/28 16:44:36
+/// 生成时间：2021/5/31 11:39:27
 /// 代码由代码生成器自动生成，更改的代码可能被进行替换
 /// 可在上层目录使用partial关键字进行扩展
 /// 角色模型操作器
 /// </summary>
 namespace Caviar.Control.Role
 {
+    [DisplayName("角色方法")]
     public partial class RoleAction : SysRole
     {
         /// <summary>
@@ -76,9 +78,7 @@ namespace Caviar.Control.Role
             return count;
         }
 
-        protected delegate T Transformation<T,K>(K model);
-
-        protected event Transformation<PageData<ViewRole>, PageData<SysRole>> TransformationEvent;
+        partial void PartialModelToViewModel(ref bool isContinue, PageData<SysRole> model,ref PageData<ViewRole> outModel);
 
         /// <summary>
         /// 魔法转换
@@ -92,12 +92,12 @@ namespace Caviar.Control.Role
         private PageData<ViewRole> ModelToViewModel(PageData<SysRole> model)
         {
             
-            var viewModel = TransformationEvent?.Invoke(model);
-            if (viewModel == null)
-            {
-                viewModel = CommonHelper.AToB<PageData<ViewRole>, PageData<SysRole>>(model);
-            }
-            return viewModel;
+            bool isContinue = true;
+            PageData<ViewRole> outModel = null;
+            PartialModelToViewModel(ref isContinue, model,ref outModel);
+            if (!isContinue) return outModel;
+            outModel = CommonHelper.AToB<PageData<ViewRole>, PageData<SysRole>>(model);
+            return outModel;
         }
     }
 }

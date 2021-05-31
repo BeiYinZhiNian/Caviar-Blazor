@@ -13,61 +13,26 @@ namespace Caviar.AntDesignPages.Pages.Menu
 {
     public partial class Index
     {
-        [Inject]
-        HttpHelper Http { get; set; }
-        [Inject]
-        MessageService Message { get; set; }
-        [Inject]
-        NavigationManager NavigationManager { get; set; }
-        public List<ViewMenu> DataSource { get; set; }
-        public int Total { get; set; }
-        public int PageIndex { get; set; }
-        public int PageSize { get; set; }
-        List<ViewMenu> Buttons { get; set; }
-        protected override async Task OnInitializedAsync()
+
+        partial void PratialGetPages(ref bool IsContinue, ref int pageIndex, ref int pageSize, ref bool isOrder)
         {
-            await GetMenus();//获取数据源
-            Buttons = await GetButtons();//获取按钮
+            pageSize = 100;
         }
 
-        async Task GetMenus()
-        {
-            var result = await Http.GetJson<PageData<ViewMenu>>("Menu/GetPages?pageSize=100");
-            if (result.Status != 200) return;
-            if (result.Data != null)
-            {
-                DataSource = result.Data.Rows;
-                Total = result.Data.Total;
-                PageIndex = result.Data.PageIndex;
-                PageSize = result.Data.PageSize;
-            }
-        }
-
-        async Task<List<ViewMenu>> GetButtons()
-        {
-            string url = NavigationManager.Uri.Replace(NavigationManager.BaseUri,"");
-            var result = await Http.GetJson<List<ViewMenu>>("Menu/GetButtons?url=" + url);
-            if (result.Status != 200) return new List<ViewMenu>();
-            return result.Data;
-        }
-
-        async void RowCallback(RowCallbackData<ViewMenu> row)
+        partial void PratialRowCallback(ref bool IsContinue, RowCallbackData<ViewMenu> row)
         {
             switch (row.Menu.MenuName)
             {
                 case "删除":
-                    Delete(row.Menu.Url,row.Data);
+                    IsContinue = false;
+                    ConfirmDelete(row.Menu.Url, row.Data);
                     break;
-                case "修改":
-                    Refresh();
-                    break;
-                case "新增":
-                    Refresh();
+                default:
                     break;
             }
         }
 
-        async void Delete(string url,ViewMenu data)
+        async void ConfirmDelete(string url,ViewMenu data)
         {
             if(data.Children!=null && data.Children.Count > 0)
             {
@@ -105,12 +70,6 @@ namespace Caviar.AntDesignPages.Pages.Menu
                 }
             }
             Refresh();
-        }
-
-        public async void Refresh()
-        {
-            await OnInitializedAsync();
-            StateHasChanged();
         }
 
 

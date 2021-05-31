@@ -12,13 +12,13 @@ using System.ComponentModel;
 using Caviar.Models.SystemData;
 /// <summary>
 /// 生成者：未登录用户
-/// 生成时间：2021/5/31 11:39:27
+/// 生成时间：2021/5/31 11:39:35
 /// 代码由代码生成器自动生成，更改的代码可能被进行替换
 /// 可在上层目录使用partial关键字进行扩展
 /// </summary>
-namespace Caviar.AntDesignPages.Pages.Role
+namespace Caviar.AntDesignPages.Pages.Menu
 {
-    [DisplayName("角色列表")]
+    [DisplayName("菜单列表")]
     public partial class Index
     {
         #region 属性注入
@@ -43,7 +43,7 @@ namespace Caviar.AntDesignPages.Pages.Role
         /// <summary>
         /// 数据源
         /// </summary>
-        List<ViewRole> DataSource { get; set; } = new List<ViewRole>();
+        List<ViewMenu> DataSource { get; set; } = new List<ViewMenu>();
         /// <summary>
         /// 总计
         /// </summary>
@@ -84,7 +84,7 @@ namespace Caviar.AntDesignPages.Pages.Role
             PratialGetPages(ref isContinue, ref pageIndex, ref pageSize, ref isOrder);
             if (!isContinue) return;
             var url = NavigationManager.Uri.Replace(NavigationManager.BaseUri,"");
-            var result = await Http.GetJson<PageData<ViewRole>>($"{url}?pageIndex={pageIndex}&pageSize={pageSize}&isOrder={isOrder}");
+            var result = await Http.GetJson<PageData<ViewMenu>>($"{url}?pageIndex={pageIndex}&pageSize={pageSize}&isOrder={isOrder}");
             if (result.Status != 200) return;
             if (result.Data != null)
             {
@@ -110,10 +110,10 @@ namespace Caviar.AntDesignPages.Pages.Role
         /// 删除数据
         /// </summary>
         /// <param name="data"></param>
-        async void Delete(string url,ViewRole data)
+        async void Delete(string url,ViewMenu data)
         {
             //删除单条
-            var result = await Http.PostJson<ViewRole, object>(url, data);
+            var result = await Http.PostJson<ViewMenu, object>(url, data);
             if (result.Status == 200)
             {
                 Message.Success("删除成功");
@@ -128,7 +128,7 @@ namespace Caviar.AntDesignPages.Pages.Role
         /// </summary>
         /// <param name="isContinue"></param>
         /// <param name="row"></param>
-        partial void PratialRowCallback(ref bool isContinue, RowCallbackData<ViewRole> row);
+        partial void PratialRowCallback(ref bool isContinue, RowCallbackData<ViewMenu> row);
         /// <summary>
         /// 翻页按钮回调
         /// </summary>
@@ -138,7 +138,7 @@ namespace Caviar.AntDesignPages.Pages.Role
 
         [Inject]
         CavModal CavModal { get; set; }
-        async void RowCallback(RowCallbackData<ViewRole> row)
+        async void RowCallback(RowCallbackData<ViewMenu> row)
         {
             bool isContinue = true;
             PratialRowCallback(ref isContinue, row);

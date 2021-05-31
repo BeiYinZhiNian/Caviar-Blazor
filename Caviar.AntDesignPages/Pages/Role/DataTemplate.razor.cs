@@ -24,18 +24,18 @@ namespace Caviar.AntDesignPages.Pages.Role
             DataSource.ParentId = 0;
         }
 
-        public List<ViewRole> ViewRoles { get; set; }
+        public List<ViewRole> ViewRoles { get; set; } = new List<ViewRole>();
 
-        async partial void  OnInitializedAsyncPratial()
+        partial void PratialOnInitializedAsync(ref bool IsContinue)
         {
-            ViewRoles = await GetMenus();
+           GetMenus();
         }
 
-        async Task<List<ViewRole>> GetMenus()
+        async void GetMenus()
         {
             string url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
             var result = await Http.GetJson<PageData<ViewRole>>($"{url}?pageSize=100");
-            if (result.Status != 200) return new List<ViewRole>();
+            if (result.Status != 200) return;
             if (DataSource.ParentId > 0)
             {
                 List<ViewRole> listData = new List<ViewRole>();
@@ -46,7 +46,7 @@ namespace Caviar.AntDesignPages.Pages.Role
                     ParentName = parent.RoleName;
                 }
             }
-            return result.Data.Rows;
+            ViewRoles = result.Data.Rows;
         }
     }
 }

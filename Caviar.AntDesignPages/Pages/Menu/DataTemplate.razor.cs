@@ -12,37 +12,21 @@ using System.Threading.Tasks;
 
 namespace Caviar.AntDesignPages.Pages.Menu
 {
-    [DisplayName("数据模板")]
     public partial class DataTemplate: ITableTemplate
     {
-
-        [Parameter]
-        public SysMenu DataSource { get; set; } = new SysMenu() { Number = "999" };
-        
-        [Parameter]
-        public string Url { get; set; }
-
-        [Parameter]
-        public string SuccMsg { get; set; } = "操作成功";
-
-        [Inject]
-        HttpHelper Http { get; set; }
-
-        private Form<SysMenu> _meunForm;
-        protected override async Task OnInitializedAsync()
+        partial void PratialOnInitializedAsync(ref bool IsContinue)
         {
-            SysMenus = await GetMenus();
+            GetMenus();
             CheckMenuType();
-
         }
 
-        private List<ViewMenu> SysMenus;
+        private List<ViewMenu> SysMenus = new List<ViewMenu>();
         string ParentMenuName { get; set; } = "无上层目录";
 
-        async Task<List<ViewMenu>> GetMenus()
+        async void GetMenus()
         {
             var result = await Http.GetJson<List<ViewMenu>>("Menu/GetLeftSideMenus");
-            if (result.Status != 200) return new List<ViewMenu>();
+            if (result.Status != 200) return;
             if (DataSource.ParentId > 0)
             {
                 List<ViewMenu> listData = new List<ViewMenu>();
@@ -53,35 +37,10 @@ namespace Caviar.AntDesignPages.Pages.Menu
                     ParentMenuName = parent.MenuName;
                 }
             }
-            return result.Data;
+            SysMenus = result.Data;
         }
-
-        [Inject]
-        MessageService _message { get; set; }
-        [Parameter]
-        public bool Visible { get; set; }
 
         
-        public async Task<bool> Submit()
-        {
-            //数据效验
-            if(_meunForm.Validate())
-            {
-                return await FormSubmit();
-            }
-            return false;
-        }
-
-        async Task<bool> FormSubmit()
-        {
-            var result = await Http.PostJson<SysMenu, object>(Url, DataSource);
-            if (result.Status == 200)
-            {
-                _message.Success(SuccMsg);
-                return true;
-            }
-            return false;
-        }
 
         void EventRecord(TreeEventArgs<ViewMenu> args)
         {

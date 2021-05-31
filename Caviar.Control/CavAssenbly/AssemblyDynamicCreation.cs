@@ -21,7 +21,12 @@ namespace Caviar.Control
             }
             if (!File.Exists(outName) || isCover)
             {
-                File.WriteAllText(outName, content);
+                string fileData = "存在文件";
+                if (File.Exists(outName)) fileData = File.ReadAllText(outName);
+                if (!string.IsNullOrEmpty(fileData))
+                {
+                    File.WriteAllText(outName, content);
+                }
             }
         }
         public List<TabItem> CodeGenerate(CodeGenerateData generate,string userName)
@@ -74,14 +79,6 @@ namespace Caviar.Control
             var extend = ".cs";
             switch (key)
             {
-                case "新增":
-                    fileName = "Add";
-                    extend = ".razor";
-                    break;
-                case "修改":
-                    fileName = "Update";
-                    extend = ".razor";
-                    break;
                 case "数据模板":
                     fileName = "DataTemplate";
                     extend = ".razor";

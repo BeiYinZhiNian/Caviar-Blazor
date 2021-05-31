@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 using {ModelsNamespace};
 /// <summary>
 /// 生成者：{Producer}
@@ -15,6 +16,7 @@ using {ModelsNamespace};
 /// </summary>
 namespace {WebApiNamespace}.{OutName}
 {
+    [DisplayName("{EntityDisplayName}方法")]
     public partial class {OutName}Action : {EntityName}
     {
         /// <summary>
@@ -76,9 +78,7 @@ namespace {WebApiNamespace}.{OutName}
             return count;
         }
 
-        protected delegate T Transformation<T,K>(K model);
-
-        protected event Transformation<PageData<{ViewOutName}>, PageData<{EntityName}>> TransformationEvent;
+        partial void PartialModelToViewModel(ref bool isContinue, PageData<{EntityName}> model,ref PageData<{ViewOutName}> outModel);
 
         /// <summary>
         /// 魔法转换
@@ -92,12 +92,12 @@ namespace {WebApiNamespace}.{OutName}
         private PageData<{ViewOutName}> ModelToViewModel(PageData<{EntityName}> model)
         {
             
-            var viewModel = TransformationEvent?.Invoke(model);
-            if (viewModel == null)
-            {
-                viewModel = CommonHelper.AToB<PageData<{ViewOutName}>, PageData<{EntityName}>>(model);
-            }
-            return viewModel;
+            bool isContinue = true;
+            PageData<{ViewOutName}> outModel = null;
+            PartialModelToViewModel(ref isContinue, model,ref outModel);
+            if (!isContinue) return outModel;
+            outModel = CommonHelper.AToB<PageData<{ViewOutName}>, PageData<{EntityName}>>(model);
+            return outModel;
         }
     }
 }

@@ -9,20 +9,15 @@ namespace Caviar.Control.Role
 {
     public partial class RoleAction
     {
-        public RoleAction()
+        partial void PartialModelToViewModel(ref bool isContinue, PageData<SysRole> model, ref PageData<ViewRole> outModel)
         {
-            TransformationEvent += RoleAction_TransformationEvent;
-        }
-
-        private PageData<ViewRole> RoleAction_TransformationEvent(PageData<SysRole> model)
-        {
-            var pages = CommonHelper.AToB<PageData<ViewRole>, PageData<SysRole>>(model);
-            if (pages.Total != 0)
+            outModel = CommonHelper.AToB<PageData<ViewRole>, PageData<SysRole>>(model);
+            if (outModel.Total != 0)
             {
                 var viewMenus = new List<ViewRole>().ListAutoAssign(model.Rows);
-                pages.Rows = viewMenus.ListToTree();
+                outModel.Rows = viewMenus.ListToTree();
             }
-            return pages;
+            isContinue = false;
         }
     }
 }
