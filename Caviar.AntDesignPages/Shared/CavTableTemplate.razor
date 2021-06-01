@@ -72,6 +72,20 @@
         foreach (var item in ViewModelHeader)
         {
             var typeNmae = item.ModelType.ToLower();
+            if (item.IsEnum)
+            {
+                <Column Title="@item.DispLayName"  TData="string" Width="@item.Width" >
+                    @{
+                            var obj = context.GetObjValue(item.TypeName);
+                            if (obj != null)
+                            {
+                                var value = (int)obj;
+                                @item.EnumValueName[value];
+                            }
+                        }
+                </Column>
+                continue;
+            }
             switch (typeNmae)
             {
                 case "string":
@@ -137,48 +151,48 @@
 
 
         <ActionColumn Title="操作">
-            
-                @if (Buttons != null)
+
+            @if (Buttons != null)
+            {
+                List<ViewMenu> but = Buttons.Where(u => u.ButtonPosition == ButtonPosition.Row).ToList();
+                if (but.Count >= 3)
                 {
-                    List<ViewMenu> but = Buttons.Where(u => u.ButtonPosition == ButtonPosition.Row).ToList();
-                    if (but.Count >= 3)
-                    {
-                        <Dropdown>
-                            <Overlay>
-                                <Menu>
-                                    @foreach (var item in but)
-                                    {
-                                        <MenuItem>
-                                            @CreatePackButton(item, context)
-                                        </MenuItem>
-                                    }
+                    <Dropdown>
+                        <Overlay>
+                            <Menu>
+                                @foreach (var item in but)
+                                {
+                                    <MenuItem>
+                                        @CreatePackButton(item, context)
+                                    </MenuItem>
+                                }
 
-                                </Menu>
-                            </Overlay>
-                            <ChildContent>
-                                <a class="ant-dropdown-link" @onclick:preventDefault>
-                                    更多 <Icon Type="down" />
-                                </a>
-                            </ChildContent>
-                        </Dropdown>
-
-                    }
-                    else
-                    {
-                        <Space>
-                            @foreach (var item in but)
-                            {
-                            <SpaceItem>
-                                    @CreatePackButton(item, context)
-                            </SpaceItem>
-                            }
-                        </Space>
-                        
-
-                    }
+                            </Menu>
+                        </Overlay>
+                        <ChildContent>
+                            <a class="ant-dropdown-link" @onclick:preventDefault>
+                                更多 <Icon Type="down" />
+                            </a>
+                        </ChildContent>
+                    </Dropdown>
 
                 }
-            
+                else
+                {
+                    <Space>
+                        @foreach (var item in but)
+                        {
+                            <SpaceItem>
+                                @CreatePackButton(item, context)
+                            </SpaceItem>
+                        }
+                    </Space>
+
+
+                }
+
+            }
+
         </ActionColumn>
     }
 </Table>

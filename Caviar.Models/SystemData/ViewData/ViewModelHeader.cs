@@ -34,6 +34,10 @@ namespace Caviar.Models.SystemData
         /// </summary>
         public int? ValueLen { get; set; }
         /// <summary>
+        /// 字段值
+        /// </summary>
+        public string Value { get; set; }
+        /// <summary>
         /// 是否为枚举
         /// </summary>
         public bool IsEnum { get; set; }

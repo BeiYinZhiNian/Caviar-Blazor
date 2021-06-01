@@ -16,7 +16,7 @@ namespace Caviar.Models.SystemData
         [Required(ErrorMessage = "请输入菜单名称")]
         [StringLength(50, ErrorMessage = "菜单名称请不要超过{1}个字符")]
         public string MenuName { get; set; }
-        [DisplayName("类型")]
+        [DisplayName("菜单类型")]
         public MenuType MenuType { get; set; }
 
         [DisplayName("打开方式")]
