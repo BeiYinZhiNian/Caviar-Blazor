@@ -12,8 +12,6 @@ namespace Caviar.AntDesignPages.Shared
 {
     partial class CavMainLayout
     {
-        [Inject]
-        IConfiguration Configuration { get; set; }
         /// <summary>
         /// logo图片地址
         /// </summary>

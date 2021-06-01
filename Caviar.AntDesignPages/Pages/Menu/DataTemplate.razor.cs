@@ -38,6 +38,7 @@ namespace Caviar.AntDesignPages.Pages.Menu
                 }
             }
             SysMenus = result.Data;
+            StateHasChanged();
         }
 
         

@@ -1,0 +1,37 @@
+﻿@typeparam TData
+
+<RadioGroup @bind-Value="Value" OnChange="EventCallback.Factory.Create<TData>(this, SetValue)">
+    @CreateEnemu()
+</RadioGroup>
+@code{
+    TData _value;
+    [Parameter]
+    public TData Value { get; set; }
+    [Parameter]
+    public EventCallback<TData> ValueChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<TData> OnChange { get; set; }
+
+    public async void SetValue()
+    {
+        if (OnChange.HasDelegate)
+        {
+            await ValueChanged.InvokeAsync(Value);
+            await OnChange.InvokeAsync(Value);
+        }
+    }
+
+    public RenderFragment CreateEnemu()
+    {
+        var type = typeof(TData);
+        if (!type.IsEnum) throw new Exception("Only enumeration types can be entered");
+        var dic = CommonHelper.GetEnenuModelHeader(type);
+        RenderFragment render = null;
+        foreach (var item in dic)
+        {
+            render +=@<Radio  Value="(TData)Enum.ToObject(type, item.Key)">@item.Value</Radio>;
+        }
+        return render;
+    }
+}

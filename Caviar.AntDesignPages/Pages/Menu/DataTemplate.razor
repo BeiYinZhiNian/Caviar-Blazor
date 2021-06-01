@@ -24,35 +24,17 @@
         </Dropdown>
     </FormItem>
     <FormItem Label="菜单类型">
-        <RadioGroup @bind-Value="@context.MenuType" OnChange="MenuTypeCallback">
-            <Radio Value="(MenuType)0">目录</Radio>
-            <Radio Value="(MenuType)1">菜单</Radio>
-            <Radio Value="(MenuType)2">按钮</Radio>
-        </RadioGroup>
+        <CavEnum TData="MenuType" @bind-Value="@context.MenuType"
+                  OnChange="EventCallback.Factory.Create<MenuType>(this, CheckMenuType)"></CavEnum>
     </FormItem>
     <FormItem Label="按钮位置" Style="@buttonStrle">
-        <RadioGroup @bind-Value="@context.ButtonPosition">
-            <Tooltip Title="@("主要用于加载请求")">
-                <Radio Value="(ButtonPosition)0">表头</Radio>
-            </Tooltip>
-            <Tooltip Title="@("主要用于数据行的回调")">
-                <Radio Value="(ButtonPosition)1">行</Radio>
-            </Tooltip>
-            <Tooltip Title="@("主要用于api授权验证")">
-                <Radio Value="(ButtonPosition)2">隐藏</Radio>
-            </Tooltip>
-        </RadioGroup>
+        <CavEnum TData="ButtonPosition" @bind-Value="@context.ButtonPosition"></CavEnum>
     </FormItem>
     <FormItem Label="请求地址" Style="@visibility">
         <Input @bind-Value="@context.Url">
     </FormItem>
     <FormItem Label="打开方式" Style="@visibility">
-        <RadioGroup @bind-Value="@context.TargetType">
-            <Radio Value="(TargetType)0">当前页面</Radio>
-            <Radio Value="(TargetType)1">弹出窗口</Radio>
-            <Radio Value="(TargetType)2">新建页面</Radio>
-            <Radio Value="(TargetType)3">回调</Radio>
-        </RadioGroup>
+        <CavEnum TData="TargetType" @bind-Value="@context.TargetType"></CavEnum>
     </FormItem>
     <FormItem Style="@buttonStrle">
         <Checkbox @bind-Value="@context.IsDoubleTrue">需要二次确认</Checkbox>
@@ -82,8 +64,6 @@
 
     string visibility = "display:none;";
     string buttonStrle = "display:none;";
-    EventCallback<MenuType> MenuTypeCallback => EventCallback.Factory.Create<MenuType>(this, CheckMenuType);
-
     public void CheckMenuType()
     {
         switch (DataSource.MenuType)
