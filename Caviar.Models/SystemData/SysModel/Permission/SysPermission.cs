@@ -9,9 +9,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
-    /// <summary>
-    /// 权限表
-    /// </summary>
+    [DisplayName("权限")]
     public class SysPermission : SysBaseModel
     {
         [JsonIgnore]

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -7,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
-    /// <summary>
-    /// 权限菜单关联表
-    /// </summary>
+    [DisplayName("菜单权限")]
     public class SysPermissionMenu:SysBaseModel
     {
         [JsonIgnore]

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -7,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData.Template.Role
 {
-    /// <summary>
-    /// 权限角色关联表
-    /// </summary>
+    [DisplayName("角色权限")]
     public class SysRolePermission : SysBaseModel
     {
         public int RoleId { get; set; }
