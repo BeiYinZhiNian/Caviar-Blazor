@@ -28,11 +28,19 @@ namespace Caviar.Control.Menu
             return menus;
         }
 
-        public async virtual Task<List<ViewMenu>> GetViewMenus(Expression<Func<SysMenu, bool>> where)
+        public List<SysMenu> GetPermissionMenu(List<SysPermission> permissions)
         {
-            var menus = GetEntitys(where).ToList();
-            var viewMenus = new List<ViewMenu>().ListAutoAssign(menus);
-            return viewMenus.ListToTree();
+            List<SysMenu> menus = new List<SysMenu>();
+            permissions = permissions.Where(u => u.PermissionType == PermissionType.Menu).ToList();
+            foreach (var item in permissions)
+            {
+                var menu = BC.DC.GetEntityAsync<SysMenu>(u => u.Id == item.PermissionId).FirstOrDefault();
+                if (menu == null) continue;
+                menus.Add(menu);
+            }
+            return menus;
         }
+
+
     }
 }

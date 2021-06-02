@@ -14,22 +14,16 @@ namespace Caviar.Control.Permission
         /// 获取权限列表
         /// </summary>
         /// <returns></returns>
-        public async Task<List<SysRole>> GetCurrentPermissions()
+        public List<SysPermission> GetCurrentPermissions(List<SysRole> roles)
         {
-            List<SysRole> roles = new List<SysRole>();
-            if (BC.Id > 0)
+            List<SysPermission> permissions = new List<SysPermission>();
+            foreach (var item in roles)
             {
-                //获取当前用户角色
-                var userRoles = BC.DC.GetEntityAsync<SysRoleLogin>(u => u.UserId == BC.Id);
-                foreach (var item in userRoles)
-                {
-                    roles.Add(item.Role);
-                }
+                var rolePermission = BC.DC.GetEntityAsync<SysRolePermission>(u => u.RoleId == item.Id).FirstOrDefault();
+                if (rolePermission == null) continue;
+                permissions.Add(rolePermission.Permission);
             }
-            //获取未登录角色
-            var noRole = await BC.DC.GetEntityAsync<SysRole>(CaviarConfig.NoLoginRoleGuid);
-            roles.Add(noRole);
-            return roles;
+            return permissions;
         }
     }
 }

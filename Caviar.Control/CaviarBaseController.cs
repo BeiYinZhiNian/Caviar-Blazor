@@ -73,6 +73,7 @@ namespace Caviar.Control
                 }
                 BC.UserToken = userToken;
             }
+            GetRolePermission();
             var IsVerification = ActionVerification();
             if (!IsVerification)
             {
@@ -96,13 +97,12 @@ namespace Caviar.Control
         /// 可以做缓存，未做
         /// </summary>
         /// <returns></returns>
-        async Task GetRolePermission()
+        void GetRolePermission()
         {
-            var permissionAction = CreateModel<PermissionAction>();
-            var test = await permissionAction.GetCurrentPermissions();
             var roleAction = CreateModel<RoleAction>();
-            var a = await roleAction.GetCurrentRoles();
-            
+            BC.Roles = roleAction.GetCurrentRoles().Result;
+            var permissionAction = CreateModel<PermissionAction>();
+            BC.Permissions = permissionAction.GetCurrentPermissions(BC.Roles);
         } 
 
         public override void OnActionExecuted(ActionExecutedContext context)
