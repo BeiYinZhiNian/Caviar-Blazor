@@ -113,7 +113,7 @@ namespace Caviar.AntDesignPages.Pages.Role
         async void Delete(string url,ViewRole data)
         {
             //删除单条
-            var result = await Http.PostJson<ViewRole, object>(url, data);
+            var result = await Http.PostJson(url, data);
             if (result.Status == 200)
             {
                 Message.Success("删除成功");

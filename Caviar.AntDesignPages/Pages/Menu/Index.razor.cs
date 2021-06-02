@@ -34,40 +34,23 @@ namespace Caviar.AntDesignPages.Pages.Menu
 
         async void ConfirmDelete(string url,ViewMenu data)
         {
-            if(data.Children!=null && data.Children.Count > 0)
+            url += "?IsDeleteAll=false";
+            if (data.Children!=null && data.Children.Count > 0)
             {
                 var confirm = await ShowConfirm(data.MenuName, data.Children.Count);
                 if (confirm == ConfirmResult.Abort)//全部删除
                 {
-
-                    var result = await Http.PostJson<ViewMenu, object>("Menu/DeleteAllEntity", data);
-                    if (result.Status == 200)
-                    {
-                        Message.Success("删除成功");
-                    }
-
+                    url += "?IsDeleteAll=true";
                 }
-                else if(confirm == ConfirmResult.Retry)//移到上层
-                {
-                    var result = await Http.PostJson<ViewMenu, object>(url, data);
-                    if (result.Status == 200)
-                    {
-                        Message.Success("删除成功");
-                    }
-                }
-                else
+                else if(confirm == ConfirmResult.Ignore)
                 {
                     return;
                 }
             }
-            else
+            var result = await Http.PostJson(url, data);
+            if (result.Status == 200)
             {
-                //删除单条
-                var result = await Http.PostJson<ViewMenu, object>(url, data);
-                if (result.Status == 200)
-                {
-                    Message.Success("删除成功");
-                }
+                Message.Success("删除成功");
             }
             Refresh();
         }

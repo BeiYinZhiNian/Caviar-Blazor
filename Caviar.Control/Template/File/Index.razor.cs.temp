@@ -105,6 +105,7 @@ namespace {WebUINamespace}.{OutName}
             var result = await Http.GetJson<List<ViewMenu>>("Menu/GetButtons?url=" + url);
             if (result.Status != 200) return;
             Buttons = result.Data;
+            StateHasChanged();
         }
         /// <summary>
         /// 删除数据
@@ -113,7 +114,7 @@ namespace {WebUINamespace}.{OutName}
         async void Delete(string url,{ViewOutName} data)
         {
             //删除单条
-            var result = await Http.PostJson<{ViewOutName}, object>(url, data);
+            var result = await Http.PostJson(url, data);
             if (result.Status == 200)
             {
                 Message.Success("删除成功");

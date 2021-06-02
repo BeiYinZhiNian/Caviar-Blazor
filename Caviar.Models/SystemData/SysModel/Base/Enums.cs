@@ -68,8 +68,16 @@ namespace Caviar.Models.SystemData
         Header,
         [Display(Name = "行")]
         Row,
-        [Display(Name = "不可见")]
-        Invisible
+        [Display(Name = "表外")]
+        Outside
     }
 
+    /// <summary>
+    /// 权限类型
+    /// </summary>
+    public enum PermissionType
+    {
+        [Display(Name = "菜单")]
+        Menu,
+    }
 }

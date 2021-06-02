@@ -44,10 +44,15 @@ namespace Caviar.Models
 
         public int Id => UserToken.Id;
 
-        public bool IsLogin { get; set; } = false;
+        public bool IsLogin { 
+            get 
+            {
+                return Id > 0;
+            } 
+        }
 
-        public string PhoneNumber { get; set; }
-
+        public List<SysRole> Roles { get; set; }
+        public List<SysPermission> Permissions { get; set; }
         public UserToken UserToken { get; set; } = new UserToken();
     }
 }

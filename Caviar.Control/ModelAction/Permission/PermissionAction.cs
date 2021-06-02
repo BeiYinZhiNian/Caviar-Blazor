@@ -1,29 +1,23 @@
-﻿using System;
+﻿using Caviar.Models.SystemData;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Caviar.Models.SystemData;
 
-namespace Caviar.Control.Role
+namespace Caviar.Control.Permission
 {
-    public partial class RoleAction
+    public partial class PermissionAction
     {
-        partial void PartialModelToViewModel(ref bool isContinue, PageData<SysRole> model, ref PageData<ViewRole> outModel)
-        {
-            outModel = CommonHelper.AToB<PageData<ViewRole>, PageData<SysRole>>(model);
-            if (outModel.Total != 0)
-            {
-                var viewMenus = new List<ViewRole>().ListAutoAssign(model.Rows);
-                outModel.Rows = viewMenus.ListToTree();
-            }
-            isContinue = false;
-        }
 
-        public async Task<List<SysRole>> GetCurrentRoles()
+        /// <summary>
+        /// 获取权限列表
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<SysRole>> GetCurrentPermissions()
         {
             List<SysRole> roles = new List<SysRole>();
-            if (BC.Id>0)
+            if (BC.Id > 0)
             {
                 //获取当前用户角色
                 var userRoles = BC.DC.GetEntityAsync<SysRoleLogin>(u => u.UserId == BC.Id);

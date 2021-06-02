@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Caviar.Models.SystemData.Template.Role
+namespace Caviar.Models.SystemData
 {
     [DisplayName("角色权限")]
     public class SysRolePermission : SysBaseModel

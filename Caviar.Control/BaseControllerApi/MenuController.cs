@@ -11,23 +11,12 @@ namespace Caviar.Control.Menu
     public partial class MenuController : CaviarBaseController
     {
         /// <summary>
-        /// 获取左侧菜单
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public IActionResult GetLeftSideMenus()
-        {
-            
-            ResultMsg.Data = Action.GetViewMenus(u => u.MenuType == MenuType.Catalog || u.MenuType == MenuType.Menu);
-            return ResultOK();
-        }
-        /// <summary>
         /// 获取该页面的按钮
         /// </summary>
         /// <param name="menuId"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult GetButtons(string url)
+        public async Task<IActionResult> GetButtons(string url)
         {
             if(url == null)
             {
@@ -45,12 +34,18 @@ namespace Caviar.Control.Menu
         }
 
         /// <summary>
-        /// 删除并将子菜单移动到上一层
+        /// 移除菜单,如有子菜单，默认移动到上一层
         /// </summary>
+        /// <param name="viewMen"></param>
+        /// <param name="IsDeleteAll">为True时删除全部子菜单</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> MoveEntity(ViewMenu viewMen)
+        public async Task<IActionResult> Move(ViewMenu viewMen,bool IsDeleteAll)
         {
+            if (IsDeleteAll)
+            {
+                return await DeleteAllEntity(viewMen);
+            }
             Action.AutoAssign(viewMen);
             List<ViewMenu> viewMenuList = new List<ViewMenu>();
             viewMen.TreeToList(viewMenuList);
@@ -85,8 +80,7 @@ namespace Caviar.Control.Menu
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> DeleteAllEntity(ViewMenu viewMen)
+        private async Task<IActionResult> DeleteAllEntity(ViewMenu viewMen)
         {
             List<ViewMenu> viewMenuList = new List<ViewMenu>();
             viewMen.TreeToList(viewMenuList);

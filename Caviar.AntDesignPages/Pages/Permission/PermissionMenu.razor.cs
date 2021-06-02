@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using AntDesign;
 namespace Caviar.AntDesignPages.Pages.Permission
 {
     public partial class PermissionMenu: ITableTemplate
@@ -25,6 +25,9 @@ namespace Caviar.AntDesignPages.Pages.Permission
             await GetMenus();//获取数据源
         }
 
+        Tree<ViewMenu> Tree { get; set; }
+        
+
         async Task GetMenus()
         {
             var result = await Http.GetJson<PageData<ViewMenu>>($"Menu/Index?pageSize=100");
@@ -35,8 +38,10 @@ namespace Caviar.AntDesignPages.Pages.Permission
             }
         }
 
-        public Task<bool> Submit()
+        public async Task<bool> Submit()
         {
+            var ids = Tree.CheckedKeys;
+            var result = await Http.PostJson(Url, ids);
             throw new NotImplementedException();
         }
     }

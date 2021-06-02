@@ -105,6 +105,7 @@ namespace Caviar.AntDesignPages.Pages.Menu
             var result = await Http.GetJson<List<ViewMenu>>("Menu/GetButtons?url=" + url);
             if (result.Status != 200) return;
             Buttons = result.Data;
+            StateHasChanged();
         }
         /// <summary>
         /// 删除数据
@@ -113,7 +114,7 @@ namespace Caviar.AntDesignPages.Pages.Menu
         async void Delete(string url,ViewMenu data)
         {
             //删除单条
-            var result = await Http.PostJson<ViewMenu, object>(url, data);
+            var result = await Http.PostJson(url, data);
             if (result.Status == 200)
             {
                 Message.Success("删除成功");

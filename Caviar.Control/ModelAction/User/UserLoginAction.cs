@@ -34,7 +34,6 @@ namespace Caviar.Control
             BC.UserToken.CreateTime = DateTime.Now;
             BC.UserToken.Token = CaviarConfig.GetUserToken(BC.UserToken);
             BC.UserToken.Duration = CaviarConfig.TokenDuration;
-            BC.IsLogin = true;
             return BC.UserToken.Token;
         }
 

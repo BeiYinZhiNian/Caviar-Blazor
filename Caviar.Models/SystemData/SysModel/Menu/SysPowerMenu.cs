@@ -35,8 +35,6 @@ namespace Caviar.Models.SystemData
 
         [DisplayName("二次确认")]
         public bool IsDoubleTrue { get; set; }
-        [JsonIgnore]
-        public virtual List<SysPermissionMenu> RoleMenus { get; set; }
     }
 
 

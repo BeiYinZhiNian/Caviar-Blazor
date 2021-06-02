@@ -1,37 +1,13 @@
 ﻿@page "/Permission/Menu"
-
-@if (ViewMenus != null)
-{
-    <Tree Checkable BlockNode TItem="string">
-        <Nodes>
-            @CreateTree(ViewMenus)
-        </Nodes>
-    </Tree>
-
-}
-
-@code{
-    RenderFragment CreateTree(List<ViewMenu> viewMenus)
-    {
-        RenderFragment render = null;
-        foreach (var item in viewMenus)
-        {
-
-            if (item.Children != null)
-            {
-                render +=@<TreeNode Title="@item.MenuName" TItem="string">
-                                  <Nodes>
-                                      @CreateTree(item.Children)
-                                  </Nodes>
-                             </TreeNode>;    
-            }
-            else
-            {
-                render +=@<TreeNode Title="@item.MenuName" TItem="string">
-                         </TreeNode>;   
-            }
-        }
-        return render;
-    }
-
-}
+<Text Type="warning">请选择该角色可访问的菜单</Text>
+<Tree @ref="Tree"
+      Checkable
+      BlockNode
+      ShowIcon DataSource="ViewMenus"
+      TitleExpression="x => x.DataItem.MenuName"
+      ChildrenExpression="x => x.DataItem.Children"
+      IconExpression="x => x.DataItem.Icon"
+      IsLeafExpression="x => x.DataItem.Children?.Count == 0"
+      KeyExpression="x => x.DataItem.Id.ToString()"
+      TItem="ViewMenu">
+</Tree>

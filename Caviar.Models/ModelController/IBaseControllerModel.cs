@@ -34,17 +34,33 @@ namespace Caviar.Models
         /// 当前请求的完整Url
         /// </summary>
         public string Current_AbsoluteUri { get; set; }
-
+        /// <summary>
+        /// 用户名
+        /// </summary>
         public string UserName { get; }
-
+        /// <summary>
+        /// 用户id
+        /// </summary>
         public int Id { get; }
-
-        public bool IsLogin { get; set; }
-
-        public string PhoneNumber { get; set; }
-
+        /// <summary>
+        /// 是否登录
+        /// </summary>
+        public bool IsLogin { get; }
+        /// <summary>
+        /// 前端令牌
+        /// </summary>
         public UserToken UserToken { get; set; }
-
+        /// <summary>
+        /// 角色表
+        /// </summary>
+        public List<SysRole> Roles { get; set; }
+        /// <summary>
+        /// 权限表
+        /// </summary>
+        public List<SysPermission> Permissions { get; set; }
+        /// <summary>
+        /// 缓存
+        /// </summary>
         public IMemoryCache Cache { get; }
     }
 }

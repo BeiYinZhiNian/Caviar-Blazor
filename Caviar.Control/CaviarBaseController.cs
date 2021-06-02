@@ -6,20 +6,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using Newtonsoft.Json;
 using System.Diagnostics;
-using System.Reflection;
-using System.ComponentModel;
 using System.Text;
 using Caviar.Models;
 using Microsoft.Extensions.Primitives;
 using System.Web;
-using System.Collections;
+using Caviar.Control.Role;
 using System.Threading.Tasks;
-using Microsoft.Data.SqlClient;
-using System.IO;
+using Caviar.Control.Permission;
+using Caviar.Control.Menu;
 
 namespace Caviar.Control
 {
@@ -80,7 +76,7 @@ namespace Caviar.Control
             var IsVerification = ActionVerification();
             if (!IsVerification)
             {
-                context.Result = ResultUnauthorized("对不起，您还没有获得改页面权限");
+                context.Result = ResultForbidden("对不起，您还没有获得该权限");
                 return;
             }
 
@@ -95,6 +91,19 @@ namespace Caviar.Control
                 }
             }
         }
+        /// <summary>
+        /// 获取用户角色和权限
+        /// 可以做缓存，未做
+        /// </summary>
+        /// <returns></returns>
+        async Task GetRolePermission()
+        {
+            var permissionAction = CreateModel<PermissionAction>();
+            var test = await permissionAction.GetCurrentPermissions();
+            var roleAction = CreateModel<RoleAction>();
+            var a = await roleAction.GetCurrentRoles();
+            
+        } 
 
         public override void OnActionExecuted(ActionExecutedContext context)
         {
@@ -125,7 +134,7 @@ namespace Caviar.Control
         #region  日志消息
         protected void LoggerMsg<T>(string msg, string action = "", LogLevel logLevel = LogLevel.Information, bool IsSucc = true)
         {
-            BC.GetLogger<T>().LogInformation($"用户：{BC.UserName} 手机号：{BC.PhoneNumber} 访问地址：{BC.Current_AbsoluteUri} 访问ip：{BC.Current_Ipaddress} 执行时间：{stopwatch.Elapsed} 执行结果：{IsSucc} 执行消息：{msg}");
+            BC.GetLogger<T>().LogInformation($"用户：{BC.UserName} 访问地址：{BC.Current_AbsoluteUri} 访问ip：{BC.Current_Ipaddress} 执行时间：{stopwatch.Elapsed} 执行结果：{IsSucc} 执行消息：{msg}");
         }
         #endregion
 
@@ -192,7 +201,7 @@ namespace Caviar.Control
 
 
         /// <summary>
-        /// 返回此结果定位到403界面（无权限）
+        /// 返回（无权限）
         /// </summary>
         /// <returns></returns>
         protected virtual IActionResult ResultForbidden(string title)

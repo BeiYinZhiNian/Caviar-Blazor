@@ -25,19 +25,19 @@ namespace Caviar.AntDesignPages.Pages.Menu
 
         async void GetMenus()
         {
-            var result = await Http.GetJson<List<ViewMenu>>("Menu/GetLeftSideMenus");
+            var result = await Http.GetJson<PageData<ViewMenu>>("Menu/Index?pageSize=100");
             if (result.Status != 200) return;
             if (DataSource.ParentId > 0)
             {
                 List<ViewMenu> listData = new List<ViewMenu>();
-                result.Data.TreeToList(listData);
+                result.Data.Rows.TreeToList(listData);
                 var parent = listData.SingleOrDefault(u => u.Id == DataSource.ParentId);
                 if (parent != null)
                 {
                     ParentMenuName = parent.MenuName;
                 }
             }
-            SysMenus = result.Data;
+            SysMenus = result.Data.Rows;
             StateHasChanged();
         }
 

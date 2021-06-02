@@ -81,9 +81,9 @@ namespace Caviar.AntDesignPages.Helper
             return result;
         }
 
-        public async Task<ResultMsg> PostJson(string address, string data, EventCallback eventCallback = default)
+        public async Task<ResultMsg> PostJson<K>(string address, K data, EventCallback eventCallback = default)
         {
-            var result = await HttpRequest<object, object>(address, "post", data, eventCallback);
+            var result = await HttpRequest<K, object>(address, "post", data, eventCallback);
             return result;
         }
 

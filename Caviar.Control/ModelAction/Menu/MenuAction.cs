@@ -22,13 +22,13 @@ namespace Caviar.Control.Menu
             isContinue = false;
         }
 
-        public virtual IQueryable<SysMenu> GetEntitys(Expression<Func<SysMenu, bool>> where)
+        public List<SysMenu> GetEntitys(Expression<Func<SysMenu, bool>> where)
         {
-            var menus = BC.DC.GetEntityAsync(where).OrderBy(u => u.Id);
+            var menus = BC.DC.GetEntityAsync(where).OrderBy(u => u.Id).ToList();
             return menus;
         }
 
-        public virtual List<ViewMenu> GetViewMenus(Expression<Func<SysMenu, bool>> where)
+        public async virtual Task<List<ViewMenu>> GetViewMenus(Expression<Func<SysMenu, bool>> where)
         {
             var menus = GetEntitys(where).ToList();
             var viewMenus = new List<ViewMenu>().ListAutoAssign(menus);

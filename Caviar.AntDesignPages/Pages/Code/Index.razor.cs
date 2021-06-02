@@ -48,6 +48,10 @@ namespace Caviar.AntDesignPages.Pages.Code
                             //循环,并添注入
                             .ForEach(t =>
                             {
+                                if(t.Name.ToLower().Contains("view") || t.Name.ToLower().Contains("sysbasemodel"))
+                                {
+                                    return;
+                                }
                                 var displayName = t.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
                                 Models.Add(new ModelData {Name = t.Name, DisplayName = displayName,FullName = t.FullName.Replace("."+t.Name,"") });
                             });

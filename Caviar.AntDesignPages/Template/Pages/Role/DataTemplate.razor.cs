@@ -67,7 +67,7 @@ namespace Caviar.AntDesignPages.Pages.Role
 
         async Task<bool> FormSubmit()
         {
-            var result = await Http.PostJson<ViewRole, object>(Url, DataSource);
+            var result = await Http.PostJson(Url, DataSource);
             if (result.Status == 200)
             {
                 Message.Success(SuccMsg);
