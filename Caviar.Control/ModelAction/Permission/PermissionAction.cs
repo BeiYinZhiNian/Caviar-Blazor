@@ -14,14 +14,21 @@ namespace Caviar.Control.Permission
         /// 获取权限列表
         /// </summary>
         /// <returns></returns>
-        public List<SysPermission> GetCurrentPermissions(List<SysRole> roles)
+        public async Task<List<SysPermission>> GetCurrentPermissions(List<SysRole> roles,bool isAdmin = false)
         {
             List<SysPermission> permissions = new List<SysPermission>();
-            foreach (var item in roles)
+            if (isAdmin)
             {
-                var rolePermission = BC.DC.GetEntityAsync<SysRolePermission>(u => u.RoleId == item.Id).FirstOrDefault();
-                if (rolePermission == null) continue;
-                permissions.Add(rolePermission.Permission);
+                return await BC.DC.GetAllAsync<SysPermission>();
+            }
+            else
+            {
+                foreach (var item in roles)
+                {
+                    var rolePermission = await BC.DC.GetFirstEntityAsync<SysRolePermission>(u => u.RoleId == item.Id);
+                    if (rolePermission == null) continue;
+                    permissions.Add(rolePermission.Permission);
+                }
             }
             return permissions;
         }

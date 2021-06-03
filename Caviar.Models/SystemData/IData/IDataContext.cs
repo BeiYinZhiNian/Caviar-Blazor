@@ -80,14 +80,21 @@ namespace Caviar.Models.SystemData
         /// 异步获取所有数据
         /// </summary>
         /// <returns></returns>
-        public IQueryable<T> GetAllAsync<T>() where T : class, IBaseModel;
+        public Task<List<T>> GetAllAsync<T>() where T : class, IBaseModel;
         /// <summary>
         /// 根据条件获取实体
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public IQueryable<T> GetEntityAsync<T>(Expression<Func<T, bool>> where) where T : class, IBaseModel;
+        public Task<List<T>> GetEntityAsync<T>(Expression<Func<T, bool>> where) where T : class, IBaseModel;
+        /// <summary>
+        /// 根据条件获取单个实体
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public Task<T> GetFirstEntityAsync<T>(Expression<Func<T, bool>> where) where T : class, IBaseModel;
         /// <summary>
         /// 根据id获取实体
         /// </summary>
@@ -133,5 +140,9 @@ namespace Caviar.Models.SystemData
         /// <param name="parentId"></param>
         /// <returns>返回indexId</returns>
         public Task<int> CreateButton(string menuName, string outName, int parentId,bool isTree = false);
+        /// <summary>
+        /// 取消所有被根据实体
+        /// </summary>
+        public void DetachAll();
     }
 }

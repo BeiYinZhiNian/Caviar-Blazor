@@ -9,8 +9,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Caviar.Models.SystemData;
 /// <summary>
-/// 生成者：未登录用户
-/// 生成时间：2021/5/31 11:39:35
+/// 生成者：admin
+/// 生成时间：2021/6/3 14:38:03
 /// 代码由代码生成器自动生成，更改的代码可能被进行替换
 /// 可在上层目录使用partial关键字进行扩展
 /// </summary>
@@ -119,7 +119,7 @@ namespace Caviar.Control.Menu
         /// <param name="isNoTracking"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10, bool isOrder = true, bool isNoTracking = false)
+        public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10, bool isOrder = true, bool isNoTracking = true)
         {
             var pages = await Action.GetPages(u => true, pageIndex, pageSize, isOrder, isNoTracking);
             ResultMsg.Data = pages;

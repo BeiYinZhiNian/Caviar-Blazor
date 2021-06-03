@@ -218,9 +218,9 @@ namespace Caviar.Control
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public virtual IQueryable<T> GetAllAsync<T>() where T : class, IBaseModel
+        public virtual Task<List<T>> GetAllAsync<T>() where T : class, IBaseModel
         {
-            return GetContext<T>();
+            return GetContext<T>().ToListAsync();
         }
         /// <summary>
         /// 获取指定页数据
@@ -254,15 +254,26 @@ namespace Caviar.Control
             return pageData;
         }
         /// <summary>
-        /// 获取指定实体
+        /// 根据条件获取指定实体
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual IQueryable<T> GetEntityAsync<T>(Expression<Func<T, bool>> where) where T : class, IBaseModel
+        public virtual Task<List<T>> GetEntityAsync<T>(Expression<Func<T, bool>> where) where T : class, IBaseModel
         {
-            return GetContext<T>().Where(where);
+            return GetContext<T>().Where(where).ToListAsync();
         }
+        /// <summary>
+        /// 根据条件获取单个实体
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public virtual Task<T> GetFirstEntityAsync<T>(Expression<Func<T, bool>> where) where T : class, IBaseModel
+        {
+            return GetContext<T>().Where(where).FirstOrDefaultAsync();
+        }
+
         /// <summary>
         /// 根据id获取实体
         /// </summary>
@@ -399,7 +410,10 @@ namespace Caviar.Control
             return IsExistence;
         }
 
-
+        public void DetachAll()
+        {
+            DC.DetachAll();
+        }
         public async Task<int> CreateButton(string menuName,string outName,int parentId,bool isTree = false)
         {
             SysMenu menu = new SysMenu()
@@ -465,11 +479,11 @@ namespace Caviar.Control
             SysMenu entity = null;
             if (menu.MenuType != MenuType.Button)
             {
-                entity = GetEntityAsync<SysMenu>(u => u.MenuName == menu.MenuName).FirstOrDefault();
+                entity = await GetFirstEntityAsync<SysMenu>(u => u.MenuName == menu.MenuName);
             }
             else
             {
-                entity = GetEntityAsync<SysMenu>(u => u.Url == menu.Url && u.MenuName == menu.MenuName && u.ParentId == menu.ParentId).FirstOrDefault();
+                entity = await GetFirstEntityAsync<SysMenu>(u => u.Url == menu.Url && u.MenuName == menu.MenuName && u.ParentId == menu.ParentId);
             }
             var count = 0;
             if (entity == null)

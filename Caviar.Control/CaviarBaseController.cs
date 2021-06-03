@@ -16,6 +16,7 @@ using Caviar.Control.Role;
 using System.Threading.Tasks;
 using Caviar.Control.Permission;
 using Caviar.Control.Menu;
+using System.Linq;
 
 namespace Caviar.Control
 {
@@ -101,8 +102,13 @@ namespace Caviar.Control
         {
             var roleAction = CreateModel<RoleAction>();
             BC.Roles = roleAction.GetCurrentRoles().Result;
+            bool isAdmin = BC.Roles.FirstOrDefault(u => u.Uid == CaviarConfig.SysAdminRoleGuid) == null ? false : true;
+            BC.IsAdmin = isAdmin;
             var permissionAction = CreateModel<PermissionAction>();
-            BC.Permissions = permissionAction.GetCurrentPermissions(BC.Roles);
+            BC.Permissions = permissionAction.GetCurrentPermissions(BC.Roles, isAdmin).Result;
+            var menuAction = CreateModel<MenuAction>();
+            BC.Menus = menuAction.GetPermissionMenu(BC.Permissions, isAdmin).Result;
+            BC.DC.DetachAll();
         } 
 
         public override void OnActionExecuted(ActionExecutedContext context)

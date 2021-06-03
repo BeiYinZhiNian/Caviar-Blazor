@@ -18,18 +18,27 @@ namespace Caviar.Control.Menu
         [HttpGet]
         public async Task<IActionResult> GetButtons(string url)
         {
-            if(url == null)
+            if (url == null)
             {
                 return ResultErrorMsg("请输入正确地址");
             }
-            var menus = Action.GetEntitys(u => u.Url.ToLower() == url.ToLower()).FirstOrDefault();
+            var menus = BC.Menus.Where(u => u.Url?.ToLower() == url.ToLower()).FirstOrDefault();
             if (menus == null)
             {
                 ResultMsg.Data = new List<SysMenu>();
                 return ResultOK();
             }
-            var buttons = Action.GetEntitys(u => u.MenuType == MenuType.Button && u.ParentId == menus.Id).OrderBy(u=>u.Number);
+            var buttons = BC.Menus.Where(u => u.MenuType == MenuType.Button && u.ParentId == menus.Id).OrderBy(u => u.Number);
             ResultMsg.Data = buttons;
+            return ResultOK();
+        }
+
+        [HttpGet]
+        public IActionResult GetPermissionMenu()
+        {
+            var viewMenus = CommonHelper.AToB<List<ViewMenu>, List<SysMenu>>(BC.Menus);
+            viewMenus = viewMenus.ListToTree();
+            ResultMsg.Data = viewMenus;
             return ResultOK();
         }
 
@@ -94,9 +103,6 @@ namespace Caviar.Control.Menu
             }
             return ResultErrorMsg("批量删除数据失败");
         }
-
-
-
         
     }
 }

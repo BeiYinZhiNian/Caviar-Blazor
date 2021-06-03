@@ -59,8 +59,16 @@ namespace Caviar.Models
         /// </summary>
         public List<SysPermission> Permissions { get; set; }
         /// <summary>
+        /// 菜单表
+        /// </summary>
+        public List<SysMenu> Menus { get; set; }
+        /// <summary>
         /// 缓存
         /// </summary>
         public IMemoryCache Cache { get; }
+        /// <summary>
+        /// 是否为管理员
+        /// </summary>
+        public bool IsAdmin { get; set; }
     }
 }

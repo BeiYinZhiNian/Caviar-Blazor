@@ -23,10 +23,10 @@ namespace Caviar.Control.Role
         public async Task<List<SysRole>> GetCurrentRoles()
         {
             List<SysRole> roles = new List<SysRole>();
-            if (BC.Id>0)
+            if (BC.Id > 0)
             {
                 //获取当前用户角色
-                var userRoles = BC.DC.GetEntityAsync<SysRoleLogin>(u => u.UserId == BC.Id);
+                var userRoles = await BC.DC.GetEntityAsync<SysRoleLogin>(u => u.UserId == BC.Id);
                 foreach (var item in userRoles)
                 {
                     roles.Add(item.Role);

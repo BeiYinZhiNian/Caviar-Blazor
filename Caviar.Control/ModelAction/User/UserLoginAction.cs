@@ -22,15 +22,14 @@ namespace Caviar.Control
             SysUserLogin userLogin = null;
             if (!string.IsNullOrEmpty(UserName))
             {
-                userLogin = BC.DC.GetEntityAsync<SysUserLogin>(u => u.UserName == UserName && u.Password == Password).FirstOrDefault();
+                userLogin = BC.DC.GetFirstEntityAsync<SysUserLogin>(u => u.UserName == UserName && u.Password == Password).Result;
             }
             else if (!string.IsNullOrEmpty(PhoneNumber))
             {
-                userLogin = BC.DC.GetEntityAsync<SysUserLogin>(u => u.PhoneNumber == PhoneNumber && u.Password == Password).FirstOrDefault();
+                userLogin = BC.DC.GetFirstEntityAsync<SysUserLogin>(u => u.PhoneNumber == PhoneNumber && u.Password == Password).Result;
             }
             if (userLogin == null) return "用户名或密码错误";
-            this.AutoAssign(userLogin);
-            BC.UserToken.AutoAssign(this);
+            BC.UserToken.AutoAssign(userLogin);
             BC.UserToken.CreateTime = DateTime.Now;
             BC.UserToken.Token = CaviarConfig.GetUserToken(BC.UserToken);
             BC.UserToken.Duration = CaviarConfig.TokenDuration;
@@ -39,19 +38,19 @@ namespace Caviar.Control
 
         public virtual bool Register(out string msg)
         {
-            var count = BC.DC.GetEntityAsync<SysUserLogin>(u => u.UserName == UserName).Count();
-            if (count > 0)
+            var user = BC.DC.GetFirstEntityAsync<SysUserLogin>(u => u.UserName == UserName).Result;
+            if (user != null)
             {
                 msg = "该用户名已经被注册！";
                 return false;
             }
-            count = BC.DC.GetEntityAsync<SysUserLogin>(u => u.PhoneNumber == PhoneNumber).Count();
-            if (count > 0)
+            user = BC.DC.GetFirstEntityAsync<SysUserLogin>(u => u.PhoneNumber == PhoneNumber).Result;
+            if (user != null)
             {
                 msg = "该手机号已经被注册！";
                 return false;
             }
-            count = BC.DC.AddEntityAsync(this).Result;
+            var count = BC.DC.AddEntityAsync(this).Result;
             if (count <= 0)
             {
                 msg = "注册账号失败！";

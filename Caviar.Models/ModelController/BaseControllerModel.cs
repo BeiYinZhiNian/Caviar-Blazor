@@ -44,6 +44,8 @@ namespace Caviar.Models
 
         public int Id => UserToken.Id;
 
+        public bool IsAdmin { get; set; }
+
         public bool IsLogin { 
             get 
             {
@@ -53,6 +55,7 @@ namespace Caviar.Models
 
         public List<SysRole> Roles { get; set; }
         public List<SysPermission> Permissions { get; set; }
+        public List<SysMenu> Menus { get; set; }
         public UserToken UserToken { get; set; } = new UserToken();
     }
 }

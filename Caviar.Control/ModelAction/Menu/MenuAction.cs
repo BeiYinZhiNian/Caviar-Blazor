@@ -22,23 +22,24 @@ namespace Caviar.Control.Menu
             isContinue = false;
         }
 
-        public List<SysMenu> GetEntitys(Expression<Func<SysMenu, bool>> where)
+        public async Task<List<SysMenu>> GetPermissionMenu(List<SysPermission> permissions,bool isAdmin =false)
         {
-            var menus = BC.DC.GetEntityAsync(where).OrderBy(u => u.Id).ToList();
-            return menus;
-        }
-
-        public List<SysMenu> GetPermissionMenu(List<SysPermission> permissions)
-        {
-            List<SysMenu> menus = new List<SysMenu>();
-            permissions = permissions.Where(u => u.PermissionType == PermissionType.Menu).ToList();
-            foreach (var item in permissions)
+            HashSet<SysMenu> menus = new HashSet<SysMenu>();
+            if (isAdmin)
             {
-                var menu = BC.DC.GetEntityAsync<SysMenu>(u => u.Id == item.PermissionId).FirstOrDefault();
-                if (menu == null) continue;
-                menus.Add(menu);
+                return await BC.DC.GetAllAsync<SysMenu>();
             }
-            return menus;
+            else
+            {
+                permissions = permissions.Where(u => u.PermissionType == PermissionType.Menu).ToList();
+                foreach (var item in permissions)
+                {
+                    var menu = await BC.DC.GetFirstEntityAsync<SysMenu>(u => u.Id == item.PermissionId);
+                    if (menu == null) continue;
+                    menus.Add(menu);
+                }
+            }
+            return menus.ToList();
         }
 
 

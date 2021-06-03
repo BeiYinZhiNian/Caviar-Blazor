@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,7 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-
+using System.Text.Json;
 namespace Caviar.Models.SystemData
 {
     public static class CommonHelper
@@ -82,9 +81,17 @@ namespace Caviar.Models.SystemData
                 foreach (PropertyInfo dp in exampleType.GetProperties())
                 {
                     if (dp.Name.ToLower() == "BaseControllerModel".ToLower()) continue;
-                    if (dp.Name == sp.Name)//判断属性名是否相同
+                    if (dp.Name.ToLower() == sp.Name.ToLower())//判断属性名是否相同
                     {
-                        dp.SetValue(example, sp.GetValue(target, null), null);//获得s对象属性的值复制给d对象的属性
+                        try
+                        {
+                            dp.SetValue(example, sp.GetValue(target, null), null);//获得s对象属性的值复制给d对象的属性
+                        }
+                        catch
+                        {
+                            //属性不一致或空属性不需要复制，所以直接忽略即可
+                        }
+                        break;
                     }
                 }
             }
@@ -111,17 +118,14 @@ namespace Caviar.Models.SystemData
         /// <summary>
         /// 两个类型进行转换，短小精悍
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="K"></typeparam>
+        /// <typeparam name="B"></typeparam>
+        /// <typeparam name="A"></typeparam>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static T AToB<T, K>(K value)
+        public static B AToB<B, A>(A value)
         {
-            var setting = new JsonSerializerSettings();
-            setting.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
-            setting.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
-            var json = JsonConvert.SerializeObject(value, setting);
-            return JsonConvert.DeserializeObject<T>(json, setting);
+            var json = JsonSerializer.Serialize(value);
+            return JsonSerializer.Deserialize<B>(json);
         }
 
         /// <summary>
@@ -180,6 +184,7 @@ namespace Caviar.Models.SystemData
         public static List<T> ListToTree<T>(this IList<T> data) where T: class,ITree<T>
         {
             List<T> Tree = new List<T>();
+            if (data == null) return Tree;
             foreach (var item in data)
             {
                 if (item.ParentId == 0)
