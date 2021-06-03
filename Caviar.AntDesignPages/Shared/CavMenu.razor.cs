@@ -86,9 +86,9 @@ namespace Caviar.AntDesignPages.Shared
 
         async Task<List<ViewMenu>> GetMenus()
         {
-            var result = await Http.GetJson<List<ViewMenu>> ("Menu/GetPermissionMenu");
+            var result = await Http.GetJson<PageData<ViewMenu>> ("Menu/Index?pageSize=100");
             if (result.Status != 200) return new List<ViewMenu>();
-            return result.Data;
+            return result.Data.Rows;
         }
 
 

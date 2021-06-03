@@ -30,7 +30,11 @@ namespace {WebApiNamespace}.{OutName}
             {
                 if (_action == null)
                 {
-                    _action = CreateModel<{OutName}Action>();
+                    SetMenuAction();
+                    if(_action == null)
+                    {
+                        _action = CreateModel<{OutName}Action>();
+                    }
                 }
                 return _action;
             }
@@ -39,6 +43,8 @@ namespace {WebApiNamespace}.{OutName}
                 _action = value;
             }
         }
+
+        partial void SetMenuAction();
         #endregion
 
         #region 方法

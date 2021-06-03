@@ -10,6 +10,12 @@ namespace Caviar.Control.Menu
 {
     public partial class MenuController : CaviarBaseController
     {
+
+        partial void SetMenuAction()
+        {
+            _action = CreateModel<NewMenuAction>();
+        }
+
         /// <summary>
         /// 获取该页面的按钮
         /// </summary>
@@ -30,15 +36,6 @@ namespace Caviar.Control.Menu
             }
             var buttons = BC.Menus.Where(u => u.MenuType == MenuType.Button && u.ParentId == menus.Id).OrderBy(u => u.Number);
             ResultMsg.Data = buttons;
-            return ResultOK();
-        }
-
-        [HttpGet]
-        public IActionResult GetPermissionMenu()
-        {
-            var viewMenus = CommonHelper.AToB<List<ViewMenu>, List<SysMenu>>(BC.Menus);
-            viewMenus = viewMenus.ListToTree();
-            ResultMsg.Data = viewMenus;
             return ResultOK();
         }
 
