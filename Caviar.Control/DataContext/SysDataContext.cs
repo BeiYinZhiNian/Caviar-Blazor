@@ -483,7 +483,7 @@ namespace Caviar.Control
             }
             else
             {
-                entity = await GetFirstEntityAsync<SysMenu>(u => u.Url == menu.Url && u.ParentId == menu.ParentId);
+                entity = await GetFirstEntityAsync<SysMenu>(u => u.MenuName == menu.MenuName && u.ParentId == menu.ParentId);
             }
             var count = 0;
             if (entity == null)
