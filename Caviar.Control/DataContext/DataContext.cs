@@ -19,7 +19,6 @@ namespace Caviar.Control
         public virtual DbSet<SysRole> SysRole { get; set; }
         public virtual DbSet<SysMenu> SysMenu { get; set; }
         public virtual DbSet<SysPermission> SysPermission { get; set; }
-        public virtual DbSet<SysRolePermission> RolePermission { get; set; }
         #endregion
 
         public DataContext(DbContextOptions<DataContext> options) : base(options) 

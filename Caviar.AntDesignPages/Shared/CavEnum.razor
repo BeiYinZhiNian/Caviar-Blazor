@@ -15,11 +15,16 @@
 
     public async void SetValue()
     {
-        if (OnChange.HasDelegate)
+        if (ValueChanged.HasDelegate)
         {
             await ValueChanged.InvokeAsync(Value);
+        }
+        if (OnChange.HasDelegate)
+        {
+
             await OnChange.InvokeAsync(Value);
         }
+
     }
 
     public RenderFragment CreateEnemu()

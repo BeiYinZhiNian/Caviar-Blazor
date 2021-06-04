@@ -39,7 +39,7 @@ namespace Caviar.Control.Menu
                     menus.Add(menu);
                 }
             }
-            return menus.ToList();
+            return menus.OrderBy(u => u.Number).ToList();
         }
 
 

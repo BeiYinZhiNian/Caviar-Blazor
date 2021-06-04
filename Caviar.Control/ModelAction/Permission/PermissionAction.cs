@@ -9,88 +9,56 @@ namespace Caviar.Control.Permission
 {
     public partial class PermissionAction
     {
-
-        /// <summary>
-        /// 获取权限列表
-        /// </summary>
-        /// <returns></returns>
         public async Task<List<SysPermission>> GetCurrentPermissions(List<SysRole> roles,bool isAdmin = false)
         {
-            List<SysPermission> permissions = new List<SysPermission>();
             if (isAdmin)
             {
                 return await BC.DC.GetAllAsync<SysPermission>();
             }
-            else
+            List<SysPermission> permissions = new List<SysPermission>();
+            foreach (var item in roles)
             {
-                foreach (var item in roles)
-                {
-                    var rolePermission = await BC.DC.GetEntityAsync<SysRolePermission>(u => u.RoleId == item.Id);
-                    foreach (var permissionItem in rolePermission)
-                    {
-                        permissions.Add(permissionItem.Permission);
-                    }
-                    
-                }
+                var permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.RoleId == item.Id);
+                permissions.AddRange(permission);
             }
             return permissions;
         }
 
         public async Task<bool> SetRoleMenu(int roleId,int[] menuIds)
         {
-            var menus = await GetRoleMenu(roleId);
+            var menus = GetRoleMenu(roleId);
             if (menus == null) return false;
             var Ids = menus.Select(u => u.Id);
             var addIds = menuIds.Except(Ids).ToArray();
             var deleteIds = Ids.Except(menuIds).ToArray();
             foreach (var item in addIds)
             {
-                using (var transaction = BC.DC.BeginTransaction())
+                var permission = new SysPermission()
                 {
-                    var permission = new SysPermission()
-                    {
-                        PermissionId = item,
-                        PermissionType = PermissionType.Menu,
-                    };
-                    var count = await BC.DC.AddEntityAsync(permission);
-                    var rolePermission = new SysRolePermission()
-                    {
-                        RoleId = roleId,
-                        PermissionId = permission.Id
-                    };
-                    await BC.DC.AddEntityAsync(rolePermission);
-                    transaction.Commit();
-                }
+                    PermissionId = item,
+                    PermissionType = PermissionType.Menu,
+                    RoleId = roleId
+                };
+                var count = await BC.DC.AddEntityAsync(permission);
             }
             foreach (var item in deleteIds)
             {
-                var rolePermission = await BC.DC.GetFirstEntityAsync<SysRolePermission>(u => u.RoleId == roleId);
-                using (var transaction = BC.DC.BeginTransaction())
-                {
-                    var permission = await BC.DC.GetFirstEntityAsync<SysPermission>(u => u.PermissionId == item && u.PermissionType == PermissionType.Menu);
-                    
-                    await BC.DC.DeleteEntityAsync(permission);
-                    await BC.DC.DeleteEntityAsync(rolePermission);
-                    transaction.Commit();
-                }
+                var permission = await BC.DC.GetFirstEntityAsync<SysPermission>(u => u.RoleId == roleId && u.PermissionId == item && u.PermissionType == PermissionType.Menu);
+                await BC.DC.DeleteEntityAsync(permission);
             }
             return true;
         }
 
-        public async Task<List<SysMenu>> GetRoleMenu(int roleId)
+        public List<SysMenu> GetRoleMenu(int roleId)
         {
-            var rolePermission = await BC.DC.GetEntityAsync<SysRolePermission>(u => u.RoleId == roleId);
-            if (rolePermission == null) return null;
             List<SysMenu> menus = new List<SysMenu>();
-            foreach (var item in rolePermission)
+            var permission = BC.Permissions.Where(u => u.RoleId == roleId && u.PermissionType == PermissionType.Menu);
+            foreach (var item in permission)
             {
-                var permission = BC.Permissions.FirstOrDefault(u => u.Id == item.PermissionId && u.PermissionType == PermissionType.Menu);
-                if (permission == null) return null;
-                var menu = BC.Menus.FirstOrDefault(u => u.Id == permission.PermissionId);
+                var menu = BC.Menus.FirstOrDefault(u => u.Id == item.PermissionId);
                 if (menu == null) return null;
                 menus.Add(menu);
             }
-            
             return menus;
         }
     }

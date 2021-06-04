@@ -20,6 +20,10 @@ namespace Caviar.Models.SystemData
         /// 权限类型
         /// </summary>
         public PermissionType PermissionType { get; set; }
+        /// <summary>
+        /// 对应的角色id
+        /// </summary>
+        public int RoleId { get; set; }
     }
 
     
