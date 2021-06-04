@@ -11,11 +11,6 @@ namespace Caviar.Control.Menu
     public partial class MenuController : CaviarBaseController
     {
 
-        partial void SetMenuAction()
-        {
-            _action = CreateModel<NewMenuAction>();
-        }
-
         /// <summary>
         /// 获取该页面的按钮
         /// </summary>

@@ -78,7 +78,14 @@ namespace Caviar.Control
             var IsVerification = ActionVerification();
             if (!IsVerification)
             {
-                context.Result = ResultForbidden("对不起，您还没有获得该权限");
+                if (BC.IsLogin)
+                {
+                    context.Result = ResultForbidden("对不起，您还没有获得该权限");
+                }
+                else
+                {
+                    context.Result = ResultUnauthorized("请您先登录");
+                }
                 return;
             }
 
@@ -103,8 +110,6 @@ namespace Caviar.Control
             var roleAction = CreateModel<RoleAction>();
             BC.Roles = roleAction.GetCurrentRoles().Result;
             bool isAdmin = BC.Roles.FirstOrDefault(u => u.Uid == CaviarConfig.SysAdminRoleGuid) == null ? false : true;
-            BC.IsAdmin = isAdmin;
-            isAdmin = true;
             var permissionAction = CreateModel<PermissionAction>();
             BC.Permissions = permissionAction.GetCurrentPermissions(BC.Roles, isAdmin).Result;
             var menuAction = CreateModel<MenuAction>();
@@ -134,8 +139,10 @@ namespace Caviar.Control
         protected virtual bool ActionVerification()
         {
             if (CaviarConfig.IsDebug) return true;
-
-            return true;
+            var url = BC.Current_Action.Replace("/api/", "").ToLower();
+            var menu = BC.Menus.FirstOrDefault(u => !string.IsNullOrEmpty(u.Url) && u.Url.ToLower() == url);
+            if (menu != null) return true;
+            return false;
         }
 
         #region  日志消息

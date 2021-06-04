@@ -12,22 +12,23 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Caviar.AntDesignPages.Pages.Code
+namespace Caviar.AntDesignPages.Pages.CaviarBase
 {
-    public partial class Index
+    public partial class CodeFileGenerate
     {
 
         List<ModelData> Models = new List<ModelData>();
-
+        [Inject]
+        NavigationManager NavigationManager { get; set; }
         [Inject]
         HttpHelper Http { get; set; }
         [Inject]
         MessageService _message { get; set; }
-
-
+        public string Url { get; set; }
         protected override void OnInitialized()
         {
             GetModels();
+            Url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
         }
 
 
@@ -100,7 +101,7 @@ namespace Caviar.AntDesignPages.Pages.Code
                     await _message.Error("请在前后端至少选择一个进行生成");
                     return;
                 }
-                var result = await Http.PostJson<CodeGenerateData,List<TabItem>>("CaviarBase/CodePreview", GenerateData);
+                var result = await Http.PostJson<CodeGenerateData,List<TabItem>>($"{Url}?isPerview=true", GenerateData);
                 if (result.Status == 200)
                 {
                     lstTabs = result.Data;
@@ -115,7 +116,7 @@ namespace Caviar.AntDesignPages.Pages.Code
         string ResultSubTitle = "";
         async void OnGenerateClick()
         {
-            var result = await Http.PostJson<CodeGenerateData, List<TabItem>>("CaviarBase/CodeFileGenerate", GenerateData);
+            var result = await Http.PostJson<CodeGenerateData, List<TabItem>>($"{Url}?isPerview=false", GenerateData);
             if (result.Status == 200)
             {
                 ResultStatus = "success";

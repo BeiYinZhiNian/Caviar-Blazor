@@ -83,18 +83,16 @@ namespace Caviar.Control
             return ResultOK();
         }
 
-
         [HttpPost]
-        public IActionResult CodePreview(CodeGenerateData generate)
-        {
-            ResultMsg.Data = CavAssembly.CodeGenerate(generate,BC.UserName);
-            return ResultOK();
-        }
-        [HttpPost]
-        public async Task<IActionResult> CodeFileGenerate(CodeGenerateData generate)
+        public async Task<IActionResult> CodeFileGenerate(CodeGenerateData generate,bool isPerview = true)
         {
             if (generate == null) return ResultError("必要参数不可为空");
             var data = CavAssembly.CodeGenerate(generate, BC.UserName);
+            if(isPerview)
+            {
+                ResultMsg.Data = CavAssembly.CodeGenerate(generate, BC.UserName);
+                return ResultOK();
+            }
             bool isCover = generate.Config?.SingleOrDefault(u => u == "覆盖") == null ? false : true;
             bool isCreateMenu = generate.Config?.SingleOrDefault(u => u == "创建按钮") == null ? false : true;
             foreach (var item in data)

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Caviar.Control
 {
-    public partial class UserLoginController : CaviarBaseController
+    public partial class UserController : CaviarBaseController
     {
         [HttpPost]
         public IActionResult Login(UserLoginAction userLogin)
@@ -23,7 +23,7 @@ namespace Caviar.Control
         public IActionResult Register(UserLoginAction userLogin)
         {
             var IsRegister = userLogin.Register(out string msg);
-            LoggerMsg<UserLoginController>(msg, IsSucc: IsRegister);
+            LoggerMsg<UserController>(msg, IsSucc: IsRegister);
             if (IsRegister)
             {
                 return ResultOK(msg);

@@ -341,16 +341,22 @@ namespace Caviar.Control
                 };
                 await AddEntityAsync(Login);
                 //创建基础角色
+                var baseRole = new SysRole
+                {
+                    RoleName = "基础角色",
+                };
+                await AddEntityAsync(baseRole);
                 var NoLoginRole = new SysRole
                 {
                     RoleName = "未登录角色",
-                    Uid = CaviarConfig.NoLoginRoleGuid
+                    Uid = CaviarConfig.NoLoginRoleGuid,
                 };
                 await AddEntityAsync(NoLoginRole);
                 var role = new SysRole()
                 {
                     RoleName = "系统管理员",
-                    Uid = CaviarConfig.SysAdminRoleGuid
+                    Uid = CaviarConfig.SysAdminRoleGuid,
+                    ParentId = baseRole.Id
                 };
                 await AddEntityAsync(role);
                 //默认角色加入管理员角色
@@ -399,14 +405,83 @@ namespace Caviar.Control
                     MenuType = MenuType.Menu,
                     TargetType = TargetType.CurrentPage,
                     MenuName = "代码生成",
-                    Url = "Code/Index",
+                    Url = "CaviarBase/CodeFileGenerate",
                     Icon = "code",
                     ParentId = management.Id,
                     Number = "999"
                 };
                 await AddEntityAsync(codePage);
+
+                SysMenu baseApi = new SysMenu()
+                {
+                    MenuType = MenuType.Button,
+                    TargetType = TargetType.Callback,
+                    MenuName = "基础API",
+                    ButtonPosition = ButtonPosition.Outside
+                };
+                await AddEntityAsync(baseApi);
+                SysMenu login = new SysMenu()
+                {
+                    MenuName = "用户登录",
+                    MenuType = MenuType.Button,
+                    TargetType = TargetType.Callback,
+                    ButtonPosition = ButtonPosition.Outside,
+                    Url = "User/Login",
+                    ParentId = baseApi.Id
+                };
+                await AddEntityAsync(login);
+                SysMenu ModelHeader = new SysMenu()
+                {
+                    MenuName = "获取表头",
+                    MenuType = MenuType.Button,
+                    TargetType = TargetType.Callback,
+                    ButtonPosition = ButtonPosition.Outside,
+                    Url = "CaviarBase/GetModelHeader",
+                    ParentId = baseApi.Id
+                };
+                await AddEntityAsync(ModelHeader);
+                SysMenu FuzzyQuery = new SysMenu()
+                {
+                    MenuName = "模糊查询",
+                    MenuType = MenuType.Button,
+                    TargetType = TargetType.Callback,
+                    ButtonPosition = ButtonPosition.Outside,
+                    Url = "CaviarBase/FuzzyQuery",
+                    ParentId = baseApi.Id
+                };
+                await AddEntityAsync(FuzzyQuery);
+                SysMenu GetButtons = new SysMenu()
+                {
+                    MenuName = "获取按钮",
+                    MenuType = MenuType.Button,
+                    TargetType = TargetType.Callback,
+                    ButtonPosition = ButtonPosition.Outside,
+                    Url = "Menu/GetButtons",
+                    ParentId = baseApi.Id
+                };
+                await AddEntityAsync(GetButtons);
+
+                //未登录角色
+                await AddPermissionMenu(NoLoginRole.Id,login.Id);
+
+                //基础角色
+                await AddPermissionMenu(baseRole.Id, login.Id);
+                await AddPermissionMenu(baseRole.Id, ModelHeader.Id);
+                await AddPermissionMenu(baseRole.Id, FuzzyQuery.Id);
+                await AddPermissionMenu(baseRole.Id, GetButtons.Id);
             }
             return IsExistence;
+        }
+
+        private async Task AddPermissionMenu(int roleId,int menuId)
+        {
+            SysPermission permission = new SysPermission()
+            {
+                RoleId = roleId,
+                PermissionId = menuId,
+                PermissionType = PermissionType.Menu
+            };
+            await AddEntityAsync(permission);
         }
 
         public void DetachAll()

@@ -34,7 +34,7 @@
     <Content Update="Pages\Exception\404\404.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Pages\Code\Index.razor">
+    <Content Update="Pages\CaviarBase\CodeFileGenerate.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
     <Content Update="Pages\Menu\DataTemplate.razor">
