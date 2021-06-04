@@ -25,6 +25,7 @@ namespace Caviar.AntDesignPages.Helper
             services.AddScoped<IPrismHighlighter, PrismHighlighter>();
             services.AddSingleton<CavModal>();
             services.AddSingleton<ModalService>();
+            services.AddSingleton<MessageService>();
             if (assemblies != null)
             {
                 AdditionalAssemblies = new List<Assembly>();

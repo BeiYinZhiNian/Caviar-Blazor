@@ -16,7 +16,7 @@ namespace Caviar.Control
                 ResultMsg.Data = BC.UserToken;
                 return ResultOK("登录成功，欢迎回来");
             }
-            return ResultErrorMsg(loginMsg);
+            return ResultError(loginMsg);
         }
 
         [HttpPost]
@@ -28,7 +28,7 @@ namespace Caviar.Control
             {
                 return ResultOK(msg);
             }
-            return ResultErrorMsg(msg);
+            return ResultError(msg);
         }
 
     }

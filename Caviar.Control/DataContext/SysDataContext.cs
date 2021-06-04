@@ -246,7 +246,6 @@ namespace Caviar.Control
             }
             PageData<T> pageData = new PageData<T>
             {
-                Total = await data.CountAsync(),
                 Rows = await data.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync(),
                 PageIndex = pageIndex,
                 PageSize = pageSize
@@ -389,7 +388,7 @@ namespace Caviar.Control
                     TargetType = TargetType.EjectPage,
                     ButtonPosition = ButtonPosition.Row,
                     MenuType = MenuType.Button,
-                    Url = $"Permission/Menu",
+                    Url = $"Permission/RoleMenu",
                     ParentId = parentId,
                     Number = "999",
                 };

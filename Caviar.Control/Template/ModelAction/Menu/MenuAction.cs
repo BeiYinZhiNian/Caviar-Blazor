@@ -89,7 +89,7 @@ namespace Caviar.Control.Menu
         /// <typeparam name="K"></typeparam>
         /// <param name="model"></param>
         /// <returns></returns>
-        protected virtual PageData<ViewMenu> ModelToViewModel(PageData<SysMenu> model)
+        public virtual PageData<ViewMenu> ModelToViewModel(PageData<SysMenu> model)
         {
             
             bool isContinue = true;

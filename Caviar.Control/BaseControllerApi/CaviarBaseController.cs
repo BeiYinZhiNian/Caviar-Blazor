@@ -36,7 +36,7 @@ namespace Caviar.Control
         [HttpPost]
         public IActionResult FuzzyQuery(ViewQuery query)
         {
-            if (string.IsNullOrEmpty(query.QueryObj)) return ResultErrorMsg("查询对象不可为空");
+            if (string.IsNullOrEmpty(query.QueryObj)) return ResultError("查询对象不可为空");
             var assemblyList = CommonHelper.GetAssembly();
             Type type = null;
             foreach (var item in assemblyList)
@@ -44,7 +44,7 @@ namespace Caviar.Control
                 type = item.GetTypes().SingleOrDefault(u => u.Name.ToLower() == query.QueryObj.ToLower());
                 if (type != null) break;
             }
-            if (type == null) return ResultErrorMsg("没有对该对象的查询权限");
+            if (type == null) return ResultError("没有对该对象的查询权限");
 
 
             List<SqlParameter> parameters = new List<SqlParameter>()
@@ -93,7 +93,7 @@ namespace Caviar.Control
         [HttpPost]
         public async Task<IActionResult> CodeFileGenerate(CodeGenerateData generate)
         {
-            if (generate == null) return ResultErrorMsg("必要参数不可为空");
+            if (generate == null) return ResultError("必要参数不可为空");
             var data = CavAssembly.CodeGenerate(generate, BC.UserName);
             bool isCover = generate.Config?.SingleOrDefault(u => u == "覆盖") == null ? false : true;
             bool isCreateMenu = generate.Config?.SingleOrDefault(u => u == "创建按钮") == null ? false : true;

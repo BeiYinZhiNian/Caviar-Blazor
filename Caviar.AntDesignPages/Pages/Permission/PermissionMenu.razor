@@ -1,6 +1,8 @@
-﻿@page "/Permission/Menu"
-<Text>请选择<Text Type="warning">@DataSource.RoleName</Text>可访问的菜单</Text>
+﻿@page "/Permission/RoleMenu"
+<Text>请选择 @DataSource.RoleName 可访问的菜单</Text>
 <Tree @ref="Tree"
+      Style="margin-top:20px"
+      TItem="ViewMenu"
       Checkable
       BlockNode
       ShowIcon DataSource="ViewMenus"
@@ -8,6 +10,5 @@
       ChildrenExpression="x => x.DataItem.Children"
       IconExpression="x => x.DataItem.Icon"
       IsLeafExpression="x => x.DataItem.Children?.Count == 0"
-      KeyExpression="x => x.DataItem.Id.ToString()"
-      TItem="ViewMenu">
+      KeyExpression="x => x.DataItem.Id.ToString()">
 </Tree>

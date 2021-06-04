@@ -26,7 +26,7 @@ namespace Caviar.Control.Menu
         {
             if (url == null)
             {
-                return ResultErrorMsg("请输入正确地址");
+                return ResultError("请输入正确地址");
             }
             var menus = BC.Menus.Where(u => u.Url?.ToLower() == url.ToLower()).FirstOrDefault();
             if (menus == null)
@@ -70,7 +70,7 @@ namespace Caviar.Control.Menu
                 count = await Action.UpdateEntity(menus);
                 if(count != viewMenuList.Count)
                 {
-                    return ResultErrorMsg("删除菜单失败,子菜单移动失败");
+                    return ResultError("删除菜单失败,子菜单移动失败");
                 }
             }
             count = await Action.DeleteEntity();
@@ -78,7 +78,7 @@ namespace Caviar.Control.Menu
             {
                 return ResultOK();
             }
-            return ResultErrorMsg("删除菜单失败");
+            return ResultError("删除菜单失败");
         }
 
         /// <summary>
@@ -98,8 +98,8 @@ namespace Caviar.Control.Menu
             {
                 return ResultOK();
             }
-            return ResultErrorMsg("批量删除数据失败");
+            return ResultError("批量删除数据失败");
         }
-        
+
     }
 }

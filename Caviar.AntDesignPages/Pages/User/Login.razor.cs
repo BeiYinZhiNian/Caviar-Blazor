@@ -16,7 +16,7 @@ namespace Caviar.AntDesignPages.Pages.User
     partial class Login
     {
         bool Loading { get; set; }
-        public SysUserLogin SysLoginUserData { get; set; } = new SysUserLogin();
+        public SysUserLogin SysLoginUserData { get; set; } = new SysUserLogin(){ UserName = "admin" , Password = "123456"};
         [Inject] public NavigationManager NavigationManager { get; set; }
 
         [Inject]

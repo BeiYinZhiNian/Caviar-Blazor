@@ -14,11 +14,13 @@ namespace Caviar.AntDesignPages.Helper
     {
         ModalService Modal;
         UserConfigHelper UserConfig;
+        MessageService MessageService;
 
-        public CavModal(UserConfigHelper userConfig,ModalService modalService)
+        public CavModal(UserConfigHelper userConfig,ModalService modalService, MessageService messageService)
         {
             UserConfig = userConfig;
             Modal = modalService;
+            MessageService = messageService;
         }
         ModalRef modalRef;
         Action OnOK;
@@ -28,7 +30,7 @@ namespace Caviar.AntDesignPages.Helper
             {
                 OnOk = HandleOk,
                 OnCancel = HandleCancel,
-                Content = Render(url, paramenter),
+                Content = Render(url,title ,paramenter),
                 Title = title,
                 Visible = true,
                 OkText = "确定",
@@ -43,7 +45,7 @@ namespace Caviar.AntDesignPages.Helper
             return modalRef;
         }
 
-        RenderFragment Render(string url, IEnumerable<KeyValuePair<string, object?>> paramenter) => builder =>
+        RenderFragment Render(string url,string title, IEnumerable<KeyValuePair<string, object?>> paramenter) => builder =>
         {
             var routes = UserConfig.Routes;
             foreach (var item in routes)
@@ -51,7 +53,6 @@ namespace Caviar.AntDesignPages.Helper
                 var page = (string)item.GetObjValue("Template").GetObjValue("TemplateText");
                 if (page.ToLower() == url.ToLower())
                 {
-
                     var ComponentType = (Type)item.GetObjValue("Handler");
                     var index = 0;
                     builder.OpenComponent(index++, ComponentType);
@@ -64,6 +65,7 @@ namespace Caviar.AntDesignPages.Helper
                     return;
                 }
             }
+            MessageService.Error($"未找到{title}组件，请检查url地址");
         };
 
         ITableTemplate menuAdd;

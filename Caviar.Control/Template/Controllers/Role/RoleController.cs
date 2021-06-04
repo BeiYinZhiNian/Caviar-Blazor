@@ -66,9 +66,9 @@ namespace Caviar.Control.Role
             }
             catch(Exception e)
             {
-                return ResultErrorMsg("添加失败", e.Message);
+                return ResultError("添加失败", e.Message);
             }
-            return ResultErrorMsg("添加失败");
+            return ResultError("添加失败");
         }
 
         /// <summary>
@@ -89,9 +89,9 @@ namespace Caviar.Control.Role
             }
             catch(Exception e)
             {
-                return ResultErrorMsg("修改失败", e.Message);
+                return ResultError("修改失败", e.Message);
             }
-            return ResultErrorMsg("修改失败");
+            return ResultError("修改失败");
         }
 
         /// <summary>
@@ -112,9 +112,9 @@ namespace Caviar.Control.Role
             }
             catch(Exception e)
             {
-                return ResultErrorMsg("删除失败", e.Message);
+                return ResultError("删除失败", e.Message);
             }
-            return ResultErrorMsg("删除失败");
+            return ResultError("删除失败");
         }
         /// <summary>
         /// 获取分页数据

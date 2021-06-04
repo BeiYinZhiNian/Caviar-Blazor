@@ -175,8 +175,6 @@ namespace Caviar.Control
             return Ok(resultMsg);
         }
 
-
-
         protected virtual IActionResult ResultError(int status, string title, string detail)
         {
             ResultMsg.Status = status;
@@ -224,11 +222,11 @@ namespace Caviar.Control
             return ResultError(401, title);
         }
 
-        protected virtual IActionResult ResultErrorMsg(string title, string detail)
+        protected virtual IActionResult ResultError(string title, string detail)
         {
             return ResultError(406, title, detail);
         }
-        protected virtual IActionResult ResultErrorMsg(string title)
+        protected virtual IActionResult ResultError(string title)
         {
             return ResultError(406, title);
         }

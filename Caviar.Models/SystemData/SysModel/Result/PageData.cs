@@ -9,6 +9,16 @@ namespace Caviar.Models.SystemData
 
     public class PageData<T>
     {
+        public PageData()
+        {
+
+        }
+
+        public PageData(List<T> rows)
+        {
+            Rows = rows;
+        }
+
         /// <summary>
         /// 数据
         /// </summary>
@@ -16,7 +26,7 @@ namespace Caviar.Models.SystemData
         /// <summary>
         /// 总计
         /// </summary>
-        public int Total { get; set; }
+        public int Total => Rows == null ? 0 : Rows.Count;
         /// <summary>
         /// 页数
         /// </summary>

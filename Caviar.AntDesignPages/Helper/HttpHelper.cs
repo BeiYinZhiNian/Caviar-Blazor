@@ -126,8 +126,8 @@ namespace Caviar.AntDesignPages.Helper
                     _message.Warn(result.Title);
                     break;
                 case 403:
-                    _navigationManager.NavigateTo("/Exception/403");
-                    _message.Warn(result.Title);
+                case 406:
+                    _message.Warn($"{result.Title} 状态码:{result.Status}");
                     break;
                 case 404:
                     _navigationManager.NavigateTo("/Exception/404");

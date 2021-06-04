@@ -89,7 +89,7 @@ namespace {WebApiNamespace}.{OutName}
         /// <typeparam name="K"></typeparam>
         /// <param name="model"></param>
         /// <returns></returns>
-        protected virtual PageData<{ViewOutName}> ModelToViewModel(PageData<{EntityName}> model)
+        public virtual PageData<{ViewOutName}> ModelToViewModel(PageData<{EntityName}> model)
         {
             
             bool isContinue = true;
