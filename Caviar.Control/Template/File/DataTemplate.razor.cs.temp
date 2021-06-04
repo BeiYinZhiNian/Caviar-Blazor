@@ -67,7 +67,7 @@ namespace {WebUINamespace}.{OutName}
 
         async Task<bool> FormSubmit()
         {
-            var result = await Http.PostJson(Url, DataSource);
+            var result = await Http.PostJson(Url, new RequestData<{ViewOutName}>(DataSource));
             if (result.Status == 200)
             {
                 Message.Success(SuccMsg);

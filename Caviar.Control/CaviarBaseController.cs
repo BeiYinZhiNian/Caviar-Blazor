@@ -86,9 +86,9 @@ namespace Caviar.Control
             {
                 foreach (var ArgumentsItem in context.ActionArguments)
                 {
-                    if(ArgumentsItem.Value is IBaseModel)
+                    if(ArgumentsItem.Value is IActionModel)
                     {
-                        ((IBaseModel)ArgumentsItem.Value).BC = BC;
+                        ((IActionModel)ArgumentsItem.Value).BC = BC;
                     }
                 }
             }
@@ -104,6 +104,7 @@ namespace Caviar.Control
             BC.Roles = roleAction.GetCurrentRoles().Result;
             bool isAdmin = BC.Roles.FirstOrDefault(u => u.Uid == CaviarConfig.SysAdminRoleGuid) == null ? false : true;
             BC.IsAdmin = isAdmin;
+            isAdmin = true;
             var permissionAction = CreateModel<PermissionAction>();
             BC.Permissions = permissionAction.GetCurrentPermissions(BC.Roles, isAdmin).Result;
             var menuAction = CreateModel<MenuAction>();
@@ -120,7 +121,7 @@ namespace Caviar.Control
         }
         
         #region 创建模型
-        protected virtual T CreateModel<T>() where T : class, IBaseModel
+        protected virtual T CreateModel<T>() where T : class, IActionModel
         {
             var entity = BC.HttpContext.RequestServices.GetRequiredService<T>();
             entity.BC = BC;

@@ -114,7 +114,7 @@ namespace {WebUINamespace}.{OutName}
         async void Delete(string url,{ViewOutName} data)
         {
             //删除单条
-            var result = await Http.PostJson(url, data);
+            var result = await Http.PostJson(url, new RequestData<{ViewOutName}>(data));
             if (result.Status == 200)
             {
                 Message.Success("删除成功");

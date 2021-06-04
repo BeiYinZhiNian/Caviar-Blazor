@@ -52,10 +52,5 @@ namespace Caviar.Models.SystemData
         /// 编号
         /// </summary>
         public string Number { get; set; }
-        /// <summary>
-        /// 用来获取控制器里一些操作
-        /// </summary>
-        [NotMapped]
-        public IBaseControllerModel BC { get; set; }
     }
 }

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using Caviar.Models.SystemData;
 /// <summary>
 /// 生成者：admin
-/// 生成时间：2021/6/3 17:27:01
+/// 生成时间：2021/6/4 18:30:48
 /// 代码由代码生成器自动生成，更改的代码可能被进行替换
 /// 可在上层目录使用partial关键字进行扩展
 /// </summary>
@@ -67,7 +67,7 @@ namespace Caviar.AntDesignPages.Pages.Menu
 
         async Task<bool> FormSubmit()
         {
-            var result = await Http.PostJson(Url, DataSource);
+            var result = await Http.PostJson(Url, new RequestData<ViewMenu>(DataSource));
             if (result.Status == 200)
             {
                 Message.Success(SuccMsg);

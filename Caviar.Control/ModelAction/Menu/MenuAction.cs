@@ -9,17 +9,14 @@ using System.Threading.Tasks;
 
 namespace Caviar.Control.Menu
 {
-    public partial class MenuAction : SysMenu
+    public partial class MenuAction
     {
-        partial void PartialModelToViewModel(ref bool isContinue, PageData<SysMenu> model, ref PageData<ViewMenu> outModel)
+        public override List<ViewMenu> ModelToViewModel(List<SysMenu> model)
         {
-            outModel = CommonHelper.AToB<PageData<ViewMenu>, PageData<SysMenu>>(model);
-            if (outModel.Total != 0)
-            {
-                var viewMenus = new List<ViewMenu>().ListAutoAssign(model.Rows);
-                outModel.Rows = viewMenus.ListToTree();
-            }
-            isContinue = false;
+            var outModel = CommonHelper.AToB<List<ViewMenu>, List<SysMenu>>(model);
+            var viewMenus = new List<ViewMenu>().ListAutoAssign(outModel).ToList();
+            viewMenus = viewMenus.ListToTree();
+            return viewMenus;
         }
 
         public async Task<List<SysMenu>> GetPermissionMenu(List<SysPermission> permissions,bool isAdmin =false)

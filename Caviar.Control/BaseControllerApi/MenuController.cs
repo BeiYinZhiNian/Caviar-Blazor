@@ -75,6 +75,7 @@ namespace Caviar.Control.Menu
                     return ResultError("É¾³ý²Ëµ¥Ê§°Ü,×Ó²Ëµ¥ÒÆ¶¯Ê§°Ü");
                 }
             }
+            Action.Entity = viewMen;
             count = await Action.DeleteEntity();
             if (count > 0)
             {

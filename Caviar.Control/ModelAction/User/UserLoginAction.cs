@@ -1,4 +1,5 @@
-﻿using Caviar.Models.SystemData;
+﻿using Caviar.Control.ModelAction;
+using Caviar.Models.SystemData;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Control
 {
-    public partial class UserLoginAction : SysUserLogin
+    public partial class UserLoginAction : BaseModelAction<SysUserLogin,ViewUserLogin>
     {
         /// <summary>
         /// 登录成功返回token，失败返回错误原因
@@ -18,15 +19,15 @@ namespace Caviar.Control
         public virtual string Login()
         {
 
-            if (string.IsNullOrEmpty(Password) || Password.Length != 64) return "用户名或密码错误";
+            if (string.IsNullOrEmpty(Entity.Password) || Entity.Password.Length != 64) return "用户名或密码错误";
             SysUserLogin userLogin = null;
-            if (!string.IsNullOrEmpty(UserName))
+            if (!string.IsNullOrEmpty(Entity.UserName))
             {
-                userLogin = BC.DC.GetFirstEntityAsync<SysUserLogin>(u => u.UserName == UserName && u.Password == Password).Result;
+                userLogin = BC.DC.GetFirstEntityAsync<SysUserLogin>(u => u.UserName == Entity.UserName && u.Password == Entity.Password).Result;
             }
-            else if (!string.IsNullOrEmpty(PhoneNumber))
+            else if (!string.IsNullOrEmpty(Entity.PhoneNumber))
             {
-                userLogin = BC.DC.GetFirstEntityAsync<SysUserLogin>(u => u.PhoneNumber == PhoneNumber && u.Password == Password).Result;
+                userLogin = BC.DC.GetFirstEntityAsync<SysUserLogin>(u => u.PhoneNumber == Entity.PhoneNumber && u.Password == Entity.Password).Result;
             }
             if (userLogin == null) return "用户名或密码错误";
             BC.UserToken.AutoAssign(userLogin);
@@ -38,19 +39,19 @@ namespace Caviar.Control
 
         public virtual bool Register(out string msg)
         {
-            var user = BC.DC.GetFirstEntityAsync<SysUserLogin>(u => u.UserName == UserName).Result;
+            var user = BC.DC.GetFirstEntityAsync<SysUserLogin>(u => u.UserName == Entity.UserName).Result;
             if (user != null)
             {
                 msg = "该用户名已经被注册！";
                 return false;
             }
-            user = BC.DC.GetFirstEntityAsync<SysUserLogin>(u => u.PhoneNumber == PhoneNumber).Result;
+            user = BC.DC.GetFirstEntityAsync<SysUserLogin>(u => u.PhoneNumber == Entity.PhoneNumber).Result;
             if (user != null)
             {
                 msg = "该手机号已经被注册！";
                 return false;
             }
-            var count = BC.DC.AddEntityAsync(this).Result;
+            var count = BC.DC.AddEntityAsync(Entity).Result;
             if (count <= 0)
             {
                 msg = "注册账号失败！";

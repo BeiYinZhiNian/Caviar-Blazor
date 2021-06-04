@@ -13,8 +13,9 @@ namespace Caviar.Control.Menu
         public override async Task<PageData<ViewMenu>> GetPages(Expression<Func<SysMenu, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = false)
         {
             var pages = new PageData<SysMenu>(BC.Menus);
-            var ViewPages = ModelToViewModel(pages);
-            return ViewPages;
+            var list = ModelToViewModel(pages.Rows);
+            var viewPage = new PageData<ViewMenu>(list);
+            return viewPage;
         }
     }
 }

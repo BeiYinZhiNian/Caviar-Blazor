@@ -67,7 +67,5 @@ namespace Caviar.Models.SystemData
         [DisplayName("编号")]
         [StringLength(50, ErrorMessage = "备注请不要超过{1}个字符")]
         public string Number { get; set; }
-        [NotMapped]
-        public IBaseControllerModel BC { get; set; }
     }
 }
