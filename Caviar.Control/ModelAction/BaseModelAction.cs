@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Control.ModelAction
 {
-    public class BaseModelAction<T,ViewT> : IActionModel, IDIinjectAtteribute where T : class, IBaseModel
+    public class BaseModelAction<T,ViewT> : IBaseModelAction<T, ViewT> where T : class, IBaseModel
     {
         /// <summary>
         /// 数据实体
