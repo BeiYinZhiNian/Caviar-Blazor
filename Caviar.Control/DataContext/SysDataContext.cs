@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Caviar.Control
@@ -336,6 +337,9 @@ namespace Caviar.Control
             if (IsExistence)
             {
                 var sql = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}/{CaviarConfig.SqlConfig.SqlFilePath}");
+                string pattern = @"USE \[.*?\]";
+                Match m = Regex.Match(sql, pattern, RegexOptions.IgnoreCase);
+                sql = sql.Replace(m.Value, "");
                 sql = sql.Replace("GO", "");
                 var result = SqlQuery(sql);
             }
