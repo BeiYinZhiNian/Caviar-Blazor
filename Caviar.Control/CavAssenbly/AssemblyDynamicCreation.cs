@@ -114,9 +114,6 @@ namespace Caviar.Control
             string txt = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}/Template/File/{fileName}{extend}.temp");
             txt = txt.Replace("{Producer}", producer);
             txt = txt.Replace("{GenerationTime}", DateTime.Now.ToString());
-            txt = txt.Replace("{ViewOutName}", $"View{generate.OutName}");
-            txt = txt.Replace("{OutName}", $"{generate.OutName}");
-            txt = txt.Replace("{EntityName}", generate.EntityName);
             txt = txt.Replace("{EntityNamespace}", generate.EntityNamespace);
             txt = txt.Replace("{WebUINamespace}", CaviarConfig.WebUINamespace);
             txt = txt.Replace("{ModelsNamespace}", CaviarConfig.ModelsNamespace);
@@ -126,6 +123,10 @@ namespace Caviar.Control
             txt = txt.Replace("{DataSourceWebApi}", $"{generate.OutName}/GetPages");
             txt = txt.Replace("{EntityDisplayName}", generate.ModelName);
             txt = txt.Replace("{FormItem}", CreateFormItem(generate));
+            //以下为最小单元，必须为最后替换
+            txt = txt.Replace("{ViewOutName}", $"View{generate.OutName}");
+            txt = txt.Replace("{OutName}", $"{generate.OutName}");
+            txt = txt.Replace("{EntityName}", generate.EntityName);
             return txt;
         }
         /// <summary>

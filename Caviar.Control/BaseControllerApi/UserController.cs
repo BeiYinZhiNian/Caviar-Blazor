@@ -8,9 +8,11 @@ namespace Caviar.Control
     public partial class UserController : CaviarBaseController
     {
         [HttpPost]
-        public IActionResult Login(UserLoginAction userLogin)
+        public IActionResult Login(ViewUserLogin userLogin)
         {
-            var loginMsg = userLogin.Login();
+            var userAction = CreateModel<UserLoginAction>();
+            userAction.Entity = userLogin;
+            var loginMsg = userAction.Login();
             if (BC.IsLogin)
             {
                 ResultMsg.Data = BC.UserToken;
@@ -20,9 +22,11 @@ namespace Caviar.Control
         }
 
         [HttpPost]
-        public IActionResult Register(UserLoginAction userLogin)
+        public IActionResult Register(ViewUserLogin userLogin)
         {
-            var IsRegister = userLogin.Register(out string msg);
+            var userAction = CreateModel<UserLoginAction>();
+            userAction.Entity = userLogin;
+            var IsRegister = userAction.Register(out string msg);
             LoggerMsg<UserController>(msg, IsSucc: IsRegister);
             if (IsRegister)
             {

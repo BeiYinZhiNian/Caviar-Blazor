@@ -122,6 +122,8 @@ namespace Caviar.AntDesignPages.Helper
                 case 200:
                     break;
                 case 401:
+                    await _jSRuntime.InvokeVoidAsync("delCookie", Config.CookieName);
+                    IsSetCookie = false;
                     _navigationManager.NavigateTo("/User/Login");
                     _message.Warn(result.Title);
                     break;

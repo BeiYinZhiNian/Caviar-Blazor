@@ -10,11 +10,9 @@ namespace Caviar.Models.SystemData
     public interface IBaseModelAction<T, ViewT>:IActionModel, IDIinjectAtteribute where T : class, IBaseModel
     {
         /// <summary>
-        /// 数据实体
+        /// 数据实体，当前台post中带有ViewT模型，会自动注入到实体中
         /// </summary>
         public T Entity { get; set; }
-
-        public IBaseControllerModel BC { get; set; }
 
         /// <summary>
         /// 添加实体

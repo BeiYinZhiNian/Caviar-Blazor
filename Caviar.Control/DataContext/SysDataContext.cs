@@ -386,7 +386,7 @@ namespace Caviar.Control
                     Number = "999"
                 };
                 await AddEntityAsync(management);
-                var parentId = await CreateButton("菜单", "Menu", management.Id,true);
+                var parentId = await CreateButton("菜单", "Menu", management.Id);
                 parentId = await CreateButton("角色", "Role", management.Id);
                 SysMenu permissionMenu = new SysMenu()
                 {

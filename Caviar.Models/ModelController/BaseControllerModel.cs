@@ -1,5 +1,6 @@
 ﻿using Caviar.Models.SystemData;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -14,6 +15,10 @@ namespace Caviar.Models
     [DIInject(InjectType.SCOPED)]
     public partial class BaseControllerModel : IBaseControllerModel
     {
+        /// <summary>
+        /// 筛选器上下文
+        /// </summary>
+        public ActionExecutingContext Context { get; set; }
         /// <summary>
         /// 数据上下文
         /// </summary>

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Control.Menu
 {
-    public partial class MenuController : CaviarBaseController
+    public partial class MenuController
     {
 
         /// <summary>
@@ -17,7 +17,7 @@ namespace Caviar.Control.Menu
         /// <param name="menuId"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetButtons(string url)
+        public IActionResult GetButtons(string url)
         {
             if (url == null)
             {
@@ -34,44 +34,34 @@ namespace Caviar.Control.Menu
             return ResultOK();
         }
 
-        
-
-        /// <summary>
-        /// 移除菜单,如有子菜单，默认移动到上一层
-        /// </summary>
-        /// <param name="viewMen"></param>
-        /// <param name="IsDeleteAll">为True时删除全部子菜单</param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> Move(ViewMenu viewMen,bool IsDeleteAll)
+        public override async Task<IActionResult> Delete(ViewMenu view)
         {
-            if (IsDeleteAll)
+            if (view.IsDeleteAll)
             {
-                return await DeleteAllEntity(viewMen);
+                return await DeleteAllEntity(view);
             }
-            Action.AutoAssign(viewMen);
+            _Action.AutoAssign(view);
             List<ViewMenu> viewMenuList = new List<ViewMenu>();
-            viewMen.TreeToList(viewMenuList);
+            view.TreeToList(viewMenuList);
             var count = 0;
-            if(viewMenuList!=null && viewMenuList.Count != 0)
+            if (viewMenuList != null && viewMenuList.Count != 0)
             {
                 List<SysMenu> menus = new List<SysMenu>();
                 menus.ListAutoAssign(viewMenuList);
                 foreach (var item in menus)
                 {
-                    if (item.ParentId == viewMen.Id)
+                    if (item.ParentId == view.Id)
                     {
-                        item.ParentId = viewMen.ParentId;
+                        item.ParentId = view.ParentId;
                     }
                 }
-                count = await Action.UpdateEntity(menus);
-                if(count != viewMenuList.Count)
+                count = await _Action.UpdateEntity(menus);
+                if (count != viewMenuList.Count)
                 {
                     return ResultError("删除菜单失败,子菜单移动失败");
                 }
             }
-            Action.Entity = viewMen;
-            count = await Action.DeleteEntity();
+            count = await _Action.DeleteEntity();
             if (count > 0)
             {
                 return ResultOK();
@@ -91,7 +81,7 @@ namespace Caviar.Control.Menu
             viewMenuList.Add(viewMen);//将自己添加入删除集合
             List<SysMenu> menus = new List<SysMenu>();
             menus.ListAutoAssign(viewMenuList);//将view转为sys
-            var count = await Action.DeleteEntity(menus);
+            var count = await _Action.DeleteEntity(menus);
             if(count == menus.Count)
             {
                 return ResultOK();

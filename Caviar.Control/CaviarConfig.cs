@@ -100,7 +100,7 @@ namespace Caviar.Control
             if (json["Caviar"]["WebApi"] == null) json["Caviar"]["WebApi"] = new JObject();
             if (json["Caviar"]["WebApi"]["Path"] == null) json["Caviar"]["WebApi"]["Path"] = "/Template/";
             if (json["Caviar"]["WebApi"]["namespace"] == null) json["Caviar"]["WebApi"]["namespace"] = "Caviar.Demo.WebAPI";
-            if (json["Caviar"]["WebApi"]["BaseController"] == null) json["Caviar"]["WebApi"]["BaseController"] = "CaviarBaseController";
+            if (json["Caviar"]["WebApi"]["BaseController"] == null) json["Caviar"]["WebApi"]["BaseController"] = "TemplateBaseController<{OutName}Action,{EntityName},{ViewOutName}>";
         }
 
 

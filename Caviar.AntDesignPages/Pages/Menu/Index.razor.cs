@@ -32,15 +32,14 @@ namespace Caviar.AntDesignPages.Pages.Menu
             }
         }
 
-        async void ConfirmDelete(string uri,ViewMenu data)
+        async void ConfirmDelete(string url,ViewMenu data)
         {
-            var url = uri + "?IsDeleteAll=false";
             if (data.Children!=null && data.Children.Count > 0)
             {
                 var confirm = await ShowConfirm(data.MenuName, data.Children.Count);
                 if (confirm == ConfirmResult.Abort)//全部删除
                 {
-                    url = uri + "?IsDeleteAll=true";
+                    data.IsDeleteAll = true;
                 }
                 else if(confirm == ConfirmResult.Ignore)
                 {
