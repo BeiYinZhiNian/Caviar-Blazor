@@ -77,6 +77,7 @@ namespace Caviar.Control
             WebApiPath = json["Caviar"]["WebApi"]["Path"].ToString();
             WebApiNamespace = json["Caviar"]["WebApi"]["namespace"].ToString();
             BaseController = json["Caviar"]["WebApi"]["BaseController"].ToString();
+            SqlConfig.SqlFilePath = json["Caviar"]["SqlFile"]["SqlPath"].ToString();
             var paseJson = json.ToString();
             File.WriteAllText(appsettingPath, paseJson);
         }
@@ -101,6 +102,8 @@ namespace Caviar.Control
             if (json["Caviar"]["WebApi"]["Path"] == null) json["Caviar"]["WebApi"]["Path"] = "/Template/";
             if (json["Caviar"]["WebApi"]["namespace"] == null) json["Caviar"]["WebApi"]["namespace"] = "Caviar.Demo.WebAPI";
             if (json["Caviar"]["WebApi"]["BaseController"] == null) json["Caviar"]["WebApi"]["BaseController"] = "TemplateBaseController<{OutName}Action,{EntityName},{ViewOutName}>";
+            if (json["Caviar"]["SqlFile"]==null) json["Caviar"]["SqlFile"] = new JObject();
+            if (json["Caviar"]["SqlFile"]["SqlPath"] == null) json["Caviar"]["SqlFile"]["SqlPath"] = "/SqlInit/CaviarSqlServer.sql";
         }
 
 
@@ -230,6 +233,8 @@ namespace Caviar.Control
     public class SqlConfig
     {
         public string Connections { get; set; }
+
+        public string SqlFilePath { get; set; }
 
         public DBTypeEnum DBTypeEnum { get; set; }
     }

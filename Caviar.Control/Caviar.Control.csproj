@@ -30,6 +30,9 @@
     <ProjectReference Include="..\Caviar.Models\Caviar.Models.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="SqlInit\CaviarSqlServer.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Template\File\Action.cs.temp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -329,159 +330,17 @@ namespace Caviar.Control
         /// <returns>返回true表示需要进行初始化数据操作，返回false即数据库已经存在或不需要初始化数据</returns>
         public virtual async Task<bool> DataInit()
         {
+            
             bool IsExistence = await DC.Database.EnsureCreatedAsync();
+            #region 使用sql初始化数据库
             if (IsExistence)
             {
-                //创建初始角色
-                SysUserLogin Login = new SysUserLogin()
-                {
-                    UserName = "admin",
-                    Password = CommonHelper.SHA256EncryptString("123456"),
-                    PhoneNumber = "11111111111",
-                };
-                await AddEntityAsync(Login);
-                //创建基础角色
-                var baseRole = new SysRole
-                {
-                    RoleName = "基础角色",
-                };
-                await AddEntityAsync(baseRole);
-                var NoLoginRole = new SysRole
-                {
-                    RoleName = "未登录角色",
-                    Uid = CaviarConfig.NoLoginRoleGuid,
-                };
-                await AddEntityAsync(NoLoginRole);
-                var role = new SysRole()
-                {
-                    RoleName = "系统管理员",
-                    Uid = CaviarConfig.SysAdminRoleGuid,
-                    ParentId = baseRole.Id
-                };
-                await AddEntityAsync(role);
-                //默认角色加入管理员角色
-                SysRoleLogin sysRoleLogin = new SysRoleLogin()
-                {
-                    RoleId = role.Id,
-                    UserId = Login.Id
-                };
-                await AddEntityAsync(sysRoleLogin);
-                //创建基础访问页面
-                SysMenu homePage = new SysMenu()
-                {
-                    MenuType = MenuType.Menu,
-                    TargetType = TargetType.CurrentPage,
-                    MenuName = "首页",
-                    Icon ="home",
-                    Url = "/"
-                };
-                await AddEntityAsync(homePage);
-                //创建基础菜单
-                SysMenu management = new SysMenu()
-                {
-                    MenuType = MenuType.Catalog,
-                    TargetType = TargetType.CurrentPage,
-                    MenuName = "系统管理",
-                    Icon = "windows",
-                    Number = "999"
-                };
-                await AddEntityAsync(management);
-                var parentId = await CreateButton("菜单", "Menu", management.Id);
-                parentId = await CreateButton("角色", "Role", management.Id);
-                SysMenu permissionMenu = new SysMenu()
-                {
-                    MenuName = "菜单权限",
-                    TargetType = TargetType.EjectPage,
-                    ButtonPosition = ButtonPosition.Row,
-                    MenuType = MenuType.Button,
-                    Url = $"Permission/RoleMenu",
-                    ParentId = parentId,
-                    Number = "999",
-                };
-                await AddEntityAsync(permissionMenu);
-
-                SysMenu codePage = new SysMenu()
-                {
-                    MenuType = MenuType.Menu,
-                    TargetType = TargetType.CurrentPage,
-                    MenuName = "代码生成",
-                    Url = "CaviarBase/CodeFileGenerate",
-                    Icon = "code",
-                    ParentId = management.Id,
-                    Number = "999"
-                };
-                await AddEntityAsync(codePage);
-
-                SysMenu baseApi = new SysMenu()
-                {
-                    MenuType = MenuType.Button,
-                    TargetType = TargetType.Callback,
-                    MenuName = "基础API",
-                    ButtonPosition = ButtonPosition.Outside
-                };
-                await AddEntityAsync(baseApi);
-                SysMenu login = new SysMenu()
-                {
-                    MenuName = "用户登录",
-                    MenuType = MenuType.Button,
-                    TargetType = TargetType.Callback,
-                    ButtonPosition = ButtonPosition.Outside,
-                    Url = "User/Login",
-                    ParentId = baseApi.Id
-                };
-                await AddEntityAsync(login);
-                SysMenu ModelHeader = new SysMenu()
-                {
-                    MenuName = "获取表头",
-                    MenuType = MenuType.Button,
-                    TargetType = TargetType.Callback,
-                    ButtonPosition = ButtonPosition.Outside,
-                    Url = "CaviarBase/GetModelHeader",
-                    ParentId = baseApi.Id
-                };
-                await AddEntityAsync(ModelHeader);
-                SysMenu FuzzyQuery = new SysMenu()
-                {
-                    MenuName = "模糊查询",
-                    MenuType = MenuType.Button,
-                    TargetType = TargetType.Callback,
-                    ButtonPosition = ButtonPosition.Outside,
-                    Url = "CaviarBase/FuzzyQuery",
-                    ParentId = baseApi.Id
-                };
-                await AddEntityAsync(FuzzyQuery);
-                SysMenu GetButtons = new SysMenu()
-                {
-                    MenuName = "获取按钮",
-                    MenuType = MenuType.Button,
-                    TargetType = TargetType.Callback,
-                    ButtonPosition = ButtonPosition.Outside,
-                    Url = "Menu/GetButtons",
-                    ParentId = baseApi.Id
-                };
-                await AddEntityAsync(GetButtons);
-
-                //未登录角色
-                await AddPermissionMenu(NoLoginRole.Id,login.Id);
-
-                //基础角色
-                await AddPermissionMenu(baseRole.Id, login.Id);
-                await AddPermissionMenu(baseRole.Id, ModelHeader.Id);
-                await AddPermissionMenu(baseRole.Id, FuzzyQuery.Id);
-                await AddPermissionMenu(baseRole.Id, GetButtons.Id);
+                var sql = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}/{CaviarConfig.SqlConfig.SqlFilePath}");
+                sql = sql.Replace("GO", "");
+                var result = SqlQuery(sql);
             }
+            #endregion
             return IsExistence;
-        }
-
-        private async Task AddPermissionMenu(int roleId,int menuId)
-        {
-            SysPermission permission = new SysPermission()
-            {
-                RoleId = roleId,
-                PermissionId = menuId,
-                PermissionType = PermissionType.Menu
-            };
-            await AddEntityAsync(permission);
         }
 
         public void DetachAll()
