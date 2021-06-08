@@ -27,8 +27,12 @@ namespace Caviar.AntDesignPages.Pages.CaviarBase
         public string Url { get; set; }
         protected override void OnInitialized()
         {
+            #if DEBUG
             GetModels();
             Url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
+            #else
+            _message.Error("代码生成只能在debug模式下进行！");
+            #endif
         }
 
 

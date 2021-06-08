@@ -79,5 +79,7 @@ namespace Caviar.Models.SystemData
     {
         [Display(Name = "菜单")]
         Menu,
+        [Display(Name = "数据")]
+        Data,
     }
 }
