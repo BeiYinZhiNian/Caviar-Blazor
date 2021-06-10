@@ -53,8 +53,6 @@ namespace Caviar.Control
             BC.Current_Action = context.HttpContext.Request.Path.Value;
             //请求上下文
             BC.HttpContext = HttpContext;
-            //筛选器上下文
-            BC.Context = context;
 
             if (HttpContext.Request.Headers.TryGetValue("UsreToken", out StringValues value))
             {
