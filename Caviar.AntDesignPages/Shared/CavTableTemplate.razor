@@ -19,8 +19,8 @@
                             {
                                 @foreach (var item in ViewModelHeader)
                                 {
-                                    if (string.IsNullOrEmpty(item.DispLayName)) continue;
-                                    <SelectOption TItemValue="string" TItem="string" Value=@item.TypeName Label=@item.DispLayName />
+                                    if (string.IsNullOrEmpty(item.DisplayName)) continue;
+                                    <SelectOption TItemValue="string" TItem="string" Value=@item.TypeName Label=@item.DisplayName />
                                 }
                             }
                         </SelectOptions>
@@ -74,7 +74,7 @@
             var typeNmae = item.ModelType.ToLower();
             if (item.IsEnum)
             {
-                <Column Title="@item.DispLayName"  TData="string" Width="@item.Width" >
+                <Column Title="@item.DisplayName"  TData="string" Width="@item.Width" >
                     @{
                             var obj = context.GetObjValue(item.TypeName);
                             if (obj != null)
@@ -89,13 +89,13 @@
             switch (typeNmae)
             {
                 case "string":
-                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="string" Width="@item.Width" />
+                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="string" Width="@item.Width" />
                     break;
                 case "int32":
-                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="int" />
+                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="int" />
                     break;
                 case "boolean":
-                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="bool">
+                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="bool">
                         @{
                             var obj = context.GetObjValue(item.TypeName);
                             if (obj != null)
@@ -114,26 +114,26 @@
                     </Column>
                     break;
                 case "guid":
-                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="Guid" />
+                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="Guid" />
                     break;
                 case "datetime":
-                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="DateTime" />
+                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="DateTime" />
                     break;
                 case "double":
-                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="double">
+                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="double">
                     </Column>
                     break;
                 case "float":
-                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="float" />
+                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="float" />
                     break;
                 case "short":
-                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="short" />
+                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="short" />
                     break;
                 case "byte":
-                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="byte" />
+                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="byte" />
                     break;
                 case "icon":
-                    <Column Title="@item.DispLayName" DataIndex="@item.TypeName" TData="string">
+                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="string">
                         @{
                             var obj = context.GetObjValue(item.TypeName);
                             if (obj != null)

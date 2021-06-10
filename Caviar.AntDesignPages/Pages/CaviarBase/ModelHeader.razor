@@ -1,0 +1,67 @@
+﻿@page "/ModelHeader/Index"
+
+<Row>
+    <Col Span="18" Push="6">
+    <Table TItem="ViewModelHeader" DataSource="@Models">
+        <Column @bind-Field="@context.TypeName">
+        </Column>
+        <Column @bind-Field="@context.DisplayName">
+        </Column>
+        <Column @bind-Field="@context.IsDisable">
+            <Switch @bind-Value="@context.IsDisable"></Switch>
+        </Column>
+        <Column Width="30%" @bind-Field="@context.Width">
+            @if (editId == context.Id.ToString())
+            {
+                <Input Type="text" @bind-Value="context.Width" OnBlur="stopEdit" AutoFocus />
+            }
+            else
+            {
+                <div class="editable-cell-value-wrap" style="padding-right:24px" @onclick="()=>startEdit(context.Id.ToString())">
+                    @context.Width
+                </div>
+            }
+        </Column>
+    </Table>
+
+
+    </Col>
+    <Col Span="6" Pull="18">
+    <Table TItem="ViewModelHeader" DataSource="@Models">
+        <Column @bind-Field="@context.TypeName">
+        </Column>
+        <Column @bind-Field="@context.DisplayName">
+        </Column>
+        <ActionColumn Title="操作">
+            <Space Size=@("middle")>
+                <SpaceItem>
+                    <Button Type="@ButtonType.Primary">
+                        选择
+                    </Button>
+                </SpaceItem>
+            </Space>
+        </ActionColumn>
+    </Table>
+    </Col>
+</Row>
+
+<style>
+    .editable-cell {
+        position: relative;
+    }
+
+    .editable-cell-value-wrap {
+        padding: 5px 12px;
+        cursor: pointer;
+    }
+
+    .editable-row:hover .editable-cell-value-wrap {
+        padding: 4px 11px;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+    }
+
+    [data-theme='dark'] .editable-row:hover .editable-cell-value-wrap {
+        border: 1px solid #434343;
+    }
+</style>

@@ -142,7 +142,7 @@ namespace Caviar.Control
             foreach (var item in headers)
             {
                 var txt = "";
-                txt += $"<FormItem Label='{item.DispLayName}'>";
+                txt += $"<FormItem Label='{item.DisplayName}'>";
                 var IsWrite = CreateCurrencyAssembly(item, ref txt);
                 txt += "</FormItem>";
                 if (IsWrite) html += txt;
@@ -346,7 +346,7 @@ namespace Caviar.Control
                     {
                         TypeName = item.Name,
                         ModelType = typeName,
-                        DispLayName = dispLayName,
+                        DisplayName = dispLayName,
                         ValueLen = valueLen,
                         IsEnum = item.PropertyType.IsEnum
                     };

@@ -1,38 +1,24 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
-    public partial class ViewModelHeader
+    public partial class ViewModelHeader: SysModelHeader
     {
-        /// <summary>
-        /// 类型名称
-        /// </summary>
-        public string TypeName { get; set; }
         /// <summary>
         /// 显示名称
         /// </summary>
-        public string DispLayName { get; set; }
+        [DisplayName("显示名称")]
+        public string DisplayName { get; set; }
         /// <summary>
-        /// 类型
+        /// 类型名称如string,int等
         /// </summary>
         public string ModelType { get; set; }
-        /// <summary>
-        /// 字段需要的宽度
-        /// </summary>
-        public string Width { get; set; }
-        /// <summary>
-        /// 字段需要的高度
-        /// </summary>
-        public string Height { get; set; }
-        /// <summary>
-        /// 字段长度
-        /// </summary>
-        public int? ValueLen { get; set; }
         /// <summary>
         /// 字段值
         /// </summary>
@@ -45,5 +31,9 @@ namespace Caviar.Models.SystemData
         /// 枚举 值-名称
         /// </summary>
         public Dictionary<int,string> EnumValueName { get; set; }
+        /// <summary>
+        /// 命名空间
+        /// </summary>
+        public string FullName { get; set; }
     }
 }

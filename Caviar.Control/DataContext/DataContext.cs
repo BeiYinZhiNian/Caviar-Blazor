@@ -13,13 +13,6 @@ namespace Caviar.Control
 {
     public class DataContext : DbContext
     {
-        #region 表对象
-        public virtual DbSet<SysRoleLogin> SysRoleLogin { get; set; }
-        public virtual DbSet<SysUserLogin> SysUserLogin { get; set; }
-        public virtual DbSet<SysRole> SysRole { get; set; }
-        public virtual DbSet<SysMenu> SysMenu { get; set; }
-        public virtual DbSet<SysPermission> SysPermission { get; set; }
-        #endregion
 
         public DataContext(DbContextOptions<DataContext> options) : base(options) 
         {
@@ -63,6 +56,21 @@ namespace Caviar.Control
                 }
                 
             }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            var types = CommonHelper.GetModelList();
+            foreach (var item in types)
+            {
+                var method = modelBuilder.GetType().GetMethods().Where(x => x.Name == "Entity").FirstOrDefault();
+                if (method != null)
+                {
+                    method = method.MakeGenericMethod(new Type[] { item });
+                    method.Invoke(modelBuilder, null);
+                }
+            }
+            base.OnModelCreating(modelBuilder);
         }
 
     }

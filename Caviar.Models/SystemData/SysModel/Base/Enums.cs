@@ -68,8 +68,8 @@ namespace Caviar.Models.SystemData
         Header,
         [Display(Name = "行")]
         Row,
-        [Display(Name = "表外")]
-        Outside
+        [Display(Name = "API")]
+        API
     }
 
     /// <summary>

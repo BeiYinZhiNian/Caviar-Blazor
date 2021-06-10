@@ -43,7 +43,7 @@ namespace Caviar.AntDesignPages.Shared
 
             if (!string.IsNullOrEmpty(ModelHeaderName))
             {
-                var modelNameList = await Http.GetJson<List<ViewModelHeader>>("CaviarBase/GetModelHeader?name=" + ModelHeaderName);
+                var modelNameList = await Http.GetJson<List<ViewModelHeader>>("ModelHeader/GetModelHeader?name=" + ModelHeaderName);
                 if (modelNameList.Status == 200)
                 {
                     ViewModelHeader = modelNameList.Data;

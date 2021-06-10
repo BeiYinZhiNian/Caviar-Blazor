@@ -20,14 +20,6 @@ namespace Caviar.Control
 
 
         #region API
-        [HttpGet]
-        public IActionResult GetModelHeader(string name)
-        {
-            if (string.IsNullOrEmpty(name)) return ResultError(400, "请输入需要获取的数据名称");
-            ResultMsg.Data = CavAssembly.GetViewModelHeaders(name);
-            return ResultOK();
-        }
-        
         /// <summary>
         /// 模糊查询，暂未使用权限,需要使用权限验证sql的正确性
         /// </summary>

@@ -39,8 +39,8 @@
         @switch (current)
         {
             case 0:
-                <Table TItem="ModelData" DataSource="@Models">
-                    <Column @bind-Field="@context.Name">
+                <Table TItem="ViewModelHeader" DataSource="@Models">
+                    <Column @bind-Field="@context.TypeName">
                     </Column>
                     <Column @bind-Field="@context.DisplayName">
                     </Column>
@@ -49,9 +49,9 @@
                             <SpaceItem>
                                 <Button Type="@ButtonType.Primary" OnClick='()=>
                                                                             {
-                                                                                GenerateData.EntityName = context.Name;
+                                                                                GenerateData.EntityName = context.TypeName;
                                                                                 GenerateData.EntityNamespace = context.FullName;
-                                                                                GenerateData.OutName = context.Name;
+                                                                                GenerateData.OutName = context.TypeName;
                                                                                 GenerateData.EntityDisplayName = context.DisplayName;
                                                                                 GenerateData.ModelName = context.DisplayName;
                                                                                 OnNextClick();

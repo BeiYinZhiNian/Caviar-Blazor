@@ -17,7 +17,7 @@ namespace Caviar.AntDesignPages.Pages.CaviarBase
     public partial class CodeFileGenerate
     {
 
-        List<ModelData> Models = new List<ModelData>();
+        List<ViewModelHeader> Models = new List<ViewModelHeader>();
         [Inject]
         NavigationManager NavigationManager { get; set; }
         [Inject]
@@ -25,10 +25,10 @@ namespace Caviar.AntDesignPages.Pages.CaviarBase
         [Inject]
         MessageService _message { get; set; }
         public string Url { get; set; }
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             #if DEBUG
-            GetModels();
+            await GetModels();
             Url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
             #else
             _message.Error("代码生成只能在debug模式下进行！");
@@ -36,32 +36,11 @@ namespace Caviar.AntDesignPages.Pages.CaviarBase
         }
 
 
-        public void GetModels()
+        public async Task GetModels()
         {
-            CommonHelper.GetAssembly()
-                    //遍历查找
-                    .ForEach((t =>
-                    {
-                        //获取所有对象
-                        t.GetTypes()
-                            //查找是否包含IBaseModel接口的类
-                            .Where(u => u.GetInterfaces().Contains(typeof(IBaseModel)))
-                            //判断是否是类
-                            .Where(u => u.IsClass)
-                            //转换成list
-                            .ToList()
-                            //循环,并添注入
-                            .ForEach(t =>
-                            {
-                                if(t.Name.ToLower().Contains("view") || t.Name.ToLower().Contains("sysbasemodel"))
-                                {
-                                    return;
-                                }
-                                var displayName = t.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
-                                Models.Add(new ModelData {Name = t.Name, DisplayName = displayName,FullName = t.FullName.Replace("."+t.Name,"") });
-                            });
-                    }));
-            
+            var result = await Http.GetJson<List<ViewModelHeader>>("ModelHeader/GetModels");
+            if (result.Status != 200) return;
+            Models = result.Data;
         }
         static string[] _pageOptions = { "列表","数据模板" };
         static string[] _webApi = { "控制器" ,"模型", "模型操作器" };
@@ -139,15 +118,5 @@ namespace Caviar.AntDesignPages.Pages.CaviarBase
 
         List<TabItem> lstTabs { get; set; } = new List<TabItem>();
         string nKey { get; set; } = "1";
-
-        class ModelData
-        {
-            [DisplayName("表名称")]
-            public string Name { get; set; }
-            [DisplayName("备注")]
-            public string DisplayName { get; set; }
-            [DisplayName("命名空间")]
-            public string FullName { get; set; }
-        }
     }
 }

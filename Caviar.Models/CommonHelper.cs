@@ -176,6 +176,39 @@ namespace Caviar.Models.SystemData
             return _assemblies;
         }
         /// <summary>
+        /// 获取数据库中所有继承IBaseModel的类
+        /// 排除SysBaseModel基类和带有View的前端类
+        /// </summary>
+        /// <returns></returns>
+        public static List<Type> GetModelList()
+        {
+            List<Type> types = new List<Type>();
+            GetAssembly()
+                    //遍历查找
+                    .ForEach((t =>
+                    {
+                        //获取所有对象
+                        t.GetTypes()
+                            //查找是否包含IBaseModel接口的类
+                            .Where(u => u.GetInterfaces().Contains(typeof(IBaseModel)))
+                            //判断是否是类
+                            .Where(u => u.IsClass)
+                            //转换成list
+                            .ToList()
+                            //循环,并添注入
+                            .ForEach(t =>
+                            {
+                                if (t.Name.ToLower().Contains("view") || t.Name.ToLower().Contains("sysbasemodel"))
+                                {
+                                    return;
+                                }
+                                types.Add(t);
+                            });
+                    }));
+            return types;
+        }
+
+        /// <summary>
         /// 列表转树
         /// </summary>
         /// <typeparam name="T"></typeparam>
