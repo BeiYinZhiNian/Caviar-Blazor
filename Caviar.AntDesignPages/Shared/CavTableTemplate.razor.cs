@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.Web;
 
 namespace Caviar.AntDesignPages.Shared
 {
@@ -97,7 +99,12 @@ namespace Caviar.AntDesignPages.Shared
             switch (menu.TargetType)
             {
                 case TargetType.CurrentPage:
-                    Navigation.NavigateTo(menu.Url);
+                    var parameter = "";
+                    if (menu.ButtonPosition == ButtonPosition.Row)
+                    {
+                        parameter = $"?parameter={HttpUtility.UrlEncode(JsonSerializer.Serialize(CurrRow.Data))}"; 
+                    }
+                    Navigation.NavigateTo(menu.Url + parameter);
                     break;
                 case TargetType.EjectPage:
                     List<KeyValuePair<string, object?>> paramenter = new List<KeyValuePair<string, object?>>();

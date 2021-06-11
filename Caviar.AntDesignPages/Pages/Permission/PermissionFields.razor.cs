@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AntDesign;
+using Microsoft.AspNetCore.WebUtilities;
+
 namespace Caviar.AntDesignPages.Pages.Permission
 {
     public partial class PermissionFields
@@ -20,11 +22,18 @@ namespace Caviar.AntDesignPages.Pages.Permission
         HttpHelper Http { get; set; }
         [Inject]
         MessageService MessageService { get; set; }
+
+        ViewRole Role { get; set; }
         string Url { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             Url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
+            var query = new Uri(NavigationManager.Uri).Query;
+            if (QueryHelpers.ParseQuery(query).TryGetValue("Parameter", out var Parameter))
+            {
+                Role = JsonSerializer.Deserialize<ViewRole>(Parameter);
+            }
             await GetModels();
         }
 
