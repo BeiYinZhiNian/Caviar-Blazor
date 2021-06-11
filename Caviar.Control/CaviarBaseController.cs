@@ -201,7 +201,14 @@ namespace Caviar.Control
             return Ok(resultMsg);
         }
 
+        protected virtual IActionResult ResultFound(string title,string url)
+        {
+            ResultMsg.Status = 302;
+            ResultMsg.Title = title;
+            ResultMsg.Type = url;
+            return ResultError(ResultMsg);
 
+        }
         /// <summary>
         /// 返回（无权限）
         /// </summary>
@@ -217,7 +224,10 @@ namespace Caviar.Control
         /// <returns></returns>
         protected virtual IActionResult ResultUnauthorized(string title)
         {
-            return ResultError(401, title);
+            ResultMsg.Status = 401;
+            ResultMsg.Title = title;
+            ResultMsg.Type = "/User/Login";//此处后续读取数据库
+            return ResultError(ResultMsg);
         }
 
         protected virtual IActionResult ResultError(string title, string detail)

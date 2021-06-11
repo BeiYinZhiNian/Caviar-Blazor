@@ -20,17 +20,18 @@ namespace Caviar.Control
     public partial class SysDataContext : IDataContext
     {
 
-        public SysDataContext(DataContext dataContext,BaseControllerModel baseControllerModel)
+        public SysDataContext(DataContext dataContext,BaseControllerModel baseControllerModel, IAssemblyDynamicCreation cavAssembly)
         {
             _dataContext = dataContext;
             _baseControllerModel = baseControllerModel;
+            _cavAssembly = cavAssembly;
             if (IsDataInit)//判断数据库是否初始化
             {
                 IsDataInit = DataInit().Result;
             }
         }
         DataContext _dataContext;
-
+        IAssemblyDynamicCreation _cavAssembly;
         private DataContext DC => _dataContext;
 
         IBaseControllerModel _baseControllerModel;
@@ -57,7 +58,7 @@ namespace Caviar.Control
         /// <param name="entity"></param>
         /// <param name="isSaveChange"></param>
         /// <returns></returns>
-        public virtual async Task<int> AddEntityAsync<T>(List<T> entity, bool isSaveChange) where T : class, IBaseModel
+        public virtual async Task<int> AddEntityAsync<T>(List<T> entity, bool isSaveChange = true) where T : class, IBaseModel
         {
             var count = 0;
             if (entity == null || entity.Count == 0) return count;
@@ -207,7 +208,7 @@ namespace Caviar.Control
         /// <param name="isSaveChange"></param>
         /// <param name="IsDelete"></param>
         /// <returns></returns>
-        public virtual async Task<int> DeleteEntityAsync<T>(List<T> entity, bool isSaveChange, bool IsDelete) where T : class, IBaseModel
+        public virtual async Task<int> DeleteEntityAsync<T>(List<T> entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IBaseModel
         {
             var count = 0;
             if (entity == null || entity.Count == 0) return count;
@@ -351,9 +352,20 @@ namespace Caviar.Control
                 Match m = Regex.Match(sql, pattern, RegexOptions.IgnoreCase);
                 sql = sql.Replace(m.Value, "");
                 sql = sql.Replace("GO", "");
-                var result = SqlQuery(sql);
+                SqlQuery(sql);
             }
             #endregion
+
+            var fields = await GetAllAsync<SysModelFields>();
+            await DeleteEntityAsync(fields,IsDelete:true);
+            var types = CommonHelper.GetModelList();
+            List<SysModelFields> modelFields = new List<SysModelFields>();
+            foreach (var item in types)
+            {
+                var viewModelFields = _cavAssembly.GetViewModelHeaders(item.Name);
+                modelFields.AddRange(viewModelFields);
+            }
+            await AddEntityAsync(modelFields);
             return IsExistence;
         }
 
@@ -440,5 +452,6 @@ namespace Caviar.Control
             }
             return entity;
         }
+
     }
 }
