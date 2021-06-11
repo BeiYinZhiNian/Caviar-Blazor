@@ -25,18 +25,23 @@ namespace Caviar.Control
                 if (_action == null)
                 {
                     _action = CreateModel<ModelAction>();
-                    //if(BC.HttpContext.ActionArguments.Count > 0)
-                    //{
-                    //    foreach (var ArgumentsItem in BC.Context.ActionArguments)
-                    //    {
-                    //        //获取前端模型
-                    //        if (ArgumentsItem.Value is ViewT)
-                    //        {
-                    //            //转到后端模型
-                    //            _action.Entity = (T)ArgumentsItem.Value;
-                    //        }
-                    //    }
-                    //}
+                    if (BC.ActionArguments.Count > 0)
+                    {
+                        //在这里可以将自己想要的属性通过接口注入
+                        foreach (var ArgumentsItem in BC.ActionArguments)
+                        {
+                            //获取前端模型
+                            if (ArgumentsItem.Value is ViewT)
+                            {
+                                //转到后端模型
+                                _action.Entity = (T)ArgumentsItem.Value;
+                            }
+                            else if(ArgumentsItem.Value is IActionModel)
+                            {
+                                ((IActionModel)ArgumentsItem.Value).BC = BC;
+                            }
+                        }
+                    }
                 }
                 return _action;
             }

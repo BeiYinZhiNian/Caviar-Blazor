@@ -70,5 +70,9 @@ namespace Caviar.Models
         /// 是否为管理员
         /// </summary>
         public bool IsAdmin { get; set; }
+        /// <summary>
+        /// 请求参数
+        /// </summary>
+        public IDictionary<string,object> ActionArguments { get; set; }
     }
 }

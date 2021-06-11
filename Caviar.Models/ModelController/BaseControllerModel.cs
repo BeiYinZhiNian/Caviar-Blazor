@@ -53,7 +53,10 @@ namespace Caviar.Models
                 return Id > 0;
             } 
         }
-
+        /// <summary>
+        /// 请求参数
+        /// </summary>
+        public IDictionary<string, object> ActionArguments { get; set; }
         public List<SysRole> Roles { get; set; }
         public List<SysPermission> Permissions { get; set; }
         public List<SysMenu> Menus { get; set; }

@@ -53,7 +53,8 @@ namespace Caviar.Control
             BC.Current_Action = context.HttpContext.Request.Path.Value;
             //请求上下文
             BC.HttpContext = HttpContext;
-
+            //请求参数
+            BC.ActionArguments = context.ActionArguments;
             if (HttpContext.Request.Headers.TryGetValue("UsreToken", out StringValues value))
             {
                 string base64url = value[0];
@@ -87,17 +88,6 @@ namespace Caviar.Control
                     context.Result = ResultUnauthorized("请您先登录");
                 }
                 return;
-            }
-
-            if (context.ActionArguments.Count > 0)
-            {
-                foreach (var ArgumentsItem in context.ActionArguments)
-                {
-                    if(ArgumentsItem.Value is IActionModel)
-                    {
-                        ((IActionModel)ArgumentsItem.Value).BC = BC;
-                    }
-                }
             }
         }
         /// <summary>
