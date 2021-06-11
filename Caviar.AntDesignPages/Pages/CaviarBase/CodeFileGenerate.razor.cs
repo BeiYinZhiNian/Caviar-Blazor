@@ -17,7 +17,7 @@ namespace Caviar.AntDesignPages.Pages.CaviarBase
     public partial class CodeFileGenerate
     {
 
-        List<ViewModelHeader> Models = new List<ViewModelHeader>();
+        List<ViewModelFields> Models = new List<ViewModelFields>();
         [Inject]
         NavigationManager NavigationManager { get; set; }
         [Inject]
@@ -38,7 +38,7 @@ namespace Caviar.AntDesignPages.Pages.CaviarBase
 
         public async Task GetModels()
         {
-            var result = await Http.GetJson<List<ViewModelHeader>>("ModelHeader/GetModels");
+            var result = await Http.GetJson<List<ViewModelFields>>("Permission/GetModels");
             if (result.Status != 200) return;
             Models = result.Data;
         }

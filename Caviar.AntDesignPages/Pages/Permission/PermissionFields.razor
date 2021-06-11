@@ -1,0 +1,93 @@
+﻿@page "/Permission/RoleFields"
+
+<Row Gutter="@gutter">
+    <AntDesign.Col Flex="2">
+        <Card Bordered="false" Title=@("数据模型")>
+            <Body>
+                <Table TItem="ViewModelFields" DataSource="@Models">
+                    <Column @bind-Field="@context.TypeName">
+                    </Column>
+                    <Column @bind-Field="@context.DisplayName">
+                    </Column>
+                    <ActionColumn Title="操作">
+                        <Space>
+                            <SpaceItem>
+                                <Button Type="@ButtonType.Primary" OnClick="()=>GetFields(context)">
+                                    选择
+                                </Button>
+                            </SpaceItem>
+                        </Space>
+                    </ActionColumn>
+                </Table>
+            </Body>
+        </Card>
+
+    </AntDesign.Col>
+    <AntDesign.Col Flex="3">
+        <Card Bordered="false" Title="数据字段">
+            <Extra>
+                <Button Type="@ButtonType.Primary" OnClick="Preservation">
+                    保存
+                </Button>
+            </Extra>
+            <Body>
+                <Table TItem="ViewModelFields" DataSource="@Fields" RowClassName="@(_=>"editable-row")" Bordered>
+                    <Column @bind-Field="@context.TypeName">
+                    </Column>
+                    <Column @bind-Field="@context.DisplayName">
+                    </Column>
+                    <Column @bind-Field="@context.IsDisable">
+                        <Switch @bind-Value="@context.IsDisable"></Switch>
+                    </Column>
+                    <Column @bind-Field="@context.Width">
+                        @if (editId == context.TypeName)
+                        {
+                            <Input Type="text" Style="width:50%" @bind-Value="context.Width" OnBlur="()=>stopEdit(context)" AutoFocus />
+                        }
+                        else
+                        {
+                            <div class="editable-cell-value-wrap" @onclick="()=>startEdit(context.TypeName)">
+                                @context.Width
+                            </div>
+                        }
+                    </Column>
+                </Table>
+            </Body>
+        </Card>
+    </AntDesign.Col>
+
+</Row>
+
+<style>
+    .editable-cell {
+        position: relative;
+    }
+
+    .editable-cell-value-wrap {
+        padding: 5px 12px;
+        cursor: pointer;
+    }
+
+    .editable-row:hover .editable-cell-value-wrap {
+        padding: 4px 11px;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+    }
+
+    [data-theme='dark'] .editable-row:hover .editable-cell-value-wrap {
+        border: 1px solid #434343;
+    }
+</style>
+
+
+@code{
+    Dictionary<string, int> gutter = new()
+    {
+        ["xs"] = 8,
+        ["sm"] = 16,
+        ["md"] = 24,
+        ["lg"] = 32,
+        ["xl"] = 48,
+        ["xxl"] = 64
+    };
+}

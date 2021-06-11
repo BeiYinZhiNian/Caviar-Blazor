@@ -7,9 +7,13 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
-    [DisplayName("数据模块")]
-    public class SysModelHeader:SysBaseModel
+    [DisplayName("字段权限")]
+    public class SysModelFields:SysBaseModel
     {
+        /// <summary>
+        /// 命名空间,判断父类的唯一条件
+        /// </summary>
+        public string FullName { get; set; }
         /// <summary>
         /// 类型名称，判断是否为同一属性的唯一条件
         /// 修改后需要重新设置，或者同步设置

@@ -29,6 +29,7 @@ namespace Caviar.Models.SystemData
         Task<int> AddEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IBaseModel;
         /// <summary>
         /// 批量添加
+        /// 会进行事务
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="entity"></param>
@@ -52,6 +53,7 @@ namespace Caviar.Models.SystemData
         public Task<int> UpdateEntityAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class, IBaseModel;
         /// <summary>
         /// 批量修改
+        /// 会进行事务
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="entity"></param>
@@ -69,6 +71,7 @@ namespace Caviar.Models.SystemData
         public Task<int> DeleteEntityAsync<T>(T entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IBaseModel;
         /// <summary>
         /// 批量删除
+        /// 会进行事务
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="entity"></param>

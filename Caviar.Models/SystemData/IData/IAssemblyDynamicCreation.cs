@@ -12,7 +12,7 @@ namespace Caviar.Models.SystemData
         /// 获取反射数据
         /// </summary>
         /// <returns></returns>
-        public List<ViewModelHeader> GetViewModelHeaders(string name);
+        public List<ViewModelFields> GetViewModelHeaders(string name);
         /// <summary>
         /// 代码写到文件
         /// </summary>

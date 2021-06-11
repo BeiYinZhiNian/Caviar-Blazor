@@ -59,17 +59,20 @@ namespace Caviar.Control
         /// <returns></returns>
         public virtual async Task<int> AddEntityAsync<T>(List<T> entity, bool isSaveChange) where T : class, IBaseModel
         {
-            var transaction = BeginTransaction();
-            foreach (var item in entity)
-            {
-                await AddEntityAsync(item, false);
-            }
             var count = 0;
-            if (isSaveChange)
+            if (entity == null || entity.Count == 0) return count;
+            using (var transaction = BeginTransaction())
             {
-                count = await SaveChangesAsync();
+                foreach (var item in entity)
+                {
+                    await AddEntityAsync(item, false);
+                }
+                if (isSaveChange)
+                {
+                    count = await SaveChangesAsync();
+                }
+                transaction.Commit();
             }
-            transaction.Commit();
             return count;
         }
         /// <summary>
@@ -152,17 +155,21 @@ namespace Caviar.Control
         /// <returns></returns>
         public virtual async Task<int> UpdateEntityAsync<T>(List<T> entity, bool isSaveChange = true) where T : class, IBaseModel
         {
-            var transaction = BeginTransaction();
-            foreach (var item in entity)
-            {
-                await UpdateEntityAsync(item, false);
-            }
             var count = 0;
-            if (isSaveChange)
+            if (entity == null || entity.Count == 0) return count;
+            using(var transaction = BeginTransaction())
             {
-                count = await SaveChangesAsync();
+                foreach (var item in entity)
+                {
+                    await UpdateEntityAsync(item, false);
+                }
+
+                if (isSaveChange)
+                {
+                    count = await SaveChangesAsync();
+                }
+                transaction.Commit();
             }
-            transaction.Commit();
             return count;
         }
 
@@ -202,17 +209,20 @@ namespace Caviar.Control
         /// <returns></returns>
         public virtual async Task<int> DeleteEntityAsync<T>(List<T> entity, bool isSaveChange, bool IsDelete) where T : class, IBaseModel
         {
-            var transaction = BeginTransaction();
-            foreach (var item in entity)
-            {
-                await DeleteEntityAsync(item, false, IsDelete);
-            }
             var count = 0;
-            if (isSaveChange)
+            if (entity == null || entity.Count == 0) return count;
+            using (var transaction = BeginTransaction())
             {
-                count = await SaveChangesAsync();
+                foreach (var item in entity)
+                {
+                    await DeleteEntityAsync(item, false, IsDelete);
+                }
+                if (isSaveChange)
+                {
+                    count = await SaveChangesAsync();
+                }
+                transaction.Commit();
             }
-            transaction.Commit();
             return count;
         }
         /// <summary>

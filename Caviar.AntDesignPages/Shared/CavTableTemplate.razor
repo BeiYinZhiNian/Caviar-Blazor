@@ -15,9 +15,9 @@
                             EnableSearch
                             AllowClear>
                         <SelectOptions>
-                            @if (ViewModelHeader != null)
+                            @if (ViewModelFields != null)
                             {
-                                @foreach (var item in ViewModelHeader)
+                                @foreach (var item in ViewModelFields)
                                 {
                                     if (string.IsNullOrEmpty(item.DisplayName)) continue;
                                     <SelectOption TItemValue="string" TItem="string" Value=@item.TypeName Label=@item.DisplayName />
@@ -67,9 +67,9 @@
        TItem="TData"
        OnPageIndexChange="PageIndexChanged"
        TreeChildren="TreeChildren">
-    @if (ViewModelHeader != null)
+    @if (ViewModelFields != null)
     {
-        foreach (var item in ViewModelHeader)
+        foreach (var item in ViewModelFields)
         {
             var typeNmae = item.ModelType.ToLower();
             if (item.IsEnum)

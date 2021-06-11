@@ -15,7 +15,7 @@
                Total="Total"
                Buttons="Buttons"
                PageIndexChanged="PageIndexChanged"
-               ModelHeaderName="{EntityName}"
+               ModelName="{EntityName}"
                RowCallback="RowCallback">
 
 </CavTableTemplate>

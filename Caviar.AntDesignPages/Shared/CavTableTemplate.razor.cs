@@ -27,11 +27,11 @@ namespace Caviar.AntDesignPages.Shared
         public List<ViewMenu> Buttons { get; set; }
 
         [Parameter]
-        public string ModelHeaderName { get; set; }
+        public string ModelName { get; set; }
         [Parameter]
         public Func<TData, IEnumerable<TData>> TreeChildren { get; set; } = _ => Enumerable.Empty<TData>();
         [Parameter]
-        public List<ViewModelHeader> ViewModelHeader { get; set; }
+        public List<ViewModelFields> ViewModelFields { get; set; }
         [Inject]
         HttpHelper Http { get; set; }
         [Parameter]
@@ -41,12 +41,12 @@ namespace Caviar.AntDesignPages.Shared
         {
             Query.QueryObj = GetBaseType(typeof(TData))?.Name;
 
-            if (!string.IsNullOrEmpty(ModelHeaderName))
+            if (!string.IsNullOrEmpty(ModelName))
             {
-                var modelNameList = await Http.GetJson<List<ViewModelHeader>>("ModelHeader/GetModelHeader?name=" + ModelHeaderName);
+                var modelNameList = await Http.GetJson<List<ViewModelFields>>("Permission/RoleFields?modelName=" + ModelName);
                 if (modelNameList.Status == 200)
                 {
-                    ViewModelHeader = modelNameList.Data;
+                    ViewModelFields = modelNameList.Data;
                 }
             }
             

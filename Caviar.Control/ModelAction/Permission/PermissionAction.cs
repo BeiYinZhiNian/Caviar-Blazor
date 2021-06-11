@@ -24,13 +24,14 @@ namespace Caviar.Control.Permission
             return permissions;
         }
 
-        public async Task<bool> SetRoleMenu(int roleId,int[] menuIds)
+        public async Task SetRoleMenu(int roleId,int[] menuIds)
         {
             var menus = GetRoleMenu(roleId);
-            if (menus == null) return false;
+            if (menus == null) return;
             var Ids = menus.Select(u => u.Id);
             var addIds = menuIds.Except(Ids).ToArray();
             var deleteIds = Ids.Except(menuIds).ToArray();
+            List<SysPermission> addSysPermission = new List<SysPermission>();
             foreach (var item in addIds)
             {
                 var permission = new SysPermission()
@@ -39,14 +40,16 @@ namespace Caviar.Control.Permission
                     PermissionType = PermissionType.Menu,
                     RoleId = roleId
                 };
-                var count = await BC.DC.AddEntityAsync(permission);
+                addSysPermission.Add(permission);
             }
+            List<SysPermission> deleteSysPermission = new List<SysPermission>();
             foreach (var item in deleteIds)
             {
                 var permission = await BC.DC.GetFirstEntityAsync<SysPermission>(u => u.RoleId == roleId && u.PermissionId == item && u.PermissionType == PermissionType.Menu);
-                await BC.DC.DeleteEntityAsync(permission);
+                deleteSysPermission.Add(permission);
             }
-            return true;
+            await BC.DC.DeleteEntityAsync(deleteSysPermission, IsDelete: true);//该权限不需要保存，直接彻底删除
+            await BC.DC.AddEntityAsync(addSysPermission);
         }
 
         public List<SysMenu> GetRoleMenu(int roleId)
@@ -60,6 +63,11 @@ namespace Caviar.Control.Permission
                 menus.Add(menu);
             }
             return menus;
+        }
+
+        public async Task SetRoleFields(string modelName,int roleId, List<SysModelFields> modelFields)
+        {
+
         }
     }
 }

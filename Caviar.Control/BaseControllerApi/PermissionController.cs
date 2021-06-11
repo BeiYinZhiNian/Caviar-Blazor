@@ -3,7 +3,9 @@ using Caviar.Models.SystemData;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,13 +13,11 @@ namespace Caviar.Control.Permission
 {
     public partial class PermissionController:CaviarBaseController
     {
-        [HttpPost]
-        public IActionResult SetMenus(List<int> ids)
-        {
-
-            return ResultOK();
-        }
-
+        /// <summary>
+        /// 获取角色菜单
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult RoleMenu(int roleId)
         {
@@ -26,12 +26,60 @@ namespace Caviar.Control.Permission
             ResultMsg.Data = menus;
             return ResultOK();
         }
+        /// <summary>
+        /// 设置角色菜单
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <param name="menuIds"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> RoleMenu(int roleId,int[] menuIds)
         {
-            var isSucc = await Action.SetRoleMenu(roleId, menuIds);
-            if (isSucc) return ResultOK();
-            return ResultError("操作失败");
+            await Action.SetRoleMenu(roleId, menuIds);
+            return ResultOK();
+        }
+
+        /// <summary>
+        /// 获取所有model
+        /// </summary>
+        [HttpGet]
+        public IActionResult GetModels()
+        {
+            List<ViewModelFields> viewModels = new List<ViewModelFields>();
+            var types = CommonHelper.GetModelList();
+            foreach (var item in types)
+            {
+                var displayName = item.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
+                viewModels.Add(new ViewModelFields() { TypeName = item.Name, DisplayName = displayName, FullName = item.FullName.Replace("." + item.Name, "") });
+            }
+            ResultMsg.Data = viewModels;
+            return ResultOK();
+        }
+
+        /// <summary>
+        /// 获取角色字段
+        /// </summary>
+        /// <param name="modelName"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult RoleFields(string modelName, int roleId)
+        {
+            if (string.IsNullOrEmpty(modelName)) return ResultError(400, "请输入需要获取的数据名称");
+            ResultMsg.Data = CavAssembly.GetViewModelHeaders(modelName);
+            return ResultOK();
+        }
+
+        /// <summary>
+        /// 设置角色字段
+        /// </summary>
+        /// <param name="viewModelFields"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> RoleFields(string modelName,int roleId,List<ViewModelFields> viewModelFields)
+        {
+            var sysModelFields = CommonHelper.AToB<List<SysModelFields>,List<ViewModelFields>>(viewModelFields);
+            await Action.SetRoleFields(modelName, roleId, sysModelFields);
+            return ResultOK();
         }
 
     }

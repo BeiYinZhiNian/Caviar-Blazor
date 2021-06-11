@@ -156,7 +156,7 @@ namespace Caviar.Control
         /// <param name="item"></param>
         /// <param name="txt"></param>
         /// <returns></returns>
-        protected virtual bool CreateCurrencyAssembly(ViewModelHeader item, ref string txt)
+        protected virtual bool CreateCurrencyAssembly(ViewModelFields item, ref string txt)
         {
             var IsWrite = true;
             if (item.IsEnum)
@@ -199,7 +199,7 @@ namespace Caviar.Control
         /// </summary>
         /// <param name="item"></param>
         /// <param name="txt"></param>
-        protected virtual void CreateEnumAssembly(ViewModelHeader item, ref string txt)
+        protected virtual void CreateEnumAssembly(ViewModelFields item, ref string txt)
         {
             if (!item.IsEnum) return;
             txt += $"<RadioGroup @bind-Value='@context.{item.TypeName}'>";
@@ -215,7 +215,7 @@ namespace Caviar.Control
         /// </summary>
         /// <param name="item"></param>
         /// <param name="txt"></param>
-        protected virtual void CreateIconAssmbly(ViewModelHeader item, ref string txt)
+        protected virtual void CreateIconAssmbly(ViewModelFields item, ref string txt)
         {
 
 
@@ -294,11 +294,11 @@ namespace Caviar.Control
         /// </summary>
         /// <param name="header"></param>
         /// <returns></returns>
-        protected virtual List<ViewModelHeader> CreateOrUpFilterField(List<ViewModelHeader> headers)
+        protected virtual List<ViewModelFields> CreateOrUpFilterField(List<ViewModelFields> headers)
         {
             if (headers == null) return null;
             string[] violation = new string[] { "id", "Uid", "CreatTime", "UpdateTime", "IsDelete", "OperatorCare", "OperatorUp", "ParentId" };
-            var result = new List<ViewModelHeader>();
+            var result = new List<ViewModelFields>();
             foreach (var item in headers)
             {
                 if (violation.SingleOrDefault(u => u.ToLower() == item.TypeName.ToLower()) == null)
@@ -313,7 +313,7 @@ namespace Caviar.Control
         /// </summary>
         /// <param name="headers"></param>
         /// <returns></returns>
-        public virtual ViewModelHeader TurnMeaning(ViewModelHeader headers)
+        public virtual ViewModelFields TurnMeaning(ViewModelFields headers)
         {
             string[] violation = new string[] { "icon", "image" };
             var typeName = violation.SingleOrDefault(u => u.ToLower() == headers.TypeName.ToLower());
@@ -325,7 +325,7 @@ namespace Caviar.Control
             return headers;
         }
 
-        public List<ViewModelHeader> GetViewModelHeaders(string name)
+        public List<ViewModelFields> GetViewModelHeaders(string name)
         {
             var assemblyList = CommonHelper.GetAssembly();
             Type type = null;
@@ -334,7 +334,7 @@ namespace Caviar.Control
                 type = item.GetTypes().SingleOrDefault(u => u.Name.ToLower() == name.ToLower());
                 if (type != null) break;
             }
-            List<ViewModelHeader> viewModelNames = new List<ViewModelHeader>();
+            List<ViewModelFields> viewModelNames = new List<ViewModelFields>();
             if (type != null)
             {
                 foreach (var item in type.GetRuntimeProperties())
@@ -342,13 +342,14 @@ namespace Caviar.Control
                     var typeName = item.PropertyType.Name;
                     var dispLayName = item.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
                     var valueLen = item.GetCustomAttributes<StringLengthAttribute>()?.Cast<StringLengthAttribute>().SingleOrDefault()?.MaximumLength;
-                    var filter = new ViewModelHeader()
+                    var filter = new ViewModelFields()
                     {
                         TypeName = item.Name,
                         ModelType = typeName,
                         DisplayName = dispLayName,
                         ValueLen = valueLen,
-                        IsEnum = item.PropertyType.IsEnum
+                        IsEnum = item.PropertyType.IsEnum,
+                        FullName = name
                     };
                     if (filter.IsEnum)
                     {
