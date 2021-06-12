@@ -353,19 +353,20 @@ namespace Caviar.Control
                 sql = sql.Replace(m.Value, "");
                 sql = sql.Replace("GO", "");
                 SqlQuery(sql);
+
+
+                var fields = await GetAllAsync<SysModelFields>();
+                await DeleteEntityAsync(fields, IsDelete: true);
+                var types = CommonHelper.GetModelList();
+                List<SysModelFields> modelFields = new List<SysModelFields>();
+                foreach (var item in types)
+                {
+                    var viewModelFields = _cavAssembly.GetViewModelHeaders(item.Name);
+                    modelFields.AddRange(viewModelFields);
+                }
+                await AddEntityAsync(modelFields);
             }
             #endregion
-
-            var fields = await GetAllAsync<SysModelFields>();
-            await DeleteEntityAsync(fields,IsDelete:true);
-            var types = CommonHelper.GetModelList();
-            List<SysModelFields> modelFields = new List<SysModelFields>();
-            foreach (var item in types)
-            {
-                var viewModelFields = _cavAssembly.GetViewModelHeaders(item.Name);
-                modelFields.AddRange(viewModelFields);
-            }
-            await AddEntityAsync(modelFields);
             return IsExistence;
         }
 

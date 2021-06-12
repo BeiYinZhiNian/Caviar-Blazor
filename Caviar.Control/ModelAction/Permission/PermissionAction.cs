@@ -67,7 +67,9 @@ namespace Caviar.Control.Permission
 
         public async Task SetRoleFields(string modelName,int roleId, List<SysModelFields> modelFields)
         {
-
+            await BC.DC.UpdateEntityAsync(modelFields);
+            var permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.RoleId == roleId && u.PermissionType == PermissionType.Field);
+            var fieldIds = modelFields.Where(u => u.IsDisable).Select(u => u.Id);
         }
     }
 }

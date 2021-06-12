@@ -28,8 +28,8 @@ namespace Caviar.AntDesignPages.Pages.Permission
 
         protected override async Task OnInitializedAsync()
         {
-            Url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
             var query = new Uri(NavigationManager.Uri).Query;
+            Url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "").Replace(query,"");
             if (QueryHelpers.ParseQuery(query).TryGetValue("Parameter", out var Parameter))
             {
                 Role = JsonSerializer.Deserialize<ViewRole>(Parameter);

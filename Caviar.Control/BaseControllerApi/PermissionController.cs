@@ -64,7 +64,7 @@ namespace Caviar.Control.Permission
         [HttpGet]
         public IActionResult RoleFields(string modelName, int roleId)
         {
-            if (string.IsNullOrEmpty(modelName)) return ResultError(400, "请输入需要获取的数据名称");
+            if (string.IsNullOrEmpty(modelName)) return ResultError("请输入需要获取的数据名称");
             ResultMsg.Data = CavAssembly.GetViewModelHeaders(modelName);
             return ResultOK();
         }
