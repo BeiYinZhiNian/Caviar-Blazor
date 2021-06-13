@@ -65,11 +65,52 @@ namespace Caviar.Control.Permission
             return menus;
         }
 
-        public async Task SetRoleFields(string modelName,int roleId, List<SysModelFields> modelFields)
+        public async Task<List<SysModelFields>> GetRoleFields(string fullName,int roleId)
         {
-            await BC.DC.UpdateEntityAsync(modelFields);
+            if (string.IsNullOrEmpty(fullName) || roleId == 0) return null;
             var permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.RoleId == roleId && u.PermissionType == PermissionType.Field);
-            var fieldIds = modelFields.Where(u => u.IsDisable).Select(u => u.Id);
+            var fields = await BC.DC.GetEntityAsync<SysModelFields>(u => u.FullName == fullName);
+            foreach (var item in fields)
+            {
+                if (permission.FirstOrDefault(u => u.Id == item.Id)!=null)
+                {
+                    item.IsDelete = true;
+                }
+            }
+            return fields;
+        }
+
+        public async Task SetRoleFields(string fullName, int roleId, List<SysModelFields> modelFields)
+        {
+            if (string.IsNullOrEmpty(fullName) || roleId == 0) return;
+            var permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.RoleId == roleId && u.PermissionType == PermissionType.Field);
+            var fields = await BC.DC.GetEntityAsync<SysModelFields>(u => u.FullName == fullName);
+            foreach (var item in modelFields)
+            {
+                var field = fields.FirstOrDefault(u => u.TypeName == item.TypeName);
+                if (field == null) continue;
+                var perm = permission.FirstOrDefault(u => u.PermissionType == PermissionType.Field && u.PermissionId == field.Id);
+                if (item.IsDisable)
+                {
+                    if (perm == null)
+                    {
+                        perm = new SysPermission()
+                        {
+                            PermissionType = PermissionType.Field,
+                            PermissionId = field.Id,
+                            RoleId = roleId,
+                        };
+                        await BC.DC.AddEntityAsync(perm);
+                    }
+                }
+                else
+                {
+                    if (perm != null)
+                    {
+                        await BC.DC.DeleteEntityAsync(perm);
+                    }
+                }
+            }
         }
     }
 }

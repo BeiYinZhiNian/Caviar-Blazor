@@ -354,9 +354,8 @@ namespace Caviar.Control
                 sql = sql.Replace("GO", "");
                 SqlQuery(sql);
 
-
+                //同步系统与数据库的模型字段
                 var fields = await GetAllAsync<SysModelFields>();
-                await DeleteEntityAsync(fields, IsDelete: true);
                 var types = CommonHelper.GetModelList();
                 List<SysModelFields> modelFields = new List<SysModelFields>();
                 foreach (var item in types)
@@ -364,7 +363,21 @@ namespace Caviar.Control
                     var viewModelFields = _cavAssembly.GetViewModelHeaders(item.Name);
                     modelFields.AddRange(viewModelFields);
                 }
-                await AddEntityAsync(modelFields);
+                foreach (var modelFieldsItem in modelFields)
+                {
+                    foreach (var fieldsItem in fields)
+                    {
+                        if(modelFieldsItem.TypeName == fieldsItem.TypeName && modelFieldsItem.FullName == fieldsItem.FullName)
+                        {
+                            modelFieldsItem.Id = fieldsItem.Id;
+                            fieldsItem.Id = 0;
+                        }
+                    }
+                }
+                var addFields = modelFields.Where(u => u.Id == 0).ToList();
+                var deleteFields = fields.Where(u => u.Id != 0).ToList();
+                await DeleteEntityAsync(deleteFields);
+                await AddEntityAsync(addFields);
             }
             #endregion
             return IsExistence;

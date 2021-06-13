@@ -22,6 +22,7 @@ namespace Caviar.AntDesignPages.Pages.Permission
         HttpHelper Http { get; set; }
         [Inject]
         MessageService MessageService { get; set; }
+        string FieldName { get; set; } = "请选择模型";
 
         ViewRole Role { get; set; }
         string Url { get; set; }
@@ -50,6 +51,7 @@ namespace Caviar.AntDesignPages.Pages.Permission
             var result = await Http.GetJson<List<ViewModelFields>>($"{Url}?modelName=" + model.TypeName);
             if (result.Status != 200) return;
             CurrentModel = model;
+            FieldName = model.DisplayName + "数据字段";
             Fields = result.Data;
         }
 
@@ -79,7 +81,7 @@ namespace Caviar.AntDesignPages.Pages.Permission
                 await MessageService.Error("请先选择所要保存的模型");
                 return;
             }
-            var result = await Http.PostJson($"{Url}?modelName={CurrentModel.TypeName}", Fields);
+            var result = await Http.PostJson($"{Url}?fullName={CurrentModel.TypeName}&roleId={Role.Id}", Fields);
             if (result.Status != 200) return;
             await MessageService.Success("保存完毕");
         }
