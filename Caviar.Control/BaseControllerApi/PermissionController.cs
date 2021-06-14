@@ -56,25 +56,35 @@ namespace Caviar.Control.Permission
             return ResultOK();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetFields(string modelName)
+        {
+            if (string.IsNullOrEmpty(modelName)) return ResultError("请输入需要获取的数据名称");
+            var fields = await Action.GetRoleFields(modelName);
+            var modelFields = CavAssembly.GetViewModelHeaders(modelName);//其他信息
+            var viewFields = new List<ViewModelFields>();
+            foreach (var item in modelFields)
+            {
+                var field = fields.FirstOrDefault(u => u.FullName == item.FullName && u.TypeName == item.TypeName);
+                if (field != null)
+                {
+                    item.IsDisable = field.IsDisable;
+                    item.Width = field.Width;
+                    viewFields.Add(item);
+                }
+            }
+            ResultMsg.Data = viewFields;
+            return ResultOK();
+        }
+
         /// <summary>
         /// 获取角色字段
         /// </summary>
         /// <param name="modelName"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> RoleFields(string modelName, int roleId)
+        public IActionResult RoleFields(string modelName, int roleId)
         {
-            //if (string.IsNullOrEmpty(modelName)) return ResultError("请输入需要获取的数据名称");
-            //var fields = await Action.GetRoleFields(modelName, roleId);
-            //var modelFields = CavAssembly.GetViewModelHeaders(modelName);
-            //foreach (var item in modelFields)
-            //{
-            //    var field = fields.FirstOrDefault(u => u.FullName == item.FullName && u.TypeName == item.TypeName);
-            //    if (field != null)
-            //    {
-            //        item.IsDisable = field.IsDisable;
-            //    }
-            //}
             ResultMsg.Data = CavAssembly.GetViewModelHeaders(modelName);
             return ResultOK();
         }
@@ -87,7 +97,7 @@ namespace Caviar.Control.Permission
         [HttpPost]
         public async Task<IActionResult> RoleFields(string fullName, int roleId,List<ViewModelFields> viewModelFields)
         {
-            var sysModelFields = CommonHelper.AToB<List<SysModelFields>,List<ViewModelFields>>(viewModelFields);
+            viewModelFields.AToB(out List<SysModelFields> sysModelFields);
             await Action.SetRoleFields(fullName, roleId, sysModelFields);
             return ResultOK();
         }

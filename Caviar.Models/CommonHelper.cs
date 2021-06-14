@@ -122,10 +122,10 @@ namespace Caviar.Models.SystemData
         /// <typeparam name="A"></typeparam>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static B AToB<B, A>(A value)
+        public static void AToB<B, A>(this A value,out B obj)
         {
             var json = JsonSerializer.Serialize(value);
-            return JsonSerializer.Deserialize<B>(json);
+            obj = JsonSerializer.Deserialize<B>(json);
         }
 
         /// <summary>

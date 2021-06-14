@@ -45,7 +45,7 @@ namespace Caviar.AntDesignPages.Shared
 
             if (!string.IsNullOrEmpty(ModelName))
             {
-                var modelNameList = await Http.GetJson<List<ViewModelFields>>("Permission/RoleFields?modelName=" + ModelName);
+                var modelNameList = await Http.GetJson<List<ViewModelFields>>("Permission/GetFields?modelName=" + ModelName);
                 if (modelNameList.Status == 200)
                 {
                     ViewModelFields = modelNameList.Data;

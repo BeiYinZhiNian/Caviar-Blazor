@@ -87,7 +87,7 @@ namespace Caviar.Control.ModelAction
         /// <returns></returns>
         public virtual List<ViewT> ModelToViewModel(List<T> model)
         {
-            var outModel = CommonHelper.AToB<List<ViewT>, List<T>>(model);
+            model.AToB(out List<ViewT> outModel);
             return outModel;
         }
     }

@@ -99,11 +99,11 @@ namespace Caviar.Control
         {
             var roleAction = CreateModel<RoleAction>();
             BC.Roles = roleAction.GetCurrentRoles().Result;
-            bool isAdmin = BC.Roles.FirstOrDefault(u => u.Uid == CaviarConfig.SysAdminRoleGuid) == null ? false : true;
+            BC.IsAdmin = BC.Roles.FirstOrDefault(u => u.Uid == CaviarConfig.SysAdminRoleGuid) == null ? false : true;
             var permissionAction = CreateModel<PermissionAction>();
-            BC.Permissions = permissionAction.GetCurrentPermissions(BC.Roles, isAdmin).Result;
+            BC.Permissions = permissionAction.GetCurrentPermissions(BC.Roles).Result;
             var menuAction = CreateModel<MenuAction>();
-            BC.Menus = menuAction.GetPermissionMenu(BC.Permissions, isAdmin).Result;
+            BC.Menus = menuAction.GetPermissionMenu(BC.Permissions).Result;
             BC.DC.DetachAll();
         } 
 

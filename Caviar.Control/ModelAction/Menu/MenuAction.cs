@@ -20,16 +20,16 @@ namespace Caviar.Control.Menu
         }
         public override List<ViewMenu> ModelToViewModel(List<SysMenu> model)
         {
-            var outModel = CommonHelper.AToB<List<ViewMenu>, List<SysMenu>>(model);
+            model.AToB(out List<ViewMenu> outModel);
             var viewMenus = new List<ViewMenu>().ListAutoAssign(outModel).ToList();
             viewMenus = viewMenus.ListToTree();
             return viewMenus;
         }
 
-        public async Task<List<SysMenu>> GetPermissionMenu(List<SysPermission> permissions,bool isAdmin =false)
+        public async Task<List<SysMenu>> GetPermissionMenu(List<SysPermission> permissions)
         {
             HashSet<SysMenu> menus = new HashSet<SysMenu>();
-            if (isAdmin)
+            if (BC.IsAdmin)
             {
                 return await BC.DC.GetAllAsync<SysMenu>();
             }

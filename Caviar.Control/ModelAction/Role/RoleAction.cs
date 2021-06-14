@@ -40,7 +40,7 @@ namespace Caviar.Control.Role
 
         public override List<ViewRole> ModelToViewModel(List<SysRole> model)
         {
-            var outModel = CommonHelper.AToB<List<ViewRole>, List<SysRole>>(model);
+            model.AToB(out List<ViewRole> outModel);
             var viewMenus = new List<ViewRole>().ListAutoAssign(outModel).ToList();
             viewMenus = viewMenus.ListToTree();
             return viewMenus;

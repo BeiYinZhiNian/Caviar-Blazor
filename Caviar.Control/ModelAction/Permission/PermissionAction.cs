@@ -9,9 +9,9 @@ namespace Caviar.Control.Permission
 {
     public partial class PermissionAction
     {
-        public async Task<List<SysPermission>> GetCurrentPermissions(List<SysRole> roles,bool isAdmin = false)
+        public async Task<List<SysPermission>> GetCurrentPermissions(List<SysRole> roles)
         {
-            if (isAdmin)
+            if (BC.IsAdmin)
             {
                 return await BC.DC.GetAllAsync<SysPermission>();
             }
@@ -65,16 +65,25 @@ namespace Caviar.Control.Permission
             return menus;
         }
 
-        public async Task<List<SysModelFields>> GetRoleFields(string fullName,int roleId)
+        public async Task<List<SysModelFields>> GetRoleFields(string fullName,int roleId = 0)
         {
-            if (string.IsNullOrEmpty(fullName) || roleId == 0) return null;
-            var permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.RoleId == roleId && u.PermissionType == PermissionType.Field);
+            if (string.IsNullOrEmpty(fullName)) return null;
+            IEnumerable<SysPermission> permission;
+            if (roleId == 0)
+            {
+                permission = BC.Permissions.Where(u => u.PermissionType == PermissionType.Field);
+            }
+            else{
+                permission = BC.Permissions.Where(u => u.RoleId == roleId && u.PermissionType == PermissionType.Field);
+            }
+            var sysModelFields = new List<SysModelFields>();
             var fields = await BC.DC.GetEntityAsync<SysModelFields>(u => u.FullName == fullName);
             foreach (var item in fields)
             {
                 if (permission.FirstOrDefault(u => u.Id == item.Id)!=null)
                 {
-                    item.IsDelete = false;
+                    item.IsDisable = false;
+                    sysModelFields.Add(item);
                 }
             }
             return fields;
