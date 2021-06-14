@@ -64,17 +64,17 @@ namespace Caviar.Control.Permission
         [HttpGet]
         public async Task<IActionResult> RoleFields(string modelName, int roleId)
         {
-            if (string.IsNullOrEmpty(modelName)) return ResultError("请输入需要获取的数据名称");
-            var fields = await Action.GetRoleFields(modelName, roleId);
-            var modelFields = CavAssembly.GetViewModelHeaders(modelName);
-            foreach (var item in modelFields)
-            {
-                var field = fields.FirstOrDefault(u => u.FullName == item.FullName && u.TypeName == item.TypeName);
-                if (field != null)
-                {
-                    item.IsDisable = field.IsDisable;
-                }
-            }
+            //if (string.IsNullOrEmpty(modelName)) return ResultError("请输入需要获取的数据名称");
+            //var fields = await Action.GetRoleFields(modelName, roleId);
+            //var modelFields = CavAssembly.GetViewModelHeaders(modelName);
+            //foreach (var item in modelFields)
+            //{
+            //    var field = fields.FirstOrDefault(u => u.FullName == item.FullName && u.TypeName == item.TypeName);
+            //    if (field != null)
+            //    {
+            //        item.IsDisable = field.IsDisable;
+            //    }
+            //}
             ResultMsg.Data = CavAssembly.GetViewModelHeaders(modelName);
             return ResultOK();
         }

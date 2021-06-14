@@ -349,7 +349,8 @@ namespace Caviar.Control
                         DisplayName = dispLayName,
                         ValueLen = valueLen,
                         IsEnum = item.PropertyType.IsEnum,
-                        FullName = name
+                        FullName = name,
+                        IsDisable = true,
                     };
                     if (filter.IsEnum)
                     {

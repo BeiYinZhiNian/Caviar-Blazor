@@ -74,7 +74,7 @@ namespace Caviar.Control.Permission
             {
                 if (permission.FirstOrDefault(u => u.Id == item.Id)!=null)
                 {
-                    item.IsDelete = true;
+                    item.IsDelete = false;
                 }
             }
             return fields;
@@ -92,6 +92,14 @@ namespace Caviar.Control.Permission
                 var perm = permission.FirstOrDefault(u => u.PermissionType == PermissionType.Field && u.PermissionId == field.Id);
                 if (item.IsDisable)
                 {
+                    if (perm != null)
+                    {
+                        await BC.DC.DeleteEntityAsync(perm);
+                    }
+
+                }
+                else
+                {
                     if (perm == null)
                     {
                         perm = new SysPermission()
@@ -101,13 +109,6 @@ namespace Caviar.Control.Permission
                             RoleId = roleId,
                         };
                         await BC.DC.AddEntityAsync(perm);
-                    }
-                }
-                else
-                {
-                    if (perm != null)
-                    {
-                        await BC.DC.DeleteEntityAsync(perm);
                     }
                 }
             }

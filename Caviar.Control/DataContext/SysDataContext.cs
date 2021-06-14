@@ -363,6 +363,7 @@ namespace Caviar.Control
                     var viewModelFields = _cavAssembly.GetViewModelHeaders(item.Name);
                     modelFields.AddRange(viewModelFields);
                 }
+                DetachAll();
                 foreach (var modelFieldsItem in modelFields)
                 {
                     foreach (var fieldsItem in fields)
