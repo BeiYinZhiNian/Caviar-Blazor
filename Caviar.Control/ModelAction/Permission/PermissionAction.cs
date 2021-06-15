@@ -51,7 +51,15 @@ namespace Caviar.Control.Permission
         public async Task<List<SysMenu>> GetRoleMenu(int roleId)
         {
             List<SysMenu> menus = new List<SysMenu>();
-            var permission = BC.Permissions.Where(u => u.RoleId == roleId && u.PermissionType == PermissionType.Menu);
+            IEnumerable<SysPermission> permission;
+            if (roleId == 0)
+            {
+                permission = BC.Permissions.Where(u => u.PermissionType == PermissionType.Menu);
+            }
+            else
+            {
+                permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.RoleId==roleId && u.PermissionType == PermissionType.Menu);
+            }
             var allMneus = BC.Menus;
             if (BC.IsAdmin)
             {
@@ -83,16 +91,14 @@ namespace Caviar.Control.Permission
                 permission = BC.Permissions.Where(u => u.PermissionType == PermissionType.Field);
             }
             else{
-                permission = BC.Permissions.Where(u => u.RoleId == roleId && u.PermissionType == PermissionType.Field);
+                permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.RoleId == roleId && u.PermissionType == PermissionType.Field);
             }
-            var sysModelFields = new List<SysModelFields>();
             var fields = await BC.DC.GetEntityAsync<SysModelFields>(u => u.FullName == fullName);
             foreach (var item in fields)
             {
                 if (permission.FirstOrDefault(u => u.PermissionId == item.Id)!=null)
                 {
                     item.IsDisable = false;
-                    sysModelFields.Add(item);
                 }
             }
             return fields;
@@ -109,12 +115,17 @@ namespace Caviar.Control.Permission
                 if (field == null) continue;
                 var perm = permission.FirstOrDefault(u => u.PermissionType == PermissionType.Field && u.PermissionId == field.Id);
                 field.Width = item.Width;
+                if (!string.IsNullOrEmpty(item.DisplayName))
+                {
+                    field.DisplayName = item.DisplayName;
+                }
+                field.Number = item.Number;
                 await BC.DC.UpdateEntityAsync(field);
                 if (item.IsDisable)
                 {
                     if (perm != null)
                     {
-                        await BC.DC.DeleteEntityAsync(perm);
+                        await BC.DC.DeleteEntityAsync(perm,IsDelete:true);
                     }
 
                 }

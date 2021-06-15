@@ -51,7 +51,7 @@ namespace Caviar.AntDesignPages.Pages.Permission
             var result = await Http.GetJson<List<ViewModelFields>>($"{Url}?modelName={model.TypeName}&roleId={Role.Id}");
             if (result.Status != 200) return;
             CurrentModel = model;
-            FieldName = model.DisplayName + "数据字段";
+            FieldName = model.DisplayName + "-数据字段";
             Fields = result.Data;
         }
 

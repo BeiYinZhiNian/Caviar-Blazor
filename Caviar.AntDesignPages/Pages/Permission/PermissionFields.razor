@@ -2,7 +2,7 @@
 
 <Row Gutter="@gutter">
     <AntDesign.Col Flex="2">
-        <Card Bordered="false" Title=@("数据模型")>
+        <Card Bordered="false" Title=@(Role.RoleName + "-数据模型")>
             <Body>
                 <Table TItem="ViewModelFields" DataSource="@Models">
                     <Column @bind-Field="@context.TypeName">
@@ -35,21 +35,52 @@
                     <Column @bind-Field="@context.TypeName">
                     </Column>
                     <Column @bind-Field="@context.DisplayName">
+                        @{
+                            var _editId = context.TypeName + "-DisplayName";
+                            if (editId == _editId)
+                            {
+                                <Input Type="text" Style="width:50%" @bind-Value="context.DisplayName" OnBlur="()=>stopEdit(context)" AutoFocus />
+                            }
+                            else
+                            {
+                                <div class="editable-cell-value-wrap" @onclick="()=>startEdit(_editId)">
+                                    @context.DisplayName
+                                </div>
+                            }
+                        }
+                    </Column>
+                    <Column @bind-Field="@context.Number">
+                        @{
+                            var _editId = context.TypeName + "-Number";
+                            if (editId == _editId)
+                            {
+                                <Input Type="text" Style="width:50%" @bind-Value="context.Number" OnBlur="()=>stopEdit(context)" AutoFocus />
+                            }
+                            else
+                            {
+                                <div class="editable-cell-value-wrap" @onclick="()=>startEdit(_editId)">
+                                    @context.Number
+                                </div>
+                            }
+                        }
+                    </Column>
+                    <Column @bind-Field="@context.Width">
+                        @{
+                            var _editId = context.TypeName + "-Width";
+                            if (editId == _editId)
+                            {
+                                <Input Type="text" Style="width:50%" @bind-Value="context.Width" OnBlur="()=>stopEdit(context)" AutoFocus />
+                            }
+                            else
+                            {
+                                <div class="editable-cell-value-wrap" @onclick="()=>startEdit(_editId)">
+                                    @context.Width
+                                </div>
+                            }
+                        }
                     </Column>
                     <Column @bind-Field="@context.IsDisable">
                         <Switch @bind-Value="@context.IsDisable"></Switch>
-                    </Column>
-                    <Column @bind-Field="@context.Width">
-                        @if (editId == context.TypeName)
-                        {
-                            <Input Type="text" Style="width:50%" @bind-Value="context.Width" OnBlur="()=>stopEdit(context)" AutoFocus />
-                        }
-                        else
-                        {
-                            <div class="editable-cell-value-wrap" @onclick="()=>startEdit(context.TypeName)">
-                                @context.Width
-                            </div>
-                        }
                     </Column>
                 </Table>
             </Body>

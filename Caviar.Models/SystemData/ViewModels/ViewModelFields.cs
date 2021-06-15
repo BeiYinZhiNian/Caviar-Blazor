@@ -11,11 +11,6 @@ namespace Caviar.Models.SystemData
     public partial class ViewModelFields : SysModelFields
     {
         /// <summary>
-        /// 显示名称
-        /// </summary>
-        [DisplayName("显示名称")]
-        public string DisplayName { get; set; }
-        /// <summary>
         /// 类型名称如string,int等
         /// </summary>
         public string ModelType { get; set; }

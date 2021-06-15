@@ -55,51 +55,56 @@ namespace Caviar.Control.Permission
             ResultMsg.Data = viewModels;
             return ResultOK();
         }
-
+        /// <summary>
+        /// 只能获取自身字段
+        /// </summary>
+        /// <param name="modelName"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetFields(string modelName)
         {
             if (string.IsNullOrEmpty(modelName)) return ResultError("请输入需要获取的数据名称");
-            var fields = await Action.GetRoleFields(modelName);
-            var modelFields = CavAssembly.GetViewModelHeaders(modelName);//其他信息
-            var viewFields = new List<ViewModelFields>();
-            foreach (var item in modelFields)
-            {
-                var field = fields.FirstOrDefault(u => u.FullName == item.FullName && u.TypeName == item.TypeName);
-                if (field != null && !field.IsDisable)
-                {
-                    item.IsDisable = field.IsDisable;
-                    item.Width = field.Width;
-                    viewFields.Add(item);
-                }
-            }
-            ResultMsg.Data = viewFields;
+            ResultMsg.Data = await GetFieldsData(modelName);
             return ResultOK();
         }
 
         /// <summary>
-        /// 获取角色字段
+        /// 获取指定角色字段
         /// </summary>
         /// <param name="modelName"></param>
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> RoleFields(string modelName, int roleId)
         {
-            var modelFields = CavAssembly.GetViewModelHeaders(modelName);
+            if (string.IsNullOrEmpty(modelName)) return ResultError("请输入需要获取的数据名称");
+            ResultMsg.Data = await GetFieldsData(modelName,roleId);
+            return ResultOK();
+        }
+
+        private async Task<List<ViewModelFields>> GetFieldsData(string modelName, int roleId = 0)
+        {
+            if (string.IsNullOrEmpty(modelName)) return null;
             var fields = await Action.GetRoleFields(modelName, roleId);
+            var modelFields = CavAssembly.GetViewModelHeaders(modelName);//其他信息
             var viewFields = new List<ViewModelFields>();
+            var isAdmin = roleId != 0 && BC.IsAdmin;
             foreach (var item in modelFields)
             {
                 var field = fields.FirstOrDefault(u => u.FullName == item.FullName && u.TypeName == item.TypeName);
-                if (field != null && (!field.IsDisable || BC.IsAdmin))
+                if (field != null && (!field.IsDisable || isAdmin))
                 {
                     item.IsDisable = field.IsDisable;
                     item.Width = field.Width;
+                    if (!string.IsNullOrEmpty(field.DisplayName))
+                    {
+                        item.DisplayName = field.DisplayName;
+                    }
+                    item.Number = field.Number;
                     viewFields.Add(item);
                 }
             }
-            ResultMsg.Data = viewFields;
-            return ResultOK();
+            viewFields = viewFields.OrderBy(u => u.Number).ToList();
+            return viewFields;
         }
 
         /// <summary>

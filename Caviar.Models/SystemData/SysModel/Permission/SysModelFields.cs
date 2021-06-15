@@ -11,6 +11,11 @@ namespace Caviar.Models.SystemData
     public class SysModelFields:SysBaseModel
     {
         /// <summary>
+        /// 显示名称
+        /// </summary>
+        [DisplayName("显示名称")]
+        public string DisplayName { get; set; }
+        /// <summary>
         /// 命名空间,判断父类的唯一条件
         /// </summary>
         public string FullName { get; set; }
