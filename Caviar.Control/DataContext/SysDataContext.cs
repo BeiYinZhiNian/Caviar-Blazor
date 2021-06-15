@@ -259,10 +259,13 @@ namespace Caviar.Control
             }
             PageData<T> pageData = new PageData<T>
             {
-                Rows = await data.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync(),
                 PageIndex = pageIndex,
                 PageSize = pageSize
             };
+            if (data.Count() > 0)
+            {
+                pageData.Rows = await data.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+            }
             return pageData;
         }
         /// <summary>
