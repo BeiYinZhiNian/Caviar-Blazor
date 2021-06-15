@@ -121,7 +121,7 @@ namespace Caviar.Models.SystemData
         /// <param name="pageSize">每页大小</param>
         /// <param name="isOrder">排序正反</param>
         /// <returns></returns>
-        public Task<PageData<T>> GetPageAsync<T, TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = false) where T : class, IBaseModel;
+        public Task<PageData<T>> GetPageAsync<T, TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true) where T : class, IBaseModel;
 
         /// <summary>
         /// 开启事务
@@ -135,14 +135,6 @@ namespace Caviar.Models.SystemData
         /// <param name="parameters"></param>
         /// <returns></returns>
         public DataTable SqlQuery(string sql, params object[] parameters);
-        /// <summary>
-        /// 创建基础按钮
-        /// </summary>
-        /// <param name="menuName"></param>
-        /// <param name="outName"></param>
-        /// <param name="parentId"></param>
-        /// <returns>返回indexId</returns>
-        public Task<int> CreateButton(string menuName, string outName, int parentId,bool isTree = false);
         /// <summary>
         /// 取消所有被根据实体
         /// </summary>

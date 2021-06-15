@@ -45,7 +45,7 @@
             {
                 foreach (var item in Buttons)
                 {
-                    if (item.ButtonPosition == ButtonPosition.Header)
+                    if (item.ButtonPosition == ButtonPosition.Default)
                     {
                         <SpaceItem>
                             @CreatePackButton(item,default)
@@ -224,7 +224,7 @@
     {
 
         RenderFragment render = null;
-        string type = menu.ButtonPosition == ButtonPosition.Header ? "primary" : "link";
+        string type = menu.ButtonPosition == ButtonPosition.Default ? "primary" : "link";
         bool danger = menu.IsDoubleTrue == true ? true : false;
         render =@<Button Icon="@menu.Icon" Type="@type" Danger="danger" Style="margin-bottom:16px" OnClick="() => doubleTrueClick(menu, context)">
                 @if (menu.TargetType == TargetType.NewLabel)

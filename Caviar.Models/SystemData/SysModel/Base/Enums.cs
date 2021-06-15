@@ -31,6 +31,11 @@ namespace Caviar.Models.SystemData
         /// </summary>
         [Display(Name = "按钮")]
         Button,
+        /// <summary>
+        /// API
+        /// </summary>
+        [Display(Name = "API")]
+        API,
     }
     /// <summary>
     /// 打开类型
@@ -64,12 +69,10 @@ namespace Caviar.Models.SystemData
     /// </summary>
     public enum ButtonPosition
     {
-        [Display(Name = "表头")]
-        Header,
+        [Display(Name = "默认")]
+        Default,
         [Display(Name = "行")]
         Row,
-        [Display(Name = "API")]
-        API
     }
 
     /// <summary>

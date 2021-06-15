@@ -247,7 +247,7 @@ namespace Caviar.Control
         /// <param name="isOrder"></param>
         /// <param name="isNoTracking"></param>
         /// <returns></returns>
-        public virtual async Task<PageData<T>> GetPageAsync<T, TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = false) where T : class, IBaseModel
+        public virtual async Task<PageData<T>> GetPageAsync<T, TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true) where T : class, IBaseModel
         {
             IQueryable<T> data = GetContext<T>();
             data = isOrder ?
@@ -387,85 +387,6 @@ namespace Caviar.Control
         public void DetachAll()
         {
             DC.DetachAll();
-        }
-        public async Task<int> CreateButton(string menuName,string outName,int parentId,bool isTree = false)
-        {
-            SysMenu menu = new SysMenu()
-            {
-                MenuName = menuName + "管理",
-                TargetType = TargetType.CurrentPage,
-                MenuType = MenuType.Menu,
-                Url = $"{outName}/Index",
-                Icon = "border-outer",
-                ParentId = parentId,
-                Number = "999"
-            };
-            menu = await AddMenu(menu);
-            parentId = menu.Id;
-            SysMenu AddButton = new SysMenu()
-            {
-                MenuType = MenuType.Button,
-                TargetType = TargetType.EjectPage,
-                MenuName = "新增",
-                ButtonPosition = ButtonPosition.Header,
-                Url = $"{outName}/Add",
-                Icon = "appstore-add",
-                ParentId = parentId,
-                IsDoubleTrue = false,
-                Number = "999"
-            };
-            await AddMenu(AddButton);
-            AddButton = new SysMenu()
-            {
-                MenuType = MenuType.Button,
-                Url = $"{outName}/Update",
-                MenuName = "修改",
-                TargetType = TargetType.EjectPage,
-                ButtonPosition = ButtonPosition.Row,
-                Icon = "edit",
-                ParentId = parentId,
-                Number = "999"
-            };
-            await AddMenu(AddButton);
-            AddButton = new SysMenu()
-            {
-                MenuType = MenuType.Button,
-                MenuName = "删除",
-                ButtonPosition = ButtonPosition.Row,
-                Url = $"{outName}/Delete",
-                TargetType = TargetType.Callback,
-                Icon = "delete",
-                ParentId = parentId,
-                IsDoubleTrue = true,
-                Number = "9999"
-            };
-            if (isTree)
-            {
-                AddButton.Url = $"{outName}/Move";
-            }
-            await AddMenu(AddButton);
-            return parentId;
-        }
-
-
-        private async Task<SysMenu> AddMenu(SysMenu menu)
-        {
-            SysMenu entity = null;
-            if (menu.MenuType != MenuType.Button)
-            {
-                entity = await GetFirstEntityAsync<SysMenu>(u => u.MenuName == menu.MenuName);
-            }
-            else
-            {
-                entity = await GetFirstEntityAsync<SysMenu>(u => u.MenuName == menu.MenuName && u.ParentId == menu.ParentId);
-            }
-            var count = 0;
-            if (entity == null)
-            {
-                count = await AddEntityAsync(menu);
-                entity = menu;
-            }
-            return entity;
         }
 
     }

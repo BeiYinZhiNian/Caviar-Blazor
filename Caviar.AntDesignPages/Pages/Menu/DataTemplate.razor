@@ -72,10 +72,15 @@
                 visibility = "display:none;";
                 buttonStrle = "display:none;";
                 DataSource.Url = "";
+                DataSource.ButtonPosition = ButtonPosition.Default;
+                DataSource.TargetType = TargetType.CurrentPage;
                 break;
             case MenuType.Menu:
+            case MenuType.API:
                 buttonStrle = "display:none;";
                 visibility = "";
+                DataSource.ButtonPosition = ButtonPosition.Default;
+                DataSource.TargetType = TargetType.CurrentPage;
                 break;
             case MenuType.Button:
                 visibility = "";
