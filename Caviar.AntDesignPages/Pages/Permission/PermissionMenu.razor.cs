@@ -22,16 +22,19 @@ namespace Caviar.AntDesignPages.Pages.Permission
         List<ViewMenu> ViewMenus { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            await GetMenus();//获取数据源
-            
+            await GetSelectMenus();//获取已选择数据
         }
         public void CheckInit(List<TreeNode<ViewMenu>> nodes,List<ViewMenu> menus)
         {
             foreach (var item in nodes)
             {
-                if(menus.FirstOrDefault(u=>u.Id.ToString() == item.Key)!=null)
+                var menu = menus.FirstOrDefault(u => u.Id.ToString() == item.Key);
+                if(menu != null)
                 {
-                    item.SetChecked(true);
+                    if (!menu.IsDisable)
+                    {
+                        item.SetChecked(true);
+                    }
                 }
                 if (item.ChildNodes != null)
                 {
@@ -41,24 +44,14 @@ namespace Caviar.AntDesignPages.Pages.Permission
         }
         Tree<ViewMenu> Tree { get; set; }
 
-        async Task GetMenus()
-        {
-            var result = await Http.GetJson<PageData<ViewMenu>>($"Menu/Index?pageSize=100");
-            if (result.Status != 200) return;
-            if (result.Data != null)
-            {
-                ViewMenus = result.Data.Rows;
-                StateHasChanged();
-                await GetSelectMenus();//获取已选择数据
-            }
-        }
-
         async Task GetSelectMenus()
         {
             var result = await Http.GetJson<List<ViewMenu>>($"{Url}?roleId={DataSource.Id}");
             if (result.Status != 200) return;
             if (result.Data != null)
             {
+                ViewMenus = result.Data.ListToTree();
+                StateHasChanged();
                 CheckInit(Tree.ChildNodes, result.Data);
             }
         }

@@ -21,27 +21,19 @@ namespace Caviar.Control.Menu
         public override List<ViewMenu> ModelToViewModel(List<SysMenu> model)
         {
             model.AToB(out List<ViewMenu> outModel);
-            var viewMenus = new List<ViewMenu>().ListAutoAssign(outModel).ToList();
-            viewMenus = viewMenus.ListToTree();
+            var viewMenus = outModel.ListToTree();
             return viewMenus;
         }
 
         public async Task<List<SysMenu>> GetPermissionMenu(List<SysPermission> permissions)
         {
             HashSet<SysMenu> menus = new HashSet<SysMenu>();
-            if (BC.IsAdmin)
+            permissions = permissions.Where(u => u.PermissionType == PermissionType.Menu).ToList();
+            foreach (var item in permissions)
             {
-                return await BC.DC.GetAllAsync<SysMenu>();
-            }
-            else
-            {
-                permissions = permissions.Where(u => u.PermissionType == PermissionType.Menu).ToList();
-                foreach (var item in permissions)
-                {
-                    var menu = await BC.DC.GetFirstEntityAsync<SysMenu>(u => u.Id == item.PermissionId);
-                    if (menu == null) continue;
-                    menus.Add(menu);
-                }
+                var menu = await BC.DC.GetFirstEntityAsync<SysMenu>(u => u.Id == item.PermissionId);
+                if (menu == null) continue;
+                menus.Add(menu);
             }
             return menus.OrderBy(u => u.Number).ToList();
         }

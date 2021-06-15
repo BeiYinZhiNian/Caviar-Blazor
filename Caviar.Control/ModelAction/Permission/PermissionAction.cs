@@ -11,10 +11,6 @@ namespace Caviar.Control.Permission
     {
         public async Task<List<SysPermission>> GetCurrentPermissions(List<SysRole> roles)
         {
-            if (BC.IsAdmin)
-            {
-                return await BC.DC.GetAllAsync<SysPermission>();
-            }
             List<SysPermission> permissions = new List<SysPermission>();
             foreach (var item in roles)
             {
@@ -26,9 +22,9 @@ namespace Caviar.Control.Permission
 
         public async Task SetRoleMenu(int roleId,int[] menuIds)
         {
-            var menus = GetRoleMenu(roleId);
+            var menus = await GetRoleMenu(roleId);
             if (menus == null) return;
-            var Ids = menus.Select(u => u.Id);
+            var Ids = menus.Where(u=>u.IsDisable==false).Select(u => u.Id);
             var addIds = menuIds.Except(Ids).ToArray();
             var deleteIds = Ids.Except(menuIds).ToArray();
             List<SysPermission> addSysPermission = new List<SysPermission>();
@@ -52,16 +48,29 @@ namespace Caviar.Control.Permission
             await BC.DC.AddEntityAsync(addSysPermission);
         }
 
-        public List<SysMenu> GetRoleMenu(int roleId)
+        public async Task<List<SysMenu>> GetRoleMenu(int roleId)
         {
             List<SysMenu> menus = new List<SysMenu>();
             var permission = BC.Permissions.Where(u => u.RoleId == roleId && u.PermissionType == PermissionType.Menu);
-            foreach (var item in permission)
+            var allMneus = BC.Menus;
+            if (BC.IsAdmin)
             {
-                var menu = BC.Menus.FirstOrDefault(u => u.Id == item.PermissionId);
-                if (menu == null) return null;
-                menus.Add(menu);
+                allMneus = await BC.DC.GetAllAsync<SysMenu>();
             }
+            foreach (var item in allMneus)
+            {
+                var menu = permission.FirstOrDefault(u => u.PermissionId == item.Id);
+                if (menu == null) 
+                {
+                    item.IsDisable = true;
+                }
+                else
+                {
+                    item.IsDisable = false;
+                }
+                menus.Add(item);
+            }
+            menus.OrderBy(u => u.Number);
             return menus;
         }
 
@@ -80,7 +89,7 @@ namespace Caviar.Control.Permission
             var fields = await BC.DC.GetEntityAsync<SysModelFields>(u => u.FullName == fullName);
             foreach (var item in fields)
             {
-                if (permission.FirstOrDefault(u => u.Id == item.Id)!=null)
+                if (permission.FirstOrDefault(u => u.PermissionId == item.Id)!=null)
                 {
                     item.IsDisable = false;
                     sysModelFields.Add(item);
@@ -99,6 +108,8 @@ namespace Caviar.Control.Permission
                 var field = fields.FirstOrDefault(u => u.TypeName == item.TypeName);
                 if (field == null) continue;
                 var perm = permission.FirstOrDefault(u => u.PermissionType == PermissionType.Field && u.PermissionId == field.Id);
+                field.Width = item.Width;
+                await BC.DC.UpdateEntityAsync(field);
                 if (item.IsDisable)
                 {
                     if (perm != null)

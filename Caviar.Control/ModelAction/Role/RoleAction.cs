@@ -11,7 +11,7 @@ namespace Caviar.Control.Role
     {
         public async Task<List<SysRole>> GetCurrentRoles()
         {
-            List<SysRole> roles = new List<SysRole>();
+            HashSet<SysRole> roles = new HashSet<SysRole>();
             if (BC.Id > 0)
             {
                 //获取当前用户角色
@@ -24,10 +24,15 @@ namespace Caviar.Control.Role
             //获取未登录角色
             var noRole = await BC.DC.GetEntityAsync<SysRole>(CaviarConfig.NoLoginRoleGuid);
             await AddRole(roles,noRole);
-            return roles;
+            return roles.ToList();
         }
-
-        private async Task AddRole(List<SysRole> roles, SysRole role)
+        /// <summary>
+        /// 加入当前角色和所有父角色
+        /// </summary>
+        /// <param name="roles"></param>
+        /// <param name="role"></param>
+        /// <returns></returns>
+        private async Task AddRole(HashSet<SysRole> roles, SysRole role)
         {
             if (roles == null) return;
             roles.Add(role);

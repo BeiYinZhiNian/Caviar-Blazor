@@ -19,9 +19,9 @@ namespace Caviar.Control.Permission
         /// <param name="roleId"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult RoleMenu(int roleId)
+        public async Task<IActionResult> RoleMenu(int roleId)
         {
-            var menus = Action.GetRoleMenu(roleId);
+            var menus = await Action.GetRoleMenu(roleId);
             if (menus == null) return ResultForbidden("未查询到该角色权限，请联系管理员获取");
             ResultMsg.Data = menus;
             return ResultOK();
@@ -66,7 +66,7 @@ namespace Caviar.Control.Permission
             foreach (var item in modelFields)
             {
                 var field = fields.FirstOrDefault(u => u.FullName == item.FullName && u.TypeName == item.TypeName);
-                if (field != null)
+                if (field != null && !field.IsDisable)
                 {
                     item.IsDisable = field.IsDisable;
                     item.Width = field.Width;
@@ -83,9 +83,22 @@ namespace Caviar.Control.Permission
         /// <param name="modelName"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult RoleFields(string modelName, int roleId)
+        public async Task<IActionResult> RoleFields(string modelName, int roleId)
         {
-            ResultMsg.Data = CavAssembly.GetViewModelHeaders(modelName);
+            var modelFields = CavAssembly.GetViewModelHeaders(modelName);
+            var fields = await Action.GetRoleFields(modelName, roleId);
+            var viewFields = new List<ViewModelFields>();
+            foreach (var item in modelFields)
+            {
+                var field = fields.FirstOrDefault(u => u.FullName == item.FullName && u.TypeName == item.TypeName);
+                if (field != null && (!field.IsDisable || BC.IsAdmin))
+                {
+                    item.IsDisable = field.IsDisable;
+                    item.Width = field.Width;
+                    viewFields.Add(item);
+                }
+            }
+            ResultMsg.Data = viewFields;
             return ResultOK();
         }
 

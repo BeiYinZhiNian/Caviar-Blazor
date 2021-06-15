@@ -48,7 +48,7 @@ namespace Caviar.AntDesignPages.Pages.Permission
 
         public async Task GetFields(ViewModelFields model)
         {
-            var result = await Http.GetJson<List<ViewModelFields>>($"{Url}?modelName=" + model.TypeName);
+            var result = await Http.GetJson<List<ViewModelFields>>($"{Url}?modelName={model.TypeName}&roleId={Role.Id}");
             if (result.Status != 200) return;
             CurrentModel = model;
             FieldName = model.DisplayName + "数据字段";
