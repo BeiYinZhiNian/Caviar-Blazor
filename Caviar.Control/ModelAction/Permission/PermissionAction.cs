@@ -115,11 +115,12 @@ namespace Caviar.Control.Permission
                 if (field == null) continue;
                 var perm = permission.FirstOrDefault(u => u.PermissionType == PermissionType.Field && u.PermissionId == field.Id);
                 field.Width = item.Width;
+                field.Number = item.Number;
+                field.IsPanel = item.IsPanel;
                 if (!string.IsNullOrEmpty(item.DisplayName))
                 {
                     field.DisplayName = item.DisplayName;
                 }
-                field.Number = item.Number;
                 await BC.DC.UpdateEntityAsync(field);
                 if (item.IsDisable)
                 {

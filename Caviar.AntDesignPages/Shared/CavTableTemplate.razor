@@ -71,6 +71,7 @@
     {
         foreach (var item in ViewModelFields)
         {
+            if (!item.IsPanel) continue;
             var typeNmae = item.ModelType.ToLower();
             if (item.IsEnum)
             {

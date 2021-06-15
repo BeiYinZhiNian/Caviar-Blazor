@@ -95,11 +95,12 @@ namespace Caviar.Control.Permission
                 {
                     item.IsDisable = field.IsDisable;
                     item.Width = field.Width;
+                    item.IsPanel = field.IsPanel;
+                    item.Number = field.Number;
                     if (!string.IsNullOrEmpty(field.DisplayName))
                     {
                         item.DisplayName = field.DisplayName;
                     }
-                    item.Number = field.Number;
                     viewFields.Add(item);
                 }
             }
