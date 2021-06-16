@@ -67,5 +67,10 @@ namespace Caviar.Models
         /// 请求参数
         /// </summary>
         public IDictionary<string,object> ActionArguments { get; set; }
+        /// <summary>
+        /// 全局缓存
+        /// 字段列表
+        /// </summary>
+        public List<SysModelFields> SysModelFields { get; set; }
     }
 }

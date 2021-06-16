@@ -33,7 +33,7 @@
     <None Update="SqlInit\CaviarSqlServer.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Template\File\Action.cs.temp">
+    <None Update="Template\File\(name)Action.cs.temp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Template\File\DataTemplate.razor.cs.temp">
@@ -48,10 +48,10 @@
     <None Update="Template\File\Index.razor.temp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Template\File\Controller.cs.temp">
+    <None Update="Template\File\(name)Controller.cs.temp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Template\File\ViewModel.cs.temp">
+    <None Update="Template\File\View(name).cs.temp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

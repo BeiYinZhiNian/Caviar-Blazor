@@ -20,7 +20,7 @@ namespace Caviar.Control
     public partial class SysDataContext : IDataContext
     {
 
-        public SysDataContext(DataContext dataContext,BaseControllerModel baseControllerModel, IAssemblyDynamicCreation cavAssembly)
+        public SysDataContext(DataContext dataContext,IBaseControllerModel baseControllerModel, IAssemblyDynamicCreation cavAssembly)
         {
             _dataContext = dataContext;
             _baseControllerModel = baseControllerModel;

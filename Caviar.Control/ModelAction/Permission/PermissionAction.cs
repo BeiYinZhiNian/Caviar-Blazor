@@ -112,7 +112,7 @@ namespace Caviar.Control.Permission
             else{
                 permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.RoleId == roleId && u.PermissionType == PermissionType.Field);
             }
-            var fields = await BC.DC.GetEntityAsync<SysModelFields>(u => u.FullName == fullName);
+            var fields = BC.SysModelFields.Where(u => u.FullName == fullName).ToList();
             foreach (var item in fields)
             {
                 if (permission.FirstOrDefault(u => u.PermissionId == item.Id)!=null)
@@ -133,7 +133,7 @@ namespace Caviar.Control.Permission
         {
             if (string.IsNullOrEmpty(fullName) || roleId == 0) return;
             var permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.RoleId == roleId && u.PermissionType == PermissionType.Field);
-            var fields = await BC.DC.GetEntityAsync<SysModelFields>(u => u.FullName == fullName);
+            var fields = BC.SysModelFields.Where(u => u.FullName == fullName);
             foreach (var item in modelFields)
             {
                 var field = fields.FirstOrDefault(u => u.TypeName == item.TypeName);
@@ -169,6 +169,34 @@ namespace Caviar.Control.Permission
                     }
                 }
             }
+        }
+
+
+        public async Task<List<ViewModelFields>> GetFieldsData(IAssemblyDynamicCreation CavAssembly, string modelName, int roleId = 0)
+        {
+            if (string.IsNullOrEmpty(modelName)) return null;
+            var fields = await GetRoleFields(modelName, roleId);
+            var modelFields = CavAssembly.GetViewModelHeaders(modelName);//其他信息
+            var viewFields = new List<ViewModelFields>();
+            var isAdmin = roleId != 0 && BC.IsAdmin;
+            foreach (var item in modelFields)
+            {
+                var field = fields.FirstOrDefault(u => u.FullName == item.FullName && u.TypeName == item.TypeName);
+                if (field != null && (!field.IsDisable || isAdmin))
+                {
+                    item.IsDisable = field.IsDisable;
+                    item.Width = field.Width;
+                    item.IsPanel = field.IsPanel;
+                    item.Number = field.Number;
+                    if (!string.IsNullOrEmpty(field.DisplayName))
+                    {
+                        item.DisplayName = field.DisplayName;
+                    }
+                    viewFields.Add(item);
+                }
+            }
+            viewFields = viewFields.OrderBy(u => u.Number).ToList();
+            return viewFields;
         }
     }
 }

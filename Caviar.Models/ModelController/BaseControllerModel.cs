@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models
 {
-    [DIInject(InjectType.SCOPED)]
     public partial class BaseControllerModel : IBaseControllerModel
     {
         /// <summary>
@@ -42,6 +41,11 @@ namespace Caviar.Models
         public string Current_AbsoluteUri { get; set; }
 
         public HttpContext HttpContext { get; set; }
+        /// <summary>
+        /// 全局缓存
+        /// 字段列表
+        /// </summary>
+        public List<SysModelFields> SysModelFields { get; set; }
 
         /// <summary>
         /// 请求参数
@@ -59,7 +63,7 @@ namespace Caviar.Models
             }
         }
 
-        public bool IsAdmin { get; }
+        public virtual bool IsAdmin { get; }
         public UserData UserData { get; set; } = new UserData();
         public UserToken UserToken { get; set; } = new UserToken();
 

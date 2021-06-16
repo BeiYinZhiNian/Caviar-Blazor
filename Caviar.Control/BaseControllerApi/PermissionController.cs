@@ -11,8 +11,9 @@ using System.Threading.Tasks;
 
 namespace Caviar.Control.Permission
 {
-    public partial class PermissionController:CaviarBaseController
+    public partial class PermissionController
     {
+        
         /// <summary>
         /// 获取角色菜单
         /// </summary>
@@ -21,7 +22,7 @@ namespace Caviar.Control.Permission
         [HttpGet]
         public async Task<IActionResult> RoleMenu(int roleId)
         {
-            var menus = await Action.GetRoleMenu(roleId);
+            var menus = await _Action.GetRoleMenu(roleId);
             if (menus == null) return ResultForbidden("未查询到该角色权限，请联系管理员获取");
             ResultMsg.Data = menus;
             return ResultOK();
@@ -35,7 +36,7 @@ namespace Caviar.Control.Permission
         [HttpPost]
         public async Task<IActionResult> RoleMenu(int roleId,int[] menuIds)
         {
-            await Action.SetRoleMenu(roleId, menuIds);
+            await _Action.SetRoleMenu(roleId, menuIds);
             return ResultOK();
         }
 
@@ -64,7 +65,7 @@ namespace Caviar.Control.Permission
         public async Task<IActionResult> GetFields(string modelName)
         {
             if (string.IsNullOrEmpty(modelName)) return ResultError("请输入需要获取的数据名称");
-            ResultMsg.Data = await GetFieldsData(modelName);
+            ResultMsg.Data = await _Action.GetFieldsData(CavAssembly, modelName);
             return ResultOK();
         }
 
@@ -77,37 +78,9 @@ namespace Caviar.Control.Permission
         public async Task<IActionResult> RoleFields(string modelName, int roleId)
         {
             if (string.IsNullOrEmpty(modelName)) return ResultError("请输入需要获取的数据名称");
-            ResultMsg.Data = await GetFieldsData(modelName,roleId);
+            ResultMsg.Data = await _Action.GetFieldsData(CavAssembly,modelName,roleId);
             return ResultOK();
         }
-
-        private async Task<List<ViewModelFields>> GetFieldsData(string modelName, int roleId = 0)
-        {
-            if (string.IsNullOrEmpty(modelName)) return null;
-            var fields = await Action.GetRoleFields(modelName, roleId);
-            var modelFields = CavAssembly.GetViewModelHeaders(modelName);//其他信息
-            var viewFields = new List<ViewModelFields>();
-            var isAdmin = roleId != 0 && BC.IsAdmin;
-            foreach (var item in modelFields)
-            {
-                var field = fields.FirstOrDefault(u => u.FullName == item.FullName && u.TypeName == item.TypeName);
-                if (field != null && (!field.IsDisable || isAdmin))
-                {
-                    item.IsDisable = field.IsDisable;
-                    item.Width = field.Width;
-                    item.IsPanel = field.IsPanel;
-                    item.Number = field.Number;
-                    if (!string.IsNullOrEmpty(field.DisplayName))
-                    {
-                        item.DisplayName = field.DisplayName;
-                    }
-                    viewFields.Add(item);
-                }
-            }
-            viewFields = viewFields.OrderBy(u => u.Number).ToList();
-            return viewFields;
-        }
-
         /// <summary>
         /// 设置角色字段
         /// </summary>
@@ -117,7 +90,7 @@ namespace Caviar.Control.Permission
         public async Task<IActionResult> RoleFields(string fullName, int roleId,List<ViewModelFields> viewModelFields)
         {
             viewModelFields.AToB(out List<SysModelFields> sysModelFields);
-            await Action.SetRoleFields(fullName, roleId, sysModelFields);
+            await _Action.SetRoleFields(fullName, roleId, sysModelFields);
             return ResultOK();
         }
 

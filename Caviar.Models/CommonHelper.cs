@@ -261,19 +261,28 @@ namespace Caviar.Models.SystemData
             }
         }
         /// <summary>
-        /// 单个树转列表
+        /// 单个树转为列表
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="data"></param>
         /// <param name="list"></param>
-        public static void TreeToList<T>(this T data, IList<T> list) where T : class, ITree<T>
+        /// <param name="needParent">是否需要加入根节点，默认将根节点加入列表</param>
+        public static void TreeToList<T>(this T data, IList<T> list,bool needParent = true) where T : class, ITree<T>
         {
+            if (list == null)
+            {
+                list = new List<T>();
+            }
+            if (list.Count == 0 && needParent)
+            {
+                list.Add(data);
+            }
             foreach (var item in data.Children)
             {
                 list.Add(item);
                 if (item.Children != null && item.Children.Count > 0)
                 {
-                    TreeToList(item, list);
+                    TreeToList(item, list, needParent);
                 }
             }
         }

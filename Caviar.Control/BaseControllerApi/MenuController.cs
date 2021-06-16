@@ -36,55 +36,20 @@ namespace Caviar.Control.Menu
 
         public override async Task<IActionResult> Delete(ViewMenu view)
         {
+            int count;
             if (view.IsDeleteAll)
             {
-                return await DeleteAllEntity(view);
+                count = await _Action.DeleteEntityAll(view);
             }
-            _Action.AutoAssign(view);
-            List<ViewMenu> viewMenuList = new List<ViewMenu>();
-            view.TreeToList(viewMenuList);
-            var count = 0;
-            if (viewMenuList != null && viewMenuList.Count != 0)
+            else
             {
-                viewMenuList.AToB(out List<SysMenu> menus);
-                foreach (var item in menus)
-                {
-                    if (item.ParentId == view.Id)
-                    {
-                        item.ParentId = view.ParentId;
-                    }
-                }
-                count = await _Action.UpdateEntity(menus);
-                if (count != viewMenuList.Count)
-                {
-                    return ResultError("删除菜单失败,子菜单移动失败");
-                }
+                count = await _Action.DeleteEntity(view);
             }
-            count = await _Action.DeleteEntity();
             if (count > 0)
             {
                 return ResultOK();
             }
             return ResultError("删除菜单失败");
-        }
-
-        /// <summary>
-        /// 批量删除
-        /// </summary>
-        /// <param name="menus"></param>
-        /// <returns></returns>
-        private async Task<IActionResult> DeleteAllEntity(ViewMenu viewMen)
-        {
-            List<ViewMenu> viewMenuList = new List<ViewMenu>();
-            viewMen.TreeToList(viewMenuList);
-            viewMenuList.Add(viewMen);//将自己添加入删除集合
-            viewMenuList.AToB(out List<SysMenu> menus);
-            var count = await _Action.DeleteEntity(menus);
-            if(count == menus.Count)
-            {
-                return ResultOK();
-            }
-            return ResultError("批量删除数据失败");
         }
 
     }

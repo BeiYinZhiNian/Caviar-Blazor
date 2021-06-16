@@ -59,7 +59,7 @@ namespace Caviar.Control
 
         private TabItem CreatTabItem(string outName,string fileName,string extend,string content)
         {
-            var item = new TabItem() { KeyName = fileName + extend, TabName = outName + fileName + extend, Content = content };
+            var item = new TabItem() { KeyName = fileName + extend, TabName =  fileName.Replace("(name)", outName) + extend, Content = content };
             if (extend.IndexOf(".razor") != -1)
             {
                 item.TabName = fileName + extend;
@@ -88,13 +88,13 @@ namespace Caviar.Control
                     extend = ".razor";
                     break;
                 case "控制器":
-                    fileName = "Controller";
+                    fileName = "(name)Controller";
                     break;
                 case "模型":
-                    fileName = "ViewModel";
+                    fileName = "View(name)";
                     break;
                 case "模型操作器":
-                    fileName = "Action";
+                    fileName = "(name)Action";
                     break;
                 default:
                     break;

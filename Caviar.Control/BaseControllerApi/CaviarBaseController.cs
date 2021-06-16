@@ -12,6 +12,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Caviar.Control.Permission;
+
 namespace Caviar.Control
 {
     public partial class CaviarBaseController
@@ -21,15 +23,18 @@ namespace Caviar.Control
 
         #region API
         /// <summary>
-        /// 模糊查询，暂未使用权限,需要使用权限验证sql的正确性
+        /// 模糊查询
+        /// 使用权限验证sql的正确性
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult FuzzyQuery(ViewQuery query)
+        public async Task<IActionResult> FuzzyQuery(ViewQuery query)
         {
             if (string.IsNullOrEmpty(query.QueryObj)) return ResultError("查询对象不可为空");
-
+            var action = CreateModel<PermissionAction>();
+            var fields = await action.GetFieldsData(CavAssembly, query.QueryObj);
+            if(fields==null) return ResultError("没有对该对象的查询权限");
             var assemblyList = CommonHelper.GetAssembly();
             Type type = null;
             foreach (var item in assemblyList)
@@ -38,8 +43,6 @@ namespace Caviar.Control
                 if (type != null) break;
             }
             if (type == null) return ResultError("没有对该对象的查询权限");
-
-
             List<SqlParameter> parameters = new List<SqlParameter>()
             {
                 new SqlParameter("@queryStr", "%" + query.QueryStr + "%"),
@@ -50,6 +53,8 @@ namespace Caviar.Control
                 queryField = "and (";
                 for (int i = 0; i < query.QueryField.Count; i++)
                 {
+                    var field = fields.FirstOrDefault(u => u.TypeName == query.QueryField[i]);
+                    if (field == null) return ResultError("查询字段错误");
                     queryField += $" {query.QueryField[i]} LIKE @queryStr ";
                     var index = i + 1;
                     if (index < query.QueryField.Count)
@@ -92,19 +97,20 @@ namespace Caviar.Control
             {
                 string outName = "";
                 string path = "";
-                if (item.KeyName.Contains(".razor"))
+                string keyName = item.KeyName.Replace("(name)", "");
+                if (keyName.Contains(".razor"))
                 {
                     path = Directory.GetCurrentDirectory() + "/" + CaviarConfig.WebUIPath + "/Pages/";
                 }
-                else if (item.KeyName.Contains("ViewModel.cs"))
+                else if (keyName.Contains("View.cs"))
                 {
                     path = Directory.GetCurrentDirectory() + "/" + CaviarConfig.ModelsPath + "/ViewModels/";
                 }
-                else if(item.KeyName.Contains("Action.cs"))
+                else if(keyName.Contains("Action.cs"))
                 {
                     path = Directory.GetCurrentDirectory() + "/" + CaviarConfig.WebApiPath + "/ModelAction/";
                 }
-                else if (item.KeyName.Contains("Controller.cs"))
+                else if (keyName.Contains("Controller.cs"))
                 {
                     path = Directory.GetCurrentDirectory() + "/" + CaviarConfig.WebApiPath + "/Controllers/";
                 }

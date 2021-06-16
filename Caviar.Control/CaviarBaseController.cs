@@ -31,16 +31,11 @@ namespace Caviar.Control
             {
                 if (_controllerModel == null)
                 {
-                    _controllerModel = HttpContext.RequestServices.GetService<CavBaseControllerModel>();
+                    _controllerModel = HttpContext.RequestServices.GetService<IBaseControllerModel>();
                 }
                 return _controllerModel;
             }
         }
-        /// <summary>
-        /// 系统所有字段
-        /// 需要在这里进行统一查询
-        /// </summary>
-        protected List<SysModelFields> SysModelFields { get; set; } 
 
 
         Stopwatch stopwatch = new Stopwatch();
@@ -101,6 +96,8 @@ namespace Caviar.Control
         /// <returns></returns>
         void GetRolePermission()
         {
+            BC.SysModelFields = BC.DC.GetAllAsync<SysModelFields>().Result;
+
             var roleAction = CreateModel<RoleAction>();
             BC.UserData.Roles = roleAction.GetCurrentRoles().Result;
             var permissionAction = CreateModel<PermissionAction>();
@@ -259,17 +256,6 @@ namespace Caviar.Control
             private void Filter(object data)
             {
                 _data = data;
-            }
-        }
-
-        protected class CavBaseControllerModel : BaseControllerModel
-        {
-            public new bool IsAdmin => GetAdmin();
-
-            private bool GetAdmin()
-            {
-                if (UserData.Roles == null || UserData.Roles.Count == 0) return false;
-                return UserData.Roles.FirstOrDefault(u => u.Uid == CaviarConfig.SysAdminRoleGuid) == null ? false : true;
             }
         }
 
