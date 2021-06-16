@@ -11,6 +11,16 @@ namespace Caviar.Control.Menu
 {
     public partial class MenuAction
     {
+        public List<SysMenu> GetButton(string url)
+        {
+            var menus = BC.UserData.Menus.Where(u => u.Url?.ToLower() == url.ToLower()).FirstOrDefault();
+            if (menus == null)
+            {
+                return null;
+            }
+            var buttons = BC.UserData.Menus.Where(u => u.MenuType == MenuType.Button && u.ParentId == menus.Id).OrderBy(u => u.Number);
+            return buttons.ToList();
+        }
         public override async Task<PageData<ViewMenu>> GetPages(Expression<Func<SysMenu, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = false)
         {
             var pages = new PageData<SysMenu>(BC.UserData.Menus);

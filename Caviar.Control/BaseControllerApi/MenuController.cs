@@ -19,17 +19,11 @@ namespace Caviar.Control.Menu
         [HttpGet]
         public IActionResult GetButtons(string url)
         {
-            if (url == null)
+            if (string.IsNullOrEmpty(url))
             {
                 return ResultError("请输入正确地址");
             }
-            var menus = BC.UserData.Menus.Where(u => u.Url?.ToLower() == url.ToLower()).FirstOrDefault();
-            if (menus == null)
-            {
-                ResultMsg.Data = new List<SysMenu>();
-                return ResultOK();
-            }
-            var buttons = BC.UserData.Menus.Where(u => u.MenuType == MenuType.Button && u.ParentId == menus.Id).OrderBy(u => u.Number);
+            var buttons = _Action.GetButton(url);
             ResultMsg.Data = buttons;
             return ResultOK();
         }
