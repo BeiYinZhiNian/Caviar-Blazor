@@ -16,7 +16,7 @@ namespace Caviar.AntDesignPages.Pages.User
     partial class Login
     {
         bool Loading { get; set; }
-        public SysUserLogin SysLoginUserData { get; set; } = new SysUserLogin(){ UserName = "admin" , Password = "123456"};
+        public SysUser SysLoginUserData { get; set; } = new SysUser(){ UserName = "admin" , Password = "123456"};
         [Inject] public NavigationManager NavigationManager { get; set; }
 
         [Inject]
@@ -37,7 +37,7 @@ namespace Caviar.AntDesignPages.Pages.User
         {
             Loading = true;
             SysLoginUserData.Password = CommonHelper.SHA256EncryptString(SysLoginUserData.Password);
-            var result = await http.PostJson<SysUserLogin, UserToken>("User/Login",SysLoginUserData);
+            var result = await http.PostJson<SysUser, UserToken>("User/Login",SysLoginUserData);
             SysLoginUserData.Password = "";
             Loading = false;
             if (result.Status==200)

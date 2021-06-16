@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 /// </summary>
 namespace Caviar.Models.SystemData
 {
-    public partial class ViewUserLogin:SysUserLogin
+    public partial class ViewUserLogin:SysUser
     {
     }
 }

@@ -85,4 +85,16 @@ namespace Caviar.Models.SystemData
         [Display(Name = "字段")]
         Field,
     }
+    /// <summary>
+    /// 权限身份
+    /// </summary>
+    public enum PermissionIdentity
+    {
+        [Display(Name = "用户")]
+        User,
+        [Display(Name = "角色")]
+        Role,
+        [Display(Name = "用户组")]
+        UserGroup
+    }
 }

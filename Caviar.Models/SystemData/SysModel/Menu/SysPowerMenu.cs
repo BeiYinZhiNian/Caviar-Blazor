@@ -22,9 +22,11 @@ namespace Caviar.Models.SystemData
         [DisplayName("打开方式")]
         public TargetType TargetType { get; set; }
         [DisplayName("请求地址")]
+        [StringLength(1024, ErrorMessage = "请求地址请不要超过{1}个字符")]
         public string Url { get; set; }
 
         [DisplayName("图标")]
+        [StringLength(50, ErrorMessage = "图标请不要超过{1}个字符")]
         public string Icon { get; set; }
 
         [DisplayName("父id")]

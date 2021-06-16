@@ -7,19 +7,22 @@ using System.Threading.Tasks;
 
 namespace Caviar.Control.Permission
 {
+    /// <summary>
+    /// 角色权限部分类
+    /// </summary>
     public partial class PermissionAction
     {
         /// <summary>
-        /// 获取当前权限
+        /// 获取当前角色权限
         /// </summary>
         /// <param name="roles"></param>
         /// <returns></returns>
-        public async Task<List<SysPermission>> GetCurrentPermissions(List<SysRole> roles)
+        public async Task<List<SysPermission>> GetCurrentRolePermissions(List<SysRole> roles)
         {
             List<SysPermission> permissions = new List<SysPermission>();
             foreach (var item in roles)
             {
-                var permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.RoleId == item.Id);
+                var permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.IdentityId == item.Id && u.PermissionIdentity == PermissionIdentity.Role);
                 permissions.AddRange(permission);
             }
             return permissions;
@@ -44,14 +47,15 @@ namespace Caviar.Control.Permission
                 {
                     PermissionId = item,
                     PermissionType = PermissionType.Menu,
-                    RoleId = roleId
+                    IdentityId = roleId,
+                    PermissionIdentity = PermissionIdentity.Role
                 };
                 addSysPermission.Add(permission);
             }
             List<SysPermission> deleteSysPermission = new List<SysPermission>();
             foreach (var item in deleteIds)
             {
-                var permission = await BC.DC.GetFirstEntityAsync<SysPermission>(u => u.RoleId == roleId && u.PermissionId == item && u.PermissionType == PermissionType.Menu);
+                var permission = await BC.DC.GetFirstEntityAsync<SysPermission>(u => u.IdentityId == roleId && u.PermissionId == item && u.PermissionType == PermissionType.Menu && u.PermissionIdentity == PermissionIdentity.Role);
                 deleteSysPermission.Add(permission);
             }
             await BC.DC.DeleteEntityAsync(deleteSysPermission, IsDelete: true);//该权限不需要保存，直接彻底删除
@@ -72,7 +76,7 @@ namespace Caviar.Control.Permission
             }
             else
             {
-                permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.RoleId==roleId && u.PermissionType == PermissionType.Menu);
+                permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.IdentityId==roleId && u.PermissionType == PermissionType.Menu && u.PermissionIdentity == PermissionIdentity.Role);
             }
             var allMneus = BC.UserData.Menus;
             if (BC.IsAdmin)
@@ -110,7 +114,7 @@ namespace Caviar.Control.Permission
                 permission = BC.UserData.Permissions.Where(u => u.PermissionType == PermissionType.Field);
             }
             else{
-                permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.RoleId == roleId && u.PermissionType == PermissionType.Field);
+                permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.IdentityId == roleId && u.PermissionType == PermissionType.Field && u.PermissionIdentity == PermissionIdentity.Role);
             }
             var fields = BC.SysModelFields.Where(u => u.FullName == fullName).ToList();
             foreach (var item in fields)
@@ -132,7 +136,7 @@ namespace Caviar.Control.Permission
         public async Task SetRoleFields(string fullName, int roleId, List<SysModelFields> modelFields)
         {
             if (string.IsNullOrEmpty(fullName) || roleId == 0) return;
-            var permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.RoleId == roleId && u.PermissionType == PermissionType.Field);
+            var permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.IdentityId == roleId && u.PermissionType == PermissionType.Field && u.PermissionIdentity == PermissionIdentity.Role);
             var fields = BC.SysModelFields.Where(u => u.FullName == fullName);
             foreach (var item in modelFields)
             {
@@ -163,7 +167,8 @@ namespace Caviar.Control.Permission
                         {
                             PermissionType = PermissionType.Field,
                             PermissionId = field.Id,
-                            RoleId = roleId,
+                            IdentityId = roleId,
+                            PermissionIdentity = PermissionIdentity.Role
                         };
                         await BC.DC.AddEntityAsync(perm);
                     }

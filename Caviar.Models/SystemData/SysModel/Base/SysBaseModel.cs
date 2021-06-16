@@ -44,17 +44,19 @@ namespace Caviar.Models.SystemData
         /// 创建操作员的名称
         /// </summary>
         [DisplayName("创建操作员")]
+        [StringLength(50, ErrorMessage = "请不要超过{1}个字符")]
         public string OperatorCare { get; set; }
         /// <summary>
         /// 创建操作员的名称
         /// </summary>
         [DisplayName("修改操作员")]
+        [StringLength(50, ErrorMessage = "请不要超过{1}个字符")]
         public string OperatorUp { get; set; }
         /// <summary>
         /// 备注
         /// </summary>
         [DisplayName("备注")]
-        [StringLength(300, ErrorMessage = "备注请不要超过{1}个字符")]
+        [StringLength(300, ErrorMessage = "请不要超过{1}个字符")]
         public string Remark { get; set; }
         /// <summary>
         /// 是否禁用
@@ -65,7 +67,7 @@ namespace Caviar.Models.SystemData
         /// 编号
         /// </summary>
         [DisplayName("编号")]
-        [StringLength(50, ErrorMessage = "备注请不要超过{1}个字符")]
+        [StringLength(50, ErrorMessage = "编号请不要超过{1}个字符")]
         public string Number { get; set; } = "999";
     }
 }

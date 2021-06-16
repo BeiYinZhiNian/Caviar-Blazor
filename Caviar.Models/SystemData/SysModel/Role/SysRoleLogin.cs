@@ -14,7 +14,7 @@ namespace Caviar.Models.SystemData
         [JsonIgnore]
         public virtual SysRole Role { get; set; }
         [JsonIgnore]
-        public virtual SysUserLogin User { get; set; }
+        public virtual SysUser User { get; set; }
 
         public int UserId { get; set; }
 

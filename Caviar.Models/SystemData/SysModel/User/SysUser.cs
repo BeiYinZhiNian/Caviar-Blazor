@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
-    [DisplayName("用户账号")]
-    public partial class SysUserLogin : SysBaseModel
+    [DisplayName("用户")]
+    public partial class SysUser : SysBaseModel
     {
         /// <summary>
         /// 用户名
@@ -24,12 +24,14 @@ namespace Caviar.Models.SystemData
         /// 用户密码
         /// </summary>
         [Required(ErrorMessage = "请输入您的密码")]
+        [StringLength(65, ErrorMessage = "密码请不要超过{1}个字符")]
         [DisplayName("密码")]
         public string Password { get; set; }
         /// <summary>
         /// 手机号码
         /// </summary>
         [RegularExpression("^$|^[1][3-9]\\d{9}$", ErrorMessage = "请输入正确的手机号")]
+        [StringLength(11, ErrorMessage = "手机号码请不要超过{1}个字符")]
         [DisplayName("手机号码")]
         public string PhoneNumber { get; set; }
 

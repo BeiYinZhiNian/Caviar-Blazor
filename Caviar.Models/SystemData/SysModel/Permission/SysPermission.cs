@@ -21,9 +21,13 @@ namespace Caviar.Models.SystemData
         /// </summary>
         public PermissionType PermissionType { get; set; }
         /// <summary>
-        /// 对应的角色id
+        /// 对应的权限身份id，需要用identity来区分权限
         /// </summary>
-        public int RoleId { get; set; }
+        public int IdentityId { get; set; }
+        /// <summary>
+        /// 权限身份
+        /// </summary>
+        public PermissionIdentity PermissionIdentity { get; set; }
     }
 
     

@@ -101,7 +101,7 @@ namespace Caviar.Control
             var roleAction = CreateModel<RoleAction>();
             BC.UserData.Roles = roleAction.GetCurrentRoles().Result;
             var permissionAction = CreateModel<PermissionAction>();
-            BC.UserData.Permissions = permissionAction.GetCurrentPermissions(BC.UserData.Roles).Result;
+            BC.UserData.Permissions = permissionAction.GetCurrentRolePermissions(BC.UserData.Roles).Result;
             var menuAction = CreateModel<MenuAction>();
             BC.UserData.Menus = menuAction.GetPermissionMenu(BC.UserData.Permissions).Result;
             BC.DC.DetachAll();
