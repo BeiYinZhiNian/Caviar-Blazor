@@ -9,7 +9,7 @@ namespace Caviar.Models.SystemData
     /// <summary>
     /// 返回给客户端使用的数据，禁止填写敏感信息
     /// </summary>
-    public class UserToken
+    public partial class UserToken
     {
         public string UserName { get; set; } = "未登录用户";
 

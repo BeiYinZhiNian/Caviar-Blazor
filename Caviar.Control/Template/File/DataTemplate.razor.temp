@@ -5,7 +5,8 @@
 界面如需更改，建议直接将内容剪切到自己的文件内，保留此空白文件
 {EntityDisplayName}数据模板
 *@
-@page "{page}"
+@page "/{OutName}/Add"
+@page "/{OutName}/Update"
 @using {ModelsNamespace}
 @namespace {WebUINamespace}.{OutName}
 

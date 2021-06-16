@@ -9,6 +9,11 @@ namespace Caviar.Control.Permission
 {
     public partial class PermissionAction
     {
+        /// <summary>
+        /// 获取当前权限
+        /// </summary>
+        /// <param name="roles"></param>
+        /// <returns></returns>
         public async Task<List<SysPermission>> GetCurrentPermissions(List<SysRole> roles)
         {
             List<SysPermission> permissions = new List<SysPermission>();
@@ -19,7 +24,12 @@ namespace Caviar.Control.Permission
             }
             return permissions;
         }
-
+        /// <summary>
+        /// 设置角色菜单
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <param name="menuIds"></param>
+        /// <returns></returns>
         public async Task SetRoleMenu(int roleId,int[] menuIds)
         {
             var menus = await GetRoleMenu(roleId);
@@ -47,20 +57,24 @@ namespace Caviar.Control.Permission
             await BC.DC.DeleteEntityAsync(deleteSysPermission, IsDelete: true);//该权限不需要保存，直接彻底删除
             await BC.DC.AddEntityAsync(addSysPermission);
         }
-
+        /// <summary>
+        /// 获取角色菜单
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
         public async Task<List<SysMenu>> GetRoleMenu(int roleId)
         {
             List<SysMenu> menus = new List<SysMenu>();
             IEnumerable<SysPermission> permission;
             if (roleId == 0)
             {
-                permission = BC.Permissions.Where(u => u.PermissionType == PermissionType.Menu);
+                permission = BC.UserData.Permissions.Where(u => u.PermissionType == PermissionType.Menu);
             }
             else
             {
                 permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.RoleId==roleId && u.PermissionType == PermissionType.Menu);
             }
-            var allMneus = BC.Menus;
+            var allMneus = BC.UserData.Menus;
             if (BC.IsAdmin)
             {
                 allMneus = await BC.DC.GetAllAsync<SysMenu>();
@@ -81,14 +95,19 @@ namespace Caviar.Control.Permission
             menus.OrderBy(u => u.Number);
             return menus;
         }
-
+        /// <summary>
+        /// 获取角色字段
+        /// </summary>
+        /// <param name="fullName"></param>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
         public async Task<List<SysModelFields>> GetRoleFields(string fullName,int roleId = 0)
         {
             if (string.IsNullOrEmpty(fullName)) return null;
             IEnumerable<SysPermission> permission;
             if (roleId == 0)
             {
-                permission = BC.Permissions.Where(u => u.PermissionType == PermissionType.Field);
+                permission = BC.UserData.Permissions.Where(u => u.PermissionType == PermissionType.Field);
             }
             else{
                 permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.RoleId == roleId && u.PermissionType == PermissionType.Field);
@@ -103,7 +122,13 @@ namespace Caviar.Control.Permission
             }
             return fields;
         }
-
+        /// <summary>
+        /// 设置角色字段
+        /// </summary>
+        /// <param name="fullName"></param>
+        /// <param name="roleId"></param>
+        /// <param name="modelFields"></param>
+        /// <returns></returns>
         public async Task SetRoleFields(string fullName, int roleId, List<SysModelFields> modelFields)
         {
             if (string.IsNullOrEmpty(fullName) || roleId == 0) return;

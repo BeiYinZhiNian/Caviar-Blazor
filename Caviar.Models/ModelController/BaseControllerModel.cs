@@ -23,7 +23,9 @@ namespace Caviar.Models
         /// 获取日志记录
         /// </summary>
         public ILogger<T> GetLogger<T>() => HttpContext.RequestServices.GetRequiredService<ILogger<T>>();
-
+        /// <summary>
+        /// 获取缓存数据
+        /// </summary>
         public IMemoryCache Cache => HttpContext.RequestServices.GetRequiredService<IMemoryCache>();
 
         /// <summary>
@@ -41,25 +43,25 @@ namespace Caviar.Models
 
         public HttpContext HttpContext { get; set; }
 
-        public string UserName => UserToken.UserName;
-
-        public int Id => UserToken.Id;
-
-        public bool IsAdmin { get; set; }
-
-        public bool IsLogin { 
-            get 
-            {
-                return Id > 0;
-            } 
-        }
         /// <summary>
         /// 请求参数
         /// </summary>
         public IDictionary<string, object> ActionArguments { get; set; }
-        public List<SysRole> Roles { get; set; }
-        public List<SysPermission> Permissions { get; set; }
-        public List<SysMenu> Menus { get; set; }
+
+        public string UserName => UserToken.UserName;
+
+        public int Id => UserToken.Id;
+        public bool IsLogin
+        {
+            get
+            {
+                return Id > 0;
+            }
+        }
+
+        public bool IsAdmin { get; }
+        public UserData UserData { get; set; } = new UserData();
         public UserToken UserToken { get; set; } = new UserToken();
+
     }
 }

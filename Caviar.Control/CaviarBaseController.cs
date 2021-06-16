@@ -25,18 +25,22 @@ namespace Caviar.Control
     public partial class CaviarBaseController : Controller
     {
         IBaseControllerModel _controllerModel;
-        public IBaseControllerModel BC
+        protected IBaseControllerModel BC
         {
             get
             {
                 if (_controllerModel == null)
                 {
-                    _controllerModel = HttpContext.RequestServices.GetService<BaseControllerModel>();
+                    _controllerModel = HttpContext.RequestServices.GetService<CavBaseControllerModel>();
                 }
                 return _controllerModel;
             }
         }
-        
+        /// <summary>
+        /// 系统所有字段
+        /// 需要在这里进行统一查询
+        /// </summary>
+        protected List<SysModelFields> SysModelFields { get; set; } 
 
 
         Stopwatch stopwatch = new Stopwatch();
@@ -98,12 +102,11 @@ namespace Caviar.Control
         void GetRolePermission()
         {
             var roleAction = CreateModel<RoleAction>();
-            BC.Roles = roleAction.GetCurrentRoles().Result;
-            BC.IsAdmin = BC.Roles.FirstOrDefault(u => u.Uid == CaviarConfig.SysAdminRoleGuid) == null ? false : true;
+            BC.UserData.Roles = roleAction.GetCurrentRoles().Result;
             var permissionAction = CreateModel<PermissionAction>();
-            BC.Permissions = permissionAction.GetCurrentPermissions(BC.Roles).Result;
+            BC.UserData.Permissions = permissionAction.GetCurrentPermissions(BC.UserData.Roles).Result;
             var menuAction = CreateModel<MenuAction>();
-            BC.Menus = menuAction.GetPermissionMenu(BC.Permissions).Result;
+            BC.UserData.Menus = menuAction.GetPermissionMenu(BC.UserData.Permissions).Result;
             BC.DC.DetachAll();
         } 
 
@@ -130,7 +133,7 @@ namespace Caviar.Control
         {
             if (CaviarConfig.IsDebug) return true;
             var url = BC.Current_Action.Replace("/api/", "").ToLower();
-            var menu = BC.Menus.FirstOrDefault(u => !string.IsNullOrEmpty(u.Url) && u.Url.ToLower() == url);
+            var menu = BC.UserData.Menus.FirstOrDefault(u => !string.IsNullOrEmpty(u.Url) && u.Url.ToLower() == url);
             if (menu != null) return true;
             return false;
         }
@@ -144,14 +147,14 @@ namespace Caviar.Control
 
 
         #region 消息回复
-        private ResultMsg _resultMsg;
-        protected ResultMsg ResultMsg
+        private CavResultMsg _resultMsg;
+        protected CavResultMsg ResultMsg
         {
             get
             {
                 if (_resultMsg == null)
                 {
-                    _resultMsg = HttpContext.RequestServices.GetRequiredService<ResultMsg>();
+                    _resultMsg = HttpContext.RequestServices.GetRequiredService<CavResultMsg>();
                 }
                 return _resultMsg;
             }
@@ -240,6 +243,37 @@ namespace Caviar.Control
         }
         #endregion
 
+        protected class CavResultMsg : ResultMsg
+        {
+            /// <summary>
+            /// 用于存放附加数据
+            /// </summary>
+            public new object Data { get { return _data; } set { Filter(value); } }
+
+            private object _data;
+            /// <summary>
+            /// 过滤字段
+            /// 以后用反射进行过滤
+            /// </summary>
+            /// <param name="data"></param>
+            private void Filter(object data)
+            {
+                _data = data;
+            }
+        }
+
+        protected class CavBaseControllerModel : BaseControllerModel
+        {
+            public new bool IsAdmin => GetAdmin();
+
+            private bool GetAdmin()
+            {
+                if (UserData.Roles == null || UserData.Roles.Count == 0) return false;
+                return UserData.Roles.FirstOrDefault(u => u.Uid == CaviarConfig.SysAdminRoleGuid) == null ? false : true;
+            }
+        }
 
     }
+
+
 }

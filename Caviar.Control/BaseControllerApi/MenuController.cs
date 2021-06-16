@@ -23,13 +23,13 @@ namespace Caviar.Control.Menu
             {
                 return ResultError("请输入正确地址");
             }
-            var menus = BC.Menus.Where(u => u.Url?.ToLower() == url.ToLower()).FirstOrDefault();
+            var menus = BC.UserData.Menus.Where(u => u.Url?.ToLower() == url.ToLower()).FirstOrDefault();
             if (menus == null)
             {
                 ResultMsg.Data = new List<SysMenu>();
                 return ResultOK();
             }
-            var buttons = BC.Menus.Where(u => u.MenuType == MenuType.Button && u.ParentId == menus.Id).OrderBy(u => u.Number);
+            var buttons = BC.UserData.Menus.Where(u => u.MenuType == MenuType.Button && u.ParentId == menus.Id).OrderBy(u => u.Number);
             ResultMsg.Data = buttons;
             return ResultOK();
         }
@@ -46,8 +46,7 @@ namespace Caviar.Control.Menu
             var count = 0;
             if (viewMenuList != null && viewMenuList.Count != 0)
             {
-                List<SysMenu> menus = new List<SysMenu>();
-                menus.ListAutoAssign(viewMenuList);
+                viewMenuList.AToB(out List<SysMenu> menus);
                 foreach (var item in menus)
                 {
                     if (item.ParentId == view.Id)
@@ -79,8 +78,7 @@ namespace Caviar.Control.Menu
             List<ViewMenu> viewMenuList = new List<ViewMenu>();
             viewMen.TreeToList(viewMenuList);
             viewMenuList.Add(viewMen);//将自己添加入删除集合
-            List<SysMenu> menus = new List<SysMenu>();
-            menus.ListAutoAssign(viewMenuList);//将view转为sys
+            viewMenuList.AToB(out List<SysMenu> menus);
             var count = await _Action.DeleteEntity(menus);
             if(count == menus.Count)
             {

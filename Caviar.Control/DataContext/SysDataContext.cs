@@ -356,33 +356,32 @@ namespace Caviar.Control
                 sql = sql.Replace(m.Value, "");
                 sql = sql.Replace("GO", "");
                 SqlQuery(sql);
-
-                //同步系统与数据库的模型字段
-                var fields = await GetAllAsync<SysModelFields>();
-                var types = CommonHelper.GetModelList();
-                List<SysModelFields> modelFields = new List<SysModelFields>();
-                foreach (var item in types)
+            }
+            //同步系统与数据库的模型字段
+            var fields = await GetAllAsync<SysModelFields>();
+            var types = CommonHelper.GetModelList();
+            List<SysModelFields> modelFields = new List<SysModelFields>();
+            foreach (var item in types)
+            {
+                var viewModelFields = _cavAssembly.GetViewModelHeaders(item.Name);
+                modelFields.AddRange(viewModelFields);
+            }
+            DetachAll();
+            foreach (var modelFieldsItem in modelFields)
+            {
+                foreach (var fieldsItem in fields)
                 {
-                    var viewModelFields = _cavAssembly.GetViewModelHeaders(item.Name);
-                    modelFields.AddRange(viewModelFields);
-                }
-                DetachAll();
-                foreach (var modelFieldsItem in modelFields)
-                {
-                    foreach (var fieldsItem in fields)
+                    if (modelFieldsItem.TypeName == fieldsItem.TypeName && modelFieldsItem.FullName == fieldsItem.FullName)
                     {
-                        if(modelFieldsItem.TypeName == fieldsItem.TypeName && modelFieldsItem.FullName == fieldsItem.FullName)
-                        {
-                            modelFieldsItem.Id = fieldsItem.Id;
-                            fieldsItem.Id = 0;
-                        }
+                        modelFieldsItem.Id = fieldsItem.Id;
+                        fieldsItem.Id = 0;
                     }
                 }
-                var addFields = modelFields.Where(u => u.Id == 0).ToList();
-                var deleteFields = fields.Where(u => u.Id != 0).ToList();
-                await DeleteEntityAsync(deleteFields);
-                await AddEntityAsync(addFields);
             }
+            var addFields = modelFields.Where(u => u.Id == 0).ToList();
+            var deleteFields = fields.Where(u => u.Id != 0).ToList();
+            await DeleteEntityAsync(deleteFields);
+            await AddEntityAsync(addFields);
             #endregion
             return IsExistence;
         }

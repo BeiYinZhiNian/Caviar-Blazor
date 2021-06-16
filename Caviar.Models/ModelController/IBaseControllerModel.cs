@@ -51,17 +51,10 @@ namespace Caviar.Models
         /// </summary>
         public UserToken UserToken { get; set; }
         /// <summary>
-        /// 角色表
+        /// 用户信息
+        /// 用于缓存部分
         /// </summary>
-        public List<SysRole> Roles { get; set; }
-        /// <summary>
-        /// 权限表
-        /// </summary>
-        public List<SysPermission> Permissions { get; set; }
-        /// <summary>
-        /// 菜单表
-        /// </summary>
-        public List<SysMenu> Menus { get; set; }
+        public UserData UserData { get; set; }
         /// <summary>
         /// 缓存
         /// </summary>
@@ -69,7 +62,7 @@ namespace Caviar.Models
         /// <summary>
         /// 是否为管理员
         /// </summary>
-        public bool IsAdmin { get; set; }
+        public bool IsAdmin { get; }
         /// <summary>
         /// 请求参数
         /// </summary>

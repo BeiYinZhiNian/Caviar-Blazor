@@ -29,6 +29,7 @@ namespace Caviar.Control
         public IActionResult FuzzyQuery(ViewQuery query)
         {
             if (string.IsNullOrEmpty(query.QueryObj)) return ResultError("查询对象不可为空");
+
             var assemblyList = CommonHelper.GetAssembly();
             Type type = null;
             foreach (var item in assemblyList)

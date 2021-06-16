@@ -30,11 +30,23 @@ namespace Caviar.Models.SystemData
             }
             return builder.ToString();
         }
-
+        /// <summary>
+        /// 是否为手机号
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
         public static bool IsPhoneNumber(string number)
         {
             return Regex.IsMatch(number, @"^[1][3-9]\\d{9}");
         }
+        /// <summary>
+        /// 获取字符串右边的字符串
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="contrastText"></param>
+        /// <param name="index"></param>
+        /// <param name="IsLastIndex"></param>
+        /// <returns></returns>
         public static string GetRightText(this string text, string contrastText, int index = 0,bool IsLastIndex = false)
         {
             if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(contrastText)) return "";
@@ -49,7 +61,14 @@ namespace Caviar.Models.SystemData
             if (index == -1) return "";
             return text.Substring(index + contrastText.Length, text.Length - index - contrastText.Length);
         }
-
+        /// <summary>
+        /// 获取字符串左边的字符串
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="contrastText"></param>
+        /// <param name="index"></param>
+        /// <param name="IsLastIndex"></param>
+        /// <returns></returns>
         public static string GetLeftText(this string text, string contrastText, int index = 0, bool IsLastIndex = false)
         {
             if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(contrastText)) return "";
@@ -97,26 +116,9 @@ namespace Caviar.Models.SystemData
             }
             return example;
         }
-        /// <summary>
-        /// 自动将target添加到example并进行类型转换
-        /// 不进行深度转换
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="K"></typeparam>
-        /// <param name="example"></param>
-        /// <param name="target"></param>
-        /// <returns></returns>
-        public static IList<T> ListAutoAssign<T, K>(this IList<T> example, IList<K> target) where T:class, new()
-        {
-            foreach (var item in target)
-            {
-                example.Add(new T().AutoAssign(item));
-            }
-            return example;
-        }
 
         /// <summary>
-        /// 两个类型进行转换，短小精悍
+        /// 利用json将两个类型进行转换，短小精悍
         /// </summary>
         /// <typeparam name="B"></typeparam>
         /// <typeparam name="A"></typeparam>
@@ -275,7 +277,11 @@ namespace Caviar.Models.SystemData
                 }
             }
         }
-
+        /// <summary>
+        /// 获取枚举的名称和值
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static Dictionary<int, string> GetEnenuModelHeader(Type type)
         {
             if(!type.IsEnum) return null;

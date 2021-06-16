@@ -65,7 +65,7 @@ namespace Caviar.AntDesignPages.Helper
                     return;
                 }
             }
-            MessageService.Error($"未找到{title}组件，请检查url地址");
+            MessageService.Error($"未找到{title}组件，请检查url地址：{url}");
         };
 
         ITableTemplate menuAdd;
