@@ -88,6 +88,7 @@ namespace Caviar.AntDesignPages.Shared
         {
             var result = await Http.GetJson<PageData<ViewMenu>> ("Menu/Index?pageSize=100");
             if (result.Status != 200) return new List<ViewMenu>();
+            UserConfig.Menus = result.Data.Rows;
             return result.Data.Rows;
         }
 

@@ -14,6 +14,7 @@ namespace Caviar.AntDesignPages.Helper
 
         public Router Router { get; set; }
 
+        public List<ViewMenu> Menus { get; set; }
 
         IEnumerable _routes;
         public IEnumerable Routes

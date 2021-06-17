@@ -1,0 +1,30 @@
+﻿@using Helper;
+<div style="@Style">
+
+</div>
+@code{
+    [Parameter]
+    public string Url { get; set; }
+
+    [Inject]
+    public UserConfigHelper UserConfig { get; set; }
+
+    string Style { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrEmpty(Url))
+        {
+            var menu = UserConfig.Menus?.FirstOrDefault(u => u.MenuName.ToLower() == Url.ToLower());
+            if (menu == null)
+            {
+                Style = "display:none;";
+            }
+            else
+            {
+                Style = "";
+            }
+        }
+        return base.OnInitializedAsync();
+    }
+}
