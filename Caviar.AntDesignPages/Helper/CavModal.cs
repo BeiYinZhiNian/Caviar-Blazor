@@ -30,6 +30,7 @@ namespace Caviar.AntDesignPages.Helper
             {
                 OnOk = HandleOk,
                 OnCancel = HandleCancel,
+                MaskClosable = false,
                 Content = Render(url,title ,paramenter),
                 Title = title,
                 Visible = true,

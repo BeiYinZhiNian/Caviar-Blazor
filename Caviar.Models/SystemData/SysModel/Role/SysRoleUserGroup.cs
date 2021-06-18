@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Caviar.Models.SystemData.SysModel.Role
+namespace Caviar.Models.SystemData
 {
     [DisplayName("角色用户组")]
     public class SysRoleUserGroup : SysBaseModel

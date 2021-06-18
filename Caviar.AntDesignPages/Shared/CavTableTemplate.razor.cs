@@ -110,7 +110,10 @@ namespace Caviar.AntDesignPages.Shared
                     List<KeyValuePair<string, object?>> paramenter = new List<KeyValuePair<string, object?>>();
                     if (menu.ButtonPosition == ButtonPosition.Row)
                     {
-                        paramenter.Add(new KeyValuePair<string, object?>("DataSource", CurrRow.Data));
+                        //因为引用类型，这里进行一次转换，相当于深度复制
+                        //否则更改内容然后取消，列表会发生改变
+                        CurrRow.Data.AToB(out TData dataSource);
+                        paramenter.Add(new KeyValuePair<string, object?>("DataSource", dataSource));
                     }
                     paramenter.Add(new KeyValuePair<string, object?>("Url", menu.Url));
                     await CavModal.Create(menu.Url, menu.MenuName, HandleOk, paramenter);

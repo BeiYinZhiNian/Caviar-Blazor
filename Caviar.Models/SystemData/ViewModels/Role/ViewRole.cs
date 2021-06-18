@@ -9,5 +9,7 @@ namespace Caviar.Models.SystemData
     public partial class ViewRole : ITree<ViewRole>
     {
         public List<ViewRole> Children { get; set; } = new List<ViewRole>();
+
+        public bool IsPermission { get; set; }
     }
 }

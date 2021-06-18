@@ -1,5 +1,4 @@
-﻿using Caviar.Control.Menu;
-using Caviar.Models.SystemData;
+﻿using Caviar.Models.SystemData;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,34 +10,11 @@ using System.Threading.Tasks;
 
 namespace Caviar.Control.Permission
 {
+    /// <summary>
+    /// 字段权限
+    /// </summary>
     public partial class PermissionController
     {
-        
-        /// <summary>
-        /// 获取角色菜单
-        /// </summary>
-        /// <param name="roleId"></param>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<IActionResult> RoleMenu(int roleId)
-        {
-            var menus = await _Action.GetRoleMenu(roleId);
-            if (menus == null) return ResultForbidden("未查询到该角色权限，请联系管理员获取");
-            ResultMsg.Data = menus;
-            return ResultOK();
-        }
-        /// <summary>
-        /// 设置角色菜单
-        /// </summary>
-        /// <param name="roleId"></param>
-        /// <param name="menuIds"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> RoleMenu(int roleId,int[] menuIds)
-        {
-            await _Action.SetRoleMenu(roleId, menuIds);
-            return ResultOK();
-        }
 
         /// <summary>
         /// 获取所有model
@@ -78,7 +54,7 @@ namespace Caviar.Control.Permission
         public async Task<IActionResult> RoleFields(string modelName, int roleId)
         {
             if (string.IsNullOrEmpty(modelName)) return ResultError("请输入需要获取的数据名称");
-            ResultMsg.Data = await _Action.GetFieldsData(CavAssembly,modelName,roleId);
+            ResultMsg.Data = await _Action.GetFieldsData(CavAssembly, modelName, roleId);
             return ResultOK();
         }
         /// <summary>
@@ -87,12 +63,11 @@ namespace Caviar.Control.Permission
         /// <param name="viewModelFields"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> RoleFields(string fullName, int roleId,List<ViewModelFields> viewModelFields)
+        public async Task<IActionResult> RoleFields(string fullName, int roleId, List<ViewModelFields> viewModelFields)
         {
             viewModelFields.AToB(out List<SysModelFields> sysModelFields);
             await _Action.SetRoleFields(fullName, roleId, sysModelFields);
             return ResultOK();
         }
-
     }
 }
