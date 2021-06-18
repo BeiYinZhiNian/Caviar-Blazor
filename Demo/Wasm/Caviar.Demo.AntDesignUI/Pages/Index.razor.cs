@@ -24,7 +24,7 @@ namespace Caviar.Demo.AntDesignUI.Pages
         HttpHelper Http { get; set; }
 
         [Inject]
-        UserConfigHelper UserConfig { get; set; }
+        UserConfig UserConfig { get; set; }
 
         [Inject]
         IJSRuntime JsRuntime { get; set; }

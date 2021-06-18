@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.AntDesignPages.Helper
 {
-    public class UserConfigHelper
+    public class UserConfig
     {
         public int CurrentMenuId { get; set; }
 

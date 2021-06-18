@@ -13,10 +13,10 @@ namespace Caviar.AntDesignPages.Helper
     public class CavModal
     {
         ModalService Modal;
-        UserConfigHelper UserConfig;
+        UserConfig UserConfig;
         MessageService MessageService;
 
-        public CavModal(UserConfigHelper userConfig,ModalService modalService, MessageService messageService)
+        public CavModal(UserConfig userConfig,ModalService modalService, MessageService messageService)
         {
             UserConfig = userConfig;
             Modal = modalService;

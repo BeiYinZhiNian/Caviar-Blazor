@@ -40,7 +40,7 @@ namespace Caviar.AntDesignPages.Shared
         [Inject]
         HttpHelper Http { get; set; }
         [Inject]
-        UserConfigHelper UserConfig { get; set; }
+        UserConfig UserConfig { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
         public async void OnMenuItemClickedNav(MenuItem menuItem)
         {
