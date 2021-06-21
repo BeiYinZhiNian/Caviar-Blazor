@@ -66,9 +66,9 @@ namespace Caviar.Control.Permission
         /// </summary>
         /// <param name="roleId"></param>
         /// <returns></returns>
-        public async Task<List<SysMenu>> GetRoleMenu(int roleId)
+        public async Task<List<ViewMenu>> GetRoleMenu(int roleId)
         {
-            List<SysMenu> menus = new List<SysMenu>();
+            List<ViewMenu> menus = new List<ViewMenu>();
             IEnumerable<SysPermission> permission;
             if (roleId == 0)
             {
@@ -86,15 +86,9 @@ namespace Caviar.Control.Permission
             foreach (var item in allMneus)
             {
                 var menu = permission.FirstOrDefault(u => u.PermissionId == item.Id);
-                if (menu == null)
-                {
-                    item.IsDisable = true;
-                }
-                else
-                {
-                    item.IsDisable = false;
-                }
-                menus.Add(item);
+                item.AToB(out ViewMenu viewMenu);
+                viewMenu.IsPermission = menu != null;
+                menus.Add(viewMenu);
             }
             menus.OrderBy(u => u.Number);
             return menus;

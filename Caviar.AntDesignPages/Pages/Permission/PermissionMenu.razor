@@ -3,7 +3,6 @@
 <Tree @ref="Tree"
       Style="margin-top:20px"
       TItem="ViewMenu"
-      Checkable
       BlockNode
       ShowIcon DataSource="ViewMenus"
       TitleExpression="x => x.DataItem.MenuName"
@@ -11,4 +10,7 @@
       IconExpression="x => x.DataItem.Icon"
       IsLeafExpression="x => x.DataItem.Children?.Count == 0"
       KeyExpression="x => x.DataItem.Id.ToString()">
+    <TitleIconTemplate Context="node">
+        <Checkbox @bind-Checked="node.DataItem.IsPermission"></Checkbox>
+    </TitleIconTemplate>
 </Tree>

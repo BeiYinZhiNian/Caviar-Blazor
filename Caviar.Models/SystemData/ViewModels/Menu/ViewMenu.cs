@@ -16,5 +16,9 @@ namespace Caviar.Models.SystemData
         /// 是否全部删除，包括孩子节点
         /// </summary>
         public bool IsDeleteAll { get; set; } = false;
+        /// <summary>
+        /// 是否授权
+        /// </summary>
+        public bool IsPermission { get; set; }
     }
 }
