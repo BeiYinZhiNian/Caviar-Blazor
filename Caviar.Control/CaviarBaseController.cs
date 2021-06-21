@@ -97,7 +97,6 @@ namespace Caviar.Control
         void GetRolePermission()
         {
             BC.SysModelFields = BC.DC.GetAllAsync<SysModelFields>().Result;
-
             var roleAction = CreateModel<RoleAction>();
             BC.UserData.Roles = roleAction.GetCurrentRoles().Result;
             var permissionAction = CreateModel<PermissionAction>();

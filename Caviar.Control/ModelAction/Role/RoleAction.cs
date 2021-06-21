@@ -20,6 +20,14 @@ namespace Caviar.Control.Role
                 {
                     await AddRole(roles, item.Role);
                 }
+                if (BC.UserData.UserGroup != null)
+                {
+                    var userGroupRoles = await BC.DC.GetEntityAsync<SysRoleUserGroup>(u => u.UserGroupId == BC.UserData.UserGroup.Id);
+                    foreach (var item in userGroupRoles)
+                    {
+                        await AddRole(roles, item.Role);
+                    }
+                }
             }
             //获取未登录角色
             var noRole = await BC.DC.GetEntityAsync<SysRole>(CaviarConfig.NoLoginRoleGuid);

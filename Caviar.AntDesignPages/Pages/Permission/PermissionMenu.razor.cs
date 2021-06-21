@@ -24,25 +24,6 @@ namespace Caviar.AntDesignPages.Pages.Permission
         {
             await GetSelectMenus();//获取已选择数据
         }
-        public void CheckInit(List<TreeNode<ViewMenu>> nodes,List<ViewMenu> menus)
-        {
-            foreach (var item in nodes)
-            {
-                var menu = menus.FirstOrDefault(u => u.Id.ToString() == item.Key);
-                if(menu != null)
-                {
-                    if (!menu.IsDisable)
-                    {
-                        item.SetChecked(true);
-                    }
-                }
-                if (item.ChildNodes != null)
-                {
-                    CheckInit(item.ChildNodes, menus);
-                }
-            }
-        }
-        Tree<ViewMenu> Tree { get; set; }
 
         async Task GetSelectMenus()
         {
@@ -52,13 +33,14 @@ namespace Caviar.AntDesignPages.Pages.Permission
             {
                 ViewMenus = result.Data.ListToTree();
                 StateHasChanged();
-                CheckInit(Tree.ChildNodes, result.Data);
             }
         }
 
         public async Task<bool> Submit()
         {
-            var ids = Tree.CheckedKeys;
+            List<ViewMenu> menus = new List<ViewMenu>();
+            ViewMenus.TreeToList(menus);
+            var ids = menus.Where(u => u.IsPermission).Select(u => u.Id);
             var result = await Http.PostJson($"{Url}?roleId={DataSource.Id}", ids);
             if (result.Status != 200) return false;
             MessageService.Success("操作成功");

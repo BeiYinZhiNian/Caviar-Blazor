@@ -93,10 +93,10 @@
                     <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="string" Width="@item.Width" />
                     break;
                 case "int32":
-                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="int" />
+                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="int?" />
                     break;
                 case "boolean":
-                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="bool">
+                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="bool?">
                         @{
                             var obj = context.GetObjValue(item.TypeName);
                             if (obj != null)
@@ -115,25 +115,25 @@
                     </Column>
                     break;
                 case "guid":
-                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="Guid" />
+                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="Guid?" />
                     break;
                 case "datetime":
-                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="DateTime" />
+                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="DateTime?" />
                     break;
                 case "double":
-                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="double">
+                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="double?">
                     </Column>
                     break;
                 case "float":
-                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="float" />
+                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="float?" />
                     break;
                 case "short":
-                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="short" />
+                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="short?" />
                     break;
                 case "byte":
-                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="byte" />
+                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="byte?" />
                     break;
-                case "icon":
+                case "icon"://特殊字段编码
                     <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="string">
                         @{
                             var obj = context.GetObjValue(item.TypeName);

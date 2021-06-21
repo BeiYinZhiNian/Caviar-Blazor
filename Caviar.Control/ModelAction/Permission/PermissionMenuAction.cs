@@ -37,7 +37,7 @@ namespace Caviar.Control.Permission
         {
             var menus = await GetRoleMenu(roleId);
             if (menus == null) return;
-            var Ids = menus.Where(u => u.IsDisable == false).Select(u => u.Id);
+            var Ids = menus.Where(u => u.IsPermission).Select(u => u.Id);
             var addIds = menuIds.Except(Ids).ToArray();
             var deleteIds = Ids.Except(menuIds).ToArray();
             List<SysPermission> addSysPermission = new List<SysPermission>();

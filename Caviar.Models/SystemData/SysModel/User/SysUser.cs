@@ -34,9 +34,16 @@ namespace Caviar.Models.SystemData
         [StringLength(11, ErrorMessage = "手机号码请不要超过{1}个字符")]
         [DisplayName("手机号码")]
         public string PhoneNumber { get; set; }
-
-        [Display(Name = "角色")]
-        [JsonIgnore]
-        public virtual List<SysRoleLogin> UserRoles { get; set; }
+        /// <summary>
+        /// 部门or用户组
+        /// </summary>
+        [DisplayName("部门")]
+        public int? UserGroupId { get; set; }
+        /// <summary>
+        /// 头像
+        /// </summary>
+        [DisplayName("头像")]
+        [StringLength(1024, ErrorMessage = "头像地址请不要超过{1}个字符")]
+        public string HeadPortrait { get; set; }
     }
 }

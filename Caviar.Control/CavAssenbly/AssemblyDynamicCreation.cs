@@ -340,6 +340,14 @@ namespace Caviar.Control
                 foreach (var item in type.GetRuntimeProperties())
                 {
                     var typeName = item.PropertyType.Name;
+                    if(typeName== "Nullable`1")//可为null的字段
+                    {
+                        var Arguments = item.PropertyType.GenericTypeArguments;
+                        if (Arguments.Length > 0)
+                        {
+                            typeName = Arguments[0].Name;
+                        }
+                    }
                     var dispLayName = item.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
                     var valueLen = item.GetCustomAttributes<StringLengthAttribute>()?.Cast<StringLengthAttribute>().SingleOrDefault()?.MaximumLength;
                     var filter = new ViewModelFields()
