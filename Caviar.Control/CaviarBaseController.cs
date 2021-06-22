@@ -74,7 +74,7 @@ namespace Caviar.Control
                 }
                 BC.UserToken = userToken;
             }
-            GetRolePermission();
+            GetPermission();
             var IsVerification = ActionVerification();
             if (!IsVerification)
             {
@@ -94,7 +94,7 @@ namespace Caviar.Control
         /// 可以做缓存，未做
         /// </summary>
         /// <returns></returns>
-        void GetRolePermission()
+        void GetPermission()
         {
             BC.SysModelFields = BC.DC.GetAllAsync<SysModelFields>().Result;
             var roleAction = CreateModel<RoleAction>();
@@ -246,6 +246,8 @@ namespace Caviar.Control
             /// </summary>
             public new object Data { get { return _data; } set { Filter(value); } }
 
+            public List<SysModelFields> SysModelFields { get; set; }
+
             private object _data;
             /// <summary>
             /// 过滤字段
@@ -255,6 +257,21 @@ namespace Caviar.Control
             private void Filter(object data)
             {
                 _data = data;
+                var type = data.GetType();
+            }
+
+
+            private void ArgumentsFilter(Type[] type)
+            {
+                foreach (var item in type)
+                {
+                    var field = SysModelFields.FirstOrDefault(u => u.TypeName.ToLower() == item.Name.ToLower());
+                    if (field != null)
+                    {
+
+                    }
+                }
+                
             }
         }
 
