@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using Caviar.Control.Permission;
 using Caviar.Control.Menu;
 using System.Linq;
+using System.Reflection;
 
 namespace Caviar.Control
 {
@@ -75,6 +76,7 @@ namespace Caviar.Control
                 BC.UserToken = userToken;
             }
             GetPermission();
+            ResultMsg.ModelFields = BC.UserData.ModelFields;
             var IsVerification = ActionVerification();
             if (!IsVerification)
             {
@@ -101,6 +103,7 @@ namespace Caviar.Control
             BC.UserData.Roles = roleAction.GetCurrentRoles().Result;
             var permissionAction = CreateModel<PermissionAction>();
             BC.UserData.Permissions = permissionAction.GetCurrentRolePermissions(BC.UserData.Roles).Result;
+            BC.UserData.ModelFields = permissionAction.GetRoleFields();
             var menuAction = CreateModel<MenuAction>();
             BC.UserData.Menus = menuAction.GetPermissionMenu(BC.UserData.Permissions).Result;
             BC.DC.DetachAll();
@@ -246,7 +249,7 @@ namespace Caviar.Control
             /// </summary>
             public new object Data { get { return _data; } set { Filter(value); } }
 
-            public List<SysModelFields> SysModelFields { get; set; }
+            public List<SysModelFields> ModelFields { private get; set; }
 
             private object _data;
             /// <summary>
@@ -257,21 +260,71 @@ namespace Caviar.Control
             private void Filter(object data)
             {
                 _data = data;
-                var type = data.GetType();
+                var type = _data.GetType();
+                ArgumentsModel(type,_data);
             }
 
-
-            private void ArgumentsFilter(Type[] type)
+            /// <summary>
+            /// 遍历类型中所有包含IBaseModel的子类
+            /// 过滤模型
+            /// </summary>
+            /// <param name="type"></param>
+            private void ArgumentsModel(Type type,object data)
             {
-                foreach (var item in type)
+                bool isBaseModel;
+                isBaseModel = type.GetInterfaces().Contains(typeof(IBaseModel));
+                if (isBaseModel)
                 {
-                    var field = SysModelFields.FirstOrDefault(u => u.TypeName.ToLower() == item.Name.ToLower());
-                    if (field != null)
+                    //去过滤参数
+                    ArgumentsFields(type, data);
+                }
+                else if (type.GetInterfaces().Contains(typeof(System.Collections.IEnumerable)))
+                {
+                    var list = (System.Collections.IEnumerable)data;
+                    foreach (var dataItem in list)
                     {
-
+                        ArgumentsModel(dataItem.GetType(), dataItem);
                     }
                 }
-                
+                else
+                {
+                    foreach (PropertyInfo sp in type.GetProperties())//获得类型的属性字段
+                    {
+                        var properType = sp.PropertyType;
+                        var value = sp.GetValue(data, null);
+                        ArgumentsModel(properType, value);
+                    }
+                }
+
+            }
+
+            /// <summary>
+            /// 过滤参数
+            /// </summary>
+            /// <param name="type"></param>
+            /// <param name="data"></param>
+            private void ArgumentsFields(Type type,object data)
+            {
+                var baseType = CommonHelper.GetCavBaseType(type);
+                if (baseType == null) return;
+                foreach (PropertyInfo sp in baseType.GetProperties())//获得类型的属性字段
+                {
+                    if (sp.Name.ToLower() == "id") continue;//忽略id字段
+                    if (sp.Name.ToLower() == "uid") continue;//忽略uid字段
+                    var field = ModelFields.FirstOrDefault(u => u.FullName == baseType.Name && sp.Name == u.TypeName);
+                    if (field == null)
+                    {
+                        try
+                        {
+                            sp.SetValue(data, default, null);//设置为默认字段
+                        }
+                        catch
+                        {
+                            //忽略该错误
+                        }
+                    }
+                }
+
             }
         }
 

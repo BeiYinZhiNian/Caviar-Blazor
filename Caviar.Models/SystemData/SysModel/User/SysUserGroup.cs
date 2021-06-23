@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
-    [DisplayName("用户组")]
+    [DisplayName("部门")]
     public partial class SysUserGroup:SysBaseModel
     {
         [Required(ErrorMessage = "请输入您的用户名")]

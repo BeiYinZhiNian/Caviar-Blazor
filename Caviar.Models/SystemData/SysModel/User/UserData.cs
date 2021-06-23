@@ -28,5 +28,9 @@ namespace Caviar.Models.SystemData
         /// 用户所在用户组
         /// </summary>
         public SysUserGroup UserGroup { get; set; }
+        /// <summary>
+        /// 用户拥有字段
+        /// </summary>
+        public List<SysModelFields> ModelFields { get; set; }
     }
 }

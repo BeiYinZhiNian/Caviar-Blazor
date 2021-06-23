@@ -31,7 +31,7 @@ namespace Caviar.AntDesignPages.Pages.Permission
             if (result.Status != 200) return;
             if (result.Data != null)
             {
-                ViewMenus = result.Data.ListToTree();
+                ViewMenus = result.Data;
                 StateHasChanged();
             }
         }

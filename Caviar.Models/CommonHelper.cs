@@ -137,7 +137,7 @@ namespace Caviar.Models.SystemData
         /// <param name="example"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static object? GetObjValue<T>(this T example,string name)
+        public static object GetObjValue<T>(this T example,string name)
         {
             var exampleType = example.GetType();//获得类型
             foreach (PropertyInfo sp in exampleType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic))//获得类型的属性
@@ -308,6 +308,29 @@ namespace Caviar.Models.SystemData
                 }
             }
             return dic;
+        }
+
+        /// <summary>
+        /// 获取类型的父类
+        /// 主要用于继承以后寻找到继承了SysBaseModel的子类
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static Type GetCavBaseType(Type type)
+        {
+            var baseType = type.BaseType;
+            if (baseType == null)
+            {
+                return null;
+            }
+            else if (baseType.Name.ToLower() == "SysBaseModel".ToLower())
+            {
+                return type;
+            }
+            else
+            {
+                return GetCavBaseType(baseType);
+            }
         }
     }
 }

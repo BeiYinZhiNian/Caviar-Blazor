@@ -27,7 +27,7 @@ namespace Caviar.Control.Permission
         {
             var menus = await _Action.GetRoleMenu(roleId);
             if (menus == null) return ResultForbidden("未查询到该角色权限，请联系管理员获取");
-            ResultMsg.Data = menus;
+            ResultMsg.Data = menus.ListToTree();
             return ResultOK();
         }
         /// <summary>

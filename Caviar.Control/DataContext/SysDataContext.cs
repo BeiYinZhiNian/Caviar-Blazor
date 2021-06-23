@@ -185,6 +185,7 @@ namespace Caviar.Control
         /// <returns></returns>
         public virtual async Task<int> DeleteEntityAsync<T>(T entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IBaseModel
         {
+            if (entity == null) return 0;
             if (entity.IsDelete || IsDelete)
             {
                 DC.Entry(entity).State = EntityState.Deleted;

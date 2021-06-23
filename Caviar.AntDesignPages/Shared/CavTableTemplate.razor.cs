@@ -41,7 +41,7 @@ namespace Caviar.AntDesignPages.Shared
 
         protected override async Task OnInitializedAsync()
         {
-            Query.QueryObj = GetBaseType(typeof(TData))?.Name;
+            Query.QueryObj = CommonHelper.GetCavBaseType(typeof(TData))?.Name;
 
             if (!string.IsNullOrEmpty(ModelName))
             {
@@ -52,23 +52,6 @@ namespace Caviar.AntDesignPages.Shared
                 }
             }
             
-        }
-
-        Type GetBaseType(Type type)
-        {
-            var baseType = type.BaseType;
-            if (baseType == null)
-            {
-                return null;
-            }
-            else if(baseType.Name.ToLower() == "SysBaseModel".ToLower())
-            {
-                return type;
-            }
-            else
-            {
-                return GetBaseType(baseType);
-            }
         }
 
         [Parameter]
