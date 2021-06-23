@@ -1,6 +1,6 @@
 @*
 生成者：admin
-生成时间：2021/6/21 14:41:41
+生成时间：2021/6/23 18:05:16
 代码由代码生成器自动生成，更改的代码可能被进行替换
 界面如需更改，建议直接将内容剪切到自己的文件内，保留此空白文件
 用户数据模板
@@ -19,6 +19,9 @@
     </FormItem>
     <FormItem Label='手机号码'>
         <Input @bind-Value='@context.PhoneNumber' Style='width:50%' />
+    </FormItem>
+    <FormItem Label='部门'>
+        <AntDesign.InputNumber @bind-Value='@context.UserGroupId' />
     </FormItem>
     <FormItem Label='头像'>
         <TextArea @bind-Value='@context.HeadPortrait' Style='width:50%'/>

@@ -139,10 +139,10 @@ namespace Caviar.AntDesignPages.Helper
                     _navigationManager.NavigateTo("/Exception/404");
                     _message.Warn(result.Title);
                     break;
-                case 400:
-                    _navigationManager.NavigateTo("/Exception/400");
-                    _message.Warn(result.Title);
-                    break;
+                //case 400:
+                //    _navigationManager.NavigateTo("/Exception/400");
+                //    _message.Warn(result.Title);
+                //    break;
                 default:
                     string msg = "";
                     if (!string.IsNullOrEmpty(result.Detail))

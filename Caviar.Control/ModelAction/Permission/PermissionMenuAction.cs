@@ -55,7 +55,7 @@ namespace Caviar.Control.Permission
             List<SysPermission> deleteSysPermission = new List<SysPermission>();
             foreach (var item in deleteIds)
             {
-                var permission = await BC.DC.GetFirstEntityAsync<SysPermission>(u => u.IdentityId == roleId && u.PermissionId == item && u.PermissionType == PermissionType.Menu && u.PermissionIdentity == PermissionIdentity.Role);
+                var permission = await BC.DC.GetSingleEntityAsync<SysPermission>(u => u.IdentityId == roleId && u.PermissionId == item && u.PermissionType == PermissionType.Menu && u.PermissionIdentity == PermissionIdentity.Role);
                 deleteSysPermission.Add(permission);
             }
             await BC.DC.DeleteEntityAsync(deleteSysPermission, IsDelete: true);//该权限不需要保存，直接彻底删除

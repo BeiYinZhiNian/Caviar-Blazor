@@ -228,7 +228,6 @@ namespace Caviar.Models.SystemData
                 }
                 else
                 {
-                    //查找源数据父节点
                     var ParentNode = data.SingleOrDefault(u => u.Id == item.ParentId);
                     if(ParentNode == null)
                     {

@@ -12,7 +12,7 @@ using System.ComponentModel;
 using Caviar.Models.SystemData;
 /// <summary>
 /// 生成者：admin
-/// 生成时间：2021/6/21 14:41:40
+/// 生成时间：2021/6/23 18:05:16
 /// 代码由代码生成器自动生成，更改的代码可能被进行替换
 /// 可在上层目录使用partial关键字进行扩展
 /// </summary>
@@ -115,10 +115,8 @@ namespace Caviar.AntDesignPages.Pages.User
         {
             //删除单条
             var result = await Http.PostJson(url, data);
-            if (result.Status == 200)
-            {
-                Message.Success("删除成功");
-            }
+            if (result.Status != 200) return;
+            Message.Success("删除成功");
             Refresh();
         }
         #endregion

@@ -232,9 +232,9 @@ namespace Caviar.Control
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public virtual Task<List<T>> GetAllAsync<T>() where T : class, IBaseModel
+        public virtual Task<List<T>> GetAllAsync<T>(bool isNoTracking = true) where T : class, IBaseModel
         {
-            return GetContext<T>().ToListAsync();
+            return GetContext<T>(isNoTracking).ToListAsync();
         }
         /// <summary>
         /// 获取指定页数据
@@ -250,14 +250,11 @@ namespace Caviar.Control
         /// <returns></returns>
         public virtual async Task<PageData<T>> GetPageAsync<T, TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true) where T : class, IBaseModel
         {
-            IQueryable<T> data = GetContext<T>();
+            IQueryable<T> data = GetContext<T>(isNoTracking);
             data = isOrder ?
                 data.OrderBy(orderBy) :
                 data.OrderByDescending(orderBy);
-            if (whereLambda != null)
-            {
-                data = isNoTracking ? data.Where(whereLambda).AsNoTracking() : data.Where(whereLambda);
-            }
+            data = data.Where(whereLambda);
             PageData<T> pageData = new PageData<T>
             {
                 PageIndex = pageIndex,
@@ -275,9 +272,9 @@ namespace Caviar.Control
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual Task<List<T>> GetEntityAsync<T>(Expression<Func<T, bool>> where) where T : class, IBaseModel
+        public virtual Task<List<T>> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IBaseModel
         {
-            return GetContext<T>().Where(where).ToListAsync();
+            return GetContext<T>(isNoTracking).Where(where).ToListAsync();
         }
         /// <summary>
         /// 根据条件获取单个实体
@@ -285,9 +282,19 @@ namespace Caviar.Control
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual Task<T> GetFirstEntityAsync<T>(Expression<Func<T, bool>> where) where T : class, IBaseModel
+        public virtual Task<T> GetSingleEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IBaseModel
         {
-            return GetContext<T>().Where(where).FirstOrDefaultAsync();
+            return GetContext<T>(isNoTracking).Where(where).SingleOrDefaultAsync();
+        }
+        /// <summary>
+        /// 根据条件获取首个单个实体
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public virtual Task<T> GetFirstEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IBaseModel
+        {
+            return GetContext<T>(isNoTracking).Where(where).FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -296,9 +303,9 @@ namespace Caviar.Control
         /// <typeparam name="T"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        public virtual Task<T> GetEntityAsync<T>(int id) where T : class, IBaseModel
+        public virtual Task<T> GetEntityAsync<T>(int id, bool isNoTracking = true) where T : class, IBaseModel
         {
-            return GetContext<T>().FirstOrDefaultAsync(u => u.Id == id);
+            return GetContext<T>(isNoTracking).SingleOrDefaultAsync(u => u.Id == id);
         }
         /// <summary>
         /// 根据guid获取实体
@@ -306,14 +313,18 @@ namespace Caviar.Control
         /// <typeparam name="T"></typeparam>
         /// <param name="uid"></param>
         /// <returns></returns>
-        public virtual Task<T> GetEntityAsync<T>(Guid uid) where T : class, IBaseModel
+        public virtual Task<T> GetEntityAsync<T>(Guid uid, bool isNoTracking = true) where T : class, IBaseModel
         {
-            return GetContext<T>().FirstOrDefaultAsync(u => u.Uid == uid);
+            return GetContext<T>(isNoTracking).SingleOrDefaultAsync(u => u.Uid == uid);
         }
 
-        private IQueryable<T> GetContext<T>() where T : class, IBaseModel
+        private IQueryable<T> GetContext<T>(bool isNoTracking) where T : class, IBaseModel
         {
             var set = DC.Set<T>();
+            if (isNoTracking)
+            {
+                return set.AsNoTracking().Where(u => u.IsDelete == false);
+            }
             return set.Where(u => u.IsDelete == false);
         }
 
@@ -367,7 +378,6 @@ namespace Caviar.Control
                 var viewModelFields = _cavAssembly.GetViewModelHeaders(item.Name);
                 modelFields.AddRange(viewModelFields);
             }
-            DetachAll();
             foreach (var modelFieldsItem in modelFields)
             {
                 foreach (var fieldsItem in fields)
@@ -381,7 +391,7 @@ namespace Caviar.Control
             }
             var addFields = modelFields.Where(u => u.Id == 0).ToList();
             var deleteFields = fields.Where(u => u.Id != 0).ToList();
-            await DeleteEntityAsync(deleteFields);
+            await DeleteEntityAsync(deleteFields,IsDelete:true);
             await AddEntityAsync(addFields);
             #endregion
             return IsExistence;

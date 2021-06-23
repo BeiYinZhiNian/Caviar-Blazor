@@ -12,13 +12,13 @@ using System.Threading.Tasks;
 using Caviar.Models.SystemData;
 /// <summary>
 /// 生成者：admin
-/// 生成时间：2021/6/16 18:08:08
+/// 生成时间：2021/6/23 18:05:44
 /// 代码由代码生成器自动生成，更改的代码可能被进行替换
 /// 可在上层目录使用partial关键字进行扩展
 /// </summary>
 namespace Caviar.AntDesignPages.Pages.UserGroup
 {
-    [DisplayName("用户组数据模板")]
+    [DisplayName("部门数据模板")]
     public partial class DataTemplate: ITableTemplate
     {
         #region 参数

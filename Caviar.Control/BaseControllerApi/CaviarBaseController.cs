@@ -192,11 +192,11 @@ namespace Caviar.Control
             SysMenu entity = null;
             if (menu.MenuType != MenuType.Button)
             {
-                entity = await BC.DC.GetFirstEntityAsync<SysMenu>(u => u.MenuName == menu.MenuName);
+                entity = await BC.DC.GetSingleEntityAsync<SysMenu>(u => u.MenuName == menu.MenuName);
             }
             else
             {
-                entity = await BC.DC.GetFirstEntityAsync<SysMenu>(u => u.MenuName == menu.MenuName && u.ParentId == menu.ParentId);
+                entity = await BC.DC.GetSingleEntityAsync<SysMenu>(u => u.MenuName == menu.MenuName && u.ParentId == menu.ParentId);
             }
             var count = 0;
             if (entity == null)

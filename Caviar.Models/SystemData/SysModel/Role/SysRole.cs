@@ -26,8 +26,5 @@ namespace Caviar.Models.SystemData
         [DisplayName("父id")]
         public int ParentId { get; set; }
 
-        [JsonIgnore]
-        public virtual List<SysRoleLogin> UserLogins { get; set; }
-
     }
 }

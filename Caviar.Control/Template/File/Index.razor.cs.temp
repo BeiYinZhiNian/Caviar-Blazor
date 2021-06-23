@@ -115,10 +115,8 @@ namespace {WebUINamespace}.{OutName}
         {
             //删除单条
             var result = await Http.PostJson(url, data);
-            if (result.Status == 200)
-            {
-                Message.Success("删除成功");
-            }
+            if (result.Status != 200) return;
+            Message.Success("删除成功");
             Refresh();
         }
         #endregion

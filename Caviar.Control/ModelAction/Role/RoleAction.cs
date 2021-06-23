@@ -11,27 +11,34 @@ namespace Caviar.Control.Role
     {
         public async Task<List<SysRole>> GetCurrentRoles()
         {
-            HashSet<SysRole> roles = new HashSet<SysRole>();
+            List<SysRole> roles = new List<SysRole>();
             if (BC.Id > 0)
             {
                 //获取当前用户角色
                 var userRoles = await BC.DC.GetEntityAsync<SysRoleLogin>(u => u.UserId == BC.Id);
                 foreach (var item in userRoles)
                 {
-                    await AddRole(roles, item.Role);
+                    if (roles.SingleOrDefault(u=>u.Id == item.RoleId) != null) continue;
+                    var role = await BC.DC.GetSingleEntityAsync<SysRole>(u => u.Id == item.RoleId);
+                    await AddRole(roles, role);
                 }
                 if (BC.UserData.UserGroup != null)
                 {
                     var userGroupRoles = await BC.DC.GetEntityAsync<SysRoleUserGroup>(u => u.UserGroupId == BC.UserData.UserGroup.Id);
                     foreach (var item in userGroupRoles)
                     {
-                        await AddRole(roles, item.Role);
+                        if (roles.SingleOrDefault(u => u.Id == item.RoleId) != null) continue;
+                        var role = await BC.DC.GetSingleEntityAsync<SysRole>(u => u.Id == item.RoleId);
+                        await AddRole(roles, role);
                     }
                 }
             }
-            //获取未登录角色
-            var noRole = await BC.DC.GetEntityAsync<SysRole>(CaviarConfig.NoLoginRoleGuid);
-            await AddRole(roles,noRole);
+            if(roles.SingleOrDefault(u => u.Uid == CaviarConfig.NoLoginRoleGuid) == null)
+            {
+                //获取未登录角色
+                var noRole = await BC.DC.GetEntityAsync<SysRole>(CaviarConfig.NoLoginRoleGuid);
+                await AddRole(roles, noRole);
+            }
             return roles.ToList();
         }
         /// <summary>
@@ -40,13 +47,14 @@ namespace Caviar.Control.Role
         /// <param name="roles"></param>
         /// <param name="role"></param>
         /// <returns></returns>
-        private async Task AddRole(HashSet<SysRole> roles, SysRole role)
+        private async Task AddRole(List<SysRole> roles, SysRole role)
         {
             if (roles == null) return;
             roles.Add(role);
             if (role.ParentId > 0)
             {
-                var userRole = await BC.DC.GetFirstEntityAsync<SysRole>(u => u.Id == role.ParentId);
+                var userRole = await BC.DC.GetSingleEntityAsync<SysRole>(u => u.Id == role.ParentId);
+                if (roles.SingleOrDefault(u => u.Id == userRole.Id) != null) return;
                 await AddRole(roles, userRole);
             }
         }

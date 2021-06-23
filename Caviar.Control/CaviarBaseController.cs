@@ -106,7 +106,6 @@ namespace Caviar.Control
             BC.UserData.ModelFields = permissionAction.GetRoleFields();
             var menuAction = CreateModel<MenuAction>();
             BC.UserData.Menus = menuAction.GetPermissionMenu(BC.UserData.Permissions).Result;
-            BC.DC.DetachAll();
         } 
 
         public override void OnActionExecuted(ActionExecutedContext context)
@@ -260,6 +259,7 @@ namespace Caviar.Control
             private void Filter(object data)
             {
                 _data = data;
+                if (_data == null) return;
                 var type = _data.GetType();
                 ArgumentsModel(type,_data);
             }
@@ -271,8 +271,6 @@ namespace Caviar.Control
             /// <param name="type"></param>
             private void ArgumentsModel(Type type,object data)
             {
-                bool isBaseModel;
-                isBaseModel = type.GetInterfaces().Contains(typeof(IBaseModel));
                 if (!type.IsClass)//排除非类
                 {
                     return;
@@ -281,8 +279,11 @@ namespace Caviar.Control
                 {
                     return;
                 }
-                else if (isBaseModel)
+                bool isBaseModel;
+                isBaseModel = type.GetInterfaces().Contains(typeof(IBaseModel));
+                if (isBaseModel)
                 {
+                    if (data == null) return;
                     //去过滤参数
                     ArgumentsFields(type, data);
                 }

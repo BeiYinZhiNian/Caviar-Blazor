@@ -24,7 +24,8 @@ namespace Caviar.Control.Permission
             var roleUserGroups = await BC.DC.GetEntityAsync<SysRoleUserGroup>(u => u.UserGroupId == userGroupId);
             foreach (var item in roleUserGroups)
             {
-                SelectUrg.Add(item.Role);
+                var role = await BC.DC.GetSingleEntityAsync<SysRole>(u => u.Id == item.RoleId);
+                SelectUrg.Add(role);
             }
             if (BC.IsAdmin)
             {
@@ -78,7 +79,7 @@ namespace Caviar.Control.Permission
             var deleteUrgList = new List<SysRoleUserGroup>();
             foreach (var item in deleteIds)
             {
-                var roleUserGroup = await BC.DC.GetFirstEntityAsync<SysRoleUserGroup>(u => u.RoleId == item && u.UserGroupId == userGroupId);
+                var roleUserGroup = await BC.DC.GetSingleEntityAsync<SysRoleUserGroup>(u => u.RoleId == item && u.UserGroupId == userGroupId);
                 deleteUrgList.Add(roleUserGroup);
             }
             await BC.DC.DeleteEntityAsync(deleteUrgList,IsDelete:true);

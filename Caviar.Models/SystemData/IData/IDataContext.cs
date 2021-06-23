@@ -83,35 +83,43 @@ namespace Caviar.Models.SystemData
         /// 异步获取所有数据
         /// </summary>
         /// <returns></returns>
-        public Task<List<T>> GetAllAsync<T>() where T : class, IBaseModel;
+        public Task<List<T>> GetAllAsync<T>(bool isNoTracking = true) where T : class, IBaseModel;
         /// <summary>
         /// 根据条件获取实体
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public Task<List<T>> GetEntityAsync<T>(Expression<Func<T, bool>> where) where T : class, IBaseModel;
+        public Task<List<T>> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IBaseModel;
         /// <summary>
         /// 根据条件获取单个实体
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public Task<T> GetFirstEntityAsync<T>(Expression<Func<T, bool>> where) where T : class, IBaseModel;
+        public Task<T> GetSingleEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IBaseModel;
+        /// <summary>
+        /// 根据条件获取首个实体
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="where"></param>
+        /// <param name="isNoTracking"></param>
+        /// <returns></returns>
+        public Task<T> GetFirstEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IBaseModel;
         /// <summary>
         /// 根据id获取实体
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Task<T> GetEntityAsync<T>(int id) where T : class, IBaseModel;
+        public Task<T> GetEntityAsync<T>(int id, bool isNoTracking = true) where T : class, IBaseModel;
         /// <summary>
         /// 根据uid获取实体
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="uid"></param>
         /// <returns></returns>
-        public Task<T> GetEntityAsync<T>(Guid uid) where T : class, IBaseModel;
+        public Task<T> GetEntityAsync<T>(Guid uid, bool isNoTracking = true) where T : class, IBaseModel;
         /// <summary>
         /// 分页查询异步
         /// </summary>

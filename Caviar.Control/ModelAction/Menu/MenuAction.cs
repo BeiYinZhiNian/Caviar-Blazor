@@ -46,11 +46,12 @@ namespace Caviar.Control.Menu
         /// <returns></returns>
         public async Task<List<SysMenu>> GetPermissionMenu(List<SysPermission> permissions)
         {
-            HashSet<SysMenu> menus = new HashSet<SysMenu>();
+            List<SysMenu> menus = new List<SysMenu>();
             permissions = permissions.Where(u => u.PermissionType == PermissionType.Menu).ToList();
             foreach (var item in permissions)
             {
-                var menu = await BC.DC.GetFirstEntityAsync<SysMenu>(u => u.Id == item.PermissionId);
+                if (menus.SingleOrDefault(u=>u.Id == item.PermissionId) != null) continue;
+                var menu = await BC.DC.GetSingleEntityAsync<SysMenu>(u => u.Id == item.PermissionId);
                 if (menu == null) continue;
                 menus.Add(menu);
             }

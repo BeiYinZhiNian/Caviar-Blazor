@@ -27,7 +27,6 @@ namespace Caviar.Control
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder = optionsBuilder.UseLazyLoadingProxies();
             if (!optionsBuilder.IsConfigured)
             {
                 string connectionString = CaviarConfig.SqlConfig.Connections;
