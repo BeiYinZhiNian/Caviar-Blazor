@@ -329,7 +329,7 @@ namespace Caviar.Control
                         }
                         catch
                         {
-                            //忽略该错误
+                            //忽略该错误,并记录到错误日志
                         }
                     }
                 }
