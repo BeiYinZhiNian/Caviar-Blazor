@@ -273,12 +273,20 @@ namespace Caviar.Control
             {
                 bool isBaseModel;
                 isBaseModel = type.GetInterfaces().Contains(typeof(IBaseModel));
-                if (isBaseModel)
+                if (!type.IsClass)//排除非类
+                {
+                    return;
+                }
+                else if (type == typeof(string))//排除字符串（特殊类）
+                {
+                    return;
+                }
+                else if (isBaseModel)
                 {
                     //去过滤参数
                     ArgumentsFields(type, data);
                 }
-                else if (type.GetInterfaces().Contains(typeof(System.Collections.IEnumerable)))
+                else if (type.GetInterfaces().Contains(typeof(System.Collections.ICollection)))
                 {
                     var list = (System.Collections.IEnumerable)data;
                     foreach (var dataItem in list)
