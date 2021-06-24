@@ -8,9 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.Control
+namespace Caviar.Control.User
 {
-    public partial class UserLoginAction : BaseModelAction<SysUser,ViewUserLogin>
+    public partial class UserAction
     {
         /// <summary>
         /// 登录成功返回token，失败返回错误原因

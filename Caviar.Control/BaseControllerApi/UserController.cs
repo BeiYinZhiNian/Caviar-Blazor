@@ -1,16 +1,18 @@
 ﻿using Caviar.Control;
+using Caviar.Control.UserGroup;
 using Caviar.Models.SystemData;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
-namespace Caviar.Control
+namespace Caviar.Control.User
 {
-    public partial class UserController : CaviarBaseController
+    public partial class UserController
     {
         [HttpPost]
         public IActionResult Login(ViewUserLogin userLogin)
         {
-            var userAction = CreateModel<UserLoginAction>();
+            var userAction = CreateModel<UserAction>();
             userAction.Entity = userLogin;
             var loginMsg = userAction.Login();
             if (BC.IsLogin)
@@ -24,7 +26,7 @@ namespace Caviar.Control
         [HttpPost]
         public IActionResult Register(ViewUserLogin userLogin)
         {
-            var userAction = CreateModel<UserLoginAction>();
+            var userAction = CreateModel<UserAction>();
             userAction.Entity = userLogin;
             var IsRegister = userAction.Register(out string msg);
             LoggerMsg<UserController>(msg, IsSucc: IsRegister);

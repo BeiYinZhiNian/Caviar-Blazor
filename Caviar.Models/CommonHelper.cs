@@ -179,10 +179,11 @@ namespace Caviar.Models.SystemData
         }
         /// <summary>
         /// 获取数据库中所有继承IBaseModel的类
-        /// 排除SysBaseModel基类和带有View的前端类
+        /// 排除SysBaseModel基类
         /// </summary>
+        /// <param name="isView">是否寻找前端类，前端类和后端类不可同时获取</param>
         /// <returns></returns>
-        public static List<Type> GetModelList()
+        public static List<Type> GetModelList(bool isView = false)
         {
             List<Type> types = new List<Type>();
             GetAssembly()
@@ -190,17 +191,26 @@ namespace Caviar.Models.SystemData
                     .ForEach((t =>
                     {
                         //获取所有对象
-                        t.GetTypes()
+                        var assemblyTypes = t.GetTypes()
                             //查找是否包含IBaseModel接口的类
                             .Where(u => u.GetInterfaces().Contains(typeof(IBaseModel)))
                             //判断是否是类
-                            .Where(u => u.IsClass)
-                            //转换成list
-                            .ToList()
+                            .Where(u => u.IsClass);
+                        if (isView)
+                        {
+                            assemblyTypes = assemblyTypes.Where(u => u.GetInterfaces().Contains(typeof(IViewMode)));
+                        }
+                        else
+                        {
+                            assemblyTypes = assemblyTypes.Where(u => !u.GetInterfaces().Contains(typeof(IViewMode)));
+                        }
+                        //转换成list
+                        assemblyTypes.ToList()
                             //循环,并添注入
                             .ForEach(t =>
                             {
-                                if (t.Name.ToLower().Contains("view") || t.Name.ToLower().Contains("sysbasemodel"))
+                                var name = t.Name.ToLower();
+                                if (name.Contains("sysbasemodel"))
                                 {
                                     return;
                                 }

@@ -14,7 +14,7 @@ using Caviar.Models.SystemData;
 namespace Caviar.Models.SystemData
 {
     [DisplayName("权限展示模型")]
-    public partial class ViewPermission:SysPermission
+    public partial class ViewPermission:SysPermission, IViewMode
     {
     }
 }

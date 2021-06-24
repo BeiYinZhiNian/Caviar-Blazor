@@ -14,7 +14,7 @@ using {EntityNamespace};
 namespace {ModelsNamespace}
 {
     [DisplayName("{EntityDisplayName}展示模型")]
-    public partial class {ViewOutName}:{EntityName}
+    public partial class {ViewOutName}:{EntityName}, IViewMode
     {
     }
 }

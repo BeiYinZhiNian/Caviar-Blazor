@@ -14,7 +14,7 @@ using Caviar.Models.SystemData;
 namespace Caviar.Models.SystemData
 {
     [DisplayName("菜单展示模型")]
-    public partial class ViewMenu:SysMenu
+    public partial class ViewMenu : SysMenu, IViewMode
     {
     }
 }

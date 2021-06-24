@@ -128,7 +128,7 @@ namespace Caviar.Control
         [HttpGet]
         public virtual async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10, bool isOrder = true, bool isNoTracking = true)
         {
-            var pages = await this._Action.GetPages(u => true, pageIndex, pageSize, isOrder, isNoTracking);
+            var pages = await _Action.GetPages(u => true, pageIndex, pageSize, isOrder, isNoTracking);
             ResultMsg.Data = pages;
             return ResultOK();
         }

@@ -14,7 +14,7 @@ using Caviar.Models.SystemData;
 namespace Caviar.Models.SystemData
 {
     [DisplayName("用户展示模型")]
-    public partial class ViewUser:SysUser
+    public partial class ViewUser:SysUser, IViewMode
     {
     }
 }

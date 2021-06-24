@@ -261,7 +261,7 @@ namespace Caviar.Control
                 _data = data;
                 if (_data == null) return;
                 var type = _data.GetType();
-                ArgumentsModel(type,_data);
+                //ArgumentsModel(type,_data);
             }
 
             /// <summary>

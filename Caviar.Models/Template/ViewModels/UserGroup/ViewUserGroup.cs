@@ -14,7 +14,7 @@ using Caviar.Models.SystemData;
 namespace Caviar.Models.SystemData
 {
     [DisplayName("部门展示模型")]
-    public partial class ViewUserGroup:SysUserGroup
+    public partial class ViewUserGroup:SysUserGroup, IViewMode
     {
     }
 }

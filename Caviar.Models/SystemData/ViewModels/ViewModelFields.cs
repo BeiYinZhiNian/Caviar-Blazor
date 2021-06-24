@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
-    public partial class ViewModelFields : SysModelFields
+    public partial class ViewModelFields : SysModelFields,IViewMode
     {
         /// <summary>
         /// 类型名称如string,int等

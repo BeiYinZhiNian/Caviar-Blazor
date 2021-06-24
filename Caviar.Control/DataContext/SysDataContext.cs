@@ -398,7 +398,7 @@ namespace Caviar.Control
             }
             //同步系统与数据库的模型字段
             var fields = await GetAllAsync<SysModelFields>();
-            var types = CommonHelper.GetModelList();
+            var types = CommonHelper.GetModelList(true);
             List<SysModelFields> modelFields = new List<SysModelFields>();
             foreach (var item in types)
             {

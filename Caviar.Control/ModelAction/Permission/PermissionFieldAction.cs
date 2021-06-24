@@ -87,7 +87,7 @@ namespace Caviar.Control.Permission
                 {
                     field.DisplayName = item.DisplayName;
                 }
-                await BC.DC.UpdateEntityAsync(field);
+                var count = await BC.DC.UpdateEntityAsync(field);
                 if (item.IsPermission)
                 {
                     //进行授权

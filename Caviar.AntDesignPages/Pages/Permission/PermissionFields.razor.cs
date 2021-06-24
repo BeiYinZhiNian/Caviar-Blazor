@@ -41,7 +41,7 @@ namespace Caviar.AntDesignPages.Pages.Permission
 
         public async Task GetModels()
         {
-            var result = await Http.GetJson<List<ViewModelFields>>("Permission/GetModels");
+            var result = await Http.GetJson<List<ViewModelFields>>("Permission/GetModels?isView=true");
             if (result.Status != 200) return;
             Models = result.Data;
         }

@@ -20,10 +20,10 @@ namespace Caviar.Control.Permission
         /// 获取所有model
         /// </summary>
         [HttpGet]
-        public IActionResult GetModels()
+        public IActionResult GetModels(bool isView = false)
         {
             List<ViewModelFields> viewModels = new List<ViewModelFields>();
-            var types = CommonHelper.GetModelList();
+            var types = CommonHelper.GetModelList(isView);
             foreach (var item in types)
             {
                 var displayName = item.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
