@@ -10,7 +10,7 @@ namespace Caviar.Control.User
     public partial class UserController
     {
         [HttpPost]
-        public IActionResult Login(ViewUserLogin userLogin)
+        public IActionResult Login(ViewUser userLogin)
         {
             var userAction = CreateModel<UserAction>();
             userAction.Entity = userLogin;
@@ -24,7 +24,7 @@ namespace Caviar.Control.User
         }
 
         [HttpPost]
-        public IActionResult Register(ViewUserLogin userLogin)
+        public IActionResult Register(ViewUser userLogin)
         {
             var userAction = CreateModel<UserAction>();
             userAction.Entity = userLogin;

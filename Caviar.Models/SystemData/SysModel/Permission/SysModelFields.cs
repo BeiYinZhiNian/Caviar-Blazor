@@ -25,11 +25,17 @@ namespace Caviar.Models.SystemData
         [StringLength(50, ErrorMessage = "显示名称请不要超过{1}个字符")]
         public string DisplayName { get; set; }
         /// <summary>
-        /// 命名空间,判断父类的唯一条件
+        /// 命名空间
         /// </summary>
         [DisplayName("命名空间")]
         [StringLength(50, ErrorMessage = "命名空间请不要超过{1}个字符")]
         public string FullName { get; set; }
+        /// <summary>
+        /// 判断父类的唯一条件
+        /// </summary>
+        [DisplayName("基类名称")]
+        [StringLength(50, ErrorMessage = "命名空间请不要超过{1}个字符")]
+        public string BaseTypeName { get; set; }
         /// <summary>
         /// 字段需要的宽度
         /// </summary>

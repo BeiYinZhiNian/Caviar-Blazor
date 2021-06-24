@@ -13,7 +13,7 @@ using {EntityNamespace};
 /// </summary>
 namespace {ModelsNamespace}
 {
-    [DisplayName("{EntityDisplayName}展示模型")]
+    [DisplayName("{EntityDisplayName}模型")]
     public partial class {ViewOutName}:{EntityName}, IViewMode
     {
     }

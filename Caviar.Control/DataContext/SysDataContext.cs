@@ -123,7 +123,7 @@ namespace Caviar.Control
                                 default:
                                     break;
                             }
-                            var field = _baseControllerModel.UserData.ModelFields.FirstOrDefault(u => u.FullName == baseType.Name && sp.Name == u.TypeName);
+                            var field = _baseControllerModel.UserData.ModelFields.FirstOrDefault(u => u.BaseTypeName == baseType.Name && sp.Name == u.TypeName);
                             if (field == null)
                             {
                                 item.Property(sp.Name).IsModified = false;
@@ -409,7 +409,7 @@ namespace Caviar.Control
             {
                 foreach (var fieldsItem in fields)
                 {
-                    if (modelFieldsItem.TypeName == fieldsItem.TypeName && modelFieldsItem.FullName == fieldsItem.FullName)
+                    if (modelFieldsItem.TypeName == fieldsItem.TypeName && modelFieldsItem.FullName == fieldsItem.FullName && modelFieldsItem.BaseTypeName==fieldsItem.BaseTypeName)
                     {
                         modelFieldsItem.Id = fieldsItem.Id;
                         fieldsItem.Id = 0;

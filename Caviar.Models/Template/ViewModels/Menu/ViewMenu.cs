@@ -13,7 +13,7 @@ using Caviar.Models.SystemData;
 /// </summary>
 namespace Caviar.Models.SystemData
 {
-    [DisplayName("菜单展示模型")]
+    [DisplayName("菜单模型")]
     public partial class ViewMenu : SysMenu, IViewMode
     {
     }

@@ -348,6 +348,7 @@ namespace Caviar.Control
                             typeName = Arguments[0].Name;
                         }
                     }
+                    var baseType = CommonHelper.GetCavBaseType(type);
                     var dispLayName = item.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
                     var valueLen = item.GetCustomAttributes<StringLengthAttribute>()?.Cast<StringLengthAttribute>().SingleOrDefault()?.MaximumLength;
                     var filter = new ViewModelFields()
@@ -358,6 +359,7 @@ namespace Caviar.Control
                         ValueLen = valueLen,
                         IsEnum = item.PropertyType.IsEnum,
                         FullName = name,
+                        BaseTypeName = baseType.Name,
                         IsDisable = true,
                     };
                     if (filter.IsEnum)

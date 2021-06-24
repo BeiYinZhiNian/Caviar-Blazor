@@ -13,7 +13,7 @@ using Caviar.Models.SystemData;
 /// </summary>
 namespace Caviar.Models.SystemData
 {
-    [DisplayName("角色展示模型")]
+    [DisplayName("角色模型")]
     public partial class ViewRole:SysRole, IViewMode
     {
     }
