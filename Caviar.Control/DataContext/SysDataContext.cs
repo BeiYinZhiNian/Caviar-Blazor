@@ -11,6 +11,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -83,34 +84,60 @@ namespace Caviar.Control
         public virtual async Task<int> SaveChangesAsync()
         {
             DC.ChangeTracker.DetectChanges(); // Important!
-            DC.ChangeTracker
-                .Entries()
-                .Where(u => u.State == EntityState.Modified)
-                .Select(u => u.Entity)
-                .ToList()
-                .ForEach(u =>
+            var entries = DC.ChangeTracker.Entries();
+            foreach (var item in entries)
+            {
+                IBaseModel baseEntity;
+                var entity = item.Entity;
+                if (entity == null) continue;
+                baseEntity = entity as IBaseModel;
+                switch (item.State)
                 {
-                    var baseEntity = u as IBaseModel;
-                    if (baseEntity != null)
-                    {
-                        baseEntity.UpdateTime = DateTime.Now;
+                    case EntityState.Detached:
+                        break;
+                    case EntityState.Unchanged:
+                        break;
+                    case EntityState.Deleted:
+                        break;
+                    case EntityState.Modified:
                         baseEntity.OperatorUp = _baseControllerModel.UserName;
-                    }
-                });
-            DC.ChangeTracker
-                .Entries()
-                .Where(u => u.State == EntityState.Added)
-                .Select(u => u.Entity)
-                .ToList()
-                .ForEach(u =>
-                {
-                    var baseEntity = u as IBaseModel;
-                    if (baseEntity != null)
-                    {
+                        baseEntity.UpdateTime = DateTime.Now;
+                        var entityType = entity.GetType();
+                        var baseType = CommonHelper.GetCavBaseType(entityType);
+                        foreach (PropertyInfo sp in baseType.GetProperties())
+                        {
+                            switch (sp.Name.ToLower())
+                            {
+                                //不可更新字段
+                                case "id":
+                                case "uid":
+                                    item.Property(sp.Name).IsModified = false;
+                                    continue;
+                                //系统更新字段
+                                case "creattime":
+                                case "updatetime":
+                                case "operatorup":
+                                case "isdelete":
+                                    item.Property(sp.Name).IsModified = true;
+                                    continue;
+                                default:
+                                    break;
+                            }
+                            var field = _baseControllerModel.UserData.ModelFields.FirstOrDefault(u => u.FullName == baseType.Name && sp.Name == u.TypeName);
+                            if (field == null)
+                            {
+                                item.Property(sp.Name).IsModified = false;
+                            }
+                        }
+                        break;
+                    case EntityState.Added:
                         baseEntity.CreatTime = DateTime.Now;
                         baseEntity.OperatorCare = _baseControllerModel.UserName;
-                    }
-                });
+                        break;
+                    default:
+                        break;
+                }
+            }
             return await DC.SaveChangesAsync();
         }
         /// <summary>
