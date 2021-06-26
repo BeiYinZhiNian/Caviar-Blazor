@@ -64,8 +64,8 @@ namespace Caviar.Control
                 }
                 queryField += ")";
             }
-
-            string sql = $"select top(20)* from {query.QueryObj} where IsDelete=0 " + queryField;
+            var from = CommonHelper.GetCavBaseType(type)?.Name;
+            string sql = $"select top(20)* from {from} where IsDelete=0 " + queryField;
             if (query.StartTime != null)
             {
                 sql += $" and CreatTime>=@StartTime ";

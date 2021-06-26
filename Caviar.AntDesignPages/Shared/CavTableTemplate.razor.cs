@@ -41,7 +41,7 @@ namespace Caviar.AntDesignPages.Shared
 
         protected override async Task OnInitializedAsync()
         {
-            Query.QueryObj = CommonHelper.GetCavBaseType(typeof(TData))?.Name;
+            Query.QueryObj = typeof(TData).Name;
 
             if (!string.IsNullOrEmpty(ModelName))
             {

@@ -261,7 +261,7 @@ namespace Caviar.Control
                 _data = data;
                 if (_data == null) return;
                 var type = _data.GetType();
-                //ArgumentsModel(type,_data);
+                ArgumentsModel(type,_data);
             }
 
             /// <summary>
@@ -320,7 +320,7 @@ namespace Caviar.Control
                 {
                     if (sp.Name.ToLower() == "id") continue;//忽略id字段
                     if (sp.Name.ToLower() == "uid") continue;//忽略uid字段
-                    var field = ModelFields.FirstOrDefault(u => u.FullName == baseType.Name && sp.Name == u.TypeName);
+                    var field = ModelFields.FirstOrDefault(u => u.BaseTypeName == baseType.Name && sp.Name == u.TypeName);
                     if (field == null)
                     {
                         try
