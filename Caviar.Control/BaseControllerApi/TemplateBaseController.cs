@@ -2,6 +2,11 @@
 using System;
 using System.Threading.Tasks;
 using Caviar.Models.SystemData;
+using System.Collections.Generic;
+using Caviar.Control.Permission;
+using System.Linq;
+using Microsoft.Data.SqlClient;
+
 namespace Caviar.Control
 {
     /// <summary>
@@ -130,6 +135,22 @@ namespace Caviar.Control
         {
             var pages = await _Action.GetPages(u => true, pageIndex, pageSize, isOrder, isNoTracking);
             ResultMsg.Data = pages;
+            return ResultOK();
+        }
+
+        /// <summary>
+        /// 模糊查询
+        /// 使用权限验证sql的正确性
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> FuzzyQuery(ViewQuery query)
+        {
+            var fields = BC.UserData.ModelFields.Where(u => u.BaseTypeName == typeof(T).Name).ToList();
+            if (fields == null) return ResultError("没有对该对象的查询权限");
+            var data = await _Action.FuzzyQuery(query, fields);
+            if(data == null) return ResultError("没有对该对象的查询权限,查询时出错");
             return ResultOK();
         }
         #endregion

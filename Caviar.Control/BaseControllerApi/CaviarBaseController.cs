@@ -28,58 +28,58 @@ namespace Caviar.Control
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> FuzzyQuery(ViewQuery query)
-        {
-            if (string.IsNullOrEmpty(query.QueryObj)) return ResultError("查询对象不可为空");
-            var action = CreateModel<PermissionAction>();
-            var fields = await action.GetFieldsData(CavAssembly, query.QueryObj);
-            if(fields==null) return ResultError("没有对该对象的查询权限");
-            var assemblyList = CommonHelper.GetAssembly();
-            Type type = null;
-            foreach (var item in assemblyList)
-            {
-                type = item.GetTypes().SingleOrDefault(u => u.Name.ToLower() == query.QueryObj.ToLower());
-                if (type != null) break;
-            }
-            if (type == null) return ResultError("没有对该对象的查询权限");
-            List<SqlParameter> parameters = new List<SqlParameter>()
-            {
-                new SqlParameter("@queryStr", "%" + query.QueryStr + "%"),
-            };
-            var queryField = "";
-            if (query.QueryField != null && query.QueryField.Count > 0)
-            {
-                queryField = "and (";
-                for (int i = 0; i < query.QueryField.Count; i++)
-                {
-                    var field = fields.FirstOrDefault(u => u.TypeName == query.QueryField[i]);
-                    if (field == null) return ResultError("查询字段错误");
-                    queryField += $" {query.QueryField[i]} LIKE @queryStr ";
-                    var index = i + 1;
-                    if (index < query.QueryField.Count)
-                    {
-                        queryField += " or ";
-                    }
-                }
-                queryField += ")";
-            }
-            var from = CommonHelper.GetCavBaseType(type)?.Name;
-            string sql = $"select top(20)* from {from} where IsDelete=0 " + queryField;
-            if (query.StartTime != null)
-            {
-                sql += $" and CreatTime>=@StartTime ";
-                parameters.Add(new SqlParameter("@StartTime", query.StartTime));
-            }
-            if (query.EndTime != null)
-            {
-                sql += $" and CreatTime<=@EndTime ";
-                parameters.Add(new SqlParameter("@EndTime", query.EndTime));
-            }
-            var data = BC.DC.SqlQuery(sql, parameters.ToArray());
-            ResultMsg.Data = data.ToList(type);
-            return ResultOK();
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> FuzzyQuery(ViewQuery query)
+        //{
+        //    if (string.IsNullOrEmpty(query.QueryObj)) return ResultError("查询对象不可为空");
+        //    var action = CreateModel<PermissionAction>();
+        //    var fields = await action.GetFieldsData(CavAssembly, query.QueryObj);
+        //    if(fields==null) return ResultError("没有对该对象的查询权限");
+        //    var assemblyList = CommonHelper.GetAssembly();
+        //    Type type = null;
+        //    foreach (var item in assemblyList)
+        //    {
+        //        type = item.GetTypes().SingleOrDefault(u => u.Name.ToLower() == query.QueryObj.ToLower());
+        //        if (type != null) break;
+        //    }
+        //    if (type == null) return ResultError("没有对该对象的查询权限");
+        //    List<SqlParameter> parameters = new List<SqlParameter>()
+        //    {
+        //        new SqlParameter("@queryStr", "%" + query.QueryStr + "%"),
+        //    };
+        //    var queryField = "";
+        //    if (query.QueryField != null && query.QueryField.Count > 0)
+        //    {
+        //        queryField = "and (";
+        //        for (int i = 0; i < query.QueryField.Count; i++)
+        //        {
+        //            var field = fields.FirstOrDefault(u => u.TypeName == query.QueryField[i]);
+        //            if (field == null) return ResultError("查询字段错误");
+        //            queryField += $" {query.QueryField[i]} LIKE @queryStr ";
+        //            var index = i + 1;
+        //            if (index < query.QueryField.Count)
+        //            {
+        //                queryField += " or ";
+        //            }
+        //        }
+        //        queryField += ")";
+        //    }
+        //    var from = CommonHelper.GetCavBaseType(type)?.Name;
+        //    string sql = $"select top(20)* from {from} where IsDelete=0 " + queryField;
+        //    if (query.StartTime != null)
+        //    {
+        //        sql += $" and CreatTime>=@StartTime ";
+        //        parameters.Add(new SqlParameter("@StartTime", query.StartTime));
+        //    }
+        //    if (query.EndTime != null)
+        //    {
+        //        sql += $" and CreatTime<=@EndTime ";
+        //        parameters.Add(new SqlParameter("@EndTime", query.EndTime));
+        //    }
+        //    var data = BC.DC.SqlQuery(sql, parameters.ToArray());
+        //    ResultMsg.Data = data.ToList(type);
+        //    return ResultOK();
+        //}
 
         [HttpPost]
         public async Task<IActionResult> CodeFileGenerate(CodeGenerateData generate,bool isPerview = true)

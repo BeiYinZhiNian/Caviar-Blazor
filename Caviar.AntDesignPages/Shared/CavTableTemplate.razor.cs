@@ -41,8 +41,7 @@ namespace Caviar.AntDesignPages.Shared
 
         protected override async Task OnInitializedAsync()
         {
-            Query.QueryObj = typeof(TData).Name;
-
+            Query.QueryObj = CommonHelper.GetCavBaseType(typeof(TData)).Name;
             if (!string.IsNullOrEmpty(ModelName))
             {
                 var modelNameList = await Http.GetJson<List<ViewModelFields>>("Permission/GetFields?modelName=" + ModelName);
@@ -131,11 +130,13 @@ namespace Caviar.AntDesignPages.Shared
             Query.EndTime = args.Dates[1];
         }
 
-
+        /// <summary>
+        /// 此处错误需要修改
+        /// </summary>
         public async void FuzzyQuery()
         {
             Query.QueryField = _selectedValues?.ToList();
-            var result = await Http.PostJson<ViewQuery, List<TData>>("CaviarBase/FuzzyQuery", Query);
+            var result = await Http.PostJson<ViewQuery, List<TData>>(Query.QueryObj + "/FuzzyQuery", Query);
             DataSource = result.Data;
             StateHasChanged();
         }

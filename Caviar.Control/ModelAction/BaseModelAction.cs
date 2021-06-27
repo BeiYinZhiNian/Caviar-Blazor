@@ -1,5 +1,6 @@
 ﻿using Caviar.Models;
 using Caviar.Models.SystemData;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Control.ModelAction
 {
-    public class BaseModelAction<T,ViewT> : IBaseModelAction<T, ViewT> where T : class, IBaseModel
+    public class BaseModelAction<T,ViewT> : IBaseModelAction<T, ViewT> where T : class, IBaseModel,new()  where ViewT: class,T, new()
     {
         /// <summary>
         /// 数据实体
@@ -77,6 +78,58 @@ namespace Caviar.Control.ModelAction
             var count = await BC.DC.UpdateEntityAsync(menus);
             return count;
         }
+        /// <summary>
+        /// 通用模糊查询
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public virtual async Task<List<ViewT>> FuzzyQuery(ViewQuery query,List<SysModelFields> fields)
+        {
+            var assemblyList = CommonHelper.GetAssembly();
+            Type type = null;
+            foreach (var item in assemblyList)
+            {
+                type = item.GetTypes().SingleOrDefault(u => u.Name.ToLower() == query.QueryObj.ToLower());
+                if (type != null) break;
+            }
+            if (type == null) return default;
+            List<SqlParameter> parameters = new List<SqlParameter>()
+            {
+                new SqlParameter("@queryStr", "%" + query.QueryStr + "%"),
+            };
+            var queryField = "";
+            if (query.QueryField != null && query.QueryField.Count > 0)
+            {
+                queryField = "and (";
+                for (int i = 0; i < query.QueryField.Count; i++)
+                {
+                    var field = fields.FirstOrDefault(u => u.TypeName == query.QueryField[i]);
+                    if (field == null) return default;
+                    queryField += $" {query.QueryField[i]} LIKE @queryStr ";
+                    var index = i + 1;
+                    if (index < query.QueryField.Count)
+                    {
+                        queryField += " or ";
+                    }
+                }
+                queryField += ")";
+            }
+            var from = CommonHelper.GetCavBaseType(type)?.Name;
+            string sql = $"select top(20)* from {from} where IsDelete=0 " + queryField;
+            if (query.StartTime != null)
+            {
+                sql += $" and CreatTime>=@StartTime ";
+                parameters.Add(new SqlParameter("@StartTime", query.StartTime));
+            }
+            if (query.EndTime != null)
+            {
+                sql += $" and CreatTime<=@EndTime ";
+                parameters.Add(new SqlParameter("@EndTime", query.EndTime));
+            }
+            var data = BC.DC.SqlQuery(sql, parameters.ToArray());
+            return data.ToList<ViewT>(type);
+        }
+
         /// <summary>
         /// 数据转换
         /// 需要达到一个model转为viewModel效果

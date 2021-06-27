@@ -56,5 +56,12 @@ namespace Caviar.Models.SystemData
         /// <param name="model"></param>
         /// <returns></returns>
         public List<ViewT> ModelToViewModel(List<T> model);
+        /// <summary>
+        /// 模糊查询
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="fields"></param>
+        /// <returns></returns>
+        public Task<List<ViewT>> FuzzyQuery(ViewQuery query, List<SysModelFields> fields);
     }
 }

@@ -9,6 +9,7 @@ namespace Caviar.Control.User
 {
     public partial class UserController
     {
+
         [HttpPost]
         public IActionResult Login(ViewUser userLogin)
         {

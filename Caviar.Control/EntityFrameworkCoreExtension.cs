@@ -56,6 +56,23 @@ namespace Caviar.Control
 			return list;
 		}
 
+		public static List<T> ToList<T>(this DataTable dt, Type type) where T :new()
+		{
+			var propertyInfos = type.GetProperties();
+			var list = new List<T>();
+			foreach (DataRow row in dt.Rows)
+			{
+				var t = new T();
+				foreach (PropertyInfo p in propertyInfos)
+				{
+					if (dt.Columns.IndexOf(p.Name) != -1 && row[p.Name] != DBNull.Value)
+						p.SetValue(t, row[p.Name], null);
+				}
+				list.Add(t);
+			}
+			return list;
+		}
+
 
 		/// <summary>
 		/// 取消跟踪DbContext中所有被跟踪的实体
