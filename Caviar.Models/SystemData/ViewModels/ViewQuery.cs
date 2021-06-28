@@ -11,7 +11,7 @@ namespace Caviar.Models.SystemData
         /// <summary>
         /// 查询字符串
         /// </summary>
-        public string QueryStr { get; set; }
+        public List<string> QueryStr { get; set; }
         /// <summary>
         /// 状态
         /// </summary>

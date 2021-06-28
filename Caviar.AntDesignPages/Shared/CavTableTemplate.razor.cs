@@ -124,6 +124,16 @@ namespace Caviar.AntDesignPages.Shared
 
         ViewQuery Query = new ViewQuery();
 
+        void OnSelectedItemsChanged(IEnumerable<string> list)
+        {
+            var queryField = _selectedValues?.ToList();
+            var count = queryField.Count - Query.QueryField.Count;
+            if (count > 0)
+            {
+
+            }
+        }
+
         void OnRangeChange(DateRangeChangedEventArgs args)
         {
             Query.StartTime = args.Dates[0];

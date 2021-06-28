@@ -13,6 +13,7 @@
                             TItem="string"
                             Style="width: 200px;"
                             EnableSearch
+                            OnSelectedItemsChanged="OnSelectedItemsChanged"
                             AllowClear>
                         <SelectOptions>
                             @if (ViewModelFields != null)
@@ -27,9 +28,19 @@
                         </SelectOptions>
                     </Select>
                 </SpaceItem>
-                <SpaceItem>
-                    <Input Placeholder="请输入搜索内容" @bind-Value="@Query.QueryStr" />
-                </SpaceItem>
+                @if (Query.QueryField != null)
+                {
+                    for (int i = 0; i < Query.QueryField.Count; i++)
+                    {
+                        <SpaceItem>
+                            <Input Placeholder="@($"搜索{Query.QueryField[i]}")" @bind-Value="@Query.QueryStr[i]" />
+                        </SpaceItem>
+                    }
+                    foreach (var item in Query.QueryField)
+                    {
+
+                    }
+                }
                 <SpaceItem>
                     <RangePicker TValue="DateTime?[]" ShowTime='@("HH:mm")' OnChange="OnRangeChange" />
                 </SpaceItem>
