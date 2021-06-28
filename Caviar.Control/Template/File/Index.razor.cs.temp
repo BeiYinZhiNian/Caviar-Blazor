@@ -134,10 +134,15 @@ namespace {WebUINamespace}.{OutName}
         /// <param name="isContinue"></param>
         /// <param name="args"></param>
         partial void PratialPageIndexChanged(ref bool isContinue, PaginationEventArgs args);
-
+        /// <summary>
+        /// 模糊查询回调
+        /// </summary>
+        /// <param name="isContinue"></param>
+        /// <param name="Query"></param>
+        partial void PratialFuzzyQueryCallback(ref bool isContinue, ViewQuery Query);
         [Inject]
         CavModal CavModal { get; set; }
-        async void RowCallback(RowCallbackData<{ViewOutName}> row)
+        void RowCallback(RowCallbackData<{ViewOutName}> row)
         {
             bool isContinue = true;
             PratialRowCallback(ref isContinue, row);
@@ -156,6 +161,17 @@ namespace {WebUINamespace}.{OutName}
                 default:
                     break;
             }
+        }
+        /// <summary>
+        /// 模糊查询
+        /// </summary>
+        /// <param name="Query"></param>
+        void FuzzyQueryCallback(ViewQuery Query)
+        {
+            Query.QueryObj = "{OutName}";
+            bool isContinue = true;
+            PratialFuzzyQueryCallback(ref isContinue, Query);
+            if (!isContinue) return;
         }
         /// <summary>
         /// 分页回调

@@ -89,7 +89,7 @@ namespace Caviar.Control.ModelAction
             Type type = null;
             foreach (var item in assemblyList)
             {
-                type = item.GetTypes().SingleOrDefault(u => u.Name.ToLower() == query.QueryObj.ToLower());
+                type = item.GetTypes().SingleOrDefault(u => u.Name.ToLower() == typeof(T).Name.ToLower());
                 if (type != null) break;
             }
             if (type == null) return default;
@@ -127,7 +127,8 @@ namespace Caviar.Control.ModelAction
                 parameters.Add(new SqlParameter("@EndTime", query.EndTime));
             }
             var data = BC.DC.SqlQuery(sql, parameters.ToArray());
-            return data.ToList<ViewT>(type);
+            var model = data.ToList<T>(type);
+            return ModelToViewModel(model);
         }
 
         /// <summary>

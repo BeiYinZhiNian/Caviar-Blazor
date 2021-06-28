@@ -130,13 +130,21 @@ namespace Caviar.AntDesignPages.Shared
             Query.EndTime = args.Dates[1];
         }
 
+        [Parameter]
+        public EventCallback<ViewQuery> FuzzyQueryCallback { get; set; }
+
         /// <summary>
         /// 此处错误需要修改
         /// </summary>
         public async void FuzzyQuery()
         {
             Query.QueryField = _selectedValues?.ToList();
+            if (FuzzyQueryCallback.HasDelegate)
+            {
+                await FuzzyQueryCallback.InvokeAsync(Query);
+            }
             var result = await Http.PostJson<ViewQuery, List<TData>>(Query.QueryObj + "/FuzzyQuery", Query);
+            if (result.Status != 200) return;
             DataSource = result.Data;
             StateHasChanged();
         }

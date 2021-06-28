@@ -38,5 +38,21 @@ namespace Caviar.Control.User
             return ResultError(msg);
         }
 
+        public override async Task<IActionResult> FuzzyQuery(ViewQuery query)
+        {
+            //foreach (var item in query.QueryField)
+            //{
+            //    switch (item)
+            //    {
+            //        case "":
+            //            break;
+            //        default:
+            //            break;
+            //    }
+            //}
+            await base.FuzzyQuery(query);
+            return ResultOK();
+        }
+
     }
 }

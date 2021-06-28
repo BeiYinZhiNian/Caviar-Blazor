@@ -145,12 +145,13 @@ namespace Caviar.Control
         /// <param name="query"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> FuzzyQuery(ViewQuery query)
+        public virtual async Task<IActionResult> FuzzyQuery(ViewQuery query)
         {
             var fields = BC.UserData.ModelFields.Where(u => u.BaseTypeName == typeof(T).Name).ToList();
             if (fields == null) return ResultError("没有对该对象的查询权限");
             var data = await _Action.FuzzyQuery(query, fields);
             if(data == null) return ResultError("没有对该对象的查询权限,查询时出错");
+            ResultMsg.Data = data;
             return ResultOK();
         }
         #endregion
