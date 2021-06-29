@@ -117,23 +117,45 @@ namespace Caviar.AntDesignPages.Shared
         }
 
         #region 查询条件
-        IEnumerable<string> _selectedValues;
         [Parameter]
         public bool IsOpenQuery { get; set; } = true;
-
-
+        string HideQuery = "~hide~";//该字段是防止在刷新的过程中删除掉对象导致报错
+        IEnumerable<string> _selectedValues;
         ViewQuery Query = new ViewQuery();
-
         void OnSelectedItemsChanged(IEnumerable<string> list)
         {
-            var queryField = _selectedValues?.ToList();
-            var count = queryField.Count - Query.QueryField.Count;
-            if (count > 0)
+            if (list == null)
             {
-
+                foreach (var item in Query.QueryData)
+                {
+                    Query.QueryData[item.Key] = HideQuery;
+                }
+                return;
+            }
+            var selectCount = list.Count();
+            var CurrQuery = Query.QueryData.Where(u => u.Value != HideQuery);
+            var count = selectCount - CurrQuery.Count();
+            if(count > 0)
+            {
+                var item = _selectedValues.Last();
+                if (Query.QueryData.ContainsKey(item))
+                {
+                    Query.QueryData[item] = "";
+                }
+                else
+                {
+                    Query.QueryData.Add(item, "");
+                }
+            }
+            else if(count < 0)
+            {
+                var keys = Query.QueryData.Keys.Except(list);
+                foreach (var item in keys)
+                {
+                    Query.QueryData[item] = HideQuery;
+                }
             }
         }
-
         void OnRangeChange(DateRangeChangedEventArgs args)
         {
             Query.StartTime = args.Dates[0];
@@ -144,11 +166,10 @@ namespace Caviar.AntDesignPages.Shared
         public EventCallback<ViewQuery> FuzzyQueryCallback { get; set; }
 
         /// <summary>
-        /// 此处错误需要修改
+        /// 模糊搜索
         /// </summary>
         public async void FuzzyQuery()
         {
-            Query.QueryField = _selectedValues?.ToList();
             if (FuzzyQueryCallback.HasDelegate)
             {
                 await FuzzyQueryCallback.InvokeAsync(Query);

@@ -9,10 +9,6 @@ namespace Caviar.Models.SystemData
     public class ViewQuery
     {
         /// <summary>
-        /// 查询字符串
-        /// </summary>
-        public List<string> QueryStr { get; set; }
-        /// <summary>
         /// 状态
         /// </summary>
         public bool State { get; set; }
@@ -29,8 +25,10 @@ namespace Caviar.Models.SystemData
         /// </summary>
         public string QueryObj { get; set; }
         /// <summary>
-        /// 查询字段集合
+        /// 查询的数据
+        /// key 字段名称
+        /// value 查询字符串
         /// </summary>
-        public List<string> QueryField { get; set; }
+        public Dictionary<string, string> QueryData = new Dictionary<string, string>();
     }
 }

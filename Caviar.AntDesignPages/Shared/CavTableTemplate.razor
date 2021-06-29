@@ -28,17 +28,16 @@
                         </SelectOptions>
                     </Select>
                 </SpaceItem>
-                @if (Query.QueryField != null)
+                @if (Query.QueryData.Count > 0)
                 {
-                    for (int i = 0; i < Query.QueryField.Count; i++)
+                    @foreach (var item in Query.QueryData)
                     {
+                        if (item.Value == HideQuery) continue;
+                        var key = item.Key;
+                        var field = ViewModelFields.SingleOrDefault(u => u.TypeName == key);
                         <SpaceItem>
-                            <Input Placeholder="@($"搜索{Query.QueryField[i]}")" @bind-Value="@Query.QueryStr[i]" />
+                            <Input Placeholder="@($"搜索{field.DisplayName}")" @bind-Value="@Query.QueryData[key]" />
                         </SpaceItem>
-                    }
-                    foreach (var item in Query.QueryField)
-                    {
-
                     }
                 }
                 <SpaceItem>

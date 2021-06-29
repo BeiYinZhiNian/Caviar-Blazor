@@ -93,21 +93,20 @@ namespace Caviar.Control.ModelAction
                 if (type != null) break;
             }
             if (type == null) return default;
-            List<SqlParameter> parameters = new List<SqlParameter>()
-            {
-                new SqlParameter("@queryStr", "%" + query.QueryStr + "%"),
-            };
+            List<SqlParameter> parameters = new List<SqlParameter>();
             var queryField = "";
-            if (query.QueryField != null && query.QueryField.Count > 0)
+            if (query.QueryData.Count > 0)
             {
                 queryField = "and (";
-                for (int i = 0; i < query.QueryField.Count; i++)
+                var i = 0;
+                foreach (var item in query.QueryData)
                 {
-                    var field = fields.FirstOrDefault(u => u.TypeName == query.QueryField[i]);
+                    var field = fields.FirstOrDefault(u => u.TypeName == item.Key);
                     if (field == null) return default;
-                    queryField += $" {query.QueryField[i]} LIKE @queryStr ";
+                    queryField += $" {item.Key} LIKE @{item.Key}Query ";
+                    parameters.Add(new SqlParameter($"@{item.Key}Query", "%" + item.Value + "%"));
                     var index = i + 1;
-                    if (index < query.QueryField.Count)
+                    if (index < query.QueryData.Count)
                     {
                         queryField += " or ";
                     }
