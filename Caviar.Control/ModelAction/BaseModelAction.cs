@@ -105,10 +105,10 @@ namespace Caviar.Control.ModelAction
                     if (field == null) return default;
                     queryField += $" {item.Key} LIKE @{item.Key}Query ";
                     parameters.Add(new SqlParameter($"@{item.Key}Query", "%" + item.Value + "%"));
-                    var index = i + 1;
-                    if (index < query.QueryData.Count)
+                    i++;
+                    if (i < query.QueryData.Count)
                     {
-                        queryField += " or ";
+                        queryField += " and ";
                     }
                 }
                 queryField += ")";

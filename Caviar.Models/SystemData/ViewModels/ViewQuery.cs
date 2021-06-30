@@ -29,6 +29,6 @@ namespace Caviar.Models.SystemData
         /// key 字段名称
         /// value 查询字符串
         /// </summary>
-        public Dictionary<string, string> QueryData = new Dictionary<string, string>();
+        public Dictionary<string, string> QueryData { get; set; }
     }
 }

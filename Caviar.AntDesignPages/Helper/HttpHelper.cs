@@ -99,10 +99,14 @@ namespace Caviar.AntDesignPages.Helper
                 {
                     result = await Http.GetFromJsonAsync<ResultMsg<T>>(address);
                 }
-                else
+                else if(model.ToLower() == "post")
                 {
                     var response = await Http.PostAsJsonAsync(address, data);
                     result = await response.Content.ReadFromJsonAsync<ResultMsg<T>>();
+                }
+                else
+                {
+                    throw new Exception("暂不支持的请求方法");
                 }
             }
             catch(Exception e)

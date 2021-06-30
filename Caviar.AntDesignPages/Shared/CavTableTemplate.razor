@@ -28,15 +28,34 @@
                         </SelectOptions>
                     </Select>
                 </SpaceItem>
-                @if (Query.QueryData.Count > 0)
+                @if (CacheQueryData.Count > 0)
                 {
-                    @foreach (var item in Query.QueryData)
+                    @foreach (var item in CacheQueryData)
                     {
                         if (item.Value == HideQuery) continue;
                         var key = item.Key;
                         var field = ViewModelFields.SingleOrDefault(u => u.TypeName == key);
                         <SpaceItem>
-                            <Input Placeholder="@($"搜索{field.DisplayName}")" @bind-Value="@Query.QueryData[key]" />
+                            @if (field.IsEnum)
+                            {
+                            <Select TItem="string"
+                                    TItemValue="string"
+                                    @bind-Value="@CacheQueryData[key]"
+                                    Placeholder="@($"{field.DisplayName}")"
+                                    Style="width:120px">
+                                <SelectOptions>
+                                    @foreach (var item in field.EnumValueName)
+                                    {
+                                        <SelectOption TItemValue="string" TItem="string" Value="item.Key.ToString()" Label="@item.Value" />
+                                    }
+                                </SelectOptions>
+                            </Select>
+                            }
+                            else
+                            {
+                                <Input Placeholder="@($"{field.DisplayName}搜索")" @bind-Value="@CacheQueryData[key]" />
+                            }
+                            
                         </SpaceItem>
                     }
                 }

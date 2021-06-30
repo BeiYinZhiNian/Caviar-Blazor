@@ -120,39 +120,40 @@ namespace Caviar.AntDesignPages.Shared
         [Parameter]
         public bool IsOpenQuery { get; set; } = true;
         string HideQuery = "~hide~";//该字段是防止在刷新的过程中删除掉对象导致报错
+        Dictionary<string, string> CacheQueryData = new Dictionary<string, string>();
         IEnumerable<string> _selectedValues;
         ViewQuery Query = new ViewQuery();
         void OnSelectedItemsChanged(IEnumerable<string> list)
         {
             if (list == null)
             {
-                foreach (var item in Query.QueryData)
+                foreach (var item in CacheQueryData)
                 {
-                    Query.QueryData[item.Key] = HideQuery;
+                    CacheQueryData[item.Key] = HideQuery;
                 }
                 return;
             }
             var selectCount = list.Count();
-            var CurrQuery = Query.QueryData.Where(u => u.Value != HideQuery);
+            var CurrQuery = CacheQueryData.Where(u => u.Value != HideQuery);
             var count = selectCount - CurrQuery.Count();
             if(count > 0)
             {
                 var item = _selectedValues.Last();
-                if (Query.QueryData.ContainsKey(item))
+                if (CacheQueryData.ContainsKey(item))
                 {
-                    Query.QueryData[item] = "";
+                    CacheQueryData[item] = "";
                 }
                 else
                 {
-                    Query.QueryData.Add(item, "");
+                    CacheQueryData.Add(item, "");
                 }
             }
             else if(count < 0)
             {
-                var keys = Query.QueryData.Keys.Except(list);
+                var keys = CacheQueryData.Keys.Except(list);
                 foreach (var item in keys)
                 {
-                    Query.QueryData[item] = HideQuery;
+                    CacheQueryData[item] = HideQuery;
                 }
             }
         }
@@ -170,6 +171,12 @@ namespace Caviar.AntDesignPages.Shared
         /// </summary>
         public async void FuzzyQuery()
         {
+            var CurrQuery = CacheQueryData.Where(u => u.Value != HideQuery);
+            Query.QueryData = new Dictionary<string, string>();
+            foreach (var item in CurrQuery)
+            {
+                Query.QueryData.Add(item.Key, item.Value);
+            }
             if (FuzzyQueryCallback.HasDelegate)
             {
                 await FuzzyQueryCallback.InvokeAsync(Query);
