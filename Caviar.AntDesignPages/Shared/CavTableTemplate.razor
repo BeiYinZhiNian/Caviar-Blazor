@@ -35,27 +35,32 @@
                         if (item.Value == HideQuery) continue;
                         var key = item.Key;
                         var field = ViewModelFields.SingleOrDefault(u => u.TypeName == key);
+                        var tableItem = GetQueryItems?.Invoke(field);
+                        continue;
                         <SpaceItem>
                             @if (field.IsEnum)
                             {
-                            <Select TItem="string"
-                                    TItemValue="string"
-                                    @bind-Value="@CacheQueryData[key]"
-                                    Placeholder="@($"{field.DisplayName}")"
-                                    Style="width:200px">
-                                <SelectOptions>
-                                    @foreach (var item in field.EnumValueName)
-                                    {
-                                        <SelectOption TItemValue="string" TItem="string" Value="item.Key.ToString()" Label="@item.Value" />
-                                    }
-                                </SelectOptions>
-                            </Select>
+                                <Select TItem="string"
+                                        TItemValue="string"
+                                        @bind-Value="@CacheQueryData[key]"
+                                        Placeholder="@($"{field.DisplayName}")"
+                                        Style="width:200px">
+                                    <SelectOptions>
+                                        @{ 
+                                            Console.WriteLine(field.EnumValueName.Count);
+                                        }
+                                        @foreach (var item in field.EnumValueName)
+                                        {
+                                            <SelectOption TItemValue="string" TItem="string" Value="item.Key.ToString()" Label="@item.Value" />
+                                        }
+                                    </SelectOptions>
+                                </Select>
                             }
                             else
                             {
                                 <Input Placeholder="@($"{field.DisplayName}搜索")" @bind-Value="@CacheQueryData[key]" />
                             }
-                            
+
                         </SpaceItem>
                     }
                 }
@@ -102,6 +107,12 @@
         foreach (var item in ViewModelFields)
         {
             if (!item.IsPanel) continue;
+            var tableItem = GetTableItems?.Invoke(item);
+            if (tableItem != null)
+            {
+                @tableItem
+                continue;
+            }
             var typeNmae = item.ModelType.ToLower();
             if (item.IsEnum)
             {

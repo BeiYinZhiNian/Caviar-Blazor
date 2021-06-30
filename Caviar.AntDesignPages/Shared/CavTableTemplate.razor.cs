@@ -16,29 +16,66 @@ namespace Caviar.AntDesignPages.Shared
 {
     public partial class CavTableTemplate<TData>
     {
-        [Parameter]
-        public List<TData> DataSource { get; set; }
-        [Parameter]
-        public int Total { get; set; }
-        [Parameter]
-        public int PageIndex { get; set; }
-        [Parameter]
-        public int PageSize { get; set; }
-
-        [Parameter]
-        public List<ViewMenu> Buttons { get; set; }
-
-        [Parameter]
-        public string ModelName { get; set; }
-        [Parameter]
-        public Func<TData, IEnumerable<TData>> TreeChildren { get; set; } = _ => Enumerable.Empty<TData>();
-        [Parameter]
-        public List<ViewModelFields> ViewModelFields { get; set; }
+        /// <summary>
+        /// http帮助类
+        /// </summary>
         [Inject]
         HttpHelper Http { get; set; }
+        /// <summary>
+        /// 数据源
+        /// </summary>
+        [Parameter]
+        public List<TData> DataSource { get; set; }
+        /// <summary>
+        /// 总计
+        /// </summary>
+        [Parameter]
+        public int Total { get; set; }
+        /// <summary>
+        /// 当前页数
+        /// </summary>
+        [Parameter]
+        public int PageIndex { get; set; }
+        /// <summary>
+        /// 页面大小
+        /// </summary>
+        [Parameter]
+        public int PageSize { get; set; }
+        /// <summary>
+        /// 按钮
+        /// </summary>
+        [Parameter]
+        public List<ViewMenu> Buttons { get; set; }
+        /// <summary>
+        /// 模型名称
+        /// </summary>
+        [Parameter]
+        public string ModelName { get; set; }
+        /// <summary>
+        /// 树形组件
+        /// </summary>
+        [Parameter]
+        public Func<TData, IEnumerable<TData>> TreeChildren { get; set; } = _ => Enumerable.Empty<TData>();
+        /// <summary>
+        /// 模型字段
+        /// </summary>
+        [Parameter]
+        public List<ViewModelFields> ViewModelFields { get; set; }
+        /// <summary>
+        /// 翻页回调
+        /// </summary>
         [Parameter]
         public EventCallback<PaginationEventArgs> PageIndexChanged { get; set; }
-
+        /// <summary>
+        /// 获取列表组件
+        /// </summary>
+        [Parameter]
+        public Func<ViewModelFields, RenderFragment> GetTableItems { get; set; }
+        /// <summary>
+        /// 获取搜索组件
+        /// </summary>
+        [Parameter]
+        public Func<ViewModelFields, RenderFragment> GetQueryItems { get; set; }
         protected override async Task OnInitializedAsync()
         {
             Query.QueryObj = CommonHelper.GetCavBaseType(typeof(TData)).Name;

@@ -17,6 +17,24 @@
                   PageIndexChanged="PageIndexChanged"
                   ModelName="ViewUser"
                   RowCallback="RowCallback"
-                  FuzzyQueryCallback="FuzzyQueryCallback">
+                  FuzzyQueryCallback="FuzzyQueryCallback"
+                  GetQueryItems="CreateQueryItem">
 
 </CavTableTemplate>
+
+@code{
+
+    RenderFragment CreateQueryItem(ViewModelFields fields)
+    {
+        RenderFragment render = null;
+        switch (fields.TypeName)
+        {
+            case "UserGroupName":
+                break;
+            default:
+                break;
+        }
+        return render;
+    }
+
+}
