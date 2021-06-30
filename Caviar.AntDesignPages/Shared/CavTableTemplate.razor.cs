@@ -155,6 +155,7 @@ namespace Caviar.AntDesignPages.Shared
                 {
                     CacheQueryData[item] = HideQuery;
                 }
+                StateHasChanged();
             }
         }
         void OnRangeChange(DateRangeChangedEventArgs args)
