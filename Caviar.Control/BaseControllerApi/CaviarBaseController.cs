@@ -22,7 +22,12 @@ namespace Caviar.Control
 
 
         #region API
-
+        /// <summary>
+        /// 代码生成
+        /// </summary>
+        /// <param name="generate"></param>
+        /// <param name="isPerview">是否预览</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> CodeFileGenerate(CodeGenerateData generate,bool isPerview = true)
         {
@@ -68,8 +73,14 @@ namespace Caviar.Control
             return ResultOK();
         }
 
-
-        private async Task<int> CreateButton(string menuName, string outName, int parentId)
+        /// <summary>
+        /// 创建基础按钮
+        /// </summary>
+        /// <param name="menuName"></param>
+        /// <param name="outName"></param>
+        /// <param name="parentId"></param>
+        /// <returns></returns>
+        protected virtual async Task<int> CreateButton(string menuName, string outName, int parentId)
         {
             SysMenu menu = new SysMenu()
             {
@@ -130,11 +141,24 @@ namespace Caviar.Control
                 Number = "999"
             };
             await AddMenu(AddButton);
+            AddButton = new SysMenu()
+            {
+                MenuType = MenuType.API,
+                MenuName = "获取字段",
+                Url = $"{outName}/GetFields",
+                ParentId = parentId,
+                Number = "999"
+            };
+            await AddMenu(AddButton);
             return parentId;
         }
 
-
-        private async Task<SysMenu> AddMenu(SysMenu menu)
+        /// <summary>
+        /// 判断按钮是否可以生成，防止重复
+        /// </summary>
+        /// <param name="menu"></param>
+        /// <returns></returns>
+        protected virtual async Task<SysMenu> AddMenu(SysMenu menu)
         {
             SysMenu entity = null;
             if (!string.IsNullOrEmpty(menu.Url))

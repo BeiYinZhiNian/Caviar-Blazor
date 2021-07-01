@@ -79,15 +79,8 @@ namespace Caviar.AntDesignPages.Shared
         protected override async Task OnInitializedAsync()
         {
             Query.QueryObj = CommonHelper.GetCavBaseType(typeof(TData)).Name;
-            if (!string.IsNullOrEmpty(ModelName))
-            {
-                var modelNameList = await Http.GetJson<List<ViewModelFields>>("Permission/GetFields?modelName=" + ModelName);
-                if (modelNameList.Status == 200)
-                {
-                    ViewModelFields = modelNameList.Data;
-                }
-            }
-            
+
+
         }
 
         [Parameter]

@@ -36,7 +36,6 @@
                         var key = item.Key;
                         var field = ViewModelFields.SingleOrDefault(u => u.TypeName == key);
                         var tableItem = GetQueryItems?.Invoke(field);
-                        continue;
                         <SpaceItem>
                             @if (field.IsEnum)
                             {
@@ -102,7 +101,7 @@
        TItem="TData"
        OnPageIndexChange="PageIndexChanged"
        TreeChildren="TreeChildren">
-    @if (ViewModelFields != null)
+    @if (ViewModelFields != null && ViewModelFields.Count>0)
     {
         foreach (var item in ViewModelFields)
         {
@@ -124,7 +123,7 @@
                                 var value = (int)obj;
                                 @item.EnumValueName[value];
                             }
-                        }
+                     }
                 </Column>
                 continue;
             }

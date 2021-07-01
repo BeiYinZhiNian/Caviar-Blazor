@@ -154,6 +154,19 @@ namespace Caviar.Control
             ResultMsg.Data = data;
             return ResultOK();
         }
+
+        /// <summary>
+        /// 只能获取自身字段
+        /// </summary>
+        /// <param name="modelName"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public virtual async Task<IActionResult> GetFields()
+        {
+            var permissionAction = CreateModel<PermissionAction>();
+            ResultMsg.Data = await permissionAction.GetFieldsData(CavAssembly, typeof(ViewT).Name);
+            return ResultOK();
+        }
         #endregion
     }
 }

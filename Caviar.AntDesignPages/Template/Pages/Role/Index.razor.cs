@@ -12,7 +12,7 @@ using System.ComponentModel;
 using Caviar.Models.SystemData;
 /// <summary>
 /// 生成者：admin
-/// 生成时间：2021/6/28 16:35:23
+/// 生成时间：1/7/2021 下午 2:36:25
 /// 代码由代码生成器自动生成，更改的代码可能被进行替换
 /// 可在上层目录使用partial关键字进行扩展
 /// </summary>
@@ -60,6 +60,10 @@ namespace Caviar.AntDesignPages.Pages.Role
         /// 按钮
         /// </summary>
         List<ViewMenu> Buttons { get; set; } = new List<ViewMenu>();
+        /// <summary>
+        /// 模型字段
+        /// </summary>
+        List<ViewModelFields> ViewModelFields { get; set; } = new List<ViewModelFields>();
         #endregion
 
         #region 方法
@@ -78,7 +82,7 @@ namespace Caviar.AntDesignPages.Pages.Role
         /// <param name="pageSize"></param>
         /// <param name="isOrder"></param>
         /// <returns></returns>
-        async void GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
+        async Task GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
             bool isContinue = true;
             PratialGetPages(ref isContinue, ref pageIndex, ref pageSize, ref isOrder);
@@ -92,20 +96,29 @@ namespace Caviar.AntDesignPages.Pages.Role
                 Total = result.Data.Total;
                 PageIndex = result.Data.PageIndex;
                 PageSize = result.Data.PageSize;
-                StateHasChanged();
             }
         }
         /// <summary>
         /// 获取按钮
         /// </summary>
         /// <returns></returns>
-        async void GetPowerButtons()
+        async Task GetPowerButtons()
         {
             string url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
+            //获取按钮需要到Menu控制器下
             var result = await Http.GetJson<List<ViewMenu>>("Menu/GetButtons?url=" + url);
             if (result.Status != 200) return;
             Buttons = result.Data;
-            StateHasChanged();
+        }
+        /// <summary>
+        /// 获取模型字段
+        /// </summary>
+        /// <returns></returns>
+        async Task GetModelFields()
+        {
+            var result = await Http.GetJson<List<ViewModelFields>>("Role/GetFields");
+            if (result.Status != 200) return;
+            ViewModelFields = result.Data;
         }
         /// <summary>
         /// 删除数据
@@ -200,8 +213,9 @@ namespace Caviar.AntDesignPages.Pages.Role
             bool isContinue = true;
             PratialOnInitializedAsync(ref isContinue);
             if (!isContinue) return;
-            GetPages();//获取数据源
-            GetPowerButtons();//获取按钮
+            await GetPages();//获取数据源
+            await GetPowerButtons();//获取按钮
+            await GetModelFields();//获取模型字段
         }
 
         protected override void OnAfterRender(bool firstRender)
