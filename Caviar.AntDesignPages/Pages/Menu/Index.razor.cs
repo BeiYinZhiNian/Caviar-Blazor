@@ -13,26 +13,27 @@ namespace Caviar.AntDesignPages.Pages.Menu
 {
     public partial class Index
     {
-
-        partial void PratialGetPages(ref bool IsContinue, ref int pageIndex, ref int pageSize, ref bool isOrder)
+        protected override Task<List<ViewMenu>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
             pageSize = 100;
+            return base.GetPages(pageIndex, pageSize, isOrder);
         }
 
-        partial void PratialRowCallback(ref bool IsContinue, RowCallbackData<ViewMenu> row)
+        protected override async Task RowCallback(RowCallbackData<ViewMenu> row)
         {
             switch (row.Menu.MenuName)
             {
                 case "删除":
-                    IsContinue = false;
-                    ConfirmDelete(row.Menu.Url, row.Data);
+                    await ConfirmDelete(row.Menu.Url, row.Data);
                     break;
                 default:
                     break;
             }
+            Refresh();
+            return;
         }
 
-        async void ConfirmDelete(string url,ViewMenu data)
+        async Task ConfirmDelete(string url,ViewMenu data)
         {
             if (data.Children!=null && data.Children.Count > 0)
             {
@@ -51,7 +52,6 @@ namespace Caviar.AntDesignPages.Pages.Menu
             {
                 Message.Success("删除成功");
             }
-            Refresh();
         }
 
 

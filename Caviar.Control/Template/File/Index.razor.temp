@@ -7,6 +7,7 @@
 *@
 @page "{page}"
 @using {ModelsNamespace}
+@inherits IndexComponentBase<{ViewOutName}>
 @namespace {WebUINamespace}.{OutName}
 <CavTableTemplate TData="{ViewOutName}"
                DataSource="DataSource"

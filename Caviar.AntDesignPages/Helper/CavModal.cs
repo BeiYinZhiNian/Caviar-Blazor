@@ -31,11 +31,12 @@ namespace Caviar.AntDesignPages.Helper
                 OnOk = HandleOk,
                 OnCancel = HandleCancel,
                 MaskClosable = false,
-                Content = Render(url,title ,paramenter),
+                Content = Render(url, title, paramenter),
                 Title = title,
                 Visible = true,
                 OkText = "确定",
-                CancelText = "取消"
+                CancelText = "取消",
+                DestroyOnClose = true
             };
             if (!string.IsNullOrEmpty(title))
             {

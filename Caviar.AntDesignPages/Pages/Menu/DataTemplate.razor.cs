@@ -12,18 +12,18 @@ using System.Threading.Tasks;
 
 namespace Caviar.AntDesignPages.Pages.Menu
 {
-    public partial class DataTemplate: ITableTemplate
+    public partial class DataTemplate
     {
-        partial void PratialOnInitializedAsync(ref bool IsContinue)
+        protected override async Task OnInitializedAsync()
         {
-            GetMenus();
+            await GetMenus();
             CheckMenuType();
         }
 
         private List<ViewMenu> SysMenus = new List<ViewMenu>();
         string ParentMenuName { get; set; } = "无上层目录";
 
-        async void GetMenus()
+        async Task GetMenus()
         {
             var result = await Http.GetJson<PageData<ViewMenu>>("Menu/Index?pageSize=100");
             if (result.Status != 200) return;
@@ -38,7 +38,6 @@ namespace Caviar.AntDesignPages.Pages.Menu
                 }
             }
             SysMenus = result.Data.Rows;
-            StateHasChanged();
         }
 
         

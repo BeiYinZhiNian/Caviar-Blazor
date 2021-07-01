@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Caviar.Models.SystemData;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,10 @@ namespace Caviar.AntDesignPages.Pages.UserGroup
 {
     public partial class Index
     {
-        partial void PratialGetPages(ref bool IsContinue, ref int pageIndex, ref int pageSize, ref bool isOrder)
+        protected override Task<List<ViewUserGroup>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
             pageSize = 100;
+            return base.GetPages(pageIndex, pageSize, isOrder);
         }
     }
 }

@@ -46,11 +46,6 @@ namespace Caviar.Control
             {
                 var content = "";
                 var task = TaskIdentification(key);
-                if(task.Item2 == ".razor")
-                {
-                    content = CreateFile(generate, task.Item1, task.Item2 + ".cs", userName);
-                    lstTabs.Add(CreatTabItem(generate.OutName, task.Item1, task.Item2 + ".cs", content));
-                }
                 content = CreateFile(generate, task.Item1, task.Item2, userName);
                 lstTabs.Add(CreatTabItem(generate.OutName,task.Item1,task.Item2,content));
             }

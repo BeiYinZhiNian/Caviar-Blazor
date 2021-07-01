@@ -8,6 +8,7 @@
 @page "/UserGroup/Add"
 @page "/UserGroup/Update"
 @using Caviar.Models.SystemData
+@inherits DataComponentBase<ViewUserGroup>
 @namespace Caviar.AntDesignPages.Pages.UserGroup
 
 <Form @ref="_meunForm" Model="@DataSource" OnFinish="FormSubmit">

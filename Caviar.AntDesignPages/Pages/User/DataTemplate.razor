@@ -8,6 +8,7 @@
 @page "/User/Add"
 @page "/User/Update"
 @using Caviar.Models.SystemData
+@inherits DataComponentBase<ViewUser>
 @namespace Caviar.AntDesignPages.Pages.User
 
 <Form @ref="_meunForm" Model="@DataSource" OnFinish="FormSubmit">

@@ -10,15 +10,15 @@ namespace Caviar.AntDesignPages.Pages.UserGroup
 {
     public partial class DataTemplate
     {
-        partial void PratialOnInitializedAsync(ref bool IsContinue)
+        protected override async Task OnInitializedAsync()
         {
-            GetParents();
+            await GetParents();
         }
 
         private List<ViewUserGroup> Parents = new List<ViewUserGroup>();
         string ParentName { get; set; } = "无上层目录";
 
-        async void GetParents()
+        async Task GetParents()
         {
             var result = await Http.GetJson<PageData<ViewUserGroup>>("UserGroup/Index?pageSize=100");
             if (result.Status != 200) return;

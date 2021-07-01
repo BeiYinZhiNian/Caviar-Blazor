@@ -22,10 +22,10 @@ namespace Caviar.AntDesignPages.Helper
             services.AddAntDesign();
             services.AddSingleton(typeof(UserConfig));
             services.AddSingleton<UserToken>();
-            services.AddScoped<IPrismHighlighter, PrismHighlighter>();
             services.AddSingleton<CavModal>();
             services.AddSingleton<ModalService>();
             services.AddSingleton<MessageService>();
+            services.AddScoped<IPrismHighlighter, PrismHighlighter>();
             if (assemblies != null)
             {
                 AdditionalAssemblies = new List<Assembly>();

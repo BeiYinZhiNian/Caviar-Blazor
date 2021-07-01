@@ -7,6 +7,7 @@
 @page "/Role/Add"
 @page "/Role/Update"
 @using Caviar.Models.SystemData
+@inherits DataComponentBase<ViewRole>
 @namespace Caviar.AntDesignPages.Pages.Role
 
 <Form @ref="_meunForm" Model="@DataSource" OnFinish="FormSubmit">
