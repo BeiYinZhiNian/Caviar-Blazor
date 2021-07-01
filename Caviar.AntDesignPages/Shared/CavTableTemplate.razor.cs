@@ -75,13 +75,7 @@ namespace Caviar.AntDesignPages.Shared
         /// 获取搜索组件
         /// </summary>
         [Parameter]
-        public Func<ViewModelFields, RenderFragment> GetQueryItems { get; set; }
-        protected override async Task OnInitializedAsync()
-        {
-            Query.QueryObj = CommonHelper.GetCavBaseType(typeof(TData)).Name;
-
-
-        }
+        public Func<string, RenderFragment> GetQueryItems { get; set; }
 
         [Parameter]
         public EventCallback<RowCallbackData<TData>> RowCallback { get; set; }
@@ -147,12 +141,11 @@ namespace Caviar.AntDesignPages.Shared
         }
 
         #region 查询条件
-        [Parameter]
-        public bool IsOpenQuery { get; set; } = true;
         string HideQuery = "~hide~";//该字段是防止在刷新的过程中删除掉对象导致报错
         Dictionary<string, string> CacheQueryData = new Dictionary<string, string>();
         IEnumerable<string> _selectedValues;
-        ViewQuery Query = new ViewQuery();
+        [Parameter]
+        public ViewQuery Query { get; set; }
         void OnSelectedItemsChanged(IEnumerable<string> list)
         {
             if (list == null)
@@ -195,7 +188,7 @@ namespace Caviar.AntDesignPages.Shared
         }
 
         [Parameter]
-        public EventCallback<ViewQuery> FuzzyQueryCallback { get; set; }
+        public EventCallback FuzzyQueryCallback { get; set; }
 
         /// <summary>
         /// 模糊搜索
@@ -210,7 +203,7 @@ namespace Caviar.AntDesignPages.Shared
             }
             if (FuzzyQueryCallback.HasDelegate)
             {
-                await FuzzyQueryCallback.InvokeAsync(Query);
+                await FuzzyQueryCallback.InvokeAsync();
             }
             var result = await Http.PostJson<ViewQuery, List<TData>>(Query.QueryObj + "/FuzzyQuery", Query);
             if (result.Status != 200) return;

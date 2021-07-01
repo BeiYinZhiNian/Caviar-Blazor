@@ -1,7 +1,7 @@
 ﻿@typeparam TData
 
 <Space Direction="@DirectionVHType.Vertical" Size="@("large")">
-    @if (IsOpenQuery)
+    @if (Query!=null)
     {
         <SpaceItem>
             <Space>
@@ -35,7 +35,12 @@
                         if (item.Value == HideQuery) continue;
                         var key = item.Key;
                         var field = ViewModelFields.SingleOrDefault(u => u.TypeName == key);
-                        var tableItem = GetQueryItems?.Invoke(field);
+                        var tableItem = GetQueryItems?.Invoke(key);
+                        if (tableItem != null)
+                        {
+                            @tableItem
+                            return;
+                        }
                         <SpaceItem>
                             @if (field.IsEnum)
                             {
@@ -45,9 +50,6 @@
                                         Placeholder="@($"{field.DisplayName}")"
                                         Style="width:200px">
                                     <SelectOptions>
-                                        @{ 
-                                            Console.WriteLine(field.EnumValueName.Count);
-                                        }
                                         @foreach (var item in field.EnumValueName)
                                         {
                                             <SelectOption TItemValue="string" TItem="string" Value="item.Key.ToString()" Label="@item.Value" />

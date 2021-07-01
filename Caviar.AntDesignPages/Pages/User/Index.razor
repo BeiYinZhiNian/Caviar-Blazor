@@ -15,27 +15,10 @@
                   PageIndex="PageIndex"
                   Total="Total"
                   Buttons="Buttons"
+                  Query="Query"
                   PageIndexChanged="PageIndexChanged"
                   ViewModelFields="ViewModelFields"
                   RowCallback="RowCallback"
-                  FuzzyQueryCallback="FuzzyQueryCallback"
-                  GetQueryItems="CreateQueryItem">
+                  FuzzyQueryCallback="FuzzyQueryCallback">
 
 </CavTableTemplate>
-
-@code{
-
-    RenderFragment CreateQueryItem(ViewModelFields fields)
-    {
-        RenderFragment render = null;
-        switch (fields.TypeName)
-        {
-            case "UserGroupName":
-                break;
-            default:
-                break;
-        }
-        return render;
-    }
-
-}

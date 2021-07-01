@@ -38,6 +38,7 @@ namespace Caviar.AntDesignPages
         /// 模型字段
         /// </summary>
         protected List<ViewModelFields> ViewModelFields { get; set; } = new List<ViewModelFields>();
+        public ViewQuery Query { get; set; } = new ViewQuery();
 
         protected string BaseController { get; set; }
 
@@ -126,7 +127,7 @@ namespace Caviar.AntDesignPages
         /// 模糊查询
         /// </summary>
         /// <param name="Query"></param>
-        protected virtual void FuzzyQueryCallback(ViewQuery Query)
+        protected virtual void FuzzyQueryCallback()
         {
             Query.QueryObj = BaseController;
         }
@@ -146,6 +147,7 @@ namespace Caviar.AntDesignPages
             var url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
             Url = url;
             BaseController = CommonHelper.GetLeftText(url, "/");
+            Query.QueryObj = BaseController;
             await GetModelFields();//获取模型字段
             await GetPages();//获取数据源
             await GetPowerButtons();//获取按钮
