@@ -1,4 +1,5 @@
-﻿using Caviar.Models.SystemData;
+﻿using AntDesign;
+using Caviar.Models.SystemData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,26 @@ namespace Caviar.AntDesignPages.Pages.User
                     await Delete(row.Menu.Url, row.Data);
                     break;
             }
+        }
+        List<ViewUserGroup> ViewUserGroups { get; set; }
+        protected override async Task OnInitializedAsync()
+        {
+            await base.OnInitializedAsync();
+            var result = await Http.GetJson<PageData<ViewUserGroup>>("UserGroup/Index?pageSize=100");
+            if (result.Status != 200) return;
+            ViewUserGroups = result.Data.Rows;
+        }
+        string ParentName = "请选择部门";
+        void RemoveRecord(string key)
+        {
+            ParentName = "请选择部门";
+            Query.QueryData[key] = "";
+        }
+
+        void EventRecord(TreeEventArgs<ViewUserGroup> args,string key)
+        {
+            ParentName = args.Node.Title;
+            Query.QueryData[key] = args.Node.Key;
         }
     }
 }

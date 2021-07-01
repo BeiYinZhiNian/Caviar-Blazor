@@ -13,6 +13,7 @@ namespace Caviar.AntDesignPages.Pages.UserGroup
         protected override async Task OnInitializedAsync()
         {
             await GetParents();
+            await base.OnInitializedAsync();
         }
 
         private List<ViewUserGroup> Parents = new List<ViewUserGroup>();

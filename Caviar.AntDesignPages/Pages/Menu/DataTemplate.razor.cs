@@ -18,6 +18,7 @@ namespace Caviar.AntDesignPages.Pages.Menu
         {
             await GetMenus();
             CheckMenuType();
+            await base.OnInitializedAsync();
         }
 
         private List<ViewMenu> SysMenus = new List<ViewMenu>();

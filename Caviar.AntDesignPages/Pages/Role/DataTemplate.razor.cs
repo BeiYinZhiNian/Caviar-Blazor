@@ -28,6 +28,7 @@ namespace Caviar.AntDesignPages.Pages.Role
         protected override async Task OnInitializedAsync()
         {
             await GetMenus();
+            await base.OnInitializedAsync();
         }
 
         async Task GetMenus()
