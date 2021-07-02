@@ -127,9 +127,12 @@ namespace Caviar.AntDesignPages
         /// 模糊查询
         /// </summary>
         /// <param name="Query"></param>
-        protected virtual void FuzzyQueryCallback()
+        protected virtual async void FuzzyQueryCallback()
         {
-            Query.QueryObj = BaseController;
+            var result = await Http.PostJson<ViewQuery, List<ViewT>>(BaseController + "/FuzzyQuery", Query);
+            if (result.Status != 200) return;
+            DataSource = result.Data;
+            StateHasChanged();
         }
         /// <summary>
         /// 分页回调
@@ -147,7 +150,6 @@ namespace Caviar.AntDesignPages
             var url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
             Url = url;
             BaseController = CommonHelper.GetLeftText(url, "/");
-            Query.QueryObj = BaseController;
             await GetModelFields();//获取模型字段
             await GetPages();//获取数据源
             await GetPowerButtons();//获取按钮

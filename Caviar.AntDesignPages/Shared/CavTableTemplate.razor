@@ -28,9 +28,9 @@
                         </SelectOptions>
                     </Select>
                 </SpaceItem>
-                @if (CacheQueryData.Count > 0)
+                @if (Query.QueryData.Count > 0)
                 {
-                    @foreach (var item in CacheQueryData)
+                    @foreach (var item in Query.QueryData)
                     {
                         if (item.Value == HideQuery) continue;
                         var key = item.Key;
@@ -46,7 +46,7 @@
                             {
                                 <Select TItem="string"
                                         TItemValue="string"
-                                        @bind-Value="@CacheQueryData[key]"
+                                        @bind-Value="@Query.QueryData[key]"
                                         Placeholder="@($"{field.DisplayName}")"
                                         Style="width:200px">
                                     <SelectOptions>
@@ -59,7 +59,7 @@
                             }
                             else
                             {
-                                <Input Placeholder="@($"{field.DisplayName}搜索")" @bind-Value="@CacheQueryData[key]" />
+                                <Input Placeholder="@($"{field.DisplayName}搜索")" @bind-Value="@Query.QueryData[key]" />
                             }
 
                         </SpaceItem>

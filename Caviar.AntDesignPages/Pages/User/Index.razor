@@ -17,6 +17,7 @@
                   Buttons="Buttons"
                   Query="Query"
                   ViewModelFields="ViewModelFields"
+                  MappingQuery="MappingQuery"
                   PageIndexChanged="PageIndexChanged"
                   RowCallback="RowCallback"
                   FuzzyQueryCallback="FuzzyQueryCallback"
@@ -32,6 +33,7 @@
         switch (key)
         {
             case "UserGroupName":
+            case "UserGroupId":
                 render = @<Dropdown>
     <Overlay>
         <Tree ShowIcon DataSource="ViewUserGroups"

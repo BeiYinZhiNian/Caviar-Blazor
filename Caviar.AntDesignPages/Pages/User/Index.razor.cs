@@ -21,8 +21,10 @@ namespace Caviar.AntDesignPages.Pages.User
             }
         }
         List<ViewUserGroup> ViewUserGroups { get; set; }
+        Dictionary<string, string> MappingQuery { get; set; } = new Dictionary<string, string>();
         protected override async Task OnInitializedAsync()
         {
+            MappingQuery.Add("UserGroupName", "UserGroupId");//将映射字段加入到字典
             await base.OnInitializedAsync();
             var result = await Http.GetJson<PageData<ViewUserGroup>>("UserGroup/Index?pageSize=100");
             if (result.Status != 200) return;

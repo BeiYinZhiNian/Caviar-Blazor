@@ -141,8 +141,7 @@ namespace Caviar.AntDesignPages.Shared
         }
 
         #region 查询条件
-        string HideQuery = "~hide~";//该字段是防止在刷新的过程中删除掉对象导致报错
-        Dictionary<string, string> CacheQueryData = new Dictionary<string, string>();
+        static string HideQuery = Guid.NewGuid().ToString();//该字段是防止在刷新的过程中删除掉对象导致报错
         IEnumerable<string> _selectedValues;
         [Parameter]
         public ViewQuery Query { get; set; }
@@ -150,33 +149,33 @@ namespace Caviar.AntDesignPages.Shared
         {
             if (list == null)
             {
-                foreach (var item in CacheQueryData)
+                foreach (var item in Query.QueryData)
                 {
-                    CacheQueryData[item.Key] = HideQuery;
+                    Query.QueryData[item.Key] = HideQuery;
                 }
                 return;
             }
             var selectCount = list.Count();
-            var CurrQuery = CacheQueryData.Where(u => u.Value != HideQuery);
+            var CurrQuery = Query.QueryData.Where(u => u.Value != HideQuery);
             var count = selectCount - CurrQuery.Count();
             if(count > 0)
             {
                 var item = _selectedValues.Last();
-                if (CacheQueryData.ContainsKey(item))
+                if (Query.QueryData.ContainsKey(item))
                 {
-                    CacheQueryData[item] = "";
+                    Query.QueryData[item] = "";
                 }
                 else
                 {
-                    CacheQueryData.Add(item, "");
+                    Query.QueryData.Add(item, "");
                 }
             }
             else if(count < 0)
             {
-                var keys = CacheQueryData.Keys.Except(list);
+                var keys = Query.QueryData.Keys.Except(list);
                 foreach (var item in keys)
                 {
-                    CacheQueryData[item] = HideQuery;
+                    Query.QueryData[item] = HideQuery;
                 }
                 StateHasChanged();
             }
@@ -189,26 +188,36 @@ namespace Caviar.AntDesignPages.Shared
 
         [Parameter]
         public EventCallback FuzzyQueryCallback { get; set; }
+        [Parameter]
+        public Dictionary<string,string> MappingQuery { get; set; }
 
         /// <summary>
         /// 模糊搜索
         /// </summary>
         public async void FuzzyQuery()
         {
-            var CurrQuery = CacheQueryData.Where(u => u.Value != HideQuery);
-            Query.QueryData = new Dictionary<string, string>();
-            foreach (var item in CurrQuery)
+            var currQuery = new Dictionary<string, string>();
+            foreach (var item in Query.QueryData)
             {
-                Query.QueryData.Add(item.Key, item.Value);
+                if(item.Value != HideQuery)
+                {
+                    string key = item.Key;
+                    string value = item.Value;//value不需要变
+                    if (MappingQuery != null)
+                    {
+                        if (MappingQuery.ContainsKey(key))
+                        {
+                            key = MappingQuery[key];//将映射字段替换为需要的key
+                        }
+                    }
+                    currQuery.Add(key, value);
+                }
             }
+            Query.QueryData = currQuery;
             if (FuzzyQueryCallback.HasDelegate)
             {
                 await FuzzyQueryCallback.InvokeAsync();
             }
-            var result = await Http.PostJson<ViewQuery, List<TData>>(Query.QueryObj + "/FuzzyQuery", Query);
-            if (result.Status != 200) return;
-            DataSource = result.Data;
-            StateHasChanged();
         }
         #endregion
     }

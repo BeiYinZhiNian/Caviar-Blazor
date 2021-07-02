@@ -21,10 +21,6 @@ namespace Caviar.Models.SystemData
         /// </summary>
         public DateTime? EndTime { get; set; }
         /// <summary>
-        /// 查询对象
-        /// </summary>
-        public string QueryObj { get; set; }
-        /// <summary>
         /// 查询的数据
         /// key 字段名称
         /// value 查询字符串
