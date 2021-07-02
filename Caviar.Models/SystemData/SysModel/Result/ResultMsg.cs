@@ -35,6 +35,10 @@ namespace Caviar.Models.SystemData
         /// 用于存放附加数据
         /// </summary>
         public object Data { get; set; }
+        /// <summary>
+        /// 当状态不为200时是否提示Title
+        /// </summary>
+        public bool IsTips { get; set; } = true;
     }
 
     public class ResultMsg<T> : ResultMsg

@@ -123,30 +123,23 @@ namespace Caviar.AntDesignPages.Helper
             await eventCallback.InvokeAsync(mainLayoutStyle);
             switch (result.Status)
             {
-                case 200:
+                case 200://正确响应
                     break;
-                case 302:
+                case 302://重定向专用
                     _navigationManager.NavigateTo(result.Type);
-                    _message.Warn(result.Title);
                     break;
-                case 401:
+                case 401://退出登录
                     await _jSRuntime.InvokeVoidAsync("delCookie", Config.CookieName);
                     IsSetCookie = false;
                     _navigationManager.NavigateTo(result.Type);
-                    _message.Warn(result.Title);
                     break;
-                case 403:
+                case 403://只用于提示
                 case 406:
-                    _message.Warn($"{result.Title} 状态码:{result.Status}");
                     break;
                 case 404:
                     _navigationManager.NavigateTo("/Exception/404");
-                    _message.Warn(result.Title);
                     break;
-                //case 400:
-                //    _navigationManager.NavigateTo("/Exception/400");
-                //    _message.Warn(result.Title);
-                //    break;
+                case 500://发生严重错误
                 default:
                     string msg = "";
                     if (!string.IsNullOrEmpty(result.Detail))
@@ -169,17 +162,27 @@ namespace Caviar.AntDesignPages.Helper
                     {
                         msg += $"<a target='_Blank' href='{result.Type}'>点击查看解决办法</a><br>";
                     }
-                    #pragma warning disable CS4014 // 由于此调用不会等待，因此在调用完成前将继续执行当前方法
-                    _notificationService.Open(new NotificationConfig()
+                    await _notificationService.Open(new NotificationConfig()
                     {
                         Message = result.Title,
                         Description = msg,
                         NotificationType = NotificationType.Error
                     });
-                    #pragma warning restore CS4014 // 由于此调用不会等待，因此在调用完成前将继续执行当前方法
                     break;
             }
+            Tips(result);
             return result;
         }
+        
+
+        void Tips(ResultMsg result)
+        {
+            if (result.IsTips && result.Status!=200)
+            {
+                _message.Warn($"{result.Title} 状态码:{result.Status}");
+            }
+        }
+
+
     }
 }
