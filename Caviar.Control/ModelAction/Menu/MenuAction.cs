@@ -39,24 +39,6 @@ namespace Caviar.Control.Menu
             var viewMenus = outModel.ListToTree();
             return viewMenus;
         }
-        /// <summary>
-        /// 获取权限菜单
-        /// </summary>
-        /// <param name="permissions"></param>
-        /// <returns></returns>
-        public async Task<List<SysMenu>> GetPermissionMenu(List<SysPermission> permissions)
-        {
-            List<SysMenu> menus = new List<SysMenu>();
-            permissions = permissions.Where(u => u.PermissionType == PermissionType.Menu).ToList();
-            foreach (var item in permissions)
-            {
-                if (menus.SingleOrDefault(u=>u.Id == item.PermissionId) != null) continue;
-                var menu = await BC.DC.GetSingleEntityAsync<SysMenu>(u => u.Id == item.PermissionId);
-                if (menu == null) continue;
-                menus.Add(menu);
-            }
-            return menus.OrderBy(u => u.Number).ToList();
-        }
 
         public async Task<int> DeleteEntityAll(ViewMenu view)
         {
@@ -91,8 +73,6 @@ namespace Caviar.Control.Menu
             count = await base.DeleteEntity();
             return count;
         }
-
-
 
     }
 }

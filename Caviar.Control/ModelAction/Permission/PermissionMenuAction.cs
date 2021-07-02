@@ -12,12 +12,34 @@ namespace Caviar.Control.Permission
     /// </summary>
     public partial class PermissionAction
     {
+
+
         /// <summary>
-        /// 获取当前角色权限
+        /// 获取权限菜单
+        /// </summary>
+        /// <param name="permissions"></param>
+        /// <returns></returns>
+        public async Task<List<SysMenu>> GetPermissionMenu(List<SysPermission> permissions)
+        {
+            List<SysMenu> menus = new List<SysMenu>();
+            permissions = permissions.Where(u => u.PermissionType == PermissionType.Menu).ToList();
+            foreach (var item in permissions)
+            {
+                if (menus.SingleOrDefault(u => u.Id == item.PermissionId) != null) continue;
+                var menu = await BC.DC.GetSingleEntityAsync<SysMenu>(u => u.Id == item.PermissionId);
+                if (menu == null) continue;
+                menus.Add(menu);
+            }
+            return menus.OrderBy(u => u.Number).ToList();
+        }
+
+
+        /// <summary>
+        /// 获取指定角色权限
         /// </summary>
         /// <param name="roles"></param>
         /// <returns></returns>
-        public async Task<List<SysPermission>> GetCurrentRolePermissions(List<SysRole> roles)
+        public async Task<List<SysPermission>> GetRolePermissions(List<SysRole> roles)
         {
             List<SysPermission> permissions = new List<SysPermission>();
             foreach (var item in roles)
@@ -27,6 +49,20 @@ namespace Caviar.Control.Permission
             }
             return permissions;
         }
+        /// <summary>
+        /// 获取指定用户的权限
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task<List<SysPermission>> GetUserPermissions(int userId)
+        {
+            List<SysPermission> permissions = new List<SysPermission>();
+            if (userId < 1) return permissions;
+            var permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.IdentityId == userId && u.PermissionIdentity == PermissionIdentity.User);
+            permissions.AddRange(permission);
+            return permissions;
+        }
+
         /// <summary>
         /// 设置角色菜单
         /// </summary>
@@ -92,6 +128,36 @@ namespace Caviar.Control.Permission
             }
             menus.OrderBy(u => u.Number);
             return menus;
+        }
+
+        /// <summary>
+        /// 为当前用户添加菜单权限
+        /// </summary>
+        /// <param name="menuId"></param>
+        /// <returns></returns>
+        public async Task<bool> SetMenuUser(int menuId)
+        {
+            if (BC.UserToken.Id < 1) return false;
+            var count = await SetMenuUser(menuId, BC.UserToken.Id);
+            return count > 0;
+        }
+
+        /// <summary>
+        /// 为指定角色添加菜单权限
+        /// </summary>
+        /// <param name="menuId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        protected async Task<int> SetMenuUser(int menuId,int userId)
+        {
+            SysPermission permission = new SysPermission()
+            {
+                PermissionId = menuId,
+                IdentityId = userId,
+                PermissionIdentity = PermissionIdentity.User,
+                PermissionType = PermissionType.Menu,
+            };
+            return await BC.DC.AddEntityAsync(permission);
         }
     }
 }

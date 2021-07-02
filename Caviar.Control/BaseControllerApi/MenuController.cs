@@ -1,4 +1,5 @@
 using Caviar.Control;
+using Caviar.Control.Permission;
 using Caviar.Models.SystemData;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -46,5 +47,15 @@ namespace Caviar.Control.Menu
             return ResultError("É¾³ý²Ëµ¥Ê§°Ü");
         }
 
+        public override async Task<IActionResult> Add(ViewMenu view)
+        {
+            var result = await base.Add(view);
+            if (view.Id > 0)
+            {
+                var permissionAction = CreateModel<PermissionAction>();
+                await permissionAction.SetMenuUser(view.Id);
+            }
+            return result;
+        }
     }
 }

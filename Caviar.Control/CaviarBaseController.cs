@@ -102,10 +102,13 @@ namespace Caviar.Control
             var roleAction = CreateModel<RoleAction>();
             BC.UserData.Roles = roleAction.GetCurrentRoles().Result;
             var permissionAction = CreateModel<PermissionAction>();
-            BC.UserData.Permissions = permissionAction.GetCurrentRolePermissions(BC.UserData.Roles).Result;
+            var rolePermission = permissionAction.GetRolePermissions(BC.UserData.Roles).Result;
+            var userPermission = permissionAction.GetUserPermissions(BC.UserToken.Id).Result;
+            BC.UserData.Permissions = new List<SysPermission>();
+            BC.UserData.Permissions.AddRange(rolePermission);
+            BC.UserData.Permissions.AddRange(userPermission);
             BC.UserData.ModelFields = permissionAction.GetRoleFields();
-            var menuAction = CreateModel<MenuAction>();
-            BC.UserData.Menus = menuAction.GetPermissionMenu(BC.UserData.Permissions).Result;
+            BC.UserData.Menus = permissionAction.GetPermissionMenu(BC.UserData.Permissions).Result;
         } 
 
         public override void OnActionExecuted(ActionExecutedContext context)
