@@ -55,6 +55,9 @@ namespace Caviar.Control.ModelAction
             var pages = await BC.DC.GetPageAsync(where, u => u.Number, pageIndex, pageSize, isOrder, isNoTracking);
             var list = ModelToViewModel(pages.Rows);
             PageData<ViewT> viewPage = new PageData<ViewT>(list);
+            viewPage.PageIndex = pages.PageIndex;
+            viewPage.PageSize = pages.PageSize;
+            viewPage.Total = pages.Total;
             return viewPage;
         }
 

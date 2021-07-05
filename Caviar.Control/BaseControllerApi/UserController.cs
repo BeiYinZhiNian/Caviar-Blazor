@@ -30,7 +30,6 @@ namespace Caviar.Control.User
             var userAction = CreateModel<UserAction>();
             userAction.Entity = userLogin;
             var IsRegister = userAction.Register(out string msg);
-            LoggerMsg<UserController>(msg, IsSucc: IsRegister);
             if (IsRegister)
             {
                 return ResultOK(msg);

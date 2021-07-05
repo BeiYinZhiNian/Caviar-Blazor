@@ -26,7 +26,7 @@ namespace Caviar.Models.SystemData
         /// <summary>
         /// 总计
         /// </summary>
-        public int Total => Rows == null ? 0 : Rows.Count;
+        public int Total { get; set; }
         /// <summary>
         /// 页数
         /// </summary>

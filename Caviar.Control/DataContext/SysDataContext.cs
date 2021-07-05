@@ -289,6 +289,7 @@ namespace Caviar.Control
             };
             if (data.Count() > 0)
             {
+                pageData.Total = await data.CountAsync();
                 pageData.Rows = await data.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
             }
             return pageData;

@@ -116,9 +116,25 @@ namespace Caviar.Control
             base.OnActionExecuted(context);
             stopwatch.Stop();
             //日志记录，这里应该想一个更好的办法
-            
+            var statusCode = context.HttpContext.Response.StatusCode;
+            if (statusCode != 200)
+            {
+                LoggerMsg("", LogLevel.Error, statusCode, true);
+            }
         }
-        
+
+        public override OkObjectResult Ok(object value)
+        {
+            if (ResultMsg.Status == 200)
+            {
+                LoggerMsg(ResultMsg.Title, LogLevel.Information, ResultMsg.Status, true);
+            }
+            else
+            {
+                LoggerMsg(ResultMsg.Title, LogLevel.Warning, ResultMsg.Status, true);
+            }
+            return base.Ok(value);
+        }
         #region 创建模型
         protected virtual T CreateModel<T>() where T : class, IActionModel
         {
@@ -140,9 +156,33 @@ namespace Caviar.Control
         }
 
         #region  日志消息
-        protected void LoggerMsg<T>(string msg, string action = "", LogLevel logLevel = LogLevel.Information, bool IsSucc = true)
+        protected void LoggerMsg(string msg, LogLevel logLevel = LogLevel.Information, int status = 200,bool IsAutomatic = false)
         {
-            BC.GetLogger<T>().LogInformation($"用户：{BC.UserName} 访问地址：{BC.Current_AbsoluteUri} 访问ip：{BC.Current_Ipaddress} 执行时间：{stopwatch.Elapsed} 执行结果：{IsSucc} 执行消息：{msg}");
+            if ((int)logLevel < 2)
+            {
+                return;
+            }
+            var log = new SysLog() 
+            {
+                UserName = BC.UserName,
+                AbsoluteUri = BC.Current_AbsoluteUri,
+                Ipaddress = BC.Current_Ipaddress,
+                Elapsed = stopwatch.Elapsed.TotalSeconds,
+                Status = status,
+                LogLevel = (CavLogLevel)logLevel,
+                Msg = msg,
+                Method = BC.HttpContext.Request.Method,
+                IsAutomatic = IsAutomatic
+            };
+            if (BC.HttpContext.Request.Headers.ContainsKey("User-Agent"))
+            {
+                log.Browser = BC.HttpContext.Request.Headers["User-Agent"];
+            }
+            if (BC.IsLogin)
+            {
+                log.UserId = BC.UserToken.Id;
+            }
+            var count = BC.DC.AddEntityAsync(log).Result;
         }
         #endregion
 
@@ -250,9 +290,10 @@ namespace Caviar.Control
             /// 用于存放附加数据
             /// </summary>
             public new object Data { get { return _data; } set { Filter(value); } }
-
+            /// <summary>
+            /// 当前角色拥有字段
+            /// </summary>
             public List<SysModelFields> ModelFields { private get; set; }
-
             private object _data;
             /// <summary>
             /// 过滤字段
