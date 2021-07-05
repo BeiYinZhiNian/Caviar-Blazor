@@ -274,6 +274,7 @@ namespace Caviar.Control
             /// <param name="type"></param>
             private void ArgumentsModel(Type type,object data)
             {
+                if (data == null) return;
                 if (!type.IsClass)//排除非类
                 {
                     return;

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Caviar.Models.SystemData
 {
     [DisplayName("附件")]
-    public partial class Enclosure:SysBaseModel
+    public partial class SysEnclosure:SysBaseModel
     {
         [Required(ErrorMessage = "请输入附件名称")]
         [DisplayName("名称")]
@@ -26,6 +26,5 @@ namespace Caviar.Models.SystemData
         [DisplayName("文件位置")]
         [StringLength(1024, ErrorMessage = "文件路径请不要超过{1}个字符")]
         public string Path { get; set; }
-
     }
 }

@@ -310,7 +310,7 @@ namespace Caviar.Control
         /// <returns></returns>
         public virtual ViewModelFields TurnMeaning(ViewModelFields headers)
         {
-            string[] violation = new string[] { "icon", "image" };
+            string[] violation = new string[] { "icon", "image" , "headportrait" };
             var typeName = violation.SingleOrDefault(u => u.ToLower() == headers.TypeName.ToLower());
             if (typeName != null)
             {

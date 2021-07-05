@@ -1,7 +1,7 @@
 ﻿@typeparam TData
 
 <Space Direction="@DirectionVHType.Vertical" Size="@("large")">
-    @if (Query!=null)
+    @if (Query != null)
     {
         <SpaceItem>
             <Space>
@@ -84,7 +84,7 @@
                     if (item.ButtonPosition == ButtonPosition.Default)
                     {
                         <SpaceItem>
-                            @CreatePackButton(item,default)
+                            @CreatePackButton(item, default)
                         </SpaceItem>
                     }
                 }
@@ -103,7 +103,7 @@
        TItem="TData"
        OnPageIndexChange="PageIndexChanged"
        TreeChildren="TreeChildren">
-    @if (ViewModelFields != null && ViewModelFields.Count>0)
+    @if (ViewModelFields != null && ViewModelFields.Count > 0)
     {
         foreach (var item in ViewModelFields)
         {
@@ -117,15 +117,15 @@
             var typeNmae = item.ModelType.ToLower();
             if (item.IsEnum)
             {
-                <Column Title="@item.DisplayName"  TData="string" Width="@item.Width" >
+                <Column Title="@item.DisplayName" TData="string" Width="@item.Width">
                     @{
-                            var obj = context.GetObjValue(item.TypeName);
-                            if (obj != null)
-                            {
-                                var value = (int)obj;
-                                @item.EnumValueName[value];
-                            }
-                     }
+                        var obj = context.GetObjValue(item.TypeName);
+                        if (obj != null)
+                        {
+                            var value = (int)obj;
+                            @item.EnumValueName[value];
+                        }
+                    }
                 </Column>
                 continue;
             }
@@ -182,6 +182,21 @@
                             if (obj != null)
                             {
                                 <Icon Type="@obj.ToString()" Theme="outline" />
+                            }
+                        }
+                    </Column>
+                    break;
+                case "headportrait":
+                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="string">
+                        @{
+                            var obj = context.GetObjValue(item.TypeName);
+                            if (obj != null)
+                            {
+                                <Avatar Src="@obj.ToString()" />
+                            }
+                            else
+                            {
+                                <Avatar Style="background-color: #87d068" Icon="user" />
                             }
                         }
                     </Column>
@@ -243,49 +258,49 @@
 
 
 @code{
-    RenderFragment CreatePackButton(ViewMenu menu,TData context)
+    RenderFragment CreatePackButton(ViewMenu menu, TData context)
     {
         RenderFragment render = null;
         if (menu.IsDoubleTrue)
         {
             string title = $"确认{menu.MenuName}该数据吗";
             render =@<Popconfirm Title='@title'
-                        OkText='确认'
-                        CancelText="取消"
-                        OnConfirm="()=>ButtonClick(menu,context)">
-                         @CreateButton(menu, context)
-                </Popconfirm>;
-        }
-        else
-        {
-            render = CreateButton(menu, context);
-        }
-        return render;
-    }
+                                 OkText='确认'
+                                 CancelText="取消"
+                                 OnConfirm="()=>ButtonClick(menu,context)">
+        @CreateButton(menu, context)
+    </Popconfirm>;
+}
+else
+{
+render = CreateButton(menu, context);
+}
+return render;
+}
 
-    RenderFragment CreateButton(ViewMenu menu, TData context)
+RenderFragment CreateButton(ViewMenu menu, TData context)
+{
+
+RenderFragment render = null;
+string type = menu.ButtonPosition == ButtonPosition.Default ? "primary" : "link";
+bool danger = menu.IsDoubleTrue == true ? true : false;
+render =@<Button Icon="@menu.Icon" Type="@type" Danger="danger" Style="margin-bottom:16px" OnClick="() => doubleTrueClick(menu, context)">
+    @if (menu.TargetType == TargetType.NewLabel)
     {
-
-        RenderFragment render = null;
-        string type = menu.ButtonPosition == ButtonPosition.Default ? "primary" : "link";
-        bool danger = menu.IsDoubleTrue == true ? true : false;
-        render =@<Button Icon="@menu.Icon" Type="@type" Danger="danger" Style="margin-bottom:16px" OnClick="() => doubleTrueClick(menu, context)">
-                @if (menu.TargetType == TargetType.NewLabel)
-                {
-                    <a href="@menu.Url" target="_blank">@menu.MenuName</a>
-                }
-                else
-                {
-                    @menu.MenuName
-                }
-            </Button>;
-        return render;
+        <a href="@menu.Url" target="_blank">@menu.MenuName</a>
     }
-
-    void doubleTrueClick(ViewMenu menu, TData context)
+    else
     {
-        if (menu.IsDoubleTrue) return;
-        ButtonClick(menu, context);
+        @menu.MenuName
     }
+</Button>;
+return render;
+}
+
+void doubleTrueClick(ViewMenu menu, TData context)
+{
+if (menu.IsDoubleTrue) return;
+ButtonClick(menu, context);
+}
 
 }
