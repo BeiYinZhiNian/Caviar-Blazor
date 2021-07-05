@@ -12,6 +12,10 @@ namespace Caviar.Control.Permission
     /// </summary>
     public partial class PermissionAction
     {
+        /// <summary>
+        /// 获取权限下字段
+        /// </summary>
+        /// <returns></returns>
         public List<SysModelFields> GetRoleFields()
         {
             //获取字段权限
@@ -27,7 +31,9 @@ namespace Caviar.Control.Permission
             return fields;
         }
         /// <summary>
-        /// 获取角色字段
+        /// 获取角色字段展示
+        /// IsPermission = true 时表示拥有该字段权限
+        /// 管理员拥有全部字段权限，但是如果不设置权限，意味着不使用
         /// </summary>
         /// <param name="fullName"></param>
         /// <param name="roleId">当id为0时获取当前角色的拥有的字段</param>

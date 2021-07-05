@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="wwwroot\Enclosure\" />
   </ItemGroup>
 
   <ItemGroup>

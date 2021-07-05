@@ -33,7 +33,7 @@ namespace Caviar.Control.User
             BC.UserToken.AutoAssign(userLogin);
             BC.UserToken.CreateTime = DateTime.Now;
             BC.UserToken.Token = CaviarConfig.GetUserToken(BC.UserToken);
-            BC.UserToken.Duration = CaviarConfig.TokenDuration;
+            BC.UserToken.Duration = CaviarConfig.TokenConfig.Duration;
             return BC.UserToken.Token;
         }
 

@@ -67,7 +67,7 @@ namespace Caviar.Control
                     context.Result = ResultUnauthorized("您的登录已过期，请重新登录");
                     return;
                 }
-                var outTime = (userToken.CreateTime.AddMinutes(CaviarConfig.TokenDuration) - DateTime.Now);
+                var outTime = (userToken.CreateTime.AddMinutes(CaviarConfig.TokenConfig.Duration) - DateTime.Now);
                 if (outTime.TotalSeconds <= 0)
                 {
                     context.Result = ResultUnauthorized("您的登录已过期，请重新登录");

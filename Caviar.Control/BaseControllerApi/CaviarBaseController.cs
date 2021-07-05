@@ -47,19 +47,19 @@ namespace Caviar.Control
                 string keyName = item.KeyName.Replace("(name)", "");
                 if (keyName.Contains(".razor"))
                 {
-                    path = Directory.GetCurrentDirectory() + "/" + CaviarConfig.WebUIPath + "/Pages/";
+                    path = Directory.GetCurrentDirectory() + "/" + CaviarConfig.WebUI.Path + "/Pages/";
                 }
                 else if (keyName.Contains("View.cs"))
                 {
-                    path = Directory.GetCurrentDirectory() + "/" + CaviarConfig.ModelsPath + "/ViewModels/";
+                    path = Directory.GetCurrentDirectory() + "/" + CaviarConfig.Models.Path + "/ViewModels/";
                 }
                 else if(keyName.Contains("Action.cs"))
                 {
-                    path = Directory.GetCurrentDirectory() + "/" + CaviarConfig.WebApiPath + "/ModelAction/";
+                    path = Directory.GetCurrentDirectory() + "/" + CaviarConfig.WebAPI.Path + "/ModelAction/";
                 }
                 else if (keyName.Contains("Controller.cs"))
                 {
-                    path = Directory.GetCurrentDirectory() + "/" + CaviarConfig.WebApiPath + "/Controllers/";
+                    path = Directory.GetCurrentDirectory() + "/" + CaviarConfig.WebAPI.Path + "/Controllers/";
                 }
                 if (path == "") continue;
                 path += generate.OutName + "/";

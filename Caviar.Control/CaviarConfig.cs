@@ -19,24 +19,20 @@ namespace Caviar.Control
     public static class CaviarConfig
     {
         public static SqlConfig SqlConfig { get; private set; }
-
+        public static EnclosureConfig EnclosureConfig { get; private set; }
         public static IConfiguration Configuration { get; private set; }
-
+        public static TokenConfig TokenConfig { get; private set; }
         public static Guid NoLoginRoleGuid { get; private set; }
         public static Guid SysAdminRoleGuid { get; private set; }
-        public static int TokenDuration { get; private set; }
-        public static string WebUIPath { get; private set; }
-        public static string WebUINamespace { get; private set; }
-        public static string BaseController { get; private set; }
-        public static string ModelsNamespace { get; private set; }
-        public static string ModelsPath { get; private set; }
-        public static string WebApiPath { get; private set; }
-        public static string WebApiNamespace { get; private set; }
-        public static string SessionUserInfoName { get; private set; } = "SysUserInfo";
-
+        public static CodeFileGenerate WebUI { get; set; }
+        public static CodeFileGenerate WebAPI { get; set; }
+        public static CodeFileGenerate Models { get; set; }
+        /// <summary>
+        /// 密钥***重要***
+        /// 防止误用，单独存放
+        /// </summary>
+        static Guid Key { get; set; }
         public static bool IsDebug { get; set; }
-
-        static Guid TokenKey;
 
         public static IServiceCollection AddCaviar(this IServiceCollection services, SqlConfig sqlConfig, IConfiguration configuration)
         {
@@ -53,6 +49,11 @@ namespace Caviar.Control
             var caviarDynamicConfig = new CaviarDynamicConfig();
             caviarDynamicConfig.AddIBaseModel(services);
             caviarDynamicConfig.AddInject(services);
+            TokenConfig = new TokenConfig();
+            WebUI = new CodeFileGenerate();
+            WebAPI = new CodeFileGenerate();
+            Models = new CodeFileGenerate();
+            EnclosureConfig = new EnclosureConfig();
             LoadAppsettings();
             return services;
         }
@@ -72,16 +73,18 @@ namespace Caviar.Control
             var guid = json["Caviar"]["Role"]["NoLoginRole"].ToString();
             NoLoginRoleGuid = Guid.Parse(guid);
             SysAdminRoleGuid = Guid.Parse(json["Caviar"]["Role"]["SysAdminRole"].ToString());
-            TokenKey = Guid.Parse(json["Caviar"]["Token"]["Key"].ToString());
-            TokenDuration = int.Parse(json["Caviar"]["Token"]["Duration"].ToString());
-            WebUIPath = json["Caviar"]["WebUI"]["Path"].ToString();
-            WebUINamespace = json["Caviar"]["WebUI"]["namespace"].ToString();
-            ModelsPath = json["Caviar"]["Models"]["Path"].ToString();
-            ModelsNamespace = json["Caviar"]["Models"]["namespace"].ToString();
-            WebApiPath = json["Caviar"]["WebApi"]["Path"].ToString();
-            WebApiNamespace = json["Caviar"]["WebApi"]["namespace"].ToString();
-            BaseController = json["Caviar"]["WebApi"]["BaseController"].ToString();
+            Key = Guid.Parse(json["Caviar"]["Token"]["Key"].ToString());
+            TokenConfig.Duration = int.Parse(json["Caviar"]["Token"]["Duration"].ToString());
+            WebUI.Path = json["Caviar"]["WebUI"]["Path"].ToString();
+            WebUI.Namespace = json["Caviar"]["WebUI"]["namespace"].ToString();
+            Models.Path = json["Caviar"]["Models"]["Path"].ToString();
+            Models.Namespace = json["Caviar"]["Models"]["namespace"].ToString();
+            WebAPI.Path = json["Caviar"]["WebApi"]["Path"].ToString();
+            WebAPI.Namespace = json["Caviar"]["WebApi"]["namespace"].ToString();
+            WebAPI.Base = json["Caviar"]["WebApi"]["BaseController"].ToString();
             SqlConfig.SqlFilePath = json["Caviar"]["SqlFile"]["SqlPath"].ToString();
+            EnclosureConfig.Path = json["Caviar"]["Enclosure"]["Path"].ToString();
+            EnclosureConfig.Size = int.Parse(json["Caviar"]["Enclosure"]["Size"].ToString());
             var paseJson = json.ToString();
             File.WriteAllText(appsettingPath, paseJson);
         }
@@ -108,6 +111,9 @@ namespace Caviar.Control
             if (json["Caviar"]["WebApi"]["BaseController"] == null) json["Caviar"]["WebApi"]["BaseController"] = "TemplateBaseController<{OutName}Action,{EntityName},{ViewOutName}>";
             if (json["Caviar"]["SqlFile"]==null) json["Caviar"]["SqlFile"] = new JObject();
             if (json["Caviar"]["SqlFile"]["SqlPath"] == null) json["Caviar"]["SqlFile"]["SqlPath"] = "/SqlInit/CaviarSqlServer.sql";
+            if (json["Caviar"]["Enclosure"] == null) json["Caviar"]["Enclosure"] = new JObject();
+            if (json["Caviar"]["Enclosure"]["Path"] == null) json["Caviar"]["Enclosure"]["Path"] = "/wwwroot/Enclosure";
+            if (json["Caviar"]["Enclosure"]["Size"] == null) json["Caviar"]["Enclosure"]["Size"] = 3;
         }
 
 
@@ -121,7 +127,7 @@ namespace Caviar.Control
 
         public static string GetUserToken(UserToken userToken)
         {
-            return CommonHelper.SHA256EncryptString(userToken.Id + userToken.UserName + userToken.Uid.ToString() + userToken.CreateTime + TokenKey.ToString());
+            return CommonHelper.SHA256EncryptString(userToken.Id + userToken.UserName + userToken.Uid.ToString() + userToken.CreateTime + Key.ToString());
         }
 
         /// <summary>
@@ -232,14 +238,58 @@ namespace Caviar.Control
         }
     }
 
+    public class EnclosureConfig
+    {
+        /// <summary>
+        /// 路径
+        /// </summary>
+        public string Path { get; set; }
+        /// <summary>
+        /// 大小
+        /// </summary>
+        public int Size { get; set; }
+    }
+
+    public class TokenConfig
+    {
+        /// <summary>
+        /// 到期时间
+        /// </summary>
+        public int Duration { get; set; }
+    }
+    /// <summary>
+    /// 代码生成器配置
+    /// </summary>
+    public class CodeFileGenerate
+    {
+        /// <summary>
+        /// 代码存放路径
+        /// </summary>
+        public string Path { get; set; }
+        /// <summary>
+        /// 命名空间
+        /// </summary>
+        public string Namespace{ get;set;}
+        /// <summary>
+        /// 父类如果需要
+        /// </summary>
+        public string Base { get; set; }
+    }
 
 
     public class SqlConfig
     {
+        /// <summary>
+        /// 连接字符串
+        /// </summary>
         public string Connections { get; set; }
-
+        /// <summary>
+        /// 初始化脚本
+        /// </summary>
         public string SqlFilePath { get; set; }
-
+        /// <summary>
+        /// 数据库类型
+        /// </summary>
         public DBTypeEnum DBTypeEnum { get; set; }
     }
 }

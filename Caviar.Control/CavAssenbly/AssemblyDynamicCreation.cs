@@ -110,10 +110,10 @@ namespace Caviar.Control
             txt = txt.Replace("{Producer}", producer);
             txt = txt.Replace("{GenerationTime}", DateTime.Now.ToString());
             txt = txt.Replace("{EntityNamespace}", generate.EntityNamespace);
-            txt = txt.Replace("{WebUINamespace}", CaviarConfig.WebUINamespace);
-            txt = txt.Replace("{ModelsNamespace}", CaviarConfig.ModelsNamespace);
-            txt = txt.Replace("{WebApiNamespace}", CaviarConfig.WebApiNamespace);
-            txt = txt.Replace("{BaseController}", CaviarConfig.BaseController);
+            txt = txt.Replace("{WebUINamespace}", CaviarConfig.WebUI.Namespace);
+            txt = txt.Replace("{ModelsNamespace}", CaviarConfig.Models.Namespace);
+            txt = txt.Replace("{WebApiNamespace}", CaviarConfig.WebAPI.Namespace);
+            txt = txt.Replace("{BaseController}", CaviarConfig.WebAPI.Base);
             txt = txt.Replace("{page}", "/" + generate.OutName + "/" + fileName);
             txt = txt.Replace("{DataSourceWebApi}", $"{generate.OutName}/GetPages");
             txt = txt.Replace("{EntityDisplayName}", generate.ModelName);
