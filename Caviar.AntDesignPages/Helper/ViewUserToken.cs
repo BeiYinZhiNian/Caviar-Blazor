@@ -19,6 +19,11 @@ namespace Caviar.AntDesignPages.Helper
             GetUserToken();
         }
 
+        public ViewUserToken()
+        {
+
+        }
+
         public async Task GetUserToken()
         {
             var cookie = await _JSRuntime.InvokeAsync<string>("getCookie", Config.CookieName);

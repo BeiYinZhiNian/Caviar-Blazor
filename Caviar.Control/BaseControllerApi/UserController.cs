@@ -10,9 +10,19 @@ namespace Caviar.Control.User
     public partial class UserController
     {
         [HttpGet]
-        public async Task<IActionResult> GetDetails()
+        public async Task<IActionResult> MyDetails()
         {
             ResultMsg.Data = await _Action.GetEntity(BC.UserToken.Id);
+            return ResultOK();
+        }
+        [HttpPost]
+        public async Task<IActionResult> MyDetails(ViewUser viewUser)
+        {
+            if (viewUser.Id != BC.UserToken.Id || viewUser.Uid != BC.UserToken.Uid)
+            {
+                return ResultError("正在进行非法修改");
+            }
+            var count = await _Action.UpdateEntity();
             return ResultOK();
         }
 

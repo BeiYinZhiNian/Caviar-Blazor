@@ -1,4 +1,4 @@
-﻿@page "/User/Center"
+﻿@page "/User/MyDetails"
 
 @if (UserData != null)
 {
@@ -24,7 +24,7 @@
                 </CardAction>
                 <CardAction>
                     <Tooltip Title="@("修改信息")">
-                        <Icon Type="edit" OnClick="@(()=> OnClick("修改头像"))" />
+                        <Icon Type="edit" OnClick="@(()=> UpdateUserData())" />
                     </Tooltip>
                 </CardAction>
             </ActionTemplate>
