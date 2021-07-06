@@ -24,13 +24,11 @@ namespace Caviar.AntDesignPages.Helper
         IJSRuntime _jSRuntime;
         public HttpHelper(HttpClient http, NotificationService _notice,NavigationManager navigationManager, MessageService message,IJSRuntime JsRuntime)
         {
-            
             Http = http;
             _notificationService = _notice;
             _navigationManager = navigationManager;
             _message = message;
             _jSRuntime = JsRuntime;
-            
         }
 
         static object cookiesOb = new object();

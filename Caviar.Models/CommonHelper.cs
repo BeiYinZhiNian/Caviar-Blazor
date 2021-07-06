@@ -88,6 +88,7 @@ namespace Caviar.Models.SystemData
         /// <summary>
         /// 自动分配当前属性值
         /// 不进行深度分配
+        /// 将目标值拷贝到自身K的值赋值给T
         /// </summary>
         /// <param name="target">拷贝目标</param>
         /// <returns></returns>

@@ -18,10 +18,10 @@ namespace Caviar.AntDesignPages.Helper
 
         public static IServiceCollection AddCaviar(this IServiceCollection services, Type[] assemblies)
         {
-            services.AddScoped(typeof(HttpHelper));
             services.AddAntDesign();
-            services.AddSingleton(typeof(UserConfig));
-            services.AddSingleton<UserToken>();
+            services.AddScoped<HttpHelper>();
+            services.AddSingleton<UserConfig>();
+            services.AddSingleton<ViewUserToken>();
             services.AddSingleton<CavModal>();
             services.AddSingleton<ModalService>();
             services.AddSingleton<MessageService>();

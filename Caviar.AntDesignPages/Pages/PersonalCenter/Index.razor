@@ -1,0 +1,45 @@
+﻿@page "/User/Center"
+
+@if (UserData != null)
+{
+<Row Gutter="16">
+    <GridCol Span="6">
+        <Card Style="width:300px;" Title=@("个人信息") Bordered Hoverable>
+            <ChildContent>
+                <CardMeta AvatarTemplate="@GetHeadPortrait()" Title="@UserData.UserName" Description="@UserData.Remark" />
+                <body>
+                    <p>
+                        <Text>部门：</Text><Text>@UserData.UserGroupName</Text>
+                    </p>
+                    <p>
+                        <Text>手机号：</Text><Text>@UserData.PhoneNumber</Text>
+                    </p>
+                </body>
+            </ChildContent>
+            <ActionTemplate>
+                <CardAction>
+                    <Tooltip Title="@("修改头像")">
+                        <Icon Type="setting" OnClick="@(()=> OnClick("修改头像"))" />
+                    </Tooltip>
+                </CardAction>
+                <CardAction>
+                    <Tooltip Title="@("修改信息")">
+                        <Icon Type="edit" OnClick="@(()=> OnClick("修改头像"))" />
+                    </Tooltip>
+                </CardAction>
+            </ActionTemplate>
+        </Card>
+    </GridCol>
+</Row>
+
+}
+@code{
+
+
+
+    public RenderFragment GetHeadPortrait()
+    {
+        RenderFragment avatarTemplate =@<Avatar Style="background-color: #87d068" Src="@UserData.HeadPortrait" Icon="user" />;
+return avatarTemplate;
+}
+}

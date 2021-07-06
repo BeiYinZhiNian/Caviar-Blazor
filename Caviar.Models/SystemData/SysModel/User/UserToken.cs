@@ -23,6 +23,10 @@ namespace Caviar.Models.SystemData
         /// 用户token
         /// </summary>
         public string Token { get; set; } = "";
+        /// <summary>
+        /// 用户头像路径
+        /// </summary>
+        public string HeadPortrait { get; set; }
 
         /// <summary>
         /// token使用时长

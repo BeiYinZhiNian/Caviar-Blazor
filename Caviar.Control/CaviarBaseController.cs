@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Text;
 using Caviar.Models;
@@ -18,6 +17,7 @@ using Caviar.Control.Permission;
 using Caviar.Control.Menu;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json;
 
 namespace Caviar.Control
 {
@@ -60,7 +60,7 @@ namespace Caviar.Control
                 string base64url = value[0];
                 string base64 = HttpUtility.UrlDecode(base64url);
                 string json = Encoding.UTF8.GetString(Convert.FromBase64String(base64));
-                UserToken userToken = JsonConvert.DeserializeObject<UserToken>(json);
+                UserToken userToken = JsonSerializer.Deserialize<UserToken>(json);
                 var token = CaviarConfig.GetUserToken(userToken);
                 if (token != userToken.Token)
                 {

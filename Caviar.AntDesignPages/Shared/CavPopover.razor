@@ -1,13 +1,26 @@
-﻿<Popover ContentTemplate="@_content" Placement="@PlacementType.BottomRight">
-    <Avatar Style="background-color: #87d068" Src="_content/Caviar.AntDesignPages/Images/headPortrait.png" Icon="user" />
-</Popover>
+﻿<Space>
+    <SpaceItem>
+        <Avatar Style="background-color: #87d068" Src="@UserToken.HeadPortrait" Icon="user" />
+    </SpaceItem>
+    <SpaceItem>
+        <Popover ContentTemplate="@_content" Placement="@PlacementType.BottomRight">
+            <Text>@UserToken.UserName</Text>
+        </Popover>
+    </SpaceItem>
+</Space>
+
 @code{
+    [Inject]
+    public ViewUserToken UserToken { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+
+        await UserToken.GetUserToken();
+        await base.OnInitializedAsync();
+    }
 
 
     RenderFragment _content =
     @<CavPopoverMenu></CavPopoverMenu>
     ;
-
-
-
 }

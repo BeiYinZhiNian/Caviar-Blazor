@@ -149,17 +149,17 @@ namespace Caviar.Control.ModelAction
 
         public virtual ViewT ModelToViewModel(T model)
         {
-            model.AToB(out ViewT outModel);
-            return outModel;
+            var list = ModelToViewModel(new List<T>() { model });
+            return list.FirstOrDefault();
         }
 
-        public virtual async Task<T> GetEntity(Guid guid)
+        public virtual async Task<ViewT> GetEntity(Guid guid)
         {
             var entity = await BC.DC.GetEntityAsync<T>(guid);
             return ModelToViewModel(entity);
         }
 
-        public virtual async Task<T> GetEntity(int id)
+        public virtual async Task<ViewT> GetEntity(int id)
         {
             var entity = await BC.DC.GetEntityAsync<T>(id);
             return ModelToViewModel(entity);

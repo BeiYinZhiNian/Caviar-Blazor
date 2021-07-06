@@ -30,14 +30,14 @@ namespace Caviar.AntDesignPages.Pages.User
         [Inject]
         HttpHelper http { get; set; }
         [Inject]
-        UserToken UserToken { get; set; }
+        ViewUserToken UserToken { get; set; }
         [Inject]
         IJSRuntime JsRuntime { get; set; }
         public async void SubmitLogin()
         {
             Loading = true;
             SysLoginUserData.Password = CommonHelper.SHA256EncryptString(SysLoginUserData.Password);
-            var result = await http.PostJson<SysUser, UserToken>("User/Login",SysLoginUserData);
+            var result = await http.PostJson<SysUser, ViewUserToken>("User/Login",SysLoginUserData);
             SysLoginUserData.Password = "";
             Loading = false;
             if (result.Status==200)

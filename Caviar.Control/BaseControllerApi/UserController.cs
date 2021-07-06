@@ -9,6 +9,12 @@ namespace Caviar.Control.User
 {
     public partial class UserController
     {
+        [HttpGet]
+        public async Task<IActionResult> GetDetails()
+        {
+            ResultMsg.Data = await _Action.GetEntity(BC.UserToken.Id);
+            return ResultOK();
+        }
 
         [HttpPost]
         public IActionResult Login(ViewUser userLogin)

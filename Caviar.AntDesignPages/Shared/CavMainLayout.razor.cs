@@ -7,6 +7,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using AntDesign;
+using Caviar.Models.SystemData;
+using System.Text;
+using System.Web;
+using System.Text.Json;
+using Microsoft.JSInterop;
+using Caviar.AntDesignPages.Helper;
 
 namespace Caviar.AntDesignPages.Shared
 {
@@ -21,18 +27,23 @@ namespace Caviar.AntDesignPages.Shared
         string LogoImgIco;
 
         string HeaderStyle { get; set; }
+        [Inject]
+        public IJSRuntime JSRuntime { get; set; }
 
         /// <summary>
         /// 面包屑数据同步
         /// </summary>
         public MenuItem BreadcrumbItemCav;
-
-        protected override void OnInitialized()
+        protected override async Task OnParametersSetAsync()
+        {
+            await base.OnParametersSetAsync();
+        }
+        protected override async Task OnInitializedAsync()
         {
             LogoImg = "_content/Caviar.AntDesignPages/Images/logo.png";
             LogoImgIco = "_content/Caviar.AntDesignPages/Images/logo-Ico.png";
             LogoImgSrc = LogoImg;
-            base.OnInitialized();
+            await base.OnInitializedAsync();
         }
 
         bool _collapsed;

@@ -1,6 +1,5 @@
-﻿@using Helper;
-<Menu>
-    <MenuItem @key="0">
+﻿<Menu>
+    <MenuItem @key="0" OnClick="UserCenter">
         <a>
             个人中心
         </a>
@@ -38,5 +37,11 @@
         Http.IsSetCookie = false;
         navigationManager.NavigateTo("/",true);
         messageService.Success("退出登录成功");
+    }
+
+    public void UserCenter()
+    {
+        string url = "User/Center";
+        navigationManager.NavigateTo(url);
     }
 }
