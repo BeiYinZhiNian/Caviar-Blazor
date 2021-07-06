@@ -17,7 +17,7 @@ namespace Caviar.Models.SystemData
         /// <summary>
         /// 字段值
         /// </summary>
-        public string Value { get; set; }
+        public object Value { get; set; }
         /// <summary>
         /// 是否为枚举
         /// </summary>

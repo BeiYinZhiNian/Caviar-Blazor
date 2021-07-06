@@ -41,8 +41,8 @@ namespace Caviar.AntDesignPages
         public ViewQuery Query { get; set; } = new ViewQuery();
 
         protected string BaseController { get; set; }
-
-        protected string Url { get; set; }
+        [Parameter]
+        public string Url { get; set; }
         #endregion
 
         #region 方法
@@ -147,9 +147,12 @@ namespace Caviar.AntDesignPages
         #region 重写
         protected override async Task OnInitializedAsync()
         {
-            var url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
-            Url = url;
-            BaseController = CommonHelper.GetLeftText(url, "/");
+            if (string.IsNullOrEmpty(Url))
+            {
+                var url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
+                Url = url;
+            }
+            BaseController = CommonHelper.GetLeftText(Url, "/");
             await GetModelFields();//获取模型字段
             await GetPages();//获取数据源
             await GetPowerButtons();//获取按钮

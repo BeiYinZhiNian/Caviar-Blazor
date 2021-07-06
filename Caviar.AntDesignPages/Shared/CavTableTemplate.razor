@@ -108,6 +108,7 @@
         foreach (var item in ViewModelFields)
         {
             if (!item.IsPanel) continue;
+            item.Value = context;
             var tableItem = GetTableItems?.Invoke(item);
             if (tableItem != null)
             {
@@ -123,7 +124,7 @@
                         if (obj != null)
                         {
                             var value = (int)obj;
-                            @item.EnumValueName[value];
+                            @item.EnumValueName[value]
                         }
                     }
                 </Column>
