@@ -17,13 +17,18 @@ namespace Caviar.AntDesignPages.Pages.User
                 case "删除":
                     row.Data.Password = CommonHelper.SHA256EncryptString("123456");//密码不能为空，所以构建一个初始密码
                     await Delete(row.Menu.Url, row.Data);
+                    Refresh();
+                    break;
+                default:
+                    await base.RowCallback(row);
                     break;
             }
         }
         List<ViewUserGroup> ViewUserGroups { get; set; }
-        Dictionary<string, string> MappingQuery { get; set; } = new Dictionary<string, string>();
+        Dictionary<string, string> MappingQuery { get; set; }
         protected override async Task OnInitializedAsync()
         {
+            MappingQuery = new Dictionary<string, string>();
             MappingQuery.Add("UserGroupName", "UserGroupId");//将映射字段加入到字典
             await base.OnInitializedAsync();
             var result = await Http.GetJson<PageData<ViewUserGroup>>("UserGroup/Index?pageSize=100");

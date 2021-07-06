@@ -207,51 +207,52 @@
 
         }
 
+        if (Buttons != null && Buttons.Count > 0)
+        {
+            <ActionColumn Title="操作">
 
-        <ActionColumn Title="操作">
+                @{
+                    List<ViewMenu> but = Buttons.Where(u => u.ButtonPosition == ButtonPosition.Row).ToList();
+                    if (but.Count >= 3)
+                    {
+                        <Dropdown>
+                            <Overlay>
+                                <Menu>
+                                    @foreach (var item in but)
+                                    {
+                                        <MenuItem>
+                                            @CreatePackButton(item, context)
+                                        </MenuItem>
+                                    }
 
-            @if (Buttons != null)
-            {
-                List<ViewMenu> but = Buttons.Where(u => u.ButtonPosition == ButtonPosition.Row).ToList();
-                if (but.Count >= 3)
-                {
-                    <Dropdown>
-                        <Overlay>
-                            <Menu>
-                                @foreach (var item in but)
-                                {
-                                    <MenuItem>
-                                        @CreatePackButton(item, context)
-                                    </MenuItem>
-                                }
+                                </Menu>
+                            </Overlay>
+                            <ChildContent>
+                                <a class="ant-dropdown-link" @onclick:preventDefault>
+                                    更多 <Icon Type="down" />
+                                </a>
+                            </ChildContent>
+                        </Dropdown>
 
-                            </Menu>
-                        </Overlay>
-                        <ChildContent>
-                            <a class="ant-dropdown-link" @onclick:preventDefault>
-                                更多 <Icon Type="down" />
-                            </a>
-                        </ChildContent>
-                    </Dropdown>
+                    }
+                    else
+                    {
+                        <Space>
+                            @foreach (var item in but)
+                            {
+                                <SpaceItem>
+                                    @CreatePackButton(item, context)
+                                </SpaceItem>
+                            }
+                        </Space>
 
+
+                    }
                 }
-                else
-                {
-                    <Space>
-                        @foreach (var item in but)
-                        {
-                            <SpaceItem>
-                                @CreatePackButton(item, context)
-                            </SpaceItem>
-                        }
-                    </Space>
 
+            </ActionColumn>
+        }
 
-                }
-
-            }
-
-        </ActionColumn>
     }
 </Table>
 
