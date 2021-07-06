@@ -279,8 +279,8 @@ namespace Caviar.Control
         {
             IQueryable<T> data = GetContext<T>(isNoTracking);
             data = isOrder ?
-                data.OrderBy(orderBy) :
-                data.OrderByDescending(orderBy);
+                data.OrderBy(orderBy).OrderByDescending(u => u.CreatTime) :
+                data.OrderByDescending(orderBy).OrderByDescending(u => u.CreatTime);
             data = data.Where(whereLambda);
             PageData<T> pageData = new PageData<T>
             {

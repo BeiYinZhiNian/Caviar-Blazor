@@ -158,10 +158,6 @@ namespace Caviar.Control
         #region  日志消息
         protected void LoggerMsg(string msg, LogLevel logLevel = LogLevel.Information, int status = 200,bool IsAutomatic = false)
         {
-            if ((int)logLevel < 2)
-            {
-                return;
-            }
             var log = new SysLog() 
             {
                 UserName = BC.UserName,
@@ -182,8 +178,27 @@ namespace Caviar.Control
             {
                 log.UserId = BC.UserToken.Id;
             }
+            var isAdd = FilterLog(log);
+            if (!isAdd) return;
             var count = BC.DC.AddEntityAsync(log).Result;
         }
+
+        protected bool FilterLog(SysLog log)
+        {
+            if ((int)log.LogLevel < 2)
+            {
+                return false;
+            }
+            else if (log.Method == "GET" && log.LogLevel == CavLogLevel.Information && log.Status == 200 && log.Elapsed < 1)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         #endregion
 
 
