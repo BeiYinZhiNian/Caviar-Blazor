@@ -72,5 +72,10 @@ namespace Caviar.Models
         /// 字段列表
         /// </summary>
         public List<SysModelFields> SysModelFields { get; set; }
+        /// <summary>
+        /// 全局缓存
+        /// 菜单列表
+        /// </summary>
+        public List<SysMenu> SysMenus { get; set; }
     }
 }

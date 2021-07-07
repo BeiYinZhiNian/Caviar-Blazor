@@ -19,14 +19,14 @@ namespace Caviar.Control.Permission
         /// </summary>
         /// <param name="permissions"></param>
         /// <returns></returns>
-        public async Task<List<SysMenu>> GetPermissionMenu(List<SysPermission> permissions)
+        public List<SysMenu> GetPermissionMenu(List<SysPermission> permissions)
         {
             List<SysMenu> menus = new List<SysMenu>();
             permissions = permissions.Where(u => u.PermissionType == PermissionType.Menu).ToList();
             foreach (var item in permissions)
             {
                 if (menus.SingleOrDefault(u => u.Id == item.PermissionId) != null) continue;
-                var menu = await BC.DC.GetSingleEntityAsync<SysMenu>(u => u.Id == item.PermissionId);
+                var menu = BC.SysMenus.SingleOrDefault(u => u.Id == item.PermissionId);
                 if (menu == null) continue;
                 menus.Add(menu);
             }

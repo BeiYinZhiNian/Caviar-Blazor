@@ -22,6 +22,7 @@ namespace Caviar.AntDesignPages.Helper
         NavigationManager _navigationManager;
         MessageService _message;
         IJSRuntime _jSRuntime;
+        public string TokenName => "UsreToken";
         public HttpHelper(HttpClient http, NotificationService _notice,NavigationManager navigationManager, MessageService message,IJSRuntime JsRuntime)
         {
             Http = http;
@@ -39,24 +40,29 @@ namespace Caviar.AntDesignPages.Helper
         async Task SetCookies()
         {
             if (IsSetCookie) return;
-            var cookie = await _jSRuntime.InvokeAsync<string>("getCookie", Config.CookieName);
+            var cookie = await GetToken();
             //这里为什么要用双锁呢，被逼的~
             lock (cookiesOb)
             {
                 if (IsSetCookie) return;
-                var tokenName = "UsreToken";
-                Http.DefaultRequestHeaders.TryGetValues(tokenName, out IEnumerable<string>? values);
-                if (Http.DefaultRequestHeaders.Contains(tokenName))
+                Http.DefaultRequestHeaders.TryGetValues(TokenName, out IEnumerable<string>? values);
+                if (Http.DefaultRequestHeaders.Contains(TokenName))
                 {
-                    Http.DefaultRequestHeaders.Remove(tokenName);
+                    Http.DefaultRequestHeaders.Remove(TokenName);
                 }
                 if (!string.IsNullOrEmpty(cookie))
                 {
-                    Http.DefaultRequestHeaders.Add(tokenName, cookie);
+                    Http.DefaultRequestHeaders.Add(TokenName, cookie);
                     IsSetCookie = true;
                 }
             }
             
+        }
+
+        public async Task<string> GetToken()
+        {
+            var cookie = await _jSRuntime.InvokeAsync<string>("getCookie", Config.CookieName);
+            return cookie;
         }
 
 

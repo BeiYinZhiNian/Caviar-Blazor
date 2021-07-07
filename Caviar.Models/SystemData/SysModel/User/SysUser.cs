@@ -34,6 +34,10 @@ namespace Caviar.Models.SystemData
         [StringLength(11, ErrorMessage = "手机号码请不要超过{1}个字符")]
         [DisplayName("手机号码")]
         public string PhoneNumber { get; set; }
+        [RegularExpression("^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$", ErrorMessage = "请输入正确邮箱")]
+        [StringLength(50, ErrorMessage = "邮箱地址请不要超过{1}个字符")]
+        [DisplayName("邮箱地址")]
+        public string EmailNumber { get; set; }
         /// <summary>
         /// 部门or用户组
         /// </summary>

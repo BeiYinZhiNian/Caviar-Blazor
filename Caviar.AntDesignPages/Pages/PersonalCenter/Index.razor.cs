@@ -1,10 +1,13 @@
-﻿using Caviar.AntDesignPages.Helper;
+﻿using AntDesign;
+using Caviar.AntDesignPages.Helper;
 using Caviar.Models.SystemData;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Caviar.AntDesignPages.Pages.PersonalCenter
@@ -16,6 +19,8 @@ namespace Caviar.AntDesignPages.Pages.PersonalCenter
         public HttpHelper Http { get; set; }
         [Inject]
         CavModal CavModal { get; set; }
+        public string UploadUrl { get; set; }
+        public Dictionary<string,string> Headers { get; set; }
         void OnClick(string icon)
         {
             Console.WriteLine($"icon {icon} is clicked");
@@ -29,21 +34,39 @@ namespace Caviar.AntDesignPages.Pages.PersonalCenter
             UserData.AToB(out ViewUser dataSource);
             paramenter.Add(new KeyValuePair<string, object?>("DataSource", dataSource));
             paramenter.Add(new KeyValuePair<string, object?>("Url", "User/MyDetails"));
-            await CavModal.Create("User/Update", "修改信息", HandleOk, paramenter);
+            await CavModal.Create("User/MyDetailsUpdate", "修改信息", HandleOk, paramenter);
 
         }
 
-        void HandleOk()
+        async void HandleOk()
         {
-
+            await OnInitializedAsync();
         }
 
         protected override async Task OnInitializedAsync()
         {
+            UploadUrl = Http.Http.BaseAddress.AbsoluteUri + "Enclosure/Upload";
+            Headers = new Dictionary<string, string>();
+            var token = await Http.GetToken();
+            Headers.Add(Http.TokenName, token);
             await base.OnInitializedAsync();
             var result = await Http.GetJson<ViewUser>("User/MyDetails");
             if (result.Status != 200) return;
             UserData = result.Data;
+            StateHasChanged();
+        }
+
+        void OnSingleCompleted(UploadInfo fileinfo)
+        {
+            if (fileinfo.File.State == UploadState.Success)
+            {
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                };
+                var result = fileinfo.File.GetResponse<ResultMsg<ViewEnclosure>>(options);
+                
+            }
         }
     }
 }

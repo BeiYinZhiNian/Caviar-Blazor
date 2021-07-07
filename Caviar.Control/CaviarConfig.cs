@@ -33,6 +33,10 @@ namespace Caviar.Control
         /// </summary>
         static Guid Key { get; set; }
         public static bool IsDebug { get; set; }
+        /// <summary>
+        /// 是否为严格模式
+        /// </summary>
+        public static bool IsStrict { get; set; }
 
         public static IServiceCollection AddCaviar(this IServiceCollection services, SqlConfig sqlConfig, IConfiguration configuration)
         {
@@ -70,6 +74,7 @@ namespace Caviar.Control
             PaseAppsettingsJson(ref json);
 
             IsDebug = bool.Parse(json["Caviar"]["IsDebug"].ToString());
+            IsStrict = bool.Parse(json["Caviar"]["IsStrict"].ToString());
             var guid = json["Caviar"]["Role"]["NoLoginRole"].ToString();
             NoLoginRoleGuid = Guid.Parse(guid);
             SysAdminRoleGuid = Guid.Parse(json["Caviar"]["Role"]["SysAdminRole"].ToString());
@@ -93,6 +98,7 @@ namespace Caviar.Control
         {
             if (json["Caviar"] == null) json["Caviar"] = new JObject();
             if (json["Caviar"]["IsDebug"] == null) json["Caviar"]["IsDebug"] = false;
+            if (json["Caviar"]["IsStrict"] == null) json["Caviar"]["IsStrict"] = false;
             if (json["Caviar"]["Role"] == null) json["Caviar"]["Role"] = new JObject();
             if (json["Caviar"]["Role"]["NoLoginRole"] == null) json["Caviar"]["Role"]["NoLoginRole"] = Guid.NewGuid();
             if (json["Caviar"]["Role"]["SysAdminRole"] == null) json["Caviar"]["Role"]["SysAdminRole"] = Guid.NewGuid();
@@ -112,7 +118,7 @@ namespace Caviar.Control
             if (json["Caviar"]["SqlFile"]==null) json["Caviar"]["SqlFile"] = new JObject();
             if (json["Caviar"]["SqlFile"]["SqlPath"] == null) json["Caviar"]["SqlFile"]["SqlPath"] = "/SqlInit/CaviarSqlServer.sql";
             if (json["Caviar"]["Enclosure"] == null) json["Caviar"]["Enclosure"] = new JObject();
-            if (json["Caviar"]["Enclosure"]["Path"] == null) json["Caviar"]["Enclosure"]["Path"] = "/wwwroot/Enclosure";
+            if (json["Caviar"]["Enclosure"]["Path"] == null) json["Caviar"]["Enclosure"]["Path"] = "wwwroot/Enclosure";
             if (json["Caviar"]["Enclosure"]["Size"] == null) json["Caviar"]["Enclosure"]["Size"] = 3;
         }
 

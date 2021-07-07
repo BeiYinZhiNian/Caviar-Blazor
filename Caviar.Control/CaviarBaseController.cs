@@ -99,6 +99,7 @@ namespace Caviar.Control
         void GetPermission()
         {
             BC.SysModelFields = BC.DC.GetAllAsync<SysModelFields>().Result;
+            BC.SysMenus = BC.DC.GetAllAsync<SysMenu>().Result;
             var roleAction = CreateModel<RoleAction>();
             BC.UserData.Roles = roleAction.GetCurrentRoles().Result;
             var permissionAction = CreateModel<PermissionAction>();
@@ -108,7 +109,7 @@ namespace Caviar.Control
             BC.UserData.Permissions.AddRange(rolePermission);
             BC.UserData.Permissions.AddRange(userPermission);
             BC.UserData.ModelFields = permissionAction.GetRoleFields();
-            BC.UserData.Menus = permissionAction.GetPermissionMenu(BC.UserData.Permissions).Result;
+            BC.UserData.Menus = permissionAction.GetPermissionMenu(BC.UserData.Permissions);
         } 
 
         public override void OnActionExecuted(ActionExecutedContext context)
@@ -150,9 +151,20 @@ namespace Caviar.Control
         {
             if (CaviarConfig.IsDebug) return true;
             var url = BC.Current_Action.Replace("/api/", "").ToLower();
-            var menu = BC.UserData.Menus.FirstOrDefault(u => !string.IsNullOrEmpty(u.Url) && u.Url.ToLower() == url);
-            if (menu != null) return true;
-            return false;
+            if (CaviarConfig.IsStrict)
+            {
+                var menu = BC.UserData.Menus.FirstOrDefault(u => !string.IsNullOrEmpty(u.Url) && u.Url.ToLower() == url);
+                if (menu != null) return true;
+                return false;
+            }
+            else
+            {
+                var menu = BC.UserData.Menus.FirstOrDefault(u => !string.IsNullOrEmpty(u.Url) && u.Url.ToLower() == url);
+                if (menu == null) return true;//宽松模式，未加入权限api则不受限制
+                menu = BC.UserData.Menus.FirstOrDefault(u => u.Url == menu.Url);//如果有限制，则向用户api查询
+                if (menu != null) return true;
+                return false;
+            }
         }
 
         #region  日志消息

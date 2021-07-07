@@ -22,9 +22,12 @@ namespace Caviar.Models.SystemData
         /// M为点位
         /// </summary>
         [DisplayName("文件大小")]
-        public int Size { get; set; }
+        public double Size { get; set; }
         [DisplayName("文件位置")]
         [StringLength(1024, ErrorMessage = "文件路径请不要超过{1}个字符")]
         public string Path { get; set; }
+        [DisplayName("使用途径")]
+        [StringLength(50, ErrorMessage = "使用途径请不要超过{1}个字符")]
+        public string Use { get; set; }
     }
 }

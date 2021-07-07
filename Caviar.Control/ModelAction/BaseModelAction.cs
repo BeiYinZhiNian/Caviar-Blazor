@@ -18,7 +18,15 @@ namespace Caviar.Control.ModelAction
         public T Entity { get; set; }
 
         public IBaseControllerModel BC { get; set; }
-
+        /// <summary>
+        /// 添加指定实体
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task<int> AddEntity(T entity)
+        {
+            var count = await BC.DC.AddEntityAsync(entity);
+            return count;
+        }
         /// <summary>
         /// 添加实体
         /// </summary>
@@ -29,12 +37,30 @@ namespace Caviar.Control.ModelAction
             return count;
         }
         /// <summary>
+        /// 删除指定实体
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task<int> DeleteEntity(T entity)
+        {
+            var count = await BC.DC.DeleteEntityAsync(entity);
+            return count;
+        }
+        /// <summary>
         /// 删除实体
         /// </summary>
         /// <returns></returns>
         public virtual async Task<int> DeleteEntity()
         {
             var count = await BC.DC.DeleteEntityAsync(Entity);
+            return count;
+        }
+        /// <summary>
+        /// 修改指定实体
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task<int> UpdateEntity(T entity)
+        {
+            var count = await BC.DC.UpdateEntityAsync(entity);
             return count;
         }
         /// <summary>
