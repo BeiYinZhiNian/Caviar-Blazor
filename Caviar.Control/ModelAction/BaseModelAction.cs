@@ -18,6 +18,8 @@ namespace Caviar.Control.ModelAction
         public T Entity { get; set; }
 
         public IBaseControllerModel BC { get; set; }
+
+        public ResultMsg ResultMsg { get; set; } = new ResultMsg();
         /// <summary>
         /// 添加指定实体
         /// </summary>

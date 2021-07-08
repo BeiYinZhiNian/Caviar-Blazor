@@ -297,7 +297,7 @@ namespace Caviar.Control
         {
             ResultMsg.Status = 401;
             ResultMsg.Title = title;
-            ResultMsg.Type = "/User/Login";//此处后续读取数据库
+            ResultMsg.Type = CaviarConfig.CavUrl.UserLogin;//登录地址
             return ResultError(ResultMsg);
         }
 

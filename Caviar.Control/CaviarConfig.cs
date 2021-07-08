@@ -28,6 +28,7 @@ namespace Caviar.Control
         public static CodeFileGenerate WebUI { get; set; }
         public static CodeFileGenerate WebAPI { get; set; }
         public static CodeFileGenerate Models { get; set; }
+        public static CavUrl CavUrl { get; set; }
         /// <summary>
         /// 密钥***重要***
         /// 防止误用，单独存放
@@ -59,6 +60,7 @@ namespace Caviar.Control
             WebAPI = new CodeFileGenerate();
             Models = new CodeFileGenerate();
             EnclosureConfig = new EnclosureConfig();
+            CavUrl = new CavUrl();
             LoadAppsettings();
             return services;
         }
@@ -92,6 +94,7 @@ namespace Caviar.Control
             EnclosureConfig.Path = json["Caviar"]["Enclosure"]["Path"].ToString();
             EnclosureConfig.Size = int.Parse(json["Caviar"]["Enclosure"]["Size"].ToString());
             EnclosureConfig.CurrentDirectory = Directory.GetCurrentDirectory();
+            CavUrl.UserLogin = json["Caviar"]["Url"]["UserLogin"].ToString();
             var paseJson = json.ToString();
             File.WriteAllText(appsettingPath, paseJson);
         }
@@ -122,6 +125,8 @@ namespace Caviar.Control
             if (json["Caviar"]["Enclosure"] == null) json["Caviar"]["Enclosure"] = new JObject();
             if (json["Caviar"]["Enclosure"]["Path"] == null) json["Caviar"]["Enclosure"]["Path"] = "wwwroot/Enclosure";
             if (json["Caviar"]["Enclosure"]["Size"] == null) json["Caviar"]["Enclosure"]["Size"] = 3;
+            if (json["Caviar"]["Url"] == null) json["Caviar"]["Url"] = new JObject();
+            if (json["Caviar"]["Url"]["UserLogin"] == null) json["Caviar"]["Url"]["UserLogin"] = "User/Login";
         }
 
 
@@ -252,6 +257,10 @@ namespace Caviar.Control
         }
     }
 
+    public class CavUrl
+    {
+        public string UserLogin { get; set; }
+    }
     public class EnclosureConfig
     {
         /// <summary>
