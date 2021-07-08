@@ -13,6 +13,7 @@ using System.Text;
 using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Caching.Memory;
 using Caviar.Models;
+using Microsoft.Extensions.FileProviders;
 
 namespace Caviar.Control
 {
@@ -90,6 +91,7 @@ namespace Caviar.Control
             SqlConfig.SqlFilePath = json["Caviar"]["SqlFile"]["SqlPath"].ToString();
             EnclosureConfig.Path = json["Caviar"]["Enclosure"]["Path"].ToString();
             EnclosureConfig.Size = int.Parse(json["Caviar"]["Enclosure"]["Size"].ToString());
+            EnclosureConfig.CurrentDirectory = Directory.GetCurrentDirectory();
             var paseJson = json.ToString();
             File.WriteAllText(appsettingPath, paseJson);
         }
@@ -128,6 +130,12 @@ namespace Caviar.Control
         public static IApplicationBuilder UserCaviar(this IApplicationBuilder app)
         {
             ApplicationServices = app.ApplicationServices;
+            var path = EnclosureConfig.CurrentDirectory + "/" + EnclosureConfig.Path;//物理路径
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(path),
+                RequestPath = CurrencyConstant.Enclosure
+            });
             return app;
         }
 
@@ -254,6 +262,10 @@ namespace Caviar.Control
         /// 大小
         /// </summary>
         public int Size { get; set; }
+        /// <summary>
+        /// 目录
+        /// </summary>
+        public string CurrentDirectory { get; set; }
     }
 
     public class TokenConfig

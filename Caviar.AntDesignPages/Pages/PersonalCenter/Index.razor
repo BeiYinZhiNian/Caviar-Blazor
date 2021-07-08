@@ -30,17 +30,6 @@
                         <Icon Type="setting" OnClick="@(()=> OnClick("修改头像"))" />
                     </Tooltip>
                 </CardAction>
-                <CardAction>
-                    <Upload Action="@UploadUrl"
-                            Name="headPortrait"
-                            Headers="@Headers"
-                            OnSingleCompleted="OnSingleCompleted">
-                        <Tooltip Title="@("修改头像")">
-                            <Button Type="@ButtonType.Text" Icon="upload">
-                            </Button>
-                        </Tooltip>
-                    </Upload>
-                </CardAction>
             </ActionTemplate>
         </Card>
     </GridCol>

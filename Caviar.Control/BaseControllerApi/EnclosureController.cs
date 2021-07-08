@@ -18,12 +18,16 @@ namespace Caviar.Control.Enclosure
         /// <param name="files"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Upload([FromForm(Name = "headPortrait")] List<IFormFile> files)
+        public async Task<IActionResult> Upload([FromForm(Name = CurrencyConstant.HeadPortrait)] IFormFile files)
         {
-            if (files.Count != 1) return ResultError("上传数量错误");
-            double length = (double)files.Sum(u => u.Length) / 1024 / 1024;
-            if (length > CaviarConfig.EnclosureConfig.Size) return ResultError("上传总文件大小超过限制");
-            ResultMsg.Data = (await _Action.Upload(files))[0];
+            if(files.Length==0) return ResultError("未找到实体文件");
+            double length = (double)files.Length / 1024 / 1024;
+            if (length > CaviarConfig.EnclosureConfig.Size) return ResultError("上传文件大小超过限制");
+            ResultMsg.Data = await _Action.Upload(files);
+            if(ResultMsg.Data == null)
+            {
+                return ResultError("文件保存失败");
+            }
             return ResultOK();
         }
     }

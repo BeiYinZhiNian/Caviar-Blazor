@@ -11,38 +11,34 @@ namespace Caviar.Control.Enclosure
 {
     public partial class EnclosureAction
     {
-        public async Task<List<ViewEnclosure>> Upload(List<IFormFile> files)
+        public async Task<ViewEnclosure> Upload(IFormFile formFile)
         {
-            List<SysEnclosure> list = new List<SysEnclosure>();
-            foreach (var formFile in files)
+            if (formFile.Length > 0)
             {
-                if (formFile.Length > 0)
+                double length = (double)formFile.Length / 1024 / 1024;
+                var extend = Path.GetExtension(formFile.FileName);
+                SysEnclosure enclosure = new SysEnclosure
                 {
-                    double length = (double)formFile.Length / 1024 / 1024;
-                    var extend = Path.GetExtension(formFile.FileName);
-                    SysEnclosure enclosure = new SysEnclosure
-                    {
-                        Extend = extend,//拓展名
-                        Name = Guid.NewGuid().ToString() + extend,//文件名
-                        Path = formFile.Name,
-                        Size = Math.Round(length, 3),
-                        Use = formFile.Name
-                    };
-                    var filePath = CaviarConfig.EnclosureConfig.Path + "/" + enclosure.Path;//储存路径
-                    var path = Directory.GetCurrentDirectory() + "/" + filePath + "/";//物理路径
-                    if (!Directory.Exists(path))
-                    {
-                        Directory.CreateDirectory(path);
-                    }
-                    using (var stream = File.Create(path + enclosure.Name))
-                    {
-                        await formFile.CopyToAsync(stream);
-                    }
-                    await AddEntity(enclosure);
-                    list.Add(enclosure);
+                    Extend = extend,//拓展名
+                    Name = Guid.NewGuid().ToString() + extend,//文件名
+                    Path = formFile.Name,
+                    Size = Math.Round(length, 3),
+                    Use = formFile.Name
+                };
+                var filePath = CaviarConfig.EnclosureConfig.Path + "/" + enclosure.Path;//储存路径
+                var path = CaviarConfig.EnclosureConfig.CurrentDirectory + "/" + filePath + "/";//物理路径
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
                 }
+                using (var stream = File.Create(path + enclosure.Name))
+                {
+                    await formFile.CopyToAsync(stream);
+                }
+                await AddEntity(enclosure);
+                return ModelToViewModel(enclosure);
             }
-            return ModelToViewModel(list);
+            return null;
         }
     }
 }

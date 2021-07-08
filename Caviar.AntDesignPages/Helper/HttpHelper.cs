@@ -125,6 +125,13 @@ namespace Caviar.AntDesignPages.Helper
             }
             mainLayoutStyle.Loading = false;
             await eventCallback.InvokeAsync(mainLayoutStyle);
+            Response(result);
+            Tips(result);
+            return result;
+        }
+        
+        public async void Response(ResultMsg result)
+        {
             switch (result.Status)
             {
                 case 200://正确响应
@@ -174,10 +181,8 @@ namespace Caviar.AntDesignPages.Helper
                     });
                     break;
             }
-            Tips(result);
-            return result;
         }
-        
+
 
         void Tips(ResultMsg result)
         {

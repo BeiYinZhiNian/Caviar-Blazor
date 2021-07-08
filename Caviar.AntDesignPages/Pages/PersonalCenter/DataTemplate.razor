@@ -11,19 +11,73 @@
 @namespace Caviar.AntDesignPages.Pages.PersonalCenter
 
 <Form @ref="_meunForm" Model="@DataSource" OnFinish="FormSubmit">
-    <FormItem Label='用户名'>
-        <Input @bind-Value='@context.UserName' Style='width:50%' Disabled />
-    </FormItem>
-    <FormItem Label='密码' Style="display: none;">
-        <Input @bind-Value='@context.Password' Style='width:50%' />
-    </FormItem>
-    <FormItem Label='手机号码'>
-        <Input @bind-Value='@context.PhoneNumber' Style='width:50%' />
-    </FormItem>
-    <FormItem Label='邮箱地址'>
-        <Input @bind-Value='@context.EmailNumber' Style='width:50%' />
-    </FormItem>
-    <FormItem Label='备注'>
-        <TextArea @bind-Value='@context.Remark' Style='width:50%' />
+    <Row>
+        <Col Flex="4">
+        <FormItem Label='用户名'>
+            <Input @bind-Value='@context.UserName' Style='width:90%' Disabled />
+        </FormItem>
+        <FormItem Label='密码' Style="display: none;">
+            <Input @bind-Value='@context.Password' Style='width:50%' />
+        </FormItem>
+        <FormItem Label='手机号码'>
+            <Input @bind-Value='@context.PhoneNumber' Style='width:90%' />
+        </FormItem>
+        <FormItem Label='邮箱地址'>
+            <Input @bind-Value='@context.EmailNumber' Style='width:90%' />
+        </FormItem>
+        </Col>
+        <Col Flex="1">
+        <CavUpload OnEnclosureCallback="OnEnclosureCallback"
+                   Class="avatar-uploader"
+                   ListType="picture-card"
+                   Name="@CurrencyConstant.HeadPortrait"
+                   ShowUploadList="false"
+                   BeforeUpload="BeforeUpload">
+            @if (!string.IsNullOrEmpty(context.HeadPortrait))
+            {
+                <img src="@context.HeadPortrait" alt="avatar" style="width: 100%" />
+            }
+            else
+            {
+                <div>
+                    <Icon Spin="loading" Type="@(loading?"Loading":"plus")"></Icon>
+                    <div className="ant-upload-text">Upload</div>
+                </div>
+            }
+        </CavUpload></Col>
+    </Row>
+    <FormItem Label='个性签名'>
+        <TextArea @bind-Value='@context.Remark' Style='width:100%' />
     </FormItem>
 </Form>
+
+<style>
+    .avatar-uploader > .ant-upload {
+        width: 128px;
+        height: 128px;
+    }
+
+    .ant-upload-select-picture-card .ant-upload-text {
+        margin-top: 8px;
+        color: #666;
+    }
+</style>
+
+@code{
+    bool loading = false;
+    @inject MessageService _message
+    bool BeforeUpload(UploadFileItem file)
+    {
+        var isJpgOrPng = file.Type == "image/jpeg" || file.Type == "image/png";
+        if (!isJpgOrPng)
+        {
+            _message.Error("You can only upload JPG/PNG file!");
+        }
+        var isLt3M = file.Size / 1024 / 1024 < 3;
+        if (!isLt3M)
+        {
+            _message.Error("Image must smaller than 3MB!");
+        }
+        return isJpgOrPng && isLt3M;
+    }
+}

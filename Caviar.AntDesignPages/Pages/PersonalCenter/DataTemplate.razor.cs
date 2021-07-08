@@ -15,5 +15,10 @@ namespace Caviar.AntDesignPages.Pages.PersonalCenter
             DataSource.Password = CommonHelper.SHA256EncryptString(password);//设置默认密码
             await base.OnInitializedAsync();
         }
+
+        public void OnEnclosureCallback(ViewEnclosure enclosure)
+        {
+            DataSource.HeadPortrait = enclosure.Path;
+        }
     }
 }

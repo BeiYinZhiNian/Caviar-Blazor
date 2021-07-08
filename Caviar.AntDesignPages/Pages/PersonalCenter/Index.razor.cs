@@ -19,8 +19,6 @@ namespace Caviar.AntDesignPages.Pages.PersonalCenter
         public HttpHelper Http { get; set; }
         [Inject]
         CavModal CavModal { get; set; }
-        public string UploadUrl { get; set; }
-        public Dictionary<string,string> Headers { get; set; }
         void OnClick(string icon)
         {
             Console.WriteLine($"icon {icon} is clicked");
@@ -45,10 +43,6 @@ namespace Caviar.AntDesignPages.Pages.PersonalCenter
 
         protected override async Task OnInitializedAsync()
         {
-            UploadUrl = Http.Http.BaseAddress.AbsoluteUri + "Enclosure/Upload";
-            Headers = new Dictionary<string, string>();
-            var token = await Http.GetToken();
-            Headers.Add(Http.TokenName, token);
             await base.OnInitializedAsync();
             var result = await Http.GetJson<ViewUser>("User/MyDetails");
             if (result.Status != 200) return;
@@ -56,17 +50,6 @@ namespace Caviar.AntDesignPages.Pages.PersonalCenter
             StateHasChanged();
         }
 
-        void OnSingleCompleted(UploadInfo fileinfo)
-        {
-            if (fileinfo.File.State == UploadState.Success)
-            {
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true,
-                };
-                var result = fileinfo.File.GetResponse<ResultMsg<ViewEnclosure>>(options);
-                
-            }
-        }
+
     }
 }
