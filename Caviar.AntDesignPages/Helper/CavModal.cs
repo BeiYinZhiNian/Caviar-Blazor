@@ -24,8 +24,13 @@ namespace Caviar.AntDesignPages.Helper
         }
         ModalRef modalRef;
         Action OnOK;
-        public async Task<ModalRef> Create(string url,string title ,Action OnOK = null, IEnumerable<KeyValuePair<string, object?>> paramenter = null)
+        public async Task<ModalRef> Create(string url,string title ,Action OnOK = null, Dictionary<string,object> paramenter = null)
         {
+            if (paramenter == null) paramenter = new Dictionary<string, object>();
+            if (!paramenter.ContainsKey(CurrencyConstant.CavModelUrl))
+            {
+                paramenter.Add(CurrencyConstant.CavModelUrl, url);//不提供url时候默认url一致
+            }
             ModalOptions options = new ModalOptions()
             {
                 OnOk = HandleOk,
@@ -82,7 +87,7 @@ namespace Caviar.AntDesignPages.Helper
             var res = true;
             if (menuAdd != null)
             {
-                res = await menuAdd.Submit();
+                res = await menuAdd.Validate();
             }
             modalRef.Config.Visible = !res;
             if (res)

@@ -18,8 +18,9 @@ namespace Caviar.Models.SystemData
         /// <summary>
         /// 保存操作
         /// </summary>
+        /// <param name="IsFieldCheck">确保为系统内部更改时，可以取消验证</param>
         /// <returns></returns>
-        Task<int> SaveChangesAsync();
+        Task<int> SaveChangesAsync(bool IsFieldCheck = true);
 
         /// <summary>
         /// 添加实体

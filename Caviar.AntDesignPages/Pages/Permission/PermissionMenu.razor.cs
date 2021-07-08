@@ -36,7 +36,7 @@ namespace Caviar.AntDesignPages.Pages.Permission
             }
         }
 
-        public async Task<bool> Submit()
+        public async Task<bool> Validate()
         {
             List<ViewMenu> menus = new List<ViewMenu>();
             ViewMenus.TreeToList(menus);

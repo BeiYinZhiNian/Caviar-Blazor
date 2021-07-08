@@ -26,12 +26,12 @@ namespace Caviar.AntDesignPages.Pages.PersonalCenter
 
         async void UpdateUserData()
         {
-            List<KeyValuePair<string, object?>> paramenter = new List<KeyValuePair<string, object?>>();
+            Dictionary<string,object> paramenter = new Dictionary<string, object>();
             //因为引用类型，这里进行一次转换，相当于深度复制
             //否则更改内容然后取消，列表会发生改变
             UserData.AToB(out ViewUser dataSource);
-            paramenter.Add(new KeyValuePair<string, object?>("DataSource", dataSource));
-            paramenter.Add(new KeyValuePair<string, object?>("Url", "User/MyDetails"));
+            paramenter.Add("DataSource", dataSource);
+            paramenter.Add(CurrencyConstant.CavModelUrl, "User/MyDetails");
             await CavModal.Create("User/MyDetailsUpdate", "修改信息", HandleOk, paramenter);
 
         }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.AntDesignPages
 {
-    public partial class IndexComponentBase<ViewT> : CavComponentBase where ViewT:class,IViewMode,IBaseModel, new()
+    public partial class IndexComponentBase<ViewT> : CavComponentBase where ViewT:class, new()
     {
 
         #region 属性

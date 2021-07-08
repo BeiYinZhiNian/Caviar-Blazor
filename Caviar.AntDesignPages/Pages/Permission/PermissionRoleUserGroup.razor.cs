@@ -16,7 +16,7 @@ namespace Caviar.AntDesignPages.Pages.Permission
         public string Url { get; set; }
 
         PermissionRoleTemple<ViewUserGroup> Temple;
-        public async Task<bool> Submit()
+        public async Task<bool> Validate()
         {
             return await Temple.Submit();
         }

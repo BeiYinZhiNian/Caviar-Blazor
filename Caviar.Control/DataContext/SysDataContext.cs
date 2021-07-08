@@ -80,8 +80,9 @@ namespace Caviar.Control
         /// <summary>
         /// 保存所有更改
         /// </summary>
+        /// <param name="IsFieldCheck">确保为系统内部更改时，可以取消验证</param>
         /// <returns></returns>
-        public virtual async Task<int> SaveChangesAsync()
+        public virtual async Task<int> SaveChangesAsync(bool IsFieldCheck = true)
         {
             DC.ChangeTracker.DetectChanges(); // Important!
             var entries = DC.ChangeTracker.Entries();
@@ -100,6 +101,7 @@ namespace Caviar.Control
                     case EntityState.Deleted:
                         break;
                     case EntityState.Modified:
+                        if (!IsFieldCheck) break;
                         baseEntity.OperatorUp = _baseControllerModel.UserName;
                         baseEntity.UpdateTime = DateTime.Now;
                         var entityType = entity.GetType();

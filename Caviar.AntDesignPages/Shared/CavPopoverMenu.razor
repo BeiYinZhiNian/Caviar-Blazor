@@ -4,14 +4,9 @@
             个人中心
         </a>
     </MenuItem>
-    <MenuItem @key="1">
+    <MenuItem @key="1" OnClick="ChangePassword">
         <a>
             修改密码
-        </a>
-    </MenuItem>
-    <MenuItem @key="2">
-        <a>
-            设置
         </a>
     </MenuItem>
     <MenuDivider />
@@ -30,6 +25,8 @@
     HttpHelper Http { get; set; }
     [Inject]
     MessageService messageService { get; set; }
+    [Inject]
+    CavModal CavModal { get; set; }
 
     public async void UserOut()
     {
@@ -43,5 +40,10 @@
     {
         string url = "User/MyDetails";
         navigationManager.NavigateTo(url);
+    }
+
+    public async void ChangePassword()
+    {
+        await CavModal.Create("user/UpdatePwd", "修改密码");
     }
 }

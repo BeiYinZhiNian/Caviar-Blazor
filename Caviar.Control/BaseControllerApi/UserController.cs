@@ -52,5 +52,12 @@ namespace Caviar.Control.User
             }
             return ResultError(msg);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdatePwd(UserPwd userPwd)
+        {
+            var result = await _Action.UpdatePwd(userPwd);
+            return ResultOK(result);
+        }
     }
 }

@@ -8,6 +8,6 @@ namespace Caviar.Models.SystemData
 {
     public interface ITableTemplate
     {
-        public Task<bool> Submit();
+        public Task<bool> Validate();
     }
 }

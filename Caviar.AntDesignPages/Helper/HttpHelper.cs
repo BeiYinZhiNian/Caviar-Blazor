@@ -106,7 +106,18 @@ namespace Caviar.AntDesignPages.Helper
                 else if(model.ToLower() == "post")
                 {
                     var response = await Http.PostAsJsonAsync(address, data);
-                    result = await response.Content.ReadFromJsonAsync<ResultMsg<T>>();
+                    if(response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        result = await response.Content.ReadFromJsonAsync<ResultMsg<T>>();
+                    }
+                    else
+                    {
+                        result = new ResultMsg<T>()
+                        {
+                            Title = "请求失败:" + response.ReasonPhrase,
+                            Status = (int)response.StatusCode,
+                        };
+                    }
                 }
                 else
                 {
@@ -152,6 +163,7 @@ namespace Caviar.AntDesignPages.Helper
                     break;
                 case 500://发生严重错误
                 default:
+                    result.IsTips = false;
                     string msg = "";
                     if (!string.IsNullOrEmpty(result.Detail))
                     {

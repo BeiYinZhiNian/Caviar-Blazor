@@ -16,5 +16,9 @@ namespace Caviar.Models.SystemData
         /// 头像文件夹名称
         /// </summary>
         public const string HeadPortrait = "headPortrait";
+        /// <summary>
+        /// url名称
+        /// </summary>
+        public const string CavModelUrl = "Url";
     }
 }

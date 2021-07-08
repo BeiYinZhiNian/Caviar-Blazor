@@ -27,7 +27,7 @@
                 </CardAction>
                 <CardAction>
                     <Tooltip Title="@("修改密码")">
-                        <Icon Type="setting" OnClick="@(()=> OnClick("修改头像"))" />
+                        <Icon Type="setting" OnClick="@(()=> ChangePassword())" />
                     </Tooltip>
                 </CardAction>
             </ActionTemplate>
@@ -39,10 +39,14 @@
 @code{
 
 
-
     public RenderFragment GetHeadPortrait()
     {
         RenderFragment avatarTemplate =@<Avatar Style="background-color: #87d068" Src="@UserData.HeadPortrait" Icon="user" />;
-return avatarTemplate;
-}
+        return avatarTemplate;
+    }
+
+    public async void ChangePassword()
+    {
+        await CavModal.Create("user/UpdatePwd", "修改密码");
+    }
 }

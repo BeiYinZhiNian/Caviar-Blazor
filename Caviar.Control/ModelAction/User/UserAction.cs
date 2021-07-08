@@ -20,5 +20,27 @@ namespace Caviar.Control.User
             }
             return viewModel;
         }
+
+        public async Task<ResultMsg> UpdatePwd(UserPwd userPwd)
+        {
+            var user = await GetEntity(BC.UserToken.Id);
+            ResultMsg result = new ResultMsg();
+            if (user.Password != userPwd.OriginalPwd)
+            {
+                result.Status = 403;
+                result.Title = "初始密码输入错误";
+                return result;
+            }
+            else if(userPwd.NewPwd != userPwd.SurePwd)
+            {
+                result.Status = 403;
+                result.Title = "两次密码不一致";
+                return result;
+            }
+            user.Password = userPwd.NewPwd;
+            await BC.DC.UpdateEntityAsync(user, false);
+            await BC.DC.SaveChangesAsync(IsFieldCheck: false);
+            return result;
+        }
     }
 }
