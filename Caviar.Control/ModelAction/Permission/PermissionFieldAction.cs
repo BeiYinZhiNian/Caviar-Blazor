@@ -127,7 +127,7 @@ namespace Caviar.Control.Permission
         /// <param name="modelName"></param>
         /// <param name="roleId"></param>
         /// <returns></returns>
-        public async Task<List<ViewModelFields>> GetFieldsData(IAssemblyDynamicCreation CavAssembly, string modelName, int roleId = 0)
+        public async Task<ResultMsg<List<ViewModelFields>>> GetFieldsData(IAssemblyDynamicCreation CavAssembly, string modelName, int roleId = 0)
         {
             if (string.IsNullOrEmpty(modelName)) return null;
             var fields = await GetRoleFields(modelName, roleId);
@@ -151,7 +151,7 @@ namespace Caviar.Control.Permission
                 }
             }
             viewFields = viewFields.OrderBy(u => u.Number).ToList();
-            return viewFields;
+            return Ok(viewFields);
         }
     }
 }

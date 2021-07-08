@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Control.ModelAction
 {
-    public class BaseModelAction<T,ViewT> : IBaseModelAction<T, ViewT> where T : class, IBaseModel,new()  where ViewT: class,T, new()
+    public partial class BaseModelAction<T,ViewT> : IBaseModelAction<T, ViewT> where T : class, IBaseModel,new()  where ViewT: class,T, new()
     {
         /// <summary>
         /// 数据实体
@@ -20,65 +20,127 @@ namespace Caviar.Control.ModelAction
         public IBaseControllerModel BC { get; set; }
 
         public ResultMsg ResultMsg { get; set; } = new ResultMsg();
-        /// <summary>
-        /// 添加指定实体
-        /// </summary>
-        /// <returns></returns>
-        public virtual async Task<int> AddEntity(T entity)
+        public virtual async Task<ResultMsg> AddEntity(T entity)
         {
-            var count = await BC.DC.AddEntityAsync(entity);
-            return count;
+            try
+            {
+                var count = await BC.DC.AddEntityAsync(entity);
+                if (count > 0)
+                {
+                    return Ok();
+                }
+                throw new Exception("添加失败，添加结果：" + count);
+            }
+            catch(Exception e)
+            {
+                return Error("添加数据失败", e.Message);
+            }
         }
         /// <summary>
         /// 添加实体
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<int> AddEntity()
+        public virtual async Task<ResultMsg> AddEntity()
         {
-            var count = await BC.DC.AddEntityAsync(Entity);
-            return count;
+            try
+            {
+                var count = await BC.DC.AddEntityAsync(Entity);
+                if (count > 0)
+                {
+                    return Ok();
+                }
+                throw new Exception("添加失败，添加结果：" + count);
+            }
+            catch (Exception e)
+            {
+                return Error("添加数据失败", e.Message);
+            }
         }
         /// <summary>
         /// 删除指定实体
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<int> DeleteEntity(T entity)
+        public virtual async Task<ResultMsg> DeleteEntity(T entity)
         {
-            var count = await BC.DC.DeleteEntityAsync(entity);
-            return count;
+            try
+            {
+                var count = await BC.DC.DeleteEntityAsync(Entity);
+                if (count > 0)
+                {
+                    return Ok();
+                }
+                throw new Exception("删除失败，删除结果：" + count);
+            }
+            catch (Exception e)
+            {
+                return Error("删除数据失败", e.Message);
+            }
         }
         /// <summary>
         /// 删除实体
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<int> DeleteEntity()
+        public virtual async Task<ResultMsg> DeleteEntity()
         {
-            var count = await BC.DC.DeleteEntityAsync(Entity);
-            return count;
+            try
+            {
+                var count = await BC.DC.DeleteEntityAsync(Entity);
+                if (count > 0)
+                {
+                    return Ok();
+                }
+                throw new Exception("删除失败，删除结果：" + count);
+            }
+            catch (Exception e)
+            {
+                return Error("删除数据失败", e.Message);
+            }
         }
         /// <summary>
         /// 修改指定实体
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<int> UpdateEntity(T entity)
+        public virtual async Task<ResultMsg> UpdateEntity(T entity)
         {
-            var count = await BC.DC.UpdateEntityAsync(entity);
-            return count;
+            try
+            {
+                var count = await BC.DC.UpdateEntityAsync(entity);
+                if (count > 0)
+                {
+                    return Ok();
+                }
+                throw new Exception("修改失败，删除结果：" + count);
+            }
+            catch (Exception e)
+            {
+                return Error("修改数据失败", e.Message);
+            }
         }
         /// <summary>
         /// 修改实体
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<int> UpdateEntity()
+        public virtual async Task<ResultMsg> UpdateEntity()
         {
-            var count = await BC.DC.UpdateEntityAsync(Entity);
-            return count;
+            try
+            {
+                var count = await BC.DC.UpdateEntityAsync(Entity);
+                if (count > 0)
+                {
+                    return Ok();
+                }
+                throw new Exception("修改失败，删除结果：" + count);
+            }
+            catch (Exception e)
+            {
+                return Error("修改数据失败", e.Message);
+            }
         }
         /// <summary>
         /// 获取分页数据
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<PageData<ViewT>> GetPages(Expression<Func<T, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true)
+        public virtual async Task<ResultMsg<PageData<ViewT>>> GetPages(Expression<Func<T, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true)
         {
             var pages = await BC.DC.GetPageAsync(where, u => u.Number, pageIndex, pageSize, isOrder, isNoTracking);
             var list = ModelToViewModel(pages.Rows);
@@ -86,7 +148,7 @@ namespace Caviar.Control.ModelAction
             viewPage.PageIndex = pages.PageIndex;
             viewPage.PageSize = pages.PageSize;
             viewPage.Total = pages.Total;
-            return viewPage;
+            return Ok(viewPage);
         }
 
         /// <summary>
@@ -94,27 +156,49 @@ namespace Caviar.Control.ModelAction
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
-        public virtual async Task<int> DeleteEntity(List<T> menus)
+        public virtual async Task<ResultMsg> DeleteEntity(List<T> menus)
         {
-            var count = await BC.DC.DeleteEntityAsync(menus);
-            return count;
+            try
+            {
+                var count = await BC.DC.DeleteEntityAsync(menus);
+                if (count > 0)
+                {
+                    return Ok();
+                }
+                throw new Exception("删除失败，删除结果：" + count);
+            }
+            catch (Exception e)
+            {
+                return Error("删除数据失败", e.Message);
+            }
         }
         /// <summary>
         /// 批量修改
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
-        public virtual async Task<int> UpdateEntity(List<SysMenu> menus)
+        public virtual async Task<ResultMsg> UpdateEntity(List<SysMenu> menus)
         {
-            var count = await BC.DC.UpdateEntityAsync(menus);
-            return count;
+            try
+            {
+                var count = await BC.DC.UpdateEntityAsync(menus);
+                if (count > 0)
+                {
+                    return Ok();
+                }
+                throw new Exception("修改失败，删除结果：" + count);
+            }
+            catch (Exception e)
+            {
+                return Error("修改数据失败", e.Message);
+            }
         }
         /// <summary>
         /// 通用模糊查询
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        public virtual async Task<List<ViewT>> FuzzyQuery(ViewQuery query,List<SysModelFields> fields)
+        public virtual async Task<ResultMsg<List<ViewT>>> FuzzyQuery(ViewQuery query,List<SysModelFields> fields)
         {
             var assemblyList = CommonHelper.GetAssembly();
             Type type = null;
@@ -158,7 +242,8 @@ namespace Caviar.Control.ModelAction
             }
             var data = BC.DC.SqlQuery(sql, parameters.ToArray());
             var model = data.ToList<T>(type);
-            return ModelToViewModel(model);
+            var viewModel = ModelToViewModel(model);
+            return Ok(viewModel);
         }
 
         /// <summary>
@@ -181,16 +266,18 @@ namespace Caviar.Control.ModelAction
             return list.FirstOrDefault();
         }
 
-        public virtual async Task<ViewT> GetEntity(Guid guid)
+        public virtual async Task<ResultMsg<ViewT>> GetEntity(Guid guid)
         {
             var entity = await BC.DC.GetEntityAsync<T>(guid);
-            return ModelToViewModel(entity);
+            var viewModel = ModelToViewModel(entity);
+            return Ok(viewModel);
         }
 
-        public virtual async Task<ViewT> GetEntity(int id)
+        public virtual async Task<ResultMsg<ViewT>> GetEntity(int id)
         {
             var entity = await BC.DC.GetEntityAsync<T>(id);
-            return ModelToViewModel(entity);
+            var viewModel = ModelToViewModel(entity);
+            return Ok(viewModel);
         }
     }
 }

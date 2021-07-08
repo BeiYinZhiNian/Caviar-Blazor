@@ -23,8 +23,8 @@ namespace Caviar.Control.User
 
         public async Task<ResultMsg> UpdatePwd(UserPwd userPwd)
         {
-            var user = await GetEntity(BC.UserToken.Id);
-            ResultMsg result = new ResultMsg();
+            var result = await GetEntity(BC.UserToken.Id);
+            var user = result.Data;
             if (user.Password != userPwd.OriginalPwd)
             {
                 result.Status = 403;

@@ -12,8 +12,8 @@ namespace Caviar.Control.User
         [HttpGet]
         public async Task<IActionResult> MyDetails()
         {
-            ResultMsg.Data = await _Action.GetEntity(BC.UserToken.Id);
-            return ResultOK();
+            var result = await _Action.GetEntity(BC.UserToken.Id);
+            return Ok(result);
         }
         [HttpPost]
         public async Task<IActionResult> MyDetails(ViewUser viewUser)
@@ -22,8 +22,8 @@ namespace Caviar.Control.User
             {
                 return ResultError("正在进行非法修改");
             }
-            var count = await _Action.UpdateEntity();
-            return ResultOK();
+            var result = await _Action.UpdateEntity();
+            return Ok(result);
         }
 
         [HttpPost]

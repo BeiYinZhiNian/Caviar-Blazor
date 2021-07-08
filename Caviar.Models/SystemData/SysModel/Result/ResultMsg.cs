@@ -20,7 +20,7 @@ namespace Caviar.Models.SystemData
         /// <summary>
         /// 标识问题类型的 URI 引用
         /// </summary>
-        public string Type { get; set; } = "";
+        public string Uri { get; set; } = "";
 
         public string TraceId { get; set; } = Guid.NewGuid().ToString();
         /// <summary>
@@ -30,11 +30,7 @@ namespace Caviar.Models.SystemData
         /// <summary>
         /// 获取与此实例关联的验证错误
         /// </summary>
-        public IDictionary<string, string[]> Errors { get; set; } = new Dictionary<string, string[]>();
-        /// <summary>
-        /// 用于存放附加数据
-        /// </summary>
-        public object Data { get; set; }
+        public IDictionary<string, string> Errors { get; set; } = new Dictionary<string, string>();
         /// <summary>
         /// 当状态不为200时是否提示Title
         /// </summary>
@@ -43,6 +39,6 @@ namespace Caviar.Models.SystemData
 
     public class ResultMsg<T> : ResultMsg
     {
-        public new T Data { get; set; }
+        public T Data { get; set; }
     }
 }

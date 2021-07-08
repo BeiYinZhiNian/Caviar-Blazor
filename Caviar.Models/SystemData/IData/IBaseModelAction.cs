@@ -18,35 +18,35 @@ namespace Caviar.Models.SystemData
         /// 添加实体
         /// </summary>
         /// <returns></returns>
-        public Task<int> AddEntity();
+        public Task<ResultMsg> AddEntity();
         /// <summary>
         /// 删除实体
         /// </summary>
         /// <returns></returns>
-        public Task<int> DeleteEntity();
+        public Task<ResultMsg> DeleteEntity();
         /// <summary>
         /// 修改实体
         /// </summary>
         /// <returns></returns>
-        public Task<int> UpdateEntity();
+        public Task<ResultMsg> UpdateEntity();
         /// <summary>
         /// 获取分页数据
         /// </summary>
         /// <returns></returns>
-        public Task<PageData<ViewT>> GetPages(Expression<Func<T, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true);
+        public Task<ResultMsg<PageData<ViewT>>> GetPages(Expression<Func<T, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true);
 
         /// <summary>
         /// 批量删除
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
-        public Task<int> DeleteEntity(List<T> menus);
+        public Task<ResultMsg> DeleteEntity(List<T> menus);
         /// <summary>
         /// 批量修改
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
-        public Task<int> UpdateEntity(List<SysMenu> menus);
+        public Task<ResultMsg> UpdateEntity(List<SysMenu> menus);
         /// <summary>
         /// 数据转换
         /// 需要达到一个model转为viewModel效果
@@ -62,6 +62,6 @@ namespace Caviar.Models.SystemData
         /// <param name="query"></param>
         /// <param name="fields"></param>
         /// <returns></returns>
-        public Task<List<ViewT>> FuzzyQuery(ViewQuery query, List<SysModelFields> fields);
+        public Task<ResultMsg<List<ViewT>>> FuzzyQuery(ViewQuery query, List<SysModelFields> fields);
     }
 }

@@ -31,20 +31,16 @@ namespace Caviar.Control.Menu
 
         public override async Task<IActionResult> Delete(ViewMenu view)
         {
-            int count;
+            ResultMsg result = null;
             if (view.IsDeleteAll)
             {
-                count = await _Action.DeleteEntityAll(view);
+                result = await _Action.DeleteEntityAll(view);
             }
             else
             {
-                count = await _Action.DeleteEntity(view);
+                result = await _Action.DeleteEntity(view);
             }
-            if (count > 0)
-            {
-                return ResultOK();
-            }
-            return ResultError("É¾³ý²Ëµ¥Ê§°Ü");
+            return Ok(result);
         }
 
         public override async Task<IActionResult> Add(ViewMenu view)

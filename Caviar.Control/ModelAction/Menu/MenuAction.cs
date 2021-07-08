@@ -21,12 +21,12 @@ namespace Caviar.Control.Menu
             var buttons = BC.UserData.Menus.Where(u => u.MenuType == MenuType.Button && u.ParentId == menus.Id).OrderBy(u => u.Number);
             return buttons.ToList();
         }
-        public override async Task<PageData<ViewMenu>> GetPages(Expression<Func<SysMenu, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = false)
+        public override async Task<ResultMsg<PageData<ViewMenu>>> GetPages(Expression<Func<SysMenu, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = false)
         {
             var pages = new PageData<SysMenu>(BC.UserData.Menus);
             var list = ModelToViewModel(pages.Rows);
             var viewPage = new PageData<ViewMenu>(list);
-            return viewPage;
+            return Ok(viewPage);
         }
         /// <summary>
         /// 将列表转为树的形式
@@ -40,20 +40,19 @@ namespace Caviar.Control.Menu
             return viewMenus;
         }
 
-        public async Task<int> DeleteEntityAll(ViewMenu view)
+        public async Task<ResultMsg> DeleteEntityAll(ViewMenu view)
         {
             List<ViewMenu> viewMenuList = new List<ViewMenu>();
             view.TreeToList(viewMenuList);
             viewMenuList.AToB(out List<SysMenu> menus);
-            var count = await base.DeleteEntity(menus);
-            return count;
+            var result = await base.DeleteEntity(menus);
+            return result;
         }
 
-        public async Task<int> DeleteEntity(ViewMenu view)
+        public async Task<ResultMsg> DeleteEntity(ViewMenu view)
         {
             List<ViewMenu> viewMenuList = new List<ViewMenu>();
             view.TreeToList(viewMenuList,false);
-            var count = 0;
             if (viewMenuList != null && viewMenuList.Count > 1)
             {
                 viewMenuList.AToB(out List<SysMenu> menus);
@@ -64,14 +63,13 @@ namespace Caviar.Control.Menu
                         item.ParentId = view.ParentId;
                     }
                 }
-                count = await base.UpdateEntity(menus);
-                if (count != viewMenuList.Count)
+                var result = await base.UpdateEntity(menus);
+                if (result.Status != 200)
                 {
-                    throw new Exception("删除菜单失败,子菜单移动失败");
+                    return Error("删除菜单失败,子菜单移动失败");
                 }
             }
-            count = await base.DeleteEntity();
-            return count;
+            return await base.DeleteEntity();
         }
 
     }

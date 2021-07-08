@@ -129,7 +129,7 @@ namespace Caviar.AntDesignPages.Helper
                 result = new ResultMsg<T>()
                 {
                     Title = "请求失败，发生请求错误",
-                    Type = "http://www.baidu.com/s?wd=" + HttpUtility.UrlEncode(e.Message),
+                    Uri = "http://www.baidu.com/s?wd=" + HttpUtility.UrlEncode(e.Message),
                     Detail = e.Message,
                     Status = 500,
                 };
@@ -148,12 +148,12 @@ namespace Caviar.AntDesignPages.Helper
                 case 200://正确响应
                     break;
                 case 302://重定向专用
-                    _navigationManager.NavigateTo(result.Type);
+                    _navigationManager.NavigateTo(result.Uri);
                     break;
                 case 401://退出登录
                     await _jSRuntime.InvokeVoidAsync("delCookie", Config.CookieName);
                     IsSetCookie = false;
-                    _navigationManager.NavigateTo(result.Type);
+                    _navigationManager.NavigateTo(result.Uri);
                     break;
                 case 403://只用于提示
                 case 406:
@@ -169,21 +169,18 @@ namespace Caviar.AntDesignPages.Helper
                     {
                         msg += "错误详细信息：" + result.Detail + "<br>";
                     }
-                    if (result.Errors != null && result.Errors.Count != 0)
+                    if (result.Errors != null)
                     {
                         msg += "错误提示：";
                         foreach (var item in result.Errors)
                         {
                             msg += "<br>" + item.Key + ":";
-                            foreach (var value in item.Value)
-                            {
-                                msg += value + "<br>";
-                            }
+                            msg += item.Value + "<br>";
                         }
                     }
-                    if (!string.IsNullOrEmpty(result.Type))
+                    if (!string.IsNullOrEmpty(result.Uri))
                     {
-                        msg += $"<a target='_Blank' href='{result.Type}'>点击查看解决办法</a><br>";
+                        msg += $"<a target='_Blank' href='{result.Uri}'>点击查看解决办法</a><br>";
                     }
                     await _notificationService.Open(new NotificationConfig()
                     {

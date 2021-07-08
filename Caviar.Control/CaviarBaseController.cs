@@ -251,7 +251,7 @@ namespace Caviar.Control
             ResultMsg.Detail = detail;
             return Ok(ResultMsg);
         }
-        protected virtual IActionResult ResultError(int status, string title, string detail, IDictionary<string, string[]> errors)
+        protected virtual IActionResult ResultError(int status, string title, string detail, IDictionary<string, string> errors)
         {
             ResultMsg.Status = status;
             ResultMsg.Title = title;
@@ -276,7 +276,7 @@ namespace Caviar.Control
         {
             ResultMsg.Status = 302;
             ResultMsg.Title = title;
-            ResultMsg.Type = url;
+            ResultMsg.Uri = url;
             return ResultError(ResultMsg);
 
         }
@@ -297,7 +297,7 @@ namespace Caviar.Control
         {
             ResultMsg.Status = 401;
             ResultMsg.Title = title;
-            ResultMsg.Type = CaviarConfig.CavUrl.UserLogin;//登录地址
+            ResultMsg.Uri = CaviarConfig.CavUrl.UserLogin;//登录地址
             return ResultError(ResultMsg);
         }
 

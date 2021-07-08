@@ -62,19 +62,8 @@ namespace Caviar.Control
         [HttpPost]
         public virtual async Task<IActionResult> Add(ViewT view)
         {
-            try
-            {
-                var count = await _Action.AddEntity();
-                if (count > 0)
-                {
-                    return ResultOK();
-                }
-            }
-            catch (Exception e)
-            {
-                return ResultError("添加失败", e.Message);
-            }
-            return ResultError("添加失败");
+            var result = await _Action.AddEntity();
+            return Ok(result);
         }
 
         /// <summary>
@@ -85,19 +74,8 @@ namespace Caviar.Control
         [HttpPost]
         public virtual async Task<IActionResult> Update(ViewT view)
         {
-            try
-            {
-                var count = await _Action.UpdateEntity();
-                if (count > 0)
-                {
-                    return ResultOK();
-                }
-            }
-            catch (Exception e)
-            {
-                return ResultError("修改失败", e.Message);
-            }
-            return ResultError("修改失败");
+            var result = await _Action.UpdateEntity(); 
+            return Ok(result);
         }
 
         /// <summary>
@@ -108,19 +86,8 @@ namespace Caviar.Control
         [HttpPost]
         public virtual async Task<IActionResult> Delete(ViewT view)
         {
-            try
-            {
-                var count = await _Action.DeleteEntity();
-                if (count > 0)
-                {
-                    return ResultOK();
-                }
-            }
-            catch (Exception e)
-            {
-                return ResultError("删除失败", e.Message);
-            }
-            return ResultError("删除失败");
+            var result = await _Action.DeleteEntity(); 
+            return Ok(result);
         }
         /// <summary>
         /// 获取分页数据
@@ -133,9 +100,8 @@ namespace Caviar.Control
         [HttpGet]
         public virtual async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10, bool isOrder = true, bool isNoTracking = true)
         {
-            var pages = await _Action.GetPages(u => true, pageIndex, pageSize, isOrder, isNoTracking);
-            ResultMsg.Data = pages;
-            return ResultOK();
+            var result = await _Action.GetPages(u => true, pageIndex, pageSize, isOrder, isNoTracking);
+            return Ok(result);
         }
 
         /// <summary>
@@ -149,10 +115,8 @@ namespace Caviar.Control
         {
             var fields = BC.UserData.ModelFields.Where(u => u.BaseTypeName == typeof(T).Name).ToList();
             if (fields == null) return ResultError("没有对该对象的查询权限");
-            var data = await _Action.FuzzyQuery(query, fields);
-            if(data == null) return ResultError("没有对该对象的查询权限,查询时出错");
-            ResultMsg.Data = data;
-            return ResultOK();
+            var result = await _Action.FuzzyQuery(query, fields);
+            return Ok(result);
         }
 
         /// <summary>
@@ -164,8 +128,8 @@ namespace Caviar.Control
         public virtual async Task<IActionResult> GetFields()
         {
             var permissionAction = CreateModel<PermissionAction>();
-            ResultMsg.Data = await permissionAction.GetFieldsData(CavAssembly, typeof(ViewT).Name);
-            return ResultOK();
+            var result = await permissionAction.GetFieldsData(CavAssembly, typeof(ViewT).Name);
+            return Ok(result);
         }
         #endregion
     }
