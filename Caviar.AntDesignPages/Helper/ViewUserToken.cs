@@ -29,8 +29,7 @@ namespace Caviar.AntDesignPages.Helper
             var cookie = await _JSRuntime.InvokeAsync<string>("getCookie", Config.CookieName);
             if (!string.IsNullOrEmpty(cookie))
             {
-                string base64 = HttpUtility.UrlDecode(cookie);
-                string json = Encoding.UTF8.GetString(Convert.FromBase64String(base64));
+                var json = CommonHelper.UrlBase64Handle(cookie);
                 var token = JsonSerializer.Deserialize<UserToken>(json);
                 this.AutoAssign(token);
             }

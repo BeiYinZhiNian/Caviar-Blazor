@@ -40,12 +40,16 @@ namespace Caviar.Control.ModelAction
         {
             try
             {
+                if (entity.Uid == CaviarConfig.SysAdminRoleGuid)
+                {
+                    return Error("不能删除管理员角色");
+                }
                 var count = await BC.DC.DeleteEntityAsync(entity);
                 if (count > 0)
                 {
                     return Ok();
                 }
-                throw new Exception("删除失败，删除结果：" + count);
+                return Error("删除失败，删除结果：" + count);
             }
             catch (Exception e)
             {

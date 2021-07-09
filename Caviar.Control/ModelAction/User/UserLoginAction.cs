@@ -29,7 +29,7 @@ namespace Caviar.Control.User
             {
                 userLogin = BC.DC.GetSingleEntityAsync<SysUser>(u => u.PhoneNumber == entity.PhoneNumber && u.Password == entity.Password).Result;
             }
-            if (userLogin == null) Error<string>("用户名或密码错误");
+            if (userLogin == null) return Error<UserToken>("用户名或密码错误");
             BC.UserToken.AutoAssign(userLogin);
             BC.UserToken.CreateTime = DateTime.Now;
             BC.UserToken.Token = CaviarConfig.GetUserToken(BC.UserToken);

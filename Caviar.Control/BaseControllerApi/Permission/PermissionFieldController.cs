@@ -56,8 +56,8 @@ namespace Caviar.Control.Permission
         [HttpPost]
         public async Task<IActionResult> RoleFields(string fullName, int roleId, List<ViewModelFields> viewModelFields)
         {
-            await _Action.SetRoleFields(fullName, roleId, viewModelFields);
-            return Ok();
+            var result = await _Action.SetRoleFields(fullName, roleId, viewModelFields);
+            return Ok(result);
         }
     }
 }

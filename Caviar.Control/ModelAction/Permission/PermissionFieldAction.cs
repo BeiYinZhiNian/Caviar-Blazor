@@ -91,9 +91,9 @@ namespace Caviar.Control.Permission
         /// <param name="roleId"></param>
         /// <param name="modelFields"></param>
         /// <returns></returns>
-        public async Task SetRoleFields(string fullName, int roleId, List<ViewModelFields> modelFields)
+        public async Task<ResultMsg> SetRoleFields(string fullName, int roleId, List<ViewModelFields> modelFields)
         {
-            if (string.IsNullOrEmpty(fullName) || roleId == 0) return;
+            if (string.IsNullOrEmpty(fullName) || roleId == 0) return Error("设置角色字段失败，请检查模型名称或角色id");
             var permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.IdentityId == roleId && u.PermissionType == PermissionType.Field && u.PermissionIdentity == PermissionIdentity.Role);
             var fields = BC.SysModelFields.Where(u => u.FullName == fullName);
             foreach (var item in modelFields)
@@ -133,6 +133,7 @@ namespace Caviar.Control.Permission
                     }
                 }
             }
+            return Ok();
         }
 
         /// <summary>

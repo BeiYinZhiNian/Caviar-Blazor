@@ -8,6 +8,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Text.Json;
+using System.Web;
+
 namespace Caviar.Models.SystemData
 {
     public static class CommonHelper
@@ -94,6 +96,7 @@ namespace Caviar.Models.SystemData
         /// <returns></returns>
         public static T AutoAssign<T, K>(this T example, K target)
         {
+            if (target == null) throw new Exception("赋值类型不可为null");
             var targetType = target.GetType();//获得类型
             var exampleType = typeof(T);
             foreach (PropertyInfo sp in targetType.GetProperties())//获得类型的属性字段
@@ -341,6 +344,13 @@ namespace Caviar.Models.SystemData
             {
                 return GetCavBaseType(baseType);
             }
+        }
+
+        public static string UrlBase64Handle(string base64)
+        {
+            var base64url = HttpUtility.UrlDecode(base64);
+            base64 = Encoding.UTF8.GetString(Convert.FromBase64String(base64url));
+            return base64;
         }
     }
 }

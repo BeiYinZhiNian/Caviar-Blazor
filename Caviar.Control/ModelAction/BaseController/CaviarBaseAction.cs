@@ -190,9 +190,8 @@ namespace Caviar.Control
             if (BC.HttpContext.Request.Headers.TryGetValue("UsreToken", out StringValues value))
             {
                 string base64url = value[0];
-                string base64 = HttpUtility.UrlDecode(base64url);
-                string json = Encoding.UTF8.GetString(Convert.FromBase64String(base64));
-                UserToken userToken = JsonSerializer.Deserialize<UserToken>(json);
+                string base64 = CommonHelper.UrlBase64Handle(base64url);
+                UserToken userToken = JsonSerializer.Deserialize<UserToken>(base64);
                 var token = CaviarConfig.GetUserToken(userToken);
                 if (token != userToken.Token)
                 {

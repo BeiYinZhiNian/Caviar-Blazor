@@ -61,8 +61,9 @@ namespace Caviar.Control.Permission
         /// <param name="userGroupId"></param>
         /// <param name="viewRoles"></param>
         /// <returns></returns>
-        public async Task SetRoleUserGropu(int userGroupId,int[] roleIds)
+        public async Task<ResultMsg> SetRoleUserGropu(int userGroupId,int[] roleIds)
         {
+            if (userGroupId == 0 || roleIds == null) return Error("设置用户组角色错误,请检查用户组或角色");
             var urgs = await BC.DC.GetEntityAsync<SysRoleUserGroup>(u => u.UserGroupId == userGroupId);
             var urgIds = urgs.Select(u => u.RoleId);
             var addIds = roleIds.Except(urgIds);
@@ -84,6 +85,7 @@ namespace Caviar.Control.Permission
             }
             await BC.DC.DeleteEntityAsync(deleteUrgList,IsDelete:true);
             await BC.DC.AddEntityAsync(addUrgList);
+            return Ok();
         }
     }
 }
