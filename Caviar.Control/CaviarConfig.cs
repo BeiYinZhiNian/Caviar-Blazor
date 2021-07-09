@@ -29,11 +29,6 @@ namespace Caviar.Control
         public static CodeFileGenerate WebAPI { get; set; }
         public static CodeFileGenerate Models { get; set; }
         public static CavUrl CavUrl { get; set; }
-        /// <summary>
-        /// 密钥***重要***
-        /// 防止误用，单独存放
-        /// </summary>
-        static Guid Key { get; set; }
         public static bool IsDebug { get; set; }
         /// <summary>
         /// 是否为严格模式
@@ -81,7 +76,7 @@ namespace Caviar.Control
             var guid = json["Caviar"]["Role"]["NoLoginRole"].ToString();
             NoLoginRoleGuid = Guid.Parse(guid);
             SysAdminRoleGuid = Guid.Parse(json["Caviar"]["Role"]["SysAdminRole"].ToString());
-            Key = Guid.Parse(json["Caviar"]["Token"]["Key"].ToString());
+            TokenConfig.Key = Guid.Parse(json["Caviar"]["Token"]["Key"].ToString());
             TokenConfig.Duration = int.Parse(json["Caviar"]["Token"]["Duration"].ToString());
             WebUI.Path = json["Caviar"]["WebUI"]["Path"].ToString();
             WebUI.Namespace = json["Caviar"]["WebUI"]["namespace"].ToString();
@@ -142,11 +137,6 @@ namespace Caviar.Control
                 RequestPath = CurrencyConstant.Enclosure
             });
             return app;
-        }
-
-        public static string GetUserToken(UserToken userToken)
-        {
-            return CommonHelper.SHA256EncryptString(userToken.Id + userToken.UserName + userToken.Uid.ToString() + userToken.CreateTime + Key.ToString());
         }
 
         /// <summary>
@@ -283,6 +273,11 @@ namespace Caviar.Control
         /// 到期时间
         /// </summary>
         public int Duration { get; set; }
+        /// <summary>
+        /// token密钥
+        /// **重要**
+        /// </summary>
+        public Guid Key { get; set; }
     }
     /// <summary>
     /// 代码生成器配置

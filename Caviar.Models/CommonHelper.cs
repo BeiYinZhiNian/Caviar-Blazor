@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Web;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Caviar.Models.SystemData
 {
@@ -351,6 +352,27 @@ namespace Caviar.Models.SystemData
             var base64url = HttpUtility.UrlDecode(base64);
             base64 = Encoding.UTF8.GetString(Convert.FromBase64String(base64url));
             return base64;
+        }
+
+        /// <summary>
+        /// 获取jwt中的payLoad
+        /// </summary>
+        /// <param name="encodeJwt"></param>
+        /// <returns></returns>
+        public static Dictionary<string, object> GetPayLoad(string encodeJwt)
+        {
+            var jwtArr = encodeJwt.Split('.');
+            var payLoad = JsonSerializer.Deserialize<Dictionary<string, object>>(Base64UrlEncoder.Decode(jwtArr[1]));
+            return payLoad;
+        }
+        /// <summary>
+        /// 获取jwt中userToken
+        /// </summary>
+        /// <returns></returns>
+        public static UserToken GetJwtUserToken(string encodeJwt)
+        {
+            var pairs = GetPayLoad(encodeJwt);
+            return JsonSerializer.Deserialize<UserToken>(pairs[CurrencyConstant.TokenPayLoadName].ToString());
         }
     }
 }

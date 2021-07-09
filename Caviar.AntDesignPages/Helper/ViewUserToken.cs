@@ -26,13 +26,12 @@ namespace Caviar.AntDesignPages.Helper
 
         public async Task GetUserToken()
         {
-            var cookie = await _JSRuntime.InvokeAsync<string>("getCookie", Config.CookieName);
-            if (!string.IsNullOrEmpty(cookie))
+            var jwt = await _JSRuntime.InvokeAsync<string>("getCookie", Config.CookieName);
+            if (!string.IsNullOrEmpty(jwt))
             {
-                var json = CommonHelper.UrlBase64Handle(cookie);
-                var token = JsonSerializer.Deserialize<UserToken>(json);
+                var token = CommonHelper.GetJwtUserToken(jwt);
                 this.AutoAssign(token);
             }
-        } 
+        }
     }
 }

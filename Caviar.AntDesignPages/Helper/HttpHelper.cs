@@ -22,7 +22,7 @@ namespace Caviar.AntDesignPages.Helper
         NavigationManager _navigationManager;
         MessageService _message;
         IJSRuntime _jSRuntime;
-        public string TokenName => "UsreToken";
+        public string TokenName => CurrencyConstant.Authorization;
         public HttpHelper(HttpClient http, NotificationService _notice,NavigationManager navigationManager, MessageService message,IJSRuntime JsRuntime)
         {
             Http = http;
@@ -52,7 +52,7 @@ namespace Caviar.AntDesignPages.Helper
                 }
                 if (!string.IsNullOrEmpty(cookie))
                 {
-                    Http.DefaultRequestHeaders.Add(TokenName, cookie);
+                    Http.DefaultRequestHeaders.Add(TokenName,CurrencyConstant.JWT + cookie);
                     IsSetCookie = true;
                 }
             }

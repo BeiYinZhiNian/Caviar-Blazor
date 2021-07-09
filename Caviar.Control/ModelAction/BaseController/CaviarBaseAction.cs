@@ -187,22 +187,15 @@ namespace Caviar.Control
         /// <returns></returns>
         public ResultMsg CheckUsreToken()
         {
-            if (BC.HttpContext.Request.Headers.TryGetValue("UsreToken", out StringValues value))
+            if (BC.HttpContext.Request.Headers.TryGetValue(CurrencyConstant.Authorization, out StringValues value))
             {
-                string base64url = value[0];
-                string base64 = CommonHelper.UrlBase64Handle(base64url);
-                UserToken userToken = JsonSerializer.Deserialize<UserToken>(base64);
-                var token = CaviarConfig.GetUserToken(userToken);
-                if (token != userToken.Token)
+                string Authorization = value[0].Replace(CurrencyConstant.JWT, "");
+                var IsValidate = JwtHelper.Validate(Authorization);
+                if (!IsValidate)
                 {
                     return Error("您的登录已过期，请重新登录");
                 }
-                var outTime = (userToken.CreateTime.AddMinutes(CaviarConfig.TokenConfig.Duration) - DateTime.Now);
-                if (outTime.TotalSeconds <= 0)
-                {
-                    return Error("您的登录已过期，请重新登录");
-                }
-                BC.UserToken = userToken;
+                BC.UserToken = CommonHelper.GetJwtUserToken(Authorization);
             }
             //没有写带token应该在权限拦下不应该在检查时候
             //这样的好处是可以给未登录用户一些权限

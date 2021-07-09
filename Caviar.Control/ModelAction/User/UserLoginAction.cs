@@ -32,7 +32,7 @@ namespace Caviar.Control.User
             if (userLogin == null) return Error<UserToken>("用户名或密码错误");
             BC.UserToken.AutoAssign(userLogin);
             BC.UserToken.CreateTime = DateTime.Now;
-            BC.UserToken.Token = CaviarConfig.GetUserToken(BC.UserToken);
+            BC.UserToken.Token = JwtHelper.CreateTokenByHandler(BC.UserToken);
             BC.UserToken.Duration = CaviarConfig.TokenConfig.Duration;
             return Ok("登录成功，欢迎回来",BC.UserToken);
         }

@@ -44,9 +44,7 @@ namespace Caviar.AntDesignPages.Pages.User
             if (result.Status==200)
             {
                 UserToken.AutoAssign(result.Data);
-                var json = JsonConvert.SerializeObject(UserToken);
-                var base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
-                await JsRuntime.InvokeVoidAsync("setCookie", Config.CookieName, base64, UserToken.Duration);
+                await JsRuntime.InvokeVoidAsync("setCookie", Config.CookieName, UserToken.Token, UserToken.Duration);
                 http.IsSetCookie = false;//更新cookies
                 NavigationManager.NavigateTo("/");
                 _message.Success(result.Title);

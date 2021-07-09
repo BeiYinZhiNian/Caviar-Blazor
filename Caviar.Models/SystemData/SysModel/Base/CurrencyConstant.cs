@@ -20,8 +20,19 @@ namespace Caviar.Models.SystemData
         /// url名称
         /// </summary>
         public const string CavModelUrl = "Url";
-        
-        
+        /// <summary>
+        /// jwt验证中token名称
+        /// </summary>
+        public const string TokenPayLoadName = "Data";
+        /// <summary>
+        /// 验证方式
+        /// </summary>
+        public const string Authorization = "Authorization";
+        /// <summary>
+        /// JWT验证
+        /// </summary>
+        public const string JWT = "JWT ";
+
     }
 
     public static class HttpState
