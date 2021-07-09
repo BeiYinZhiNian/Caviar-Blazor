@@ -30,7 +30,8 @@ namespace Caviar.Control
             var json = JsonSerializer.Serialize(userToken);
             var tempClaim = new Claim(CurrencyConstant.TokenPayLoadName, json);
             claims.Add(tempClaim);
- 
+            tempClaim = new Claim("Duration", CaviarConfig.TokenConfig.Duration.ToString());
+            claims.Add(tempClaim);
             // Create the JWT and write it to a string
             var jwt = new JwtSecurityToken(
                 issuer: null,
