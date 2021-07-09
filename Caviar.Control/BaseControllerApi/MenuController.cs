@@ -24,9 +24,8 @@ namespace Caviar.Control.Menu
             {
                 return ResultError("请输入正确地址");
             }
-            var buttons = _Action.GetButton(url);
-            ResultMsg.Data = buttons;
-            return ResultOK();
+            var result = _Action.GetButton(url);
+            return Ok(result);
         }
 
         public override async Task<IActionResult> Delete(ViewMenu view)

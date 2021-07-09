@@ -9,26 +9,22 @@ namespace Caviar.Models.SystemData
 {
     public interface IBaseModelAction<T, ViewT>:IActionModel, IDIinjectAtteribute where T : class, IBaseModel
     {
-        /// <summary>
-        /// 数据实体，当前台post中带有ViewT模型，会自动注入到实体中
-        /// </summary>
-        public T Entity { get; set; }
 
         /// <summary>
         /// 添加实体
         /// </summary>
         /// <returns></returns>
-        public Task<ResultMsg> AddEntity();
+        public Task<ResultMsg> AddEntity(T entity);
         /// <summary>
         /// 删除实体
         /// </summary>
         /// <returns></returns>
-        public Task<ResultMsg> DeleteEntity();
+        public Task<ResultMsg> DeleteEntity(T entity);
         /// <summary>
         /// 修改实体
         /// </summary>
         /// <returns></returns>
-        public Task<ResultMsg> UpdateEntity();
+        public Task<ResultMsg> UpdateEntity(T entity);
         /// <summary>
         /// 获取分页数据
         /// </summary>
@@ -55,7 +51,7 @@ namespace Caviar.Models.SystemData
         /// <typeparam name="K"></typeparam>
         /// <param name="model"></param>
         /// <returns></returns>
-        public List<ViewT> ModelToViewModel(List<T> model);
+        public List<ViewT> ToViewModel(List<T> model);
         /// <summary>
         /// 模糊查询
         /// </summary>

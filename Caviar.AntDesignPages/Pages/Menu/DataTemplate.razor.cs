@@ -27,7 +27,7 @@ namespace Caviar.AntDesignPages.Pages.Menu
         async Task GetMenus()
         {
             var result = await Http.GetJson<PageData<ViewMenu>>("Menu/Index?pageSize=100");
-            if (result.Status != 200) return;
+            if (result.Status != HttpState.OK) return;
             if (DataSource.ParentId > 0)
             {
                 List<ViewMenu> listData = new List<ViewMenu>();

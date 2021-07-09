@@ -41,8 +41,8 @@ namespace Caviar.Control.Permission
         public async Task<IActionResult> GetFields(string modelName)
         {
             if (string.IsNullOrEmpty(modelName)) return ResultError("请输入需要获取的数据名称");
-            ResultMsg.Data = await _Action.GetFieldsData(CavAssembly, modelName);
-            return ResultOK();
+            var result = await _Action.GetFieldsData(CavAssembly, modelName);
+            return Ok(result);
         }
 
         /// <summary>
@@ -54,8 +54,8 @@ namespace Caviar.Control.Permission
         public async Task<IActionResult> RoleFields(string modelName, int roleId)
         {
             if (string.IsNullOrEmpty(modelName)) return ResultError("请输入需要获取的数据名称");
-            ResultMsg.Data = await _Action.GetFieldsData(CavAssembly, modelName, roleId);
-            return ResultOK();
+            var result = await _Action.GetFieldsData(CavAssembly, modelName, roleId);
+            return Ok(result);
         }
         /// <summary>
         /// 设置角色字段
@@ -66,7 +66,7 @@ namespace Caviar.Control.Permission
         public async Task<IActionResult> RoleFields(string fullName, int roleId, List<ViewModelFields> viewModelFields)
         {
             await _Action.SetRoleFields(fullName, roleId, viewModelFields);
-            return ResultOK();
+            return Ok();
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Caviar.Control.Permission
         /// </summary>
         /// <param name="userGroupId"></param>
         /// <returns></returns>
-        public async Task<List<ViewRole>> GetRoleUserGropu(int userGroupId)
+        public async Task<ResultMsg<List<ViewRole>>> GetRoleUserGropu(int userGroupId)
         {
             List<SysRole> SelectUrg = new List<SysRole>();
             List<SysRole> haveSysRoles = new List<SysRole>();
@@ -53,7 +53,7 @@ namespace Caviar.Control.Permission
                 viewUrg.Add(userGroup);
             }
             viewUrg.OrderBy(u => u.Number);
-            return viewUrg;
+            return Ok(viewUrg);
         }
         /// <summary>
         /// 设置用户组角色

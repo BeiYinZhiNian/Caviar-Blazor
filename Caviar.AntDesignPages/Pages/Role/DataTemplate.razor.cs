@@ -35,7 +35,7 @@ namespace Caviar.AntDesignPages.Pages.Role
         {
             string url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
             var result = await Http.GetJson<PageData<ViewRole>>($"{url}?pageSize=100");
-            if (result.Status != 200) return;
+            if (result.Status != HttpState.OK) return;
             if (DataSource.ParentId > 0)
             {
                 List<ViewRole> listData = new List<ViewRole>();

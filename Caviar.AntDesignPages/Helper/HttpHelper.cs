@@ -145,23 +145,23 @@ namespace Caviar.AntDesignPages.Helper
         {
             switch (result.Status)
             {
-                case 200://正确响应
+                case HttpState.OK://正确响应
                     break;
-                case 302://重定向专用
+                case HttpState.Redirect://重定向专用
                     _navigationManager.NavigateTo(result.Uri);
                     break;
-                case 401://退出登录
+                case HttpState.Unauthorized://退出登录
                     await _jSRuntime.InvokeVoidAsync("delCookie", Config.CookieName);
                     IsSetCookie = false;
                     _navigationManager.NavigateTo(result.Uri);
                     break;
-                case 403://只用于提示
-                case 406:
+                case HttpState.NotPermission://只用于提示
+                case HttpState.Error:
                     break;
-                case 404:
+                case HttpState.NotFound:
                     _navigationManager.NavigateTo("/Exception/404");
                     break;
-                case 500://发生严重错误
+                case HttpState.InternaError://发生严重错误
                 default:
                     result.IsTips = false;
                     string msg = "";
@@ -195,7 +195,7 @@ namespace Caviar.AntDesignPages.Helper
 
         void Tips(ResultMsg result)
         {
-            if (result.IsTips && result.Status!=200)
+            if (result.IsTips && result.Status!= HttpState.OK)
             {
                 _message.Warn($"{result.Title} 状态码:{result.Status}");
             }

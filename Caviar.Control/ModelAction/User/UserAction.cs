@@ -9,9 +9,9 @@ namespace Caviar.Control.User
 {
     public partial class UserAction
     {
-        public override List<ViewUser> ModelToViewModel(List<SysUser> model)
+        public override List<ViewUser> ToViewModel(List<SysUser> model)
         {
-            var viewModel = base.ModelToViewModel(model);
+            var viewModel = base.ToViewModel(model);
             foreach (var item in viewModel)
             {
                 var userGroup = BC.DC.GetSingleEntityAsync<SysUserGroup>(u => u.Id == item.UserGroupId).Result;

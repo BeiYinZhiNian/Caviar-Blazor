@@ -27,8 +27,8 @@ namespace Caviar.Control.Permission
         {
             var menus = await _Action.GetRoleMenu(roleId);
             if (menus == null) return ResultForbidden("未查询到该角色权限，请联系管理员获取");
-            ResultMsg.Data = menus.ListToTree();
-            return ResultOK();
+            menus.Data = menus.Data.ListToTree();
+            return Ok(menus);
         }
         /// <summary>
         /// 设置角色菜单
@@ -39,8 +39,8 @@ namespace Caviar.Control.Permission
         [HttpPost]
         public async Task<IActionResult> RoleMenu(int roleId,int[] menuIds)
         {
-            await _Action.SetRoleMenu(roleId, menuIds);
-            return ResultOK();
+            var result = await _Action.SetRoleMenu(roleId, menuIds);
+            return Ok(result);
         }
 
     }

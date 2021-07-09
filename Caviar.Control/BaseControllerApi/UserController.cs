@@ -22,42 +22,29 @@ namespace Caviar.Control.User
             {
                 return ResultError("正在进行非法修改");
             }
-            var result = await _Action.UpdateEntity();
+            var result = await _Action.UpdateEntity(viewUser);
             return Ok(result);
         }
 
         [HttpPost]
-        public IActionResult Login(ViewUser userLogin)
+        public IActionResult Login(ViewUser eneity)
         {
-            var userAction = CreateModel<UserAction>();
-            userAction.Entity = userLogin;
-            var loginMsg = userAction.Login();
-            if (BC.IsLogin)
-            {
-                ResultMsg.Data = BC.UserToken;
-                return ResultOK("登录成功，欢迎回来");
-            }
-            return ResultError(loginMsg);
+            var result = _Action.Login(eneity);
+            return Ok(result);
         }
 
         [HttpPost]
-        public IActionResult Register(ViewUser userLogin)
+        public IActionResult Register(ViewUser eneity)
         {
-            var userAction = CreateModel<UserAction>();
-            userAction.Entity = userLogin;
-            var IsRegister = userAction.Register(out string msg);
-            if (IsRegister)
-            {
-                return ResultOK(msg);
-            }
-            return ResultError(msg);
+            var ruslut = _Action.Register(eneity);
+            return Ok(ruslut);
         }
 
         [HttpPost]
         public async Task<IActionResult> UpdatePwd(UserPwd userPwd)
         {
             var result = await _Action.UpdatePwd(userPwd);
-            return ResultOK(result);
+            return Ok(result);
         }
     }
 }

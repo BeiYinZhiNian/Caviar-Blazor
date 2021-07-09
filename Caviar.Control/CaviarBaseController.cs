@@ -101,15 +101,15 @@ namespace Caviar.Control
             BC.SysModelFields = BC.DC.GetAllAsync<SysModelFields>().Result;
             BC.SysMenus = BC.DC.GetAllAsync<SysMenu>().Result;
             var roleAction = CreateModel<RoleAction>();
-            BC.UserData.Roles = roleAction.GetCurrentRoles().Result;
+            BC.UserData.Roles = roleAction.GetCurrentRoles().Result.Data;
             var permissionAction = CreateModel<PermissionAction>();
             var rolePermission = permissionAction.GetRolePermissions(BC.UserData.Roles).Result;
             var userPermission = permissionAction.GetUserPermissions(BC.UserToken.Id).Result;
             BC.UserData.Permissions = new List<SysPermission>();
-            BC.UserData.Permissions.AddRange(rolePermission);
-            BC.UserData.Permissions.AddRange(userPermission);
-            BC.UserData.ModelFields = permissionAction.GetRoleFields();
-            BC.UserData.Menus = permissionAction.GetPermissionMenu(BC.UserData.Permissions);
+            BC.UserData.Permissions.AddRange(rolePermission.Data);
+            BC.UserData.Permissions.AddRange(userPermission.Data);
+            BC.UserData.ModelFields = permissionAction.GetRoleFields().Data;
+            BC.UserData.Menus = permissionAction.GetPermissionMenu(BC.UserData.Permissions).Data;
         } 
 
         public override void OnActionExecuted(ActionExecutedContext context)
@@ -118,7 +118,7 @@ namespace Caviar.Control
             stopwatch.Stop();
             //日志记录，这里应该想一个更好的办法
             var statusCode = context.HttpContext.Response.StatusCode;
-            if (statusCode != 200)
+            if (statusCode != HttpState.OK)
             {
                 LoggerMsg("", LogLevel.Error, statusCode, true);
             }
@@ -126,7 +126,7 @@ namespace Caviar.Control
 
         public override OkObjectResult Ok(object value)
         {
-            if (ResultMsg.Status == 200)
+            if (ResultMsg.Status == HttpState.OK)
             {
                 LoggerMsg(ResultMsg.Title, LogLevel.Information, ResultMsg.Status, true);
             }
@@ -201,7 +201,7 @@ namespace Caviar.Control
             {
                 return false;
             }
-            else if (log.Method == "GET" && log.LogLevel == CavLogLevel.Information && log.Status == 200 && log.Elapsed < 1)
+            else if (log.Method == "GET" && log.LogLevel == CavLogLevel.Information && log.Status == HttpState.OK && log.Elapsed < 1)
             {
                 return false;
             }

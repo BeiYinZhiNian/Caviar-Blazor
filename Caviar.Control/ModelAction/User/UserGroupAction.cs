@@ -9,7 +9,7 @@ namespace Caviar.Control.UserGroup
 {
     public partial class UserGroupAction
     {
-        public override List<ViewUserGroup> ModelToViewModel(List<SysUserGroup> model)
+        public override List<ViewUserGroup> ToViewModel(List<SysUserGroup> model)
         {
             model.AToB(out List<ViewUserGroup> viewModel);
             viewModel = viewModel.ListToTree();

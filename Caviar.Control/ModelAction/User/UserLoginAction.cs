@@ -16,49 +16,45 @@ namespace Caviar.Control.User
         /// 登录成功返回token，失败返回错误原因
         /// </summary>
         /// <returns></returns>
-        public virtual string Login()
+        public virtual ResultMsg<UserToken> Login(ViewUser entity)
         {
 
-            if (string.IsNullOrEmpty(Entity.Password) || Entity.Password.Length != 64) return "用户名或密码错误";
+            if (string.IsNullOrEmpty(entity.Password) || entity.Password.Length != 64) return Error<UserToken>("用户名或密码错误");
             SysUser userLogin = null;
-            if (!string.IsNullOrEmpty(Entity.UserName))
+            if (!string.IsNullOrEmpty(entity.UserName))
             {
-                userLogin = BC.DC.GetSingleEntityAsync<SysUser>(u => u.UserName == Entity.UserName && u.Password == Entity.Password).Result;
+                userLogin = BC.DC.GetSingleEntityAsync<SysUser>(u => u.UserName == entity.UserName && u.Password == entity.Password).Result;
             }
-            else if (!string.IsNullOrEmpty(Entity.PhoneNumber))
+            else if (!string.IsNullOrEmpty(entity.PhoneNumber))
             {
-                userLogin = BC.DC.GetSingleEntityAsync<SysUser>(u => u.PhoneNumber == Entity.PhoneNumber && u.Password == Entity.Password).Result;
+                userLogin = BC.DC.GetSingleEntityAsync<SysUser>(u => u.PhoneNumber == entity.PhoneNumber && u.Password == entity.Password).Result;
             }
-            if (userLogin == null) return "用户名或密码错误";
+            if (userLogin == null) Error<string>("用户名或密码错误");
             BC.UserToken.AutoAssign(userLogin);
             BC.UserToken.CreateTime = DateTime.Now;
             BC.UserToken.Token = CaviarConfig.GetUserToken(BC.UserToken);
             BC.UserToken.Duration = CaviarConfig.TokenConfig.Duration;
-            return BC.UserToken.Token;
+            return Ok("登录成功，欢迎回来",BC.UserToken);
         }
 
-        public virtual bool Register(out string msg)
+        public virtual ResultMsg Register(ViewUser entity)
         {
-            var user = BC.DC.GetSingleEntityAsync<SysUser>(u => u.UserName == Entity.UserName).Result;
+            var user = BC.DC.GetSingleEntityAsync<SysUser>(u => u.UserName == entity.UserName).Result;
             if (user != null)
             {
-                msg = "该用户名已经被注册！";
-                return false;
+                return Error("该用户名已经被注册!");
             }
-            user = BC.DC.GetSingleEntityAsync<SysUser>(u => u.PhoneNumber == Entity.PhoneNumber).Result;
+            user = BC.DC.GetSingleEntityAsync<SysUser>(u => u.PhoneNumber == entity.PhoneNumber).Result;
             if (user != null)
             {
-                msg = "该手机号已经被注册！";
-                return false;
+                return Error("该手机号已经被注册!");
             }
-            var count = BC.DC.AddEntityAsync(Entity).Result;
+            var count = BC.DC.AddEntityAsync(entity).Result;
             if (count <= 0)
             {
-                msg = "注册账号失败！";
-                return false;
+                return Error("注册账号失败!");
             }
-            msg = "账号注册成功";
-            return true;
+            return Ok("账号注册成功");
         }
     }
 }

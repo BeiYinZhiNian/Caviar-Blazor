@@ -45,7 +45,7 @@ namespace Caviar.AntDesignPages.Pages.PersonalCenter
         {
             await base.OnInitializedAsync();
             var result = await Http.GetJson<ViewUser>("User/MyDetails");
-            if (result.Status != 200) return;
+            if (result.Status != HttpState.OK) return;
             UserData = result.Data;
             StateHasChanged();
         }

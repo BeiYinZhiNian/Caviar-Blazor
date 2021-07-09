@@ -9,7 +9,7 @@ namespace Caviar.Control.Role
 {
     public partial class RoleAction
     {
-        public async Task<List<SysRole>> GetCurrentRoles()
+        public async Task<ResultMsg<List<SysRole>>> GetCurrentRoles()
         {
             List<SysRole> roles = new List<SysRole>();
             if (BC.Id > 0)
@@ -39,7 +39,7 @@ namespace Caviar.Control.Role
                 var noRole = await BC.DC.GetEntityAsync<SysRole>(CaviarConfig.NoLoginRoleGuid);
                 await AddRole(roles, noRole);
             }
-            return roles.ToList();
+            return Ok(roles.ToList());
         }
         /// <summary>
         /// 加入当前角色和所有父角色
@@ -59,7 +59,7 @@ namespace Caviar.Control.Role
             }
         }
 
-        public override List<ViewRole> ModelToViewModel(List<SysRole> model)
+        public override List<ViewRole> ToViewModel(List<SysRole> model)
         {
             model.AToB(out List<ViewRole> outModel);
             outModel = outModel.ListToTree();

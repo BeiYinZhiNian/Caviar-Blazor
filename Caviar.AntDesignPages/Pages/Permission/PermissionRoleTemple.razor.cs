@@ -29,7 +29,7 @@ namespace Caviar.AntDesignPages.Pages.Permission
         async Task GetSelectMenus()
         {
             var result = await Http.GetJson<List<ViewRole>>($"{Url}?PermissionId={DataSource.Id}");
-            if (result.Status != 200) return;
+            if (result.Status != HttpState.OK) return;
             if (result.Data != null)
             {
                 ViewRoles = result.Data.ListToTree();
@@ -43,7 +43,7 @@ namespace Caviar.AntDesignPages.Pages.Permission
             ViewRoles.TreeToList(roles);
             var ids = roles.Where(u => u.IsPermission).Select(u => u.Id);
             var result = await Http.PostJson($"{Url}?PermissionId={DataSource.Id}", ids);
-            if (result.Status != 200) return false;
+            if (result.Status != HttpState.OK) return false;
             MessageService.Success("操作成功");
             return true;
         }

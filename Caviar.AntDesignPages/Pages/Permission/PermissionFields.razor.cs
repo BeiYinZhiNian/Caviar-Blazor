@@ -42,14 +42,14 @@ namespace Caviar.AntDesignPages.Pages.Permission
         public async Task GetModels()
         {
             var result = await Http.GetJson<List<ViewModelFields>>("Permission/GetModels?isView=true");
-            if (result.Status != 200) return;
+            if (result.Status != HttpState.OK) return;
             Models = result.Data;
         }
 
         public async Task GetFields(ViewModelFields model)
         {
             var result = await Http.GetJson<List<ViewModelFields>>($"{Url}?modelName={model.TypeName}&roleId={Role.Id}");
-            if (result.Status != 200) return;
+            if (result.Status != HttpState.OK) return;
             CurrentModel = model;
             FieldName = model.DisplayName + "-数据字段";
             Fields = result.Data;
@@ -82,7 +82,7 @@ namespace Caviar.AntDesignPages.Pages.Permission
                 return;
             }
             var result = await Http.PostJson($"{Url}?fullName={CurrentModel.TypeName}&roleId={Role.Id}", Fields);
-            if (result.Status != 200) return;
+            if (result.Status != HttpState.OK) return;
             await MessageService.Success("保存完毕");
         }
 

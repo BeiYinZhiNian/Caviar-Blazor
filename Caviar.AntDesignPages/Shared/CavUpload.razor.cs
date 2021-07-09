@@ -38,7 +38,7 @@ namespace Caviar.AntDesignPages.Shared
                 };
                 var result = fileinfo.File.GetResponse<ResultMsg<ViewEnclosure>>(options);
                 Http.Response(result);
-                if (result.Status != 200) return;
+                if (result.Status != HttpState.OK) return;
                 result.Data.Path = Http.Http.BaseAddress.AbsoluteUri.Replace("/api/","") + CurrencyConstant.Enclosure + "/" + CurrencyConstant.HeadPortrait + "/" + result.Data.Name;
                 if (OnEnclosureCallback.HasDelegate)
                 {

@@ -22,7 +22,7 @@ namespace Caviar.AntDesignPages.Pages.UserGroup
         async Task GetParents()
         {
             var result = await Http.GetJson<PageData<ViewUserGroup>>("UserGroup/Index?pageSize=100");
-            if (result.Status != 200) return;
+            if (result.Status != HttpState.OK) return;
             if (DataSource.ParentId > 0)
             {
                 List<ViewUserGroup> listData = new List<ViewUserGroup>();

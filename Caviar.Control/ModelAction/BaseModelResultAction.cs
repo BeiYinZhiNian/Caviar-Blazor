@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Caviar.Control.ModelAction
 {
-    public partial class BaseModelAction <T, ViewT>
+    public partial class BaseModelAction<T, ViewT>
     {
+
         #region 成功请求
         public ResultMsg Ok()
         {
@@ -16,11 +17,11 @@ namespace Caviar.Control.ModelAction
         }
         public ResultMsg Ok(string title)
         {
-            return new ResultMsg() { Title = title};
+            return new ResultMsg() { Title = title };
         }
-        public ResultMsg<K> Ok<K>(string title,K data)
+        public ResultMsg<K> Ok<K>(string title, K data)
         {
-            return new ResultMsg<K>() { Title = title,Data = data };
+            return new ResultMsg<K>() { Title = title, Data = data };
         }
         public ResultMsg<K> Ok<K>(K data)
         {
@@ -32,21 +33,40 @@ namespace Caviar.Control.ModelAction
         #region 失败请求
         public ResultMsg Error(string title)
         {
-            return new ResultMsg() { Status = 406, Title = title };
+            return new ResultMsg() { Status = HttpState.Error, Title = title, };
         }
-        public ResultMsg Error(string title,string detail)
+        public ResultMsg Error(string title, string detail)
         {
-            return new ResultMsg() { Status = 406, Title = title ,Detail = detail};
-        }
-        public ResultMsg Error(string title, string detail, string uri)
-        {
-            return new ResultMsg() { Status = 406, Detail = detail, Title = title, Uri = uri };
-        }
-        public ResultMsg Error(string title, string detail,IDictionary<string,string> errors)
-        {
-            return new ResultMsg() { Status = 406, Title = title, Detail = detail ,Errors = errors};
+            return new ResultMsg() { Status = HttpState.Error, Title = title, Detail = detail, };
         }
 
+        public ResultMsg Error(string title, string detail, string uri)
+        {
+            return new ResultMsg() { Status = HttpState.Error, Detail = detail, Title = title, Uri = uri, };
+        }
+
+        public ResultMsg Error(string title, string detail, IDictionary<string, string> errors)
+        {
+            return new ResultMsg() { Status = HttpState.Error, Title = title, Detail = detail, Errors = errors, };
+        }
+        public ResultMsg<K> Error<K>(string title, K data = default)
+        {
+            return new ResultMsg<K>() { Status = HttpState.Error, Title = title, Data = data };
+        }
+        public ResultMsg<K> Error<K>(string title, string detail, K data = default)
+        {
+            return new ResultMsg<K>() { Status = HttpState.Error, Title = title, Detail = detail, Data = data };
+        }
+
+        public ResultMsg<K> Error<K>(string title, string detail, string uri, K data = default)
+        {
+            return new ResultMsg<K>() { Status = HttpState.Error, Detail = detail, Title = title, Uri = uri, Data = data };
+        }
+
+        public ResultMsg<K> Error<K>(string title, string detail, IDictionary<string, string> errors, K data = default)
+        {
+            return new ResultMsg<K>() { Status = HttpState.Error, Title = title, Detail = detail, Errors = errors, Data = data };
+        }
         #endregion
 
         #region 其他
@@ -58,7 +78,7 @@ namespace Caviar.Control.ModelAction
         /// <returns></returns>
         public virtual ResultMsg Redirect(string title, string uri)
         {
-            return new ResultMsg() { Status = 302, Title = title, Uri= uri };
+            return new ResultMsg() { Status = HttpState.Redirect, Title = title, Uri = uri };
         }
         /// <summary>
         /// 没有操作权限
@@ -67,12 +87,12 @@ namespace Caviar.Control.ModelAction
         /// <returns></returns>
         public virtual ResultMsg NoPermission(string title)
         {
-            return new ResultMsg() { Title = title, Status = 403 };
+            return new ResultMsg() { Title = title, Status = HttpState.NotPermission };
         }
 
         public virtual ResultMsg Unauthorized(string title)
         {
-            return new ResultMsg() { Title = title, Status = 401 };
+            return new ResultMsg() { Title = title, Status = HttpState.Unauthorized };
         }
         #endregion
     }

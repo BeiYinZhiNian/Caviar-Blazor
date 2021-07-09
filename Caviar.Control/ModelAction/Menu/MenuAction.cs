@@ -11,7 +11,7 @@ namespace Caviar.Control.Menu
 {
     public partial class MenuAction
     {
-        public List<SysMenu> GetButton(string url)
+        public ResultMsg<List<SysMenu>> GetButton(string url)
         {
             var menus = BC.UserData.Menus.Where(u => u.Url?.ToLower() == url.ToLower()).FirstOrDefault();
             if (menus == null)
@@ -19,12 +19,12 @@ namespace Caviar.Control.Menu
                 return null;
             }
             var buttons = BC.UserData.Menus.Where(u => u.MenuType == MenuType.Button && u.ParentId == menus.Id).OrderBy(u => u.Number);
-            return buttons.ToList();
+            return Ok(buttons.ToList());
         }
         public override async Task<ResultMsg<PageData<ViewMenu>>> GetPages(Expression<Func<SysMenu, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = false)
         {
             var pages = new PageData<SysMenu>(BC.UserData.Menus);
-            var list = ModelToViewModel(pages.Rows);
+            var list = ToViewModel(pages.Rows);
             var viewPage = new PageData<ViewMenu>(list);
             return Ok(viewPage);
         }
@@ -33,7 +33,7 @@ namespace Caviar.Control.Menu
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public override List<ViewMenu> ModelToViewModel(List<SysMenu> model)
+        public override List<ViewMenu> ToViewModel(List<SysMenu> model)
         {
             model.AToB(out List<ViewMenu> outModel);
             var viewMenus = outModel.ListToTree();
@@ -64,12 +64,12 @@ namespace Caviar.Control.Menu
                     }
                 }
                 var result = await base.UpdateEntity(menus);
-                if (result.Status != 200)
+                if (result.Status != HttpState.OK)
                 {
                     return Error("É¾³ý²Ëµ¥Ê§°Ü,×Ó²Ëµ¥ÒÆ¶¯Ê§°Ü");
                 }
             }
-            return await base.DeleteEntity();
+            return await base.DeleteEntity(view);
         }
 
     }

@@ -16,7 +16,7 @@ namespace Caviar.Control.Permission
         /// 获取权限下字段
         /// </summary>
         /// <returns></returns>
-        public List<SysModelFields> GetRoleFields()
+        public ResultMsg<List<SysModelFields>> GetRoleFields()
         {
             //获取字段权限
             var permission = BC.UserData.Permissions.Where(u => u.PermissionType == PermissionType.Field);
@@ -28,7 +28,7 @@ namespace Caviar.Control.Permission
                     fields.Add(item);
                 }
             }
-            return fields;
+            return Ok(fields);
         }
         /// <summary>
         /// 获取角色字段展示
@@ -38,7 +38,7 @@ namespace Caviar.Control.Permission
         /// <param name="fullName"></param>
         /// <param name="roleId">当id为0时获取当前角色的拥有的字段</param>
         /// <returns></returns>
-        public async Task<List<ViewModelFields>> GetRoleFields(string fullName,int roleId = 0)
+        public async Task<ResultMsg<List<ViewModelFields>>> GetRoleFields(string fullName,int roleId = 0)
         {
             if (string.IsNullOrEmpty(fullName)) return null;
             IEnumerable<SysPermission> permission;
@@ -67,7 +67,7 @@ namespace Caviar.Control.Permission
                     item.IsPermission = true;
                 }
             }
-            return viewFields;
+            return Ok(viewFields);
         }
         /// <summary>
         /// 设置角色字段
@@ -136,7 +136,7 @@ namespace Caviar.Control.Permission
             var isAdmin = roleId != 0 && BC.IsAdmin;
             foreach (var item in modelFields)
             {
-                var field = fields.FirstOrDefault(u => u.FullName == item.FullName && u.TypeName == item.TypeName);
+                var field = fields.Data.FirstOrDefault(u => u.FullName == item.FullName && u.TypeName == item.TypeName);
                 if (field != null && (field.IsPermission || isAdmin))
                 {
                     item.IsPermission = field.IsPermission;

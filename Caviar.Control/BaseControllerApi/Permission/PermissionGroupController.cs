@@ -15,16 +15,15 @@ namespace Caviar.Control.Permission
         [HttpGet]
         public async Task<IActionResult> RoleUserGroup(int PermissionId)
         {
-            var Roles = await _Action.GetRoleUserGropu(PermissionId);
-            ResultMsg.Data = Roles;
-            return ResultOK();
+            var result = await _Action.GetRoleUserGropu(PermissionId);
+            return Ok(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> RoleUserGroup(int PermissionId,int[] roleIds)
         {
             await _Action.SetRoleUserGropu(PermissionId,roleIds);
-            return ResultOK();
+            return Ok();
         }
     }
 }

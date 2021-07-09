@@ -12,7 +12,7 @@ namespace Caviar.Models.SystemData
         /// <summary>
         /// HTTP 状态代码
         /// </summary>
-        public int Status { get; set; } = 200;
+        public int Status { get; set; } = HttpState.OK;
         /// <summary>
         /// 问题类型的简短、可读的摘要
         /// </summary>

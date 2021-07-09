@@ -48,7 +48,7 @@ namespace Caviar.AntDesignPages.Pages.Menu
                 }
             }
             var result = await Http.PostJson(url, data);
-            if (result.Status == 200)
+            if (result.Status == HttpState.OK)
             {
                 Message.Success("删除成功");
             }

@@ -32,7 +32,7 @@ namespace Caviar.AntDesignPages.Pages.User
             MappingQuery.Add("UserGroupName", "UserGroupId");//将映射字段加入到字典
             await base.OnInitializedAsync();
             var result = await Http.GetJson<PageData<ViewUserGroup>>("UserGroup/Index?pageSize=100");
-            if (result.Status != 200) return;
+            if (result.Status != HttpState.OK) return;
             ViewUserGroups = result.Data.Rows;
         }
         string ParentName = "请选择部门";

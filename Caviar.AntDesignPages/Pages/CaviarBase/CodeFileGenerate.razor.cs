@@ -39,7 +39,7 @@ namespace Caviar.AntDesignPages.Pages.CaviarBase
         public async Task GetModels()
         {
             var result = await Http.GetJson<List<ViewModelFields>>("Permission/GetModels");
-            if (result.Status != 200) return;
+            if (result.Status != HttpState.OK) return;
             Models = result.Data;
         }
         static string[] _pageOptions = { "列表","数据模板" };
@@ -85,7 +85,7 @@ namespace Caviar.AntDesignPages.Pages.CaviarBase
                     return;
                 }
                 var result = await Http.PostJson<CodeGenerateData,List<TabItem>>($"{Url}?isPerview=true", GenerateData);
-                if (result.Status == 200)
+                if (result.Status == HttpState.OK)
                 {
                     lstTabs = result.Data;
                 }
@@ -100,7 +100,7 @@ namespace Caviar.AntDesignPages.Pages.CaviarBase
         async void OnGenerateClick()
         {
             var result = await Http.PostJson<CodeGenerateData, List<TabItem>>($"{Url}?isPerview=false", GenerateData);
-            if (result.Status == 200)
+            if (result.Status == HttpState.OK)
             {
                 ResultStatus = "success";
                 ReusltTitle = "代码生成完毕";

@@ -24,7 +24,7 @@ namespace Caviar.AntDesignPages.Pages.User
         async Task GetViewUserGroups()
         {
             var result = await Http.GetJson<PageData<ViewUserGroup>>("UserGroup/Index?pageSize=100");
-            if (result.Status != 200) return;
+            if (result.Status != HttpState.OK) return;
             if (DataSource.UserGroupId > 0)
             {
                 List<ViewUserGroup> listData = new List<ViewUserGroup>();

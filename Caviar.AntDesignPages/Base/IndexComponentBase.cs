@@ -56,7 +56,7 @@ namespace Caviar.AntDesignPages
         protected virtual async Task<List<ViewT>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
             var result = await Http.GetJson<PageData<ViewT>>($"{Url}?pageIndex={pageIndex}&pageSize={pageSize}&isOrder={isOrder}");
-            if (result.Status != 200) return null;
+            if (result.Status != HttpState.OK) return null;
             if (result.Data != null)
             {
                 DataSource = result.Data.Rows;
@@ -75,7 +75,7 @@ namespace Caviar.AntDesignPages
         protected virtual async Task<List<ViewMenu>> GetPowerButtons()
         {
             var result = await Http.GetJson<List<ViewMenu>>("Menu/GetButtons?url=" + Url);
-            if (result.Status != 200) return null;
+            if (result.Status != HttpState.OK) return null;
             Buttons = result.Data;
             return Buttons;
         }
@@ -86,7 +86,7 @@ namespace Caviar.AntDesignPages
         protected virtual async Task<List<ViewModelFields>> GetModelFields()
         {
             var result = await Http.GetJson<List<ViewModelFields>>($"{BaseController}/GetFields");
-            if (result.Status != 200) return null;
+            if (result.Status != HttpState.OK) return null;
             ViewModelFields = result.Data;
             return ViewModelFields;
         }
@@ -98,7 +98,7 @@ namespace Caviar.AntDesignPages
         {
             //删除单条
             var result = await Http.PostJson(url, data);
-            if (result.Status != 200) return false;
+            if (result.Status != HttpState.OK) return false;
             Message.Success("删除成功");
             return true;
         }
@@ -130,7 +130,7 @@ namespace Caviar.AntDesignPages
         protected virtual async void FuzzyQueryCallback()
         {
             var result = await Http.PostJson<ViewQuery, List<ViewT>>(BaseController + "/FuzzyQuery", Query);
-            if (result.Status != 200) return;
+            if (result.Status != HttpState.OK) return;
             DataSource = result.Data;
             StateHasChanged();
         }
