@@ -128,6 +128,7 @@ namespace Caviar.Control.Permission
                 menus.Add(viewMenu);
             }
             menus.OrderBy(u => u.Number);
+            menus = menus.ListToTree();
             return Ok(menus);
         }
 

@@ -18,11 +18,7 @@ namespace Caviar.Control.User
         [HttpPost]
         public async Task<IActionResult> MyDetails(ViewUser viewUser)
         {
-            if (viewUser.Id != BC.UserToken.Id || viewUser.Uid != BC.UserToken.Uid)
-            {
-                return ResultError("正在进行非法修改");
-            }
-            var result = await _Action.UpdateEntity(viewUser);
+            var result = await _Action.UpateMyData(viewUser);
             return Ok(result);
         }
 

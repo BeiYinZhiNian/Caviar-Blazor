@@ -96,9 +96,7 @@ namespace Caviar.Control
         [HttpPost]
         public virtual async Task<IActionResult> FuzzyQuery(ViewQuery query)
         {
-            var fields = BC.UserData.ModelFields.Where(u => u.BaseTypeName == typeof(T).Name).ToList();
-            if (fields == null) return ResultError("没有对该对象的查询权限");
-            var result = await _Action.FuzzyQuery(query, fields);
+            var result = await _Action.FuzzyQuery(query);
             return Ok(result);
         }
 

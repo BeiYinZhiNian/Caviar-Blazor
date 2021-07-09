@@ -25,10 +25,8 @@ namespace Caviar.Control.Permission
         [HttpGet]
         public async Task<IActionResult> RoleMenu(int roleId)
         {
-            var menus = await _Action.GetRoleMenu(roleId);
-            if (menus == null) return ResultForbidden("未查询到该角色权限，请联系管理员获取");
-            menus.Data = menus.Data.ListToTree();
-            return Ok(menus);
+            var result = await _Action.GetRoleMenu(roleId);
+            return Ok(result);
         }
         /// <summary>
         /// 设置角色菜单

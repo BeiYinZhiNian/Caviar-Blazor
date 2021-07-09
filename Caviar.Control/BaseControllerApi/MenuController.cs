@@ -20,10 +20,6 @@ namespace Caviar.Control.Menu
         [HttpGet]
         public IActionResult GetButtons(string url)
         {
-            if (string.IsNullOrEmpty(url))
-            {
-                return ResultError("请输入正确地址");
-            }
             var result = _Action.GetButton(url);
             return Ok(result);
         }

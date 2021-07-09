@@ -22,15 +22,8 @@ namespace Caviar.Control.Permission
         [HttpGet]
         public IActionResult GetModels(bool isView = false)
         {
-            List<ViewModelFields> viewModels = new List<ViewModelFields>();
-            var types = CommonHelper.GetModelList(isView);
-            foreach (var item in types)
-            {
-                var displayName = item.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
-                viewModels.Add(new ViewModelFields() { TypeName = item.Name, DisplayName = displayName, FullName = item.FullName.Replace("." + item.Name, "") });
-            }
-            ResultMsg.Data = viewModels;
-            return ResultOK();
+            var result = _Action.GetModels(isView);
+            return Ok(result);
         }
         /// <summary>
         /// 只能获取自身字段
@@ -40,7 +33,6 @@ namespace Caviar.Control.Permission
         [HttpGet]
         public async Task<IActionResult> GetFields(string modelName)
         {
-            if (string.IsNullOrEmpty(modelName)) return ResultError("请输入需要获取的数据名称");
             var result = await _Action.GetFieldsData(CavAssembly, modelName);
             return Ok(result);
         }
@@ -53,7 +45,6 @@ namespace Caviar.Control.Permission
         [HttpGet]
         public async Task<IActionResult> RoleFields(string modelName, int roleId)
         {
-            if (string.IsNullOrEmpty(modelName)) return ResultError("请输入需要获取的数据名称");
             var result = await _Action.GetFieldsData(CavAssembly, modelName, roleId);
             return Ok(result);
         }

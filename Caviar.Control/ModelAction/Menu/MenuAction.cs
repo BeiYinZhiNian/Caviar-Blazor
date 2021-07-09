@@ -13,6 +13,10 @@ namespace Caviar.Control.Menu
     {
         public ResultMsg<List<SysMenu>> GetButton(string url)
         {
+            if (string.IsNullOrEmpty(url))
+            {
+                return Error<List<SysMenu>>("请输入正确地址");
+            }
             var menus = BC.UserData.Menus.Where(u => u.Url?.ToLower() == url.ToLower()).FirstOrDefault();
             if (menus == null)
             {

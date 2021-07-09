@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Control.ModelAction
 {
-    public partial class BaseModelAction<T, ViewT>
+    public partial class BaseModelResultAction
     {
 
         #region 成功请求
@@ -89,10 +89,14 @@ namespace Caviar.Control.ModelAction
         {
             return new ResultMsg() { Title = title, Status = HttpState.NotPermission };
         }
-
-        public virtual ResultMsg Unauthorized(string title)
+        /// <summary>
+        /// 没有授权，需要登录
+        /// </summary>
+        /// <param name="title"></param>
+        /// <returns></returns>
+        public virtual ResultMsg Unauthorized(string title,string uri)
         {
-            return new ResultMsg() { Title = title, Status = HttpState.Unauthorized };
+            return new ResultMsg() { Title = title, Status = HttpState.Unauthorized,Uri = uri };
         }
         #endregion
     }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Control.ModelAction
 {
-    public partial class BaseModelAction<T,ViewT> : IBaseModelAction<T, ViewT> where T : class, IBaseModel,new()  where ViewT: class,T, new()
+    public partial class BaseModelAction<T,ViewT> : BaseModelResultAction, IBaseModelAction<T, ViewT> where T : class, IBaseModel,new()  where ViewT: class,T, new()
     {
         public IBaseControllerModel BC { get; set; }
 
@@ -136,8 +136,10 @@ namespace Caviar.Control.ModelAction
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        public virtual async Task<ResultMsg<List<ViewT>>> FuzzyQuery(ViewQuery query,List<SysModelFields> fields)
+        public virtual async Task<ResultMsg<List<ViewT>>> FuzzyQuery(ViewQuery query)
         {
+            var fields = BC.UserData.ModelFields.Where(u => u.BaseTypeName == typeof(T).Name).ToList();
+            if (fields == null) return Error<List<ViewT>>("没有对该对象的查询权限");
             var assemblyList = CommonHelper.GetAssembly();
             Type type = null;
             foreach (var item in assemblyList)

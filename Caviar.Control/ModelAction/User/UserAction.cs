@@ -20,6 +20,19 @@ namespace Caviar.Control.User
             }
             return viewModel;
         }
+        /// <summary>
+        /// 修改自身信息
+        /// </summary>
+        /// <param name="viewUser"></param>
+        /// <returns></returns>
+        public async Task<ResultMsg> UpateMyData(ViewUser viewUser)
+        {
+            if (viewUser.Id != BC.UserToken.Id || viewUser.Uid != BC.UserToken.Uid)
+            {
+                return Error("正在进行非法修改");
+            }
+            return await UpdateEntity(viewUser);
+        }
 
         public async Task<ResultMsg> UpdatePwd(UserPwd userPwd)
         {

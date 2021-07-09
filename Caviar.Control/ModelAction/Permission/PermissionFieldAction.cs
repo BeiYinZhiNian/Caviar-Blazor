@@ -1,7 +1,9 @@
 ﻿using Caviar.Models.SystemData;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,6 +14,19 @@ namespace Caviar.Control.Permission
     /// </summary>
     public partial class PermissionAction
     {
+
+        public ResultMsg<List<ViewModelFields>> GetModels(bool isView)
+        {
+            List<ViewModelFields> viewModels = new List<ViewModelFields>();
+            var types = CommonHelper.GetModelList(isView);
+            foreach (var item in types)
+            {
+                var displayName = item.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
+                viewModels.Add(new ViewModelFields() { TypeName = item.Name, DisplayName = displayName, FullName = item.FullName.Replace("." + item.Name, "") });
+            }
+            return Ok(viewModels);
+        }
+
         /// <summary>
         /// 获取权限下字段
         /// </summary>
@@ -40,7 +55,7 @@ namespace Caviar.Control.Permission
         /// <returns></returns>
         public async Task<ResultMsg<List<ViewModelFields>>> GetRoleFields(string fullName,int roleId = 0)
         {
-            if (string.IsNullOrEmpty(fullName)) return null;
+            if (string.IsNullOrEmpty(fullName)) return Error<List<ViewModelFields>>("模型名称不能为空");
             IEnumerable<SysPermission> permission;
             if (roleId == 0)
             {
@@ -129,7 +144,7 @@ namespace Caviar.Control.Permission
         /// <returns></returns>
         public async Task<ResultMsg<List<ViewModelFields>>> GetFieldsData(IAssemblyDynamicCreation CavAssembly, string modelName, int roleId = 0)
         {
-            if (string.IsNullOrEmpty(modelName)) return null;
+            if (string.IsNullOrEmpty(modelName)) return Error<List<ViewModelFields>>("请输入需要获取的数据名称");
             var fields = await GetRoleFields(modelName, roleId);
             var modelFields = CavAssembly.GetViewModelHeaders(modelName);//其他信息
             var viewFields = new List<ViewModelFields>();
