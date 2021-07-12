@@ -121,6 +121,11 @@ namespace Caviar.Control
             return base.Ok(value);
         }
 
+        public override OkResult Ok()
+        {
+            throw new Exception("请勿调用此方法，需要为前端返回ResultMsg");
+        }
+
         #region 创建模型
         protected virtual T CreateModel<T>() where T : class, IActionModel
         {
@@ -154,6 +159,11 @@ namespace Caviar.Control
             if (BC.IsLogin)
             {
                 log.UserId = BC.UserToken.Id;
+            }
+            if(log.Method.ToUpper() == "POST")
+            {
+                var json = JsonSerializer.Serialize(BC.ActionArguments);
+                log.PostData = json;
             }
             var isAdd = FilterLog(log);
             if (!isAdd) return;

@@ -40,6 +40,9 @@ namespace Caviar.Models.SystemData
         [DisplayName("请求方法")]
         [StringLength(10, ErrorMessage = "请求方法请不要超过{1}个字符")]
         public string Method { get; set; }
+        [DisplayName("提交的数据")]
+        [StringLength(1024*3, ErrorMessage = "提交的数据请不要超过{1}个字符")]
+        public string PostData { get; set; }
     }
 
     public enum CavLogLevel

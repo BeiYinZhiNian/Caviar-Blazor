@@ -140,8 +140,8 @@ namespace Caviar.Control.Permission
         public async Task<ResultMsg> SetMenuUser(int menuId)
         {
             if (BC.UserToken.Id < 1) return Error("添加失败");
-            var count = await SetMenuUser(menuId, BC.UserToken.Id);
-            return Ok();
+            var result = await SetMenuUser(menuId, BC.UserToken.Id);
+            return result;
         }
 
         /// <summary>
@@ -159,8 +159,12 @@ namespace Caviar.Control.Permission
                 PermissionIdentity = PermissionIdentity.User,
                 PermissionType = PermissionType.Menu,
             };
-            await BC.DC.AddEntityAsync(permission);
-            return Ok();
+            var count = await BC.DC.AddEntityAsync(permission);
+            if (count > 0)
+            {
+                return Ok();
+            }
+            return Error("为角色添加菜单失败");
         }
     }
 }
