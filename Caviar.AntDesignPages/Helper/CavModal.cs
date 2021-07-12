@@ -84,12 +84,14 @@ namespace Caviar.AntDesignPages.Helper
 
         private async Task HandleOk(MouseEventArgs e)
         {
+            modalRef.Config.ConfirmLoading = true;
             var res = true;
             if (menuAdd != null)
             {
                 res = await menuAdd.Validate();
             }
             modalRef.Config.Visible = !res;
+            modalRef.Config.ConfirmLoading = false;
             if (res)
             {
                 OnOK?.Invoke();
