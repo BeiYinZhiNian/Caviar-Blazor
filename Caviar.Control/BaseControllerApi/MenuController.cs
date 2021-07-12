@@ -23,6 +23,16 @@ namespace Caviar.Control.Menu
             var result = _Action.GetButton(url);
             return Ok(result);
         }
+        /// <summary>
+        /// ªÒ»°≤Àµ•
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult GetMenus()
+        {
+            var menus = _Action.GetMenus();
+            return Ok(menus);
+        }
 
         public override async Task<IActionResult> Delete(ViewMenu view)
         {

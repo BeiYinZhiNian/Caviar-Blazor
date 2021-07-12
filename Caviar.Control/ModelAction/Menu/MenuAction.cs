@@ -20,10 +20,16 @@ namespace Caviar.Control.Menu
             var menus = BC.UserData.Menus.Where(u => u.Url?.ToLower() == url.ToLower()).FirstOrDefault();
             if (menus == null)
             {
-                return null;
+                return Error<List<SysMenu>>("Î´ÕÒµ½°´Å¥µØÖ·");
             }
             var buttons = BC.UserData.Menus.Where(u => u.MenuType == MenuType.Button && u.ParentId == menus.Id).OrderBy(u => u.Number);
             return Ok(buttons.ToList());
+        }
+        public ResultMsg<List<ViewMenu>> GetMenus()
+        {
+            var menus = BC.UserData.Menus.Where(u => u.MenuType == MenuType.Menu || u.MenuType == MenuType.Catalog).ToList();
+            var viewModel = ToViewModel(menus);
+            return Ok(viewModel);
         }
         public override async Task<ResultMsg<PageData<ViewMenu>>> GetPages(Expression<Func<SysMenu, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = false)
         {
