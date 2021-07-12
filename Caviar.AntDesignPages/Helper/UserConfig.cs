@@ -71,7 +71,7 @@ namespace Caviar.AntDesignPages.Helper
             switch (newThemeName)
             {
                 case "ant-design-blazor.dark.css":
-                    Background = "background:#000000";
+                    Background = "background:#2E2E2E";
                     ContentStyle = $"margin: 6px 16px;padding: 24px;min-height: 280px;{Background}";
                     HeaderStyle = $"padding:0;{Background}";
                     break;

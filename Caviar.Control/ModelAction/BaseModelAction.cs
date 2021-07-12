@@ -44,6 +44,14 @@ namespace Caviar.Control.ModelAction
                 {
                     return Error("不能删除管理员角色");
                 }
+                else if(entity.Uid == CaviarConfig.NoLoginRoleGuid)
+                {
+                    return Error("不能默认用户组");
+                }
+                else if (entity.Uid == CaviarConfig.UserAdminGuid)
+                {
+                    return Error("不能删除默认用户");
+                }
                 var count = await BC.DC.DeleteEntityAsync(entity);
                 if (count > 0)
                 {

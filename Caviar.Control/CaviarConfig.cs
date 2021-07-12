@@ -25,6 +25,7 @@ namespace Caviar.Control
         public static TokenConfig TokenConfig { get; private set; }
         public static Guid NoLoginRoleGuid { get; private set; }
         public static Guid SysAdminRoleGuid { get; private set; }
+        public static Guid UserAdminGuid { get; private set; }
         public static CodeFileGenerate WebUI { get; set; }
         public static CodeFileGenerate WebAPI { get; set; }
         public static CodeFileGenerate Models { get; set; }
@@ -73,9 +74,10 @@ namespace Caviar.Control
 
             IsDebug = bool.Parse(json["Caviar"]["IsDebug"].ToString());
             IsStrict = bool.Parse(json["Caviar"]["IsStrict"].ToString());
-            var guid = json["Caviar"]["Role"]["NoLoginRole"].ToString();
+            var guid = json["Caviar"]["Uid"]["NoLoginRole"].ToString();
             NoLoginRoleGuid = Guid.Parse(guid);
-            SysAdminRoleGuid = Guid.Parse(json["Caviar"]["Role"]["SysAdminRole"].ToString());
+            SysAdminRoleGuid = Guid.Parse(json["Caviar"]["Uid"]["SysAdminRole"].ToString());
+            UserAdminGuid = Guid.Parse(json["Caviar"]["Uid"]["UserAdmin"].ToString());
             TokenConfig.Key = Guid.Parse(json["Caviar"]["Token"]["Key"].ToString());
             TokenConfig.Duration = int.Parse(json["Caviar"]["Token"]["Duration"].ToString());
             WebUI.Path = json["Caviar"]["WebUI"]["Path"].ToString();
@@ -99,9 +101,10 @@ namespace Caviar.Control
             if (json["Caviar"] == null) json["Caviar"] = new JObject();
             if (json["Caviar"]["IsDebug"] == null) json["Caviar"]["IsDebug"] = false;
             if (json["Caviar"]["IsStrict"] == null) json["Caviar"]["IsStrict"] = false;
-            if (json["Caviar"]["Role"] == null) json["Caviar"]["Role"] = new JObject();
-            if (json["Caviar"]["Role"]["NoLoginRole"] == null) json["Caviar"]["Role"]["NoLoginRole"] = Guid.NewGuid();
-            if (json["Caviar"]["Role"]["SysAdminRole"] == null) json["Caviar"]["Role"]["SysAdminRole"] = Guid.NewGuid();
+            if (json["Caviar"]["Uid"] == null) json["Caviar"]["Uid"] = new JObject();
+            if (json["Caviar"]["Uid"]["NoLoginRole"] == null) json["Caviar"]["Uid"]["NoLoginRole"] = Guid.NewGuid();
+            if (json["Caviar"]["Uid"]["SysAdminRole"] == null) json["Caviar"]["Uid"]["SysAdminRole"] = Guid.NewGuid();
+            if (json["Caviar"]["Uid"]["UserAdmin"] == null) json["Caviar"]["Uid"]["UserAdmin"] = Guid.NewGuid();
             if (json["Caviar"]["Token"] == null) json["Caviar"]["Token"] = new JObject();
             if (json["Caviar"]["Token"]["Duration"] == null) json["Caviar"]["Token"]["Duration"] = 60 * 2;
             if (json["Caviar"]["Token"]["Key"] == null) json["Caviar"]["Token"]["Key"] = Guid.NewGuid();
