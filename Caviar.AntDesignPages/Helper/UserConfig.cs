@@ -10,25 +10,20 @@ namespace Caviar.AntDesignPages.Helper
 {
     public class UserConfig
     {
-        public int CurrentMenuId { get; set; }
-
-        public Router Router { get; set; }
-
-        public List<ViewMenu> Menus { get; set; }
+        public Router Router;
 
         IEnumerable _routes;
-        public IEnumerable Routes
+        public IEnumerable Routes()
         {
-            get
+            if (_routes == null)
             {
-                if (_routes == null)
-                {
-                    var routes = Router.GetObjValue("Routes");
-                    _routes = (IEnumerable)routes.GetObjValue("Routes");
-                }
-                return _routes;
+                var routes = Router.GetObjValue("Routes");
+                _routes = (IEnumerable)routes.GetObjValue("Routes");
             }
+            return _routes;
         }
+
+
 
 
     }

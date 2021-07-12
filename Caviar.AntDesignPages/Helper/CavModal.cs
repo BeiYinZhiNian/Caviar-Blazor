@@ -54,7 +54,7 @@ namespace Caviar.AntDesignPages.Helper
 
         RenderFragment Render(string url,string title, IEnumerable<KeyValuePair<string, object?>> paramenter) => builder =>
         {
-            var routes = UserConfig.Routes;
+            var routes = UserConfig.Routes();
             foreach (var item in routes)
             {
                 var page = (string)item.GetObjValue("Template").GetObjValue("TemplateText");

@@ -95,8 +95,6 @@ namespace Caviar.AntDesignPages.Helper
         {
             await SetCookies();
             ResultMsg<T> result = default;
-            var mainLayoutStyle = new MainLayoutStyle() { Loading = true };
-            await eventCallback.InvokeAsync(mainLayoutStyle);
             try
             {
                 if (model.ToLower() == "get")
@@ -134,8 +132,6 @@ namespace Caviar.AntDesignPages.Helper
                     Status = 500,
                 };
             }
-            mainLayoutStyle.Loading = false;
-            await eventCallback.InvokeAsync(mainLayoutStyle);
             Response(result);
             Tips(result);
             return result;

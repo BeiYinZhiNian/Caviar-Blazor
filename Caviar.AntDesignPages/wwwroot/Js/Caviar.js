@@ -30,3 +30,7 @@ function getCookie(name) {
 	}
 	return "";
 }
+
+function getClientWidth() {
+	return document.body.clientWidth
+}

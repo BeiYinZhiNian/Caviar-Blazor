@@ -11,8 +11,9 @@ using Caviar.Models.SystemData;
 using System.Text;
 using System.Web;
 using System.Text.Json;
-using Microsoft.JSInterop;
 using Caviar.AntDesignPages.Helper;
+using AntDesign.JsInterop;
+using Microsoft.JSInterop;
 
 namespace Caviar.AntDesignPages.Shared
 {
@@ -51,8 +52,8 @@ namespace Caviar.AntDesignPages.Shared
         {
             set
             {
-                CollapseCallback(value);
                 _collapsed = value;
+                CollapseCallback(value);
             }
             get
             {
@@ -76,30 +77,36 @@ namespace Caviar.AntDesignPages.Shared
         /// <param name="collapsed"></param>
         void OnCollapse(bool collapsed)
         {
-            this.Collapsed = collapsed;
+            Collapsed = collapsed;
         }
-
         /// <summary>
         /// 菜单栏缩放时百分百触发
         /// </summary>
         /// <param name="collapsed"></param>
-        void CollapseCallback(bool collapsed)
+        async void CollapseCallback(bool collapsed)
         {
+            var clientWidth = await JSRuntime.InvokeAsync<int>("getClientWidth");
             if (collapsed)
             {
-                HeaderStyle = "margin-left: 0px";
-                LogoImgSrc = LogoImgIco;
+                if (clientWidth >= 576)
+                {
+                    HeaderStyle = "margin-left: 80px";
+                    LogoImgSrc = LogoImgIco;
+                    CollapsedWidth = 80;
+                }
+                else
+                {
+                    HeaderStyle = "margin-left: 0px";
+                    LogoImgSrc = LogoImgIco;
+                    CollapsedWidth = 0;
+                }
             }
             else
             {
                 HeaderStyle = "margin-left: 200px";
                 LogoImgSrc = LogoImg;
             }
+            StateHasChanged();
         }
-    }
-
-    public class MainLayoutStyle
-    {
-        public bool Loading { get; set; }
     }
 }

@@ -55,7 +55,6 @@ namespace Caviar.AntDesignPages.Shared
 
         public void MenuItemClick(ViewMenu menu)
         {
-            UserConfig.CurrentMenuId = menu.Id;
             NavigationManager.NavigateTo(menu.Url);
         }
 
@@ -88,7 +87,6 @@ namespace Caviar.AntDesignPages.Shared
         {
             var result = await Http.GetJson<List<ViewMenu>> ("Menu/GetMenus");
             if (result.Status != HttpState.OK) return new List<ViewMenu>();
-            UserConfig.Menus = result.Data;
             return result.Data;
         }
 
