@@ -1,5 +1,7 @@
 ﻿using Caviar.Models.SystemData;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.JSInterop;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +12,18 @@ namespace Caviar.AntDesignPages.Helper
 {
     public class UserConfig
     {
+        public UserConfig(IJSRuntime jSRuntime)
+        {
+            JSRuntime = jSRuntime;
+            Background = "background:#ffffff";
+            ContentStyle = $"margin: 6px 16px;padding: 24px;min-height: 280px;{Background}";
+            HeaderStyle = $"padding:0;{Background}";
+        }
+        public IJSRuntime JSRuntime { get; set; }
+
         public Router Router;
+
+        public Action StateHasAction { get; set; }
 
         IEnumerable _routes;
         public IEnumerable Routes()
@@ -29,11 +42,49 @@ namespace Caviar.AntDesignPages.Helper
         /// <summary>
         /// 主题
         /// </summary>
-        public string Theme { get; set; }
+        public string Theme { 
+            get { return _theme; } 
+            set {
+                SetTheme(_theme, value);
+                _theme = value; 
+            } 
+        }
+
+        public string Background { get; set; }
+
+        public string ContentStyle { get; set; }
+
+        public string HeaderStyle { get; set; }
+
         /// <summary>
         /// 是否table页
         /// </summary>
         public bool IsTable { get; set; }
+        
 
+
+        private string _theme = "ant-design-blazor.css";
+
+        public async void SetTheme(string oldThemeName,string newThemeName)
+        {
+            await JSRuntime.InvokeVoidAsync("loadCss", oldThemeName, newThemeName);
+            switch (newThemeName)
+            {
+                case "ant-design-blazor.dark.css":
+                    Background = "background:#000000";
+                    ContentStyle = $"margin: 6px 16px;padding: 24px;min-height: 280px;{Background}";
+                    HeaderStyle = $"padding:0;{Background}";
+                    break;
+                default:
+                    Background = "background:#ffffff";
+                    ContentStyle = $"margin: 6px 16px;padding: 24px;min-height: 280px;{Background}";
+                    HeaderStyle = $"padding:0;{Background}";
+                    break;
+            }
+            if (StateHasAction != null)
+            {
+                StateHasAction.Invoke();
+            }
+        }
     }
 }

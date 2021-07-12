@@ -29,9 +29,14 @@ namespace Caviar.AntDesignPages.Shared
 
         string HeaderStyle { get; set; }
         [Inject]
-        public IJSRuntime JSRuntime { get; set; }
-        [Inject]
         public UserConfig UserConfig { get; set; }
+        [Inject]
+        public IJSRuntime JSRuntime { get; set; }
+
+        public void StateHasAction()
+        {
+            StateHasChanged();
+        }
 
         /// <summary>
         /// 面包屑数据同步
@@ -39,6 +44,7 @@ namespace Caviar.AntDesignPages.Shared
         public MenuItem BreadcrumbItemCav;
         protected override async Task OnParametersSetAsync()
         {
+            UserConfig.StateHasAction = StateHasAction;
             await base.OnParametersSetAsync();
         }
         protected override async Task OnInitializedAsync()

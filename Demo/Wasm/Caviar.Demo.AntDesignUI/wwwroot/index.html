@@ -18,20 +18,10 @@
         <a class="dismiss">🗙</a>
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
-    <link href="_content/AntDesign/css/ant-design-blazor.css" rel="stylesheet">
+    <link href="_content/AntDesign/css/ant-design-blazor.css" rel="stylesheet"  id="uiCss" media="screen">
     <script src="_content/AntDesign/js/ant-design-blazor.js"></script>
     <script src="_content/Caviar.AntDesignPages/js/Caviar.js"></script>
     <script src="_content/Caviar.AntDesignPages/js/prism.js"></script>
     <link href="_content/Caviar.AntDesignPages/js/prism.css" rel="stylesheet" />
-    <script>
-        window.AntDesign.Prism = {};
-        window.AntDesign.Prism.highlight = function (code, language) {
-            return Prism.highlight(code, Prism.languages[language], language);
-        }
-
-        window.AntDesign.Prism.highlightAll = function () {
-            Prism.highlightAll();
-        }
-    </script>
 </body>
 </html>

@@ -28,7 +28,7 @@
                     <Text>主题模式：</Text>
                 </SpaceItem>
                 <SpaceItem>
-                    <RadioGroup @bind-Value="@UserConfig.Theme">
+                    <RadioGroup @bind-Value="@UserConfig.Theme" TValue="string">
                         <Radio Value="@("ant-design-blazor.css")">默认主题</Radio>
                         <Radio Value="@("ant-design-blazor.aliyun.css")">阿里云主题</Radio>
                         <Radio Value="@("ant-design-blazor.dark.css")">暗黑主题</Radio>
@@ -45,4 +45,5 @@
 @code{
     [Inject]
     public UserConfig UserConfig { get; set; }
+
 }
