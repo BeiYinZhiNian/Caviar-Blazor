@@ -2,8 +2,8 @@
 
 @if (UserData != null)
 {
-    <Row Gutter="16">
-        <GridCol Span="6">
+    <Row>
+        <GridCol>
             <Card Style="width:300px;" Title=@("个人信息") Bordered Hoverable>
                 <ChildContent>
                     <CardMeta AvatarTemplate="@GetHeadPortrait()" TitleTemplate="@GetTitleRender()" Description="@UserData.Remark" />
@@ -32,6 +32,9 @@
                     </CardAction>
                 </ActionTemplate>
             </Card>
+        </GridCol>
+        <GridCol Style="margin-left:10px">
+            <CavConfigure></CavConfigure>
         </GridCol>
     </Row>
 

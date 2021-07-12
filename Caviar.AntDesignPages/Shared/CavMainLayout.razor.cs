@@ -30,6 +30,8 @@ namespace Caviar.AntDesignPages.Shared
         string HeaderStyle { get; set; }
         [Inject]
         public IJSRuntime JSRuntime { get; set; }
+        [Inject]
+        public UserConfig UserConfig { get; set; }
 
         /// <summary>
         /// 面包屑数据同步

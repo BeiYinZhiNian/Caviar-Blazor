@@ -22,9 +22,18 @@ namespace Caviar.AntDesignPages.Helper
             }
             return _routes;
         }
-
-
-
+        /// <summary>
+        /// 手风琴模式
+        /// </summary>
+        public bool Accordion { get; set; }
+        /// <summary>
+        /// 主题
+        /// </summary>
+        public string Theme { get; set; }
+        /// <summary>
+        /// 是否table页
+        /// </summary>
+        public bool IsTable { get; set; }
 
     }
 }
