@@ -96,12 +96,10 @@
 
 
 <Table DataSource="DataSource"
-       Total="Total"
-       PageIndex="PageIndex"
-       PageSize="PageSize"
        ScrollX="1300"
+       HidePagination
+       PageSize="PageSize"
        TItem="TData"
-       OnPageIndexChange="PageIndexChanged"
        TreeChildren="TreeChildren">
     @if (ViewModelFields != null && ViewModelFields.Count > 0)
     {
@@ -256,7 +254,14 @@
 
     }
 </Table>
-
+<div style="float:right;margin-top:20px">
+    <Pagination Total="Total"
+                ShowTotal=showTotal
+                PageSize="PageSize"
+                Current="PageIndex"
+                OnChange="PageIndexChanged"
+                OnShowSizeChange="PageIndexChanged" />
+</div>
 
 
 @code{
@@ -305,4 +310,5 @@ if (menu.IsDoubleTrue) return;
 ButtonClick(menu, context);
 }
 
+Func<PaginationTotalContext, string> showTotal = ctx => $"{ctx.Range.Item1}-{ctx.Range.Item2} 共 {ctx.Total} 条";
 }

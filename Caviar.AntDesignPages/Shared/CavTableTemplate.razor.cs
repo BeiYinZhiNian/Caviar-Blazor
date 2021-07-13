@@ -21,6 +21,8 @@ namespace Caviar.AntDesignPages.Shared
         /// </summary>
         [Inject]
         HttpHelper Http { get; set; }
+        [Inject]
+        MessageService MessageService { get; set; }
         /// <summary>
         /// 数据源
         /// </summary>
@@ -149,10 +151,12 @@ namespace Caviar.AntDesignPages.Shared
         {
             if (list == null)
             {
+                //清空查询，重置查询
                 foreach (var item in Query.QueryData)
                 {
                     Query.QueryData[item.Key] = HideQuery;
                 }
+                QuerySubstitution(false);
                 return;
             }
             var selectCount = list.Count();
@@ -191,11 +195,21 @@ namespace Caviar.AntDesignPages.Shared
         [Parameter]
         public Dictionary<string,string> MappingQuery { get; set; }
 
+        private List<TData> CacheDataSource { get; set; }
+        private int CacheTotal { get; set; }
+        private int CachePageIndex { get; set; }
+        private int CachePageSize { get; set; }
+        /// <summary>
+        /// 是否在查询中
+        /// </summary>
+        public bool IsQuery { get; set; }
+
         /// <summary>
         /// 模糊搜索
         /// </summary>
         public async void FuzzyQuery()
         {
+
             var currQuery = new Dictionary<string, string>();
             foreach (var item in Query.QueryData)
             {
@@ -213,10 +227,36 @@ namespace Caviar.AntDesignPages.Shared
                     currQuery.Add(key, value);
                 }
             }
+            if (currQuery.Count == 0)
+            {
+                await MessageService.Warn("请至少选择一个字段进行查询");
+                return;
+            }
+            QuerySubstitution(true);
             Query.QueryData = currQuery;
             if (FuzzyQueryCallback.HasDelegate)
             {
                 await FuzzyQueryCallback.InvokeAsync();
+            }
+        }
+
+        private void QuerySubstitution(bool startQuery)
+        {
+            if (!IsQuery && startQuery)//开始查询并且不在查询中
+            {
+                IsQuery = true;//在查询状态
+                CacheDataSource = DataSource;
+                CachePageIndex = PageIndex;
+                CachePageSize = PageSize;
+                CacheTotal = Total;
+            }
+            else if (IsQuery && !startQuery)//正在查询中,且停止查询
+            {
+                IsQuery = false;//停止查询状态
+                DataSource = CacheDataSource;
+                PageIndex = CachePageIndex;
+                PageSize = CachePageSize;
+                Total = CacheTotal;
             }
         }
         #endregion

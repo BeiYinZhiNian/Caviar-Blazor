@@ -58,6 +58,6 @@ namespace Caviar.Models.SystemData
         /// <param name="query"></param>
         /// <param name="fields"></param>
         /// <returns></returns>
-        public Task<ResultMsg<List<ViewT>>> FuzzyQuery(ViewQuery query);
+        public ResultMsg<PageData<ViewT>> FuzzyQuery(ViewQuery query);
     }
 }

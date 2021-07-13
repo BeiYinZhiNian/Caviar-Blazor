@@ -148,10 +148,10 @@ namespace Caviar.Control.ModelAction
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        public virtual async Task<ResultMsg<List<ViewT>>> FuzzyQuery(ViewQuery query)
+        public virtual ResultMsg<PageData<ViewT>> FuzzyQuery(ViewQuery query)
         {
             var fields = BC.UserData.ModelFields.Where(u => u.BaseTypeName == typeof(T).Name).ToList();
-            if (fields == null) return Error<List<ViewT>>("没有对该对象的查询权限");
+            if (fields == null) return Error<PageData<ViewT>>("没有对该对象的查询权限");
             var assemblyList = CommonHelper.GetAssembly();
             Type type = null;
             foreach (var item in assemblyList)
@@ -195,7 +195,10 @@ namespace Caviar.Control.ModelAction
             var data = BC.DC.SqlQuery(sql, parameters.ToArray());
             var model = data.ToList<T>(type);
             var viewModel = ToViewModel(model);
-            return Ok(viewModel);
+            var pages = new PageData<ViewT>(viewModel);
+            pages.Total = viewModel.Count;
+            pages.PageSize = viewModel.Count;
+            return Ok(pages);
         }
 
         /// <summary>

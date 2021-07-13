@@ -94,9 +94,9 @@ namespace Caviar.Control
         /// <param name="query"></param>
         /// <returns></returns>
         [HttpPost]
-        public virtual async Task<IActionResult> FuzzyQuery(ViewQuery query)
+        public virtual IActionResult FuzzyQuery(ViewQuery query)
         {
-            var result = await _Action.FuzzyQuery(query);
+            var result = _Action.FuzzyQuery(query);
             return Ok(result);
         }
 

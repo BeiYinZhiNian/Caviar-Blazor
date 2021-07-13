@@ -55,6 +55,7 @@ namespace Caviar.AntDesignPages
         /// <returns></returns>
         protected virtual async Task<List<ViewT>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
+            if (PageIndex == pageIndex && PageSize == pageSize) return null;
             var result = await Http.GetJson<PageData<ViewT>>($"{Url}?pageIndex={pageIndex}&pageSize={pageSize}&isOrder={isOrder}");
             if (result.Status != HttpState.OK) return null;
             if (result.Data != null)
@@ -129,9 +130,12 @@ namespace Caviar.AntDesignPages
         /// <param name="Query"></param>
         protected virtual async void FuzzyQueryCallback()
         {
-            var result = await Http.PostJson<ViewQuery, List<ViewT>>(BaseController + "/FuzzyQuery", Query);
+            var result = await Http.PostJson<ViewQuery, PageData<ViewT>>(BaseController + "/FuzzyQuery", Query);
             if (result.Status != HttpState.OK) return;
-            DataSource = result.Data;
+            DataSource = result.Data.Rows;
+            Total = result.Data.Total;
+            PageIndex = result.Data.PageIndex;
+            PageSize = result.Data.PageSize;
             StateHasChanged();
         }
         /// <summary>
