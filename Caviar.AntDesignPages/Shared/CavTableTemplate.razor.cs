@@ -239,7 +239,10 @@ namespace Caviar.AntDesignPages.Shared
                 await FuzzyQueryCallback.InvokeAsync();
             }
         }
-
+        /// <summary>
+        /// 缓存查询状态或者恢复查询前状态
+        /// </summary>
+        /// <param name="startQuery"></param>
         private void QuerySubstitution(bool startQuery)
         {
             if (!IsQuery && startQuery)//开始查询并且不在查询中

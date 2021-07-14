@@ -1,10 +1,66 @@
 ﻿@page "/"
 
+<div style="background-color: #ececec; padding: 20px;">
+    <Row Gutter="16">
+        <Col Span="8">
+        <Card Bordered="false" Title=@("简介")>
+            <Body>
+                <p>Card content</p>
+            </Body>
+        </Card>
+        </Col>
+        <Col Span="8">
+        <Card Bordered="false" TitleTemplate="GiteeTitle">
+            <Body>
+                <Row Gutter=16>
+                    <Col Span=12>
+                    <Statistic Title="Stars" Value="23" PrefixTemplate="@star" />
+                    </Col>
+                    <Col Span=12>
+                    <Statistic Title="Fork" Value="6" PrefixTemplate="@fork" />
+                    </Col>
+                </Row>
+                <Row Gutter=16>
+                    <Col Span=12>
+                    <Statistic Title="Watch" Value="5" PrefixTemplate="@eye" />
+                    </Col>
+                    <Col Span=12>
+                    <Statistic Title="Issues" Value="1" PrefixTemplate="@issues" />
+                    </Col>
+                </Row>
+            </Body>
+        </Card>
+        </Col>
+        <Col Span="8">
+        <Card Bordered="false" Title=@("GitHub")>
+            <Body>
+                <Row Gutter=16>
+                    <Col Span=12>
+                    <Statistic Title="Stars" Value="23" PrefixTemplate="@star" />
+                    </Col>
+                    <Col Span=12>
+                    <Statistic Title="Fork" Value="6" PrefixTemplate="@fork" />
+                    </Col>
+                </Row>
+                <Row Gutter=16>
+                    <Col Span=12>
+                    <Statistic Title="Watch" Value="5" PrefixTemplate="@eye" />
+                    </Col>
+                    <Col Span=12>
+                    <Statistic Title="Issues" Value="1" PrefixTemplate="@issues" />
+                    </Col>
+                </Row>
+            </Body>
+        </Card>
+        </Col>
+    </Row>
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-<Button Type="@ButtonType.Primary" OnClick="Test">Hello World!</Button>
-
-
-
+</div>
+@code
+{
+    RenderFragment star =@<Icon Type="star" />;
+    RenderFragment fork =@<Icon Type="fork" />;
+    RenderFragment eye =@<Icon Type="eye" />;
+    RenderFragment issues =@<Icon Type="issues-close" />;
+    RenderFragment GiteeTitle =@<a href="https://gitee.com/Cherryblossoms/caviar" target="_blank" >Gitee</a>;
+    }
