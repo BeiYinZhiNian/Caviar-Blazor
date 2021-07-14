@@ -3,14 +3,16 @@
 <div style="background-color: #ececec; padding: 20px;">
     <Row Gutter="16">
         <Col Span="8">
-        <Card Bordered="false" Title=@("简介")>
+        <Card Bordered="false" Title=@("简介") Hoverable="true" Style="height:240px">
             <Body>
-                <p>Card content</p>
+                <Text>Caviar(鱼子酱)框架创建于2021年2月3日</Text><br>
+                <Text>采用了：Blazor + Ant Design + .NET 5</Text>
+                <Text>如果让我描述这个框架是什么样的，</Text><Text>我感觉就像是看似什么也没发生，但确实是发生了。</Text><br>
             </Body>
         </Card>
         </Col>
         <Col Span="8">
-        <Card Bordered="false" TitleTemplate="GiteeTitle">
+        <Card Bordered="false" TitleTemplate="GiteeTitle" Hoverable="true" Style="height:240px">
             <Body>
                 <Row Gutter=16>
                     <Col Span=12>
@@ -32,19 +34,19 @@
         </Card>
         </Col>
         <Col Span="8">
-        <Card Bordered="false" Title=@("GitHub")>
+        <Card Bordered="false" TitleTemplate="GitHubTitle" Hoverable="true" Style="height:240px">
             <Body>
                 <Row Gutter=16>
                     <Col Span=12>
-                    <Statistic Title="Stars" Value="23" PrefixTemplate="@star" />
+                    <Statistic Title="Stars" Value="18" PrefixTemplate="@star" />
                     </Col>
                     <Col Span=12>
-                    <Statistic Title="Fork" Value="6" PrefixTemplate="@fork" />
+                    <Statistic Title="Fork" Value="1" PrefixTemplate="@fork" />
                     </Col>
                 </Row>
                 <Row Gutter=16>
                     <Col Span=12>
-                    <Statistic Title="Watch" Value="5" PrefixTemplate="@eye" />
+                    <Statistic Title="Watch" Value="0" PrefixTemplate="@eye" />
                     </Col>
                     <Col Span=12>
                     <Statistic Title="Issues" Value="1" PrefixTemplate="@issues" />
@@ -54,13 +56,54 @@
         </Card>
         </Col>
     </Row>
-
+    <Row Gutter="16" Style="margin-top:10px">
+        <Col Span="8">
+        <Card Bordered="false" Title=@("已有功能") Hoverable="true" Style="height:240px">
+            <Body>
+                <Text>√基础：用户、部门、角色、菜单、日志、附件</Text><br>
+                <Text>√代码生成</Text><br>
+                <Text>√权限管理</Text><br>
+                <Text>√Wasm</Text><br>
+                <Text>√SqlServer</Text><br>
+                <Text>√模糊搜索</Text><br>
+                <Text>√主题切换</Text><br>
+            </Body>
+        </Card>
+        </Col>
+        <Col Span="8">
+        <Card Bordered="false" Title=@("待添加功能") Hoverable="true" Style="height:240px">
+            <Body>
+                <Text>Server模式</Text><br>
+                <Text>其他数据库</Text><br>
+                <Text>Rides缓存</Text><br>
+                <Text>任务调度</Text><br>
+            </Body>
+        </Card>
+        </Col>
+        <Col Span="8">
+        <Card Bordered="false" Title=@("Blazor介绍") Hoverable="true" Style="height:240px">
+            <Body>
+                <Text>Blazor 是一个 Web UI 框架，可通过 WebAssembly 在任意浏览器中运行 .Net 。</Text>
+                <Text>
+                    Blazor 旨在简化快速的单页面 .Net 浏览器应用的构建过程，它虽然使用了诸如 CSS 和 HTML 之类的 Web 技术，但它使用 C＃语言和 Razor 语法代替 JavaScript 来构建可组合的 Web UI 。通过提供用于编译到 Web 的大小和高效加载的格式，WebAssembly 可让 .Net 在浏览器中运行。
+                </Text>
+            </Body>
+        </Card>
+        </Col>
+    </Row>
 </div>
+<div style="margin-top:30px">
+    <Timeline Mode="alternate">
+        <TimelineItem>2021年2月3日 Caviar(鱼子酱)项目创建</TimelineItem>
+    </Timeline>
+</div>
+
 @code
 {
     RenderFragment star =@<Icon Type="star" />;
-    RenderFragment fork =@<Icon Type="fork" />;
-    RenderFragment eye =@<Icon Type="eye" />;
-    RenderFragment issues =@<Icon Type="issues-close" />;
-    RenderFragment GiteeTitle =@<a href="https://gitee.com/Cherryblossoms/caviar" target="_blank" >Gitee</a>;
-    }
+RenderFragment fork =@<Icon Type="fork" />;
+RenderFragment eye =@<Icon Type="eye" />;
+RenderFragment issues =@<Icon Type="issues-close" />;
+RenderFragment GiteeTitle =@<a href="https://gitee.com/Cherryblossoms/caviar" target="_blank">Gitee</a>;
+RenderFragment GitHubTitle =@<a href="https://github.com/BeiYinZhiNian/Caviar" target="_blank">GitHub</a>;
+}
