@@ -12,10 +12,11 @@ namespace Caviar.AntDesignPages.Helper
 {
     public class UserConfig
     {
+        public string White = "#F8F8FF";
         public UserConfig(IJSRuntime jSRuntime)
         {
             JSRuntime = jSRuntime;
-            Background = "background:#ffffff";
+            Background = "background:" + White;
             ContentStyle = $"margin: 6px 16px;padding: 24px;min-height: 280px;{Background}";
             HeaderStyle = $"padding:0;{Background}";
         }
@@ -76,7 +77,7 @@ namespace Caviar.AntDesignPages.Helper
                     HeaderStyle = $"padding:0;{Background}";
                     break;
                 default:
-                    Background = "background:#ffffff";
+                    Background = "background:" + White;
                     ContentStyle = $"margin: 6px 16px;padding: 24px;min-height: 280px;{Background}";
                     HeaderStyle = $"padding:0;{Background}";
                     break;
