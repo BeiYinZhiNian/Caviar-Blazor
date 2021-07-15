@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace Caviar.Control
 {
+    /// <summary>
+    /// 代码生成器类及反射
+    /// </summary>
     public class AssemblyDynamicCreation:IAssemblyDynamicCreation
     {
         public virtual void WriteCodeFile(string path, string outName, string content, bool isCover)
