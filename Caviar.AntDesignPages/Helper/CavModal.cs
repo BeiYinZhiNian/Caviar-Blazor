@@ -90,13 +90,12 @@ namespace Caviar.AntDesignPages.Helper
             {
                 res = await menuAdd.Validate();
             }
-            modalRef.Config.Visible = !res;
             modalRef.Config.ConfirmLoading = false;
+            modalRef.Config.Visible = !res;
             if (res)
             {
                 OnOK?.Invoke();
             }
-
         }
 
         private async Task HandleCancel(MouseEventArgs e)

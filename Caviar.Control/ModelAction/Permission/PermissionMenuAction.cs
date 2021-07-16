@@ -71,11 +71,17 @@ namespace Caviar.Control.Permission
         /// <returns></returns>
         public async Task<ResultMsg> SetRoleMenu(int roleId, int[] menuIds)
         {
-            var menus = await GetRoleMenu(roleId);
-            if (menus == null) return Error("没有该角色菜单");
-            var Ids = menus.Data.Where(u => u.IsPermission).Select(u => u.Id);
+            var result = await GetRoleMenu(roleId);
+            if (result.Status != HttpState.OK) return Error("没有该角色菜单");
+            List<ViewMenu> menus = new List<ViewMenu>();
+            result.Data.TreeToList(menus);
+            var Ids = menus.Where(u => u.IsPermission == true).Select(u => u.Id);
             var addIds = menuIds.Except(Ids).ToArray();
             var deleteIds = Ids.Except(menuIds).ToArray();
+            if(addIds.Length==0 && deleteIds.Length == 0)
+            {
+                return Ok();
+            }
             List<SysPermission> addSysPermission = new List<SysPermission>();
             foreach (var item in addIds)
             {
@@ -100,6 +106,7 @@ namespace Caviar.Control.Permission
         }
         /// <summary>
         /// 获取角色菜单
+        /// 返回角色树形列表
         /// </summary>
         /// <param name="roleId"></param>
         /// <returns></returns>
@@ -126,6 +133,10 @@ namespace Caviar.Control.Permission
                 item.AToB(out ViewMenu viewMenu);
                 viewMenu.IsPermission = menu != null;
                 menus.Add(viewMenu);
+            }
+            if (menus.Count == 0)
+            {
+                return Error<List<ViewMenu>>("未获取到该角色菜单");
             }
             menus.OrderBy(u => u.Number);
             menus = menus.ListToTree();

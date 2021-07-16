@@ -14,7 +14,11 @@ namespace Caviar.Control.Permission
     /// </summary>
     public partial class PermissionAction
     {
-
+        /// <summary>
+        /// 获取所有模型
+        /// </summary>
+        /// <param name="isView"></param>
+        /// <returns></returns>
         public ResultMsg<List<ViewModelFields>> GetModels(bool isView)
         {
             List<ViewModelFields> viewModels = new List<ViewModelFields>();
@@ -31,10 +35,10 @@ namespace Caviar.Control.Permission
         /// 获取权限下字段
         /// </summary>
         /// <returns></returns>
-        public ResultMsg<List<SysModelFields>> GetRoleFields()
+        public ResultMsg<List<SysModelFields>> GetPermissionFields(List<SysPermission> permissions)
         {
             //获取字段权限
-            var permission = BC.UserData.Permissions.Where(u => u.PermissionType == PermissionType.Field);
+            var permission = permissions.Where(u => u.PermissionType == PermissionType.Field);
             List<SysModelFields> fields = new List<SysModelFields>();
             foreach (var item in BC.SysModelFields)
             {

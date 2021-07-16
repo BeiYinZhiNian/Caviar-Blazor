@@ -18,6 +18,7 @@ using Caviar.Control.Menu;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
+using Caviar.Control.UserGroup;
 
 namespace Caviar.Control
 {
@@ -78,14 +79,16 @@ namespace Caviar.Control
             BC.SysModelFields = BC.DC.GetAllAsync<SysModelFields>().Result;
             BC.SysMenus = BC.DC.GetAllAsync<SysMenu>().Result;
             var roleAction = CreateModel<RoleAction>();
-            BC.UserData.Roles = roleAction.GetCurrentRoles().Result.Data;
+            var userGroup = CreateModel<UserGroupAction>();
+            BC.UserData.UserGroup = userGroup.GetUserGroup(BC.Id).Result.Data;
+            BC.UserData.Roles = roleAction.GetUserRoles(BC.Id, BC.UserData.UserGroup?.Id).Result.Data;
             var permissionAction = CreateModel<PermissionAction>();
             var rolePermission = permissionAction.GetRolePermissions(BC.UserData.Roles).Result;
             var userPermission = permissionAction.GetUserPermissions(BC.UserToken.Id).Result;
             BC.UserData.Permissions = new List<SysPermission>();
             BC.UserData.Permissions.AddRange(rolePermission.Data);
             BC.UserData.Permissions.AddRange(userPermission.Data);
-            BC.UserData.ModelFields = permissionAction.GetRoleFields().Data;
+            BC.UserData.ModelFields = permissionAction.GetPermissionFields(BC.UserData.Permissions).Data;
             BC.UserData.Menus = permissionAction.GetPermissionMenu(BC.UserData.Permissions).Data;
         } 
 

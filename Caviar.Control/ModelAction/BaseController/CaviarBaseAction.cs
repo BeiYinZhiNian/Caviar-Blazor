@@ -208,7 +208,9 @@ namespace Caviar.Control
             {
                 if (BC.IsLogin)
                 {
-                    return NoPermission("对不起，您还没有获得该权限");
+                    var url = BC.Current_Action.Replace("/api/", "").ToLower();
+                    var menu = BC.SysMenus.SingleOrDefault(u => !string.IsNullOrEmpty(u.Url) && u.Url.ToLower() == url);
+                    return NoPermission($"对不起，您还没有获得{menu?.MenuName}权限");
                 }
                 else
                 {

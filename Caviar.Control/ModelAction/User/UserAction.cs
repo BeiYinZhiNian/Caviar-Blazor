@@ -36,15 +36,21 @@ namespace Caviar.Control.User
             {
                 return Error("该用户名已有人使用，请重新绑定");
             }
-            user = await BC.DC.GetSingleEntityAsync<SysUser>(u => u.PhoneNumber == viewUser.PhoneNumber && u.Uid != BC.UserToken.Uid);
-            if (user != null)
+            if (!string.IsNullOrEmpty(viewUser.PhoneNumber))
             {
-                return Error("该手机号已有人使用，请重新绑定");
+                user = await BC.DC.GetSingleEntityAsync<SysUser>(u => u.PhoneNumber == viewUser.PhoneNumber && u.Uid != BC.UserToken.Uid);
+                if (user != null)
+                {
+                    return Error("该手机号已有人使用，请重新绑定");
+                }
             }
-            user = await BC.DC.GetSingleEntityAsync<SysUser>(u => u.EmailNumber == viewUser.EmailNumber && u.Uid != BC.UserToken.Uid);
-            if (user != null)
+            if (!string.IsNullOrEmpty(viewUser.EmailNumber))
             {
-                return Error("该邮箱已有人使用，请重新绑定");
+                user = await BC.DC.GetSingleEntityAsync<SysUser>(u => u.EmailNumber == viewUser.EmailNumber && u.Uid != BC.UserToken.Uid);
+                if (user != null)
+                {
+                    return Error("该邮箱已有人使用，请重新绑定");
+                }
             }
             return await UpdateEntity(viewUser);
         }

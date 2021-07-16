@@ -9,22 +9,26 @@ namespace Caviar.Control.Role
 {
     public partial class RoleAction
     {
-        public async Task<ResultMsg<List<SysRole>>> GetCurrentRoles()
+        /// <summary>
+        /// 获取指定用户的所有角色
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ResultMsg<List<SysRole>>> GetUserRoles(int userId,int? userGroupId = null)
         {
             List<SysRole> roles = new List<SysRole>();
-            if (BC.Id > 0)
+            if (userId > 0)
             {
                 //获取当前用户角色
-                var userRoles = await BC.DC.GetEntityAsync<SysRoleLogin>(u => u.UserId == BC.Id);
+                var userRoles = await BC.DC.GetEntityAsync<SysRoleUser>(u => u.UserId == userId);
                 foreach (var item in userRoles)
                 {
                     if (roles.SingleOrDefault(u=>u.Id == item.RoleId) != null) continue;
                     var role = await BC.DC.GetSingleEntityAsync<SysRole>(u => u.Id == item.RoleId);
                     await AddRole(roles, role);
                 }
-                if (BC.UserData.UserGroup != null)
+                if (userGroupId != null && userGroupId>0)
                 {
-                    var userGroupRoles = await BC.DC.GetEntityAsync<SysRoleUserGroup>(u => u.UserGroupId == BC.UserData.UserGroup.Id);
+                    var userGroupRoles = await BC.DC.GetEntityAsync<SysRoleUserGroup>(u => u.UserGroupId == userGroupId);
                     foreach (var item in userGroupRoles)
                     {
                         if (roles.SingleOrDefault(u => u.Id == item.RoleId) != null) continue;

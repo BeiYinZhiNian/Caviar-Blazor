@@ -81,7 +81,7 @@
             {
                 foreach (var item in Buttons)
                 {
-                    if (item.ButtonPosition == ButtonPosition.Default)
+                    if (item.ButtonPosition == ButtonPosition.Default && item.MenuType == MenuType.Button)
                     {
                         <SpaceItem>
                             @CreatePackButton(item, default)
@@ -212,7 +212,7 @@
             <ActionColumn Title="操作">
 
                 @{
-                    List<ViewMenu> but = Buttons.Where(u => u.ButtonPosition == ButtonPosition.Row).ToList();
+                    List<ViewMenu> but = Buttons.Where(u => u.ButtonPosition == ButtonPosition.Row && u.MenuType== MenuType.Button).ToList();
                     if (but.Count >= 3)
                     {
                         <Dropdown>

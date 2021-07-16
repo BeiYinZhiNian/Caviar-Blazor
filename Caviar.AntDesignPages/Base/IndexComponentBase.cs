@@ -38,8 +38,7 @@ namespace Caviar.AntDesignPages
         /// 模型字段
         /// </summary>
         protected List<ViewModelFields> ViewModelFields { get; set; } = new List<ViewModelFields>();
-        public ViewQuery Query { get; set; } = new ViewQuery();
-
+        public ViewQuery Query { get; set; }
         protected string BaseController { get; set; }
         [Parameter]
         public string Url { get; set; }
@@ -77,6 +76,11 @@ namespace Caviar.AntDesignPages
             var result = await Http.GetJson<List<ViewMenu>>("Menu/GetButtons?url=" + Url);
             if (result.Status != HttpState.OK) return null;
             Buttons = result.Data;
+            var queryButton = Buttons.SingleOrDefault(u => u.Url == BaseController + "/FuzzyQuery");
+            if (queryButton != null)
+            {
+                Query = new ViewQuery();
+            }
             return Buttons;
         }
         /// <summary>

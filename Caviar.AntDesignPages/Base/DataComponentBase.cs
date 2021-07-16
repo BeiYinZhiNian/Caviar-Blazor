@@ -40,6 +40,10 @@ namespace Caviar.AntDesignPages
         /// <returns></returns>
         public virtual async Task<bool> Validate()
         {
+            if (_meunForm == null)//当_meunForm为null时，不进行表单验证
+            {
+                return await FormSubmit();
+            }
             //数据效验
             if (_meunForm.Validate())
             {

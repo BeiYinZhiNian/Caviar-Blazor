@@ -1,10 +1,10 @@
-﻿@typeparam TData
+﻿@page "/Permission/RoleUser"
+@inherits PermissionRoleTemple<ViewUser>
 
-<Tree
-      Style="margin-top:20px"
+<Tree Style="margin-top:20px"
       TItem="ViewRole"
       BlockNode
-      ShowIcon 
+      ShowIcon
       DataSource="ViewRoles"
       TitleExpression="x => x.DataItem.RoleName"
       ChildrenExpression="x => x.DataItem.Children"

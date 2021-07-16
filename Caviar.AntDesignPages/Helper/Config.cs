@@ -20,9 +20,9 @@ namespace Caviar.AntDesignPages.Helper
         {
             services.AddAntDesign();
             services.AddScoped<HttpHelper>();
+            services.AddScoped<CavModal>();
             services.AddSingleton<UserConfig>();
             services.AddSingleton<ViewUserToken>();
-            services.AddSingleton<CavModal>();
             services.AddSingleton<ModalService>();
             services.AddSingleton<MessageService>();
             services.AddScoped<IPrismHighlighter, PrismHighlighter>();

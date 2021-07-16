@@ -1,8 +1,16 @@
 ﻿@page "/Permission/RoleUserGroup"
+@inherits PermissionRoleTemple<ViewUserGroup>
 
-<PermissionRoleTemple 
-                      TData="ViewUserGroup" 
-                      DataSource="@DataSource"
-                      @ref="Temple"
-                      Url="@Url">
-</PermissionRoleTemple>
+<Tree Style="margin-top:20px"
+      TItem="ViewRole"
+      BlockNode
+      ShowIcon
+      DataSource="ViewRoles"
+      TitleExpression="x => x.DataItem.RoleName"
+      ChildrenExpression="x => x.DataItem.Children"
+      IsLeafExpression="x => x.DataItem.Children?.Count == 0"
+      KeyExpression="x => x.DataItem.Id.ToString()">
+    <TitleIconTemplate Context="node">
+        <Checkbox @bind-Checked="node.DataItem.IsPermission"></Checkbox>
+    </TitleIconTemplate>
+</Tree>

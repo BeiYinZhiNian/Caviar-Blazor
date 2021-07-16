@@ -20,9 +20,9 @@ namespace Caviar.Control.Menu
             var menus = BC.UserData.Menus.Where(u => u.Url?.ToLower() == url.ToLower()).FirstOrDefault();
             if (menus == null)
             {
-                return Error<List<SysMenu>>("Œ¥’“µΩ∞¥≈•µÿ÷∑");
+                return Ok(new List<SysMenu>());
             }
-            var buttons = BC.UserData.Menus.Where(u => u.MenuType == MenuType.Button && u.ParentId == menus.Id).OrderBy(u => u.Number);
+            var buttons = BC.UserData.Menus.Where(u => (u.MenuType == MenuType.Button || u.MenuType == MenuType.API) && u.ParentId == menus.Id).OrderBy(u => u.Number);
             return Ok(buttons.ToList());
         }
         public ResultMsg<List<ViewMenu>> GetMenus()
