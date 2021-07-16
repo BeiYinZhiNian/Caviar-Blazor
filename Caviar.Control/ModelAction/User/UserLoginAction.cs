@@ -30,6 +30,7 @@ namespace Caviar.Control.User
                 userLogin = BC.DC.GetSingleEntityAsync<SysUser>(u => u.PhoneNumber == entity.PhoneNumber && u.Password == entity.Password).Result;
             }
             if (userLogin == null) return Error<UserToken>("用户名或密码错误");
+            if (userLogin.IsDisable) return Error<UserToken>("该账号未被启动，请联系管理员");
             BC.UserToken.AutoAssign(userLogin);
             BC.UserToken.CreateTime = DateTime.Now;
             BC.UserToken.Token = JwtHelper.CreateTokenByHandler(BC.UserToken);
