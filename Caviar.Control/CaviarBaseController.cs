@@ -38,12 +38,11 @@ namespace Caviar.Control
             }
         }
 
-
-        Stopwatch stopwatch = new Stopwatch();
+        SysLogAction LoginAction => HttpContext.RequestServices.GetService<SysLogAction>();
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            stopwatch.Start();
+            BC.Stopwatch.Start();
             base.OnActionExecuting(context);
             //获取ip地址
             BC.Current_Ipaddress = context.HttpContext.GetUserIp();
@@ -90,28 +89,17 @@ namespace Caviar.Control
             BC.UserData.Menus = permissionAction.GetPermissionMenu(BC.UserData.Permissions).Data;
         } 
 
-        public override void OnActionExecuted(ActionExecutedContext context)
-        {
-            base.OnActionExecuted(context);
-            stopwatch.Stop();
-            //日志记录，这里应该想一个更好的办法
-            var statusCode = context.HttpContext.Response.StatusCode;
-            if (statusCode != HttpState.OK)
-            {
-                LoggerMsg("", LogLevel.Error, statusCode, true);
-            }
-        }
-
         public override OkObjectResult Ok(object value)
         {
+            BC.Stopwatch.Stop();
             ResultMsg result = (ResultMsg)value;
             if (result.Status == HttpState.OK)
             {
-                LoggerMsg(result.Title, LogLevel.Information, result.Status, true);
+                LoginAction.LoggerMsg(result.Title, LogLevel.Information, result.Status, true);
             }
             else
             {
-                LoggerMsg(result.Title, LogLevel.Warning, result.Status, true);
+                LoginAction.LoggerMsg(result.Title, LogLevel.Warning, result.Status, true);
             }
             var data = value.GetObjValue("data");
             if (data != null)
@@ -134,60 +122,6 @@ namespace Caviar.Control
             return entity;
         }
         #endregion
-
-
-
-        #region  日志消息
-        protected void LoggerMsg(string msg, LogLevel logLevel = LogLevel.Information, int status = 200,bool IsAutomatic = false)
-        {
-            var log = new SysLog() 
-            {
-                UserName = BC.UserName,
-                AbsoluteUri = BC.Current_AbsoluteUri,
-                Ipaddress = BC.Current_Ipaddress,
-                Elapsed = stopwatch.Elapsed.TotalSeconds,
-                Status = status,
-                LogLevel = (CavLogLevel)logLevel,
-                Msg = msg,
-                Method = BC.HttpContext.Request.Method,
-                IsAutomatic = IsAutomatic
-            };
-            if (BC.HttpContext.Request.Headers.ContainsKey("User-Agent"))
-            {
-                log.Browser = BC.HttpContext.Request.Headers["User-Agent"];
-            }
-            if (BC.IsLogin)
-            {
-                log.UserId = BC.UserToken.Id;
-            }
-            if(log.Method.ToUpper() == "POST")
-            {
-                var json = JsonSerializer.Serialize(BC.ActionArguments);
-                log.PostData = json;
-            }
-            var isAdd = FilterLog(log);
-            if (!isAdd) return;
-            var count = BC.DC.AddEntityAsync(log).Result;
-        }
-
-        protected bool FilterLog(SysLog log)
-        {
-            if ((int)log.LogLevel < 2)
-            {
-                return false;
-            }
-            else if (log.Method == "GET" && log.LogLevel == CavLogLevel.Information && log.Status == HttpState.OK && log.Elapsed < 1)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        #endregion
-
     }
 
 

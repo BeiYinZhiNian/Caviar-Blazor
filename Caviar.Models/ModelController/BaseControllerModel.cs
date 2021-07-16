@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,14 +20,13 @@ namespace Caviar.Models
         /// </summary>
         public IDataContext DC => HttpContext.RequestServices.GetRequiredService<IDataContext>();
         /// <summary>
-        /// 获取日志记录
-        /// </summary>
-        public ILogger<T> GetLogger<T>() => HttpContext.RequestServices.GetRequiredService<ILogger<T>>();
-        /// <summary>
         /// 获取缓存数据
         /// </summary>
         public IMemoryCache Cache => HttpContext.RequestServices.GetRequiredService<IMemoryCache>();
-
+        /// <summary>
+        /// 计时器
+        /// </summary>
+        public Stopwatch Stopwatch { get; set; } = new Stopwatch();
         /// <summary>
         /// 当前请求路径
         /// </summary>

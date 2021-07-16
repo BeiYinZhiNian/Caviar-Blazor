@@ -55,7 +55,6 @@ namespace Caviar.AntDesignPages
         /// <returns></returns>
         protected virtual async Task<List<ViewT>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
-            if (PageIndex == pageIndex && PageSize == pageSize) return null;
             var result = await Http.GetJson<PageData<ViewT>>($"{Url}?pageIndex={pageIndex}&pageSize={pageSize}&isOrder={isOrder}");
             if (result.Status != HttpState.OK) return null;
             if (result.Data != null)

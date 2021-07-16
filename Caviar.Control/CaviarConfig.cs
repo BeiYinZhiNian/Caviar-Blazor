@@ -42,6 +42,7 @@ namespace Caviar.Control
             services.AddDbContext<DataContext>();
             services.AddScoped<IDataContext, SysDataContext>();
             services.AddScoped<IBaseControllerModel, CavBaseControllerModel>();
+            services.AddScoped<SysLogAction>();
 
             services.AddSingleton<IMemoryCache, MemoryCache>();
             services.AddSingleton<IAssemblyDynamicCreation, AssemblyDynamicCreation>();
@@ -139,6 +140,7 @@ namespace Caviar.Control
                 FileProvider = new PhysicalFileProvider(path),
                 RequestPath = CurrencyConstant.Enclosure
             });
+            app.UseCustomExceptionMiddleware();
             return app;
         }
 

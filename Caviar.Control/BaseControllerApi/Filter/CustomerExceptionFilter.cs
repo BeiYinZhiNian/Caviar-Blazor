@@ -1,4 +1,5 @@
-﻿using Caviar.Models.SystemData;
+﻿using Caviar.Models;
+using Caviar.Models.SystemData;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Caviar.Control
 {
@@ -41,6 +43,8 @@ namespace Caviar.Control
                 Title = "服务器内部发生错误，请联系管理员",
                 Detail = ex.Message
             };
+            var logger = context.RequestServices.GetService<SysLogAction>();
+            logger.LoggerMsg(ex.Message, LogLevel.Error, HttpState.InternaError, true);
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = HttpState.OK;
             var json = JsonSerializer.Serialize(resultMsg);
