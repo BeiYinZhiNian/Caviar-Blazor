@@ -81,7 +81,8 @@ namespace Caviar.AntDesignPages.Shared
 
         [Parameter]
         public EventCallback<RowCallbackData<TData>> RowCallback { get; set; }
-
+        [Parameter]
+        public bool Loading { get; set; }
         async void RoleAction(RowCallbackData<TData> data)
         {
             if (RowCallback.HasDelegate)

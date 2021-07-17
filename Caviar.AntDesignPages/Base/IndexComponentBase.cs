@@ -40,6 +40,7 @@ namespace Caviar.AntDesignPages
         protected List<ViewModelFields> ViewModelFields { get; set; } = new List<ViewModelFields>();
         public ViewQuery Query { get; set; }
         protected string BaseController { get; set; }
+        public bool Loading { get; set; }
         [Parameter]
         public string Url { get; set; }
         #endregion
@@ -154,6 +155,7 @@ namespace Caviar.AntDesignPages
         #region 重写
         protected override async Task OnInitializedAsync()
         {
+            Loading = true;
             if (string.IsNullOrEmpty(Url))
             {
                 var url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
@@ -163,6 +165,7 @@ namespace Caviar.AntDesignPages
             await GetModelFields();//获取模型字段
             await GetPages();//获取数据源
             await GetPowerButtons();//获取按钮
+            Loading = false;
         }
         #endregion
     }
