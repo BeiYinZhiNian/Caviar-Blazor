@@ -1,10 +1,10 @@
 ﻿@typeparam TData
 
-<Space Direction="@DirectionVHType.Vertical" Size="@("large")">
+<Space Direction="@DirectionVHType.Vertical" Size="@("small")">
     @if (Query != null)
     {
         <SpaceItem>
-            <Space>
+            <Space Size=@(("8", "8")) Wrap>
                 <SpaceItem>
                     <Select Mode="multiple"
                             Placeholder="选择查询的字段"
