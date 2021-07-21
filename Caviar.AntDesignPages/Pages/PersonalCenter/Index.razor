@@ -2,41 +2,45 @@
 
 @if (UserData != null)
 {
-    <Row>
-        <GridCol>
-            <Card Style="width:300px;" Title=@("个人信息") Bordered Hoverable>
-                <ChildContent>
-                    <CardMeta AvatarTemplate="@GetHeadPortrait()" TitleTemplate="@GetTitleRender()" Description="@UserData.Remark" />
-                    <body>
-                        <p style="margin-top:10px">
-                            <Text>部门：</Text><Text>@UserData.UserGroupName</Text>
-                        </p>
-                        <p>
-                            <Text>手机号：</Text><Text>@UserData.PhoneNumber</Text>
-                        </p>
-                        <p>
-                            <Text>电子邮箱：</Text><Text>@UserData.EmailNumber</Text>
-                        </p>
-                    </body>
-                </ChildContent>
-                <ActionTemplate>
-                    <CardAction>
-                        <Tooltip Title="@("修改信息")">
-                            <Icon Type="edit" OnClick="@(()=> UpdateUserData())" />
-                        </Tooltip>
-                    </CardAction>
-                    <CardAction>
-                        <Tooltip Title="@("修改密码")">
-                            <Icon Type="setting" OnClick="@(()=> ChangePassword())" />
-                        </Tooltip>
-                    </CardAction>
-                </ActionTemplate>
-            </Card>
-        </GridCol>
-        <GridCol Style="margin-left:10px">
-            <CavConfigure></CavConfigure>
-        </GridCol>
-    </Row>
+    <Space Size=@(("8", "8")) Wrap Align="start" >
+        <SpaceItem>
+            <GridCol>
+                <Card Style="width:300px;" Title=@("个人信息") Bordered Hoverable>
+                    <ChildContent>
+                        <CardMeta AvatarTemplate="@GetHeadPortrait()" TitleTemplate="@GetTitleRender()" Description="@UserData.Remark" />
+                        <body>
+                            <p style="margin-top:10px">
+                                <Text>部门：</Text><Text>@UserData.UserGroupName</Text>
+                            </p>
+                            <p>
+                                <Text>手机号：</Text><Text>@UserData.PhoneNumber</Text>
+                            </p>
+                            <p>
+                                <Text>电子邮箱：</Text><Text>@UserData.EmailNumber</Text>
+                            </p>
+                        </body>
+                    </ChildContent>
+                    <ActionTemplate>
+                        <CardAction>
+                            <Tooltip Title="@("修改信息")">
+                                <Icon Type="edit" OnClick="@(()=> UpdateUserData())" />
+                            </Tooltip>
+                        </CardAction>
+                        <CardAction>
+                            <Tooltip Title="@("修改密码")">
+                                <Icon Type="setting" OnClick="@(()=> ChangePassword())" />
+                            </Tooltip>
+                        </CardAction>
+                    </ActionTemplate>
+                </Card>
+            </GridCol>
+        </SpaceItem>
+        <SpaceItem>
+            <GridCol>
+                <CavConfigure></CavConfigure>
+            </GridCol>
+        </SpaceItem>
+    </Space>
 
 }
 @code{

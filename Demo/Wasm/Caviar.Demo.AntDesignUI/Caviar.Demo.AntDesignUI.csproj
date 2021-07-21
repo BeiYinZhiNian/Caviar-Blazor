@@ -23,6 +23,12 @@
     <ProjectReference Include="..\Caviar.Demo.Models\Caviar.Demo.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\css\app.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
   <ProjectExtensions><VisualStudio><UserProperties wwwroot_4appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>
