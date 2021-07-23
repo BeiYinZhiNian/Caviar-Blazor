@@ -17,6 +17,14 @@ Caviar(鱼子酱)框架采用了：Blazor + Ant Design + .NET 5 本框架使用�
 - 🎁 内置日志管理、菜单管理、附件管理、部门管理、用户管理、角色管理、代码生成等
 - 💿 多种主题任意切换
 
+## 项目架构
+
+<p align="center">
+    <img src="https://images.gitee.com/uploads/images/2021/0723/154334_7f00d449_1456276.png">
+</p>
+
+
+
 ## 🔗 链接
 
 - 项目文档即将上线
