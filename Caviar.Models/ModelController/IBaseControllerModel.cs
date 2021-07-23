@@ -48,6 +48,10 @@ namespace Caviar.Models
         /// </summary>
         public bool IsLogin { get; }
         /// <summary>
+        /// 当前访问菜单
+        /// </summary>
+        public SysMenu CurrentMenu { get; set; }
+        /// <summary>
         /// 前端令牌
         /// </summary>
         public UserToken UserToken { get; set; }

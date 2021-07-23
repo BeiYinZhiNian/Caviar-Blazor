@@ -15,6 +15,9 @@ namespace Caviar.Models.SystemData
         [DisplayName("用户名")]
         [StringLength(50, ErrorMessage = "用户名请不要超过{1}个字符")]
         public string UserName { get; set; }
+        [DisplayName("模块名称")]
+        [StringLength(50, ErrorMessage = "用户名请不要超过{1}个字符")]
+        public string ControllerName { get; set; }
         [DisplayName("用户id")]
         public int? UserId { get; set; }
         [DisplayName("访问地址")]
@@ -28,7 +31,7 @@ namespace Caviar.Models.SystemData
         [DisplayName("状态码")]
         public int Status { get; set; }
         [DisplayName("执行消息")]
-        [StringLength(50, ErrorMessage = "执行消息请不要超过{1}个字符")]
+        [StringLength(2048, ErrorMessage = "执行消息请不要超过{1}个字符")]
         public string Msg { get; set; }
         [DisplayName("浏览器")]
         [StringLength(1024, ErrorMessage = "浏览器请不要超过{1}个字符")]

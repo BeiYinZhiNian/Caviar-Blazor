@@ -1,12 +1,10 @@
 ﻿using AntDesign;
+using Caviar.AntDesignPages.Helper;
 using Caviar.Models.SystemData;
 using Microsoft.AspNetCore.Components;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-
+using System.Linq;
 namespace Caviar.AntDesignPages
 {
     public partial class DataComponentBase<ViewT> : CavComponentBase,ITableTemplate where ViewT : class, new()
@@ -20,15 +18,33 @@ namespace Caviar.AntDesignPages
 
         [Parameter]
         public string SuccMsg { get; set; } = "操作成功";
+
+        public List<ViewUserGroup> ViewUserGroups { get; set; }
         #endregion
 
-        protected override Task OnInitializedAsync()
+        [Inject]
+        public ViewUserToken UserToken { get; set; }
+
+        protected override async Task OnInitializedAsync()
         {
-            if(DataSource is IBaseModel)
+            if (DataSource is IBaseModel)
             {
-                ((IBaseModel)DataSource).Number = "999";
+                var data = (IBaseModel)DataSource;
+                var result = await Http.GetJson<List<ViewUserGroup>>("Permission/GetPermissionGroup");
+                if (result.Status == HttpState.OK)
+                {
+                    ViewUserGroups = result.Data;
+                }
+                var list = ViewUserGroups?.ListToTree();
+                if (data.Id == 0)
+                {
+                    data.Number = "999";
+                    data.DataId = UserToken.UserGroupId == 0 ? null : UserToken.UserGroupId;
+                }
+                var userGroup = list?.FirstOrDefault(u => u.Id == data.DataId);
+                if (userGroup != null) UserGroupName = userGroup.Name;
+                await base.OnInitializedAsync();
             }
-            return base.OnInitializedAsync();
         }
 
 
@@ -64,6 +80,19 @@ namespace Caviar.AntDesignPages
                 return true;
             }
             return false;
+        }
+
+        public string UserGroupName = "请选择部门";
+        public void OnUserGroupCancel()
+        {
+            UserGroupName = "请选择部门";
+            ((IBaseModel)DataSource).DataId = null;
+        }
+
+        public void OnUserGroupSelect(TreeEventArgs<ViewUserGroup> args)
+        {
+            UserGroupName = args.Node.Title;
+            ((IBaseModel)DataSource).DataId = int.Parse(args.Node.Key);
         }
         #endregion
     }

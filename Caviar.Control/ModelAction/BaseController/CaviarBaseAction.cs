@@ -201,15 +201,19 @@ namespace Caviar.Control
             //这样的好处是可以给未登录用户一些权限
             return Ok();
         }
-
-        public virtual ResultMsg GetInto()
+        /// <summary>
+        /// 检查是否有访问api的权限
+        /// </summary>
+        /// <returns></returns>
+        public virtual ResultMsg CheckAPI()
         {
-            if (!ActionVerification())
+            var url = BC.Current_Action.Replace("/api/", "").ToLower();
+            var menu = BC.SysMenus.SingleOrDefault(u => !string.IsNullOrEmpty(u.Url) && u.Url.ToLower() == url);
+            if (!ActionVerification(menu))
             {
                 if (BC.IsLogin)
                 {
-                    var url = BC.Current_Action.Replace("/api/", "").ToLower();
-                    var menu = BC.SysMenus.SingleOrDefault(u => !string.IsNullOrEmpty(u.Url) && u.Url.ToLower() == url);
+                    
                     return NoPermission($"对不起，您还没有获得{menu?.MenuName}权限");
                 }
                 else
@@ -225,19 +229,18 @@ namespace Caviar.Control
         /// 判断是否可以访问
         /// </summary>
         /// <returns></returns>
-        protected virtual bool ActionVerification()
+        protected virtual bool ActionVerification(SysMenu menu)
         {
             if (CaviarConfig.IsDebug) return true;
-            var url = BC.Current_Action.Replace("/api/", "").ToLower();
             if (CaviarConfig.IsStrict)
             {
-                var menu = BC.UserData.Menus.FirstOrDefault(u => !string.IsNullOrEmpty(u.Url) && u.Url.ToLower() == url);
-                if (menu != null) return true;
+                if (menu == null) return false;
+                var userMenu = BC.UserData.Menus.FirstOrDefault(u => u.Id == menu.Id);
+                if (userMenu != null) return true;
                 return false;
             }
             else
             {
-                var menu = BC.UserData.Menus.FirstOrDefault(u => !string.IsNullOrEmpty(u.Url) && u.Url.ToLower() == url);
                 if (menu == null) return true;//宽松模式，未加入权限api则不受限制
                 menu = BC.UserData.Menus.FirstOrDefault(u => u.Url == menu.Url);//如果有限制，则向用户api查询
                 if (menu != null) return true;

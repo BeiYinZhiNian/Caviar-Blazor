@@ -28,6 +28,10 @@ namespace Caviar.Models
         /// </summary>
         public Stopwatch Stopwatch { get; set; } = new Stopwatch();
         /// <summary>
+        /// 当前访问菜单
+        /// </summary>
+        public SysMenu CurrentMenu { get; set; }
+        /// <summary>
         /// 当前请求路径
         /// </summary>
         public string Current_Action { get; set; }

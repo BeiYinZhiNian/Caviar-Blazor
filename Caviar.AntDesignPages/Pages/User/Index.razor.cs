@@ -35,16 +35,16 @@ namespace Caviar.AntDesignPages.Pages.User
             if (result.Status != HttpState.OK) return;
             ViewUserGroups = result.Data.Rows;
         }
-        string ParentName = "请选择部门";
+        string UserGroupName = "请选择部门";
         void RemoveRecord(string key)
         {
-            ParentName = "请选择部门";
+            UserGroupName = "请选择部门";
             Query.QueryData[key] = "";
         }
 
         void EventRecord(TreeEventArgs<ViewUserGroup> args,string key)
         {
-            ParentName = args.Node.Title;
+            UserGroupName = args.Node.Title;
             Query.QueryData[key] = args.Node.Key;
         }
     }

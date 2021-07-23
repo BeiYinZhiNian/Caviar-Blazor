@@ -44,6 +44,13 @@
     <FormItem Label='备注'>
         <TextArea @bind-Value='@context.Remark' Style='width:50%' />
     </FormItem>
+    <FormItem Label='数据权限'>
+        <CavUserGroup DataSource="ViewUserGroups"
+                      UserGroupName="@UserGroupName"
+                      OnSelect="OnUserGroupSelect"
+                      OnCancel="OnUserGroupCancel">
+        </CavUserGroup>
+    </FormItem>
     <FormItem Label='是否禁用'>
         <Switch @bind-Value='@context.IsDisable' />
     </FormItem>

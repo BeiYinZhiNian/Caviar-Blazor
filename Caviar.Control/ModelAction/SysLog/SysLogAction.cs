@@ -28,7 +28,8 @@ namespace Caviar.Control
             var log = new SysLog()
             {
                 UserName = BC.UserName,
-                AbsoluteUri = BC.Current_AbsoluteUri,
+                AbsoluteUri = BC.Current_Action,
+                ControllerName = BC.CurrentMenu?.MenuName,
                 Ipaddress = BC.Current_Ipaddress,
                 Elapsed = BC.Stopwatch.Elapsed.TotalMilliseconds,
                 Status = status,

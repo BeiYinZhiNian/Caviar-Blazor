@@ -35,21 +35,11 @@
         {
             case "UserGroupName":
             case "UserGroupId":
-                render = @<Dropdown>
-    <Overlay>
-        <Tree ShowIcon DataSource="ViewUserGroups"
-              TitleExpression="x => x.DataItem.Name"
-              ChildrenExpression="x => x.DataItem.Children"
-              IsLeafExpression="x => x.DataItem.Children?.Count == 0"
-              KeyExpression="x => x.DataItem.Id.ToString()"
-              OnClick='e => EventRecord(e,key)'
-              TItem="ViewUserGroup">
-        </Tree>
-    </Overlay>
-    <ChildContent>
-        <Button OnClick="()=>RemoveRecord(key)">@ParentName</Button>
-    </ChildContent>
-</Dropdown>;
+                render = @<CavUserGroup DataSource="ViewUserGroups"
+                                        OnSelect="e => EventRecord(e,key)"
+                                        UserGroupName="@UserGroupName"
+                                        OnCancel="()=>RemoveRecord(key)">
+                        </CavUserGroup>;
                 break;
             default:
                 break;

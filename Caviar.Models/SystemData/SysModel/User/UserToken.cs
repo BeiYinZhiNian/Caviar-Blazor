@@ -27,7 +27,10 @@ namespace Caviar.Models.SystemData
         /// 用户头像路径
         /// </summary>
         public string HeadPortrait { get; set; }
-
+        /// <summary>
+        /// 所在用户组
+        /// </summary>
+        public int UserGroupId { get; set; }
         /// <summary>
         /// token使用时长
         /// </summary>

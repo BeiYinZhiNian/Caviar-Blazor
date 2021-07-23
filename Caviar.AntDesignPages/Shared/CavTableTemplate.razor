@@ -38,7 +38,9 @@
                         var tableItem = GetQueryItems?.Invoke(key);
                         if (tableItem != null)
                         {
-                            @tableItem
+                            <SpaceItem>
+                                @tableItem
+                            </SpaceItem>
                             continue;
                         }
                         <SpaceItem>

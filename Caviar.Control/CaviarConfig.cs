@@ -14,6 +14,7 @@ using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Caching.Memory;
 using Caviar.Models;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace Caviar.Control
 {
@@ -141,6 +142,10 @@ namespace Caviar.Control
                 RequestPath = CurrencyConstant.Enclosure
             });
             app.UseCustomExceptionMiddleware();
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
             return app;
         }
 

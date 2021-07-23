@@ -52,5 +52,9 @@ namespace Caviar.Models.SystemData
         /// 编号
         /// </summary>
         public string Number { get; set; }
+        /// <summary>
+        /// 数据权限
+        /// </summary>
+        public int? DataId { get; set; }
     }
 }

@@ -9,6 +9,17 @@ namespace Caviar.Control.Permission
 {
     public partial class PermissionController
     {
+        /// <summary>
+        /// 获取可设置的数据权限
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> GetPermissionGroup()
+        {
+            var result = await _Action.GetPermissionGroup();
+            return Ok(result);
+        }
+
         [HttpGet]
         public async Task<IActionResult> RoleUser(int PermissionId)
         {

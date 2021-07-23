@@ -1,0 +1,40 @@
+﻿<Dropdown>
+    <Overlay>
+        <Tree ShowIcon DataSource="DataSource"
+              TitleExpression="x => x.DataItem.Name"
+              ChildrenExpression="x => x.DataItem.Children"
+              IsLeafExpression="x => x.DataItem.Children?.Count == 0"
+              KeyExpression="x => x.DataItem.Id.ToString()"
+              OnClick='e => {
+                           if (OnSelect.HasDelegate)
+                           {
+                               OnSelect.InvokeAsync(e);
+                           }
+                       }'
+              TItem="ViewUserGroup">
+        </Tree>
+    </Overlay>
+    <ChildContent>
+        <Button OnClick="()=>{
+                             if (OnCancel.HasDelegate)
+                             {
+                                 OnCancel.InvokeAsync();
+                             }
+        }">@UserGroupName</Button>
+    </ChildContent>
+</Dropdown>
+
+@code{
+    [Parameter]
+    public List<ViewUserGroup> DataSource { get; set; }
+
+    [Parameter]
+    public EventCallback<TreeEventArgs<ViewUserGroup>> OnSelect { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    [Parameter]
+    public string UserGroupName { get; set; } = "未选择部门";
+
+}

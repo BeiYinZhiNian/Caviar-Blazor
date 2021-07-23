@@ -86,5 +86,13 @@ namespace Caviar.Control.Permission
             await BC.DC.AddEntityAsync(addUrgList);
             return Ok();
         }
+
+        public async Task<ResultMsg<List<ViewUserGroup>>> GetPermissionGroup()
+        {
+            var userGroup = await BC.DC.GetAllAsync<SysUserGroup>();
+            CommonHelper.AToB(userGroup, out List<ViewUserGroup> viewUserGroup);
+            var tree = viewUserGroup.ListToTree();
+            return Ok(tree);
+        }
     }
 }

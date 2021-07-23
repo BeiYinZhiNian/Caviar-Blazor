@@ -62,7 +62,7 @@ namespace Caviar.Control
                 return;
             }
             GetPermission();
-            var IsInto = BaseAction.GetInto();
+            var IsInto = BaseAction.CheckAPI();
             if (IsInto.Status!=HttpState.OK)
             {
                 context.Result = Ok(IsInto);

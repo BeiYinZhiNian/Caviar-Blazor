@@ -69,5 +69,10 @@ namespace Caviar.Models.SystemData
         [DisplayName("编号")]
         [StringLength(50, ErrorMessage = "编号请不要超过{1}个字符")]
         public string Number { get; set; } = "999";
+        /// <summary>
+        /// 数据权限
+        /// </summary>
+        [DisplayName("数据权限")]
+        public int? DataId { get; set; }
     }
 }
