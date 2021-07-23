@@ -15,14 +15,13 @@ Caviar(鱼子酱)框架采用了：Blazor + Ant Design + .NET 5 本框架使用�
 - 💕 支持 WebAssembly、Server(开发中) 模式
 - ⚙️ 支持多种数据库：SqlServer、MySql等
 - 🎁 内置日志管理、菜单管理、附件管理、部门管理、用户管理、角色管理、代码生成等
+- 💿 多种主题任意切换
 
-## ♨️ 在线演示
+## 🔗 链接
 
-- 演示环境即将上线，请耐心等待
-
-## 🍉 项目文档
-
-- 项目文档即将上线，请耐心等待
+- 项目文档即将上线
+- 演示地址即将上线
+- [Ant Design](https://ant-design-blazor.gitee.io/zh-CN/)
 
 ## 🍡 使用环境
 
