@@ -28,7 +28,14 @@ namespace Caviar.Control
             _cavAssembly = cavAssembly;
             if (IsDataInit)//判断数据库是否初始化
             {
-                IsDataInit = DataInit().Result;
+                try
+                {
+                    IsDataInit = DataInit().Result;
+                }
+                catch(Exception e)
+                {
+                    throw new Exception("数据库初始化失败，请检查更新字段," + e.Message);
+                }
             }
         }
         DataContext _dataContext;

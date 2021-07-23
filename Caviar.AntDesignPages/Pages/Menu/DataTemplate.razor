@@ -66,10 +66,10 @@
         <Input @bind-Value="@context.Number" Style="width: 20%;">
     </FormItem>
     <FormItem Label='数据权限'>
-        <CavUserGroup DataSource="ViewUserGroups"
-                      UserGroupName="@UserGroupName"
-                      OnSelect="OnUserGroupSelect"
-                      OnCancel="OnUserGroupCancel">
+        <CavUserGroup DataSource='ViewUserGroups'
+                      UserGroupName='@UserGroupName'
+                      OnSelect='OnUserGroupSelect'
+                      OnCancel='OnUserGroupCancel'>
         </CavUserGroup>
     </FormItem>
 </Form>

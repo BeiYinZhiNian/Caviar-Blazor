@@ -150,6 +150,8 @@ namespace Caviar.Control
         }
         /// <summary>
         /// 根据类型创建通用组件
+        /// 先检查特殊组件是否创建，如果未创建则创建通用组件
+        /// 如果通用组件未创建，则该字段丢弃
         /// </summary>
         /// <param name="item"></param>
         /// <param name="txt"></param>
@@ -157,49 +159,82 @@ namespace Caviar.Control
         protected virtual bool CreateCurrencyAssembly(ViewModelFields item, ref string txt)
         {
             var IsWrite = true;
+            IsWrite = CreateSpecialAssembly(item, ref txt);
+            if (IsWrite) return IsWrite;
+            var modelType = item.ModelType.ToLower();
+            switch (modelType)
+            {
+                case "string":
+                    if (item.ValueLen != null && item.ValueLen >= 200)
+                    {
+                        txt += $"<TextArea @bind-Value='@context.{item.TypeName}' Style='width:53%'/>";
+                    }
+                    else
+                    {
+                        switch (item.DisplayName.Length)
+                        {
+                            case 1:
+                            case 2:
+                                txt += $"<Input @bind-Value='@context.{item.TypeName}' Style='width:53%' />";
+                                break;
+                            case 3:
+                                txt += $"<Input @bind-Value='@context.{item.TypeName}' Style='width:52%' />";
+                                break;
+                            default:
+                                txt += $"<Input @bind-Value='@context.{item.TypeName}' Style='width:50%' />";
+                                break;
+                        }
+                        
+                    }
+                    break;
+                case "int32":
+                    txt += $"<AntDesign.InputNumber @bind-Value='@context.{item.TypeName}' Style='width:50%'/>";
+                    break;
+                case "boolean":
+                    txt += $"<Switch @bind-Value='@context.{item.TypeName}'/>";
+                    break;
+                case "datetime":
+                    txt += $"<DatePicker @bind-Value='@context.{item.TypeName}'/>";
+                    break;
+                default:
+                    return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// 创建特殊组件
+        /// </summary>
+        /// <returns></returns>
+        protected virtual bool CreateSpecialAssembly(ViewModelFields item, ref string txt)
+        {
             if (item.IsEnum)
             {
-                CreateEnumAssembly(item, ref txt);
+                return CreateEnumAssembly(item, ref txt);
             }
-            else
+            var modelType = item.ModelType.ToLower();
+            switch (modelType)
             {
-                var modelType = item.ModelType.ToLower();
-                switch (modelType)
-                {
-                    case "string":
-                        if (item.ValueLen != null && item.ValueLen >= 200)
-                        {
-                            txt += $"<TextArea @bind-Value='@context.{item.TypeName}' Style='width:50%'/>";
-                        }
-                        else
-                        {
-                            txt += $"<Input @bind-Value='@context.{item.TypeName}' Style='width:50%' />";
-                        }
-                        break;
-                    case "int32":
-                        txt += $"<AntDesign.InputNumber @bind-Value='@context.{item.TypeName}' />";
-                        break;
-                    case "boolean":
-                        txt += $"<Switch @bind-Value='@context.{item.TypeName}'/>";
-                        break;
-                    case "datetime":
-                        txt += $"<DatePicker @bind-Value='@context.{item.TypeName}'/>";
-                        break;
-                    default:
-                        IsWrite = false;
-                        break;
-                }
+                case "dataid"://数据权限
+                    txt += @"<CavUserGroup DataSource='ViewUserGroups'
+                                    UserGroupName='@UserGroupName'
+                                    OnSelect='OnUserGroupSelect'
+                                    OnCancel='OnUserGroupCancel'>
+                                 </CavUserGroup>";
+                    break;
+                default:
+                    return false;
             }
-            return IsWrite;
+            return true;
         }
+
         /// <summary>
         /// 创建枚举组件
         /// </summary>
         /// <param name="item"></param>
         /// <param name="txt"></param>
-        protected virtual void CreateEnumAssembly(ViewModelFields item, ref string txt)
+        protected virtual bool CreateEnumAssembly(ViewModelFields item, ref string txt)
         {
-            if (!item.IsEnum) return;
+            if (!item.IsEnum) return false;
             txt += $"<RadioGroup @bind-Value='@context.{item.TypeName}'>";
             foreach (var keyValue in item.EnumValueName)
             {
@@ -207,6 +242,7 @@ namespace Caviar.Control
             }
 
             txt += $"</RadioGroup>";
+            return true;
         }
         /// <summary>
         /// 创建icon组件
@@ -313,7 +349,7 @@ namespace Caviar.Control
         /// <returns></returns>
         public virtual ViewModelFields TurnMeaning(ViewModelFields headers)
         {
-            string[] violation = new string[] { "icon", "image" , "headportrait" };
+            string[] violation = new string[] { "icon", "image" , "headportrait", "DataId" };
             var typeName = violation.SingleOrDefault(u => u.ToLower() == headers.TypeName.ToLower());
             if (typeName != null)
             {

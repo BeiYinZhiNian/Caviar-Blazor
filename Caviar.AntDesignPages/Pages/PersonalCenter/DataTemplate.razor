@@ -49,13 +49,6 @@
     <FormItem Label='个性签名'>
         <TextArea @bind-Value='@context.Remark' Style='width:100%' />
     </FormItem>
-    <FormItem Label='数据权限'>
-        <CavUserGroup DataSource="ViewUserGroups"
-                      UserGroupName="@UserGroupName"
-                      OnSelect="OnUserGroupSelect"
-                      OnCancel="OnUserGroupCancel">
-        </CavUserGroup>
-    </FormItem>
 </Form>
 
 <style>
