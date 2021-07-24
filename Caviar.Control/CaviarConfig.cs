@@ -46,7 +46,7 @@ namespace Caviar.Control
             services.AddScoped<SysLogAction>();
 
             services.AddSingleton<IMemoryCache, MemoryCache>();
-            services.AddSingleton<IAssemblyDynamicCreation, AssemblyDynamicCreation>();
+            services.AddSingleton<ICodeGeneration, CodeGeneration>();
             
             Configuration = configuration;
 

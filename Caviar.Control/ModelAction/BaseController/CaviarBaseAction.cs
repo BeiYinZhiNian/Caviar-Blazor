@@ -29,7 +29,7 @@ namespace Caviar.Control
         /// <returns></returns>
         public async Task<ResultMsg<List<TabItem>>> CodeFileGenerate(CodeGenerateData generate, bool isPerview = true)
         {
-            IAssemblyDynamicCreation CavAssembly = BC.HttpContext.RequestServices.GetService<IAssemblyDynamicCreation>();
+            ICodeGeneration CavAssembly = BC.HttpContext.RequestServices.GetService<ICodeGeneration>();
             if (generate == null) return Error<List<TabItem>>("必要参数不可为空");
             var data = CavAssembly.CodeGenerate(generate, BC.UserName);
             if (isPerview)

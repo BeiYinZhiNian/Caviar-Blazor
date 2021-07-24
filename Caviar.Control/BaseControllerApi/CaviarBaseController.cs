@@ -18,7 +18,7 @@ namespace Caviar.Control
 {
     public partial class CaviarBaseController
     {
-        protected IAssemblyDynamicCreation CavAssembly => BC.HttpContext.RequestServices.GetService<IAssemblyDynamicCreation>();
+        protected ICodeGeneration CavAssembly => BC.HttpContext.RequestServices.GetService<ICodeGeneration>();
 
         CaviarBaseAction BaseAction => new CaviarBaseAction() { BC = BC };
 

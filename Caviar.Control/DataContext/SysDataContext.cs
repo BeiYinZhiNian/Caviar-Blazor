@@ -21,10 +21,10 @@ namespace Caviar.Control
     public partial class SysDataContext : IDataContext
     {
 
-        public SysDataContext(DataContext dataContext,IBaseControllerModel baseControllerModel, IAssemblyDynamicCreation cavAssembly)
+        public SysDataContext(DataContext dataContext,IBaseControllerModel baseControllerModel, ICodeGeneration cavAssembly)
         {
             _dataContext = dataContext;
-            _baseControllerModel = baseControllerModel;
+            BC = baseControllerModel;
             _cavAssembly = cavAssembly;
             if (IsDataInit)//判断数据库是否初始化
             {
@@ -39,10 +39,10 @@ namespace Caviar.Control
             }
         }
         DataContext _dataContext;
-        IAssemblyDynamicCreation _cavAssembly;
+        ICodeGeneration _cavAssembly;
         private DataContext DC => _dataContext;
 
-        IBaseControllerModel _baseControllerModel;
+        IBaseControllerModel BC;
         /// <summary>
         /// 添加实体
         /// </summary>
@@ -109,7 +109,7 @@ namespace Caviar.Control
                         break;
                     case EntityState.Modified:
                         if (!IsFieldCheck) break;
-                        baseEntity.OperatorUp = _baseControllerModel.UserName;
+                        baseEntity.OperatorUp = BC.UserName;
                         baseEntity.UpdateTime = DateTime.Now;
                         var entityType = entity.GetType();
                         var baseType = CommonHelper.GetCavBaseType(entityType);
@@ -132,7 +132,7 @@ namespace Caviar.Control
                                 default:
                                     break;
                             }
-                            var field = _baseControllerModel.UserData.ModelFields.FirstOrDefault(u => u.BaseTypeName == baseType.Name && sp.Name == u.TypeName);
+                            var field = BC.UserData.ModelFields.FirstOrDefault(u => u.BaseTypeName == baseType.Name && sp.Name == u.TypeName);
                             if (field == null)
                             {
                                 item.Property(sp.Name).IsModified = false;
@@ -141,7 +141,7 @@ namespace Caviar.Control
                         break;
                     case EntityState.Added:
                         baseEntity.CreatTime = DateTime.Now;
-                        baseEntity.OperatorCare = _baseControllerModel.UserName;
+                        baseEntity.OperatorCare = BC.UserName;
                         break;
                     default:
                         break;
@@ -355,6 +355,12 @@ namespace Caviar.Control
             return GetContext<T>(isNoTracking).SingleOrDefaultAsync(u => u.Uid == uid);
         }
 
+        /// <summary>
+        /// 获取上下文
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="isNoTracking"></param>
+        /// <returns></returns>
         private IQueryable<T> GetContext<T>(bool isNoTracking) where T : class, IBaseModel
         {
             var set = DC.Set<T>();

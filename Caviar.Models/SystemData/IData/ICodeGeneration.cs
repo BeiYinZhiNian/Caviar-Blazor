@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
-    public interface IAssemblyDynamicCreation
+    public interface ICodeGeneration
     {
         /// <summary>
         /// 获取反射数据

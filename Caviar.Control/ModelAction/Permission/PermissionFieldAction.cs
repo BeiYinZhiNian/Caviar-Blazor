@@ -147,7 +147,7 @@ namespace Caviar.Control.Permission
         /// <param name="modelName"></param>
         /// <param name="roleId"></param>
         /// <returns></returns>
-        public async Task<ResultMsg<List<ViewModelFields>>> GetFieldsData(IAssemblyDynamicCreation CavAssembly, string modelName, int roleId = 0)
+        public async Task<ResultMsg<List<ViewModelFields>>> GetFieldsData(ICodeGeneration CavAssembly, string modelName, int roleId = 0)
         {
             if (string.IsNullOrEmpty(modelName)) return Error<List<ViewModelFields>>("请输入需要获取的数据名称");
             var fields = await GetRoleFields(modelName, roleId);

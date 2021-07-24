@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 namespace Caviar.Control
 {
     /// <summary>
-    /// 代码生成器类及反射
+    /// 代码生成器
     /// </summary>
-    public class AssemblyDynamicCreation:IAssemblyDynamicCreation
+    public class CodeGeneration:ICodeGeneration
     {
         public virtual void WriteCodeFile(string path, string outName, string content, bool isCover)
         {
@@ -171,20 +171,7 @@ namespace Caviar.Control
                     }
                     else
                     {
-                        switch (item.DisplayName.Length)
-                        {
-                            case 1:
-                            case 2:
-                                txt += $"<Input @bind-Value='@context.{item.TypeName}' Style='width:53%' />";
-                                break;
-                            case 3:
-                                txt += $"<Input @bind-Value='@context.{item.TypeName}' Style='width:52%' />";
-                                break;
-                            default:
-                                txt += $"<Input @bind-Value='@context.{item.TypeName}' Style='width:50%' />";
-                                break;
-                        }
-                        
+                        txt += $"<Input @bind-Value='@context.{item.TypeName}' Style='width:50%' />";
                     }
                     break;
                 case "int32":
