@@ -359,16 +359,20 @@ namespace Caviar.Control
         /// 获取上下文
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="isNoTracking"></param>
+        /// <param name="isNoTracking">是否跟踪上下文</param>
+        /// <param name="isDataPermissions">是否启动数据权限</param>
+        /// <param name="isRecycleBin">是否获取回收站数据</param>
         /// <returns></returns>
-        private IQueryable<T> GetContext<T>(bool isNoTracking) where T : class, IBaseModel
+        private IQueryable<T> GetContext<T>(bool isNoTracking = true,bool isDataPermissions = true,bool isRecycleBin = false) where T : class, IBaseModel
         {
             var set = DC.Set<T>();
+            IQueryable<T> query;
+            query = set.Where(u => u.IsDelete == isRecycleBin);
             if (isNoTracking)
             {
-                return set.AsNoTracking().Where(u => u.IsDelete == false);
+                query = query.AsNoTracking();
             }
-            return set.Where(u => u.IsDelete == false);
+            return query;
         }
 
         /// <summary>
