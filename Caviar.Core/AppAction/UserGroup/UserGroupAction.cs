@@ -11,9 +11,9 @@ namespace Caviar.Core.UserGroup
     {
         public async Task<ResultMsg<SysUserGroup>> GetUserGroup(int userId)
         {
-            var user = await BC.DbContext.GetSingleEntityAsync<SysUser>(u => u.Id == userId);
+            var user = await Interactor.DbContext.GetSingleEntityAsync<SysUser>(u => u.Id == userId);
             if (user == null) return Error<SysUserGroup>("不存在该角色");
-            var group = await BC.DbContext.GetSingleEntityAsync<SysUserGroup>(u => u.Id == user.UserGroupId);
+            var group = await Interactor.DbContext.GetSingleEntityAsync<SysUserGroup>(u => u.Id == user.UserGroupId);
             return Ok(group);
         }
     }

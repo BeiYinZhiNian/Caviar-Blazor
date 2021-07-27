@@ -21,19 +21,19 @@ namespace Caviar.Core.Permission
         {
             List<SysRole> SelectUrg = new List<SysRole>();
             List<SysRole> haveSysRoles = new List<SysRole>();
-            var roleUserGroups = await BC.DbContext.GetEntityAsync<SysRoleUserGroup>(u => u.UserGroupId == userGroupId);
+            var roleUserGroups = await Interactor.DbContext.GetEntityAsync<SysRoleUserGroup>(u => u.UserGroupId == userGroupId);
             foreach (var item in roleUserGroups)
             {
-                var role = await BC.DbContext.GetSingleEntityAsync<SysRole>(u => u.Id == item.RoleId);
+                var role = await Interactor.DbContext.GetSingleEntityAsync<SysRole>(u => u.Id == item.RoleId);
                 SelectUrg.Add(role);
             }
-            if (BC.IsAdmin)
+            if (Interactor.IsAdmin)
             {
-                haveSysRoles = await BC.DbContext.GetAllAsync<SysRole>();
+                haveSysRoles = await Interactor.DbContext.GetAllAsync<SysRole>();
             }
             else
             {
-                haveSysRoles = BC.UserData.Roles;
+                haveSysRoles = Interactor.UserData.Roles;
             }
             var viewUrg = new List<ViewRole>();
             foreach (var item in haveSysRoles)
@@ -64,7 +64,7 @@ namespace Caviar.Core.Permission
         public async Task<ResultMsg> SetRoleUserGropu(int userGroupId,int[] roleIds)
         {
             if (userGroupId == 0 || roleIds == null) return Error("设置用户组角色错误,请检查用户组或角色");
-            var urgs = await BC.DbContext.GetEntityAsync<SysRoleUserGroup>(u => u.UserGroupId == userGroupId);
+            var urgs = await Interactor.DbContext.GetEntityAsync<SysRoleUserGroup>(u => u.UserGroupId == userGroupId);
             var urgIds = urgs.Select(u => u.RoleId);
             var addIds = roleIds.Except(urgIds);
             var deleteIds = urgIds.Except(roleIds);
@@ -80,11 +80,11 @@ namespace Caviar.Core.Permission
             var deleteUrgList = new List<SysRoleUserGroup>();
             foreach (var item in deleteIds)
             {
-                var roleUserGroup = await BC.DbContext.GetSingleEntityAsync<SysRoleUserGroup>(u => u.RoleId == item && u.UserGroupId == userGroupId);
+                var roleUserGroup = await Interactor.DbContext.GetSingleEntityAsync<SysRoleUserGroup>(u => u.RoleId == item && u.UserGroupId == userGroupId);
                 deleteUrgList.Add(roleUserGroup);
             }
-            await BC.DbContext.DeleteEntityAsync(deleteUrgList,IsDelete:true);
-            await BC.DbContext.AddEntityAsync(addUrgList);
+            await Interactor.DbContext.DeleteEntityAsync(deleteUrgList,IsDelete:true);
+            await Interactor.DbContext.AddEntityAsync(addUrgList);
             return Ok();
         }
     }

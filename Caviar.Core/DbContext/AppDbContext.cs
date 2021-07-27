@@ -1,5 +1,4 @@
 ﻿using Caviar.Models;
-using Caviar.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -21,10 +20,10 @@ namespace Caviar.Core
     public partial class AppDbContext : IAppDbContext
     {
 
-        public AppDbContext(SysDbContext dataContext,IInteractor baseControllerModel, ICodeGeneration cavAssembly)
+        public AppDbContext(SysDbContext dataContext,IInteractor Interactor, ICodeGeneration cavAssembly)
         {
-            _dataContext = dataContext;
-            BC = baseControllerModel;
+            _SysDbContext = dataContext;
+            _Interactor = Interactor;
             _cavAssembly = cavAssembly;
             if (IsDataInit)//判断数据库是否初始化
             {
@@ -38,11 +37,11 @@ namespace Caviar.Core
                 }
             }
         }
-        SysDbContext _dataContext;
+        SysDbContext _SysDbContext;
         ICodeGeneration _cavAssembly;
-        private SysDbContext DC => _dataContext;
+        private SysDbContext DC => _SysDbContext;
 
-        IInteractor BC;
+        IInteractor _Interactor;
         /// <summary>
         /// 添加实体
         /// </summary>
@@ -109,7 +108,7 @@ namespace Caviar.Core
                         break;
                     case EntityState.Modified:
                         if (!IsFieldCheck) break;
-                        baseEntity.OperatorUp = BC.UserName;
+                        baseEntity.OperatorUp = _Interactor.UserName;
                         baseEntity.UpdateTime = DateTime.Now;
                         var entityType = entity.GetType();
                         var baseType = CommonlyHelper.GetCavBaseType(entityType);
@@ -132,7 +131,7 @@ namespace Caviar.Core
                                 default:
                                     break;
                             }
-                            var field = BC.UserData.ModelFields.FirstOrDefault(u => u.BaseTypeName == baseType.Name && sp.Name == u.TypeName);
+                            var field = _Interactor.UserData.ModelFields.FirstOrDefault(u => u.BaseTypeName == baseType.Name && sp.Name == u.TypeName);
                             if (field == null)
                             {
                                 item.Property(sp.Name).IsModified = false;
@@ -141,7 +140,7 @@ namespace Caviar.Core
                         break;
                     case EntityState.Added:
                         baseEntity.CreatTime = DateTime.Now;
-                        baseEntity.OperatorCare = BC.UserName;
+                        baseEntity.OperatorCare = _Interactor.UserName;
                         break;
                     default:
                         break;

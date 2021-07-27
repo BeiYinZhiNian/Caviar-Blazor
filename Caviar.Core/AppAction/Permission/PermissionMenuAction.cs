@@ -26,7 +26,7 @@ namespace Caviar.Core.Permission
             foreach (var item in permissions)
             {
                 if (menus.SingleOrDefault(u => u.Id == item.PermissionId) != null) continue;
-                var menu = BC.SysMenus.SingleOrDefault(u => u.Id == item.PermissionId);
+                var menu = Interactor.SysMenus.SingleOrDefault(u => u.Id == item.PermissionId);
                 if (menu == null) continue;
                 menus.Add(menu);
             }
@@ -44,7 +44,7 @@ namespace Caviar.Core.Permission
             List<SysPermission> permissions = new List<SysPermission>();
             foreach (var item in roles)
             {
-                var permission = await BC.DbContext.GetEntityAsync<SysPermission>(u => u.IdentityId == item.Id && u.PermissionIdentity == PermissionIdentity.Role);
+                var permission = await Interactor.DbContext.GetEntityAsync<SysPermission>(u => u.IdentityId == item.Id && u.PermissionIdentity == PermissionIdentity.Role);
                 permissions.AddRange(permission);
             }
             return Ok(permissions);
@@ -58,7 +58,7 @@ namespace Caviar.Core.Permission
         {
             List<SysPermission> permissions = new List<SysPermission>();
             if (userId < 1) return Ok(permissions);
-            var permission = await BC.DbContext.GetEntityAsync<SysPermission>(u => u.IdentityId == userId && u.PermissionIdentity == PermissionIdentity.User);
+            var permission = await Interactor.DbContext.GetEntityAsync<SysPermission>(u => u.IdentityId == userId && u.PermissionIdentity == PermissionIdentity.User);
             permissions.AddRange(permission);
             return Ok(permissions);
         }
@@ -97,11 +97,11 @@ namespace Caviar.Core.Permission
             List<SysPermission> deleteSysPermission = new List<SysPermission>();
             foreach (var item in deleteIds)
             {
-                var permission = await BC.DbContext.GetSingleEntityAsync<SysPermission>(u => u.IdentityId == roleId && u.PermissionId == item && u.PermissionType == PermissionType.Menu && u.PermissionIdentity == PermissionIdentity.Role);
+                var permission = await Interactor.DbContext.GetSingleEntityAsync<SysPermission>(u => u.IdentityId == roleId && u.PermissionId == item && u.PermissionType == PermissionType.Menu && u.PermissionIdentity == PermissionIdentity.Role);
                 deleteSysPermission.Add(permission);
             }
-            await BC.DbContext.DeleteEntityAsync(deleteSysPermission, IsDelete: true);//该权限不需要保存，直接彻底删除
-            await BC.DbContext.AddEntityAsync(addSysPermission);
+            await Interactor.DbContext.DeleteEntityAsync(deleteSysPermission, IsDelete: true);//该权限不需要保存，直接彻底删除
+            await Interactor.DbContext.AddEntityAsync(addSysPermission);
             return Ok();
         }
         /// <summary>
@@ -116,16 +116,16 @@ namespace Caviar.Core.Permission
             IEnumerable<SysPermission> permission;
             if (roleId == 0)
             {
-                permission = BC.UserData.Permissions.Where(u => u.PermissionType == PermissionType.Menu);
+                permission = Interactor.UserData.Permissions.Where(u => u.PermissionType == PermissionType.Menu);
             }
             else
             {
-                permission = await BC.DbContext.GetEntityAsync<SysPermission>(u => u.IdentityId == roleId && u.PermissionType == PermissionType.Menu && u.PermissionIdentity == PermissionIdentity.Role);
+                permission = await Interactor.DbContext.GetEntityAsync<SysPermission>(u => u.IdentityId == roleId && u.PermissionType == PermissionType.Menu && u.PermissionIdentity == PermissionIdentity.Role);
             }
-            var allMneus = BC.UserData.Menus;
-            if (BC.IsAdmin)
+            var allMneus = Interactor.UserData.Menus;
+            if (Interactor.IsAdmin)
             {
-                allMneus = await BC.DbContext.GetAllAsync<SysMenu>();
+                allMneus = await Interactor.DbContext.GetAllAsync<SysMenu>();
             }
             foreach (var item in allMneus)
             {
@@ -150,8 +150,8 @@ namespace Caviar.Core.Permission
         /// <returns></returns>
         public async Task<ResultMsg> SetMenuUser(int menuId)
         {
-            if (BC.UserToken.Id < 1) return Error("添加失败");
-            var result = await SetMenuUser(menuId, BC.UserToken.Id);
+            if (Interactor.UserToken.Id < 1) return Error("添加失败");
+            var result = await SetMenuUser(menuId, Interactor.UserToken.Id);
             return result;
         }
 
@@ -170,7 +170,7 @@ namespace Caviar.Core.Permission
                 PermissionIdentity = PermissionIdentity.User,
                 PermissionType = PermissionType.Menu,
             };
-            var count = await BC.DbContext.AddEntityAsync(permission);
+            var count = await Interactor.DbContext.AddEntityAsync(permission);
             if (count > 0)
             {
                 return Ok();

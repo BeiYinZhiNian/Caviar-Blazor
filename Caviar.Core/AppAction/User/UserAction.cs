@@ -14,7 +14,7 @@ namespace Caviar.Core.User
             var viewModel = base.ToViewModel(model);
             foreach (var item in viewModel)
             {
-                var userGroup = BC.DbContext.GetSingleEntityAsync<SysUserGroup>(u => u.Id == item.UserGroupId).Result;
+                var userGroup = Interactor.DbContext.GetSingleEntityAsync<SysUserGroup>(u => u.Id == item.UserGroupId).Result;
                 if (userGroup == null) continue;
                 item.UserGroupName = userGroup.Name;
             }
@@ -27,18 +27,18 @@ namespace Caviar.Core.User
         /// <returns></returns>
         public async Task<ResultMsg> UpateMyData(ViewUser viewUser)
         {
-            if (viewUser.Id != BC.UserToken.Id || viewUser.Uid != BC.UserToken.Uid)
+            if (viewUser.Id != Interactor.UserToken.Id || viewUser.Uid != Interactor.UserToken.Uid)
             {
                 return Error("正在进行非法修改");
             }
-            var user = await BC.DbContext.GetSingleEntityAsync<SysUser>(u => u.UserName == viewUser.UserName && u.Uid != BC.UserToken.Uid);
+            var user = await Interactor.DbContext.GetSingleEntityAsync<SysUser>(u => u.UserName == viewUser.UserName && u.Uid != Interactor.UserToken.Uid);
             if (user != null)
             {
                 return Error("该用户名已有人使用，请重新绑定");
             }
             if (!string.IsNullOrEmpty(viewUser.PhoneNumber))
             {
-                user = await BC.DbContext.GetSingleEntityAsync<SysUser>(u => u.PhoneNumber == viewUser.PhoneNumber && u.Uid != BC.UserToken.Uid);
+                user = await Interactor.DbContext.GetSingleEntityAsync<SysUser>(u => u.PhoneNumber == viewUser.PhoneNumber && u.Uid != Interactor.UserToken.Uid);
                 if (user != null)
                 {
                     return Error("该手机号已有人使用，请重新绑定");
@@ -46,7 +46,7 @@ namespace Caviar.Core.User
             }
             if (!string.IsNullOrEmpty(viewUser.EmailNumber))
             {
-                user = await BC.DbContext.GetSingleEntityAsync<SysUser>(u => u.EmailNumber == viewUser.EmailNumber && u.Uid != BC.UserToken.Uid);
+                user = await Interactor.DbContext.GetSingleEntityAsync<SysUser>(u => u.EmailNumber == viewUser.EmailNumber && u.Uid != Interactor.UserToken.Uid);
                 if (user != null)
                 {
                     return Error("该邮箱已有人使用，请重新绑定");
@@ -57,7 +57,7 @@ namespace Caviar.Core.User
 
         public async Task<ResultMsg> UpdatePwd(UserPwd userPwd)
         {
-            var result = await GetEntity(BC.UserToken.Id);
+            var result = await GetEntity(Interactor.UserToken.Id);
             var user = result.Data;
             if (user.Password != userPwd.OriginalPwd)
             {
@@ -72,8 +72,8 @@ namespace Caviar.Core.User
                 return result;
             }
             user.Password = userPwd.NewPwd;
-            await BC.DbContext.UpdateEntityAsync(user, false);
-            await BC.DbContext.SaveChangesAsync(IsFieldCheck: false);
+            await Interactor.DbContext.UpdateEntityAsync(user, false);
+            await Interactor.DbContext.SaveChangesAsync(IsFieldCheck: false);
             return result;
         }
     }

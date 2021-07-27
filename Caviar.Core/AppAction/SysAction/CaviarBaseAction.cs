@@ -16,7 +16,7 @@ namespace Caviar.Core
 {
     public class CaviarBaseAction: ActionResult
     {
-        public IInteractor BC { get; set; }
+        public IInteractor Interactor { get; set; }
 
         public ResultMsg ResultMsg { get; set; } = new ResultMsg();
 
@@ -28,9 +28,9 @@ namespace Caviar.Core
         /// <returns></returns>
         public async Task<ResultMsg<List<TabItem>>> CodeFileGenerate(CodeGenerateData generate, bool isPerview = true)
         {
-            ICodeGeneration CavAssembly = BC.HttpContext.RequestServices.GetService<ICodeGeneration>();
+            ICodeGeneration CavAssembly = Interactor.HttpContext.RequestServices.GetService<ICodeGeneration>();
             if (generate == null) return Error<List<TabItem>>("必要参数不可为空");
-            var data = CavAssembly.CodeGenerate(generate, BC.UserName);
+            var data = CavAssembly.CodeGenerate(generate, Interactor.UserName);
             if (isPerview)
             {
                 return Ok(data);
@@ -160,20 +160,20 @@ namespace Caviar.Core
             SysMenu entity = null;
             if (!string.IsNullOrEmpty(menu.Url))
             {
-                entity = await BC.DbContext.GetSingleEntityAsync<SysMenu>(u => u.Url == menu.Url);
+                entity = await Interactor.DbContext.GetSingleEntityAsync<SysMenu>(u => u.Url == menu.Url);
             }
             else if (menu.MenuType != MenuType.Button)
             {
-                entity = await BC.DbContext.GetSingleEntityAsync<SysMenu>(u => u.MenuName == menu.MenuName);
+                entity = await Interactor.DbContext.GetSingleEntityAsync<SysMenu>(u => u.MenuName == menu.MenuName);
             }
             else
             {
-                entity = await BC.DbContext.GetSingleEntityAsync<SysMenu>(u => u.MenuName == menu.MenuName && u.ParentId == menu.ParentId);
+                entity = await Interactor.DbContext.GetSingleEntityAsync<SysMenu>(u => u.MenuName == menu.MenuName && u.ParentId == menu.ParentId);
             }
             var count = 0;
             if (entity == null)
             {
-                count = await BC.DbContext.AddEntityAsync(menu);
+                count = await Interactor.DbContext.AddEntityAsync(menu);
                 entity = menu;
             }
             return entity;
@@ -186,7 +186,7 @@ namespace Caviar.Core
         /// <returns></returns>
         public ResultMsg CheckUsreToken()
         {
-            if (BC.HttpContext.Request.Headers.TryGetValue(CurrencyConstant.Authorization, out StringValues value))
+            if (Interactor.HttpContext.Request.Headers.TryGetValue(CurrencyConstant.Authorization, out StringValues value))
             {
                 string Authorization = value[0].Replace(CurrencyConstant.JWT, "");
                 var IsValidate = JwtHelper.Validate(Authorization);
@@ -194,7 +194,7 @@ namespace Caviar.Core
                 {
                     return Error("您的登录已过期，请重新登录");
                 }
-                BC.UserToken = CommonlyHelper.GetJwtUserToken(Authorization);
+                Interactor.UserToken = CommonlyHelper.GetJwtUserToken(Authorization);
             }
             //没有写带token应该在权限拦下不应该在检查时候
             //这样的好处是可以给未登录用户一些权限
@@ -206,11 +206,11 @@ namespace Caviar.Core
         /// <returns></returns>
         public virtual ResultMsg CheckAPI()
         {
-            var url = BC.Current_Action.Replace("/api/", "").ToLower();
-            var menu = BC.SysMenus.SingleOrDefault(u => !string.IsNullOrEmpty(u.Url) && u.Url.ToLower() == url);
+            var url = Interactor.Current_Action.Replace("/api/", "").ToLower();
+            var menu = Interactor.SysMenus.SingleOrDefault(u => !string.IsNullOrEmpty(u.Url) && u.Url.ToLower() == url);
             if (!ActionVerification(menu))
             {
-                if (BC.IsLogin)
+                if (Interactor.IsLogin)
                 {
                     
                     return NoPermission($"对不起，您还没有获得{menu?.MenuName}权限");
@@ -234,14 +234,14 @@ namespace Caviar.Core
             if (CaviarConfig.IsStrict)
             {
                 if (menu == null) return false;
-                var userMenu = BC.UserData.Menus.FirstOrDefault(u => u.Id == menu.Id);
+                var userMenu = Interactor.UserData.Menus.FirstOrDefault(u => u.Id == menu.Id);
                 if (userMenu != null) return true;
                 return false;
             }
             else
             {
                 if (menu == null) return true;//宽松模式，未加入权限api则不受限制
-                menu = BC.UserData.Menus.FirstOrDefault(u => u.Url == menu.Url);//如果有限制，则向用户api查询
+                menu = Interactor.UserData.Menus.FirstOrDefault(u => u.Url == menu.Url);//如果有限制，则向用户api查询
                 if (menu != null) return true;
                 return false;
             }
@@ -304,7 +304,7 @@ namespace Caviar.Core
             {
                 if (sp.Name.ToLower() == "id") continue;//忽略id字段
                 if (sp.Name.ToLower() == "uid") continue;//忽略uid字段
-                var field = BC.UserData.ModelFields.FirstOrDefault(u => u.BaseTypeName == baseType.Name && sp.Name == u.TypeName);
+                var field = Interactor.UserData.ModelFields.FirstOrDefault(u => u.BaseTypeName == baseType.Name && sp.Name == u.TypeName);
                 if (field == null)
                 {
                     try

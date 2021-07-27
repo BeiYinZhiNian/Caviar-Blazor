@@ -40,7 +40,7 @@ namespace Caviar.Core.Permission
             //获取字段权限
             var permission = permissions.Where(u => u.PermissionType == PermissionType.Field);
             List<SysModelFields> fields = new List<SysModelFields>();
-            foreach (var item in BC.SysModelFields)
+            foreach (var item in Interactor.SysModelFields)
             {
                 if (permission.FirstOrDefault(u => u.PermissionId == item.Id) != null)
                 {
@@ -63,20 +63,20 @@ namespace Caviar.Core.Permission
             IEnumerable<SysPermission> permission;
             if (roleId == 0)
             {
-                permission = BC.UserData.Permissions.Where(u => u.PermissionType == PermissionType.Field);
+                permission = Interactor.UserData.Permissions.Where(u => u.PermissionType == PermissionType.Field);
             }
             else{
                 //当id!=0时，是设置其他角色的权限
-                permission = await BC.DbContext.GetEntityAsync<SysPermission>(u => u.IdentityId == roleId && u.PermissionType == PermissionType.Field && u.PermissionIdentity == PermissionIdentity.Role);
+                permission = await Interactor.DbContext.GetEntityAsync<SysPermission>(u => u.IdentityId == roleId && u.PermissionType == PermissionType.Field && u.PermissionIdentity == PermissionIdentity.Role);
             }
             List<SysModelFields> fields;
-            if (BC.IsAdmin)
+            if (Interactor.IsAdmin)
             {
-                fields = BC.SysModelFields.Where(u => u.FullName == fullName).ToList();
+                fields = Interactor.SysModelFields.Where(u => u.FullName == fullName).ToList();
             }
             else
             {
-                fields = BC.UserData.ModelFields.Where(u => u.FullName == fullName).ToList();
+                fields = Interactor.UserData.ModelFields.Where(u => u.FullName == fullName).ToList();
             }
             fields.AToB(out List<ViewModelFields> viewFields);
             foreach (var item in viewFields)
@@ -98,8 +98,8 @@ namespace Caviar.Core.Permission
         public async Task<ResultMsg> SetRoleFields(string fullName, int roleId, List<ViewModelFields> modelFields)
         {
             if (string.IsNullOrEmpty(fullName) || roleId == 0) return Error("设置角色字段失败，请检查模型名称或角色id");
-            var permission = await BC.DbContext.GetEntityAsync<SysPermission>(u => u.IdentityId == roleId && u.PermissionType == PermissionType.Field && u.PermissionIdentity == PermissionIdentity.Role);
-            var fields = BC.SysModelFields.Where(u => u.FullName == fullName);
+            var permission = await Interactor.DbContext.GetEntityAsync<SysPermission>(u => u.IdentityId == roleId && u.PermissionType == PermissionType.Field && u.PermissionIdentity == PermissionIdentity.Role);
+            var fields = Interactor.SysModelFields.Where(u => u.FullName == fullName);
             foreach (var item in modelFields)
             {
                 var field = fields.FirstOrDefault(u => u.TypeName == item.TypeName);
@@ -112,7 +112,7 @@ namespace Caviar.Core.Permission
                 {
                     field.DisplayName = item.DisplayName;
                 }
-                var count = await BC.DbContext.UpdateEntityAsync(field);
+                var count = await Interactor.DbContext.UpdateEntityAsync(field);
                 if (item.IsPermission)
                 {
                     //进行授权
@@ -125,7 +125,7 @@ namespace Caviar.Core.Permission
                             IdentityId = roleId,
                             PermissionIdentity = PermissionIdentity.Role
                         };
-                        await BC.DbContext.AddEntityAsync(perm);
+                        await Interactor.DbContext.AddEntityAsync(perm);
                     }
                 }
                 else
@@ -133,7 +133,7 @@ namespace Caviar.Core.Permission
                     //删除授权
                     if (perm != null)
                     {
-                        await BC.DbContext.DeleteEntityAsync(perm, IsDelete: true);
+                        await Interactor.DbContext.DeleteEntityAsync(perm, IsDelete: true);
                     }
                 }
             }
@@ -153,7 +153,7 @@ namespace Caviar.Core.Permission
             var fields = await GetRoleFields(modelName, roleId);
             var modelFields = CavAssembly.GetViewModelHeaders(modelName);//其他信息
             var viewFields = new List<ViewModelFields>();
-            var isAdmin = roleId != 0 && BC.IsAdmin;
+            var isAdmin = roleId != 0 && Interactor.IsAdmin;
             foreach (var item in modelFields)
             {
                 var field = fields.Data.FirstOrDefault(u => u.FullName == item.FullName && u.TypeName == item.TypeName);

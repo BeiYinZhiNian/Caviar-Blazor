@@ -1,5 +1,4 @@
 ﻿using Caviar.Models;
-using Caviar.Models;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -12,14 +11,14 @@ namespace Caviar.Core.ModelAction
 {
     public partial class BaseAction<T,ViewT> : ActionResult, IBaseAction<T, ViewT> where T : class, IBaseModel,new()  where ViewT: class,T, new()
     {
-        public IInteractor BC { get; set; }
+        public IInteractor Interactor { get; set; }
 
         public ResultMsg ResultMsg { get; set; } = new ResultMsg();
         public virtual async Task<ResultMsg> AddEntity(T entity)
         {
             try
             {
-                var count = await BC.DbContext.AddEntityAsync(entity);
+                var count = await Interactor.DbContext.AddEntityAsync(entity);
                 if (count > 0)
                 {
                     return Ok();
@@ -52,7 +51,7 @@ namespace Caviar.Core.ModelAction
                 {
                     return Error("不能删除默认用户");
                 }
-                var count = await BC.DbContext.DeleteEntityAsync(entity);
+                var count = await Interactor.DbContext.DeleteEntityAsync(entity);
                 if (count > 0)
                 {
                     return Ok();
@@ -73,7 +72,7 @@ namespace Caviar.Core.ModelAction
         {
             try
             {
-                var count = await BC.DbContext.UpdateEntityAsync(entity);
+                var count = await Interactor.DbContext.UpdateEntityAsync(entity);
                 if (count > 0)
                 {
                     return Ok();
@@ -92,7 +91,7 @@ namespace Caviar.Core.ModelAction
         /// <returns></returns>
         public virtual async Task<ResultMsg<PageData<ViewT>>> GetPages(Expression<Func<T, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true)
         {
-            var pages = await BC.DbContext.GetPageAsync(where, u => u.Number, pageIndex, pageSize, isOrder, isNoTracking);
+            var pages = await Interactor.DbContext.GetPageAsync(where, u => u.Number, pageIndex, pageSize, isOrder, isNoTracking);
             var list = ToViewModel(pages.Rows);
             PageData<ViewT> viewPage = new PageData<ViewT>(list);
             viewPage.PageIndex = pages.PageIndex;
@@ -110,7 +109,7 @@ namespace Caviar.Core.ModelAction
         {
             try
             {
-                var count = await BC.DbContext.DeleteEntityAsync(menus);
+                var count = await Interactor.DbContext.DeleteEntityAsync(menus);
                 if (count > 0)
                 {
                     return Ok();
@@ -131,7 +130,7 @@ namespace Caviar.Core.ModelAction
         {
             try
             {
-                var count = await BC.DbContext.UpdateEntityAsync(menus);
+                var count = await Interactor.DbContext.UpdateEntityAsync(menus);
                 if (count > 0)
                 {
                     return Ok();
@@ -150,7 +149,7 @@ namespace Caviar.Core.ModelAction
         /// <returns></returns>
         public virtual ResultMsg<PageData<ViewT>> FuzzyQuery(ViewQuery query)
         {
-            var fields = BC.UserData.ModelFields.Where(u => u.BaseTypeName == typeof(T).Name).ToList();
+            var fields = Interactor.UserData.ModelFields.Where(u => u.BaseTypeName == typeof(T).Name).ToList();
             if (fields == null) return Error<PageData<ViewT>>("没有对该对象的查询权限");
             var assemblyList = CommonlyHelper.GetAssembly();
             Type type = null;
@@ -192,7 +191,7 @@ namespace Caviar.Core.ModelAction
                 sql += $" and CreatTime<=@EndTime ";
                 parameters.Add(new SqlParameter("@EndTime", query.EndTime));
             }
-            var data = BC.DbContext.SqlQuery(sql, parameters.ToArray());
+            var data = Interactor.DbContext.SqlQuery(sql, parameters.ToArray());
             var model = data.ToList<T>(type);
             var viewModel = ToViewModel(model);
             var pages = new PageData<ViewT>(viewModel);
@@ -223,14 +222,14 @@ namespace Caviar.Core.ModelAction
 
         public virtual async Task<ResultMsg<ViewT>> GetEntity(Guid guid)
         {
-            var entity = await BC.DbContext.GetEntityAsync<T>(guid);
+            var entity = await Interactor.DbContext.GetEntityAsync<T>(guid);
             var viewModel = ToViewModel(entity);
             return Ok(viewModel);
         }
 
         public virtual async Task<ResultMsg<ViewT>> GetEntity(int id)
         {
-            var entity = await BC.DbContext.GetEntityAsync<T>(id);
+            var entity = await Interactor.DbContext.GetEntityAsync<T>(id);
             var viewModel = ToViewModel(entity);
             return Ok(viewModel);
         }

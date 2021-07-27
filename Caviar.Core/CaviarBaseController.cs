@@ -18,7 +18,7 @@ namespace Caviar.Core
     public partial class CaviarBaseController : Controller
     {
         IInteractor _interactor;
-        protected IInteractor BC
+        protected IInteractor _Interactor
         {
             get
             {
@@ -29,25 +29,25 @@ namespace Caviar.Core
                 return _interactor;
             }
         }
-        protected ICodeGeneration CodeGeneration => BC.HttpContext.RequestServices.GetService<ICodeGeneration>();
+        protected ICodeGeneration CodeGeneration => _Interactor.HttpContext.RequestServices.GetService<ICodeGeneration>();
 
-        CaviarBaseAction BaseAction => new CaviarBaseAction() { BC = BC };
+        CaviarBaseAction BaseAction => new CaviarBaseAction() { Interactor = _Interactor };
         SysLogAction LoginAction => HttpContext.RequestServices.GetService<SysLogAction>();
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            BC.Stopwatch.Start();
+            _Interactor.Stopwatch.Start();
             base.OnActionExecuting(context);
             //获取ip地址
-            BC.Current_Ipaddress = context.HttpContext.GetUserIp();
+            _Interactor.Current_Ipaddress = context.HttpContext.GetUserIp();
             //获取完整Url
-            BC.Current_AbsoluteUri = context.HttpContext.Request.GetAbsoluteUri();
+            _Interactor.Current_AbsoluteUri = context.HttpContext.Request.GetAbsoluteUri();
             //获取请求路径
-            BC.Current_Action = context.HttpContext.Request.Path.Value;
+            _Interactor.Current_Action = context.HttpContext.Request.Path.Value;
             //请求上下文
-            BC.HttpContext = HttpContext;
+            _Interactor.HttpContext = HttpContext;
             //请求参数
-            BC.ActionArguments = context.ActionArguments;
+            _Interactor.ActionArguments = context.ActionArguments;
             var result = BaseAction.CheckUsreToken();
             if (result.Status != HttpState.OK)
             {
@@ -69,25 +69,25 @@ namespace Caviar.Core
         /// <returns></returns>
         void GetPermission()
         {
-            BC.SysModelFields = BC.DbContext.GetAllAsync<SysModelFields>().Result;
-            BC.SysMenus = BC.DbContext.GetAllAsync<SysMenu>().Result;
+            _Interactor.SysModelFields = _Interactor.DbContext.GetAllAsync<SysModelFields>().Result;
+            _Interactor.SysMenus = _Interactor.DbContext.GetAllAsync<SysMenu>().Result;
             var roleAction = CreateModel<RoleAction>();
             var userGroup = CreateModel<UserGroupAction>();
-            BC.UserData.UserGroup = userGroup.GetUserGroup(BC.Id).Result.Data;
-            BC.UserData.Roles = roleAction.GetUserRoles(BC.Id, BC.UserData.UserGroup?.Id).Result.Data;
+            _Interactor.UserData.UserGroup = userGroup.GetUserGroup(_Interactor.Id).Result.Data;
+            _Interactor.UserData.Roles = roleAction.GetUserRoles(_Interactor.Id, _Interactor.UserData.UserGroup?.Id).Result.Data;
             var permissionAction = CreateModel<PermissionAction>();
-            var rolePermission = permissionAction.GetRolePermissions(BC.UserData.Roles).Result;
-            var userPermission = permissionAction.GetUserPermissions(BC.UserToken.Id).Result;
-            BC.UserData.Permissions = new List<SysPermission>();
-            BC.UserData.Permissions.AddRange(rolePermission.Data);
-            BC.UserData.Permissions.AddRange(userPermission.Data);
-            BC.UserData.ModelFields = permissionAction.GetPermissionFields(BC.UserData.Permissions).Data;
-            BC.UserData.Menus = permissionAction.GetPermissionMenu(BC.UserData.Permissions).Data;
+            var rolePermission = permissionAction.GetRolePermissions(_Interactor.UserData.Roles).Result;
+            var userPermission = permissionAction.GetUserPermissions(_Interactor.UserToken.Id).Result;
+            _Interactor.UserData.Permissions = new List<SysPermission>();
+            _Interactor.UserData.Permissions.AddRange(rolePermission.Data);
+            _Interactor.UserData.Permissions.AddRange(userPermission.Data);
+            _Interactor.UserData.ModelFields = permissionAction.GetPermissionFields(_Interactor.UserData.Permissions).Data;
+            _Interactor.UserData.Menus = permissionAction.GetPermissionMenu(_Interactor.UserData.Permissions).Data;
         } 
 
         public override OkObjectResult Ok(object value)
         {
-            BC.Stopwatch.Stop();
+            _Interactor.Stopwatch.Stop();
             ResultMsg result = (ResultMsg)value;
             if (result.Status == HttpState.OK)
             {
@@ -113,8 +113,8 @@ namespace Caviar.Core
         #region 创建模型
         protected virtual T CreateModel<T>() where T : class, IActionModel
         {
-            var entity = BC.HttpContext.RequestServices.GetRequiredService<T>();
-            entity.BC = BC;
+            var entity = _Interactor.HttpContext.RequestServices.GetRequiredService<T>();
+            entity.Interactor = _Interactor;
             return entity;
         }
         #endregion

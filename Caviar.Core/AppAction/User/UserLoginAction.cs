@@ -23,33 +23,33 @@ namespace Caviar.Core.User
             SysUser userLogin = null;
             if (!string.IsNullOrEmpty(entity.UserName))
             {
-                userLogin = BC.DbContext.GetSingleEntityAsync<SysUser>(u => u.UserName == entity.UserName && u.Password == entity.Password).Result;
+                userLogin = Interactor.DbContext.GetSingleEntityAsync<SysUser>(u => u.UserName == entity.UserName && u.Password == entity.Password).Result;
             }
             else if (!string.IsNullOrEmpty(entity.PhoneNumber))
             {
-                userLogin = BC.DbContext.GetSingleEntityAsync<SysUser>(u => u.PhoneNumber == entity.PhoneNumber && u.Password == entity.Password).Result;
+                userLogin = Interactor.DbContext.GetSingleEntityAsync<SysUser>(u => u.PhoneNumber == entity.PhoneNumber && u.Password == entity.Password).Result;
             }
             if (userLogin == null) return Error<UserToken>("用户名或密码错误");
             if (userLogin.IsDisable) return Error<UserToken>("该账号未被启动，请联系管理员");
-            BC.UserToken.AutoAssign(userLogin);
-            BC.UserToken.Duration = CaviarConfig.TokenConfig.Duration;
-            BC.UserToken.Token = JwtHelper.CreateTokenByHandler(BC.UserToken);
-            return Ok("登录成功，欢迎回来",BC.UserToken);
+            Interactor.UserToken.AutoAssign(userLogin);
+            Interactor.UserToken.Duration = CaviarConfig.TokenConfig.Duration;
+            Interactor.UserToken.Token = JwtHelper.CreateTokenByHandler(Interactor.UserToken);
+            return Ok("登录成功，欢迎回来",Interactor.UserToken);
         }
 
         public virtual ResultMsg Register(ViewUser entity)
         {
-            var user = BC.DbContext.GetSingleEntityAsync<SysUser>(u => u.UserName == entity.UserName).Result;
+            var user = Interactor.DbContext.GetSingleEntityAsync<SysUser>(u => u.UserName == entity.UserName).Result;
             if (user != null)
             {
                 return Error("该用户名已经被注册!");
             }
-            user = BC.DbContext.GetSingleEntityAsync<SysUser>(u => u.PhoneNumber == entity.PhoneNumber).Result;
+            user = Interactor.DbContext.GetSingleEntityAsync<SysUser>(u => u.PhoneNumber == entity.PhoneNumber).Result;
             if (user != null)
             {
                 return Error("该手机号已经被注册!");
             }
-            var count = BC.DbContext.AddEntityAsync(entity).Result;
+            var count = Interactor.DbContext.AddEntityAsync(entity).Result;
             if (count <= 0)
             {
                 return Error("注册账号失败!");
