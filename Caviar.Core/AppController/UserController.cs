@@ -12,7 +12,7 @@ namespace Caviar.Core.User
         [HttpGet]
         public async Task<IActionResult> MyDetails()
         {
-            var result = await _Action.GetEntity(_Interactor.UserToken.Id);
+            var result = await _Action.GetEntity(Interactor.UserToken.Id);
             return Ok(result);
         }
         [HttpPost]

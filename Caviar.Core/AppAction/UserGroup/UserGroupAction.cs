@@ -16,5 +16,11 @@ namespace Caviar.Core.UserGroup
             var group = await Interactor.DbContext.GetSingleEntityAsync<SysUserGroup>(u => u.Id == user.UserGroupId);
             return Ok(group);
         }
+
+        public async Task<ResultMsg<List<SysUserGroup>>> GetOtherUserGroup(int userGroupId)
+        {
+            var user = await Interactor.DbContext.GetEntityAsync<SysUserGroup>(u => u.ParentId == userGroupId);
+            return Ok(user);
+        }
     }
 }
