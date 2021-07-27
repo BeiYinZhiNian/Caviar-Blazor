@@ -1,4 +1,4 @@
-using Caviar.Control;
+using Caviar.Core;
 using Caviar.Models.SystemData;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
