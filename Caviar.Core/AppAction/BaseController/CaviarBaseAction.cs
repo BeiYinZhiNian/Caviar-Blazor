@@ -15,7 +15,7 @@ using System.Web;
 
 namespace Caviar.Core
 {
-    public class CaviarBaseAction: BaseModelResultAction
+    public class CaviarBaseAction: ActionResult
     {
         public IBaseControllerModel BC { get; set; }
 
@@ -53,7 +53,7 @@ namespace Caviar.Core
                 }
                 else if (keyName.Contains("Action.cs"))
                 {
-                    path = Directory.GetCurrentDirectory() + "/" + CaviarConfig.WebAPI.Path + "/ModelAction/";
+                    path = Directory.GetCurrentDirectory() + "/" + CaviarConfig.WebAPI.Path + "/AppAction/";
                 }
                 else if (keyName.Contains("Controller.cs"))
                 {

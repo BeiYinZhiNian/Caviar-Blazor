@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Core.ModelAction
 {
-    public partial class BaseModelAction<T,ViewT> : BaseModelResultAction, IBaseModelAction<T, ViewT> where T : class, IBaseModel,new()  where ViewT: class,T, new()
+    public partial class BaseAction<T,ViewT> : ActionResult, IBaseAction<T, ViewT> where T : class, IBaseModel,new()  where ViewT: class,T, new()
     {
         public IBaseControllerModel BC { get; set; }
 

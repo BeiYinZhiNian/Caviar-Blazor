@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Core.ModelAction
 {
-    public partial class BaseModelResultAction
+    public partial class ActionResult
     {
 
         #region 成功请求

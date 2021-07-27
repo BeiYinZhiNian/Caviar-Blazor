@@ -11,15 +11,15 @@ using System.Linq.Expressions;
 
 namespace Caviar.Core
 {
-    public class DataContext : DbContext
+    public class SysDbContext : DbContext
     {
 
-        public DataContext(DbContextOptions<DataContext> options) : base(options) 
+        public SysDbContext(DbContextOptions<SysDbContext> options) : base(options) 
         {
 
         }
 
-        public DataContext():base()
+        public SysDbContext():base()
         {
 
         }

@@ -40,8 +40,8 @@ namespace Caviar.Core
         public static IServiceCollection AddCaviar(this IServiceCollection services, SqlConfig sqlConfig, IConfiguration configuration)
         {
             SqlConfig = sqlConfig;
-            services.AddDbContext<DataContext>();
-            services.AddScoped<IDataContext, SysDataContext>();
+            services.AddDbContext<SysDbContext>();
+            services.AddScoped<ISysDbContext, AppDbContext>();
             services.AddScoped<IBaseControllerModel, CavBaseControllerModel>();
             services.AddScoped<SysLogAction>();
 
@@ -121,7 +121,7 @@ namespace Caviar.Core
             if (json["Caviar"]["WebApi"]["namespace"] == null) json["Caviar"]["WebApi"]["namespace"] = "Caviar.Demo.WebAPI";
             if (json["Caviar"]["WebApi"]["BaseController"] == null) json["Caviar"]["WebApi"]["BaseController"] = "TemplateBaseController<{OutName}Action,{EntityName},{ViewOutName}>";
             if (json["Caviar"]["SqlFile"]==null) json["Caviar"]["SqlFile"] = new JObject();
-            if (json["Caviar"]["SqlFile"]["SqlPath"] == null) json["Caviar"]["SqlFile"]["SqlPath"] = "/SqlInit/CaviarSqlServer.sql";
+            if (json["Caviar"]["SqlFile"]["SqlPath"] == null) json["Caviar"]["SqlFile"]["SqlPath"] = "/SqlFile/CaviarSqlServer.sql";
             if (json["Caviar"]["Enclosure"] == null) json["Caviar"]["Enclosure"] = new JObject();
             if (json["Caviar"]["Enclosure"]["Path"] == null) json["Caviar"]["Enclosure"]["Path"] = "wwwroot/Enclosure";
             if (json["Caviar"]["Enclosure"]["Size"] == null) json["Caviar"]["Enclosure"]["Size"] = 3;

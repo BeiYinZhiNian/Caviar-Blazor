@@ -18,7 +18,7 @@ namespace Caviar.Models
         /// <summary>
         /// 数据上下文
         /// </summary>
-        public IDataContext DC => HttpContext.RequestServices.GetRequiredService<IDataContext>();
+        public ISysDbContext DC => HttpContext.RequestServices.GetRequiredService<ISysDbContext>();
         /// <summary>
         /// 获取缓存数据
         /// </summary>

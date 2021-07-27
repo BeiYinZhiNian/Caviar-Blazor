@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
-    public interface IBaseModelAction<T, ViewT>:IActionModel, IDIinjectAtteribute where T : class, IBaseModel
+    public interface IBaseAction<T, ViewT>:IActionModel, IDIinjectAtteribute where T : class, IBaseModel
     {
 
         /// <summary>

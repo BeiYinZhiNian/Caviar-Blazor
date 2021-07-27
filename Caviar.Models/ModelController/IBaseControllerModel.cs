@@ -22,7 +22,7 @@ namespace Caviar.Models
         /// <summary>
         /// 数据上下文
         /// </summary>
-        public IDataContext DC { get; }
+        public ISysDbContext DC { get; }
         /// <summary>
         /// 当前请求路径
         /// </summary>

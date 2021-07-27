@@ -18,7 +18,7 @@ using Caviar.Models.SystemData;
 namespace Caviar.Core.Permission
 {
     [DisplayName("权限方法")]
-    public partial class PermissionAction:BaseModelAction<SysPermission,ViewPermission>
+    public partial class PermissionAction:BaseAction<SysPermission,ViewPermission>
     {
         
     }

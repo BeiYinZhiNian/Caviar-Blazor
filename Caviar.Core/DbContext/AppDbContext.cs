@@ -18,10 +18,10 @@ using System.Threading.Tasks;
 
 namespace Caviar.Core
 {
-    public partial class SysDataContext : IDataContext
+    public partial class AppDbContext : ISysDbContext
     {
 
-        public SysDataContext(DataContext dataContext,IBaseControllerModel baseControllerModel, ICodeGeneration cavAssembly)
+        public AppDbContext(SysDbContext dataContext,IBaseControllerModel baseControllerModel, ICodeGeneration cavAssembly)
         {
             _dataContext = dataContext;
             BC = baseControllerModel;
@@ -38,9 +38,9 @@ namespace Caviar.Core
                 }
             }
         }
-        DataContext _dataContext;
+        SysDbContext _dataContext;
         ICodeGeneration _cavAssembly;
-        private DataContext DC => _dataContext;
+        private SysDbContext DC => _dataContext;
 
         IBaseControllerModel BC;
         /// <summary>
