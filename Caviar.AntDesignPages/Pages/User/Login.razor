@@ -5,12 +5,12 @@
         <Card Bordered="true" Title=@("用户登录") Style="width:400px" Hoverable="true">
             <Body>
                 <Form Model="@SysLoginUserData" OnFinish="SubmitLogin">
-                    <FormItem>
+                    <FormItem Label="">
                         <AntDesign.Input Placeholder="请输入用户名/手机号" Size="large" @bind-Value="@context.UserName">
                             <Prefix><Icon Type="user" /></Prefix>
                         </AntDesign.Input>
                     </FormItem>
-                    <FormItem>
+                    <FormItem Label="">
                         <AntDesign.Input Placeholder="请输入密码" Size="large" @bind-Value="@context.Password" Type="password">
                             <Prefix><Icon Type="lock" /></Prefix>
                         </AntDesign.Input>

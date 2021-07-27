@@ -96,8 +96,7 @@
                 <Tabs DefaultActiveKey="1" @bind-ActiveKey="@nKey">
                     @foreach (var item in lstTabs)
                     {
-                        <TabPane Key="@item.KeyName">
-                            <Tab>@item.TabName</Tab>
+                        <TabPane Key="@item.KeyName" Tab="@item.TabName">
                             <ChildContent>
                                 <CavHighlightedCode Code="@item.Content" CanLoad="true" Language="csharp"></CavHighlightedCode>
                             </ChildContent>
@@ -156,7 +155,5 @@
         new StepItem {Title = "查看代码", Content = ""},
         new StepItem {Title = "生成结果", Content = ""}
     };
-
-
 
 }
