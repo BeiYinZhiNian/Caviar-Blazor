@@ -8,7 +8,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Caviar.Models.SystemData;
+using Caviar.Models;
 using IdentityModel;
 
 namespace Caviar.Core

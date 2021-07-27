@@ -11,7 +11,7 @@ using System.Text.Json;
 using System.Web;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Caviar.Models.SystemData
+namespace Caviar.Models
 {
     public static class CommonlyHelper
     {

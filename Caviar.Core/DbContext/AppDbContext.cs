@@ -1,5 +1,5 @@
 ﻿using Caviar.Models;
-using Caviar.Models.SystemData;
+using Caviar.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;

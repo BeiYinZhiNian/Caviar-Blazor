@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Caviar.Models.SystemData;
+using Caviar.Models;
 
 namespace Caviar.Core.Role
 {

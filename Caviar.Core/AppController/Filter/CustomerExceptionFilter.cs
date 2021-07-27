@@ -1,5 +1,5 @@
 ﻿using Caviar.Models;
-using Caviar.Models.SystemData;
+using Caviar.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;

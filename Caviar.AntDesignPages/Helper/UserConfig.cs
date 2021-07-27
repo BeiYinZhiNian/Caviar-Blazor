@@ -1,4 +1,4 @@
-﻿using Caviar.Models.SystemData;
+﻿using Caviar.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.JSInterop;

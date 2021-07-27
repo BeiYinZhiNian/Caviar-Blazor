@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using Caviar.Models.SystemData;
+using Caviar.Models;
 using System.Collections.Generic;
 using Caviar.Core.Permission;
 using System.Linq;
