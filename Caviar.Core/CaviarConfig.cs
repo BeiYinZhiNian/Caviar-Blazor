@@ -12,7 +12,6 @@ using System.Reflection;
 using System.Text;
 using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Caching.Memory;
-using Caviar.Models;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.HttpOverrides;
 
