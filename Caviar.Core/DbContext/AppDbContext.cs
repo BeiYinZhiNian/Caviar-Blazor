@@ -18,10 +18,10 @@ using System.Threading.Tasks;
 
 namespace Caviar.Core
 {
-    public partial class AppDbContext : ISysDbContext
+    public partial class AppDbContext : IAppDbContext
     {
 
-        public AppDbContext(SysDbContext dataContext,IBaseControllerModel baseControllerModel, ICodeGeneration cavAssembly)
+        public AppDbContext(SysDbContext dataContext,IInteractor baseControllerModel, ICodeGeneration cavAssembly)
         {
             _dataContext = dataContext;
             BC = baseControllerModel;
@@ -42,7 +42,7 @@ namespace Caviar.Core
         ICodeGeneration _cavAssembly;
         private SysDbContext DC => _dataContext;
 
-        IBaseControllerModel BC;
+        IInteractor BC;
         /// <summary>
         /// 添加实体
         /// </summary>
@@ -112,7 +112,7 @@ namespace Caviar.Core
                         baseEntity.OperatorUp = BC.UserName;
                         baseEntity.UpdateTime = DateTime.Now;
                         var entityType = entity.GetType();
-                        var baseType = CommonHelper.GetCavBaseType(entityType);
+                        var baseType = CommonlyHelper.GetCavBaseType(entityType);
                         foreach (PropertyInfo sp in baseType.GetProperties())
                         {
                             switch (sp.Name.ToLower())
@@ -418,7 +418,7 @@ namespace Caviar.Core
             }
             //同步系统与数据库的模型字段
             var fields = await GetAllAsync<SysModelFields>();
-            var types = CommonHelper.GetModelList(true);
+            var types = CommonlyHelper.GetModelList(true);
             List<SysModelFields> modelFields = new List<SysModelFields>();
             foreach (var item in types)
             {

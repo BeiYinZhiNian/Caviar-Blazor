@@ -12,14 +12,14 @@ namespace Caviar.Core.ModelAction
 {
     public partial class BaseAction<T,ViewT> : ActionResult, IBaseAction<T, ViewT> where T : class, IBaseModel,new()  where ViewT: class,T, new()
     {
-        public IBaseControllerModel BC { get; set; }
+        public IInteractor BC { get; set; }
 
         public ResultMsg ResultMsg { get; set; } = new ResultMsg();
         public virtual async Task<ResultMsg> AddEntity(T entity)
         {
             try
             {
-                var count = await BC.DC.AddEntityAsync(entity);
+                var count = await BC.DbContext.AddEntityAsync(entity);
                 if (count > 0)
                 {
                     return Ok();
@@ -52,7 +52,7 @@ namespace Caviar.Core.ModelAction
                 {
                     return Error("不能删除默认用户");
                 }
-                var count = await BC.DC.DeleteEntityAsync(entity);
+                var count = await BC.DbContext.DeleteEntityAsync(entity);
                 if (count > 0)
                 {
                     return Ok();
@@ -73,7 +73,7 @@ namespace Caviar.Core.ModelAction
         {
             try
             {
-                var count = await BC.DC.UpdateEntityAsync(entity);
+                var count = await BC.DbContext.UpdateEntityAsync(entity);
                 if (count > 0)
                 {
                     return Ok();
@@ -92,7 +92,7 @@ namespace Caviar.Core.ModelAction
         /// <returns></returns>
         public virtual async Task<ResultMsg<PageData<ViewT>>> GetPages(Expression<Func<T, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true)
         {
-            var pages = await BC.DC.GetPageAsync(where, u => u.Number, pageIndex, pageSize, isOrder, isNoTracking);
+            var pages = await BC.DbContext.GetPageAsync(where, u => u.Number, pageIndex, pageSize, isOrder, isNoTracking);
             var list = ToViewModel(pages.Rows);
             PageData<ViewT> viewPage = new PageData<ViewT>(list);
             viewPage.PageIndex = pages.PageIndex;
@@ -110,7 +110,7 @@ namespace Caviar.Core.ModelAction
         {
             try
             {
-                var count = await BC.DC.DeleteEntityAsync(menus);
+                var count = await BC.DbContext.DeleteEntityAsync(menus);
                 if (count > 0)
                 {
                     return Ok();
@@ -131,7 +131,7 @@ namespace Caviar.Core.ModelAction
         {
             try
             {
-                var count = await BC.DC.UpdateEntityAsync(menus);
+                var count = await BC.DbContext.UpdateEntityAsync(menus);
                 if (count > 0)
                 {
                     return Ok();
@@ -152,7 +152,7 @@ namespace Caviar.Core.ModelAction
         {
             var fields = BC.UserData.ModelFields.Where(u => u.BaseTypeName == typeof(T).Name).ToList();
             if (fields == null) return Error<PageData<ViewT>>("没有对该对象的查询权限");
-            var assemblyList = CommonHelper.GetAssembly();
+            var assemblyList = CommonlyHelper.GetAssembly();
             Type type = null;
             foreach (var item in assemblyList)
             {
@@ -180,7 +180,7 @@ namespace Caviar.Core.ModelAction
                 }
                 queryField += ")";
             }
-            var from = CommonHelper.GetCavBaseType(type)?.Name;
+            var from = CommonlyHelper.GetCavBaseType(type)?.Name;
             string sql = $"select top(20)* from {from} where IsDelete=0 " + queryField;
             if (query.StartTime != null)
             {
@@ -192,7 +192,7 @@ namespace Caviar.Core.ModelAction
                 sql += $" and CreatTime<=@EndTime ";
                 parameters.Add(new SqlParameter("@EndTime", query.EndTime));
             }
-            var data = BC.DC.SqlQuery(sql, parameters.ToArray());
+            var data = BC.DbContext.SqlQuery(sql, parameters.ToArray());
             var model = data.ToList<T>(type);
             var viewModel = ToViewModel(model);
             var pages = new PageData<ViewT>(viewModel);
@@ -223,14 +223,14 @@ namespace Caviar.Core.ModelAction
 
         public virtual async Task<ResultMsg<ViewT>> GetEntity(Guid guid)
         {
-            var entity = await BC.DC.GetEntityAsync<T>(guid);
+            var entity = await BC.DbContext.GetEntityAsync<T>(guid);
             var viewModel = ToViewModel(entity);
             return Ok(viewModel);
         }
 
         public virtual async Task<ResultMsg<ViewT>> GetEntity(int id)
         {
-            var entity = await BC.DC.GetEntityAsync<T>(id);
+            var entity = await BC.DbContext.GetEntityAsync<T>(id);
             var viewModel = ToViewModel(entity);
             return Ok(viewModel);
         }

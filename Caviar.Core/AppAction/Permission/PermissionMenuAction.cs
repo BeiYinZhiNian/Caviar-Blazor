@@ -44,7 +44,7 @@ namespace Caviar.Core.Permission
             List<SysPermission> permissions = new List<SysPermission>();
             foreach (var item in roles)
             {
-                var permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.IdentityId == item.Id && u.PermissionIdentity == PermissionIdentity.Role);
+                var permission = await BC.DbContext.GetEntityAsync<SysPermission>(u => u.IdentityId == item.Id && u.PermissionIdentity == PermissionIdentity.Role);
                 permissions.AddRange(permission);
             }
             return Ok(permissions);
@@ -58,7 +58,7 @@ namespace Caviar.Core.Permission
         {
             List<SysPermission> permissions = new List<SysPermission>();
             if (userId < 1) return Ok(permissions);
-            var permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.IdentityId == userId && u.PermissionIdentity == PermissionIdentity.User);
+            var permission = await BC.DbContext.GetEntityAsync<SysPermission>(u => u.IdentityId == userId && u.PermissionIdentity == PermissionIdentity.User);
             permissions.AddRange(permission);
             return Ok(permissions);
         }
@@ -97,11 +97,11 @@ namespace Caviar.Core.Permission
             List<SysPermission> deleteSysPermission = new List<SysPermission>();
             foreach (var item in deleteIds)
             {
-                var permission = await BC.DC.GetSingleEntityAsync<SysPermission>(u => u.IdentityId == roleId && u.PermissionId == item && u.PermissionType == PermissionType.Menu && u.PermissionIdentity == PermissionIdentity.Role);
+                var permission = await BC.DbContext.GetSingleEntityAsync<SysPermission>(u => u.IdentityId == roleId && u.PermissionId == item && u.PermissionType == PermissionType.Menu && u.PermissionIdentity == PermissionIdentity.Role);
                 deleteSysPermission.Add(permission);
             }
-            await BC.DC.DeleteEntityAsync(deleteSysPermission, IsDelete: true);//该权限不需要保存，直接彻底删除
-            await BC.DC.AddEntityAsync(addSysPermission);
+            await BC.DbContext.DeleteEntityAsync(deleteSysPermission, IsDelete: true);//该权限不需要保存，直接彻底删除
+            await BC.DbContext.AddEntityAsync(addSysPermission);
             return Ok();
         }
         /// <summary>
@@ -120,12 +120,12 @@ namespace Caviar.Core.Permission
             }
             else
             {
-                permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.IdentityId == roleId && u.PermissionType == PermissionType.Menu && u.PermissionIdentity == PermissionIdentity.Role);
+                permission = await BC.DbContext.GetEntityAsync<SysPermission>(u => u.IdentityId == roleId && u.PermissionType == PermissionType.Menu && u.PermissionIdentity == PermissionIdentity.Role);
             }
             var allMneus = BC.UserData.Menus;
             if (BC.IsAdmin)
             {
-                allMneus = await BC.DC.GetAllAsync<SysMenu>();
+                allMneus = await BC.DbContext.GetAllAsync<SysMenu>();
             }
             foreach (var item in allMneus)
             {
@@ -170,7 +170,7 @@ namespace Caviar.Core.Permission
                 PermissionIdentity = PermissionIdentity.User,
                 PermissionType = PermissionType.Menu,
             };
-            var count = await BC.DC.AddEntityAsync(permission);
+            var count = await BC.DbContext.AddEntityAsync(permission);
             if (count > 0)
             {
                 return Ok();

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Core
 {
-    public class CavBaseControllerModel : BaseControllerModel
+    public class AppInteractor : Interactor
     {
         public override bool IsAdmin => GetAdmin();
 

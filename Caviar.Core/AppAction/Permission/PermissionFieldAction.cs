@@ -22,7 +22,7 @@ namespace Caviar.Core.Permission
         public ResultMsg<List<ViewModelFields>> GetModels(bool isView)
         {
             List<ViewModelFields> viewModels = new List<ViewModelFields>();
-            var types = CommonHelper.GetModelList(isView);
+            var types = CommonlyHelper.GetModelList(isView);
             foreach (var item in types)
             {
                 var displayName = item.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
@@ -67,7 +67,7 @@ namespace Caviar.Core.Permission
             }
             else{
                 //当id!=0时，是设置其他角色的权限
-                permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.IdentityId == roleId && u.PermissionType == PermissionType.Field && u.PermissionIdentity == PermissionIdentity.Role);
+                permission = await BC.DbContext.GetEntityAsync<SysPermission>(u => u.IdentityId == roleId && u.PermissionType == PermissionType.Field && u.PermissionIdentity == PermissionIdentity.Role);
             }
             List<SysModelFields> fields;
             if (BC.IsAdmin)
@@ -98,7 +98,7 @@ namespace Caviar.Core.Permission
         public async Task<ResultMsg> SetRoleFields(string fullName, int roleId, List<ViewModelFields> modelFields)
         {
             if (string.IsNullOrEmpty(fullName) || roleId == 0) return Error("设置角色字段失败，请检查模型名称或角色id");
-            var permission = await BC.DC.GetEntityAsync<SysPermission>(u => u.IdentityId == roleId && u.PermissionType == PermissionType.Field && u.PermissionIdentity == PermissionIdentity.Role);
+            var permission = await BC.DbContext.GetEntityAsync<SysPermission>(u => u.IdentityId == roleId && u.PermissionType == PermissionType.Field && u.PermissionIdentity == PermissionIdentity.Role);
             var fields = BC.SysModelFields.Where(u => u.FullName == fullName);
             foreach (var item in modelFields)
             {
@@ -112,7 +112,7 @@ namespace Caviar.Core.Permission
                 {
                     field.DisplayName = item.DisplayName;
                 }
-                var count = await BC.DC.UpdateEntityAsync(field);
+                var count = await BC.DbContext.UpdateEntityAsync(field);
                 if (item.IsPermission)
                 {
                     //进行授权
@@ -125,7 +125,7 @@ namespace Caviar.Core.Permission
                             IdentityId = roleId,
                             PermissionIdentity = PermissionIdentity.Role
                         };
-                        await BC.DC.AddEntityAsync(perm);
+                        await BC.DbContext.AddEntityAsync(perm);
                     }
                 }
                 else
@@ -133,7 +133,7 @@ namespace Caviar.Core.Permission
                     //删除授权
                     if (perm != null)
                     {
-                        await BC.DC.DeleteEntityAsync(perm, IsDelete: true);
+                        await BC.DbContext.DeleteEntityAsync(perm, IsDelete: true);
                     }
                 }
             }

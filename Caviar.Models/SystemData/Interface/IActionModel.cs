@@ -8,6 +8,6 @@ namespace Caviar.Models.SystemData
 {
     public interface IActionModel
     {
-        public IBaseControllerModel BC { get; set; }
+        public IInteractor BC { get; set; }
     }
 }

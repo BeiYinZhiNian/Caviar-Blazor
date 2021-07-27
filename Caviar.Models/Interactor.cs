@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models
 {
-    public partial class BaseControllerModel : IBaseControllerModel
+    public partial class Interactor : IInteractor
     {
         /// <summary>
         /// 数据上下文
         /// </summary>
-        public ISysDbContext DC => HttpContext.RequestServices.GetRequiredService<ISysDbContext>();
+        public IAppDbContext DbContext => HttpContext.RequestServices.GetRequiredService<IAppDbContext>();
         /// <summary>
         /// 获取缓存数据
         /// </summary>

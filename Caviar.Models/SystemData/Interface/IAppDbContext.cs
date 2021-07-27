@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models.SystemData
 {
-    public partial interface ISysDbContext
+    public partial interface IAppDbContext
     {
         /// <summary>
         /// 保存操作

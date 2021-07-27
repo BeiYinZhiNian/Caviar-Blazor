@@ -26,19 +26,21 @@ namespace Caviar.Core
     [ApiController]
     public partial class CaviarBaseController : Controller
     {
-        IBaseControllerModel _controllerModel;
-        protected IBaseControllerModel BC
+        IInteractor _interactor;
+        protected IInteractor BC
         {
             get
             {
-                if (_controllerModel == null)
+                if (_interactor == null)
                 {
-                    _controllerModel = HttpContext.RequestServices.GetService<IBaseControllerModel>();
+                    _interactor = HttpContext.RequestServices.GetService<IInteractor>();
                 }
-                return _controllerModel;
+                return _interactor;
             }
         }
+        protected ICodeGeneration CodeGeneration => BC.HttpContext.RequestServices.GetService<ICodeGeneration>();
 
+        CaviarBaseAction BaseAction => new CaviarBaseAction() { BC = BC };
         SysLogAction LoginAction => HttpContext.RequestServices.GetService<SysLogAction>();
 
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -76,8 +78,8 @@ namespace Caviar.Core
         /// <returns></returns>
         void GetPermission()
         {
-            BC.SysModelFields = BC.DC.GetAllAsync<SysModelFields>().Result;
-            BC.SysMenus = BC.DC.GetAllAsync<SysMenu>().Result;
+            BC.SysModelFields = BC.DbContext.GetAllAsync<SysModelFields>().Result;
+            BC.SysMenus = BC.DbContext.GetAllAsync<SysMenu>().Result;
             var roleAction = CreateModel<RoleAction>();
             var userGroup = CreateModel<UserGroupAction>();
             BC.UserData.UserGroup = userGroup.GetUserGroup(BC.Id).Result.Data;
@@ -123,6 +125,21 @@ namespace Caviar.Core
             var entity = BC.HttpContext.RequestServices.GetRequiredService<T>();
             entity.BC = BC;
             return entity;
+        }
+        #endregion
+
+        #region API
+        /// <summary>
+        /// 代码生成
+        /// </summary>
+        /// <param name="generate"></param>
+        /// <param name="isPerview">是否预览</param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> CodeFileGenerate(CodeGenerateData generate, bool isPerview = true)
+        {
+            var result = await BaseAction.CodeFileGenerate(generate, isPerview);
+            return Ok(result);
         }
         #endregion
     }

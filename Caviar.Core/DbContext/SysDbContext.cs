@@ -59,7 +59,7 @@ namespace Caviar.Core
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var types = CommonHelper.GetModelList();
+            var types = CommonlyHelper.GetModelList();
             foreach (var item in types)
             {
                 var method = modelBuilder.GetType().GetMethods().Where(x => x.Name == "Entity").FirstOrDefault();

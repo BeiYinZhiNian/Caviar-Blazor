@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Models
 {
-    public partial interface IBaseControllerModel
+    public partial interface IInteractor
     {
         public HttpContext HttpContext { get; set; }
         /// <summary>
@@ -20,9 +20,9 @@ namespace Caviar.Models
         /// </summary>
         public Stopwatch Stopwatch { get; set; }
         /// <summary>
-        /// 数据上下文
+        /// 应用数据上下文
         /// </summary>
-        public ISysDbContext DC { get; }
+        public IAppDbContext DbContext { get; }
         /// <summary>
         /// 当前请求路径
         /// </summary>

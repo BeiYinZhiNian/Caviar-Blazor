@@ -13,8 +13,8 @@ namespace Caviar.Core
 {
     public class SysLogAction
     {
-        private IBaseControllerModel BC;
-        public SysLogAction(IBaseControllerModel bc)
+        private IInteractor BC;
+        public SysLogAction(IInteractor bc)
         {
             BC = bc;
         }
@@ -54,7 +54,7 @@ namespace Caviar.Core
             }
             var isAdd = FilterLog(log);
             if (!isAdd) return;
-            var count = BC.DC.AddEntityAsync(log).Result;
+            var count = BC.DbContext.AddEntityAsync(log).Result;
         }
         public virtual void LoggerMsg<T>(string msg, LogLevel logLevel = LogLevel.Information, int status = 200, bool IsAutomatic = false)
         {

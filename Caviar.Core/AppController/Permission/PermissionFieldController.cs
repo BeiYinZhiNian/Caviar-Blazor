@@ -33,7 +33,7 @@ namespace Caviar.Core.Permission
         [HttpGet]
         public async Task<IActionResult> GetFields(string modelName)
         {
-            var result = await _Action.GetFieldsData(CavAssembly, modelName);
+            var result = await _Action.GetFieldsData(CodeGeneration, modelName);
             return Ok(result);
         }
 
@@ -45,7 +45,7 @@ namespace Caviar.Core.Permission
         [HttpGet]
         public async Task<IActionResult> RoleFields(string modelName, int roleId)
         {
-            var result = await _Action.GetFieldsData(CavAssembly, modelName, roleId);
+            var result = await _Action.GetFieldsData(CodeGeneration, modelName, roleId);
             return Ok(result);
         }
         /// <summary>

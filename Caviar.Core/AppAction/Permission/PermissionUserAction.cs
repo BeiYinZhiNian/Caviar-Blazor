@@ -18,15 +18,15 @@ namespace Caviar.Core.Permission
         {
             List<SysRole> SelectUrg = new List<SysRole>();
             List<SysRole> haveSysRoles = new List<SysRole>();
-            var roleUserGroups = await BC.DC.GetEntityAsync<SysRoleUser>(u => u.UserId == userId);
+            var roleUserGroups = await BC.DbContext.GetEntityAsync<SysRoleUser>(u => u.UserId == userId);
             foreach (var item in roleUserGroups)
             {
-                var role = await BC.DC.GetSingleEntityAsync<SysRole>(u => u.Id == item.RoleId);
+                var role = await BC.DbContext.GetSingleEntityAsync<SysRole>(u => u.Id == item.RoleId);
                 SelectUrg.Add(role);
             }
             if (BC.IsAdmin)
             {
-                haveSysRoles = await BC.DC.GetAllAsync<SysRole>();
+                haveSysRoles = await BC.DbContext.GetAllAsync<SysRole>();
             }
             else
             {
@@ -63,7 +63,7 @@ namespace Caviar.Core.Permission
         public async Task<ResultMsg> SetRoleUser(int userId, int[] roleIds)
         {
             if (userId == 0 || roleIds == null) return Error("设置用户角色错误,请检查用户或角色");
-            var urgs = await BC.DC.GetEntityAsync<SysRoleUser>(u => u.UserId == userId);
+            var urgs = await BC.DbContext.GetEntityAsync<SysRoleUser>(u => u.UserId == userId);
             var urgIds = urgs.Select(u => u.RoleId);
             var addIds = roleIds.Except(urgIds);
             var deleteIds = urgIds.Except(roleIds);
@@ -79,18 +79,18 @@ namespace Caviar.Core.Permission
             var deleteUrgList = new List<SysRoleUser>();
             foreach (var item in deleteIds)
             {
-                var roleUserGroup = await BC.DC.GetSingleEntityAsync<SysRoleUser>(u => u.RoleId == item && u.UserId == userId);
+                var roleUserGroup = await BC.DbContext.GetSingleEntityAsync<SysRoleUser>(u => u.RoleId == item && u.UserId == userId);
                 deleteUrgList.Add(roleUserGroup);
             }
-            await BC.DC.DeleteEntityAsync(deleteUrgList, IsDelete: true);
-            await BC.DC.AddEntityAsync(addUrgList);
+            await BC.DbContext.DeleteEntityAsync(deleteUrgList, IsDelete: true);
+            await BC.DbContext.AddEntityAsync(addUrgList);
             return Ok();
         }
 
         public async Task<ResultMsg<List<ViewUserGroup>>> GetPermissionGroup()
         {
-            var userGroup = await BC.DC.GetAllAsync<SysUserGroup>();
-            CommonHelper.AToB(userGroup, out List<ViewUserGroup> viewUserGroup);
+            var userGroup = await BC.DbContext.GetAllAsync<SysUserGroup>();
+            CommonlyHelper.AToB(userGroup, out List<ViewUserGroup> viewUserGroup);
             var tree = viewUserGroup.ListToTree();
             return Ok(tree);
         }

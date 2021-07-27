@@ -17,7 +17,7 @@ namespace Caviar.Core
 {
     public class CaviarBaseAction: ActionResult
     {
-        public IBaseControllerModel BC { get; set; }
+        public IInteractor BC { get; set; }
 
         public ResultMsg ResultMsg { get; set; } = new ResultMsg();
 
@@ -161,20 +161,20 @@ namespace Caviar.Core
             SysMenu entity = null;
             if (!string.IsNullOrEmpty(menu.Url))
             {
-                entity = await BC.DC.GetSingleEntityAsync<SysMenu>(u => u.Url == menu.Url);
+                entity = await BC.DbContext.GetSingleEntityAsync<SysMenu>(u => u.Url == menu.Url);
             }
             else if (menu.MenuType != MenuType.Button)
             {
-                entity = await BC.DC.GetSingleEntityAsync<SysMenu>(u => u.MenuName == menu.MenuName);
+                entity = await BC.DbContext.GetSingleEntityAsync<SysMenu>(u => u.MenuName == menu.MenuName);
             }
             else
             {
-                entity = await BC.DC.GetSingleEntityAsync<SysMenu>(u => u.MenuName == menu.MenuName && u.ParentId == menu.ParentId);
+                entity = await BC.DbContext.GetSingleEntityAsync<SysMenu>(u => u.MenuName == menu.MenuName && u.ParentId == menu.ParentId);
             }
             var count = 0;
             if (entity == null)
             {
-                count = await BC.DC.AddEntityAsync(menu);
+                count = await BC.DbContext.AddEntityAsync(menu);
                 entity = menu;
             }
             return entity;
@@ -195,7 +195,7 @@ namespace Caviar.Core
                 {
                     return Error("您的登录已过期，请重新登录");
                 }
-                BC.UserToken = CommonHelper.GetJwtUserToken(Authorization);
+                BC.UserToken = CommonlyHelper.GetJwtUserToken(Authorization);
             }
             //没有写带token应该在权限拦下不应该在检查时候
             //这样的好处是可以给未登录用户一些权限
@@ -299,7 +299,7 @@ namespace Caviar.Core
         /// <param name="data"></param>
         private void ArgumentsFields(Type type, object data)
         {
-            var baseType = CommonHelper.GetCavBaseType(type);
+            var baseType = CommonlyHelper.GetCavBaseType(type);
             if (baseType == null) return;
             foreach (PropertyInfo sp in baseType.GetProperties())//获得类型的属性字段
             {

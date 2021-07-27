@@ -14,7 +14,7 @@ namespace Caviar.Core.User
             var viewModel = base.ToViewModel(model);
             foreach (var item in viewModel)
             {
-                var userGroup = BC.DC.GetSingleEntityAsync<SysUserGroup>(u => u.Id == item.UserGroupId).Result;
+                var userGroup = BC.DbContext.GetSingleEntityAsync<SysUserGroup>(u => u.Id == item.UserGroupId).Result;
                 if (userGroup == null) continue;
                 item.UserGroupName = userGroup.Name;
             }
@@ -31,14 +31,14 @@ namespace Caviar.Core.User
             {
                 return Error("正在进行非法修改");
             }
-            var user = await BC.DC.GetSingleEntityAsync<SysUser>(u => u.UserName == viewUser.UserName && u.Uid != BC.UserToken.Uid);
+            var user = await BC.DbContext.GetSingleEntityAsync<SysUser>(u => u.UserName == viewUser.UserName && u.Uid != BC.UserToken.Uid);
             if (user != null)
             {
                 return Error("该用户名已有人使用，请重新绑定");
             }
             if (!string.IsNullOrEmpty(viewUser.PhoneNumber))
             {
-                user = await BC.DC.GetSingleEntityAsync<SysUser>(u => u.PhoneNumber == viewUser.PhoneNumber && u.Uid != BC.UserToken.Uid);
+                user = await BC.DbContext.GetSingleEntityAsync<SysUser>(u => u.PhoneNumber == viewUser.PhoneNumber && u.Uid != BC.UserToken.Uid);
                 if (user != null)
                 {
                     return Error("该手机号已有人使用，请重新绑定");
@@ -46,7 +46,7 @@ namespace Caviar.Core.User
             }
             if (!string.IsNullOrEmpty(viewUser.EmailNumber))
             {
-                user = await BC.DC.GetSingleEntityAsync<SysUser>(u => u.EmailNumber == viewUser.EmailNumber && u.Uid != BC.UserToken.Uid);
+                user = await BC.DbContext.GetSingleEntityAsync<SysUser>(u => u.EmailNumber == viewUser.EmailNumber && u.Uid != BC.UserToken.Uid);
                 if (user != null)
                 {
                     return Error("该邮箱已有人使用，请重新绑定");
@@ -72,8 +72,8 @@ namespace Caviar.Core.User
                 return result;
             }
             user.Password = userPwd.NewPwd;
-            await BC.DC.UpdateEntityAsync(user, false);
-            await BC.DC.SaveChangesAsync(IsFieldCheck: false);
+            await BC.DbContext.UpdateEntityAsync(user, false);
+            await BC.DbContext.SaveChangesAsync(IsFieldCheck: false);
             return result;
         }
     }

@@ -19,20 +19,20 @@ namespace Caviar.Core.Role
             if (userId > 0)
             {
                 //获取当前用户角色
-                var userRoles = await BC.DC.GetEntityAsync<SysRoleUser>(u => u.UserId == userId);
+                var userRoles = await BC.DbContext.GetEntityAsync<SysRoleUser>(u => u.UserId == userId);
                 foreach (var item in userRoles)
                 {
                     if (roles.SingleOrDefault(u=>u.Id == item.RoleId) != null) continue;
-                    var role = await BC.DC.GetSingleEntityAsync<SysRole>(u => u.Id == item.RoleId);
+                    var role = await BC.DbContext.GetSingleEntityAsync<SysRole>(u => u.Id == item.RoleId);
                     await AddRole(roles, role);
                 }
                 if (userGroupId != null && userGroupId>0)
                 {
-                    var userGroupRoles = await BC.DC.GetEntityAsync<SysRoleUserGroup>(u => u.UserGroupId == userGroupId);
+                    var userGroupRoles = await BC.DbContext.GetEntityAsync<SysRoleUserGroup>(u => u.UserGroupId == userGroupId);
                     foreach (var item in userGroupRoles)
                     {
                         if (roles.SingleOrDefault(u => u.Id == item.RoleId) != null) continue;
-                        var role = await BC.DC.GetSingleEntityAsync<SysRole>(u => u.Id == item.RoleId);
+                        var role = await BC.DbContext.GetSingleEntityAsync<SysRole>(u => u.Id == item.RoleId);
                         await AddRole(roles, role);
                     }
                 }
@@ -40,7 +40,7 @@ namespace Caviar.Core.Role
             if(roles.SingleOrDefault(u => u.Uid == CaviarConfig.NoLoginRoleGuid) == null)
             {
                 //获取未登录角色
-                var noRole = await BC.DC.GetEntityAsync<SysRole>(CaviarConfig.NoLoginRoleGuid);
+                var noRole = await BC.DbContext.GetEntityAsync<SysRole>(CaviarConfig.NoLoginRoleGuid);
                 await AddRole(roles, noRole);
             }
             return Ok(roles.ToList());
@@ -57,7 +57,7 @@ namespace Caviar.Core.Role
             roles.Add(role);
             if (role.ParentId > 0)
             {
-                var userRole = await BC.DC.GetSingleEntityAsync<SysRole>(u => u.Id == role.ParentId);
+                var userRole = await BC.DbContext.GetSingleEntityAsync<SysRole>(u => u.Id == role.ParentId);
                 if (roles.SingleOrDefault(u => u.Id == userRole.Id) != null) return;
                 await AddRole(roles, userRole);
             }

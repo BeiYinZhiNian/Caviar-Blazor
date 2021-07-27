@@ -23,11 +23,11 @@ namespace Caviar.Core.User
             SysUser userLogin = null;
             if (!string.IsNullOrEmpty(entity.UserName))
             {
-                userLogin = BC.DC.GetSingleEntityAsync<SysUser>(u => u.UserName == entity.UserName && u.Password == entity.Password).Result;
+                userLogin = BC.DbContext.GetSingleEntityAsync<SysUser>(u => u.UserName == entity.UserName && u.Password == entity.Password).Result;
             }
             else if (!string.IsNullOrEmpty(entity.PhoneNumber))
             {
-                userLogin = BC.DC.GetSingleEntityAsync<SysUser>(u => u.PhoneNumber == entity.PhoneNumber && u.Password == entity.Password).Result;
+                userLogin = BC.DbContext.GetSingleEntityAsync<SysUser>(u => u.PhoneNumber == entity.PhoneNumber && u.Password == entity.Password).Result;
             }
             if (userLogin == null) return Error<UserToken>("用户名或密码错误");
             if (userLogin.IsDisable) return Error<UserToken>("该账号未被启动，请联系管理员");
@@ -39,17 +39,17 @@ namespace Caviar.Core.User
 
         public virtual ResultMsg Register(ViewUser entity)
         {
-            var user = BC.DC.GetSingleEntityAsync<SysUser>(u => u.UserName == entity.UserName).Result;
+            var user = BC.DbContext.GetSingleEntityAsync<SysUser>(u => u.UserName == entity.UserName).Result;
             if (user != null)
             {
                 return Error("该用户名已经被注册!");
             }
-            user = BC.DC.GetSingleEntityAsync<SysUser>(u => u.PhoneNumber == entity.PhoneNumber).Result;
+            user = BC.DbContext.GetSingleEntityAsync<SysUser>(u => u.PhoneNumber == entity.PhoneNumber).Result;
             if (user != null)
             {
                 return Error("该手机号已经被注册!");
             }
-            var count = BC.DC.AddEntityAsync(entity).Result;
+            var count = BC.DbContext.AddEntityAsync(entity).Result;
             if (count <= 0)
             {
                 return Error("注册账号失败!");

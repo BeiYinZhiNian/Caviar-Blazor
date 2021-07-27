@@ -348,7 +348,7 @@ namespace Caviar.Core
 
         public List<ViewModelFields> GetViewModelHeaders(string name)
         {
-            var assemblyList = CommonHelper.GetAssembly();
+            var assemblyList = CommonlyHelper.GetAssembly();
             Type type = null;
             foreach (var item in assemblyList)
             {
@@ -369,7 +369,7 @@ namespace Caviar.Core
                             typeName = Arguments[0].Name;
                         }
                     }
-                    var baseType = CommonHelper.GetCavBaseType(type);
+                    var baseType = CommonlyHelper.GetCavBaseType(type);
                     var dispLayName = item.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
                     var valueLen = item.GetCustomAttributes<StringLengthAttribute>()?.Cast<StringLengthAttribute>().SingleOrDefault()?.MaximumLength;
                     var filter = new ViewModelFields()
@@ -385,7 +385,7 @@ namespace Caviar.Core
                     };
                     if (filter.IsEnum)
                     {
-                        filter.EnumValueName = CommonHelper.GetEnenuModelHeader(item.PropertyType);
+                        filter.EnumValueName = CommonlyHelper.GetEnenuModelHeader(item.PropertyType);
                     }
                     filter = TurnMeaning(filter);
                     viewModelNames.Add(filter);

@@ -41,8 +41,8 @@ namespace Caviar.Core
         {
             SqlConfig = sqlConfig;
             services.AddDbContext<SysDbContext>();
-            services.AddScoped<ISysDbContext, AppDbContext>();
-            services.AddScoped<IBaseControllerModel, CavBaseControllerModel>();
+            services.AddScoped<IAppDbContext, AppDbContext>();
+            services.AddScoped<IInteractor, AppInteractor>();
             services.AddScoped<SysLogAction>();
 
             services.AddSingleton<IMemoryCache, MemoryCache>();
@@ -197,7 +197,7 @@ namespace Caviar.Core
             /// </summary>
             public void AddIBaseModel(IServiceCollection services)
             {
-                CommonHelper.GetAssembly()
+                CommonlyHelper.GetAssembly()
                     //遍历查找
                     .ForEach((t =>
                     {
@@ -223,7 +223,7 @@ namespace Caviar.Core
             /// <param name="services"></param>
             public void AddInject(IServiceCollection services)
             {
-                CommonHelper.GetAssembly()
+                CommonlyHelper.GetAssembly()
                    //遍历查找
                    .ForEach((t =>
                    {

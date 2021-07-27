@@ -13,7 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Caviar.Models.SystemData
 {
-    public static class CommonHelper
+    public static class CommonlyHelper
     {
 
         /// <summary>

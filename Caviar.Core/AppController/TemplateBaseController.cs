@@ -109,7 +109,7 @@ namespace Caviar.Core
         public virtual async Task<IActionResult> GetFields()
         {
             var permissionAction = CreateModel<PermissionAction>();
-            var result = await permissionAction.GetFieldsData(CavAssembly, typeof(ViewT).Name);
+            var result = await permissionAction.GetFieldsData(CodeGeneration, typeof(ViewT).Name);
             return Ok(result);
         }
         #endregion
