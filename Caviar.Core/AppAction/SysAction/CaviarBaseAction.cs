@@ -208,6 +208,7 @@ namespace Caviar.Core
         {
             var url = Interactor.Current_Action.Replace("/api/", "").ToLower();
             var menu = Interactor.SysMenus.SingleOrDefault(u => !string.IsNullOrEmpty(u.Url) && u.Url.ToLower() == url);
+            Interactor.CurrentMenu = menu;
             if (!ActionVerification(menu))
             {
                 if (Interactor.IsLogin)
