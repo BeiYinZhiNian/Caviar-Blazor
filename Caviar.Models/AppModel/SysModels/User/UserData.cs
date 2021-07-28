@@ -29,6 +29,10 @@ namespace Caviar.Models
         /// </summary>
         public SysUserGroup UserGroup { get; set; }
         /// <summary>
+        /// 下级用户组
+        /// </summary>
+        public List<SysUserGroup> SubordinateUserGroup { get; set; }
+        /// <summary>
         /// 用户拥有字段
         /// </summary>
         public List<SysModelFields> ModelFields { get; set; }

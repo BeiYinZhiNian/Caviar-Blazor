@@ -267,9 +267,9 @@ namespace Caviar.Core
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public virtual Task<List<T>> GetAllAsync<T>(bool isNoTracking = true) where T : class, IBaseModel
+        public virtual Task<List<T>> GetAllAsync<T>(bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseModel
         {
-            return GetContext<T>(isNoTracking).ToListAsync();
+            return GetContext<T>(isNoTracking,isDataPermissions,isRecycleBin).ToListAsync();
         }
         /// <summary>
         /// 获取指定页数据
@@ -283,9 +283,9 @@ namespace Caviar.Core
         /// <param name="isOrder"></param>
         /// <param name="isNoTracking"></param>
         /// <returns></returns>
-        public virtual async Task<PageData<T>> GetPageAsync<T, TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true) where T : class, IBaseModel
+        public virtual async Task<PageData<T>> GetPageAsync<T, TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseModel
         {
-            IQueryable<T> data = GetContext<T>(isNoTracking);
+            IQueryable<T> data = GetContext<T>(isNoTracking,isDataPermissions,isRecycleBin);
             data = isOrder ?
                 data.OrderBy(orderBy).OrderByDescending(u => u.CreatTime) :
                 data.OrderByDescending(orderBy).OrderByDescending(u => u.CreatTime);
@@ -308,9 +308,9 @@ namespace Caviar.Core
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual Task<List<T>> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IBaseModel
+        public virtual Task<List<T>> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseModel
         {
-            return GetContext<T>(isNoTracking).Where(where).ToListAsync();
+            return GetContext<T>(isNoTracking,isDataPermissions,isRecycleBin).Where(where).ToListAsync();
         }
         /// <summary>
         /// 根据条件获取单个实体
@@ -318,9 +318,9 @@ namespace Caviar.Core
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual Task<T> GetSingleEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IBaseModel
+        public virtual Task<T> GetSingleEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseModel
         {
-            return GetContext<T>(isNoTracking).Where(where).SingleOrDefaultAsync();
+            return GetContext<T>(isNoTracking,isDataPermissions,isRecycleBin).Where(where).SingleOrDefaultAsync();
         }
         /// <summary>
         /// 根据条件获取首个单个实体
@@ -328,9 +328,9 @@ namespace Caviar.Core
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual Task<T> GetFirstEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IBaseModel
+        public virtual Task<T> GetFirstEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseModel
         {
-            return GetContext<T>(isNoTracking).Where(where).FirstOrDefaultAsync();
+            return GetContext<T>(isNoTracking,isDataPermissions,isRecycleBin).Where(where).FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -339,9 +339,9 @@ namespace Caviar.Core
         /// <typeparam name="T"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        public virtual Task<T> GetEntityAsync<T>(int id, bool isNoTracking = true) where T : class, IBaseModel
+        public virtual Task<T> GetEntityAsync<T>(int id, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseModel
         {
-            return GetContext<T>(isNoTracking).SingleOrDefaultAsync(u => u.Id == id);
+            return GetContext<T>(isNoTracking,isDataPermissions,isRecycleBin).SingleOrDefaultAsync(u => u.Id == id);
         }
         /// <summary>
         /// 根据guid获取实体
@@ -349,9 +349,9 @@ namespace Caviar.Core
         /// <typeparam name="T"></typeparam>
         /// <param name="uid"></param>
         /// <returns></returns>
-        public virtual Task<T> GetEntityAsync<T>(Guid uid, bool isNoTracking = true) where T : class, IBaseModel
+        public virtual Task<T> GetEntityAsync<T>(Guid uid, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseModel
         {
-            return GetContext<T>(isNoTracking).SingleOrDefaultAsync(u => u.Uid == uid);
+            return GetContext<T>(isNoTracking, isDataPermissions,isRecycleBin).SingleOrDefaultAsync(u => u.Uid == uid);
         }
 
         /// <summary>
@@ -370,6 +370,24 @@ namespace Caviar.Core
             if (isNoTracking)
             {
                 query = query.AsNoTracking();
+            }
+            if (isDataPermissions)
+            {
+                //定义总的lambda树
+                var lambdaTree = PredicateBuilder.False<T>();
+                lambdaTree = lambdaTree.Or(u => u.DataId == null);
+                if (_Interactor.UserData.UserGroup != null)
+                {
+                    lambdaTree = lambdaTree.Or(u => u.DataId == _Interactor.UserData.UserGroup.Id);
+                    if (_Interactor.UserData.SubordinateUserGroup != null && _Interactor.UserData.SubordinateUserGroup.Count!=0)
+                    {
+                        foreach (var item in _Interactor.UserData.SubordinateUserGroup)
+                        {
+                            lambdaTree = lambdaTree.Or(u => u.DataId == item.Id);
+                        }
+                    }
+                }
+                query = query.Where(lambdaTree);
             }
             return query;
         }

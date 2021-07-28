@@ -84,21 +84,21 @@ namespace Caviar.Models
         /// 异步获取所有数据
         /// </summary>
         /// <returns></returns>
-        public Task<List<T>> GetAllAsync<T>(bool isNoTracking = true) where T : class, IBaseModel;
+        public Task<List<T>> GetAllAsync<T>(bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseModel;
         /// <summary>
         /// 根据条件获取实体
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public Task<List<T>> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IBaseModel;
+        public Task<List<T>> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseModel;
         /// <summary>
         /// 根据条件获取单个实体
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public Task<T> GetSingleEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IBaseModel;
+        public Task<T> GetSingleEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseModel;
         /// <summary>
         /// 根据条件获取首个实体
         /// </summary>
@@ -106,21 +106,21 @@ namespace Caviar.Models
         /// <param name="where"></param>
         /// <param name="isNoTracking"></param>
         /// <returns></returns>
-        public Task<T> GetFirstEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IBaseModel;
+        public Task<T> GetFirstEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseModel;
         /// <summary>
         /// 根据id获取实体
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Task<T> GetEntityAsync<T>(int id, bool isNoTracking = true) where T : class, IBaseModel;
+        public Task<T> GetEntityAsync<T>(int id, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseModel;
         /// <summary>
         /// 根据uid获取实体
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="uid"></param>
         /// <returns></returns>
-        public Task<T> GetEntityAsync<T>(Guid uid, bool isNoTracking = true) where T : class, IBaseModel;
+        public Task<T> GetEntityAsync<T>(Guid uid, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseModel;
         /// <summary>
         /// 分页查询异步
         /// </summary>
@@ -130,7 +130,7 @@ namespace Caviar.Models
         /// <param name="pageSize">每页大小</param>
         /// <param name="isOrder">排序正反</param>
         /// <returns></returns>
-        public Task<PageData<T>> GetPageAsync<T, TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true) where T : class, IBaseModel;
+        public Task<PageData<T>> GetPageAsync<T, TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseModel;
 
         /// <summary>
         /// 开启事务

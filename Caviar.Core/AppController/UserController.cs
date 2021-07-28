@@ -23,17 +23,10 @@ namespace Caviar.Core.User
         }
 
         [HttpPost]
-        public IActionResult Login(ViewUser eneity)
+        public async Task<IActionResult> Login(ViewUser eneity)
         {
-            var result = _Action.Login(eneity);
+            var result = await _Action.Login(eneity);
             return Ok(result);
-        }
-
-        [HttpPost]
-        public IActionResult Register(ViewUser eneity)
-        {
-            var ruslut = _Action.Register(eneity);
-            return Ok(ruslut);
         }
 
         [HttpPost]

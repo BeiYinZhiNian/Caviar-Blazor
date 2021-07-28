@@ -73,7 +73,11 @@ namespace Caviar.Core
             Interactor.SysMenus = Interactor.DbContext.GetAllAsync<SysMenu>().Result;
             var roleAction = CreateModel<RoleAction>();
             var userGroup = CreateModel<UserGroupAction>();
-            Interactor.UserData.UserGroup = userGroup.GetUserGroup(Interactor.Id).Result.Data;
+            Interactor.UserData.UserGroup = userGroup.GetUserGroup(Interactor.Id,false).Result.Data;
+            if (Interactor.UserData.UserGroup != null)
+            {
+                Interactor.UserData.SubordinateUserGroup = userGroup.GetSubordinateUserGroup(Interactor.UserData.UserGroup.Id, false).Result.Data;
+            }
             Interactor.UserData.Roles = roleAction.GetUserRoles(Interactor.Id, Interactor.UserData.UserGroup?.Id).Result.Data;
             var permissionAction = CreateModel<PermissionAction>();
             var rolePermission = permissionAction.GetRolePermissions(Interactor.UserData.Roles).Result;
