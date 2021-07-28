@@ -54,6 +54,7 @@ namespace Caviar.Core.Role
         private async Task AddRole(List<SysRole> roles, SysRole role)
         {
             if (roles == null) return;
+            if (role == null) return;
             roles.Add(role);
             if (role.ParentId > 0)
             {
