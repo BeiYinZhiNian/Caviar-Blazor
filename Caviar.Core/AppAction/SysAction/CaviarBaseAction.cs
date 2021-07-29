@@ -192,7 +192,7 @@ namespace Caviar.Core
                 var IsValidate = JwtHelper.Validate(Authorization);
                 if (!IsValidate)
                 {
-                    return Error("您的登录已过期，请重新登录");
+                    return Unauthorized("您的登录已过期，请重新登录", CaviarConfig.CavUrl.UserLogin);
                 }
                 Interactor.UserToken = CommonlyHelper.GetJwtUserToken(Authorization);
             }
