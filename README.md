@@ -34,10 +34,17 @@ Caviar(鱼子酱)框架采用了：Blazor + Ant Design + .NET 5 本框架使用�
 - 项目文档正在编写
 - [Ant Design](https://ant-design-blazor.gitee.io/zh-CN/)
 
+## ☀️ 第一次点亮
+- 1、首先下载源代码解压后，打开Caviar.sln。  
+  2、如果以前有运行过代码，请先打开SqlServer资源管理器，连接到本地数据库【(localdb)\MSSQLLocalDB】，找到Caviar_db数据库后删除就可以了。  
+  3、右键解决方案，选择属性，选择多个项目启动，把Caviar.Demo.AntDesignUI和Caviar.Demo.AntWebApi设定为启动，然后点击确定。  
+  4、F5启动后会自动打开，第一次启动loading会比较长，请耐性等待。  
+  5、如果无法启动可以加入QQ群进行联系。  
+
 ## 🍡 使用环境
 
 - .NET 5
-- Ant Design:0.8.4
+- Ant Design:0.9.0
 - Visual Studio 2019
 - SqlServer
 
