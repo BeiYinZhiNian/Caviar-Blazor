@@ -13,6 +13,8 @@ namespace Caviar.AntDesignPages.Pages.Menu
 {
     public partial class Index
     {
+        [Inject]
+        UserConfig UserConfig { get; set; }
         protected override Task<List<ViewMenu>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
             pageSize = 100;
@@ -29,6 +31,7 @@ namespace Caviar.AntDesignPages.Pages.Menu
                 default:
                     break;
             }
+            UserConfig.RefreshMenuAction.Invoke();//更新菜单
             Refresh();
             return;
         }

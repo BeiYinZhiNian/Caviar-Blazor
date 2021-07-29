@@ -75,6 +75,11 @@ namespace Caviar.AntDesignPages.Shared
                 OpenKeysNav = _openKeysNae;
             }
         }
+        protected override void OnParametersSet()
+        {
+            UserConfig.RefreshMenuAction = Refresh;
+            base.OnParametersSet();
+        }
 
         protected override async Task OnInitializedAsync()
         {
@@ -82,6 +87,12 @@ namespace Caviar.AntDesignPages.Shared
         }
 
         private List<ViewMenu> SysMenus;
+
+        public async void Refresh()
+        {
+            await OnInitializedAsync();
+            StateHasChanged();
+        }
 
         async Task<List<ViewMenu>> GetMenus()
         {

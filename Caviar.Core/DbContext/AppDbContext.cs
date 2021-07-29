@@ -374,6 +374,8 @@ namespace Caviar.Core
             if (isDataPermissions)
             {
                 //定义总的lambda树
+                var lambdaTotalTree = PredicateBuilder.True<T>();
+                //定义或lambda数
                 var lambdaTree = PredicateBuilder.False<T>();
                 lambdaTree = lambdaTree.Or(u => u.DataId == null);
                 if (_Interactor.UserData.UserGroup != null)
@@ -387,7 +389,8 @@ namespace Caviar.Core
                         }
                     }
                 }
-                query = query.Where(lambdaTree);
+                lambdaTotalTree.And(lambdaTree);
+                query = query.Where(lambdaTotalTree);
             }
             return query;
         }

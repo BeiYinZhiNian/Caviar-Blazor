@@ -23,8 +23,14 @@ namespace Caviar.AntDesignPages.Helper
         public IJSRuntime JSRuntime { get; set; }
 
         public Router Router;
-
+        /// <summary>
+        /// 更新面包屑数据
+        /// </summary>
         public Action StateHasAction { get; set; }
+        /// <summary>
+        /// 更新菜单数据
+        /// </summary>
+        public Action RefreshMenuAction { get; set; }
 
         IEnumerable _routes;
         public IEnumerable Routes()
