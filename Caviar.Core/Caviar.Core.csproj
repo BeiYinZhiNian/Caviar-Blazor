@@ -33,7 +33,7 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Caviar.Models\Caviar.Models.csproj" />
+    <ProjectReference Include="..\Caviar.Models\Caviar.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="SqlFile\CaviarSqlServer.sql">

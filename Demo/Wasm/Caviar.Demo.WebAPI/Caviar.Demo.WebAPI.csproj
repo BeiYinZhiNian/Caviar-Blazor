@@ -28,7 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Caviar.Core\Caviar.Core.csproj" />
-    <ProjectReference Include="..\..\..\Caviar.Models\Caviar.Models.csproj" />
+    <ProjectReference Include="..\..\..\Caviar.Models\Caviar.Domain.csproj" />
     <ProjectReference Include="..\Caviar.Demo.Models\Caviar.Demo.Models.csproj" />
   </ItemGroup>
 

@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Caviar.Models\Caviar.Models.csproj" />
+    <ProjectReference Include="..\..\..\Caviar.Models\Caviar.Domain.csproj" />
   </ItemGroup>
 
 </Project>

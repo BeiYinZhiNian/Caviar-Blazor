@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30914.41
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.Demo.AntDesignUI", "Demo\Wasm\Caviar.Demo.AntDesignUI\Caviar.Demo.AntDesignUI.csproj", "{09911180-2079-480E-8847-DBE226A84063}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.Models", "Caviar.Models\Caviar.Models.csproj", "{1345B5AB-97A3-407E-A938-867E8AA6DC8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.Domain", "Caviar.Models\Caviar.Domain.csproj", "{1345B5AB-97A3-407E-A938-867E8AA6DC8F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.Demo.WebAPI", "Demo\Wasm\Caviar.Demo.WebAPI\Caviar.Demo.WebAPI.csproj", "{632F1BC9-FE83-44A0-81A9-53C1D6347808}"
 EndProject
