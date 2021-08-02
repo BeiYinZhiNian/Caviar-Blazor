@@ -14,7 +14,7 @@ using Caviar.SharedKernel;
 namespace Caviar.SharedKernel
 {
     [DisplayName("权限模型")]
-    public partial class ViewPermission:SysPermission, IViewMode
+    public partial class ViewPermission:SysPermission, IView
     {
     }
 }

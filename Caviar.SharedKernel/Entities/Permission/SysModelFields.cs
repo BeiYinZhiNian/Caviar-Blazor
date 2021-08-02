@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Caviar.SharedKernel
 {
     [DisplayName("字段权限")]
-    public class SysModelFields:SysBaseModel
+    public class SysModelFields:SysBaseEntity
     {
         /// <summary>
         /// 类型名称，判断是否为同一属性的唯一条件

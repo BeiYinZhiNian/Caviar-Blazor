@@ -14,7 +14,7 @@ using Caviar.SharedKernel;
 namespace Caviar.SharedKernel
 {
     [DisplayName("用户模型")]
-    public partial class ViewUser:SysUser, IViewMode
+    public partial class ViewUser:SysUser, IView
     {
     }
 }

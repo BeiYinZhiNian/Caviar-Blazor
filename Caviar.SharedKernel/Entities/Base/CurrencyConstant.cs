@@ -32,7 +32,10 @@ namespace Caviar.SharedKernel
         /// JWT验证
         /// </summary>
         public const string JWT = "JWT ";
-
+        /// <summary>
+        /// 基础实体类名称
+        /// </summary>
+        public static string BaseEntityName = typeof(SysBaseEntity).Name;
     }
 
     public static class HttpState

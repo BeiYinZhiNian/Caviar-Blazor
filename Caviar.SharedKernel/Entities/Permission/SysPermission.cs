@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Caviar.SharedKernel
 {
     [DisplayName("权限")]
-    public class SysPermission : SysBaseModel
+    public class SysPermission : SysBaseEntity
     {
         /// <summary>
         /// 对应的权限id，需要type来区分id种类

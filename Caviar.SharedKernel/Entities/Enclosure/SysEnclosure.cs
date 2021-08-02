@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Caviar.SharedKernel
 {
     [DisplayName("附件")]
-    public partial class SysEnclosure:SysBaseModel
+    public partial class SysEnclosure:SysBaseEntity
     {
         [Required(ErrorMessage = "请输入附件名称")]
         [DisplayName("名称")]

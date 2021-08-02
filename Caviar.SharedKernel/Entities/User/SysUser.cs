@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Caviar.SharedKernel
 {
     [DisplayName("用户")]
-    public partial class SysUser : SysBaseModel
+    public partial class SysUser : SysBaseEntity
     {
         /// <summary>
         /// 用户名

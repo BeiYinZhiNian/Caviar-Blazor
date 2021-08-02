@@ -13,7 +13,7 @@ namespace Caviar.SharedKernel
     /// 角色表
     /// </summary>
     [DisplayName("角色")]
-    public partial class SysRole : SysBaseModel
+    public partial class SysRole : SysBaseEntity
     {
         /// <summary>
         /// 角色名称

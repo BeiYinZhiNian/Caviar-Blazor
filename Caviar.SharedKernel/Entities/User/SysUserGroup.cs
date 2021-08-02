@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Caviar.SharedKernel
 {
     [DisplayName("部门")]
-    public partial class SysUserGroup:SysBaseModel
+    public partial class SysUserGroup:SysBaseEntity
     {
         [Required(ErrorMessage = "请输入您的用户名")]
         [DisplayName("名称")]

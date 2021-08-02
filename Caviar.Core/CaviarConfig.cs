@@ -14,6 +14,7 @@ using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.HttpOverrides;
+using Caviar.Core.Scanner;
 
 namespace Caviar.Core
 {
@@ -43,7 +44,7 @@ namespace Caviar.Core
             services.AddScoped<IAppDbContext, AppDbContext>();
             services.AddScoped<IInteractor, AppInteractor>();
             services.AddScoped<SysLogAction>();
-
+            services.AddAutoMapper(typeof(AutoMapperScanner));
             services.AddSingleton<IMemoryCache, MemoryCache>();
             services.AddSingleton<ICodeGeneration, CodeGeneration>();
             

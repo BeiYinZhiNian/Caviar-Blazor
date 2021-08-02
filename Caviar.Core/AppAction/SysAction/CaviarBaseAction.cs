@@ -265,7 +265,7 @@ namespace Caviar.Core
                 return;
             }
             bool isBaseModel;
-            isBaseModel = type.GetInterfaces().Contains(typeof(IBaseModel));
+            isBaseModel = type.GetInterfaces().Contains(typeof(IBaseEntity));
             if (isBaseModel)
             {
                 if (data == null) return;

@@ -14,7 +14,7 @@ using Caviar.SharedKernel;
 namespace Caviar.SharedKernel
 {
     [DisplayName("角色模型")]
-    public partial class ViewRole:SysRole, IViewMode
+    public partial class ViewRole:SysRole, IView
     {
     }
 }

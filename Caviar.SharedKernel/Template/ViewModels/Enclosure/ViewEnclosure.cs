@@ -14,7 +14,7 @@ using Caviar.SharedKernel;
 namespace Caviar.SharedKernel
 {
     [DisplayName("附件模型")]
-    public partial class ViewEnclosure:SysEnclosure, IViewMode
+    public partial class ViewEnclosure:SysEnclosure, IView
     {
     }
 }

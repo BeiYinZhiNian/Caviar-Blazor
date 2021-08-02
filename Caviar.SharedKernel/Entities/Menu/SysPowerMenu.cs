@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Caviar.SharedKernel
 {
     [DisplayName("系统菜单")]
-    public partial class SysMenu : SysBaseModel
+    public partial class SysMenu : SysBaseEntity
     {
         [DisplayName("菜单名称")]
         [Required(ErrorMessage = "请输入菜单名称")]

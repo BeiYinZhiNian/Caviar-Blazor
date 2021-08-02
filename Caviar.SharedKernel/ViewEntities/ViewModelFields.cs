@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel
 {
-    public partial class ViewModelFields : SysModelFields,IViewMode
+    public partial class ViewModelFields : SysModelFields,IView
     {
         /// <summary>
         /// 类型名称如string,int等

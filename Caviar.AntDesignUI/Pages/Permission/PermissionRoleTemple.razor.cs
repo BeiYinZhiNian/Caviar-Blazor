@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.AntDesignUI.Pages.Permission
 {
-    public partial class PermissionRoleTemple<TData>: DataComponentBase<TData> where TData: class, IBaseModel, new()
+    public partial class PermissionRoleTemple<TData>: DataComponentBase<TData> where TData: class, IBaseEntity, new()
     {
         protected List<ViewRole> ViewRoles { get; set; }
         protected override async Task OnInitializedAsync()

@@ -42,6 +42,7 @@ namespace Caviar.Core
         private SysDbContext DC => _SysDbContext;
 
         IInteractor _Interactor;
+
         /// <summary>
         /// 添加实体
         /// </summary>
@@ -49,9 +50,25 @@ namespace Caviar.Core
         /// <param name="entity"></param>
         /// <param name="isSaveChange">默认为立刻保存</param>
         /// <returns></returns>
-        public virtual async Task<int> AddEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IBaseModel
+        public virtual async Task<int> AddEntityAsync<T>(T entity) where T : class, IView
         {
-            DC.Entry(entity).State = EntityState.Added;
+            var conversionType = CommonlyHelper.GetCavBaseType(typeof(T));
+            var obj = Convert.ChangeType(entity, conversionType);
+            DC.Entry(obj).State = EntityState.Added;
+            return await SaveChangesAsync();
+        }
+        /// <summary>
+        /// 添加实体
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entity"></param>
+        /// <param name="isSaveChange">默认为立刻保存</param>
+        /// <returns></returns>
+        public virtual async Task<int> AddEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IBaseEntity
+        {
+            var conversionType = CommonlyHelper.GetCavBaseType(typeof(T));
+            var obj = Convert.ChangeType(entity, conversionType);
+            DC.Entry(obj).State = EntityState.Added;
             if (isSaveChange)
             {
                 return await SaveChangesAsync();
@@ -65,7 +82,7 @@ namespace Caviar.Core
         /// <param name="entity"></param>
         /// <param name="isSaveChange"></param>
         /// <returns></returns>
-        public virtual async Task<int> AddEntityAsync<T>(List<T> entity, bool isSaveChange = true) where T : class, IBaseModel
+        public virtual async Task<int> AddEntityAsync<T>(List<T> entity, bool isSaveChange = true) where T : class, IBaseEntity
         {
             var count = 0;
             if (entity == null || entity.Count == 0) return count;
@@ -94,10 +111,10 @@ namespace Caviar.Core
             var entries = DC.ChangeTracker.Entries();
             foreach (var item in entries)
             {
-                IBaseModel baseEntity;
+                IBaseEntity baseEntity;
                 var entity = item.Entity;
                 if (entity == null) continue;
-                baseEntity = entity as IBaseModel;
+                baseEntity = entity as IBaseEntity;
                 switch (item.State)
                 {
                     case EntityState.Detached:
@@ -155,7 +172,7 @@ namespace Caviar.Core
         /// <param name="entity"></param>
         /// <param name="isSaveChange">默认为立刻保存</param>
         /// <returns></returns>
-        public virtual async Task<int> UpdateEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IBaseModel
+        public virtual async Task<int> UpdateEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IBaseEntity
         {
             DC.Entry(entity).State = EntityState.Modified;
             if (isSaveChange)
@@ -172,7 +189,7 @@ namespace Caviar.Core
         /// <param name="fieldExp"></param>
         /// <param name="isSaveChange">默认为立刻保存</param>
         /// <returns></returns>
-        public virtual async Task<int> UpdateEntityAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class, IBaseModel
+        public virtual async Task<int> UpdateEntityAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class, IBaseEntity
         {
             DC.Entry(entity).Property(fieldExp).IsModified = true;
             if (isSaveChange)
@@ -189,7 +206,7 @@ namespace Caviar.Core
         /// <param name="fieldExp"></param>
         /// <param name="isSaveChange"></param>
         /// <returns></returns>
-        public virtual async Task<int> UpdateEntityAsync<T>(List<T> entity, bool isSaveChange = true) where T : class, IBaseModel
+        public virtual async Task<int> UpdateEntityAsync<T>(List<T> entity, bool isSaveChange = true) where T : class, IBaseEntity
         {
             var count = 0;
             if (entity == null || entity.Count == 0) return count;
@@ -218,7 +235,7 @@ namespace Caviar.Core
         /// <param name="isSaveChange">默认立刻保存</param>
         /// <param name="IsDelete">是否立刻删除，默认不删除，只修改IsDelete,设为true则立刻删除</param>
         /// <returns></returns>
-        public virtual async Task<int> DeleteEntityAsync<T>(T entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IBaseModel
+        public virtual async Task<int> DeleteEntityAsync<T>(T entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IBaseEntity
         {
             if (entity == null) return 0;
             if (entity.IsDelete || IsDelete)
@@ -244,7 +261,7 @@ namespace Caviar.Core
         /// <param name="isSaveChange"></param>
         /// <param name="IsDelete"></param>
         /// <returns></returns>
-        public virtual async Task<int> DeleteEntityAsync<T>(List<T> entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IBaseModel
+        public virtual async Task<int> DeleteEntityAsync<T>(List<T> entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IBaseEntity
         {
             var count = 0;
             if (entity == null || entity.Count == 0) return count;
@@ -267,7 +284,7 @@ namespace Caviar.Core
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public virtual Task<List<T>> GetAllAsync<T>(bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseModel
+        public virtual Task<List<T>> GetAllAsync<T>(bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity
         {
             return GetContext<T>(isNoTracking,isDataPermissions,isRecycleBin).ToListAsync();
         }
@@ -283,7 +300,7 @@ namespace Caviar.Core
         /// <param name="isOrder"></param>
         /// <param name="isNoTracking"></param>
         /// <returns></returns>
-        public virtual async Task<PageData<T>> GetPageAsync<T, TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseModel
+        public virtual async Task<PageData<T>> GetPageAsync<T, TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity
         {
             IQueryable<T> data = GetContext<T>(isNoTracking,isDataPermissions,isRecycleBin);
             data = isOrder ?
@@ -308,7 +325,7 @@ namespace Caviar.Core
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual Task<List<T>> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseModel
+        public virtual Task<List<T>> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity
         {
             return GetContext<T>(isNoTracking,isDataPermissions,isRecycleBin).Where(where).ToListAsync();
         }
@@ -318,7 +335,7 @@ namespace Caviar.Core
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual Task<T> GetSingleEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseModel
+        public virtual Task<T> GetSingleEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity
         {
             return GetContext<T>(isNoTracking,isDataPermissions,isRecycleBin).Where(where).SingleOrDefaultAsync();
         }
@@ -328,7 +345,7 @@ namespace Caviar.Core
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual Task<T> GetFirstEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseModel
+        public virtual Task<T> GetFirstEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity
         {
             return GetContext<T>(isNoTracking,isDataPermissions,isRecycleBin).Where(where).FirstOrDefaultAsync();
         }
@@ -339,7 +356,7 @@ namespace Caviar.Core
         /// <typeparam name="T"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        public virtual Task<T> GetEntityAsync<T>(int id, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseModel
+        public virtual Task<T> GetEntityAsync<T>(int id, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity
         {
             return GetContext<T>(isNoTracking,isDataPermissions,isRecycleBin).SingleOrDefaultAsync(u => u.Id == id);
         }
@@ -349,7 +366,7 @@ namespace Caviar.Core
         /// <typeparam name="T"></typeparam>
         /// <param name="uid"></param>
         /// <returns></returns>
-        public virtual Task<T> GetEntityAsync<T>(Guid uid, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseModel
+        public virtual Task<T> GetEntityAsync<T>(Guid uid, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity
         {
             return GetContext<T>(isNoTracking, isDataPermissions,isRecycleBin).SingleOrDefaultAsync(u => u.Uid == uid);
         }
@@ -362,7 +379,7 @@ namespace Caviar.Core
         /// <param name="isDataPermissions">是否启动数据权限</param>
         /// <param name="isRecycleBin">是否获取回收站数据</param>
         /// <returns></returns>
-        private IQueryable<T> GetContext<T>(bool isNoTracking = true,bool isDataPermissions = true,bool isRecycleBin = false) where T : class, IBaseModel
+        private IQueryable<T> GetContext<T>(bool isNoTracking = true,bool isDataPermissions = true,bool isRecycleBin = false) where T : class, IBaseEntity
         {
             var set = DC.Set<T>();
             IQueryable<T> query;
@@ -461,6 +478,14 @@ namespace Caviar.Core
             await DeleteEntityAsync(deleteFields,IsDelete:true);
             await AddEntityAsync(addFields);
             #endregion
+
+
+            //ViewUser viewUser = new ViewUser()
+            //{
+            //    UserName = "test",
+            //    Password = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92"
+            //};
+            //await AddEntityAsync(viewUser);
             return IsExistence;
         }
 

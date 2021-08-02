@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel
 {
-    public interface IBaseAction<T, ViewT>:IActionModel, IDIinjectAtteribute where T : class, IBaseModel
+    public interface IBaseAction<T, ViewT>:IActionModel, IDIinjectAtteribute where T : class, IBaseEntity
     {
 
         /// <summary>

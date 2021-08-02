@@ -183,7 +183,7 @@ namespace Caviar.SharedKernel
             return _assemblies;
         }
         /// <summary>
-        /// 获取数据库中所有继承IBaseModel的类
+        /// 获取数据库中所有继承ISysBaseEntity的类
         /// 排除SysBaseModel基类
         /// </summary>
         /// <param name="isView">是否寻找前端类，前端类和后端类不可同时获取</param>
@@ -198,24 +198,23 @@ namespace Caviar.SharedKernel
                         //获取所有对象
                         var assemblyTypes = t.GetTypes()
                             //查找是否包含IBaseModel接口的类
-                            .Where(u => u.GetInterfaces().Contains(typeof(IBaseModel)))
+                            .Where(u => u.GetInterfaces().Contains(typeof(IBaseEntity)))
                             //判断是否是类
                             .Where(u => u.IsClass);
                         if (isView)
                         {
-                            assemblyTypes = assemblyTypes.Where(u => u.GetInterfaces().Contains(typeof(IViewMode)));
+                            assemblyTypes = assemblyTypes.Where(u => u.GetInterfaces().Contains(typeof(IView)));
                         }
                         else
                         {
-                            assemblyTypes = assemblyTypes.Where(u => !u.GetInterfaces().Contains(typeof(IViewMode)));
+                            assemblyTypes = assemblyTypes.Where(u => !u.GetInterfaces().Contains(typeof(IView)));
                         }
                         //转换成list
                         assemblyTypes.ToList()
                             //循环,并添注入
                             .ForEach(t =>
                             {
-                                var name = t.Name.ToLower();
-                                if (name.Contains("sysbasemodel"))
+                                if (t.Name == CurrencyConstant.BaseEntityName)
                                 {
                                     return;
                                 }
@@ -337,7 +336,7 @@ namespace Caviar.SharedKernel
             {
                 return null;
             }
-            else if (baseType.Name.ToLower() == "SysBaseModel".ToLower())
+            else if (baseType.Name == CurrencyConstant.BaseEntityName)
             {
                 return type;
             }

@@ -27,9 +27,9 @@ namespace Caviar.AntDesignUI
 
         protected override async Task OnInitializedAsync()
         {
-            if (DataSource is IBaseModel)
+            if (DataSource is IBaseEntity)
             {
-                var data = (IBaseModel)DataSource;
+                var data = (IBaseEntity)DataSource;
                 var result = await Http.GetJson<List<ViewUserGroup>>("Permission/GetPermissionGroup");
                 if (result.Status == HttpState.OK)
                 {
@@ -86,13 +86,13 @@ namespace Caviar.AntDesignUI
         public void OnUserGroupCancel()
         {
             UserGroupName = "请选择部门";
-            ((IBaseModel)DataSource).DataId = null;
+            ((IBaseEntity)DataSource).DataId = null;
         }
 
         public void OnUserGroupSelect(TreeEventArgs<ViewUserGroup> args)
         {
             UserGroupName = args.Node.Title;
-            ((IBaseModel)DataSource).DataId = int.Parse(args.Node.Key);
+            ((IBaseEntity)DataSource).DataId = int.Parse(args.Node.Key);
         }
         #endregion
     }

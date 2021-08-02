@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Caviar.SharedKernel
 {
     [DisplayName("日志")]
-    public partial class SysLog:SysBaseModel
+    public partial class SysLog:SysBaseEntity
     {
         [DisplayName("用户名")]
         [StringLength(50, ErrorMessage = "用户名请不要超过{1}个字符")]
