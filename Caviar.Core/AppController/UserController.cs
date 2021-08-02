@@ -1,6 +1,6 @@
 ﻿using Caviar.Core;
 using Caviar.Core.UserGroup;
-using Caviar.Models;
+using Caviar.SharedKernel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

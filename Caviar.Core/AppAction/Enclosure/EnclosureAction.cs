@@ -1,4 +1,4 @@
-﻿using Caviar.Models;
+﻿using Caviar.SharedKernel;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;

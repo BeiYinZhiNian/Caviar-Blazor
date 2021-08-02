@@ -1,4 +1,4 @@
-﻿using Caviar.Models;
+﻿using Caviar.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Proxies;
 using System;

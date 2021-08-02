@@ -28,8 +28,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Caviar.Core\Caviar.Core.csproj" />
-    <ProjectReference Include="..\..\..\Caviar.Models\Caviar.Domain.csproj" />
-    <ProjectReference Include="..\Caviar.Demo.Models\Caviar.Demo.Models.csproj" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

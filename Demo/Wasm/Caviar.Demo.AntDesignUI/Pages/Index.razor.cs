@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
-using Caviar.Models;
-using Caviar.AntDesignPages.Helper;
+using Caviar.SharedKernel;
+using Caviar.AntDesignUI.Helper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Caviar.AntDesignPages.Shared;
+using Caviar.AntDesignUI.Shared;
 using AntDesign;
 
 namespace Caviar.Demo.AntDesignUI.Pages

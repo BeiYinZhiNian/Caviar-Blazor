@@ -1,4 +1,4 @@
-using Caviar.Models;
+using Caviar.SharedKernel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using Caviar.Core.ModelAction;
-using Caviar.Models;
+using Caviar.SharedKernel;
 /// <summary>
 /// 生成者：admin
 /// 生成时间：5/7/2021 下午 5:21:12

@@ -1,5 +1,5 @@
 using Caviar.Core;
-using Caviar.Models;
+using Caviar.SharedKernel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Caviar.Models;
+using Caviar.SharedKernel;
 /// <summary>
 /// 生成者：admin
 /// 生成时间：1/7/2021 下午 2:36:12

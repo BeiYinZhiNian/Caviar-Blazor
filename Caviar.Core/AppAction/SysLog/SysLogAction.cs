@@ -1,4 +1,4 @@
-﻿using Caviar.Models;
+﻿using Caviar.SharedKernel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;

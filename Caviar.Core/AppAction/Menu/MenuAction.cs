@@ -1,4 +1,4 @@
-using Caviar.Models;
+using Caviar.SharedKernel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

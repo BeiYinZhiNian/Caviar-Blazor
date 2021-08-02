@@ -1,5 +1,5 @@
 using Caviar.Core.Permission;
-using Caviar.Models;
+using Caviar.SharedKernel;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

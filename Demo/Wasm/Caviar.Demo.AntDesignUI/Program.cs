@@ -7,8 +7,8 @@ using System;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Caviar.Models;
-using Caviar.AntDesignPages.Helper;
+using Caviar.SharedKernel;
+using Caviar.AntDesignUI.Helper;
 namespace Caviar
 {
     public class Program
@@ -24,7 +24,7 @@ namespace Caviar
 
         public static void ConfigureServices(WebAssemblyHostBuilder builder)
         {
-            builder.RootComponents.Add<AntDesignPages.App>("#app");
+            builder.RootComponents.Add<Caviar.AntDesignUI.App>("#app");
             var ServerUrl = "http://localhost:5215/api/";
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(ServerUrl) });
             builder.Services.AddCaviar(new Type[] { typeof(Program) });

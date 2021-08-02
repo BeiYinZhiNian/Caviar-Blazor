@@ -1,5 +1,5 @@
 ﻿using Caviar.Core.ModelAction;
-using Caviar.Models;
+using Caviar.SharedKernel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;

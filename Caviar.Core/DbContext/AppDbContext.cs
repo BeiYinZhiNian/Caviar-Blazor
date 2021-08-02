@@ -1,4 +1,4 @@
-﻿using Caviar.Models;
+﻿using Caviar.SharedKernel;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
