@@ -15,7 +15,7 @@ namespace Caviar.Core
     /// <typeparam name="ModelAction">模型方法</typeparam>
     /// <typeparam name="T">模型</typeparam>
     /// <typeparam name="ViewT">前端模型</typeparam>
-    public partial class TemplateBaseController<ModelAction,T,ViewT>: CaviarBaseController where ModelAction : class, IBaseAction<T, ViewT> where T:class, IBaseEntity where ViewT:T
+    public partial class TemplateBaseController<ModelAction,ViewT>: CaviarBaseController where ModelAction : class, IBaseAction<ViewT> where ViewT:class,IView,new()
     {
 
         #region 属性注入

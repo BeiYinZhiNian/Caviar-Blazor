@@ -98,13 +98,13 @@ namespace Caviar.Core.Permission
         public async Task<ResultMsg> SetRoleFields(string fullName, int roleId, List<ViewModelFields> modelFields)
         {
             if (string.IsNullOrEmpty(fullName) || roleId == 0) return Error("设置角色字段失败，请检查模型名称或角色id");
-            var permission = await Interactor.DbContext.GetEntityAsync<SysPermission>(u => u.IdentityId == roleId && u.PermissionType == PermissionType.Field && u.PermissionIdentity == PermissionIdentity.Role);
+            var permission = await Interactor.DbContext.GetEntityAsync<ViewPermission>(u => u.IdentityId == roleId && u.PermissionType == PermissionType.Field && u.PermissionIdentity == PermissionIdentity.Role);
             var fields = Interactor.SysModelFields.Where(u => u.FullName == fullName);
             foreach (var item in modelFields)
             {
                 var field = fields.FirstOrDefault(u => u.TypeName == item.TypeName);
                 if (field == null) continue;
-                var perm = permission.FirstOrDefault(u => u.PermissionType == PermissionType.Field && u.PermissionId == field.Id);
+                ViewPermission perm = permission.FirstOrDefault(u => u.PermissionType == PermissionType.Field && u.PermissionId == field.Id);
                 field.Width = item.Width;
                 field.Number = item.Number;
                 field.IsPanel = item.IsPanel;
@@ -118,7 +118,7 @@ namespace Caviar.Core.Permission
                     //进行授权
                     if (perm == null)
                     {
-                        perm = new SysPermission()
+                        perm = new ViewPermission()
                         {
                             PermissionType = PermissionType.Field,
                             PermissionId = field.Id,

@@ -27,7 +27,7 @@ namespace Caviar.SharedKernel
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        Task<int> AddEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IBaseEntity;
+        Task<int> AddEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IView, new();
         /// <summary>
         /// 批量添加
         /// 会进行事务
@@ -36,7 +36,7 @@ namespace Caviar.SharedKernel
         /// <param name="entity"></param>
         /// <param name="isSaveChange"></param>
         /// <returns></returns>
-        Task<int> AddEntityAsync<T>(List<T> entity, bool isSaveChange = true) where T : class, IBaseEntity;
+        Task<int> AddEntityAsync<T>(List<T> entity, bool isSaveChange = true) where T : class, IView, new();
         /// <summary>
         /// 修改实体
         /// </summary>

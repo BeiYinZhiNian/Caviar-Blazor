@@ -79,7 +79,7 @@ namespace Caviar.Core
         /// <returns></returns>
         public virtual async Task<int> CreateButton(string menuName, string outName, int parentId)
         {
-            SysMenu menu = new SysMenu()
+            ViewMenu menu = new ViewMenu()
             {
                 MenuName = menuName + "管理",
                 TargetType = TargetType.CurrentPage,
@@ -91,7 +91,7 @@ namespace Caviar.Core
             };
             menu = await AddMenu(menu);
             parentId = menu.Id;
-            SysMenu AddButton = new SysMenu()
+            ViewMenu AddButton = new ViewMenu()
             {
                 MenuType = MenuType.Button,
                 TargetType = TargetType.EjectPage,
@@ -104,7 +104,7 @@ namespace Caviar.Core
                 Number = "999"
             };
             await AddMenu(AddButton);
-            AddButton = new SysMenu()
+            AddButton = new ViewMenu()
             {
                 MenuType = MenuType.Button,
                 Url = $"{outName}/Update",
@@ -116,7 +116,7 @@ namespace Caviar.Core
                 Number = "999"
             };
             await AddMenu(AddButton);
-            AddButton = new SysMenu()
+            AddButton = new ViewMenu()
             {
                 MenuType = MenuType.Button,
                 MenuName = "删除",
@@ -129,7 +129,7 @@ namespace Caviar.Core
                 Number = "9999"
             };
             await AddMenu(AddButton);
-            AddButton = new SysMenu()
+            AddButton = new ViewMenu()
             {
                 MenuType = MenuType.API,
                 MenuName = "查询",
@@ -138,7 +138,7 @@ namespace Caviar.Core
                 Number = "999"
             };
             await AddMenu(AddButton);
-            AddButton = new SysMenu()
+            AddButton = new ViewMenu()
             {
                 MenuType = MenuType.API,
                 MenuName = "获取字段",
@@ -155,20 +155,20 @@ namespace Caviar.Core
         /// </summary>
         /// <param name="menu"></param>
         /// <returns></returns>
-        protected virtual async Task<SysMenu> AddMenu(SysMenu menu)
+        protected virtual async Task<ViewMenu> AddMenu(ViewMenu menu)
         {
-            SysMenu entity = null;
+            ViewMenu entity = null;
             if (!string.IsNullOrEmpty(menu.Url))
             {
-                entity = await Interactor.DbContext.GetSingleEntityAsync<SysMenu>(u => u.Url == menu.Url);
+                entity = await Interactor.DbContext.GetSingleEntityAsync<ViewMenu>(u => u.Url == menu.Url);
             }
             else if (menu.MenuType != MenuType.Button)
             {
-                entity = await Interactor.DbContext.GetSingleEntityAsync<SysMenu>(u => u.MenuName == menu.MenuName);
+                entity = await Interactor.DbContext.GetSingleEntityAsync<ViewMenu>(u => u.MenuName == menu.MenuName);
             }
             else
             {
-                entity = await Interactor.DbContext.GetSingleEntityAsync<SysMenu>(u => u.MenuName == menu.MenuName && u.ParentId == menu.ParentId);
+                entity = await Interactor.DbContext.GetSingleEntityAsync<ViewMenu>(u => u.MenuName == menu.MenuName && u.ParentId == menu.ParentId);
             }
             var count = 0;
             if (entity == null)

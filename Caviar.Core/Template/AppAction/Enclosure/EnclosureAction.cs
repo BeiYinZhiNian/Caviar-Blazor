@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using Caviar.Core.ModelAction;
-using Caviar.SharedKernel;
 /// <summary>
 /// 生成者：admin
 /// 生成时间：7/7/2021 下午 5:46:07
@@ -18,7 +17,7 @@ using Caviar.SharedKernel;
 namespace Caviar.Core.Enclosure
 {
     [DisplayName("附件方法")]
-    public partial class EnclosureAction:BaseAction<SysEnclosure,ViewEnclosure>
+    public partial class EnclosureAction:BaseAction<ViewEnclosure>
     {
         
     }

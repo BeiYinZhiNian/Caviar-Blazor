@@ -104,7 +104,6 @@ namespace Caviar.SharedKernel
             {
                 foreach (PropertyInfo dp in exampleType.GetProperties())
                 {
-                    if (dp.Name.ToLower() == "BaseControllerModel".ToLower()) continue;
                     if (dp.Name.ToLower() == sp.Name.ToLower())//判断属性名是否相同
                     {
                         try
@@ -120,6 +119,36 @@ namespace Caviar.SharedKernel
                 }
             }
             return example;
+        }
+
+        /// <summary>
+        /// 将ViewModel自动转为Model
+        /// </summary>
+        /// <returns>拷贝目标</returns>
+        public static object ChangeBaseType<T>(this T source) where T: class,IView,new()
+        {
+            var targetType = GetCavBaseType(typeof(T));
+            var target = Activator.CreateInstance(targetType);
+            var exampleType = typeof(T);
+            foreach (PropertyInfo sp in targetType.GetProperties())//获得类型的属性字段
+            {
+                foreach (PropertyInfo dp in exampleType.GetProperties())
+                {
+                    if (dp.Name.ToLower() == sp.Name.ToLower())//判断属性名是否相同
+                    {
+                        try
+                        {
+                            sp.SetValue(target, dp.GetValue(source, null), null);//获得s对象属性的值复制给d对象的属性
+                        }
+                        catch
+                        {
+                            //属性不一致或空属性不需要复制，所以直接忽略即可
+                        }
+                        break;
+                    }
+                }
+            }
+            return target;
         }
 
         /// <summary>

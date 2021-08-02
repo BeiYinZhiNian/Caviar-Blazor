@@ -82,10 +82,10 @@ namespace Caviar.Core.Permission
             {
                 return Ok();
             }
-            List<SysPermission> addSysPermission = new List<SysPermission>();
+            List<ViewPermission> addSysPermission = new List<ViewPermission>();
             foreach (var item in addIds)
             {
-                var permission = new SysPermission()
+                var permission = new ViewPermission()
                 {
                     PermissionId = item,
                     PermissionType = PermissionType.Menu,
@@ -163,7 +163,7 @@ namespace Caviar.Core.Permission
         /// <returns></returns>
         protected async Task<ResultMsg> SetMenuUser(int menuId,int userId)
         {
-            SysPermission permission = new SysPermission()
+            ViewPermission permission = new ViewPermission()
             {
                 PermissionId = menuId,
                 IdentityId = userId,

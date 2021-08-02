@@ -24,7 +24,7 @@ namespace Caviar.Core
             {
                 logger = BC.HttpContext.RequestServices.GetRequiredService<ILogger<SysLogAction>>();
             }
-            var log = new SysLog()
+            var log = new ViewLog()
             {
                 UserName = BC.UserName,
                 AbsoluteUri = BC.Current_Action,

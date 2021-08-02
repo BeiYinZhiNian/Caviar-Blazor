@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Caviar.SharedKernel;
 /// <summary>
 /// 生成者：admin
 /// 生成时间：1/7/2021 下午 6:17:48
@@ -17,7 +16,7 @@ using Caviar.SharedKernel;
 namespace Caviar.Core.Menu
 {
     [DisplayName("系统菜单控制器")]
-    public partial class MenuController : TemplateBaseController<MenuAction,SysMenu,ViewMenu>
+    public partial class MenuController : TemplateBaseController<MenuAction,ViewMenu>
     {
         
     }

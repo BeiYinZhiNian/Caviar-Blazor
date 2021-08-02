@@ -18,7 +18,7 @@ using Caviar.SharedKernel;
 namespace Caviar.Core.Menu
 {
     [DisplayName("系统菜单方法")]
-    public partial class MenuAction:BaseAction<SysMenu,ViewMenu>
+    public partial class MenuAction:BaseAction<ViewMenu>
     {
         
     }

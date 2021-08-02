@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using Caviar.Core.ModelAction;
-using Caviar.SharedKernel;
 /// <summary>
 /// 生成者：admin
 /// 生成时间：2021/6/16 14:25:53
@@ -18,7 +17,7 @@ using Caviar.SharedKernel;
 namespace Caviar.Core.Permission
 {
     [DisplayName("权限方法")]
-    public partial class PermissionAction:BaseAction<SysPermission,ViewPermission>
+    public partial class PermissionAction:BaseAction<ViewPermission>
     {
         
     }

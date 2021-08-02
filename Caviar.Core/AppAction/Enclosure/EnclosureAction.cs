@@ -17,7 +17,7 @@ namespace Caviar.Core.Enclosure
             double length = (double)formFile.Length / 1024 / 1024;
             if (length > CaviarConfig.EnclosureConfig.Size) return Error<ViewEnclosure>("上传文件大小超过限制");
             var extend = Path.GetExtension(formFile.FileName);
-            SysEnclosure enclosure = new SysEnclosure
+            ViewEnclosure enclosure = new ViewEnclosure
             {
                 Extend = extend,//拓展名
                 Name = Guid.NewGuid().ToString() + extend,//文件名

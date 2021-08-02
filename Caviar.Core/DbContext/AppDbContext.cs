@@ -50,24 +50,13 @@ namespace Caviar.Core
         /// <param name="entity"></param>
         /// <param name="isSaveChange">默认为立刻保存</param>
         /// <returns></returns>
-        public virtual async Task<int> AddEntityAsync<T>(T entity) where T : class, IView
+        public virtual async Task<int> AddEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IView,new()
         {
-            var conversionType = CommonlyHelper.GetCavBaseType(typeof(T));
-            var obj = Convert.ChangeType(entity, conversionType);
-            DC.Entry(obj).State = EntityState.Added;
-            return await SaveChangesAsync();
-        }
-        /// <summary>
-        /// 添加实体
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="entity"></param>
-        /// <param name="isSaveChange">默认为立刻保存</param>
-        /// <returns></returns>
-        public virtual async Task<int> AddEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IBaseEntity
-        {
-            var conversionType = CommonlyHelper.GetCavBaseType(typeof(T));
-            var obj = Convert.ChangeType(entity, conversionType);
+            var obj = CommonlyHelper.ChangeBaseType(entity);
+            if(obj == null)
+            {
+                obj = entity;
+            }
             DC.Entry(obj).State = EntityState.Added;
             if (isSaveChange)
             {
@@ -82,7 +71,7 @@ namespace Caviar.Core
         /// <param name="entity"></param>
         /// <param name="isSaveChange"></param>
         /// <returns></returns>
-        public virtual async Task<int> AddEntityAsync<T>(List<T> entity, bool isSaveChange = true) where T : class, IBaseEntity
+        public virtual async Task<int> AddEntityAsync<T>(List<T> entity, bool isSaveChange = true) where T : class, IView, new()
         {
             var count = 0;
             if (entity == null || entity.Count == 0) return count;
@@ -456,7 +445,7 @@ namespace Caviar.Core
             //同步系统与数据库的模型字段
             var fields = await GetAllAsync<SysModelFields>();
             var types = CommonlyHelper.GetModelList(true);
-            List<SysModelFields> modelFields = new List<SysModelFields>();
+            List<ViewModelFields> modelFields = new List<ViewModelFields>();
             foreach (var item in types)
             {
                 var viewModelFields = _cavAssembly.GetViewModelHeaders(item.Name);
@@ -478,14 +467,6 @@ namespace Caviar.Core
             await DeleteEntityAsync(deleteFields,IsDelete:true);
             await AddEntityAsync(addFields);
             #endregion
-
-
-            //ViewUser viewUser = new ViewUser()
-            //{
-            //    UserName = "test",
-            //    Password = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92"
-            //};
-            //await AddEntityAsync(viewUser);
             return IsExistence;
         }
 

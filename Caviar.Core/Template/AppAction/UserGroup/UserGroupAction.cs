@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using Caviar.Core.ModelAction;
-using Caviar.SharedKernel;
 /// <summary>
 /// 生成者：admin
 /// 生成时间：1/7/2021 下午 2:36:12
@@ -18,7 +17,7 @@ using Caviar.SharedKernel;
 namespace Caviar.Core.UserGroup
 {
     [DisplayName("部门方法")]
-    public partial class UserGroupAction:BaseAction<SysUserGroup,ViewUserGroup>
+    public partial class UserGroupAction:BaseAction<ViewUserGroup>
     {
         
     }

@@ -17,7 +17,7 @@ using Caviar.SharedKernel;
 namespace Caviar.Core.Enclosure
 {
     [DisplayName("附件控制器")]
-    public partial class EnclosureController : TemplateBaseController<EnclosureAction,SysEnclosure,ViewEnclosure>
+    public partial class EnclosureController : TemplateBaseController<EnclosureAction,ViewEnclosure>
     {
         
     }
