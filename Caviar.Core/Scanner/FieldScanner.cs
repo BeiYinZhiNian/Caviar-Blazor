@@ -13,16 +13,23 @@ namespace Caviar.Core.Scanner
     public class FieldScanner
     {
         /// <summary>
-        /// 获取继承了IBaseEntity字段信息
+        /// 获取继承了IBaseEntity类的所有字段字段信息
         /// </summary>
         /// <returns></returns>
-        //public List<ViewFields> GetAppFields()
-        //{
-
-        //}
+        public List<ViewFields> GetApplicationFields()
+        {
+            var entityList = CommonHelper.GetEntityList();
+            var fields = new List<ViewFields>();
+            foreach (var item in entityList)
+            {
+                var _field = GetClassFields(item.Name);
+                fields.AddRange(_field);
+            }
+            return fields;
+        }
 
         /// <summary>
-        /// 获取类下
+        /// 获取类下所有字段
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
