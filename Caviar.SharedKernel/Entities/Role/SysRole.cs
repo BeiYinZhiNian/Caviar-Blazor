@@ -7,13 +7,13 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Caviar.SharedKernel
+namespace Caviar.SharedKernel.Entities
 {
     /// <summary>
     /// 角色表
     /// </summary>
     [DisplayName("角色")]
-    public partial class SysRole : SysBaseEntity
+    public partial class SysRole : SysBaseEntity, IBaseEntity
     {
         /// <summary>
         /// 角色名称

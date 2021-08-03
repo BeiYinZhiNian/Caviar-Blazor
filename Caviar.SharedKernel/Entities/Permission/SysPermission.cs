@@ -7,10 +7,10 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Caviar.SharedKernel
+namespace Caviar.SharedKernel.Entities
 {
     [DisplayName("权限")]
-    public class SysPermission : SysBaseEntity
+    public class SysPermission : SysBaseEntity, IBaseEntity
     {
         /// <summary>
         /// 对应的权限id，需要type来区分id种类

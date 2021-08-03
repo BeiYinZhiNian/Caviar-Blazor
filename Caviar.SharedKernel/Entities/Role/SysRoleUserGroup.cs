@@ -6,10 +6,10 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Caviar.SharedKernel
+namespace Caviar.SharedKernel.Entities
 {
     [DisplayName("角色用户组")]
-    public class SysRoleUserGroup : SysBaseEntity,IView
+    public class SysRoleUserGroup : SysBaseEntity, IBaseEntity,IView
     {
         public int UserGroupId { get; set; }
 

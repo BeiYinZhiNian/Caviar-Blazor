@@ -7,10 +7,10 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Caviar.SharedKernel
+namespace Caviar.SharedKernel.Entities
 {
     [DisplayName("系统菜单")]
-    public partial class SysMenu : SysBaseEntity
+    public partial class SysMenu : SysBaseEntity, IBaseEntity
     {
         [DisplayName("菜单名称")]
         [Required(ErrorMessage = "请输入菜单名称")]

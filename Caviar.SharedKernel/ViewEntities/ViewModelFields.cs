@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,14 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.SharedKernel
+namespace Caviar.SharedKernel.View
 {
-    public partial class ViewModelFields : SysModelFields,IView
+    public partial class ViewFields : SysFields,IView
     {
         /// <summary>
         /// 类型名称如string,int等
         /// </summary>
-        public string ModelType { get; set; }
+        public string EntityType { get; set; }
         /// <summary>
         /// 字段值
         /// </summary>

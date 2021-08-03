@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Caviar.SharedKernel.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,7 +34,7 @@ namespace Caviar.SharedKernel
         /// </summary>
         public const string JWT = "JWT ";
         /// <summary>
-        /// 基础实体类名称
+        /// 基础实体名称
         /// </summary>
         public static string BaseEntityName = typeof(SysBaseEntity).Name;
     }

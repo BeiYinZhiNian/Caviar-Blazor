@@ -28,10 +28,6 @@ namespace Caviar.SharedKernel
         /// </summary>
         public string Detail { get; set; } = "";
         /// <summary>
-        /// 获取与此实例关联的验证错误
-        /// </summary>
-        public IDictionary<string, string> Errors { get; set; } = new Dictionary<string, string>();
-        /// <summary>
         /// 当状态不为200时是否提示Title
         /// </summary>
         public bool IsTips { get; set; } = true;

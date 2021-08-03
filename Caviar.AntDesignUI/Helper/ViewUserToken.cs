@@ -29,7 +29,7 @@ namespace Caviar.AntDesignUI.Helper
             var jwt = await _JSRuntime.InvokeAsync<string>("getCookie", Config.CookieName);
             if (!string.IsNullOrEmpty(jwt))
             {
-                var token = CommonlyHelper.GetJwtUserToken(jwt);
+                var token = CommonHelper.GetJwtUserToken(jwt);
                 this.AutoAssign(token);
             }
         }

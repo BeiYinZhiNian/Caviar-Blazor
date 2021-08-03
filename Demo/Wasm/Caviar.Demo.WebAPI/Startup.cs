@@ -34,12 +34,13 @@ namespace Caviar.Demo.WebAPI
                         .AllowAnyMethod()
                         .AllowAnyHeader());
             });
-            services.AddControllers();
+            
             services.AddCaviar(new SqlConfig
             {
                 Connections = Configuration["Connections:Value"],
                 DBTypeEnum = (DBTypeEnum)Enum.Parse(typeof(DBTypeEnum), Configuration["Connections:DBType"])
             }, Configuration);
+            services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Caviar.Demo.WebAPI", Version = "v1" });

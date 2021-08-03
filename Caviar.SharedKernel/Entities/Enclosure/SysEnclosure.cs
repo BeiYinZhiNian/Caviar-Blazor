@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.SharedKernel
+namespace Caviar.SharedKernel.Entities
 {
     [DisplayName("附件")]
-    public partial class SysEnclosure:SysBaseEntity
+    public partial class SysEnclosure: SysBaseEntity, IBaseEntity
     {
         [Required(ErrorMessage = "请输入附件名称")]
         [DisplayName("名称")]

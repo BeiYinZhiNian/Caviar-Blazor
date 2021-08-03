@@ -6,18 +6,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.SharedKernel
+namespace Caviar.SharedKernel.Entities
 {
     [DisplayName("字段权限")]
-    public class SysModelFields:SysBaseEntity
+    public class SysFields: SysBaseEntity, IBaseEntity
     {
         /// <summary>
         /// 类型名称，判断是否为同一属性的唯一条件
         /// 修改后需要重新设置，或者同步设置
         /// </summary>
-        [DisplayName("类型名称")]
+        [DisplayName("字段名称")]
         [StringLength(50, ErrorMessage = "类型名称请不要超过{1}个字符")]
-        public string TypeName { get; set; }
+        public string FildName { get; set; }
         /// <summary>
         /// 显示名称
         /// </summary>
@@ -35,7 +35,7 @@ namespace Caviar.SharedKernel
         /// </summary>
         [DisplayName("基类名称")]
         [StringLength(50, ErrorMessage = "命名空间请不要超过{1}个字符")]
-        public string BaseTypeName { get; set; }
+        public string BaseFullName { get; set; }
         /// <summary>
         /// 字段需要的宽度
         /// </summary>

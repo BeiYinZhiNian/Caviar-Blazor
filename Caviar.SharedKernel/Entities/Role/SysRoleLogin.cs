@@ -6,10 +6,10 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Caviar.SharedKernel
+namespace Caviar.SharedKernel.Entities
 {
     [DisplayName("用户角色")]
-    public partial class SysRoleUser : SysBaseEntity,IView
+    public partial class SysRoleUser : SysBaseEntity, IBaseEntity,IView
     {
         public int UserId { get; set; }
 

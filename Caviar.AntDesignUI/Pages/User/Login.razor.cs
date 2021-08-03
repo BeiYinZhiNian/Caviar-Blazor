@@ -37,7 +37,7 @@ namespace Caviar.AntDesignUI.Pages.User
         public async void SubmitLogin()
         {
             Loading = true;
-            SysLoginUserData.Password = CommonlyHelper.SHA256EncryptString(SysLoginUserData.Password);
+            SysLoginUserData.Password = CommonHelper.SHA256EncryptString(SysLoginUserData.Password);
             var result = await http.PostJson<SysUser, ViewUserToken>("User/Login",SysLoginUserData);
             SysLoginUserData.Password = "";
             Loading = false;

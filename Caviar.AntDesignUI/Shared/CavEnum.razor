@@ -31,7 +31,7 @@
     {
         var type = typeof(TData);
         if (!type.IsEnum) throw new Exception("Only enumeration types can be entered");
-        var dic = CommonlyHelper.GetEnenuModelHeader(type);
+        var dic = CommonHelper.GetEnenuModelHeader(type);
         RenderFragment render = null;
         foreach (var item in dic)
         {

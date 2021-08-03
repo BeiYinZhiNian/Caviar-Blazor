@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -7,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.SharedKernel
+namespace Caviar.SharedKernel.Entities
 {
     [DisplayName("日志")]
-    public partial class SysLog:SysBaseEntity
+    public partial class SysLog: SysBaseEntity, IBaseEntity
     {
         [DisplayName("用户名")]
         [StringLength(50, ErrorMessage = "用户名请不要超过{1}个字符")]

@@ -24,9 +24,9 @@
             return false;
         }
         DataSource.AToB(out DataCatch);
-        DataSource.OriginalPwd = CommonlyHelper.SHA256EncryptString(DataSource.OriginalPwd);
-        DataSource.SurePwd = CommonlyHelper.SHA256EncryptString(DataSource.SurePwd);
-        DataSource.NewPwd = CommonlyHelper.SHA256EncryptString(DataSource.NewPwd);
+        DataSource.OriginalPwd = CommonHelper.SHA256EncryptString(DataSource.OriginalPwd);
+        DataSource.SurePwd = CommonHelper.SHA256EncryptString(DataSource.SurePwd);
+        DataSource.NewPwd = CommonHelper.SHA256EncryptString(DataSource.NewPwd);
         return await base.Validate();
     }
     public override async Task<bool> FormSubmit()

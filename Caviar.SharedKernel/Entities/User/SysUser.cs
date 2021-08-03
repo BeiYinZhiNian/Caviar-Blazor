@@ -7,10 +7,10 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Caviar.SharedKernel
+namespace Caviar.SharedKernel.Entities
 {
     [DisplayName("用户")]
-    public partial class SysUser : SysBaseEntity
+    public partial class SysUser : SysBaseEntity, IBaseEntity
     {
         /// <summary>
         /// 用户名

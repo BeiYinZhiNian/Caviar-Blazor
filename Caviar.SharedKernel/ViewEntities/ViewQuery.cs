@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.SharedKernel
+namespace Caviar.SharedKernel.View
 {
     public class ViewQuery
     {
@@ -20,6 +20,10 @@ namespace Caviar.SharedKernel
         /// 结束时间
         /// </summary>
         public DateTime? EndTime { get; set; }
+        /// <summary>
+        /// 查询条数
+        /// </summary>
+        public int Number { get; set; } = 20;
         /// <summary>
         /// 查询的数据
         /// key 字段名称

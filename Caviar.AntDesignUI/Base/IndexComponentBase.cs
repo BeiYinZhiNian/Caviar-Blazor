@@ -161,7 +161,7 @@ namespace Caviar.AntDesignUI
                 var url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
                 Url = url;
             }
-            BaseController = CommonlyHelper.GetLeftText(Url, "/");
+            BaseController = CommonHelper.GetLeftText(Url, "/");
             await GetModelFields();//获取模型字段
             await GetPages();//获取数据源
             await GetPowerButtons();//获取按钮

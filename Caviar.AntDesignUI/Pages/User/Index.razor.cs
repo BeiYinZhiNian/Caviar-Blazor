@@ -15,7 +15,7 @@ namespace Caviar.AntDesignUI.Pages.User
             switch (row.Menu.MenuName)
             {
                 case "删除":
-                    row.Data.Password = CommonlyHelper.SHA256EncryptString("123456");//密码不能为空，所以构建一个初始密码
+                    row.Data.Password = CommonHelper.SHA256EncryptString("123456");//密码不能为空，所以构建一个初始密码
                     await Delete(row.Menu.Url, row.Data);
                     Refresh();
                     break;
