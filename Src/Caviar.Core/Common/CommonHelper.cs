@@ -89,9 +89,8 @@ namespace Caviar.Core
 
 
         /// <summary>
-        /// 自动分配当前属性值
-        /// 不进行深度分配
-        /// 将目标值拷贝到自身K的值赋值给T
+        /// 拷贝目标属性
+        /// 将目标属性进行拷贝，不进行深度拷贝
         /// </summary>
         /// <param name="target">拷贝目标</param>
         /// <returns></returns>

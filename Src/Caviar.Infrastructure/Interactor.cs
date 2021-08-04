@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Infrastructure
 {
-    public partial class Interactor : IInteractor
+    public partial class Interactor
     {
         /// <summary>
         /// 数据上下文

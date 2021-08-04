@@ -1,0 +1,10 @@
+{
+  "Language.test": "多语言功能测试",
+  "app": {
+    "DbContext": {
+      "entity": {
+        "null": "数据操作失败，操作对象为null"
+      }
+    }
+  }
+}

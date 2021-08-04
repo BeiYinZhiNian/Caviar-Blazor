@@ -1,0 +1,10 @@
+{
+  "Language.test": "Multilingual function test",
+  "app": {
+    "DbContext": {
+      "entity": {
+        "null": "Data operation failed, operation object is null"
+      }
+    }
+  }
+}
