@@ -8,26 +8,26 @@ using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel.Entities
 {
-    [DisplayName("附件")]
+    [DisplayName("SysEnclosure")]
     public partial class SysEnclosure: SysBaseEntity, IBaseEntity
     {
-        [Required(ErrorMessage = "请输入附件名称")]
-        [DisplayName("名称")]
-        [StringLength(50, ErrorMessage = "附件名称请不要超过{1}个字符")]
-        public string Name { get; set; }
-        [DisplayName("文件类型")]
-        [StringLength(50, ErrorMessage = "文件类型名请不要超过{1}个字符")]
-        public string Extend { get; set; }
+        [Required(ErrorMessage = "RequiredErrorMsg")]
+        [DisplayName("FileName")]
+        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        public string FileName { get; set; }
+        [DisplayName("FileExtend")]
+        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        public string FileExtend { get; set; }
         /// <summary>
         /// M为点位
         /// </summary>
-        [DisplayName("文件大小")]
-        public double Size { get; set; }
-        [DisplayName("文件位置")]
-        [StringLength(1024, ErrorMessage = "文件路径请不要超过{1}个字符")]
-        public string Path { get; set; }
-        [DisplayName("使用途径")]
-        [StringLength(50, ErrorMessage = "使用途径请不要超过{1}个字符")]
-        public string Use { get; set; }
+        [DisplayName("FileSize")]
+        public double FileSize { get; set; }
+        [DisplayName("FilePath")]
+        [StringLength(1024, ErrorMessage = "LengthErrorMsg")]
+        public string FilePath { get; set; }
+        [DisplayName("FileUse")]
+        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        public string FileUse { get; set; }
     }
 }

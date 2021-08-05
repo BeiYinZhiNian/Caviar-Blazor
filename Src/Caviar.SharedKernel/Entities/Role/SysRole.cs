@@ -12,18 +12,18 @@ namespace Caviar.SharedKernel.Entities
     /// <summary>
     /// 角色表
     /// </summary>
-    [DisplayName("角色")]
+    [DisplayName("SysRole")]
     public partial class SysRole : SysBaseEntity, IBaseEntity
     {
         /// <summary>
         /// 角色名称
         /// </summary>
-        [Required(ErrorMessage = "请输入您的角色名称")]
-        [DisplayName("角色名称")]
-        [StringLength(50, ErrorMessage = "角色名称请不要超过{1}个字符")]
+        [Required(ErrorMessage = "RequiredErrorMsg")]
+        [DisplayName("RoleName")]
+        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
         public string RoleName { get; set; }
 
-        [DisplayName("父id")]
+        [DisplayName("ParentId")]
         public int ParentId { get; set; }
 
     }

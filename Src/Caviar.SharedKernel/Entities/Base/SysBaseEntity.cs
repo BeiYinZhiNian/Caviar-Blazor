@@ -19,60 +19,55 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         [DisplayName("Id")]
         [Key]
-        public int Id { get; set; }
-        /// <summary>
-        /// uid
-        /// </summary>
-        [DisplayName("Uid")]
-        public Guid Uid { get; set; } = Guid.NewGuid();
+        public virtual int Id { get; set; }
         /// <summary>
         /// 创建时间
         /// </summary>
-        [DisplayName("创建时间")]
-        public DateTime CreatTime { get; set; } = DateTime.Now;
+        [DisplayName("CreatTime")]
+        public virtual DateTime CreatTime { get; set; } = DateTime.Now;
         /// <summary>
         /// 修改时间
         /// </summary>
-        [DisplayName("修改时间")]
-        public DateTime UpdateTime { get; set; } = DateTime.Now;
+        [DisplayName("UpdateTime")]
+        public virtual DateTime UpdateTime { get; set; } = DateTime.Now;
         /// <summary>
         /// 根据配置确定删除后是否保留条目
         /// </summary>
-        [DisplayName("是否删除")]
-        public bool IsDelete { get; set; } = false;
+        [DisplayName("IsDelete")]
+        public virtual bool IsDelete { get; set; } = false;
         /// <summary>
         /// 创建操作员的名称
         /// </summary>
-        [DisplayName("创建操作员")]
-        [StringLength(50, ErrorMessage = "请不要超过{1}个字符")]
-        public string OperatorCare { get; set; }
+        [DisplayName("OperatorCare")]
+        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        public virtual string OperatorCare { get; set; }
         /// <summary>
         /// 创建操作员的名称
         /// </summary>
-        [DisplayName("修改操作员")]
-        [StringLength(50, ErrorMessage = "请不要超过{1}个字符")]
-        public string OperatorUp { get; set; }
+        [DisplayName("OperatorUp")]
+        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        public virtual string OperatorUp { get; set; }
         /// <summary>
         /// 备注
         /// </summary>
-        [DisplayName("备注")]
-        [StringLength(300, ErrorMessage = "请不要超过{1}个字符")]
-        public string Remark { get; set; }
+        [DisplayName("Remark")]
+        [StringLength(300, ErrorMessage = "LengthErrorMsg")]
+        public virtual string Remark { get; set; }
         /// <summary>
         /// 是否禁用
         /// </summary>
-        [DisplayName("是否禁用")]
-        public bool IsDisable { get; set; }
+        [DisplayName("IsDisable")]
+        public virtual bool IsDisable { get; set; }
         /// <summary>
         /// 编号
         /// </summary>
-        [DisplayName("编号")]
-        [StringLength(50, ErrorMessage = "编号请不要超过{1}个字符")]
-        public string Number { get; set; } = "999";
+        [DisplayName("Number")]
+        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        public virtual string Number { get; set; } = "999";
         /// <summary>
         /// 数据权限
         /// </summary>
-        [DisplayName("数据权限")]
-        public int? DataId { get; set; }
+        [DisplayName("DataId")]
+        public virtual int DataId { get; set; }
     }
 }

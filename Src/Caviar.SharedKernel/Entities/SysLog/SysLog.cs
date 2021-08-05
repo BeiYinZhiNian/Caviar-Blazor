@@ -8,41 +8,41 @@ using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel.Entities
 {
-    [DisplayName("日志")]
+    [DisplayName("SysLog")]
     public partial class SysLog: SysBaseEntity, IBaseEntity
     {
-        [DisplayName("用户名")]
-        [StringLength(50, ErrorMessage = "用户名请不要超过{1}个字符")]
+        [DisplayName("UserName")]
+        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
         public string UserName { get; set; }
-        [DisplayName("模块名称")]
-        [StringLength(50, ErrorMessage = "用户名请不要超过{1}个字符")]
+        [DisplayName("ControllerName")]
+        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
         public string ControllerName { get; set; }
-        [DisplayName("用户id")]
+        [DisplayName("UserId")]
         public int? UserId { get; set; }
-        [DisplayName("访问地址")]
-        [StringLength(1024, ErrorMessage = "访问地址请不要超过{1}个字符")]
+        [DisplayName("AbsoluteUri")]
+        [StringLength(1024, ErrorMessage = "LengthErrorMsg")]
         public string AbsoluteUri { get; set; }
-        [DisplayName("IP")]
-        [StringLength(50, ErrorMessage = "IP请不要超过{1}个字符")]
+        [DisplayName("Ipaddress")]
+        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
         public string Ipaddress { get; set; }
-        [DisplayName("执行时间")]
+        [DisplayName("Elapsed")]
         public double Elapsed { get; set; }
-        [DisplayName("状态码")]
+        [DisplayName("Status")]
         public int Status { get; set; }
-        [DisplayName("执行消息")]
-        [StringLength(2048, ErrorMessage = "执行消息请不要超过{1}个字符")]
+        [DisplayName("Msg")]
+        [StringLength(2048, ErrorMessage = "LengthErrorMsg")]
         public string Msg { get; set; }
-        [DisplayName("浏览器")]
-        [StringLength(1024, ErrorMessage = "浏览器请不要超过{1}个字符")]
+        [DisplayName("Browser")]
+        [StringLength(1024, ErrorMessage = "LengthErrorMsg")]
         public string Browser { get; set; }
-        [DisplayName("日志等级")]
+        [DisplayName("LogLevel")]
         public CavLogLevel LogLevel { get; set; }
-        [DisplayName("自动记录")]
+        [DisplayName("IsAutomatic")]
         public bool IsAutomatic { get; set; }
-        [DisplayName("请求方法")]
-        [StringLength(10, ErrorMessage = "请求方法请不要超过{1}个字符")]
+        [DisplayName("Method")]
+        [StringLength(10, ErrorMessage = "LengthErrorMsg")]
         public string Method { get; set; }
-        [DisplayName("提交的数据")]
+        [DisplayName("PostData")]
         public string PostData { get; set; }
     }
 
@@ -53,45 +53,45 @@ namespace Caviar.SharedKernel.Entities
         //     Logs that contain the most detailed messages. These messages may contain sensitive
         //     application data. These messages are disabled by default and should never be
         //     enabled in a production environment.
-        [Display(Name = "输出")]
+        [Display(Name = "Trace")]
         Trace = 0,
         //
         // 摘要:
         //     Logs that are used for interactive investigation during development. These logs
         //     should primarily contain information useful for debugging and have no long-term
         //     value.
-        [Display(Name = "调试")]
+        [Display(Name = "Debug")]
         Debug = 1,
         //
         // 摘要:
         //     Logs that track the general flow of the application. These logs should have long-term
         //     value.
-        [Display(Name = "信息")]
+        [Display(Name = "Information")]
         Information = 2,
         //
         // 摘要:
         //     Logs that highlight an abnormal or unexpected event in the application flow,
         //     but do not otherwise cause the application execution to stop.
-        [Display(Name = "警告")]
+        [Display(Name = "Warning")]
         Warning = 3,
         //
         // 摘要:
         //     Logs that highlight when the current flow of execution is stopped due to a failure.
         //     These should indicate a failure in the current activity, not an application-wide
         //     failure.
-        [Display(Name = "错误")]
+        [Display(Name = "Error")]
         Error = 4,
         //
         // 摘要:
         //     Logs that describe an unrecoverable application or system crash, or a catastrophic
         //     failure that requires immediate attention.
-        [Display(Name = "关键")]
+        [Display(Name = "Critical")]
         Critical = 5,
         //
         // 摘要:
         //     Not used for writing log messages. Specifies that a logging category should not
         //     write any messages.
-        [Display(Name = "无")]
+        [Display(Name = "None")]
         None = 6
     }
 }

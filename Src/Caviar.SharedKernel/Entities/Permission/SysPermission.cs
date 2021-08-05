@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel.Entities
 {
-    [DisplayName("权限")]
+    [DisplayName("SysPermission")]
     public class SysPermission : SysBaseEntity, IBaseEntity
     {
         /// <summary>

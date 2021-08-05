@@ -16,10 +16,6 @@ namespace Caviar.SharedKernel
         [Key]
         public int Id { get; set; }
         /// <summary>
-        /// uid
-        /// </summary>
-        public Guid Uid { get; set; }
-        /// <summary>
         /// 创建时间
         /// </summary>
         public DateTime CreatTime { get; set; }
@@ -55,6 +51,6 @@ namespace Caviar.SharedKernel
         /// <summary>
         /// 数据权限
         /// </summary>
-        public int? DataId { get; set; }
+        public int DataId { get; set; }
     }
 }

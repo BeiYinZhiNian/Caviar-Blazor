@@ -9,33 +9,33 @@ using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel.Entities
 {
-    [DisplayName("系统菜单")]
+    [DisplayName("SysMenu")]
     public partial class SysMenu : SysBaseEntity, IBaseEntity
     {
-        [DisplayName("菜单名称")]
-        [Required(ErrorMessage = "请输入菜单名称")]
-        [StringLength(50, ErrorMessage = "菜单名称请不要超过{1}个字符")]
+        [DisplayName("MenuName")]
+        [Required(ErrorMessage = "RequiredErrorMsg")]
+        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
         public string MenuName { get; set; }
-        [DisplayName("菜单类型")]
+        [DisplayName("MenuType")]
         public MenuType MenuType { get; set; }
 
-        [DisplayName("打开方式")]
+        [DisplayName("TargetType")]
         public TargetType TargetType { get; set; }
-        [DisplayName("请求地址")]
-        [StringLength(1024, ErrorMessage = "请求地址请不要超过{1}个字符")]
+        [DisplayName("Url")]
+        [StringLength(1024, ErrorMessage = "LengthErrorMsg")]
         public string Url { get; set; }
 
-        [DisplayName("图标")]
-        [StringLength(50, ErrorMessage = "图标请不要超过{1}个字符")]
+        [DisplayName("Icon")]
+        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
         public string Icon { get; set; }
 
-        [DisplayName("父id")]
+        [DisplayName("ParentId")]
         public int ParentId { get; set; }
 
-        [DisplayName("按钮位置")]
+        [DisplayName("ButtonPosition")]
         public ButtonPosition ButtonPosition { get; set; }
 
-        [DisplayName("二次确认")]
+        [DisplayName("IsDoubleTrue")]
         public bool IsDoubleTrue { get; set; }
     }
 

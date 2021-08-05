@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,48 +9,58 @@ using Caviar.SharedKernel;
 using Microsoft.AspNetCore.Identity;
 namespace Caviar.Infrastructure.Identity
 {
-    public class ApplicationRole:IdentityRole<int>, IBaseEntity
+    public class ApplicationRole : IdentityRole<int>, IBaseEntity
     {
-        /// <summary>
-        /// uid
-        /// </summary>
-        public Guid Uid { get; set; }
+        [DisplayName("RoleName")]
+        public override string Name { get => base.Name; set => base.Name = value; }
         /// <summary>
         /// 创建时间
         /// </summary>
-        public DateTime CreatTime { get; set; }
+        [DisplayName("CreatTime")]
+        public DateTime CreatTime { get; set; } = DateTime.Now;
         /// <summary>
         /// 修改时间
         /// </summary>
-        public DateTime UpdateTime { get; set; }
+        [DisplayName("UpdateTime")]
+        public DateTime UpdateTime { get; set; } = DateTime.Now;
         /// <summary>
-        /// 第一次并不会引发删除，只是隐藏，第二次会真正的删除数据
-        /// 当IsDelete为false时，删除会将IsDelete值改为true，当IsDelete值为true时将删除数据
+        /// 根据配置确定删除后是否保留条目
         /// </summary>
-        public bool IsDelete { get; set; }
+        [DisplayName("IsDelete")]
+        public bool IsDelete { get; set; } = false;
         /// <summary>
         /// 创建操作员的名称
         /// </summary>
+        [DisplayName("OperatorCare")]
+        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
         public string OperatorCare { get; set; }
         /// <summary>
-        /// 更新操作员的名称
+        /// 创建操作员的名称
         /// </summary>
+        [DisplayName("OperatorUp")]
+        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
         public string OperatorUp { get; set; }
         /// <summary>
         /// 备注
         /// </summary>
+        [DisplayName("Remark")]
+        [StringLength(300, ErrorMessage = "LengthErrorMsg")]
         public string Remark { get; set; }
         /// <summary>
         /// 是否禁用
         /// </summary>
+        [DisplayName("IsDisable")]
         public bool IsDisable { get; set; }
         /// <summary>
         /// 编号
         /// </summary>
-        public string Number { get; set; }
+        [DisplayName("Number")]
+        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        public string Number { get; set; } = "999";
         /// <summary>
         /// 数据权限
         /// </summary>
-        public int? DataId { get; set; }
+        [DisplayName("DataId")]
+        public int DataId { get; set; }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel.Entities
 {
-    [DisplayName("用户角色")]
+    [DisplayName("SysRoleUser")]
     public partial class SysRoleUser : SysBaseEntity, IBaseEntity,IView
     {
         public int UserId { get; set; }
