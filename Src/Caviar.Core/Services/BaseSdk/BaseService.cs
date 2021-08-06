@@ -1,4 +1,5 @@
-﻿using Caviar.SharedKernel;
+﻿using Caviar.Core.Interface;
+using Caviar.SharedKernel;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -11,8 +12,8 @@ namespace Caviar.Core.Services
 {
     public partial class BaseSdk<T> :  IBaseSdk<T>   where T: class,IBaseEntity, new()
     {
-        private IAppDbContext _dbContext;
-        public IAppDbContext DbContext { 
+        private IEasyDbContext<T> _dbContext;
+        public IEasyDbContext<T> DbContext { 
             get 
             {
                 if (_dbContext != null) return _dbContext;

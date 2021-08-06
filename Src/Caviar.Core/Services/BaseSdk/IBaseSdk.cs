@@ -1,4 +1,5 @@
-﻿using Caviar.SharedKernel;
+﻿using Caviar.Core.Interface;
+using Caviar.SharedKernel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace Caviar.Core.Services
         /// <summary>
         /// 数据库上下文
         /// </summary>
-        public IAppDbContext DbContext { get; set; }
+        public IEasyDbContext<T> DbContext { get; set; }
 
         /// <summary>
         /// 添加实体

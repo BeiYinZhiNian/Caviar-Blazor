@@ -1,4 +1,5 @@
 ﻿using Caviar.Core;
+using Caviar.Core.Interface;
 using Caviar.SharedKernel;
 using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Http;

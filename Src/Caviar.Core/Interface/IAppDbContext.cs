@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Caviar.SharedKernel;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Caviar.SharedKernel
+namespace Caviar.Core.Interface
 {
     public partial interface IAppDbContext
     {

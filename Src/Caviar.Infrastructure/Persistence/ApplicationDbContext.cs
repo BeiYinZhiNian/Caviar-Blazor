@@ -1,27 +1,20 @@
 ﻿using Caviar.Core;
+using Caviar.Core.Interface;
 using Caviar.Core.Scanner;
-using Caviar.Infrastructure.Identity;
 using Caviar.Infrastructure.Persistence.Sys;
 using Caviar.SharedKernel;
-using IdentityServer4.EntityFramework.Options;
-using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Caviar.Infrastructure.Persistence
 {
-    public class ApplicationDbContext:IAppDbContext
+    public class ApplicationDbContext: IAppDbContext
     {
         protected SysDbContext DbContext { get;private set; }
         protected Interactor Interactor { get; private set; }
