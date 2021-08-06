@@ -14,10 +14,6 @@ namespace Caviar.SharedKernel.View
     public partial class UserData
     {
         /// <summary>
-        /// 用户所有角色
-        /// </summary>
-        public List<SysUser> Roles { get; set; }
-        /// <summary>
         /// 用户所有权限
         /// </summary>
         public List<SysPermission> Permissions { get; set; }

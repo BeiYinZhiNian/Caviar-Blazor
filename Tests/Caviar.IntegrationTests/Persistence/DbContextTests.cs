@@ -1,7 +1,6 @@
 ﻿using Caviar.Infrastructure.Identity;
 using Caviar.Infrastructure.Persistence;
 using Caviar.SharedKernel.Entities;
-using Caviar.SharedKernel.View;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +11,10 @@ namespace Caviar.IntegrationTests.Persistence
     public class DbContextTests
     {
         BaseEfRepoTestFixture efCore = new BaseEfRepoTestFixture();
-        ApplicationDbContext<ApplicationUser, ApplicationRole, int> DbContext;
+        EasyDbContext<SysMenu> DbContext;
         public DbContextTests()
         {
-            DbContext = efCore.GetDbContext();
+            DbContext = efCore.GetDbContext<SysMenu>();
         }
         public SysMenu CreateEntity()
         {
@@ -36,7 +35,7 @@ namespace Caviar.IntegrationTests.Persistence
         public SysMenu GetEntityTest()
         {
             var menu = CreateEntity();
-            var entity = DbContext.SingleOrDefaultAsync<SysMenu>(u => u.Id == menu.Id).Result;
+            var entity = DbContext.SingleOrDefaultAsync(u => u.Id == menu.Id).Result;
             Assert.IsTrue(entity!=null);
             return menu;
         }
@@ -44,7 +43,7 @@ namespace Caviar.IntegrationTests.Persistence
         public List<SysMenu> GetEntityListTest()
         {
             var menu = CreateEntityList();
-            var entity = DbContext.GetAllAsync<SysMenu>().Result;
+            var entity = DbContext.GetAllAsync().Result;
             Assert.IsTrue(entity.Count == menu.Count);
             return menu;
         }
@@ -68,10 +67,10 @@ namespace Caviar.IntegrationTests.Persistence
         {
             var menu = GetEntityTest();
             DbContext.DeleteEntityAsync(menu).Wait();
-            var entity = DbContext.SingleOrDefaultAsync<SysMenu>(u => u.Id == menu.Id,isRecycleBin:true).Result;
+            var entity = DbContext.SingleOrDefaultAsync(u => u.Id == menu.Id,isRecycleBin:true).Result;
             Assert.IsTrue(entity != null);
             DbContext.DeleteEntityAsync(menu).Wait();
-            entity = DbContext.SingleOrDefaultAsync<SysMenu>(u => u.Id == menu.Id, isRecycleBin: true).Result;
+            entity = DbContext.SingleOrDefaultAsync(u => u.Id == menu.Id, isRecycleBin: true).Result;
             Assert.IsTrue(entity == null);
         }
         [TestMethod]
@@ -84,7 +83,7 @@ namespace Caviar.IntegrationTests.Persistence
             }
             DbContext.UpdateEntityAsync(menus, false).Wait();
             DbContext.SaveChangesAsync(false).Wait();
-            var entity = DbContext.GetAllAsync<SysMenu>().Result.OrderBy(u=>u.Id).ToList();
+            var entity = DbContext.GetAllAsync().Result.OrderBy(u=>u.Id).ToList();
             for (int i = 0; i < entity.Count; i++)
             {
                 Assert.AreEqual("" + i, entity[i].MenuName);
@@ -96,10 +95,10 @@ namespace Caviar.IntegrationTests.Persistence
         {
             var menu = GetEntityListTest();
             DbContext.DeleteEntityAsync(menu).Wait();
-            var entity = DbContext.GetEntityAsync<SysMenu>(u => u.IsDelete == true, isRecycleBin: true).Result;
+            var entity = DbContext.GetEntityAsync(u => u.IsDelete == true, isRecycleBin: true).Result;
             Assert.IsTrue(entity.Count == menu.Count);
             DbContext.DeleteEntityAsync(menu).Wait();
-            entity = DbContext.GetEntityAsync<SysMenu>(u => u.IsDelete == true, isRecycleBin: true).Result;
+            entity = DbContext.GetEntityAsync(u => u.IsDelete == true, isRecycleBin: true).Result;
             Assert.IsTrue(entity.Count == 0);
         }
     }

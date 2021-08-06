@@ -1,6 +1,6 @@
 ﻿using Caviar.Core;
 using Caviar.Infrastructure.Identity;
-using Caviar.Infrastructure.Persistence.SysDbContext;
+using Caviar.Infrastructure.Persistence.Sys;
 using Caviar.SharedKernel;
 using Caviar.SharedKernel.Exceptions;
 using IdentityServer4.EntityFramework.Options;
@@ -20,17 +20,14 @@ using System.Threading.Tasks;
 
 namespace Caviar.Infrastructure.Persistence
 {
-    public class ApplicationDbContext<TUser, TRole, TKey>
-        where TUser : IdentityUser<TKey>
-        where TRole : IdentityRole<TKey>
-        where TKey : IEquatable<TKey>
+    public class ApplicationDbContext
     {
-        protected SysDbContext<TUser, TRole, TKey> DbContext { get;private set; }
+        protected SysDbContext DbContext { get;private set; }
         protected Interactor Interactor { get; private set; }
 
         protected ILanguageService LanguageService { get; set; }
 
-        public ApplicationDbContext(SysDbContext<TUser, TRole, TKey> identityDbContext, Interactor interactor, ILanguageService languageService)
+        public ApplicationDbContext(SysDbContext identityDbContext, Interactor interactor, ILanguageService languageService)
         {
             DbContext = identityDbContext;
             Interactor = interactor;
@@ -365,6 +362,32 @@ namespace Caviar.Infrastructure.Persistence
                 query = query.Where(lambdaTotalTree);
             }
             return query;
+        }
+    }
+
+    public class EasyDbContext<T> : ApplicationDbContext where T : class, IBaseEntity, new()
+    {
+        public EasyDbContext(SysDbContext identityDbContext, Interactor interactor, ILanguageService languageService) : base(identityDbContext, interactor, languageService)
+        {
+        }
+        public Task<List<T>> GetAllAsync(bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false)
+        {
+            return base.GetAllAsync<T>(isNoTracking, isDataPermissions, isRecycleBin);
+        }
+
+        public Task<T> SingleOrDefaultAsync(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false)
+        {
+            return base.SingleOrDefaultAsync(where, isNoTracking, isDataPermissions, isRecycleBin);
+        }
+
+        public Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false)
+        {
+            return base.FirstOrDefaultAsync(where, isNoTracking, isDataPermissions, isRecycleBin);
+        }
+
+        public Task<List<T>> GetEntityAsync(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false)
+        {
+            return base.GetEntityAsync(where, isNoTracking, isDataPermissions, isRecycleBin);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Caviar.Core;
+using Caviar.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -8,12 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.Infrastructure.Persistence.SysDbContext
+namespace Caviar.Infrastructure.Persistence.Sys
 {
-    public class SysDbContext<TUser, TRole, TKey>: IdentityDbContext<TUser, TRole, TKey>
-        where TUser : IdentityUser<TKey>
-        where TRole : IdentityRole<TKey>
-        where TKey : IEquatable<TKey>
+    public class SysDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
     {
         public SysDbContext(DbContextOptions options) : base(options)
         {
