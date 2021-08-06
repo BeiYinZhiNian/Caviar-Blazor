@@ -1,5 +1,6 @@
 ﻿using Caviar.SharedKernel;
 using Caviar.SharedKernel.Entities;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,24 @@ namespace Caviar.Core.Services.BaseSdk
     public class DataCheckSdk
     {
         /// <summary>
+        /// 用户拥有的字段权限
+        /// </summary>
+        public List<SysFields> Fields { get; set; }
+
+        public ResultMsg ResultHandle(IActionResult result)
+        {
+            var StatusCode = (int)result.GetObjValue("StatusCode");
+            var value = result.GetObjValue("Value");
+            if (value != null)
+            {
+                ArgumentsModel(value.GetType(), value);
+            }
+            var resultMsg = ResultCheck(StatusCode, value);
+            return resultMsg;
+        }
+
+
+        /// <summary>
         /// 过滤对象中所有字段，检测包含IbaseEntity接口类
         /// 将包含IbaseEntity接口的类进行字段检测
         /// </summary>
@@ -19,7 +38,7 @@ namespace Caviar.Core.Services.BaseSdk
         /// <param name="data">需要检测的字段,过滤后将未授权字段的值设置为default</param>
         /// <param name="fields">用户拥有的字段权限</param>
         /// <
-        public void ArgumentsModel(Type type, object data,List<SysFields> fields)
+        public void ArgumentsModel(Type type, object data)
         {
             if (data == null) return;
             if (!type.IsClass)//排除非类
@@ -36,14 +55,14 @@ namespace Caviar.Core.Services.BaseSdk
             {
                 if (data == null) return;
                 //进行非法字段检测
-                ArgumentsFields(type, data, fields);
+                ArgumentsFields(type, data);
             }
             else if (type.GetInterfaces().Contains(typeof(System.Collections.ICollection)))
             {
                 var list = (System.Collections.IEnumerable)data;
                 foreach (var dataItem in list)
                 {
-                    ArgumentsModel(dataItem.GetType(), dataItem, fields);
+                    ArgumentsModel(dataItem.GetType(), dataItem);
                 }
             }
             else
@@ -52,7 +71,7 @@ namespace Caviar.Core.Services.BaseSdk
                 {
                     var properType = sp.PropertyType;
                     var value = sp.GetValue(data, null);
-                    ArgumentsModel(properType, value, fields);
+                    ArgumentsModel(properType, value);
                 }
             }
 
@@ -63,7 +82,7 @@ namespace Caviar.Core.Services.BaseSdk
         /// </summary>
         /// <param name="type"></param>
         /// <param name="data"></param>
-        private void ArgumentsFields(Type type, object data,List<SysFields> fields)
+        public void ArgumentsFields(Type type, object data)
         {
             var baseType = CommonHelper.GetCavBaseType(type);
             if (baseType == null) return;
@@ -71,7 +90,7 @@ namespace Caviar.Core.Services.BaseSdk
             {
                 if (sp.Name.ToLower() == "id") continue;//忽略id字段
                 if (sp.Name.ToLower() == "uid") continue;//忽略uid字段
-                var field = fields.FirstOrDefault(u => u.BaseFullName == baseType.Name && sp.Name == u.FieldName);
+                var field = Fields?.FirstOrDefault(u => u.BaseFullName == baseType.Name && sp.Name == u.FieldName);
                 if (field == null)//如果为null则标名没有字段权限
                 {
                     try

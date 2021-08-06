@@ -76,14 +76,10 @@ namespace Caviar.Infrastructure.API
         {
             base.OnActionExecuted(context);
             var result = context.Result;
-            var StatusCode = (int)result.GetObjValue("StatusCode");
-            var value = result.GetObjValue("Value");
-            if (value != null)
-            {
-                DataCheckSdk.ArgumentsModel(value.GetType(), value, Interactor.UserData.Fields);
-            }
-            var resultMsg = DataCheckSdk.ResultCheck(StatusCode, value);
+            var resultMsg = DataCheckSdk.ResultHandle(result);
             context.Result = Ok(resultMsg);
         }
+
+
     }
 }
