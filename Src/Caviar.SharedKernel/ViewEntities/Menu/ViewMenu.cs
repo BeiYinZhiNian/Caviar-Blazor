@@ -10,6 +10,9 @@ namespace Caviar.SharedKernel.View
 {
     public partial class ViewMenu: ITree<ViewMenu>
     {
+        public int ParentId { get=>Entity.ParentId; }
+
+        public int Id { get=>Entity.Id; }
         /// <summary>
         /// 孩子节点
         /// </summary>

@@ -18,7 +18,7 @@ namespace Caviar.SharedKernel.Entities
         [DisplayName("FildName")]
         [Required(ErrorMessage = "RequiredErrorMsg")]
         [StringLength(50, ErrorMessage = "LengthErrorMsg")]
-        public string FildName { get; set; }
+        public string FieldName { get; set; }
         /// <summary>
         /// 显示名称
         /// </summary>
@@ -58,6 +58,6 @@ namespace Caviar.SharedKernel.Entities
         /// 字段长度
         /// </summary>
         [DisplayName("FildLen")]
-        public int? FildLen { get; set; }
+        public int? FieldLen { get; set; }
     }
 }

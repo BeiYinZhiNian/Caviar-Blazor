@@ -15,8 +15,8 @@ using Caviar.SharedKernel;
 /// </summary>
 namespace Caviar.SharedKernel.View
 {
-    [DisplayName("日志模型")]
-    public partial class ViewLog:SysLog, IView
+    [DisplayName("SysLog")]
+    public partial class ViewLog: BaseView<SysLog>
     {
     }
 }

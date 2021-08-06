@@ -23,7 +23,7 @@ namespace Caviar.SharedKernel
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        Task<int> AddEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IView, new();
+        Task<int> AddEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IBaseEntity, new();
         /// <summary>
         /// 批量添加
         /// 会进行事务
@@ -32,13 +32,13 @@ namespace Caviar.SharedKernel
         /// <param name="entity"></param>
         /// <param name="isSaveChange"></param>
         /// <returns></returns>
-        Task<bool> AddEntityAsync<T>(List<T> entity, bool isSaveChange = true) where T : class, IView, new();
+        Task<bool> AddEntityAsync<T>(List<T> entity, bool isSaveChange = true) where T : class, IBaseEntity, new();
         /// <summary>
         /// 修改实体
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public Task<T> UpdateEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IView, new();
+        public Task<T> UpdateEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IBaseEntity, new();
         /// <summary>
         /// 修改部分实体
         /// </summary>
@@ -47,7 +47,7 @@ namespace Caviar.SharedKernel
         /// <param name="updatePropertyList"></param>
         /// <param name="modified"></param>
         /// <returns></returns>
-        public Task<T> UpdateEntityAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class, IView, new();
+        public Task<T> UpdateEntityAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class, IBaseEntity, new();
         /// <summary>
         /// 批量修改
         /// 会进行事务
@@ -57,7 +57,7 @@ namespace Caviar.SharedKernel
         /// <param name="fieldExp"></param>
         /// <param name="isSaveChange"></param>
         /// <returns></returns>
-        public Task<bool> UpdateEntityAsync<T>(List<T> entity, bool isSaveChange = true) where T : class, IView, new();
+        public Task<bool> UpdateEntityAsync<T>(List<T> entity, bool isSaveChange = true) where T : class, IBaseEntity, new();
 
         /// <summary>
         /// 删除实体
@@ -65,7 +65,7 @@ namespace Caviar.SharedKernel
         /// <param name="entity"></param>
         /// <param name="IsDelete">是否彻底删除，默认不彻底删除</param>
         /// <returns></returns>
-        public Task<bool> DeleteEntityAsync<T>(T entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IView, new();
+        public Task<bool> DeleteEntityAsync<T>(T entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IBaseEntity, new();
         /// <summary>
         /// 批量删除
         /// 会进行事务
@@ -75,26 +75,26 @@ namespace Caviar.SharedKernel
         /// <param name="isSaveChange"></param>
         /// <param name="IsDelete"></param>
         /// <returns></returns>
-        public Task<bool> DeleteEntityAsync<T>(List<T> entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IView, new();
+        public Task<bool> DeleteEntityAsync<T>(List<T> entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IBaseEntity, new();
         /// <summary>
         /// 异步获取所有数据
         /// </summary>
         /// <returns></returns>
-        public Task<IQueryable<T>> GetAllAsync<T>(bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IView, new();
+        public Task<IQueryable<T>> GetAllAsync<T>(bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity, new();
         /// <summary>
         /// 根据条件获取实体
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public Task<IQueryable<T>> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IView, new();
+        public Task<IQueryable<T>> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity, new();
         /// <summary>
         /// 根据条件获取单个实体
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public Task<T> GetSingleEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IView, new();
+        public Task<T> GetSingleEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity, new();
         /// <summary>
         /// 根据条件获取首个实体
         /// </summary>
@@ -102,7 +102,7 @@ namespace Caviar.SharedKernel
         /// <param name="where"></param>
         /// <param name="isNoTracking"></param>
         /// <returns></returns>
-        public Task<T> GetFirstEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IView, new();
+        public Task<T> GetFirstEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity, new();
         /// <summary>
         /// 分页查询异步
         /// </summary>
@@ -112,7 +112,7 @@ namespace Caviar.SharedKernel
         /// <param name="pageSize">每页大小</param>
         /// <param name="isOrder">排序正反</param>
         /// <returns></returns>
-        public Task<PageData<T>> GetPageAsync<T, TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IView, new();
+        public Task<PageData<T>> GetPageAsync<T, TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity, new();
         /// <summary>
         /// 执行sql，请注意参数的检查防止sql注入
         /// </summary>

@@ -121,36 +121,6 @@ namespace Caviar.Core
         }
 
         /// <summary>
-        /// 将ViewModel自动转为Model
-        /// </summary>
-        /// <returns>拷贝目标</returns>
-        public static object ChangeBaseType<T>(this T source) where T: class,IView,new()
-        {
-            var targetType = GetCavBaseType(typeof(T));
-            var target = Activator.CreateInstance(targetType);
-            var exampleType = typeof(T);
-            foreach (PropertyInfo sp in targetType.GetProperties())//获得类型的属性字段
-            {
-                foreach (PropertyInfo dp in exampleType.GetProperties())
-                {
-                    if (dp.Name.ToLower() == sp.Name.ToLower())//判断属性名是否相同
-                    {
-                        try
-                        {
-                            sp.SetValue(target, dp.GetValue(source, null), null);//获得s对象属性的值复制给d对象的属性
-                        }
-                        catch
-                        {
-                            //属性不一致或空属性不需要复制，所以直接忽略即可
-                        }
-                        break;
-                    }
-                }
-            }
-            return target;
-        }
-
-        /// <summary>
         /// 利用json将两个类型进行转换，短小精悍
         /// </summary>
         /// <typeparam name="B"></typeparam>
@@ -216,7 +186,7 @@ namespace Caviar.Core
         /// </summary>
         /// <param name="isView">是否寻找前端类，前端类和后端类不可同时获取</param>
         /// <returns></returns>
-        public static List<Type> GetEntityList(bool isView = false)
+        public static List<Type> GetEntityList()
         {
             List<Type> types = new List<Type>();
             GetAssembly()
@@ -229,14 +199,6 @@ namespace Caviar.Core
                             .Where(u => u.GetInterfaces().Contains(typeof(IBaseEntity)))
                             //判断是否是类
                             .Where(u => u.IsClass);
-                        if (isView)
-                        {
-                            assemblyTypes = assemblyTypes.Where(u => u.GetInterfaces().Contains(typeof(IView)));
-                        }
-                        else
-                        {
-                            assemblyTypes = assemblyTypes.Where(u => !u.GetInterfaces().Contains(typeof(IView)));
-                        }
                         //转换成list
                         assemblyTypes.ToList()
                             //循环,并添注入

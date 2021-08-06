@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Caviar.SharedKernel.Entities
 {
     [DisplayName("SysRoleUserGroup")]
-    public class SysRoleUserGroup : SysBaseEntity, IBaseEntity,IView
+    public class SysRoleUserGroup : SysBaseEntity, IBaseEntity
     {
         public int UserGroupId { get; set; }
 

@@ -11,8 +11,8 @@ namespace Caviar.Core.Services
     /// <summary>
     /// 基础sdk封装
     /// </summary>
-    /// <typeparam name="ViewT"></typeparam>
-    public interface IBaseSdk<ViewT> : IDIinjectAtteribute where ViewT : class, IView, new()
+    /// <typeparam name="T"></typeparam>
+    public interface IBaseSdk<T> : IDIinjectAtteribute where T : class, IBaseEntity, new()
     {
         /// <summary>
         /// 数据库上下文
@@ -23,34 +23,34 @@ namespace Caviar.Core.Services
         /// 添加实体
         /// </summary>
         /// <returns>实体id</returns>
-        public Task<int> AddEntity(ViewT entity);
+        public Task<int> AddEntity(T entity);
         /// <summary>
         /// 删除实体
         /// </summary>
         /// <returns>是否删除成功</returns>
-        public Task<bool> DeleteEntity(ViewT entity);
+        public Task<bool> DeleteEntity(T entity);
         /// <summary>
         /// 修改实体
         /// </summary>
         /// <returns>修改后实体</returns>
-        public Task<ViewT> UpdateEntity(ViewT entity);
+        public Task<T> UpdateEntity(T entity);
         /// <summary>
         /// 获取分页数据
         /// </summary>
         /// <returns></returns>
-        public Task<PageData<ViewT>> GetPages(Expression<Func<ViewT, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true);
+        public Task<PageData<T>> GetPages(Expression<Func<T, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true);
 
         /// <summary>
         /// 批量删除
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
-        public Task<bool> DeleteEntity(List<ViewT> menus);
+        public Task<bool> DeleteEntity(List<T> menus);
         /// <summary>
         /// 批量修改
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
-        public Task<bool> UpdateEntity(List<ViewT> menus);
+        public Task<bool> UpdateEntity(List<T> menus);
     }
 }

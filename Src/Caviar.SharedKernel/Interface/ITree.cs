@@ -11,11 +11,11 @@ namespace Caviar.SharedKernel
         /// <summary>
         /// id
         /// </summary>
-        public int Id { get; set; }
+        public int Id { get; }
         /// <summary>
         /// 父id
         /// </summary>
-        public int ParentId { get; set; }
+        public int ParentId { get; }
         /// <summary>
         /// 孩子节点
         /// </summary>

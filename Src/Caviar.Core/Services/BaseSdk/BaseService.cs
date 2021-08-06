@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Core.Services
 {
-    public partial class BaseSdk<ViewT> :  IBaseSdk<ViewT>   where ViewT: class,IView, new()
+    public partial class BaseSdk<T> :  IBaseSdk<T>   where T: class,IBaseEntity, new()
     {
         private IAppDbContext _dbContext;
         public IAppDbContext DbContext { 
@@ -29,7 +29,7 @@ namespace Caviar.Core.Services
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public virtual async Task<int> AddEntity(ViewT entity)
+        public virtual async Task<int> AddEntity(T entity)
         {
             var id = await DbContext.AddEntityAsync(entity);
             return id;
@@ -39,7 +39,7 @@ namespace Caviar.Core.Services
         /// 删除指定实体
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<bool> DeleteEntity(ViewT entity)
+        public virtual async Task<bool> DeleteEntity(T entity)
         {
             return await DbContext.DeleteEntityAsync(entity);
         }
@@ -48,7 +48,7 @@ namespace Caviar.Core.Services
         /// 修改指定实体
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<ViewT> UpdateEntity(ViewT entity)
+        public virtual async Task<T> UpdateEntity(T entity)
         {
             return await DbContext.UpdateEntityAsync(entity);
         }
@@ -57,7 +57,7 @@ namespace Caviar.Core.Services
         /// 获取分页数据
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<PageData<ViewT>> GetPages(Expression<Func<ViewT, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true)
+        public virtual async Task<PageData<T>> GetPages(Expression<Func<T, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true)
         {
             return await DbContext.GetPageAsync(where, u => u.Number, pageIndex, pageSize, isOrder, isNoTracking);
         }
@@ -67,7 +67,7 @@ namespace Caviar.Core.Services
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
-        public virtual async Task<bool> DeleteEntity(List<ViewT> menus)
+        public virtual async Task<bool> DeleteEntity(List<T> menus)
         {
             return await DbContext.DeleteEntityAsync(menus);
         }
@@ -76,15 +76,9 @@ namespace Caviar.Core.Services
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
-        public virtual async Task<bool> UpdateEntity(List<ViewT> menus)
+        public virtual async Task<bool> UpdateEntity(List<T> menus)
         {
             return await DbContext.UpdateEntityAsync(menus);
-        }
-
-
-        public virtual Task<ViewT> GetEntity(Guid guid)
-        {
-            return DbContext.GetSingleEntityAsync<ViewT>(u => u.Uid == guid);
         }
     }
 }

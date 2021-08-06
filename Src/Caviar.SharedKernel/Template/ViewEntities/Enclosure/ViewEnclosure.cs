@@ -15,8 +15,8 @@ using Caviar.SharedKernel.Entities;
 /// </summary>
 namespace Caviar.SharedKernel.View
 {
-    [DisplayName("附件模型")]
-    public partial class ViewEnclosure:SysEnclosure, IView
+    [DisplayName("SysEnclosure")]
+    public partial class ViewEnclosure : BaseView<SysEnclosure>
     {
     }
 }

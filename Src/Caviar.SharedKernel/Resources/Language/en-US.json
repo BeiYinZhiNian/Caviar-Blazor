@@ -1,10 +1,8 @@
 {
   "Language.test": "Multilingual function test",
   "app": {
-    "DbContext": {
-      "entity": {
-        "null": "Data operation failed, operation object is null"
-      }
+    "null": {
+      "entity": "Data operation failed, object {entityname} is null"
     }
   },
   "SharedKernel": {
@@ -35,14 +33,14 @@
       "ButtonPosition": "ButtonPosition",
       "IsDoubleTrue": "IsDoubleTrue",
       "SysFields": "SysFields",
-      "FildName": "FildName",
+      "FieldName": "FieldName",
       "DisplayName": "DisplayName",
       "FullName": "FullName",
       "BaseFullName": "BaseFullName",
       "TableWidth": "TableWidth",
       "TableHeight": "TableHeight",
       "IsPanel": "IsPanel",
-      "FildLen": "FildLen",
+      "FieldLen": "FieldLen",
       "SysPermission": "SysPermission",
       "RoleName": "RoleName",
       "SysRole": "SysRole",

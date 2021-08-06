@@ -3,6 +3,7 @@ using Caviar.Infrastructure.Identity;
 using Caviar.Infrastructure.Persistence;
 using Caviar.Infrastructure.Persistence.SysDbContext;
 using Caviar.SharedKernel;
+using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +21,7 @@ namespace Caviar.IntegrationTests.Persistence
             Interactor interactor = new Interactor();
             ILanguageService languageService = new InAssemblyLanguageService();
             _dbContext = new ApplicationDbContext<ApplicationUser, ApplicationRole, int>(dbContext, interactor, languageService);
+            interactor.UserData.Fields = _dbContext.GetAllAsync<SysFields>().Result;
         }
 
         public ApplicationDbContext<ApplicationUser, ApplicationRole, int> GetDbContext()

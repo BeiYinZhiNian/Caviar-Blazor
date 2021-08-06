@@ -15,8 +15,8 @@ using Caviar.SharedKernel;
 /// </summary>
 namespace Caviar.SharedKernel.View
 {
-    [DisplayName("系统菜单模型")]
-    public partial class ViewMenu:SysMenu, IView
+    [DisplayName("SysMenu")]
+    public partial class ViewMenu: BaseView<SysMenu>
     {
     }
 }

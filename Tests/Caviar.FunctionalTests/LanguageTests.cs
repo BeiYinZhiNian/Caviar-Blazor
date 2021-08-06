@@ -9,7 +9,7 @@ namespace Caviar.FunctionalTests
     public class LanguageTests
     {
         [TestMethod]
-        public void ZhLanguageTest()
+        public void CnLanguageTest()
         {
             var culture = CultureInfo.GetCultureInfo("zh-CN");
             ILanguageService languageService = new InAssemblyLanguageService(culture);
@@ -18,7 +18,7 @@ namespace Caviar.FunctionalTests
         }
 
         [TestMethod]
-        public void EnLanguageTest()
+        public void UsLanguageTest()
         {
             var culture = CultureInfo.GetCultureInfo("en-US");
             ILanguageService languageService = new InAssemblyLanguageService(culture);

@@ -1,4 +1,5 @@
-﻿using Caviar.SharedKernel.View;
+﻿using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.View;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -58,24 +59,28 @@ namespace Caviar.Core.Scanner
                     }
                     var baseType = CommonHelper.GetCavBaseType(type);
                     var dispLayName = item.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
-                    var valueLen = item.GetCustomAttributes<StringLengthAttribute>()?.Cast<StringLengthAttribute>().SingleOrDefault()?.MaximumLength;
-                    var filter = new ViewFields()
+                    var fieldLen = item.GetCustomAttributes<StringLengthAttribute>()?.Cast<StringLengthAttribute>().SingleOrDefault()?.MaximumLength;
+                    var field = new ViewFields()
                     {
-                        FildName = item.Name,
+                        Entity = new SysFields()
+                        {
+                            FieldName = item.Name,
+                            DisplayName = dispLayName,
+                            FieldLen = fieldLen,
+                            FullName = name,
+                            BaseFullName = baseType.Name,
+                            IsDisable = true,
+                        },
                         EntityType = typeName,
-                        DisplayName = dispLayName,
-                        ValueLen = valueLen,
-                        IsEnum = item.PropertyType.IsEnum,
-                        FullName = name,
-                        BaseFullName = baseType.Name,
-                        IsDisable = true,
+                        IsEnum = item.PropertyType.IsEnum
                     };
-                    if (filter.IsEnum)
+
+                    if (field.IsEnum)
                     {
-                        filter.EnumValueName = CommonHelper.GetEnenuModelHeader(item.PropertyType);
+                        field.EnumValueName = CommonHelper.GetEnenuModelHeader(item.PropertyType);
                     }
-                    filter = FieldTurnMeaning(filter);
-                    fields.Add(filter);
+                    field = FieldTurnMeaning(field);
+                    fields.Add(field);
                 }
             }
             return fields;
@@ -92,8 +97,8 @@ namespace Caviar.Core.Scanner
         public virtual ViewFields FieldTurnMeaning(ViewFields headers)
         {
             if (TurnMeaningDic == null) return headers;
-            if(!TurnMeaningDic.ContainsKey(headers.FildName)) return headers;
-            var EntityType = TurnMeaningDic[headers.FildName];
+            if(!TurnMeaningDic.ContainsKey(headers.Entity.FieldName)) return headers;
+            var EntityType = TurnMeaningDic[headers.Entity.FieldName];
             if (EntityType != null)
             {
                 headers.EntityType = EntityType;

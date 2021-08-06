@@ -16,7 +16,7 @@ using Caviar.SharedKernel;
 namespace Caviar.SharedKernel.View
 {
     [DisplayName("部门模型")]
-    public partial class ViewUserGroup:SysUserGroup, IView
+    public partial class ViewUserGroup: BaseView<SysUserGroup>
     {
     }
 }

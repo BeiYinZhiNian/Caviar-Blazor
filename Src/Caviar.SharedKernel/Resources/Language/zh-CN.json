@@ -1,10 +1,8 @@
 {
   "Language.test": "多语言功能测试",
   "app": {
-    "DbContext": {
-      "entity": {
-        "null": "数据操作失败，操作对象为null"
-      }
+    "null": {
+      "Db": "数据操作失败，对象{entityName}为null"
     }
   },
   "SharedKernel": {
@@ -35,14 +33,14 @@
       "ButtonPosition": "按钮位置",
       "IsDoubleTrue": "二次确认",
       "SysFields": "字段表",
-      "FildName": "字段名称",
+      "FieldName": "字段名称",
       "DisplayName": "显示名称",
       "FullName": "命名空间",
       "BaseFullName": "基类名称",
       "TableWidth": "表宽",
       "TableHeight": "表高",
       "IsPanel": "显示在看板",
-      "FildLen": "字段长度",
+      "FieldLen": "字段长度",
       "SysPermission": "权限映射表",
       "RoleName": "角色名称",
       "SysRole": "角色表",
