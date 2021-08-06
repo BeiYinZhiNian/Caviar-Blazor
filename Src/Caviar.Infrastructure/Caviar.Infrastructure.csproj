@@ -12,4 +12,8 @@
     <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="5.0.8" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CodeGeneration\" />
+  </ItemGroup>
+
 </Project>

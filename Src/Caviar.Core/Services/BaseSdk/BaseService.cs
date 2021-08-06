@@ -16,7 +16,7 @@ namespace Caviar.Core.Services
             get 
             {
                 if (_dbContext != null) return _dbContext;
-                throw new SharedKernel.ApplicationException("未向Sdk注入DbContext");
+                throw new ApplicationException("未向Sdk注入DbContext");
             }
             set
             {
@@ -29,7 +29,7 @@ namespace Caviar.Core.Services
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public virtual async Task<int> AddEntity(T entity)
+        public virtual async Task<int> CreateEntity(T entity)
         {
             var id = await DbContext.AddEntityAsync(entity);
             return id;
@@ -48,9 +48,9 @@ namespace Caviar.Core.Services
         /// 修改指定实体
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<T> UpdateEntity(T entity)
+        public virtual Task UpdateEntity(T entity)
         {
-            return await DbContext.UpdateEntityAsync(entity);
+            return DbContext.UpdateEntityAsync(entity);
         }
         
         /// <summary>
@@ -67,18 +67,18 @@ namespace Caviar.Core.Services
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
-        public virtual async Task<bool> DeleteEntity(List<T> menus)
+        public virtual Task DeleteEntity(IEnumerable<T> menus)
         {
-            return await DbContext.DeleteEntityAsync(menus);
+            return DbContext.DeleteEntityAsync(menus);
         }
         /// <summary>
         /// 批量修改
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
-        public virtual async Task<bool> UpdateEntity(List<T> menus)
+        public virtual Task UpdateEntity(IEnumerable<T> menus)
         {
-            return await DbContext.UpdateEntityAsync(menus);
+            return DbContext.UpdateEntityAsync(menus);
         }
     }
 }

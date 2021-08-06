@@ -1,8 +1,8 @@
 ﻿using Caviar.Core;
+using Caviar.Core.Scanner;
 using Caviar.Infrastructure.Identity;
 using Caviar.Infrastructure.Persistence.Sys;
 using Caviar.SharedKernel;
-using Caviar.SharedKernel.Exceptions;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Identity;
@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -20,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Infrastructure.Persistence
 {
-    public class ApplicationDbContext
+    public class ApplicationDbContext:IAppDbContext
     {
         protected SysDbContext DbContext { get;private set; }
         protected Interactor Interactor { get; private set; }
@@ -91,16 +92,31 @@ namespace Caviar.Infrastructure.Persistence
         /// <param name="entity"></param>
         /// <param name="isSaveChange">默认为立刻保存</param>
         /// <returns></returns>
-        public virtual async Task<T> UpdateEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IBaseEntity,new()
+        public virtual async Task UpdateEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IBaseEntity,new()
         {
             IsEntityNull(entity);
             DbContext.Entry(entity).State = EntityState.Modified;
             if (isSaveChange)
             {
                 await SaveChangesAsync();
-                return entity;
             }
-            return entity;
+        }
+        /// <summary>
+        /// 修改部分实体
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entity"></param>
+        /// <param name="fieldExp"></param>
+        /// <param name="isSaveChange">默认为立刻保存</param>
+        /// <returns></returns>
+        public virtual async Task UpdateEntityAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class, IBaseEntity,new()
+        {
+            IsEntityNull(entity);
+            DbContext.Entry(entity).Property(fieldExp).IsModified = true;
+            if (isSaveChange)
+            {
+                await SaveChangesAsync();
+            }
         }
 
         /// <summary>
@@ -111,16 +127,14 @@ namespace Caviar.Infrastructure.Persistence
         /// <param name="fieldExp"></param>
         /// <param name="isSaveChange"></param>
         /// <returns></returns>
-        public virtual async Task<bool> UpdateEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true) where T : class, IBaseEntity,new()
+        public virtual async Task UpdateEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true) where T : class, IBaseEntity,new()
         {
             IsEntityNull(entity);
             DbContext.UpdateRange(entity);
             if (isSaveChange)
             {
                 await SaveChangesAsync();
-                return true;
             }
-            return false;
         }
 
 
@@ -141,16 +155,15 @@ namespace Caviar.Infrastructure.Persistence
                 if (isSaveChange)
                 {
                     await SaveChangesAsync();
-                    return true;
                 }
+                return true;
             }
             else
             {
                 entity.IsDelete = true;
                 await UpdateEntityAsync(entity, isSaveChange);
-                return true;
+                return false;
             }
-            return false;
         }
         /// <summary>
         /// 批量删除
@@ -160,7 +173,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <param name="isSaveChange"></param>
         /// <param name="IsDelete"></param>
         /// <returns></returns>
-        public virtual async Task DeleteEntityAsync<T>(List<T> entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IBaseEntity, new()
+        public virtual async Task DeleteEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IBaseEntity, new()
         {
             IsEntityNull(entity);
             var removeList = entity.Where(u => u.IsDelete);//取出物理删除数据
@@ -276,29 +289,30 @@ namespace Caviar.Infrastructure.Persistence
                         baseEntity.UpdateTime = DateTime.Now;
                         var entityType = entity.GetType();
                         var baseType = CommonHelper.GetCavBaseType(entityType);
-                        foreach (PropertyInfo sp in baseType.GetProperties())
+                        var fields = FieldScanner.GetClassFields(baseType);
+                        foreach (var fieldItem in fields)
                         {
-                            switch (sp.Name.ToLower())
+                            switch (fieldItem.Entity.FieldName.ToLower())
                             {
                                 //不可更新字段
                                 case "id":
                                 case "uid":
-                                    item.Property(sp.Name).IsModified = false;
+                                    item.Property(fieldItem.Entity.FieldName).IsModified = false;
                                     continue;
                                 //系统更新字段
                                 case "creattime":
                                 case "updatetime":
                                 case "operatorup":
                                 case "isdelete":
-                                    item.Property(sp.Name).IsModified = true;
+                                    item.Property(fieldItem.Entity.FieldName).IsModified = true;
                                     continue;
                                 default:
                                     break;
                             }
-                            var field = Interactor.UserData.Fields.FirstOrDefault(u => u.BaseFullName == baseType.Name && sp.Name == u.FieldName);
+                            var field = Interactor.UserData.Fields.FirstOrDefault(u => u.BaseFullName == baseType.Name && fieldItem.Entity.FieldName == u.FieldName);
                             if (field == null)
                             {
-                                item.Property(sp.Name).IsModified = false;
+                                item.Property(fieldItem.Entity.FieldName).IsModified = false;
                             }
                         }
                         break;
@@ -321,6 +335,17 @@ namespace Caviar.Infrastructure.Persistence
         {
             var transaction = DbContext.Database.BeginTransaction();
             return transaction;
+        }
+
+        /// <summary>
+        /// 执行sql，请注意参数的检查防止sql注入
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public Task<DataTable> SqlQueryAsync(string sql, params object[] parameters)
+        {
+            return DbContext.Database.SqlQueryAsync(sql, parameters);
         }
 
         /// <summary>

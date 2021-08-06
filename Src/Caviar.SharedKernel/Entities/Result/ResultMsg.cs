@@ -36,5 +36,15 @@ namespace Caviar.SharedKernel
     public class ResultMsg<T> : ResultMsg
     {
         public T Data { get; set; }
+
+        public ResultMsg(T data)
+        {
+            Data = data;
+        }
+
+        public ResultMsg()
+        {
+
+        }
     }
 }

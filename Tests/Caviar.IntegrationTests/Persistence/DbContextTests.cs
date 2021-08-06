@@ -54,7 +54,7 @@ namespace Caviar.IntegrationTests.Persistence
             var menu = GetEntityTest();
             var testName = "testUpdate";
             menu.MenuName = testName;
-            menu = DbContext.UpdateEntityAsync(menu,false).Result;
+            DbContext.UpdateEntityAsync(menu,false).Wait();
             DbContext.SaveChangesAsync(false).Wait();
             Assert.AreEqual(menu.MenuName, testName);
         }

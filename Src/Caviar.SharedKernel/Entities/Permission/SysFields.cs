@@ -26,7 +26,7 @@ namespace Caviar.SharedKernel.Entities
         [StringLength(50, ErrorMessage = "LengthErrorMsg")]
         public string DisplayName { get; set; }
         /// <summary>
-        /// 命名空间
+        /// 类型名称
         /// </summary>
         [DisplayName("FullName")]
         [StringLength(50, ErrorMessage = "LengthErrorMsg")]

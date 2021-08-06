@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.SharedKernel
+namespace Caviar.Core
 {
-    public class ApplicationException : Exception
+    public class DbException : Exception
     {
-        public ApplicationException(string errorMsg)
+        public DbException(string errorMsg)
             : base(errorMsg)
         {
         }

@@ -3,6 +3,9 @@
   "app": {
     "null": {
       "Db": "数据操作失败，对象{entityName}为null"
+    },
+    "Permission": {
+      "Field": "没有{fieldName}字段的{action}权限"
     }
   },
   "SharedKernel": {

@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace Caviar.Core.Scanner
 {
-    public class FieldScanner
+    public static class FieldScanner
     {
         /// <summary>
         /// 获取继承了IBaseEntity类的所有字段字段信息
         /// </summary>
         /// <returns></returns>
-        public List<ViewFields> GetApplicationFields()
+        public static List<ViewFields> GetApplicationFields()
         {
             var entityList = CommonHelper.GetEntityList();
             var fields = new List<ViewFields>();
@@ -34,7 +34,7 @@ namespace Caviar.Core.Scanner
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public List<ViewFields> GetClassFields(string name)
+        public static List<ViewFields> GetClassFields(string name)
         {
             var assemblyList = CommonHelper.GetAssembly();
             Type type = null;
@@ -43,6 +43,11 @@ namespace Caviar.Core.Scanner
                 type = item.GetTypes().SingleOrDefault(u => u.Name.ToLower() == name.ToLower());
                 if (type != null) break;
             }
+            return GetClassFields(type);
+        }
+
+        public static List<ViewFields> GetClassFields(Type type,bool isFieldTurnMeaning = true)
+        {
             List<ViewFields> fields = new List<ViewFields>();
             if (type != null)
             {
@@ -67,7 +72,7 @@ namespace Caviar.Core.Scanner
                             FieldName = item.Name,
                             DisplayName = dispLayName,
                             FieldLen = fieldLen,
-                            FullName = name,
+                            FullName = type.Name,
                             BaseFullName = baseType.Name,
                             IsDisable = true,
                         },
@@ -79,7 +84,7 @@ namespace Caviar.Core.Scanner
                     {
                         field.EnumValueName = CommonHelper.GetEnenuModelHeader(item.PropertyType);
                     }
-                    field = FieldTurnMeaning(field);
+                    if(isFieldTurnMeaning) field = FieldTurnMeaning(field);
                     fields.Add(field);
                 }
             }
@@ -94,7 +99,7 @@ namespace Caviar.Core.Scanner
         /// </summary>
         /// <param name="headers"></param>
         /// <returns></returns>
-        public virtual ViewFields FieldTurnMeaning(ViewFields headers)
+        public static ViewFields FieldTurnMeaning(ViewFields headers)
         {
             if (TurnMeaningDic == null) return headers;
             if(!TurnMeaningDic.ContainsKey(headers.Entity.FieldName)) return headers;

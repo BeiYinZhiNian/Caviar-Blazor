@@ -23,7 +23,7 @@ namespace Caviar.Core.Services
         /// 添加实体
         /// </summary>
         /// <returns>实体id</returns>
-        public Task<int> AddEntity(T entity);
+        public Task<int> CreateEntity(T entity);
         /// <summary>
         /// 删除实体
         /// </summary>
@@ -33,7 +33,7 @@ namespace Caviar.Core.Services
         /// 修改实体
         /// </summary>
         /// <returns>修改后实体</returns>
-        public Task<T> UpdateEntity(T entity);
+        public Task UpdateEntity(T entity);
         /// <summary>
         /// 获取分页数据
         /// </summary>
@@ -45,12 +45,12 @@ namespace Caviar.Core.Services
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
-        public Task<bool> DeleteEntity(List<T> menus);
+        public Task DeleteEntity(IEnumerable<T> menus);
         /// <summary>
         /// 批量修改
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
-        public Task<bool> UpdateEntity(List<T> menus);
+        public Task UpdateEntity(IEnumerable<T> menus);
     }
 }

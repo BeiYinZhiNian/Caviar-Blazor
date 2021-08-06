@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Web;
 using Caviar.SharedKernel;
+using Microsoft.AspNetCore.Http;
 
 namespace Caviar.Core
 {
@@ -341,6 +342,38 @@ namespace Caviar.Core
             var base64url = HttpUtility.UrlDecode(base64);
             base64 = Encoding.UTF8.GetString(Convert.FromBase64String(base64url));
             return base64;
+        }
+
+
+        /// <summary>
+        /// 获取用户的ip地址
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static string GetUserIp(this HttpContext context)
+        {
+            var ip = context.Request.Headers["X-Forwarded-For"].FirstOrDefault();
+            if (string.IsNullOrEmpty(ip))
+            {
+                ip = context.Connection.RemoteIpAddress.ToString();
+            }
+            return ip;
+        }
+        /// <summary>
+        /// 获取请求的完整地址
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static string GetAbsoluteUri(this HttpRequest request)
+        {
+            return new StringBuilder()
+                .Append(request.Scheme)
+                .Append("://")
+                .Append(request.Host)
+                .Append(request.PathBase)
+                .Append(request.Path)
+                .Append(request.QueryString)
+                .ToString();
         }
 
     }

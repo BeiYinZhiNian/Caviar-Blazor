@@ -3,6 +3,9 @@
   "app": {
     "null": {
       "entity": "Data operation failed, object {entityname} is null"
+    },
+    "Permission": {
+      "Field": "You do not have {action} permission for the {fieldname} field"
     }
   },
   "SharedKernel": {

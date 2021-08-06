@@ -14,7 +14,7 @@ namespace Caviar.SharedKernel
         /// <summary>
         /// 保存操作
         /// </summary>
-        /// <param name="IsFieldCheck">确保为系统内部更改时，可以取消验证</param>
+        /// <param name="IsFieldCheck">确保为系统内部更改时，可以取消字段验证</param>
         /// <returns></returns>
         Task<int> SaveChangesAsync(bool IsFieldCheck = true);
 
@@ -26,45 +26,43 @@ namespace Caviar.SharedKernel
         Task<int> AddEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IBaseEntity, new();
         /// <summary>
         /// 批量添加
-        /// 会进行事务
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="entity"></param>
         /// <param name="isSaveChange"></param>
         /// <returns></returns>
-        Task<bool> AddEntityAsync<T>(List<T> entity, bool isSaveChange = true) where T : class, IBaseEntity, new();
+        Task<bool> AddEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true) where T : class, IBaseEntity, new();
         /// <summary>
         /// 修改实体
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public Task<T> UpdateEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IBaseEntity, new();
+        public Task UpdateEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IBaseEntity, new();
         /// <summary>
         /// 修改部分实体
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="isSaveChange"></param>
-        /// <param name="updatePropertyList"></param>
+        /// <param name="updatePropertyIEnumerable"></param>
         /// <param name="modified"></param>
         /// <returns></returns>
-        public Task<T> UpdateEntityAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class, IBaseEntity, new();
+        public Task UpdateEntityAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class, IBaseEntity, new();
         /// <summary>
         /// 批量修改
-        /// 会进行事务
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="entity"></param>
         /// <param name="fieldExp"></param>
         /// <param name="isSaveChange"></param>
         /// <returns></returns>
-        public Task<bool> UpdateEntityAsync<T>(List<T> entity, bool isSaveChange = true) where T : class, IBaseEntity, new();
+        public Task UpdateEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true) where T : class, IBaseEntity, new();
 
         /// <summary>
         /// 删除实体
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="IsDelete">是否彻底删除，默认不彻底删除</param>
-        /// <returns></returns>
+        /// <returns>返回代表是否真正删除了实体，如果为true则是物理删除，如果为false则是逻辑删除</returns>
         public Task<bool> DeleteEntityAsync<T>(T entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IBaseEntity, new();
         /// <summary>
         /// 批量删除
@@ -75,26 +73,26 @@ namespace Caviar.SharedKernel
         /// <param name="isSaveChange"></param>
         /// <param name="IsDelete"></param>
         /// <returns></returns>
-        public Task<bool> DeleteEntityAsync<T>(List<T> entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IBaseEntity, new();
+        public Task DeleteEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IBaseEntity, new();
         /// <summary>
         /// 异步获取所有数据
         /// </summary>
         /// <returns></returns>
-        public Task<IQueryable<T>> GetAllAsync<T>(bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity, new();
+        public Task<List<T>> GetAllAsync<T>(bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity, new();
         /// <summary>
         /// 根据条件获取实体
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public Task<IQueryable<T>> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity, new();
+        public Task<List<T>> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity, new();
         /// <summary>
         /// 根据条件获取单个实体
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public Task<T> GetSingleEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity, new();
+        public Task<T> SingleOrDefaultAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity, new();
         /// <summary>
         /// 根据条件获取首个实体
         /// </summary>
@@ -102,7 +100,7 @@ namespace Caviar.SharedKernel
         /// <param name="where"></param>
         /// <param name="isNoTracking"></param>
         /// <returns></returns>
-        public Task<T> GetFirstEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity, new();
+        public Task<T> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity, new();
         /// <summary>
         /// 分页查询异步
         /// </summary>
