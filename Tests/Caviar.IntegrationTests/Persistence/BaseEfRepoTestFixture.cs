@@ -1,3 +1,4 @@
+using Caviar.Core.Interface;
 using Caviar.Infrastructure;
 using Caviar.Infrastructure.Identity;
 using Caviar.Infrastructure.Persistence;
@@ -16,7 +17,7 @@ namespace Caviar.IntegrationTests.Persistence
         {
             var builder = new DbContextOptionsBuilder<IdentityDbContext<ApplicationUser, ApplicationRole, int>>()
                 .UseInMemoryDatabase("ApplicationDbContext");
-            var dbContext = new SysDbContext(builder.Options);
+            IDbContext dbContext = new SysDbContext<ApplicationUser, ApplicationRole, int>(builder.Options);
             Interactor interactor = new Interactor();
             ILanguageService languageService = new InAssemblyLanguageService();
             var _dbContext = new EasyDbContext<T>(dbContext, interactor, languageService);

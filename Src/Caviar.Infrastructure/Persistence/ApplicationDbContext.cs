@@ -3,6 +3,7 @@ using Caviar.Core.Interface;
 using Caviar.Core.Scanner;
 using Caviar.Infrastructure.Persistence.Sys;
 using Caviar.SharedKernel;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
@@ -14,14 +15,14 @@ using System.Threading.Tasks;
 
 namespace Caviar.Infrastructure.Persistence
 {
-    public class ApplicationDbContext: IAppDbContext
+    public class ApplicationDbContext : IAppDbContext
     {
-        protected SysDbContext DbContext { get;private set; }
+        protected IDbContext DbContext { get;private set; }
         protected Interactor Interactor { get; private set; }
 
         protected ILanguageService LanguageService { get; set; }
 
-        public ApplicationDbContext(SysDbContext identityDbContext, Interactor interactor, ILanguageService languageService)
+        public ApplicationDbContext(IDbContext identityDbContext, Interactor interactor, ILanguageService languageService)
         {
             DbContext = identityDbContext;
             Interactor = interactor;
@@ -383,9 +384,9 @@ namespace Caviar.Infrastructure.Persistence
         }
     }
 
-    public class EasyDbContext<T> : ApplicationDbContext where T : class, IBaseEntity, new()
+    public class EasyDbContext<T> : ApplicationDbContext, IEasyDbContext<T> where T : class, IBaseEntity, new()
     {
-        public EasyDbContext(SysDbContext identityDbContext, Interactor interactor, ILanguageService languageService) : base(identityDbContext, interactor, languageService)
+        public EasyDbContext(IDbContext identityDbContext, Interactor interactor, ILanguageService languageService) : base(identityDbContext, interactor, languageService)
         {
         }
         public Task<List<T>> GetAllAsync(bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false)
