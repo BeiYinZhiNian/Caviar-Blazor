@@ -316,11 +316,11 @@ namespace Caviar.Core
 
         /// <summary>
         /// 获取类型的父类
-        /// 主要用于继承以后寻找到继承了SysBaseModel的子类
+        /// 主要用于继承以后寻找到继承了IBaseEntity的子类
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static Type GetCavBaseType(Type type)
+        public static Type GetBaseClass(Type type)
         {
             var baseType = type.BaseType;
             if (baseType == null)
@@ -333,7 +333,7 @@ namespace Caviar.Core
             }
             else
             {
-                return GetCavBaseType(baseType);
+                return GetBaseClass(baseType);
             }
         }
 

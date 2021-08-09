@@ -62,7 +62,7 @@ namespace Caviar.Core.Scanner
                             typeName = Arguments[0].Name;
                         }
                     }
-                    var baseType = CommonHelper.GetCavBaseType(type);
+                    var baseType = CommonHelper.GetBaseClass(type);
                     var dispLayName = item.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
                     var fieldLen = item.GetCustomAttributes<StringLengthAttribute>()?.Cast<StringLengthAttribute>().SingleOrDefault()?.MaximumLength;
                     var field = new ViewFields()

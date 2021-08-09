@@ -282,7 +282,7 @@ namespace Caviar.Infrastructure.Persistence
                         baseEntity.OperatorUp = Interactor.UserName;
                         baseEntity.UpdateTime = DateTime.Now;
                         var entityType = entity.GetType();
-                        var baseType = CommonHelper.GetCavBaseType(entityType);
+                        var baseType = CommonHelper.GetBaseClass(entityType);
                         var fields = FieldScanner.GetClassFields(baseType);
                         foreach (var fieldItem in fields)
                         {

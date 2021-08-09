@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.AspNetCore.Http;
 namespace Caviar.FunctionalTests
 {
     [TestClass]
@@ -40,12 +40,17 @@ namespace Caviar.FunctionalTests
             return NotFound();
         }
 
+        public IActionResult LocalRedirectResult()
+        {
+            return LocalRedirect("http://www.baidu.com");
+        }
+
         [TestMethod]
         public void OkResultTest()
         {
             var result = OkResult();
             var resultMsg = DataCheckSdk.ResultHandle(result);
-            Assert.AreEqual(HttpState.OK, resultMsg.Status);
+            Assert.AreEqual(StatusCodes.Status200OK, resultMsg.Status);
         }
 
         [TestMethod]
@@ -69,7 +74,16 @@ namespace Caviar.FunctionalTests
         {
             var result = NotFoundResult();
             var resultMsg = DataCheckSdk.ResultHandle(result);
-            Assert.AreEqual(HttpState.NotFound, resultMsg.Status);
+            Assert.AreEqual(StatusCodes.Status404NotFound, resultMsg.Status);
         }
+
+        //[TestMethod]
+        //public void LocalRedirectResultTest()
+        //{
+        //    var result = LocalRedirectResult();
+        //    var resultMsg = DataCheckSdk.ResultHandle(result);
+        //    Assert.AreEqual(StatusCodes.Status302Found, resultMsg.Status);
+        //    Assert.AreEqual("http://www.baidu.com", resultMsg.Title);
+        //}
     }
 }

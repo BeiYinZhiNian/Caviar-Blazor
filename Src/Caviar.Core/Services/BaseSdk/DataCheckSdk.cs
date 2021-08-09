@@ -84,7 +84,7 @@ namespace Caviar.Core.Services.BaseSdk
         /// <param name="data"></param>
         public void ArgumentsFields(Type type, object data)
         {
-            var baseType = CommonHelper.GetCavBaseType(type);
+            var baseType = CommonHelper.GetBaseClass(type);
             if (baseType == null) return;
             foreach (PropertyInfo sp in baseType.GetProperties())//获得类型的属性字段
             {
