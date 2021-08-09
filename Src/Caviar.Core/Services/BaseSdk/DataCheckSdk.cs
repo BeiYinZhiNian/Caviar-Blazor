@@ -19,13 +19,14 @@ namespace Caviar.Core.Services.BaseSdk
 
         public ResultMsg ResultHandle(IActionResult result)
         {
-            var StatusCode = (int)result.GetObjValue("StatusCode");
+            var StatusCode = result.GetObjValue("StatusCode");
+            if (StatusCode == null) return null;
             var value = result.GetObjValue("Value");
             if (value != null)
             {
                 ArgumentsModel(value.GetType(), value);
             }
-            var resultMsg = ResultCheck(StatusCode, value);
+            var resultMsg = ResultCheck((int)StatusCode, value);
             return resultMsg;
         }
 

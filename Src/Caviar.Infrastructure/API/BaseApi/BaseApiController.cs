@@ -77,7 +77,10 @@ namespace Caviar.Infrastructure.API
             base.OnActionExecuted(context);
             var result = context.Result;
             var resultMsg = DataCheckSdk.ResultHandle(result);
-            context.Result = Ok(resultMsg);
+            if (resultMsg != null)
+            {
+                context.Result = Ok(resultMsg);
+            }
         }
 
 

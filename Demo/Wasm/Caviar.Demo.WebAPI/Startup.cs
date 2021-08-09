@@ -1,17 +1,13 @@
-using Caviar.Core;
-using Caviar.SharedKernel;
+using Caviar.Infrastructure;
+using Caviar.Infrastructure.Identity;
+using Caviar.Infrastructure.Persistence.Sys;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Caviar.Demo.WebAPI
 {
@@ -34,12 +30,9 @@ namespace Caviar.Demo.WebAPI
                         .AllowAnyMethod()
                         .AllowAnyHeader());
             });
-            
-            services.AddCaviar(new SqlConfig
-            {
-                Connections = Configuration["Connections:Value"],
-                DBTypeEnum = (DBTypeEnum)Enum.Parse(typeof(DBTypeEnum), Configuration["Connections:DBType"])
-            }, Configuration);
+            services.AddCaviarIdentity<ApplicationUser, ApplicationRole>(options =>
+                options.UseSqlServer(
+            Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -57,15 +50,9 @@ namespace Caviar.Demo.WebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Caviar.Demo.WebAPI v1"));
             }
-            app.UserCaviar();
             app.UseRouting();
 
             app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
         }
     }
 }

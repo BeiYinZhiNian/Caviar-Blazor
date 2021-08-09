@@ -4,6 +4,7 @@ using Caviar.Infrastructure.Persistence;
 using Caviar.Infrastructure.Persistence.Sys;
 using Caviar.SharedKernel;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -27,16 +28,28 @@ namespace Caviar.Infrastructure
         /// <typeparam name="TUser"></typeparam>
         /// <typeparam name="TRole"></typeparam>
         /// <param name="services"></param>
-        public static void AddCaviarIdentity<TUser, TRole>(this IServiceCollection services)
+        public static void AddCaviarIdentity<TUser, TRole>(this IServiceCollection services, Action<DbContextOptionsBuilder> optionsAction = null, ServiceLifetime contextLifetime = ServiceLifetime.Scoped, ServiceLifetime optionsLifetime = ServiceLifetime.Scoped)
             where TUser : IdentityUser<int>, IBaseEntity
             where TRole : IdentityRole<int>, IBaseEntity
         {
+            services.AddDbContext<SysDbContext<TUser, TRole, int>>(optionsAction, contextLifetime, optionsLifetime);
             services.AddIdentity<TUser, TRole>()
                     .AddEntityFrameworkStores<SysDbContext<TUser, TRole, int>>()
                     .AddDefaultUI()
                     .AddDefaultTokenProviders();
 
             services.AddTransient<IDbContext, SysDbContext<TUser, TRole, int>>();
+        }
+
+        /// <summary>
+        /// 自定义用户表和角色表
+        /// </summary>
+        /// <typeparam name="TUser"></typeparam>
+        /// <typeparam name="TRole"></typeparam>
+        /// <param name="services"></param>
+        public static void AddCaviarIdentity(this IServiceCollection services, Action<DbContextOptionsBuilder> optionsAction = null, ServiceLifetime contextLifetime = ServiceLifetime.Scoped, ServiceLifetime optionsLifetime = ServiceLifetime.Scoped)
+        {
+            services.AddCaviarIdentity<ApplicationUser, ApplicationRole>(optionsAction, contextLifetime, optionsLifetime);
         }
 
 

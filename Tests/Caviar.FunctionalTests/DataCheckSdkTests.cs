@@ -77,13 +77,12 @@ namespace Caviar.FunctionalTests
             Assert.AreEqual(StatusCodes.Status404NotFound, resultMsg.Status);
         }
 
-        //[TestMethod]
-        //public void LocalRedirectResultTest()
-        //{
-        //    var result = LocalRedirectResult();
-        //    var resultMsg = DataCheckSdk.ResultHandle(result);
-        //    Assert.AreEqual(StatusCodes.Status302Found, resultMsg.Status);
-        //    Assert.AreEqual("http://www.baidu.com", resultMsg.Title);
-        //}
+        [TestMethod]
+        public void LocalRedirectResultTest()
+        {
+            var result = LocalRedirectResult();
+            var resultMsg = DataCheckSdk.ResultHandle(result);
+            Assert.AreEqual(null, resultMsg);
+        }
     }
 }
