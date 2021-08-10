@@ -53,5 +53,11 @@ namespace Caviar.Core.Services
         /// <param name="menus"></param>
         /// <returns></returns>
         public Task UpdateEntity(IEnumerable<T> menus);
+        /// <summary>
+        /// 获取指定实体
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Task<T> GetEntity(int id);
     }
 }

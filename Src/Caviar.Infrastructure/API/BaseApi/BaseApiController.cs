@@ -17,15 +17,15 @@ namespace Caviar.Infrastructure.API
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class BaseApiController<TSdk,T> : Controller where TSdk:IBaseSdk<T> where T:class,IBaseEntity,new()
+    public class BaseApiController<Vm,T> : Controller where T:class,IBaseEntity,new() where Vm : IView<T>
     {
-        TSdk sdk;
-        TSdk Sdk { 
+        IBaseSdk<T> sdk;
+        IBaseSdk<T> Sdk { 
             get 
             {
                 if (sdk == null)
                 {
-                    sdk = HttpContext.RequestServices.GetRequiredService<TSdk>();
+                    sdk = HttpContext.RequestServices.GetRequiredService<BaseSdk<T>>();
                 }
                 return sdk; 
             }
@@ -70,14 +70,33 @@ namespace Caviar.Infrastructure.API
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateEntity(T entity)
+        public virtual async Task<IActionResult> CreateEntity(Vm vm)
         {
-            var id = await Sdk.CreateEntity(entity);
+            var id = await Sdk.CreateEntity(vm.Entity);
             return Ok(id);
+        }
+
+        [HttpPost]
+        public virtual async Task<IActionResult> UpdateEntity(Vm vm)
+        {
+            await Sdk.UpdateEntity(vm.Entity);
+            return Ok();
         }
 
 
 
+        [HttpPost]
+        public virtual async Task<IActionResult> DeleteEntity(Vm vm)
+        {
+            await Sdk.DeleteEntity(vm.Entity);
+            return Ok();
+        }
 
+        [HttpPost]
+        public virtual async Task<IActionResult> GetEntity(int id)
+        {
+            var entity = await Sdk.GetEntity(id);
+            return Ok(entity);
+        }
     }
 }

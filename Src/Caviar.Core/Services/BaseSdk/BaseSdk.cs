@@ -82,5 +82,10 @@ namespace Caviar.Core.Services
         {
             return DbContext.UpdateEntityAsync(menus);
         }
+
+        public virtual Task<T> GetEntity(int id)
+        {
+            return DbContext.SingleOrDefaultAsync(u => u.Id == id);
+        }
     }
 }
