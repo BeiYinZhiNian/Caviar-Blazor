@@ -59,5 +59,11 @@ namespace Caviar.Core.Services
         /// <param name="id"></param>
         /// <returns></returns>
         public Task<T> GetEntity(int id);
+        /// <summary>
+        /// 根据条件获取列表
+        /// </summary>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public Task<List<T>> GetEntity(Expression<Func<T, bool>> where);
     }
 }

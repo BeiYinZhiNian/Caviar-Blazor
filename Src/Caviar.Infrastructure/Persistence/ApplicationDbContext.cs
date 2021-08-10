@@ -380,7 +380,7 @@ namespace Caviar.Infrastructure.Persistence
                 //定义或lambda数
                 var lambdaTree = PredicateBuilder.False<T>();
                 lambdaTree = lambdaTree.Or(u => u.DataId == 0);
-                if (Interactor.UserData.UserGroup != null)
+                if (Interactor?.UserData?.UserGroup != null)
                 {
                     lambdaTree = lambdaTree.Or(u => u.DataId == Interactor.UserData.UserGroup.Id);
                     if (Interactor.UserData.SubordinateUserGroup != null && Interactor.UserData.SubordinateUserGroup.Count != 0)

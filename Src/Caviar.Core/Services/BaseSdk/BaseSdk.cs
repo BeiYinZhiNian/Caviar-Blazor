@@ -87,5 +87,10 @@ namespace Caviar.Core.Services
         {
             return DbContext.SingleOrDefaultAsync(u => u.Id == id);
         }
+
+        public virtual Task<List<T>> GetEntity(Expression<Func<T, bool>> where)
+        {
+            return DbContext.GetEntityAsync(where);
+        }
     }
 }

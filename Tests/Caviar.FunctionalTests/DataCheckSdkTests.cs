@@ -1,5 +1,4 @@
 ﻿using Caviar.Core.Services;
-using Caviar.Core.Services.BaseSdk;
 using Caviar.Infrastructure.API;
 using Caviar.SharedKernel;
 using Caviar.SharedKernel.Entities;
@@ -11,12 +10,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Caviar.SharedKernel.View;
+using Caviar.Core.Services.Filter;
+
 namespace Caviar.FunctionalTests
 {
     [TestClass]
-    public class DataCheckSdkTests:BaseApiController<BaseSdk<SysMenu>, SysMenu>
+    public class DataCheckSdkTests:BaseApiController<ViewMenu, SysMenu>
     {
-        DataFilter DataCheckSdk = new DataFilter();
+        ResultDataFilter DataCheckSdk = new ResultDataFilter();
         public DataCheckSdkTests()
         {
         }

@@ -111,18 +111,18 @@ namespace Caviar.Core.Services.Filter
 
         }
 
-        public ResultMsg ResultCheck(int statusCode,object value)
+        public ResultMsg<object> ResultCheck(int statusCode,object value)
         {
-            ResultMsg resultMsg = new ResultMsg();
+            ResultMsg<object> resultMsg = new ResultMsg<object>();
             if (value != null)
             {
                 if(value is ResultMsg)
                 {
-                    return (ResultMsg)value;
+                    return (ResultMsg<object>)value;
                 }
                 else if(value is string)
                 {
-                    resultMsg = new ResultMsg();
+                    resultMsg = new ResultMsg<object>();
                     resultMsg.Title = (string)value;
                 }
                 else
