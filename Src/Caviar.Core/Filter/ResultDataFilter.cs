@@ -8,9 +8,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.Core.Services.BaseSdk
+namespace Caviar.Core.Services.Filter
 {
-    public class DataCheckSdk
+    public class ResultDataFilter
     {
         /// <summary>
         /// 用户拥有的字段权限

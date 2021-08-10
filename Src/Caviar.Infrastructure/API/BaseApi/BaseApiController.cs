@@ -10,8 +10,8 @@ using Caviar.Core;
 using Caviar.Core.Services;
 using Caviar.SharedKernel;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Caviar.Core.Services.BaseSdk;
 using Caviar.Core.Interface;
+using Caviar.Core.Services.Filter;
 
 namespace Caviar.Infrastructure.API
 {
@@ -37,7 +37,7 @@ namespace Caviar.Infrastructure.API
 
         protected Interactor Interactor;
 
-        private DataCheckSdk DataCheckSdk = new DataCheckSdk();
+        private ResultDataFilter DataFilter = new ResultDataFilter();
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
@@ -62,7 +62,7 @@ namespace Caviar.Infrastructure.API
         {
             base.OnActionExecuted(context);
             var result = context.Result;
-            var resultMsg = DataCheckSdk.ResultHandle(result);
+            var resultMsg = DataFilter.ResultHandle(result);
             if (resultMsg != null)
             {
                 context.Result = Ok(resultMsg);

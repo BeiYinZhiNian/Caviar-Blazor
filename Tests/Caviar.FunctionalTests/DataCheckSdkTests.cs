@@ -16,7 +16,7 @@ namespace Caviar.FunctionalTests
     [TestClass]
     public class DataCheckSdkTests:BaseApiController<BaseSdk<SysMenu>, SysMenu>
     {
-        DataCheckSdk DataCheckSdk = new DataCheckSdk();
+        DataFilter DataCheckSdk = new DataFilter();
         public DataCheckSdkTests()
         {
         }
