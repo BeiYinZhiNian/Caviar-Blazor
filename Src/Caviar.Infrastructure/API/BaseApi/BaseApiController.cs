@@ -11,6 +11,7 @@ using Caviar.Core.Services;
 using Caviar.SharedKernel;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Caviar.Core.Services.BaseSdk;
+using Caviar.Core.Interface;
 
 namespace Caviar.Infrastructure.API
 {
@@ -24,7 +25,7 @@ namespace Caviar.Infrastructure.API
             {
                 if (sdk == null)
                 {
-                    sdk = HttpContext.RequestServices.GetService<TSdk>();
+                    sdk = HttpContext.RequestServices.GetRequiredService<TSdk>();
                 }
                 return sdk; 
             }
@@ -34,23 +35,15 @@ namespace Caviar.Infrastructure.API
             } 
         }
 
-        Interactor _interactor;
-        protected Interactor Interactor
-        {
-            get
-            {
-                if (_interactor == null)
-                {
-                    _interactor = HttpContext.RequestServices.GetService<Interactor>();
-                }
-                return _interactor;
-            }
-        }
+        protected Interactor Interactor;
 
         private DataCheckSdk DataCheckSdk = new DataCheckSdk();
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
+            Interactor = HttpContext.RequestServices.GetRequiredService<Interactor>();
+            Sdk.DbContext = HttpContext.RequestServices.GetRequiredService<IEasyDbContext<T>>();
+
             Interactor.Stopwatch.Start();
             base.OnActionExecuting(context);
             //获取ip地址
@@ -65,13 +58,6 @@ namespace Caviar.Infrastructure.API
             Interactor.ActionArguments = context.ActionArguments;
         }
 
-        [HttpPost]
-        public IActionResult CreateEntity(T entity)
-        {
-            Sdk.CreateEntity(entity);
-            return Ok();
-        }
-
         public override void OnActionExecuted(ActionExecutedContext context)
         {
             base.OnActionExecuted(context);
@@ -82,6 +68,15 @@ namespace Caviar.Infrastructure.API
                 context.Result = Ok(resultMsg);
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateEntity(T entity)
+        {
+            var id = await Sdk.CreateEntity(entity);
+            return Ok(id);
+        }
+
+
 
 
     }

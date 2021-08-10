@@ -143,6 +143,7 @@ namespace Caviar.Core
         /// <returns></returns>
         public static object GetObjValue<T>(this T example,string name)
         {
+            if (example == null) return null;
             var exampleType = example.GetType();//获得类型
             foreach (PropertyInfo sp in exampleType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic))//获得类型的属性
             {

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Caviar.Demo.WebAPI
+namespace Caviar.Demo.WebApi
 {
     public class Program
     {

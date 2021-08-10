@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Core.Services
 {
+    [DIInject]
     public partial class BaseSdk<T> :  IBaseSdk<T>   where T: class,IBaseEntity, new()
     {
         private IEasyDbContext<T> _dbContext;

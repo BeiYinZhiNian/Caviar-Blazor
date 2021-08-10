@@ -27,7 +27,21 @@ namespace Caviar.Infrastructure.Persistence
             DbContext = identityDbContext;
             Interactor = interactor;
             LanguageService = languageService;
+            DataInit().Wait();
         }
+
+
+        /// <summary>
+        /// 数据初始化
+        /// </summary>
+        /// <param name="allModules"></param>
+        /// <param name="IsSpa"></param>
+        /// <returns>返回true表示需要进行初始化数据操作，返回false即数据库已经存在或不需要初始化数据</returns>
+        public virtual async Task DataInit()
+        {
+            await DbContext.Database.EnsureCreatedAsync();
+        }
+
 
         void IsEntityNull<T>(T entity)
         {
