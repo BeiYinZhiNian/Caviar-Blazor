@@ -14,16 +14,16 @@
     <Row>
         <Col Flex="4">
         <FormItem Label='用户名'>
-            <Input @bind-Value='@context.UserName' Style='width:90%' />
+            <Input @bind-Value='@context.Entity.UserName' Style='width:90%' />
         </FormItem>
         <FormItem Label='密码' Style="display: none;">
-            <Input @bind-Value='@context.Password' Style='width:50%' />
+            <Input @bind-Value='@context.Entity.PasswordHash' Style='width:50%' />
         </FormItem>
         <FormItem Label='手机号码'>
-            <Input @bind-Value='@context.PhoneNumber' Style='width:90%' />
+            <Input @bind-Value='@context.Entity.PhoneNumber' Style='width:90%' />
         </FormItem>
         <FormItem Label='邮箱地址'>
-            <Input @bind-Value='@context.EmailNumber' Style='width:90%' />
+            <Input @bind-Value='@context.Entity.Email' Style='width:90%' />
         </FormItem>
         </Col>
         <Col Flex="1">
@@ -33,9 +33,9 @@
                    Name="@CurrencyConstant.HeadPortrait"
                    ShowUploadList="false"
                    BeforeUpload="BeforeUpload">
-            @if (!string.IsNullOrEmpty(context.HeadPortrait))
+            @if (!string.IsNullOrEmpty(context.Entity.HeadPortrait))
             {
-                <img src="@context.HeadPortrait" alt="avatar" style="width: 100%" />
+                <img src="@context.Entity.HeadPortrait" alt="avatar" style="width: 100%" />
             }
             else
             {
@@ -47,7 +47,7 @@
         </CavUpload></Col>
     </Row>
     <FormItem Label='个性签名'>
-        <TextArea @bind-Value='@context.Remark' Style='width:100%' />
+        <TextArea @bind-Value='@context.Entity.Remark' Style='width:100%' />
     </FormItem>
 </Form>
 

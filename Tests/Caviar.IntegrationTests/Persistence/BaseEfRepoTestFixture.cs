@@ -3,10 +3,11 @@ using Caviar.Infrastructure;
 using Caviar.Infrastructure.Identity;
 using Caviar.Infrastructure.Persistence;
 using Caviar.Infrastructure.Persistence.Sys;
-using Caviar.SharedKernel;
+using Caviar.SharedKernel.View;
 using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Caviar.SharedKernel;
 
 namespace Caviar.IntegrationTests.Persistence
 {

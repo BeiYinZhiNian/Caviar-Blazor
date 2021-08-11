@@ -1,4 +1,5 @@
-﻿using Caviar.SharedKernel;
+﻿using Caviar.SharedKernel.View;
+using Caviar.SharedKernel.View;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
@@ -27,11 +28,11 @@ namespace Caviar.AntDesignUI.Helper
         public async Task GetUserToken()
         {
             var jwt = await _JSRuntime.InvokeAsync<string>("getCookie", Config.CookieName);
-            if (!string.IsNullOrEmpty(jwt))
-            {
-                var token = CommonHelper.GetJwtUserToken(jwt);
-                this.AutoAssign(token);
-            }
+            //if (!string.IsNullOrEmpty(jwt))
+            //{
+            //    var token = CommonHelper.GetJwtUserToken(jwt);
+            //    this.AutoAssign(token);
+            //}
         }
     }
 }

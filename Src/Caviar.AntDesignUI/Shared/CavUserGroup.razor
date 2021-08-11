@@ -1,7 +1,7 @@
 ﻿<Dropdown>
     <Overlay>
         <Tree ShowIcon DataSource="DataSource"
-              TitleExpression="x => x.DataItem.Name"
+              TitleExpression="x => x.DataItem.Entity.Name"
               ChildrenExpression="x => x.DataItem.Children"
               IsLeafExpression="x => x.DataItem.Children?.Count == 0"
               KeyExpression="x => x.DataItem.Id.ToString()"

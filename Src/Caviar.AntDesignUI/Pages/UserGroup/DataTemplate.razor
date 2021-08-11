@@ -13,13 +13,13 @@
 
 <Form @ref="_meunForm" Model="@DataSource" OnFinish="FormSubmit">
     <FormItem Label='名称'>
-        <Input @bind-Value='@context.Name' Style='width:50%' />
+        <Input @bind-Value='@context.Entity.Name' Style='width:50%' />
     </FormItem>
     <FormItem Label="上层目录">
         <Dropdown>
             <Overlay>
                 <Tree ShowIcon DataSource="Parents"
-                      TitleExpression="x => x.DataItem.Name"
+                      TitleExpression="x => x.DataItem.Entity.Name"
                       ChildrenExpression="x => x.DataItem.Children"
                       IsLeafExpression="x => x.DataItem.Children?.Count == 0"
                       KeyExpression="x => x.DataItem.Id.ToString()"
@@ -40,12 +40,12 @@
         </CavUserGroup>
     </FormItem>
     <FormItem Label='是否禁用'>
-        <Switch @bind-Value='@context.IsDisable' />
+        <Switch @bind-Value='@context.Entity.IsDisable' />
     </FormItem>
     <FormItem Label='编号'>
-        <Input @bind-Value='@context.Number' Style='width:53%' />
+        <Input @bind-Value='@context.Entity.Number' Style='width:53%' />
     </FormItem>
     <FormItem Label='备注'>
-        <TextArea @bind-Value='@context.Remark' Style='width:53%' />
+        <TextArea @bind-Value='@context.Entity.Remark' Style='width:53%' />
     </FormItem>
 </Form>

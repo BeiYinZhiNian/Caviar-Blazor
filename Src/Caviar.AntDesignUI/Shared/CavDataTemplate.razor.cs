@@ -1,5 +1,6 @@
 ﻿using AntDesign;
-using Caviar.SharedKernel;
+using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;

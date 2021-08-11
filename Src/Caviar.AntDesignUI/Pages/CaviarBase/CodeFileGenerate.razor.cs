@@ -1,5 +1,5 @@
 ﻿using AntDesign;
-using Caviar.SharedKernel;
+using Caviar.SharedKernel.View;
 using Caviar.AntDesignUI.Helper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -11,13 +11,15 @@ using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.IO;
+using Caviar.SharedKernel.View;
+using Microsoft.AspNetCore.Http;
 
 namespace Caviar.AntDesignUI.Pages.CaviarBase
 {
     public partial class CodeFileGenerate
     {
 
-        List<ViewModelFields> Models = new List<ViewModelFields>();
+        List<ViewFields> Models = new List<ViewFields>();
         [Inject]
         NavigationManager NavigationManager { get; set; }
         [Inject]
@@ -38,8 +40,8 @@ namespace Caviar.AntDesignUI.Pages.CaviarBase
 
         public async Task GetModels()
         {
-            var result = await Http.GetJson<List<ViewModelFields>>("Permission/GetModels");
-            if (result.Status != HttpState.OK) return;
+            var result = await Http.GetJson<List<ViewFields>>("Permission/GetModels");
+            if (result.Status != StatusCodes.Status200OK) return;
             Models = result.Data;
         }
         static string[] _pageOptions = { "列表","数据模板" };
@@ -85,7 +87,7 @@ namespace Caviar.AntDesignUI.Pages.CaviarBase
                     return;
                 }
                 var result = await Http.PostJson<CodeGenerateData,List<TabItem>>($"{Url}?isPerview=true", GenerateData);
-                if (result.Status == HttpState.OK)
+                if (result.Status == StatusCodes.Status200OK)
                 {
                     lstTabs = result.Data;
                 }
@@ -100,7 +102,7 @@ namespace Caviar.AntDesignUI.Pages.CaviarBase
         async void OnGenerateClick()
         {
             var result = await Http.PostJson<CodeGenerateData, List<TabItem>>($"{Url}?isPerview=false", GenerateData);
-            if (result.Status == HttpState.OK)
+            if (result.Status == StatusCodes.Status200OK)
             {
                 ResultStatus = "success";
                 ReusltTitle = "代码生成完毕";

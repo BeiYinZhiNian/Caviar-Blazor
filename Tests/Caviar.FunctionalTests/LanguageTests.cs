@@ -1,4 +1,5 @@
 using Caviar.SharedKernel;
+using Caviar.SharedKernel.View;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Globalization;
 using Xunit.Sdk;

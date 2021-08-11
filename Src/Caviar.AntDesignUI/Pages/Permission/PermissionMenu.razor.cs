@@ -1,5 +1,5 @@
 ﻿using Caviar.AntDesignUI.Helper;
-using Caviar.SharedKernel;
+using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -7,6 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AntDesign;
+using Caviar.SharedKernel.View;
+using Microsoft.AspNetCore.Http;
+using Caviar.SharedKernel;
+
 namespace Caviar.AntDesignUI.Pages.Permission
 {
     public partial class PermissionMenu: ITableTemplate
@@ -28,7 +32,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
         async Task GetSelectMenus()
         {
             var result = await Http.GetJson<List<ViewMenu>>($"{Url}?roleId={DataSource.Id}");
-            if (result.Status != HttpState.OK) return;
+            if (result.Status != StatusCodes.Status200OK) return;
             if (result.Data != null)
             {
                 ViewMenus = result.Data;
@@ -42,7 +46,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
             ViewMenus.TreeToList(menus);
             var ids = menus.Where(u => u.IsPermission).Select(u => u.Id);
             var result = await Http.PostJson($"{Url}?roleId={DataSource.Id}", ids);
-            if (result.Status != HttpState.OK) return false;
+            if (result.Status != StatusCodes.Status200OK) return false;
             MessageService.Success("操作成功");
             return true;
         }

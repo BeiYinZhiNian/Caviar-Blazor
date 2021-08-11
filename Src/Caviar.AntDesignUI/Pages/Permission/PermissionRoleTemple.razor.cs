@@ -1,7 +1,9 @@
 ﻿using AntDesign;
 using Caviar.AntDesignUI.Helper;
 using Caviar.SharedKernel;
+using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +23,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
         protected virtual async Task GetSelectMenus()
         {
             var result = await Http.GetJson<List<ViewRole>>($"{Url}?PermissionId={DataSource.Id}");
-            if (result.Status != HttpState.OK) return;
+            if (result.Status != StatusCodes.Status200OK) return;
             if (result.Data != null)
             {
                 ViewRoles = result.Data.ListToTree();
@@ -35,7 +37,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
             ViewRoles.TreeToList(roles);
             var ids = roles.Where(u => u.IsPermission).Select(u => u.Id);
             var result = await Http.PostJson($"{Url}?PermissionId={DataSource.Id}", ids);
-            if (result.Status != HttpState.OK) return false;
+            if (result.Status != StatusCodes.Status200OK) return false;
             Message.Success("操作成功");
             return true;
         }

@@ -28,7 +28,7 @@ namespace Caviar.Demo.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCaviar();
-            services.AddCaviarIdentity(options =>
+            services.AddCaviarDbContext(options =>
                 options.UseSqlServer(
             Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();

@@ -1,13 +1,13 @@
 ﻿@page "/Permission/RoleMenu"
-<Text>请选择 @DataSource.RoleName 可访问的菜单</Text>
+<Text>请选择 @DataSource.Entity.Name 可访问的菜单</Text>
 <Tree
       Style="margin-top:20px"
       TItem="ViewMenu"
       BlockNode
       ShowIcon DataSource="ViewMenus"
-      TitleExpression="x => x.DataItem.MenuName"
+      TitleExpression="x => x.DataItem.Entity.MenuName"
       ChildrenExpression="x => x.DataItem.Children"
-      IconExpression="x => x.DataItem.Icon"
+      IconExpression="x => x.DataItem.Entity.Icon"
       IsLeafExpression="x => x.DataItem.Children?.Count == 0"
       KeyExpression="x => x.DataItem.Id.ToString()">
     <TitleIconTemplate Context="node">

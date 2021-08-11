@@ -39,21 +39,21 @@
         @switch (current)
         {
             case 0:
-                <Table TItem="ViewModelFields" DataSource="@Models">
-                    <Column @bind-Field="@context.TypeName">
+                <Table TItem="ViewFields" DataSource="@Models">
+                    <Column @bind-Field="@context.Entity.FieldName">
                     </Column>
-                    <Column @bind-Field="@context.DisplayName">
+                    <Column @bind-Field="@context.Entity.DisplayName">
                     </Column>
                     <ActionColumn Title="操作">
                         <Space Size=@("middle")>
                             <SpaceItem>
                                 <Button Type="@ButtonType.Primary" OnClick='()=>
                                                                             {
-                                                                                GenerateData.EntityName = context.TypeName;
-                                                                                GenerateData.EntityNamespace = context.FullName;
-                                                                                GenerateData.OutName = context.TypeName;
-                                                                                GenerateData.EntityDisplayName = context.DisplayName;
-                                                                                GenerateData.ModelName = context.DisplayName;
+                                                                                GenerateData.EntityName = context.Entity.FieldName;
+                                                                                GenerateData.EntityNamespace = context.Entity.FullName;
+                                                                                GenerateData.OutName = context.Entity.FieldName;
+                                                                                GenerateData.EntityDisplayName = context.Entity.DisplayName;
+                                                                                GenerateData.ModelName = context.Entity.DisplayName;
                                                                                 OnNextClick();
                                                                             }'>选择</Button>
                             </SpaceItem>

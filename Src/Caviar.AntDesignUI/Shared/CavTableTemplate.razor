@@ -16,13 +16,13 @@
                             OnSelectedItemsChanged="OnSelectedItemsChanged"
                             AllowClear>
                         <SelectOptions>
-                            @if (ViewModelFields != null)
+                            @if (ViewFields != null)
                             {
-                                @foreach (var item in ViewModelFields)
+                                @foreach (var item in ViewFields)
                                 {
-                                    if (string.IsNullOrEmpty(item.DisplayName)) continue;
-                                    if (!item.IsPanel) continue;
-                                    <SelectOption TItemValue="string" TItem="string" Value=@item.TypeName Label=@item.DisplayName />
+                                    if (string.IsNullOrEmpty(item.Entity.DisplayName)) continue;
+                                    if (!item.Entity.IsPanel) continue;
+                                    <SelectOption TItemValue="string" TItem="string" Value=@item.Entity.FieldName Label=@item.Entity.DisplayName />
                                 }
                             }
                         </SelectOptions>
@@ -34,7 +34,7 @@
                     {
                         if (item.Value == HideQuery) continue;
                         var key = item.Key;
-                        var field = ViewModelFields.SingleOrDefault(u => u.TypeName == key);
+                        var field = ViewFields.SingleOrDefault(u => u.Entity.FieldName == key);
                         var tableItem = GetQueryItems?.Invoke(key);
                         if (tableItem != null)
                         {
@@ -49,7 +49,7 @@
                                 <Select TItem="string"
                                         TItemValue="string"
                                         @bind-Value="@Query.QueryData[key]"
-                                        Placeholder="@($"{field.DisplayName}")"
+                                        Placeholder="@($"{field.Entity.DisplayName}")"
                                         Style="width:200px">
                                     <SelectOptions>
                                         @foreach (var item in field.EnumValueName)
@@ -61,7 +61,7 @@
                             }
                             else
                             {
-                                <Input Placeholder="@($"{field.DisplayName}搜索")" @bind-Value="@Query.QueryData[key]" />
+                                <Input Placeholder="@($"{field.Entity.DisplayName}搜索")" @bind-Value="@Query.QueryData[key]" />
                             }
 
                         </SpaceItem>
@@ -83,7 +83,7 @@
             {
                 foreach (var item in Buttons)
                 {
-                    if (item.ButtonPosition == ButtonPosition.Default && item.MenuType == MenuType.Button)
+                    if (item.Entity.ButtonPosition == ButtonPosition.Default && item.Entity.MenuType == MenuType.Button)
                     {
                         <SpaceItem>
                             @CreatePackButton(item, default)
@@ -105,11 +105,11 @@
        TItem="TData"
        Loading="Loading"
        TreeChildren="TreeChildren">
-    @if (ViewModelFields != null && ViewModelFields.Count > 0)
+    @if (ViewFields != null && ViewFields.Count > 0)
     {
-        foreach (var item in ViewModelFields)
+        foreach (var item in ViewFields)
         {
-            if (!item.IsPanel) continue;
+            if (!item.Entity.IsPanel) continue;
             item.Value = context;
             var tableItem = GetTableItems?.Invoke(item);
             if (tableItem != null)
@@ -117,12 +117,12 @@
                 @tableItem
                 continue;
             }
-            var typeNmae = item.ModelType.ToLower();
+            var FieldName = item.Entity.FieldName.ToLower();
             if (item.IsEnum)
             {
-                <Column Title="@item.DisplayName" TData="string" Width="@item.Width">
+                <Column Title="@item.Entity.DisplayName" TData="string" Width="@item.Entity.TableWidth">
                     @{
-                        var obj = context.GetObjValue(item.TypeName);
+                        var obj = context.GetObjValue(item.Entity.FieldName);
                         if (obj != null)
                         {
                             var value = (int)obj;
@@ -132,18 +132,18 @@
                 </Column>
                 continue;
             }
-            switch (typeNmae)
+            switch (FieldName)
             {
                 case "string":
-                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="string" Width="@item.Width" />
+                    <Column Title="@item.Entity.DisplayName" DataIndex="@item.Entity.FieldName" TData="string" Width="@item.Entity.TableWidth" />
                     break;
                 case "int32":
-                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="int?" />
+                    <Column Title="@item.Entity.DisplayName" DataIndex="@item.Entity.FieldName" TData="int?" />
                     break;
                 case "boolean":
-                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="bool?">
+                    <Column Title="@item.Entity.DisplayName" DataIndex="@item.Entity.FieldName" TData="bool?">
                         @{
-                            var obj = context.GetObjValue(item.TypeName);
+                            var obj = context.GetObjValue(item.Entity.FieldName);
                             if (obj != null)
                             {
                                 var value = (bool)obj;
@@ -160,28 +160,28 @@
                     </Column>
                     break;
                 case "guid":
-                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="Guid?" />
+                    <Column Title="@item.Entity.DisplayName" DataIndex="@item.Entity.FieldName" TData="Guid?" />
                     break;
                 case "datetime":
-                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="DateTime?" />
+                    <Column Title="@item.Entity.DisplayName" DataIndex="@item.Entity.FieldName" TData="DateTime?" />
                     break;
                 case "double":
-                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="double?">
+                    <Column Title="@item.Entity.DisplayName" DataIndex="@item.Entity.FieldName" TData="double?">
                     </Column>
                     break;
                 case "float":
-                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="float?" />
+                    <Column Title="@item.Entity.DisplayName" DataIndex="@item.Entity.FieldName" TData="float?" />
                     break;
                 case "short":
-                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="short?" />
+                    <Column Title="@item.Entity.DisplayName" DataIndex="@item.Entity.FieldName" TData="short?" />
                     break;
                 case "byte":
-                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="byte?" />
+                    <Column Title="@item.Entity.DisplayName" DataIndex="@item.Entity.FieldName" TData="byte?" />
                     break;
                 case "icon"://特殊字段编码
-                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="string">
+                    <Column Title="@item.Entity.DisplayName" DataIndex="@item.Entity.FieldName" TData="string">
                         @{
-                            var obj = context.GetObjValue(item.TypeName);
+                            var obj = context.GetObjValue(item.Entity.FieldName);
                             if (obj != null)
                             {
                                 <Icon Type="@obj.ToString()" Theme="outline" />
@@ -190,9 +190,9 @@
                     </Column>
                     break;
                 case "headportrait":
-                    <Column Title="@item.DisplayName" DataIndex="@item.TypeName" TData="string">
+                    <Column Title="@item.Entity.DisplayName" DataIndex="@item.Entity.FieldName" TData="string">
                         @{
-                            var obj = context.GetObjValue(item.TypeName);
+                            var obj = context.GetObjValue(item.Entity.FieldName);
                             if (obj != null)
                             {
                                 <Avatar Src="@obj.ToString()" />
@@ -212,7 +212,7 @@
 
         if (Buttons != null && Buttons.Count > 0)
         {
-                List<ViewMenu> but = Buttons.Where(u => u.ButtonPosition == ButtonPosition.Row && u.MenuType == MenuType.Button).ToList();
+                List<ViewMenu> but = Buttons.Where(u => u.Entity.ButtonPosition == ButtonPosition.Row && u.Entity.MenuType == MenuType.Button).ToList();
                 if (but.Count > 0)
                 {
                     <ActionColumn Title="操作">
@@ -271,9 +271,9 @@
     RenderFragment CreatePackButton(ViewMenu menu, TData context)
     {
         RenderFragment render = null;
-        if (menu.IsDoubleTrue)
+        if (menu.Entity.IsDoubleTrue)
         {
-            string title = $"确认{menu.MenuName}该数据吗";
+            string title = $"确认{menu.Entity.MenuName}该数据吗";
             render =@<Popconfirm Title='@title'
                                  OkText='确认'
                                  CancelText="取消"
@@ -292,16 +292,16 @@ RenderFragment CreateButton(ViewMenu menu, TData context)
 {
 
 RenderFragment render = null;
-string type = menu.ButtonPosition == ButtonPosition.Default ? "primary" : "link";
-bool danger = menu.IsDoubleTrue == true ? true : false;
-render =@<Button Icon="@menu.Icon" Type="@type" Danger="danger" Style="margin-bottom:16px" OnClick="() => doubleTrueClick(menu, context)">
-    @if (menu.TargetType == TargetType.NewLabel)
+string type = menu.Entity.ButtonPosition == ButtonPosition.Default ? "primary" : "link";
+bool danger = menu.Entity.IsDoubleTrue == true ? true : false;
+render =@<Button Icon="@menu.Entity.Icon" Type="@type" Danger="danger" Style="margin-bottom:16px" OnClick="() => doubleTrueClick(menu, context)">
+    @if (menu.Entity.TargetType == TargetType.NewLabel)
     {
-        <a href="@menu.Url" target="_blank">@menu.MenuName</a>
+        <a href="@menu.Entity.Url" target="_blank">@menu.Entity.MenuName</a>
     }
     else
     {
-        @menu.MenuName
+        @menu.Entity.MenuName
     }
 </Button>;
 return render;
@@ -309,7 +309,7 @@ return render;
 
 void doubleTrueClick(ViewMenu menu, TData context)
 {
-if (menu.IsDoubleTrue) return;
+if (menu.Entity.IsDoubleTrue) return;
 ButtonClick(menu, context);
 }
 

@@ -1,8 +1,10 @@
 ﻿using AntDesign;
 using Caviar.AntDesignUI.Helper;
 using Caviar.SharedKernel;
+using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,7 +47,7 @@ namespace Caviar.AntDesignUI.Pages.PersonalCenter
         {
             await base.OnInitializedAsync();
             var result = await Http.GetJson<ViewUser>("User/MyDetails");
-            if (result.Status != HttpState.OK) return;
+            if (result.Status != StatusCodes.Status200OK) return;
             UserData = result.Data;
             StateHasChanged();
         }

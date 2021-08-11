@@ -1,5 +1,5 @@
 ﻿using AntDesign;
-using Caviar.SharedKernel;
+using Caviar.SharedKernel.View;
 using Caviar.AntDesignUI.Helper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Caviar.AntDesignUI.Shared
 {
@@ -55,7 +56,7 @@ namespace Caviar.AntDesignUI.Shared
 
         public void MenuItemClick(ViewMenu menu)
         {
-            NavigationManager.NavigateTo(menu.Url);
+            NavigationManager.NavigateTo(menu.Entity.Url);
         }
 
         /// <summary>
@@ -97,7 +98,7 @@ namespace Caviar.AntDesignUI.Shared
         async Task<List<ViewMenu>> GetMenus()
         {
             var result = await Http.GetJson<List<ViewMenu>> ("Menu/GetMenus");
-            if (result.Status != HttpState.OK) return new List<ViewMenu>();
+            if (result.Status != StatusCodes.Status200OK) return new List<ViewMenu>();
             return result.Data;
         }
 

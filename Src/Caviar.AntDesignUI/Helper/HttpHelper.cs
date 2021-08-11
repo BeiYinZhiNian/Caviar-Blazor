@@ -2,17 +2,12 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Configuration;
 using System;
-using Caviar.SharedKernel;
-using Caviar.AntDesignUI.Shared;
 using AntDesign;
 using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json;
-using System.Text;
-using System.Web;
 using Microsoft.JSInterop;
+using Microsoft.AspNetCore.Http;
+using Caviar.SharedKernel;
 
 namespace Caviar.AntDesignUI.Helper
 {
@@ -127,13 +122,11 @@ namespace Caviar.AntDesignUI.Helper
                 result = new ResultMsg<T>()
                 {
                     Title = "请求失败，发生请求错误",
-                    Uri = "http://www.baidu.com/s?wd=" + HttpUtility.UrlEncode(e.Message),
                     Detail = e.Message,
                     Status = 500,
                 };
             }
             Response(result);
-            Tips(result);
             return result;
         }
         
@@ -141,42 +134,29 @@ namespace Caviar.AntDesignUI.Helper
         {
             switch (result.Status)
             {
-                case HttpState.OK://正确响应
+                case StatusCodes.Status200OK://正确响应
                     break;
-                case HttpState.Redirect://重定向专用
-                    _navigationManager.NavigateTo(result.Uri);
+                case StatusCodes.Status307TemporaryRedirect://重定向专用
+                    _navigationManager.NavigateTo(result.Title);
                     break;
-                case HttpState.Unauthorized://退出登录
+                case StatusCodes.Status401Unauthorized://退出登录
                     await _jSRuntime.InvokeVoidAsync("delCookie", Config.CookieName);
                     IsSetCookie = false;
-                    _navigationManager.NavigateTo(result.Uri);
+                    _navigationManager.NavigateTo(result.Title);
                     break;
-                case HttpState.NotPermission://只用于提示
-                case HttpState.Error:
-                    break;
-                case HttpState.NotFound:
+                case StatusCodes.Status404NotFound:
                     _navigationManager.NavigateTo("/Exception/404");
                     break;
-                case HttpState.InternaError://发生严重错误
+                case StatusCodes.Status500InternalServerError://发生严重错误
                 default:
-                    result.IsTips = false;
                     string msg = "";
                     if (!string.IsNullOrEmpty(result.Detail))
                     {
                         msg += "错误详细信息：" + result.Detail + "<br>";
                     }
-                    if (result.Errors != null)
+                    if (!string.IsNullOrEmpty(result.Url))
                     {
-                        msg += "错误提示：";
-                        foreach (var item in result.Errors)
-                        {
-                            msg += "<br>" + item.Key + ":";
-                            msg += item.Value + "<br>";
-                        }
-                    }
-                    if (!string.IsNullOrEmpty(result.Uri))
-                    {
-                        msg += $"<a target='_Blank' href='{result.Uri}'>点击查看解决办法</a><br>";
+                        msg += $"<a target='_Blank' href='{result.Url}'>点击查看解决办法</a><br>";
                     }
                     await _notificationService.Open(new NotificationConfig()
                     {
@@ -185,15 +165,6 @@ namespace Caviar.AntDesignUI.Helper
                         NotificationType = NotificationType.Error
                     });
                     break;
-            }
-        }
-
-
-        void Tips(ResultMsg result)
-        {
-            if (result.IsTips && result.Status!= HttpState.OK)
-            {
-                _message.Warn($"{result.Title} 状态码:{result.Status}");
             }
         }
 

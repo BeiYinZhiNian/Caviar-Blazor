@@ -1,4 +1,4 @@
-﻿using Caviar.SharedKernel;
+﻿using Caviar.SharedKernel.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +9,10 @@ namespace Caviar.AntDesignUI.Pages.UserGroup
 {
     public partial class Index
     {
-        protected override Task<List<ViewUserGroup>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
-        {
-            pageSize = 100;
-            return base.GetPages(pageIndex, pageSize, isOrder);
-        }
+        //protected override Task<List<ViewUserGroup>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
+        //{
+        //    pageSize = 100;
+        //    return base.GetPages(pageIndex, pageSize, isOrder);
+        //}
     }
 }

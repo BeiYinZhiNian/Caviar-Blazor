@@ -1,5 +1,8 @@
 ﻿using AntDesign;
 using Caviar.SharedKernel;
+using Caviar.SharedKernel.View;
+using Caviar.SharedKernel.View;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +15,11 @@ namespace Caviar.AntDesignUI.Pages.User
     {
         protected override async Task RowCallback(RowCallbackData<ViewUser> row)
         {
-            switch (row.Menu.MenuName)
+            switch (row.Menu.Entity.MenuName)
             {
                 case "删除":
-                    row.Data.Password = CommonHelper.SHA256EncryptString("123456");//密码不能为空，所以构建一个初始密码
-                    await Delete(row.Menu.Url, row.Data);
+                    row.Data.Entity.PasswordHash = CommonHelper.SHA256EncryptString("123456");//密码不能为空，所以构建一个初始密码
+                    await Delete(row.Menu.Entity.Url, row.Data);
                     Refresh();
                     break;
                 default:
@@ -32,7 +35,7 @@ namespace Caviar.AntDesignUI.Pages.User
             MappingQuery.Add("UserGroupName", "UserGroupId");//将映射字段加入到字典
             await base.OnInitializedAsync();
             var result = await Http.GetJson<PageData<ViewUserGroup>>("UserGroup/Index?pageSize=100");
-            if (result.Status != HttpState.OK) return;
+            if (result.Status != StatusCodes.Status200OK) return;
             ViewUserGroups = result.Data.Rows;
         }
         string UserGroupName = "请选择部门";

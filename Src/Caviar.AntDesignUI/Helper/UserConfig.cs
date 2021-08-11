@@ -1,4 +1,5 @@
 ﻿using Caviar.SharedKernel;
+using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.JSInterop;

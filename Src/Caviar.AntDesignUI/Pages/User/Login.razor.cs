@@ -1,23 +1,19 @@
 ﻿using AntDesign;
-using Caviar.SharedKernel;
+using Caviar.SharedKernel.View;
 using Caviar.AntDesignUI.Helper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using Microsoft.JSInterop;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Web;
+using Caviar.SharedKernel;
 
 namespace Caviar.AntDesignUI.Pages.User
 {
     partial class Login
     {
         bool Loading { get; set; }
-        public SysUser SysLoginUserData { get; set; } = new SysUser(){ UserName = "admin" , Password = "123456"};
+        public ViewUser SysLoginUserData { get; set; } = new ViewUser() { Entity = new SharedKernel.Entities.ApplicationUser { UserName = "admin" } };
+
+        public string Password { get; set; } = "123456";
         [Inject] public NavigationManager NavigationManager { get; set; }
 
         [Inject]
@@ -37,9 +33,8 @@ namespace Caviar.AntDesignUI.Pages.User
         public async void SubmitLogin()
         {
             Loading = true;
-            SysLoginUserData.Password = CommonHelper.SHA256EncryptString(SysLoginUserData.Password);
-            var result = await http.PostJson<SysUser, ViewUserToken>("User/Login",SysLoginUserData);
-            SysLoginUserData.Password = "";
+            SysLoginUserData.Entity.PasswordHash = CommonHelper.SHA256EncryptString(Password);
+            var result = await http.PostJson<ViewUser, ViewUserToken>("User/Login",SysLoginUserData);
             Loading = false;
             if (result.Status==200)
             {

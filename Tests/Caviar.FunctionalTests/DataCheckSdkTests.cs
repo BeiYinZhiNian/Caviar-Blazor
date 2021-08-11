@@ -1,6 +1,6 @@
 ﻿using Caviar.Core.Services;
 using Caviar.Infrastructure.API;
-using Caviar.SharedKernel;
+using Caviar.SharedKernel.View;
 using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Caviar.SharedKernel.View;
 using Caviar.Core.Services.Filter;
+using Caviar.SharedKernel;
 
 namespace Caviar.FunctionalTests
 {

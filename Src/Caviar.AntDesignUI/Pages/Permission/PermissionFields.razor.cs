@@ -1,5 +1,5 @@
 ﻿using Caviar.AntDesignUI.Helper;
-using Caviar.SharedKernel;
+using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -8,14 +8,15 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using AntDesign;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.AspNetCore.Http;
 
 namespace Caviar.AntDesignUI.Pages.Permission
 {
     public partial class PermissionFields
     {
-        List<ViewModelFields> Models = new List<ViewModelFields>();
-        List<ViewModelFields> Fields { get; set; }
-        ViewModelFields CurrentModel { get; set; }
+        List<ViewFields> Models = new List<ViewFields>();
+        List<ViewFields> Fields { get; set; }
+        ViewFields CurrentModel { get; set; }
         [Inject]
         NavigationManager NavigationManager { get; set; }
         [Inject]
@@ -41,17 +42,17 @@ namespace Caviar.AntDesignUI.Pages.Permission
 
         public async Task GetModels()
         {
-            var result = await Http.GetJson<List<ViewModelFields>>("Permission/GetModels?isView=true");
-            if (result.Status != HttpState.OK) return;
+            var result = await Http.GetJson<List<ViewFields>>("Permission/GetModels?isView=true");
+            if (result.Status != StatusCodes.Status200OK) return;
             Models = result.Data;
         }
 
-        public async Task GetFields(ViewModelFields model)
+        public async Task GetFields(ViewFields model)
         {
-            var result = await Http.GetJson<List<ViewModelFields>>($"{Url}?modelName={model.TypeName}&roleId={Role.Id}");
-            if (result.Status != HttpState.OK) return;
+            var result = await Http.GetJson<List<ViewFields>>($"{Url}?modelName={model.Entity.FieldName}&roleId={Role.Id}");
+            if (result.Status != StatusCodes.Status200OK) return;
             CurrentModel = model;
-            FieldName = model.DisplayName + "-数据字段";
+            FieldName = model.Entity.DisplayName + "-数据字段";
             Fields = result.Data;
         }
 
@@ -61,9 +62,9 @@ namespace Caviar.AntDesignUI.Pages.Permission
             editId = id;
         }
 
-        void stopEdit(ViewModelFields model)
+        void stopEdit(ViewFields model)
         {
-            if(string.IsNullOrEmpty(model.Width) || int.TryParse(model.Width, out int result))
+            if(string.IsNullOrEmpty(model.Entity.TableWidth) || int.TryParse(model.Entity.TableHeight, out int result))
             {
                 editId = null;
             }
@@ -81,8 +82,8 @@ namespace Caviar.AntDesignUI.Pages.Permission
                 await MessageService.Error("请先选择所要保存的模型");
                 return;
             }
-            var result = await Http.PostJson($"{Url}?fullName={CurrentModel.TypeName}&roleId={Role.Id}", Fields);
-            if (result.Status != HttpState.OK) return;
+            var result = await Http.PostJson($"{Url}?fullName={CurrentModel.Entity.FieldName}&roleId={Role.Id}", Fields);
+            if (result.Status != StatusCodes.Status200OK) return;
             await MessageService.Success("保存完毕");
         }
 

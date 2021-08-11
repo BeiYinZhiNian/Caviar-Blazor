@@ -7,16 +7,16 @@
             <GridCol>
                 <Card Style="width:300px;" Title=@("个人信息") Bordered Hoverable>
                     <ChildContent>
-                        <CardMeta AvatarTemplate="@GetHeadPortrait()" TitleTemplate="@GetTitleRender()" Description="@UserData.Remark" />
+                        <CardMeta AvatarTemplate="@GetHeadPortrait()" TitleTemplate="@GetTitleRender()" Description="@UserData.Entity.Remark" />
                         <body>
                             <p style="margin-top:10px">
-                                <Text>部门：</Text><Text>@UserData.UserGroupName</Text>
+                                <Text>部门：</Text><Text>@UserData.Entity.UserName</Text>
                             </p>
                             <p>
-                                <Text>手机号：</Text><Text>@UserData.PhoneNumber</Text>
+                                <Text>手机号：</Text><Text>@UserData.Entity.PhoneNumber</Text>
                             </p>
                             <p>
-                                <Text>电子邮箱：</Text><Text>@UserData.EmailNumber</Text>
+                                <Text>电子邮箱：</Text><Text>@UserData.Entity.Email</Text>
                             </p>
                         </body>
                     </ChildContent>
@@ -49,12 +49,12 @@
 
         public RenderFragment GetHeadPortrait()
             {
-                RenderFragment avatarTemplate =@<Avatar Style="background-color: #87d068" Src="@UserData.HeadPortrait" Icon="user" />;
+                RenderFragment avatarTemplate =@<Avatar Style="background-color: #87d068" Src="@UserData.Entity.HeadPortrait" Icon="user" />;
         return avatarTemplate;
     }
     public RenderFragment GetTitleRender()
     {
-        RenderFragment titleRender =@<Title Level="4">@UserData.UserName</Title>;
+        RenderFragment titleRender =@<Title Level="4">@UserData.Entity.UserName</Title>;
         return titleRender;
     }
 

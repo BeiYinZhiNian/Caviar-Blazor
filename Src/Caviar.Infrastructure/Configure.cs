@@ -1,9 +1,9 @@
 ﻿using Caviar.Core;
 using Caviar.Core.Interface;
-using Caviar.Infrastructure.Identity;
 using Caviar.Infrastructure.Persistence;
 using Caviar.Infrastructure.Persistence.Sys;
 using Caviar.SharedKernel;
+using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,7 +33,7 @@ namespace Caviar.Infrastructure
         /// <typeparam name="TUser"></typeparam>
         /// <typeparam name="TRole"></typeparam>
         /// <param name="services"></param>
-        public static void AddCaviarIdentity<TUser, TRole>(this IServiceCollection services, Action<DbContextOptionsBuilder> optionsAction = null, ServiceLifetime contextLifetime = ServiceLifetime.Scoped, ServiceLifetime optionsLifetime = ServiceLifetime.Scoped)
+        public static void AddCaviarDbContext<TUser, TRole>(this IServiceCollection services, Action<DbContextOptionsBuilder> optionsAction = null, ServiceLifetime contextLifetime = ServiceLifetime.Scoped, ServiceLifetime optionsLifetime = ServiceLifetime.Scoped)
             where TUser : IdentityUser<int>, IBaseEntity
             where TRole : IdentityRole<int>, IBaseEntity
         {
@@ -52,9 +52,9 @@ namespace Caviar.Infrastructure
         /// <typeparam name="TUser"></typeparam>
         /// <typeparam name="TRole"></typeparam>
         /// <param name="services"></param>
-        public static void AddCaviarIdentity(this IServiceCollection services, Action<DbContextOptionsBuilder> optionsAction = null, ServiceLifetime contextLifetime = ServiceLifetime.Scoped, ServiceLifetime optionsLifetime = ServiceLifetime.Scoped)
+        public static void AddCaviarDbContext(this IServiceCollection services, Action<DbContextOptionsBuilder> optionsAction = null, ServiceLifetime contextLifetime = ServiceLifetime.Scoped, ServiceLifetime optionsLifetime = ServiceLifetime.Scoped)
         {
-            services.AddCaviarIdentity<ApplicationUser, ApplicationRole>(optionsAction, contextLifetime, optionsLifetime);
+            services.AddCaviarDbContext<ApplicationUser, ApplicationRole>(optionsAction, contextLifetime, optionsLifetime);
         }
 
 

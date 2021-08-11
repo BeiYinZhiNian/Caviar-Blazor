@@ -1,10 +1,13 @@
 ﻿using AntDesign;
 using Caviar.AntDesignUI.Helper;
-using Caviar.SharedKernel;
+using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Caviar.SharedKernel;
+
 namespace Caviar.AntDesignUI
 {
     public partial class DataComponentBase<ViewT> : CavComponentBase,ITableTemplate where ViewT : class, new()
@@ -31,7 +34,7 @@ namespace Caviar.AntDesignUI
             {
                 var data = (IBaseEntity)DataSource;
                 var result = await Http.GetJson<List<ViewUserGroup>>("Permission/GetPermissionGroup");
-                if (result.Status == HttpState.OK)
+                if (result.Status == StatusCodes.Status200OK)
                 {
                     ViewUserGroups = result.Data;
                 }
@@ -39,10 +42,10 @@ namespace Caviar.AntDesignUI
                 if (data.Id == 0)
                 {
                     data.Number = "999";
-                    data.DataId = UserToken.UserGroupId == 0 ? null : UserToken.UserGroupId;
+                    data.DataId = UserToken.UserGroupId;
                 }
                 var userGroup = list?.FirstOrDefault(u => u.Id == data.DataId);
-                if (userGroup != null) UserGroupName = userGroup.Name;
+                if (userGroup != null) UserGroupName = userGroup.Entity.Name;
                 await base.OnInitializedAsync();
             }
         }
@@ -74,7 +77,7 @@ namespace Caviar.AntDesignUI
         public virtual async Task<bool> FormSubmit()
         {
             var result = await Http.PostJson(Url, DataSource);
-            if (result.Status == HttpState.OK)
+            if (result.Status == StatusCodes.Status200OK)
             {
                 Message.Success(SuccMsg);
                 return true;
@@ -86,7 +89,7 @@ namespace Caviar.AntDesignUI
         public void OnUserGroupCancel()
         {
             UserGroupName = "请选择部门";
-            ((IBaseEntity)DataSource).DataId = null;
+            ((IBaseEntity)DataSource).DataId = 0;
         }
 
         public void OnUserGroupSelect(TreeEventArgs<ViewUserGroup> args)

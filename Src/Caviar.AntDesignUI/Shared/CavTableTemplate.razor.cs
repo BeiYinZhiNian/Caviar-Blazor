@@ -1,5 +1,5 @@
 ﻿using AntDesign;
-using Caviar.SharedKernel;
+using Caviar.SharedKernel.View;
 using Caviar.AntDesignUI.Helper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Web;
+using Caviar.SharedKernel;
 
 namespace Caviar.AntDesignUI.Shared
 {
@@ -62,7 +63,7 @@ namespace Caviar.AntDesignUI.Shared
         /// 模型字段
         /// </summary>
         [Parameter]
-        public List<ViewModelFields> ViewModelFields { get; set; }
+        public List<ViewFields> ViewFields { get; set; }
         /// <summary>
         /// 翻页回调
         /// </summary>
@@ -72,7 +73,7 @@ namespace Caviar.AntDesignUI.Shared
         /// 获取列表组件
         /// </summary>
         [Parameter]
-        public Func<ViewModelFields, RenderFragment> GetTableItems { get; set; }
+        public Func<ViewFields, RenderFragment> GetTableItems { get; set; }
         /// <summary>
         /// 获取搜索组件
         /// </summary>
@@ -105,27 +106,27 @@ namespace Caviar.AntDesignUI.Shared
                 Menu = menu,
                 Data = data,
             };
-            switch (menu.TargetType)
+            switch (menu.Entity.TargetType)
             {
                 case TargetType.CurrentPage:
                     var parameter = "";
-                    if (menu.ButtonPosition == ButtonPosition.Row)
+                    if (menu.Entity.ButtonPosition == ButtonPosition.Row)
                     {
                         parameter = $"?parameter={HttpUtility.UrlEncode(JsonSerializer.Serialize(CurrRow.Data))}"; 
                     }
-                    Navigation.NavigateTo(menu.Url + parameter);
+                    Navigation.NavigateTo(menu.Entity.Url + parameter);
                     break;
                 case TargetType.EjectPage:
                     Dictionary<string,object> paramenter = new Dictionary<string, object>();
-                    if (menu.ButtonPosition == ButtonPosition.Row)
+                    if (menu.Entity.ButtonPosition == ButtonPosition.Row)
                     {
                         //因为引用类型，这里进行一次转换，相当于深度复制
                         //否则更改内容然后取消，列表会发生改变
                         CurrRow.Data.AToB(out TData dataSource);
                         paramenter.Add("DataSource", dataSource);
                     }
-                    paramenter.Add("Url", menu.Url);
-                    await CavModal.Create(menu.Url, menu.MenuName, HandleOk, paramenter);
+                    paramenter.Add("Url", menu.Entity.Url);
+                    await CavModal.Create(menu.Entity.Url, menu.Entity.MenuName, HandleOk, paramenter);
                     break;
                 case TargetType.NewLabel:
                     //await JSRuntime.InvokeVoidAsync("open", menu.Url, "_blank");

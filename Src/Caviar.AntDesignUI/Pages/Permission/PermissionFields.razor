@@ -2,12 +2,12 @@
 
 <Row Gutter="@gutter">
     <AntDesign.Col Flex="2">
-        <Card Bordered="false" Title=@(Role.RoleName + "-数据模型")>
+        <Card Bordered="false" Title=@(Role.Entity.Name + "-数据模型")>
             <Body>
-                <Table TItem="ViewModelFields" DataSource="@Models">
-                    <Column @bind-Field="@context.TypeName">
+                <Table TItem="ViewFields" DataSource="@Models">
+                    <Column @bind-Field="@context.Entity.FieldName">
                     </Column>
-                    <Column @bind-Field="@context.DisplayName">
+                    <Column @bind-Field="@context.Entity.DisplayName">
                     </Column>
                     <ActionColumn Title="操作">
                         <Space>
@@ -31,56 +31,56 @@
                 </Button>
             </Extra>
             <Body>
-                <Table TItem="ViewModelFields" DataSource="@Fields" RowClassName="@(_=>"editable-row")" Bordered>
-                    <Column @bind-Field="@context.TypeName">
+                <Table TItem="ViewFields" DataSource="@Fields" RowClassName="@(_=>"editable-row")" Bordered>
+                    <Column @bind-Field="@context.Entity.FieldName">
                     </Column>
-                    <Column @bind-Field="@context.DisplayName">
+                    <Column @bind-Field="@context.Entity.DisplayName">
                         @{
-                            var _editId = context.TypeName + "-DisplayName";
+                            var _editId = context.Entity.FieldName + "-DisplayName";
                             if (editId == _editId)
                             {
-                                <Input Type="text" Style="width:50%" @bind-Value="context.DisplayName" OnBlur="()=>stopEdit(context)" AutoFocus />
+                                <Input Type="text" Style="width:50%" @bind-Value="context.Entity.DisplayName" OnBlur="()=>stopEdit(context)" AutoFocus />
                             }
                             else
                             {
                                 <div class="editable-cell-value-wrap" @onclick="()=>startEdit(_editId)">
-                                    @context.DisplayName
+                                    @context.Entity.DisplayName
                                 </div>
                             }
                         }
                     </Column>
-                    <Column @bind-Field="@context.Number">
+                    <Column @bind-Field="@context.Entity.Number">
                         @{
-                            var _editId = context.TypeName + "-Number";
+                            var _editId = context.Entity.FieldName + "-Number";
                             if (editId == _editId)
                             {
-                                <Input Type="text" Style="width:50%" @bind-Value="context.Number" OnBlur="()=>stopEdit(context)" AutoFocus />
+                                <Input Type="text" Style="width:50%" @bind-Value="context.Entity.Number" OnBlur="()=>stopEdit(context)" AutoFocus />
                             }
                             else
                             {
                                 <div class="editable-cell-value-wrap" @onclick="()=>startEdit(_editId)">
-                                    @context.Number
+                                    @context.Entity.Number
                                 </div>
                             }
                         }
                     </Column>
-                    <Column @bind-Field="@context.Width">
+                    <Column @bind-Field="@context.Entity.TableWidth">
                         @{
-                            var _editId = context.TypeName + "-Width";
+                            var _editId = context.Entity.FieldName + "-Width";
                             if (editId == _editId)
                             {
-                                <Input Type="text" Style="width:50%" @bind-Value="context.Width" OnBlur="()=>stopEdit(context)" AutoFocus />
+                                <Input Type="text" Style="width:50%" @bind-Value="context.Entity.TableWidth" OnBlur="()=>stopEdit(context)" AutoFocus />
                             }
                             else
                             {
                                 <div class="editable-cell-value-wrap" @onclick="()=>startEdit(_editId)">
-                                    @context.Width
+                                    @context.Entity.TableWidth
                                 </div>
                             }
                         }
                     </Column>
-                    <Column @bind-Field="@context.IsPanel">
-                        <Switch @bind-Value="@context.IsPanel"></Switch>
+                    <Column @bind-Field="@context.Entity.IsPanel">
+                        <Switch @bind-Value="@context.Entity.IsPanel"></Switch>
                     </Column>
                     <Column @bind-Field="@context.IsPermission">
                         <Switch @bind-Value="@context.IsPermission"></Switch>

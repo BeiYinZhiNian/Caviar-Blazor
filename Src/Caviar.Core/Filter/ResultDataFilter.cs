@@ -1,4 +1,4 @@
-﻿using Caviar.SharedKernel;
+﻿using Caviar.SharedKernel.View;
 using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Caviar.SharedKernel;
 
 namespace Caviar.Core.Services.Filter
 {

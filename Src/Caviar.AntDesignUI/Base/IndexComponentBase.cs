@@ -1,7 +1,9 @@
 ﻿using AntDesign;
 using Caviar.AntDesignUI.Helper;
 using Caviar.SharedKernel;
+using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +39,7 @@ namespace Caviar.AntDesignUI
         /// <summary>
         /// 模型字段
         /// </summary>
-        protected List<ViewModelFields> ViewModelFields { get; set; } = new List<ViewModelFields>();
+        protected List<ViewFields> ViewFields { get; set; } = new List<ViewFields>();
         public ViewQuery Query { get; set; }
         protected string BaseController { get; set; }
         public bool Loading { get; set; }
@@ -56,7 +58,7 @@ namespace Caviar.AntDesignUI
         protected virtual async Task<List<ViewT>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
             var result = await Http.GetJson<PageData<ViewT>>($"{Url}?pageIndex={pageIndex}&pageSize={pageSize}&isOrder={isOrder}");
-            if (result.Status != HttpState.OK) return null;
+            if (result.Status != StatusCodes.Status200OK) return null;
             if (result.Data != null)
             {
                 DataSource = result.Data.Rows;
@@ -75,9 +77,9 @@ namespace Caviar.AntDesignUI
         protected virtual async Task<List<ViewMenu>> GetPowerButtons()
         {
             var result = await Http.GetJson<List<ViewMenu>>("Menu/GetButtons?url=" + Url);
-            if (result.Status != HttpState.OK) return null;
+            if (result.Status != StatusCodes.Status200OK) return null;
             Buttons = result.Data;
-            var queryButton = Buttons.SingleOrDefault(u => u.Url == BaseController + "/FuzzyQuery");
+            var queryButton = Buttons.SingleOrDefault(u => u.Entity.Url == BaseController + "/FuzzyQuery");
             if (queryButton != null)
             {
                 Query = new ViewQuery();
@@ -88,12 +90,12 @@ namespace Caviar.AntDesignUI
         /// 获取模型字段
         /// </summary>
         /// <returns></returns>
-        protected virtual async Task<List<ViewModelFields>> GetModelFields()
+        protected virtual async Task<List<ViewFields>> GetModelFields()
         {
-            var result = await Http.GetJson<List<ViewModelFields>>($"{BaseController}/GetFields");
-            if (result.Status != HttpState.OK) return null;
-            ViewModelFields = result.Data;
-            return ViewModelFields;
+            var result = await Http.GetJson<List<ViewFields>>($"{BaseController}/GetFields");
+            if (result.Status != StatusCodes.Status200OK) return null;
+            ViewFields = result.Data;
+            return ViewFields;
         }
         /// <summary>
         /// 删除数据
@@ -103,7 +105,7 @@ namespace Caviar.AntDesignUI
         {
             //删除单条
             var result = await Http.PostJson(url, data);
-            if (result.Status != HttpState.OK) return false;
+            if (result.Status != StatusCodes.Status200OK) return false;
             Message.Success("删除成功");
             return true;
         }
@@ -114,10 +116,10 @@ namespace Caviar.AntDesignUI
         CavModal CavModal { get; set; }
         protected virtual async Task RowCallback(RowCallbackData<ViewT> row)
         {
-            switch (row.Menu.MenuName)
+            switch (row.Menu.Entity.MenuName)
             {
                 case "删除":
-                    await Delete(row.Menu.Url, row.Data);
+                    await Delete(row.Menu.Entity.MenuName, row.Data);
                     break;
                 case "修改":
                     break;
@@ -135,7 +137,7 @@ namespace Caviar.AntDesignUI
         protected virtual async void FuzzyQueryCallback()
         {
             var result = await Http.PostJson<ViewQuery, PageData<ViewT>>(BaseController + "/FuzzyQuery", Query);
-            if (result.Status != HttpState.OK) return;
+            if (result.Status != StatusCodes.Status200OK) return;
             DataSource = result.Data.Rows;
             Total = result.Data.Total;
             PageIndex = result.Data.PageIndex;

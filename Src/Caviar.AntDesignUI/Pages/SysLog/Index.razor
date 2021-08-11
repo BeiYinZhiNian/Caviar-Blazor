@@ -7,6 +7,8 @@
 *@
 @page "/Log/Index"
 @using Caviar.SharedKernel
+@using Caviar.SharedKernel.Entities
+@using Microsoft.AspNetCore.Http;
 @inherits IndexComponentBase<ViewLog>
 @namespace Caviar.AntDesignUI.Pages.SysLog
 <CavTableTemplate TData="ViewLog"
@@ -16,7 +18,7 @@
                   Total="Total"
                   Buttons="Buttons"
                   Query="Query"
-                  ViewModelFields="ViewModelFields"
+                  ViewFields="ViewFields"
                   PageIndexChanged="PageIndexChanged"
                   RowCallback="RowCallback"
                   Loading="Loading"
@@ -26,16 +28,17 @@
 
 @code{
 
-    public RenderFragment GetTableItems(ViewModelFields fields)
+    public RenderFragment GetTableItems(ViewFields viewFields)
     {
+        var fields = viewFields.Entity;
         RenderFragment render = null;
-        var context = fields.Value;
-        switch (fields.TypeName.ToLower())
+        var context = viewFields.Value;
+        switch (fields.FieldName.ToLower())
         {
             case "elapsed":
-                render =@<Column Title="@fields.DisplayName" TData="double" Width="@fields.Width">
+                render =@<Column Title="@fields.DisplayName" TData="double" Width="@fields.TableWidth">
         @{
-            var obj = context.GetObjValue(fields.TypeName);
+            var obj = context.GetObjValue(fields.FieldName);
             if (obj != null)
             {
                 var value = (double)obj;
@@ -50,35 +53,35 @@
             }
         }
     </Column>;
-           break;
-           case "status":
-        render =@<Column Title="@fields.DisplayName" TData="int" Width="@fields.Width">
-        @{
-            var obj = context.GetObjValue(fields.TypeName);
-            if (obj != null)
+       break;
+   case "status":
+       render =@<Column Title="@fields.DisplayName" TData="int" Width="@fields.TableWidth">
+    @{
+        var obj = context.GetObjValue(fields.FieldName);
+        if (obj != null)
+        {
+            var value = (int)obj;
+            if (value == StatusCodes.Status200OK)
             {
-                var value = (int)obj;
-                if (value == HttpState.OK)
-                {
-                    <Tag Color="green">@value</Tag>
-                }
-                else
-                {
-                    <Tag Color="red-inverse">@value</Tag>
-                }
+                <Tag Color="green">@value</Tag>
+            }
+            else
+            {
+                <Tag Color="red-inverse">@value</Tag>
             }
         }
-    </Column>;
-                        break;
-                    case "loglevel":
-        render =@<Column Title="@fields.DisplayName" TData="string" Width="@fields.Width">
+    }
+</Column>;
+break;
+case "loglevel":
+render =@<Column Title="@fields.DisplayName" TData="string" Width="@fields.TableWidth">
     @{
-        var obj = context.GetObjValue(fields.TypeName);
+        var obj = context.GetObjValue(fields.FieldName);
         if (obj != null)
         {
             var value = (CavLogLevel)obj;
             var index = (int)value;
-            var str = fields.EnumValueName[index];
+            var str = viewFields.EnumValueName[index];
             switch (value)
             {
                 case CavLogLevel.Trace:
@@ -103,10 +106,10 @@
         }
     }
 </Column>;
-                        break;
-                    default:
-                        break;
-                }
-                return render;
-            }
+break;
+default:
+break;
+}
+return render;
+}
 }

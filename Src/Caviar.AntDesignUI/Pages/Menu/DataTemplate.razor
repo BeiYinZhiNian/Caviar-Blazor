@@ -12,15 +12,15 @@
 @page "/Menu/Update"
 <Form @ref="_meunForm" Model="@DataSource" OnFinish="FormSubmit">
     <FormItem Label='菜单名称'>
-        <Input @bind-Value="@context.MenuName" Style="width:50%" />
+        <Input @bind-Value="@context.Entity.MenuName" Style="width:50%" />
     </FormItem>
     <FormItem Label="上层目录">
         <Dropdown>
             <Overlay>
                 <Tree ShowIcon DataSource="SysMenus"
-                      TitleExpression="x => x.DataItem.MenuName"
+                      TitleExpression="x => x.DataItem.Entity.MenuName"
                       ChildrenExpression="x => x.DataItem.Children"
-                      IconExpression="x => x.DataItem.Icon"
+                      IconExpression="x => x.DataItem.Entity.Icon"
                       IsLeafExpression="x => x.DataItem.Children?.Count == 0"
                       KeyExpression="x => x.DataItem.Id.ToString()"
                       OnClick='e=>EventRecord(e)'
@@ -33,37 +33,37 @@
         </Dropdown>
     </FormItem>
     <FormItem Label="菜单类型">
-        <CavEnum TData="MenuType" @bind-Value="@context.MenuType"
+        <CavEnum TData="MenuType" @bind-Value="@context.Entity.MenuType"
                  OnChange="EventCallback.Factory.Create<MenuType>(this, CheckMenuType)"></CavEnum>
     </FormItem>
     <FormItem Label="按钮位置" Style="@buttonStrle">
-        <CavEnum TData="ButtonPosition" @bind-Value="@context.ButtonPosition"></CavEnum>
+        <CavEnum TData="ButtonPosition" @bind-Value="@context.Entity.ButtonPosition"></CavEnum>
     </FormItem>
     <FormItem Label="请求地址" Style="@visibility">
-        <Input @bind-Value="@context.Url">
+        <Input @bind-Value="@context.Entity.Url">
     </FormItem>
     <FormItem Label="打开方式" Style="@visibility">
-        <CavEnum TData="TargetType" @bind-Value="@context.TargetType"></CavEnum>
+        <CavEnum TData="TargetType" @bind-Value="@context.Entity.TargetType"></CavEnum>
     </FormItem>
     <FormItem Style="@buttonStrle">
-        <Checkbox @bind-Value="@context.IsDoubleTrue">需要二次确认</Checkbox>
+        <Checkbox @bind-Value="@context.Entity.IsDoubleTrue">需要二次确认</Checkbox>
     </FormItem>
     <FormItem Label="图标">
         <Space>
             <SpaceItem>
                 <Button OnClick="()=> { _visible = true; }">图标库</Button>
-                <CavModalIcon @bind-IconValue="DataSource.Icon" @bind-Visible="_visible"></CavModalIcon>
+                <CavModalIcon @bind-IconValue="DataSource.Entity.Icon" @bind-Visible="_visible"></CavModalIcon>
             </SpaceItem>
             <SpaceItem>
-                @if (!string.IsNullOrEmpty(DataSource.Icon))
+                @if (!string.IsNullOrEmpty(DataSource.Entity.Icon))
                 {
-                    <Icon Type="@DataSource.Icon" Theme="outline"></Icon>
+                    <Icon Type="@DataSource.Entity.Icon" Theme="outline"></Icon>
                 }
             </SpaceItem>
         </Space>
     </FormItem>
     <FormItem Label="编号">
-        <Input @bind-Value="@context.Number" Style="width: 20%;">
+        <Input @bind-Value="@context.Entity.Number" Style="width: 20%;">
     </FormItem>
     <FormItem Label='数据权限'>
         <CavUserGroup DataSource='ViewUserGroups'
@@ -82,21 +82,21 @@
     string buttonStrle = "display:none;";
     public void CheckMenuType()
     {
-        switch (DataSource.MenuType)
+        switch (DataSource.Entity.MenuType)
         {
             case MenuType.Catalog:
                 visibility = "display:none;";
                 buttonStrle = "display:none;";
-                DataSource.Url = "";
-                DataSource.ButtonPosition = ButtonPosition.Default;
-                DataSource.TargetType = TargetType.CurrentPage;
+                DataSource.Entity.Url = "";
+                DataSource.Entity.ButtonPosition = ButtonPosition.Default;
+                DataSource.Entity.TargetType = TargetType.CurrentPage;
                 break;
             case MenuType.Menu:
             case MenuType.API:
                 buttonStrle = "display:none;";
                 visibility = "";
-                DataSource.ButtonPosition = ButtonPosition.Default;
-                DataSource.TargetType = TargetType.CurrentPage;
+                DataSource.Entity.ButtonPosition = ButtonPosition.Default;
+                DataSource.Entity.TargetType = TargetType.CurrentPage;
                 break;
             case MenuType.Button:
                 visibility = "";

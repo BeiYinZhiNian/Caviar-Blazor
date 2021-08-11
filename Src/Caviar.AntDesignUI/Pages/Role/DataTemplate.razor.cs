@@ -1,5 +1,7 @@
 ﻿using AntDesign;
 using Caviar.SharedKernel;
+using Caviar.SharedKernel.View;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +37,7 @@ namespace Caviar.AntDesignUI.Pages.Role
         {
             string url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
             var result = await Http.GetJson<PageData<ViewRole>>($"{url}?pageSize=100");
-            if (result.Status != HttpState.OK) return;
+            if (result.Status != StatusCodes.Status200OK) return;
             if (DataSource.ParentId > 0)
             {
                 List<ViewRole> listData = new List<ViewRole>();
@@ -43,7 +45,7 @@ namespace Caviar.AntDesignUI.Pages.Role
                 var parent = listData.SingleOrDefault(u => u.Id == DataSource.ParentId);
                 if (parent != null)
                 {
-                    ParentName = parent.RoleName;
+                    ParentName = parent.Entity.Name;
                 }
             }
             ViewRoles = result.Data.Rows;

@@ -1,7 +1,9 @@
 ﻿using AntDesign;
 using Caviar.AntDesignUI.Helper;
 using Caviar.SharedKernel;
+using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,8 +40,8 @@ namespace Caviar.AntDesignUI.Shared
                 };
                 var result = fileinfo.File.GetResponse<ResultMsg<ViewEnclosure>>(options);
                 Http.Response(result);
-                if (result.Status != HttpState.OK) return;
-                result.Data.Path = Http.Http.BaseAddress.AbsoluteUri.Replace("/api/","") + CurrencyConstant.Enclosure + "/" + CurrencyConstant.HeadPortrait + "/" + result.Data.Name;
+                if (result.Status != StatusCodes.Status200OK) return;
+                result.Data.Entity.FilePath = Http.Http.BaseAddress.AbsoluteUri.Replace("/api/","") + CurrencyConstant.Enclosure + "/" + CurrencyConstant.HeadPortrait + "/" + result.Data.Entity.FileName;
                 if (OnEnclosureCallback.HasDelegate)
                 {
                     OnEnclosureCallback.InvokeAsync(result.Data);//回传服务器结果

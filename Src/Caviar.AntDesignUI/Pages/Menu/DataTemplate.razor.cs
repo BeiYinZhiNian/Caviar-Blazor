@@ -1,14 +1,12 @@
 ﻿using AntDesign;
-using Caviar.SharedKernel;
-using Caviar.AntDesignUI.Helper;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
-using Microsoft.AspNetCore.Components.Web;
-using System;
+using Caviar.SharedKernel.View;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Caviar.SharedKernel.View;
+using Caviar.SharedKernel;
 
 namespace Caviar.AntDesignUI.Pages.Menu
 {
@@ -27,7 +25,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
         async Task GetMenus()
         {
             var result = await Http.GetJson<PageData<ViewMenu>>("Menu/Index?pageSize=100");
-            if (result.Status != HttpState.OK) return;
+            if (result.Status != StatusCodes.Status200OK) return;
             if (DataSource.ParentId > 0)
             {
                 List<ViewMenu> listData = new List<ViewMenu>();
@@ -35,7 +33,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
                 var parent = listData.SingleOrDefault(u => u.Id == DataSource.ParentId);
                 if (parent != null)
                 {
-                    ParentMenuName = parent.MenuName;
+                    ParentMenuName = parent.Entity.MenuName;
                 }
             }
             SysMenus = result.Data.Rows;

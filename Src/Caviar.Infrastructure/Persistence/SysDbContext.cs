@@ -1,6 +1,6 @@
 ﻿using Caviar.Core;
 using Caviar.Core.Interface;
-using Caviar.Infrastructure.Identity;
+using Caviar.SharedKernel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

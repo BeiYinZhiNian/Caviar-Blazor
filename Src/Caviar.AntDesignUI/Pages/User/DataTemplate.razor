@@ -13,22 +13,22 @@
 
 <Form @ref="_meunForm" Model="@DataSource" OnFinish="FormSubmit">
     <FormItem Label='用户名'>
-        <Input @bind-Value='@context.UserName' Style='width:50%' />
+        <Input @bind-Value='@context.Entity.UserName' Style='width:50%' />
     </FormItem>
     <FormItem Label='密码' Style="display: none;">
-        <Input @bind-Value='@context.Password' Style='width:50%' />
+        <Input @bind-Value='@context.Entity.PasswordHash' Style='width:50%' />
     </FormItem>
     <FormItem Label='手机号码'>
-        <Input @bind-Value='@context.PhoneNumber' Style='width:50%' />
+        <Input @bind-Value='@context.Entity.PhoneNumber' Style='width:50%' />
     </FormItem>
     <FormItem Label='邮箱地址'>
-        <Input @bind-Value='@context.EmailNumber' Style='width:50%' />
+        <Input @bind-Value='@context.Entity.Email' Style='width:50%' />
     </FormItem>
     <FormItem Label='部门'>
         <Dropdown>
             <Overlay>
                 <Tree ShowIcon DataSource="ViewUserGroups"
-                      TitleExpression="x => x.DataItem.Name"
+                      TitleExpression="x => x.DataItem.Entity.Name"
                       ChildrenExpression="x => x.DataItem.Children"
                       IsLeafExpression="x => x.DataItem.Children?.Count == 0"
                       KeyExpression="x => x.DataItem.Id.ToString()"
@@ -49,12 +49,12 @@
         </CavUserGroup>
     </FormItem>
     <FormItem Label='是否禁用'>
-        <Switch @bind-Value='@context.IsDisable' />
+        <Switch @bind-Value='@context.Entity.IsDisable' />
     </FormItem>
     <FormItem Label='编号'>
-        <Input @bind-Value='@context.Number' Style='width:53%' />
+        <Input @bind-Value='@context.Entity.Number' Style='width:53%' />
     </FormItem>
     <FormItem Label='备注'>
-        <TextArea @bind-Value='@context.Remark' Style='width:53%' />
+        <TextArea @bind-Value='@context.Entity.Remark' Style='width:53%' />
     </FormItem>
 </Form>

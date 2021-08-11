@@ -1,5 +1,7 @@
 ﻿using AntDesign;
 using Caviar.SharedKernel;
+using Caviar.SharedKernel.View;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,26 +15,24 @@ namespace Caviar.AntDesignUI.Pages.User
         protected override async Task OnInitializedAsync()
         {
             var password = "123456";//创建的初始密码为123456，修改时候也提交这个密码，字段权限会自动过滤掉
-            DataSource.Password = CommonHelper.SHA256EncryptString(password);//设置默认密码
+            DataSource.Entity.PasswordHash = CommonHelper.SHA256EncryptString(password);//设置默认密码
             await GetViewUserGroups();
             await base.OnInitializedAsync();
         }
-
-        private List<ViewUserGroup> ViewUserGroups = new List<ViewUserGroup>();
         string ParentName { get; set; } = "未分配部门";
 
         async Task GetViewUserGroups()
         {
             var result = await Http.GetJson<PageData<ViewUserGroup>>("UserGroup/Index?pageSize=100");
-            if (result.Status != HttpState.OK) return;
-            if (DataSource.UserGroupId > 0)
+            if (result.Status != StatusCodes.Status200OK) return;
+            if (DataSource.Entity.UserGroupId > 0)
             {
                 List<ViewUserGroup> listData = new List<ViewUserGroup>();
                 result.Data.Rows.TreeToList(listData);
-                var parent = listData.SingleOrDefault(u => u.Id == DataSource.UserGroupId);
+                var parent = listData.SingleOrDefault(u => u.Id == DataSource.Entity.UserGroupId);
                 if (parent != null)
                 {
-                    ParentName = parent.Name;
+                    ParentName = parent.Entity.Name;
                 }
             }
             ViewUserGroups = result.Data.Rows;
@@ -44,13 +44,13 @@ namespace Caviar.AntDesignUI.Pages.User
         void EventRecord(TreeEventArgs<ViewUserGroup> args)
         {
             ParentName = args.Node.Title;
-            DataSource.UserGroupId = int.Parse(args.Node.Key);
+            DataSource.Entity.UserGroupId = int.Parse(args.Node.Key);
         }
 
         void RemoveRecord()
         {
             ParentName = "未分配部门";
-            DataSource.UserGroupId = null;
+            DataSource.Entity.UserGroupId = 0;
         }
     }
 }

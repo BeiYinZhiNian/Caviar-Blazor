@@ -17,9 +17,10 @@
     {
         RenderFragment ViewSubMenu = null;
         if (ViewMenus == null || ViewMenus.Count == 0) return ViewSubMenu;
-        ViewMenus = ViewMenus.OrderBy(u => u.Number).ToList();
-        foreach (var item in ViewMenus)
+        ViewMenus = ViewMenus.OrderBy(u => u.Entity.Number).ToList();
+        foreach (var viewMenu in ViewMenus)
         {
+            var item = viewMenu.Entity;
             RenderFragment subTitle =
             @<span style="font-size:15px">
             @if (!string.IsNullOrEmpty(item.Icon))
@@ -33,7 +34,7 @@
                 case MenuType.Catalog:
                      ViewSubMenu +=
                      @<SubMenu Key="@item.MenuName" TitleTemplate="subTitle">
-                     @GetSubMenu(item.Children)
+                     @GetSubMenu(viewMenu.Children)
                      </SubMenu>;
                      break;
                 case MenuType.Menu:

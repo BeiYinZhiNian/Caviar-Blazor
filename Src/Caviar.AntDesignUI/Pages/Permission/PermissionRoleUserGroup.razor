@@ -1,12 +1,13 @@
 ﻿@page "/Permission/RoleUserGroup"
-@inherits PermissionRoleTemple<ViewUserGroup>
+@using Caviar.SharedKernel.Entities;
+@inherits PermissionRoleTemple<SysUserGroup>
 
 <Tree Style="margin-top:20px"
       TItem="ViewRole"
       BlockNode
       ShowIcon
       DataSource="ViewRoles"
-      TitleExpression="x => x.DataItem.RoleName"
+      TitleExpression="x => x.DataItem.Entity.Name"
       ChildrenExpression="x => x.DataItem.Children"
       IsLeafExpression="x => x.DataItem.Children?.Count == 0"
       KeyExpression="x => x.DataItem.Id.ToString()">

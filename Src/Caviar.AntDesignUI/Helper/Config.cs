@@ -1,5 +1,5 @@
 ﻿using AntDesign;
-using Caviar.SharedKernel;
+using Caviar.SharedKernel.View;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;

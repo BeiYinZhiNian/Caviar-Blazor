@@ -1,5 +1,5 @@
 ﻿using AntDesign;
-using Caviar.SharedKernel;
+using Caviar.SharedKernel.View;
 using Caviar.AntDesignUI.Helper;
 using Caviar.AntDesignUI.Shared;
 using Microsoft.AspNetCore.Components;
@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Caviar.AntDesignUI.Pages.Menu
 {
@@ -15,32 +16,32 @@ namespace Caviar.AntDesignUI.Pages.Menu
     {
         [Inject]
         UserConfig UserConfig { get; set; }
-        protected override Task<List<ViewMenu>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
-        {
-            pageSize = 100;
-            return base.GetPages(pageIndex, pageSize, isOrder);
-        }
+        //protected override Task<List<ViewMenu>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
+        //{
+        //    pageSize = 100;
+        //    return base.GetPages(pageIndex, pageSize, isOrder);
+        //}
 
-        protected override async Task RowCallback(RowCallbackData<ViewMenu> row)
-        {
-            switch (row.Menu.MenuName)
-            {
-                case "删除":
-                    await ConfirmDelete(row.Menu.Url, row.Data);
-                    break;
-                default:
-                    break;
-            }
-            UserConfig.RefreshMenuAction.Invoke();//更新菜单
-            Refresh();
-            return;
-        }
+        //protected override async Task RowCallback(RowCallbackData<ViewMenu> row)
+        //{
+        //    switch (row.Menu.Entity.MenuName)
+        //    {
+        //        case "删除":
+        //            await ConfirmDelete(row.Menu.Url, row.Data);
+        //            break;
+        //        default:
+        //            break;
+        //    }
+        //    UserConfig.RefreshMenuAction.Invoke();//更新菜单
+        //    Refresh();
+        //    return;
+        //}
 
         async Task ConfirmDelete(string url,ViewMenu data)
         {
             if (data.Children!=null && data.Children.Count > 0)
             {
-                var confirm = await ShowConfirm(data.MenuName, data.Children.Count);
+                var confirm = await ShowConfirm(data.Entity.MenuName, data.Children.Count);
                 if (confirm == ConfirmResult.Abort)//全部删除
                 {
                     data.IsDeleteAll = true;
@@ -51,7 +52,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
                 }
             }
             var result = await Http.PostJson(url, data);
-            if (result.Status == HttpState.OK)
+            if (result.Status == StatusCodes.Status200OK)
             {
                 Message.Success("删除成功");
             }

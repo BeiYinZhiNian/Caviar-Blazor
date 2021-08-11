@@ -19,6 +19,10 @@ namespace Caviar.SharedKernel
         /// 可根据不同的http状态码承载不同的信息
         /// </summary>
         public string Title { get; set; } = "操作完成";
+        /// <summary>
+        /// 承载url地址
+        /// </summary>
+        public string Url { get; set; }
 
         public string TraceId { get; set; } = Guid.NewGuid().ToString();
         /// <summary>
