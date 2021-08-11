@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel.View
 {
-    public partial class ViewRole:BaseView<ApplicationRole>
+    public partial class ViewRole:BaseView<IRole>
     {
     }
 }

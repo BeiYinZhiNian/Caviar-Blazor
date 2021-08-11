@@ -5,13 +5,14 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using Microsoft.JSInterop;
 using Caviar.SharedKernel;
+using Caviar.AntDesignUI.Base.Entitys;
 
 namespace Caviar.AntDesignUI.Pages.User
 {
     partial class Login
     {
         bool Loading { get; set; }
-        public ViewUser SysLoginUserData { get; set; } = new ViewUser() { Entity = new SharedKernel.Entities.ApplicationUser { UserName = "admin" } };
+        public ViewUser SysLoginUserData { get; set; } = new ViewUser() { Entity = new UserEntity { UserName = "admin" } };
 
         public string Password { get; set; } = "123456";
         [Inject] public NavigationManager NavigationManager { get; set; }

@@ -1,4 +1,5 @@
 ﻿@page "/"
+
 <Card Bordered="true" Title=@("框架简介") Hoverable="true">
     <Body>
         <Text>Caviar(鱼子酱)框架创建于2021年2月3日</Text><br>
@@ -12,7 +13,7 @@
         </Text><br>
     </Body>
 </Card>
-<Space Size=@(("8", "8")) Wrap Align="start">
+<Space Size=@(("8", "8" )) Wrap Align="start">
     <SpaceItem>
         <Card Bordered="true" Title=@("已有功能") Hoverable="true">
             <Body>
@@ -55,6 +56,7 @@
     </Timeline>
 </div>
 
+
 @code
 {
     RenderFragment star =@<Icon Type="star" />;
@@ -63,4 +65,5 @@ RenderFragment eye =@<Icon Type="eye" />;
 RenderFragment issues =@<Icon Type="issues-close" />;
 RenderFragment GiteeTitle =@<a href="https://gitee.com/Cherryblossoms/caviar" target="_blank">Gitee</a>;
 RenderFragment GitHubTitle =@<a href="https://github.com/BeiYinZhiNian/Caviar" target="_blank">GitHub</a>;
+
 }

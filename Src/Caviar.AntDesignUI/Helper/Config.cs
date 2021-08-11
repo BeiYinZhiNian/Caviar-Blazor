@@ -1,4 +1,5 @@
 ﻿using AntDesign;
+using Caviar.AntDesignUI.Helper;
 using Caviar.SharedKernel.View;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -8,7 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.AntDesignUI.Helper
+namespace Caviar.AntDesignUI
 {
     public static class Config
     {

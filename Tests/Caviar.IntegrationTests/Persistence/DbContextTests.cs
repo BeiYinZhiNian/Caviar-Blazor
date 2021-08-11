@@ -1,5 +1,4 @@
-﻿using Caviar.Infrastructure.Identity;
-using Caviar.Infrastructure.Persistence;
+﻿using Caviar.Infrastructure.Persistence;
 using Caviar.SharedKernel.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;

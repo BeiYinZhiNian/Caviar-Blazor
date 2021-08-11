@@ -1,14 +1,18 @@
-﻿using System;
+﻿using Caviar.SharedKernel;
+using Caviar.SharedKernel.View;
+using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Caviar.SharedKernel;
-using Microsoft.AspNetCore.Identity;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace Caviar.SharedKernel.Entities
 {
-    public class ApplicationRole : IdentityRole<int>, IBaseEntity
+    public class ApplicationUser: IdentityUser<int>,IBaseEntity,IUser
     {
-        [DisplayName("RoleName")]
-        public override string Name { get => base.Name; set => base.Name = value; }
         /// <summary>
         /// 创建时间
         /// </summary>
@@ -58,7 +62,9 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         [DisplayName("DataId")]
         public int DataId { get; set; }
-        [DisplayName("ParentId")]
-        public int ParentId { get; set; }
+        [DisplayName("HeadPortrait")]
+        public string HeadPortrait { get; set; }
+
+        public int UserGroupId { get; set; }
     }
 }

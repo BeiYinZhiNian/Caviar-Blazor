@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:60513",
+      "applicationUrl": "http://localhost:16279",
       "sslPort": 0
     }
   },
@@ -16,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Caviar": {
+    "Caviar.Demo.AntDesignUI": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

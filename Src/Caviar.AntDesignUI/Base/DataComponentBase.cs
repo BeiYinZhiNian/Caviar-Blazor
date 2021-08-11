@@ -10,11 +10,11 @@ using Caviar.SharedKernel;
 
 namespace Caviar.AntDesignUI
 {
-    public partial class DataComponentBase<ViewT> : CavComponentBase,ITableTemplate where ViewT : class, new()
+    public partial class DataComponentBase<ViewT> : CavComponentBase,ITableTemplate
     {
         #region 参数
         [Parameter]
-        public ViewT DataSource { get; set; } = new ViewT();
+        public ViewT DataSource { get; set; }
 
         [Parameter]
         public string Url { get; set; }
