@@ -1,6 +1,5 @@
 using Caviar.Core.Interface;
 using Caviar.Infrastructure;
-using Caviar.Infrastructure.Identity;
 using Caviar.Infrastructure.Persistence;
 using Caviar.Infrastructure.Persistence.Sys;
 using Caviar.SharedKernel.View;

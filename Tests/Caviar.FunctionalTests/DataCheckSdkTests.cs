@@ -10,7 +10,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Caviar.SharedKernel.View;
 using Caviar.Core.Services.Filter;
 using Caviar.SharedKernel;
 
