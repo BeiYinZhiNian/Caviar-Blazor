@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using Caviar.SharedKernel.View;
-using Caviar.SharedKernel.View;
 using Caviar.SharedKernel.Entities;
 /// <summary>
 /// 生成者：admin

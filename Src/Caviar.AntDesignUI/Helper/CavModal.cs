@@ -53,7 +53,7 @@ namespace Caviar.AntDesignUI.Helper
             return modalRef;
         }
 
-        RenderFragment Render(string url,string title, IEnumerable<KeyValuePair<string, object?>> paramenter) => builder =>
+        RenderFragment Render(string url,string title, IEnumerable<KeyValuePair<string, object>> paramenter) => builder =>
         {
             var routes = UserConfig.Routes();
             foreach (var item in routes)
@@ -99,10 +99,10 @@ namespace Caviar.AntDesignUI.Helper
             }
         }
 
-        private async Task HandleCancel(MouseEventArgs e)
+        private Task HandleCancel(MouseEventArgs e)
         {
             modalRef.Config.Visible = false;
-
+            return Task.CompletedTask;
         }
     }
 }

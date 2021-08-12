@@ -139,7 +139,7 @@ namespace Caviar.AntDesignUI.Shared
             }
         }
 
-        public async void HandleOk()
+        public void HandleOk()
         {
             RoleAction(CurrRow);
         }

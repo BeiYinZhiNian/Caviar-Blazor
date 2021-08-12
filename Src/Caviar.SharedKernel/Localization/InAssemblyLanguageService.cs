@@ -92,7 +92,7 @@ namespace Caviar.SharedKernel
                 var content = streamReader.ReadToEnd();
                 return JObject.Parse(content);
             }
-            catch (System.Exception e)
+            catch
             {
                 return null;
             }

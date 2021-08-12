@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Caviar.SharedKernel.View;
 using Caviar.SharedKernel;
 
 namespace Caviar.AntDesignUI.Pages.Menu

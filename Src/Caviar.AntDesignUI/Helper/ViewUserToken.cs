@@ -1,5 +1,4 @@
 ﻿using Caviar.SharedKernel.View;
-using Caviar.SharedKernel.View;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;

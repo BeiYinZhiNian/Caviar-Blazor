@@ -40,7 +40,7 @@ namespace Caviar.AntDesignUI.Helper
             lock (cookiesOb)
             {
                 if (IsSetCookie) return;
-                Http.DefaultRequestHeaders.TryGetValues(TokenName, out IEnumerable<string>? values);
+                Http.DefaultRequestHeaders.TryGetValues(TokenName, out IEnumerable<string> values);
                 if (Http.DefaultRequestHeaders.Contains(TokenName))
                 {
                     Http.DefaultRequestHeaders.Remove(TokenName);

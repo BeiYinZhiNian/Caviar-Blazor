@@ -13,4 +13,8 @@
     <ProjectReference Include="..\..\..\Src\Caviar.Infrastructure\Caviar.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
 </Project>

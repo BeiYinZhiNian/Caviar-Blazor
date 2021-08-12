@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AntDesign;
-using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Http;
 using Caviar.SharedKernel;
 

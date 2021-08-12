@@ -29,9 +29,9 @@ namespace Caviar.AntDesignUI.Shared
             builder.AddContent(index++, u =>
             {
                 u.OpenComponent(0, typeof(FormItem));
-                u.AddMultipleAttributes(1, new List<KeyValuePair<string, object?>>()
+                u.AddMultipleAttributes(1, new List<KeyValuePair<string, object>>()
                 { 
-                    new KeyValuePair<string, object?>("Label","菜单名称")
+                    new KeyValuePair<string, object>("Label","菜单名称")
                 });
                 u.AddContent(2, t =>
                 {

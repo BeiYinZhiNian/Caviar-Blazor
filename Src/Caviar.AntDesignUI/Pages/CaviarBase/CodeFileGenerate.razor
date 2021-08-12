@@ -12,19 +12,19 @@
             <SpaceItem>
                 @if (current > 0 && current < steps.Length - 1)
                 {
-                    <Button Type="primary" OnClick="OnPreClick">上一步</Button>
+                    <Button Type="@ButtonType.Primary" OnClick="OnPreClick">上一步</Button>
                 }
             </SpaceItem>
             <SpaceItem>
                 @if (current < steps.Length - 2 && current > 0)
                 {
-                    <Button Type="primary" OnClick="OnNextClick">下一步</Button>
+                    <Button Type="@ButtonType.Primary" OnClick="OnNextClick">下一步</Button>
                 }
             </SpaceItem>
             <SpaceItem>
                 @if (current == steps.Length - 2)
                 {
-                    <Button Type="primary" Danger OnClick=@(() => { OnGenerateClick(); })>
+                    <Button Type="@ButtonType.Primary" Danger OnClick=@(() => { OnGenerateClick(); })>
                         生成
                     </Button>
                 }
@@ -109,7 +109,7 @@
                         Title="@ReusltTitle"
                         SubTitle="@ResultSubTitle">
                     <Extra>
-                        <Button Type="primary" OnClick='()=> { navigation.NavigateTo("/"); }'>返回首页</Button>
+                        <Button Type="@ButtonType.Primary" OnClick='()=> { navigation.NavigateTo("/"); }'>返回首页</Button>
                         <Button OnClick='()=> { current = 0; }'>继续生成</Button>
                     </Extra>
 
@@ -127,7 +127,7 @@
         margin-top: 16px;
         border: 3px dashed #e9e9e9;
         border-radius: 6px;
-        @UserConfig.Background;
+        @UserConfig.Background
         text-align: center;
     }
 
@@ -139,7 +139,6 @@
 @inject NavigationManager navigation
 @inject UserConfig UserConfig
 @code {
-    string Code = "";
     public class StepItem
     {
         public string Title { get; set; }

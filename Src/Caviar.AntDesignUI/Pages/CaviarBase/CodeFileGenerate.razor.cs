@@ -11,7 +11,6 @@ using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.IO;
-using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Http;
 
 namespace Caviar.AntDesignUI.Pages.CaviarBase
