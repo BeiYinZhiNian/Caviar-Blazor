@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace Caviar.SharedKernel
 {
@@ -13,7 +8,7 @@ namespace Caviar.SharedKernel
         /// <summary>
         /// HTTP 状态代码
         /// </summary>
-        public int Status { get; set; } = StatusCodes.Status200OK;
+        public int Status { get; set; } = 200;
         /// <summary>
         /// 问题类型的简短、可读的摘要
         /// 可根据不同的http状态码承载不同的信息

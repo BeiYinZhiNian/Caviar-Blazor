@@ -12,6 +12,7 @@ using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Caviar.Core.Interface;
 using Caviar.SharedKernel;
+using Caviar.SharedKernel.Entities;
 
 namespace Caviar.Infrastructure.API
 {
@@ -43,7 +44,6 @@ namespace Caviar.Infrastructure.API
         {
             Interactor = HttpContext.RequestServices.GetRequiredService<Interactor>();
             Sdk.DbContext = HttpContext.RequestServices.GetRequiredService<IEasyDbContext<T>>();
-
             Interactor.Stopwatch.Start();
             base.OnActionExecuting(context);
             //获取ip地址

@@ -78,6 +78,10 @@ namespace Caviar.Core.Interface
         /// <summary>
         /// 异步获取所有数据
         /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="isNoTracking">是否开启数据追踪</param>
+        /// <param name="isDataPermissions">是否开启数据权限</param>
+        /// <param name="isRecycleBin">是否读取回收站数据</param>
         /// <returns></returns>
         public Task<List<T>> GetAllAsync<T>(bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity, new();
         /// <summary>

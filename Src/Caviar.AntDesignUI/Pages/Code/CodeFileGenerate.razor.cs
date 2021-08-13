@@ -2,23 +2,16 @@
 using Caviar.SharedKernel.View;
 using Caviar.AntDesignUI.Helper;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using System.Text.Json;
 using System.Threading.Tasks;
-using System.IO;
 using Microsoft.AspNetCore.Http;
 
-namespace Caviar.AntDesignUI.Pages.CaviarBase
+namespace Caviar.AntDesignUI.Pages.Code
 {
     public partial class CodeFileGenerate
     {
 
-        List<ViewFields> Models = new List<ViewFields>();
+        List<ViewFields> Models { get; set; }
         [Inject]
         NavigationManager NavigationManager { get; set; }
         [Inject]

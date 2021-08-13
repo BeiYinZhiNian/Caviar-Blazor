@@ -4,6 +4,7 @@ using Caviar.Infrastructure.Persistence;
 using Caviar.Infrastructure.Persistence.Sys;
 using Caviar.SharedKernel;
 using Caviar.SharedKernel.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +17,8 @@ namespace Caviar.Infrastructure
 {
     public static class Configure
     {
+        public static bool HasDataInit { get; set; }
+
         public static void AddCaviar(this IServiceCollection services)
         {
             services.AddScoped<ILanguageService, InAssemblyLanguageService>();
@@ -44,6 +47,7 @@ namespace Caviar.Infrastructure
                     .AddDefaultTokenProviders();
 
             services.AddTransient<IDbContext, SysDbContext<TUser, TRole, int>>();
+            new DataInit(new Interactor());
         }
 
         /// <summary>
@@ -57,6 +61,37 @@ namespace Caviar.Infrastructure
             services.AddCaviarDbContext<ApplicationUser, ApplicationRole>(optionsAction, contextLifetime, optionsLifetime);
         }
 
+
+        /// <summary>
+        /// 获取用户的ip地址
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static string GetUserIp(this HttpContext context)
+        {
+            var ip = context.Request.Headers["X-Forwarded-For"].FirstOrDefault();
+            if (string.IsNullOrEmpty(ip))
+            {
+                ip = context.Connection.RemoteIpAddress.ToString();
+            }
+            return ip;
+        }
+        /// <summary>
+        /// 获取请求的完整地址
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static string GetAbsoluteUri(this HttpRequest request)
+        {
+            return new StringBuilder()
+                .Append(request.Scheme)
+                .Append("://")
+                .Append(request.Host)
+                .Append(request.PathBase)
+                .Append(request.Path)
+                .Append(request.QueryString)
+                .ToString();
+        }
 
 
     }
