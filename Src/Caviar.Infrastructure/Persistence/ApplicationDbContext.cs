@@ -1,6 +1,5 @@
 ﻿using Caviar.Core;
 using Caviar.Core.Interface;
-using Caviar.Core.Scanner;
 using Caviar.Infrastructure.Persistence.Sys;
 using Caviar.SharedKernel;
 using Caviar.SharedKernel.View;

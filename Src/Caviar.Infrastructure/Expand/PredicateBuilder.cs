@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.Core
+namespace Caviar.Infrastructure
 {
     public static class PredicateBuilder
     {

@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Caviar.Core.Interface
+namespace Caviar.Infrastructure
 {
     public interface IDbContext
     {

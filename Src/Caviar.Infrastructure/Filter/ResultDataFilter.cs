@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Caviar.SharedKernel;
 
-namespace Caviar.Core.Services.Filter
+namespace Caviar.Infrastructure
 {
     public class ResultDataFilter
     {

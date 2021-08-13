@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.Core.Scanner
+namespace Caviar.Infrastructure
 {
     public static class FieldScanner
     {

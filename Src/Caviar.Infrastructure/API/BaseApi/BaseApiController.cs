@@ -11,7 +11,6 @@ using Caviar.Core.Services;
 using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Caviar.Core.Interface;
-using Caviar.Core.Services.Filter;
 using Caviar.SharedKernel;
 
 namespace Caviar.Infrastructure.API

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Caviar.Core
+namespace Caviar.Infrastructure
 {
     public static class EntityFrameworkCoreExtension
     {
