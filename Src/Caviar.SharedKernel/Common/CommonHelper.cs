@@ -184,7 +184,6 @@ namespace Caviar.SharedKernel
         /// 反射获取所有继承IBaseEntity的类
         /// 排除BaseEntity基类
         /// </summary>
-        /// <param name="isView">是否寻找前端类，前端类和后端类不可同时获取</param>
         /// <returns></returns>
         public static List<Type> GetEntityList()
         {
@@ -204,10 +203,6 @@ namespace Caviar.SharedKernel
                             //循环,并添注入
                             .ForEach(t =>
                             {
-                                if (t.Name == CurrencyConstant.BaseEntityName)
-                                {
-                                    return;
-                                }
                                 types.Add(t);
                             });
                     }));

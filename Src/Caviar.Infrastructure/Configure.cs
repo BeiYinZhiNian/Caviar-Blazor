@@ -47,7 +47,6 @@ namespace Caviar.Infrastructure
                     .AddDefaultTokenProviders();
 
             services.AddTransient<IDbContext, SysDbContext<TUser, TRole, int>>();
-            new DataInit(new Interactor());
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using Caviar.SharedKernel.Entities;
+﻿using Caviar.Core.Interface;
+using Caviar.SharedKernel.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,16 +13,19 @@ namespace Caviar.Infrastructure.Persistence
     /// </summary>
     public class DataInit
     {
-        Interactor Interactor { get; set; }
-        public DataInit(Interactor interactor)
+        IAppDbContext DbContext { get; set; }
+        public DataInit(IAppDbContext dbContext)
         {
-            fieldsInit();
+            if (Configure.HasDataInit) return;
+            DbContext = dbContext;
+            fieldsInit().Wait();
+            Configure.HasDataInit = true;
         }
 
-        private void fieldsInit()
+        private async Task fieldsInit()
         {
             var fields = FieldScanner.GetApplicationFields();
-            var dataBaseFields = Interactor.DbContext.GetAllAsync<SysFields>(isDataPermissions: false);
+            var dataBaseFields = await DbContext.GetAllAsync<SysFields>(isDataPermissions: false);
         }
 
     }

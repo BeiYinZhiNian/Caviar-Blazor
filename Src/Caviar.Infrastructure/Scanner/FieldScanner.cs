@@ -74,7 +74,7 @@ namespace Caviar.Infrastructure
                             DisplayName = dispLayName,
                             FieldLen = fieldLen,
                             FullName = type.Name,
-                            BaseFullName = baseType.Name,
+                            BaseFullName = baseType?.Name,
                             IsDisable = true,
                         },
                         EntityType = typeName,

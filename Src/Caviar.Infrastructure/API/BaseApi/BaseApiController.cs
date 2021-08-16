@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Caviar.Core.Interface;
 using Caviar.SharedKernel;
 using Caviar.SharedKernel.Entities;
+using Caviar.Infrastructure.Persistence;
 
 namespace Caviar.Infrastructure.API
 {
@@ -56,6 +57,10 @@ namespace Caviar.Infrastructure.API
             Interactor.HttpContext = HttpContext;
             //请求参数
             Interactor.ActionArguments = context.ActionArguments;
+            if (!Configure.HasDataInit)
+            {
+                new DataInit(Interactor.DbContext);
+            }
         }
 
         public override void OnActionExecuted(ActionExecutedContext context)
