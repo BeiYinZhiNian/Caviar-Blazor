@@ -13,19 +13,39 @@ namespace Caviar.Infrastructure.Persistence
     /// </summary>
     public class DataInit
     {
+        static object obj = new object();
         IAppDbContext DbContext { get; set; }
         public DataInit(IAppDbContext dbContext)
         {
             if (Configure.HasDataInit) return;
             DbContext = dbContext;
-            fieldsInit().Wait();
-            Configure.HasDataInit = true;
+            lock (obj)
+            {
+                if (Configure.HasDataInit) return;
+                Configure.HasDataInit = true;
+                fieldsInit().Wait();
+            }
         }
 
         private async Task fieldsInit()
         {
-            var fields = FieldScanner.GetApplicationFields();
+            var fields = FieldScanner.GetApplicationFields().Select(u => u.Entity);
             var dataBaseFields = await DbContext.GetAllAsync<SysFields>(isDataPermissions: false);
+            foreach (var sysField in fields)
+            {
+                foreach (var dataBaseField in dataBaseFields)
+                {
+                    if (dataBaseField.FieldName == sysField.FieldName && dataBaseField.FullName == sysField.FullName && dataBaseField.BaseFullName == sysField.BaseFullName)
+                    {
+                        sysField.Id = dataBaseField.Id;
+                        dataBaseField.Id = 0;
+                    }
+                }
+            }
+            var addFields = fields.Where(u => u.Id == 0).ToList();
+            var deleteFields = dataBaseFields.Where(u => u.Id != 0).ToList();
+            await DbContext.DeleteEntityAsync(deleteFields, IsDelete: true);
+            await DbContext.AddEntityAsync(addFields);
         }
 
     }
