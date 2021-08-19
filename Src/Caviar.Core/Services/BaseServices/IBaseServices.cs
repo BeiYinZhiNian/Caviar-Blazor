@@ -14,7 +14,7 @@ namespace Caviar.Core.Services
     /// 基础sdk封装
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IBaseSdk<T> : IDIinjectAtteribute where T : class, IBaseEntity, new()
+    public interface IEasyBaseServices<T> : IDIinjectAtteribute where T : class, IBaseEntity, new()
     {
         /// <summary>
         /// 数据库上下文

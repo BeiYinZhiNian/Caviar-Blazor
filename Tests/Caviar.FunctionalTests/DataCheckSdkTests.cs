@@ -16,7 +16,7 @@ using Caviar.Infrastructure;
 namespace Caviar.FunctionalTests
 {
     [TestClass]
-    public class DataCheckSdkTests:BaseApiController<ViewMenu, SysMenu>
+    public class DataCheckSdkTests: BaseApiController
     {
         ResultDataFilter DataCheckSdk = new ResultDataFilter();
         public DataCheckSdkTests()

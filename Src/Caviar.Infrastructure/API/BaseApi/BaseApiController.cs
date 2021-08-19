@@ -1,42 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using Caviar.Core;
 using Caviar.Core.Services;
-using Caviar.SharedKernel.View;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Caviar.Core.Interface;
 using Caviar.SharedKernel;
-using Caviar.SharedKernel.Entities;
 using Caviar.Infrastructure.Persistence;
 
 namespace Caviar.Infrastructure.API
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class BaseApiController<Vm,T> : Controller where T:class,IBaseEntity,new() where Vm : IView<T>
+    public class BaseApiController: Controller
     {
-        IBaseSdk<T> sdk;
-        IBaseSdk<T> Sdk { 
-            get 
-            {
-                if (sdk == null)
-                {
-                    sdk = HttpContext.RequestServices.GetRequiredService<BaseSdk<T>>();
-                }
-                return sdk; 
-            }
-            set 
-            {
-                sdk = value;
-            } 
-        }
-
         protected Interactor Interactor;
 
         private ResultDataFilter DataFilter = new ResultDataFilter();
@@ -44,7 +20,6 @@ namespace Caviar.Infrastructure.API
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             Interactor = HttpContext.RequestServices.GetRequiredService<Interactor>();
-            Sdk.DbContext = HttpContext.RequestServices.GetRequiredService<IEasyDbContext<T>>();
             Interactor.Stopwatch.Start();
             base.OnActionExecuting(context);
             //获取ip地址
@@ -72,7 +47,32 @@ namespace Caviar.Infrastructure.API
             {
                 context.Result = Ok(resultMsg);
             }
+            Interactor.Stopwatch.Stop();
         }
+
+    }
+
+
+    public class EasyBaseApiController<Vm, T>: BaseApiController where T : class, IBaseEntity, new() where Vm : IView<T>
+    {
+        IEasyBaseServices<T> sdk;
+        IEasyBaseServices<T> Sdk
+        {
+            get
+            {
+                if (sdk == null)
+                {
+                    sdk = HttpContext.RequestServices.GetRequiredService<IEasyBaseServices<T>>();
+                    sdk.DbContext = HttpContext.RequestServices.GetRequiredService<IEasyDbContext<T>>();
+                }
+                return sdk;
+            }
+            set
+            {
+                sdk = value;
+            }
+        }
+
 
         [HttpPost]
         public virtual async Task<IActionResult> CreateEntity(Vm vm)
@@ -87,8 +87,6 @@ namespace Caviar.Infrastructure.API
             await Sdk.UpdateEntity(vm.Entity);
             return Ok();
         }
-
-
 
         [HttpPost]
         public virtual async Task<IActionResult> DeleteEntity(Vm vm)

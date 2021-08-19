@@ -1,4 +1,5 @@
-﻿using Caviar.Core.Interface;
+﻿using Caviar.Core;
+using Caviar.Core.Interface;
 using Caviar.SharedKernel.Entities;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace Caviar.Infrastructure.Persistence
 
         private async Task fieldsInit()
         {
-            var fields = FieldScanner.GetApplicationFields().Select(u => u.Entity);
+            var fields = FieldScannerServices.GetApplicationFields().Select(u => u.Entity);
             var dataBaseFields = await DbContext.GetAllAsync<SysFields>(isDataPermissions: false);
             foreach (var sysField in fields)
             {

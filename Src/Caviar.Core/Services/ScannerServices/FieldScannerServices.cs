@@ -10,9 +10,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.Infrastructure
+namespace Caviar.Core
 {
-    public static class FieldScanner
+    public static class FieldScannerServices
     {
         /// <summary>
         /// 获取继承了IBaseEntity类的所有字段字段信息
@@ -26,6 +26,29 @@ namespace Caviar.Infrastructure
             {
                 var _field = GetClassFields(item.Name);
                 fields.AddRange(_field);
+            }
+            return fields;
+        }
+
+        /// <summary>
+        /// 获取继承了IBaseEntity类信息
+        /// </summary>
+        /// <returns></returns>
+        public static List<ViewFields> GetClasss()
+        {
+            var entityList = CommonHelper.GetEntityList();
+            var fields = new List<ViewFields>();
+            foreach (var item in entityList)
+            {
+                var displayName = item.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
+                fields.Add(new ViewFields() { 
+                    Entity = new SysFields()
+                    {
+                        FieldName = item.Name,
+                        DisplayName = displayName,
+                        FullName = item.FullName.Replace("." + item.Name, "")
+                    }
+                });
             }
             return fields;
         }
@@ -46,7 +69,12 @@ namespace Caviar.Infrastructure
             }
             return GetClassFields(type);
         }
-
+        /// <summary>
+        /// 获取一个类的字段信息
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="isFieldTurnMeaning">是否开启转义，默认开启</param>
+        /// <returns></returns>
         public static List<ViewFields> GetClassFields(Type type,bool isFieldTurnMeaning = true)
         {
             List<ViewFields> fields = new List<ViewFields>();
