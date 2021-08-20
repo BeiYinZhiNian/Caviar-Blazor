@@ -5,13 +5,15 @@ using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using System;
+using System.Text.Json;
 
 namespace Caviar.AntDesignUI.Pages.Code
 {
     public partial class CodeFileGenerate
     {
 
-        List<ViewFields> Models { get; set; }
+        List<ViewFields> Entitys { get; set; }
         [Inject]
         NavigationManager NavigationManager { get; set; }
         [Inject]
@@ -32,9 +34,9 @@ namespace Caviar.AntDesignUI.Pages.Code
 
         public async Task GetModels()
         {
-            var result = await Http.GetJson<List<ViewFields>>("Permission/GetModels");
+            var result = await Http.GetJson<List<ViewFields>>("Permission/GetEntitys");
             if (result.Status != StatusCodes.Status200OK) return;
-            Models = result.Data;
+            Entitys = result.Data;
         }
         static string[] _pageOptions = { "列表","数据模板" };
         static string[] _webApi = { "控制器" ,"模型", "模型操作器" };
@@ -55,11 +57,11 @@ namespace Caviar.AntDesignUI.Pages.Code
         }
 
 
-        CodeGenerateData GenerateData = new CodeGenerateData() { 
+        CodeGenerateOptions GenerateData = new CodeGenerateOptions() { 
             Page = _pageOptions,
             WebApi = _webApi ,Config = new string[] { "创建按钮" } 
         };
-        Form<CodeGenerateData> GenerateFrom;
+        Form<CodeGenerateOptions> GenerateFrom;
         void OnPreClick()
         {
             current--;
@@ -78,7 +80,7 @@ namespace Caviar.AntDesignUI.Pages.Code
                     await _message.Error("请在前后端至少选择一个进行生成");
                     return;
                 }
-                var result = await Http.PostJson<CodeGenerateData,List<TabItem>>($"{Url}?isPerview=true", GenerateData);
+                var result = await Http.PostJson<CodeGenerateOptions,List<TabItem>>($"{Url}?isPerview=true", GenerateData);
                 if (result.Status == StatusCodes.Status200OK)
                 {
                     lstTabs = result.Data;
@@ -93,7 +95,7 @@ namespace Caviar.AntDesignUI.Pages.Code
         string ResultSubTitle = "";
         async void OnGenerateClick()
         {
-            var result = await Http.PostJson<CodeGenerateData, List<TabItem>>($"{Url}?isPerview=false", GenerateData);
+            var result = await Http.PostJson<CodeGenerateOptions, List<TabItem>>($"{Url}?isPerview=false", GenerateData);
             if (result.Status == StatusCodes.Status200OK)
             {
                 ResultStatus = "success";

@@ -31,10 +31,10 @@ namespace Caviar.Core
         }
 
         /// <summary>
-        /// 获取继承了IBaseEntity类信息
+        /// 获取继承了IBaseEntity实体信息
         /// </summary>
         /// <returns></returns>
-        public static List<ViewFields> GetClasss()
+        public static List<ViewFields> GetEntitys()
         {
             var entityList = CommonHelper.GetEntityList();
             var fields = new List<ViewFields>();

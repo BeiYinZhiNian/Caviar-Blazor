@@ -14,6 +14,11 @@ namespace Caviar.Infrastructure
     public class ResultDataFilter
     {
         /// <summary>
+        /// 是否开启数据过滤
+        /// </summary>
+        public static bool IsDataFilter { get; set; }
+
+        /// <summary>
         /// 用户拥有的字段权限
         /// </summary>
         public List<SysFields> Fields { get; set; }
@@ -26,7 +31,7 @@ namespace Caviar.Infrastructure
             {
                 return null;
             }
-            if (value != null)
+            if (value != null && IsDataFilter)
             {
                 ArgumentsModel(value.GetType(), value);
             }

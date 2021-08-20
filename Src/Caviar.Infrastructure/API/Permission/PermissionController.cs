@@ -18,9 +18,9 @@ namespace Caviar.Infrastructure.API.Permission
         }
 
         [HttpGet]
-        public IActionResult GetEntitysasync()
+        public IActionResult GetEntitys()
         {
-            var entitys = FieldScannerServices.GetClasss();
+            var entitys = FieldScannerServices.GetEntitys();
             return Ok(entitys);
         }
     }

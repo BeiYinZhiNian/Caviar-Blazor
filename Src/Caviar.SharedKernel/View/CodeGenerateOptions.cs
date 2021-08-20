@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel.View
 {
-    public class CodeGenerateData
+    public class CodeGenerateOptions
     {
         public string EntityName { get; set; }
         [Required(ErrorMessage = "目录名称必填")]

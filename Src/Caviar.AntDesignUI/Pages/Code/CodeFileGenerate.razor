@@ -1,5 +1,5 @@
 ﻿@page "/Code/CodeFileGenerate"
-
+@using System.Text.Json
 <div>
     <Steps Current="current">
         @foreach (var item in steps)
@@ -39,30 +39,30 @@
         @switch (current)
         {
             case 0:
-                if (Models != null)
+                if (Entitys != null && Entitys.Count!=0)
                 {
-                    <Table TItem="ViewFields" DataSource="@Models">
-                        <Column @bind-Field="@context.Entity.FieldName">
+                    var Source = Entitys.Select(u => u.Entity);
+                    <Table TItem="SharedKernel.Entities.SysFields" DataSource="@Source">
+                        <Column @bind-Field="@context.FieldName">
                         </Column>
-                        <Column @bind-Field="@context.Entity.DisplayName">
-                        </Column>
-                        <ActionColumn Title="操作">
-                            <Space Size=@("middle")>
-                                <SpaceItem>
-                                    <Button Type="@ButtonType.Primary" OnClick='()=>
+                        <Column @bind-Field="@context.DisplayName">
+                    </Column>
+                    <ActionColumn Title="操作">
+                        <Space Size=@("middle")>
+                            <SpaceItem>
+                                <Button Type="@ButtonType.Primary" OnClick='()=>
                                                                             {
-                                                                                GenerateData.EntityName = context.Entity.FieldName;
-                                                                                GenerateData.EntityNamespace = context.Entity.FullName;
-                                                                                GenerateData.OutName = context.Entity.FieldName;
-                                                                                GenerateData.EntityDisplayName = context.Entity.DisplayName;
-                                                                                GenerateData.ModelName = context.Entity.DisplayName;
+                                                                                GenerateData.EntityName = context.FieldName;
+                                                                                GenerateData.EntityNamespace = context.FullName;
+                                                                                GenerateData.OutName = context.FieldName;
+                                                                                GenerateData.EntityDisplayName = context.DisplayName;
+                                                                                GenerateData.ModelName = context.DisplayName;
                                                                                 OnNextClick();
-                                                                            }'>
-                                        选择
-                                    </Button>
-                                </SpaceItem>
-                            </Space>
-                        </ActionColumn>
+                                                                            }'>选择</Button>
+                            </SpaceItem>
+                        </Space>
+                    </ActionColumn>
+
                     </Table>
                 }
                 break;
