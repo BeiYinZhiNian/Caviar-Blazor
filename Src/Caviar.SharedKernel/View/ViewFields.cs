@@ -25,6 +25,10 @@ namespace Caviar.SharedKernel.View
         /// </summary>
         public bool IsEnum { get; set; }
         /// <summary>
+        /// 实体命名空间
+        /// </summary>
+        public string EntityNamespace { get; set; }
+        /// <summary>
         /// 枚举 值-名称
         /// </summary>
         public Dictionary<int,string> EnumValueName { get; set; }

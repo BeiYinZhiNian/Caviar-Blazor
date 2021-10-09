@@ -80,7 +80,7 @@ namespace Caviar.AntDesignUI.Pages.Code
                     await _message.Error("请在前后端至少选择一个进行生成");
                     return;
                 }
-                var result = await Http.PostJson<CodeGenerateOptions,List<TabItem>>($"{Url}?isPerview=true", GenerateData);
+                var result = await Http.PostJson<CodeGenerateOptions,List<CodePreviewTab>>($"{Url}?isPerview=true", GenerateData);
                 if (result.Status == StatusCodes.Status200OK)
                 {
                     lstTabs = result.Data;
@@ -95,7 +95,7 @@ namespace Caviar.AntDesignUI.Pages.Code
         string ResultSubTitle = "";
         async void OnGenerateClick()
         {
-            var result = await Http.PostJson<CodeGenerateOptions, List<TabItem>>($"{Url}?isPerview=false", GenerateData);
+            var result = await Http.PostJson<CodeGenerateOptions, List<CodePreviewTab>>($"{Url}?isPerview=false", GenerateData);
             if (result.Status == StatusCodes.Status200OK)
             {
                 ResultStatus = "success";
@@ -112,7 +112,7 @@ namespace Caviar.AntDesignUI.Pages.Code
         }
 
 
-        List<TabItem> lstTabs { get; set; } = new List<TabItem>();
+        List<CodePreviewTab> lstTabs { get; set; } = new List<CodePreviewTab>();
         string nKey { get; set; } = "1";
     }
 }

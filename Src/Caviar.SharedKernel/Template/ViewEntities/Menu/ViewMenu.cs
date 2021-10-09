@@ -9,7 +9,7 @@ using Caviar.SharedKernel.Entities;
 namespace Caviar.SharedKernel.View
 {
     [DisplayName("SysMenu")]
-    public partial class ViewMenu: BaseView<SysMenu>
+    public partial class ViewMenu : BaseView<SysMenu>
     {
     }
 }

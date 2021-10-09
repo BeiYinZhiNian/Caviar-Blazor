@@ -37,5 +37,9 @@ namespace Caviar.SharedKernel
         /// 基础实体名称
         /// </summary>
         public static string BaseEntityName = typeof(SysBaseEntity).Name;
+        /// <summary>
+        /// 视图类代码文件路径
+        /// </summary>
+        public const string CodeGenerateFilePath = "/Template/File/";
     }
 }
