@@ -1,4 +1,5 @@
 ﻿﻿using Caviar.Infrastructure.API
+using System.ComponentModel;
 
 using {EntityNamespace};
 /// <summary>

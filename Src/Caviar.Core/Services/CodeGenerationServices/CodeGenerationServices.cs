@@ -23,23 +23,46 @@ namespace Caviar.Core.Services.CodeGenerationServices
         //{
 
         //}
-
-        public CodePreviewTab ReadCodePreviewTab(string entityName,string fileName,string extendName)
+        /// <summary>
+        /// 预览生成的代码
+        /// </summary>
+        /// <param name="entityName">实体名称</param>
+        /// <param name="suffixName">后缀名</param>
+        /// <param name="extendName">扩展名</param>
+        /// <returns></returns>
+        public PreviewCode PreviewCode(string entityName,string suffixName,string extendName)
         {
-            string path = $"{AppDomain.CurrentDomain.BaseDirectory}{CurrencyConstant.CodeGenerateFilePath}{fileName}.txt";
+            string path = $"{AppDomain.CurrentDomain.BaseDirectory}{CurrencyConstant.CodeGenerateFilePath}{suffixName}.txt";
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException("代码生成文件未找到，请确认路径是否正确：" + path);
             }
             string txt = File.ReadAllText(path);
-            string name = entityName + fileName + extendName;
-            CodePreviewTab codePreviewTab = new CodePreviewTab()
+            string name = entityName + suffixName + extendName;
+            PreviewCode codePreviewTab = new PreviewCode()
             {
                 TabName = name,
                 KeyName = name,
                 Content = txt
             };
             return codePreviewTab;
+        }
+        /// <summary>
+        /// 替换代码文件中内容
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <param name="codePreview"></param>
+        /// <param name="producer"></param>
+        /// <returns></returns>
+        public PreviewCode PreviewCodeReplace(ViewFields fields, PreviewCode codePreview,string producer)
+        {
+            StringBuilder txt = new StringBuilder(codePreview.Content);
+            txt = txt.Replace("{GenerationTime}", DateTime.Now.ToString());
+            txt = txt.Replace("{Producer}", producer);
+            txt = txt.Replace("{EntityNamespace}", fields.EntityNamespace);
+            txt = txt.Replace("{EntityName}", fields.Entity.FieldName);
+            codePreview.Content = txt.ToString();
+            return codePreview;
         }
 
     }

@@ -9,7 +9,7 @@ namespace Caviar.SharedKernel.View
     /// <summary>
     /// 代码预览tab
     /// </summary>
-    public class CodePreviewTab
+    public class PreviewCode
     {
         /// <summary>
         /// 文件名称
