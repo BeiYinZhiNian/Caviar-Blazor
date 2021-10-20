@@ -47,22 +47,218 @@ namespace Caviar.Core.Services.CodeGenerationServices
             };
             return codePreviewTab;
         }
+        
         /// <summary>
-        /// 替换代码文件中内容
+        /// 替换文件生成内容
         /// </summary>
-        /// <param name="fields"></param>
-        /// <param name="codePreview"></param>
-        /// <param name="producer"></param>
+        /// <param name="classData">类的信息</param>
+        /// <param name="fieldsData">类的字段信息</param>
+        /// <param name="codePreview">预览的代码</param>
+        /// <param name="producer">生成者</param>
         /// <returns></returns>
-        public PreviewCode PreviewCodeReplace(ViewFields fields, PreviewCode codePreview,string producer)
+        public PreviewCode PreviewCodeReplace(ViewFields classData,List<ViewFields> fieldsData, PreviewCode codePreview,string producer)
         {
             StringBuilder txt = new StringBuilder(codePreview.Content);
             txt = txt.Replace("{GenerationTime}", DateTime.Now.ToString());
             txt = txt.Replace("{Producer}", producer);
-            txt = txt.Replace("{EntityNamespace}", fields.EntityNamespace);
-            txt = txt.Replace("{EntityName}", fields.Entity.FieldName);
+            txt = txt.Replace("{EntityNamespace}", classData.EntityNamespace);
+            txt = txt.Replace("{EntityName}", classData.Entity.FieldName);
+            txt = txt.Replace("{FormItem}", CreateFormItem(fieldsData));
             codePreview.Content = txt.ToString();
             return codePreview;
+        }
+
+        /// <summary>
+        /// 创建formItem
+        /// </summary>
+        /// <param name="generate"></param>
+        /// <returns></returns>
+        protected virtual string CreateFormItem(List<ViewFields> headers)
+        {
+            headers = CreateOrUpFilterField(headers);
+            var html = "";
+            foreach (var item in headers)
+            {
+                var txt = "";
+                txt += $"<FormItem Label='{item.Entity.DisplayName}'>";
+                var IsWrite = CreateCurrencyAssembly(item, ref txt);
+                txt += "</FormItem>";
+                if (IsWrite) html += txt;
+            }
+            html = FormatHtml(html);
+            return html;
+        }
+
+        /// <summary>
+        /// 根据类型创建通用组件
+        /// 先检查特殊组件是否创建，如果未创建则创建通用组件
+        /// 如果通用组件未创建，则该字段丢弃
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="txt"></param>
+        /// <returns></returns>
+        protected virtual bool CreateCurrencyAssembly(ViewFields item, ref string txt)
+        {
+            var IsWrite = true;
+            IsWrite = CreateSpecialAssembly(item, ref txt);
+            if (IsWrite) return IsWrite;
+            var modelType = item.Entity.FullName.ToLower();
+            switch (modelType)
+            {
+                case "string":
+                    if (item.Entity.FieldLen != null && item.Entity.FieldLen >= 200)
+                    {
+                        txt += $"<TextArea @bind-Value='@context.{item.Entity.FieldName}' Style='width:53%'/>";
+                    }
+                    else
+                    {
+                        txt += $"<Input @bind-Value='@context.{item.Entity.FieldName}' Style='width:50%' />";
+                    }
+                    break;
+                case "int32":
+                    txt += $"<AntDesign.InputNumber @bind-Value='@context.{item.Entity.FieldName}' Style='width:50%'/>";
+                    break;
+                case "boolean":
+                    txt += $"<Switch @bind-Value='@context.{item.Entity.FieldName}'/>";
+                    break;
+                case "datetime":
+                    txt += $"<DatePicker @bind-Value='@context.{item.Entity.FieldName}'/>";
+                    break;
+                default:
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 创建特殊组件
+        /// </summary>
+        /// <returns></returns>
+        protected virtual bool CreateSpecialAssembly(ViewFields item, ref string txt)
+        {
+            if (item.IsEnum)
+            {
+                return CreateEnumAssembly(item, ref txt);
+            }
+            var modelType = item.Entity.FullName.ToLower();
+            switch (modelType)
+            {
+                case "dataid"://数据权限
+                    txt += @"<CavUserGroup DataSource='ViewUserGroups'
+                                    UserGroupName='@UserGroupName'
+                                    OnSelect='OnUserGroupSelect'
+                                    OnCancel='OnUserGroupCancel'>
+                                 </CavUserGroup>";
+                    break;
+                default:
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 创建枚举组件
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="txt"></param>
+        protected virtual bool CreateEnumAssembly(ViewFields item, ref string txt)
+        {
+            if (!item.IsEnum) return false;
+            txt += $"<RadioGroup @bind-Value='@context.{item.Entity.FieldName}'>";
+            foreach (var keyValue in item.EnumValueName)
+            {
+                txt += $"<Radio RadioButton Value='({item.Entity.FieldName}){keyValue.Key}'>{keyValue.Value}</Radio>";
+            }
+
+            txt += $"</RadioGroup>";
+            return true;
+        }
+
+        /// <summary>
+        /// 创建或修改时过滤字段
+        /// </summary>
+        /// <param name="header"></param>
+        /// <returns></returns>
+        protected virtual List<ViewFields> CreateOrUpFilterField(List<ViewFields> headers)
+        {
+            if (headers == null) return null;
+            string[] violation = new string[] { "id", "Uid", "CreatTime", "UpdateTime", "IsDelete", "OperatorCare", "OperatorUp", "ParentId" };
+            var result = new List<ViewFields>();
+            foreach (var item in headers)
+            {
+                if (violation.SingleOrDefault(u => u.ToLower() == item.Entity.FieldName.ToLower()) == null)
+                {
+                    result.Add(item);
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 将html代码格式化
+        /// </summary>
+        /// <param name="html"></param>
+        /// <returns></returns>
+        protected virtual string FormatHtml(string html)
+        {
+            string[] arr = html.Split('>');
+            string formatHtml = "";
+            int count = 0;
+            bool isSame = false;
+            bool isFirst = true;
+            foreach (var item in arr)
+            {
+                if (string.IsNullOrEmpty(item)) continue;
+                var lene = item + ">";
+                if (lene[0] != '<')
+                {
+                    formatHtml += lene;
+                    isSame = true;
+                }
+                else
+                {
+                    if (isSame && lene.Contains("</"))
+                    {
+                        isSame = false;
+                        count -= 1;
+                    }
+                    if (isFirst)
+                    {
+                        formatHtml = GetSpace(count) + lene;
+                    }
+                    else
+                    {
+                        formatHtml += "\r\n" + GetSpace(count) + lene;
+                    }
+                    isFirst = false;
+
+                }
+                if (lene.Contains("</"))
+                {
+                    count -= 1;
+                    if (count < 0) count = 0;
+                }
+                else if (lene.Contains("/>"))
+                {
+                    isSame = true;
+                }
+                else
+                {
+                    count += 1;
+                }
+
+            }
+            return formatHtml;
+        }
+
+        public string GetSpace(int count)
+        {
+            string space = "    ";
+            for (int i = 0; i < count; i++)
+            {
+                space += space;
+            }
+            return space;
         }
 
     }

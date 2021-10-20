@@ -11,7 +11,7 @@ using {EntityNamespace};
 namespace {EntityNamespace}.View
 {
     [DisplayName("{EntityName}")]
-    public partial class View{EntityName} : BaseView<{EntityName}>
+    public partial class {EntityName}View : BaseView<{EntityName}>
     {
     }
 }

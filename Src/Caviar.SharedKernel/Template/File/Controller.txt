@@ -11,7 +11,7 @@ using {EntityNamespace};
 namespace {EntityNamespace}.Controller
 {
     [DisplayName("{EntityName}")]
-    public partial class {EntityName}Controller : EasyBaseApiController<View{EntityName},{EntityName}>
+    public partial class {EntityName}Controller : EasyBaseApiController<{EntityName}View,{EntityName}>
     {
         
     }

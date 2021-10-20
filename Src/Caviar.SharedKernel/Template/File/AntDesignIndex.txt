@@ -1,0 +1,24 @@
+﻿﻿@*
+生成者：{Producer}
+生成时间：{GenerationTime}
+代码由代码生成器自动生成，更改的代码可能被进行替换
+界面如需更改，建议直接将内容剪切到自己的文件内，保留此空白文件
+{EntityDisplayName}列表
+*@
+@page "{page}"
+@using {EntityNamespace}.View
+@inherits IndexComponentBase<{EntityName}>
+
+<CavTableTemplate TData="{EntityName}View"
+               DataSource="DataSource"
+               PageSize="PageSize"
+               PageIndex="PageIndex"
+               Total="Total"
+               Buttons="Buttons"
+               Query="Query"
+               ViewModelFields="ViewModelFields"
+               PageIndexChanged="PageIndexChanged"
+               RowCallback="RowCallback"
+               Loading="Loading"
+               FuzzyQueryCallback="FuzzyQueryCallback">
+</CavTableTemplate>

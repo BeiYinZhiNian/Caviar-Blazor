@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Xunit.Sdk;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.View;
+using System.Collections.Generic;
 
 namespace Caviar.UnitTest
 {
@@ -85,9 +86,22 @@ namespace caviar.test.View
                 },
                 EntityNamespace = "caviar.test"
             };
-            var result = codeGenerationServices.PreviewCodeReplace(fields, previewCode, "test");
+            List<ViewFields> list = new List<ViewFields>()
+            {
+                new ViewFields()
+                {
+                    Entity = new SysFields()
+                    {
+                        FieldName = "test",
+                        FullName = "string",
+                    },
+                    EntityNamespace = "caviar.test"
+                },
+            };
+            var result = codeGenerationServices.PreviewCodeReplace(fields, list, previewCode, "test");
             Assert.AreEqual(generateTxt, result.Content);
 
         }
+
     }
 }
