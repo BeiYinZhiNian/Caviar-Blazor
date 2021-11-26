@@ -27,7 +27,7 @@ namespace Caviar.AntDesignUI.Shared
         string LogoImg;
         string LogoImgIco;
 
-        string HeaderStyle { get; set; }
+        string HeaderStyle { get; set; } = "margin-left: 200px";
         [Inject]
         public UserConfig UserConfig { get; set; }
         [Inject]
@@ -56,6 +56,9 @@ namespace Caviar.AntDesignUI.Shared
         }
 
         bool _collapsed;
+        /// <summary>
+        /// 控制左侧菜单是否折叠
+        /// </summary>
         bool Collapsed
         {
             set

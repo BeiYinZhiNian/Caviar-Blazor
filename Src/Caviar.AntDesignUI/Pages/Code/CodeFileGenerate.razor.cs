@@ -41,25 +41,11 @@ namespace Caviar.AntDesignUI.Pages.Code
         static string[] _pageOptions = { "列表","数据模板" };
         static string[] _webApi = { "控制器" ,"模型", "模型操作器" };
         static string[] _configOptions = { "覆盖" , "创建按钮" };
-        void OnPageChange(string[] checkedValues)
-        {
-            GenerateData.Page = checkedValues;
-        }
-
-        void OnConfigChange(string[] checkedValues)
-        {
-            GenerateData.Config = checkedValues;
-        }
-
-        void OnWebApiChange(string[] checkedValues)
-        {
-            GenerateData.WebApi = checkedValues;
-        }
 
 
-        CodeGenerateOptions GenerateData = new CodeGenerateOptions() { 
-            Page = _pageOptions,
-            WebApi = _webApi ,Config = new string[] { "创建按钮" } 
+        CodeGenerateOptions GenerateData = new CodeGenerateOptions()
+        { 
+            ViewFields = new ViewFields()
         };
         Form<CodeGenerateOptions> GenerateFrom;
         void OnPreClick()
@@ -73,11 +59,6 @@ namespace Caviar.AntDesignUI.Pages.Code
             {
                 if (!GenerateFrom.Validate())
                 {
-                    return;
-                }
-                if((GenerateData.Page == null || GenerateData.Page.Length == 0) && (GenerateData.WebApi == null || GenerateData.WebApi.Length == 0))
-                {
-                    await _message.Error("请在前后端至少选择一个进行生成");
                     return;
                 }
                 var result = await Http.PostJson<CodeGenerateOptions,List<PreviewCode>>($"{Url}?isPerview=true", GenerateData);

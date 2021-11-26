@@ -52,11 +52,8 @@
                             <SpaceItem>
                                 <Button Type="@ButtonType.Primary" OnClick='()=>
                                                                             {
-                                                                                GenerateData.EntityName = context.FieldName;
-                                                                                GenerateData.EntityNamespace = context.FullName;
-                                                                                GenerateData.OutName = context.FieldName;
-                                                                                GenerateData.EntityDisplayName = context.DisplayName;
-                                                                                GenerateData.ModelName = context.DisplayName;
+                                                                                GenerateData.EntitieName = context.FieldName;
+                                                                                GenerateData.ViewFields.Entity = context;
                                                                                 OnNextClick();
                                                                             }'>选择</Button>
                             </SpaceItem>
@@ -71,27 +68,12 @@
                     <Form Model="GenerateData" @ref="GenerateFrom">
                         <Space Direction="DirectionVHType.Vertical" Size="@("large")">
                             <FormItem>
-                                <AntDesign.Input Placeholder="请输入生成的文件名" @bind-Value="@context.OutName">
-                                    <AddOnBefore>目录名:</AddOnBefore>
+                                <AntDesign.Input Disabled="true" @bind-Value="@context.EntitieName">
                                 </AntDesign.Input>
                             </FormItem>
                             <FormItem>
-                                <AntDesign.Input Placeholder="请输入模块名称" @bind-Value="@context.ModelName">
-                                    <AddOnBefore>模块名称:</AddOnBefore>
-                                </AntDesign.Input>
+                                <Switch @bind-Checked="@context.IsCover" />
                             </FormItem>
-                            <SpaceItem>
-                                <span style="margin-right:8px">前端:</span>
-                                <CheckboxGroup Value="GenerateData.Page" Options="@_pageOptions" OnChange="OnPageChange" />
-                            </SpaceItem>
-                            <SpaceItem>
-                                <span style="margin-right:8px">后端:</span>
-                                <CheckboxGroup Value="GenerateData.WebApi" Options="@_webApi" OnChange="OnWebApiChange" />
-                            </SpaceItem>
-                            <SpaceItem>
-                                <span style="margin-right:8px">其他:</span>
-                                <CheckboxGroup Value="GenerateData.Config" Options="@_configOptions" OnChange="OnConfigChange" />
-                            </SpaceItem>
                         </Space>
 
                     </Form>

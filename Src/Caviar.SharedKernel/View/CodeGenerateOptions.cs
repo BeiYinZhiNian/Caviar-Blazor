@@ -18,7 +18,7 @@ namespace Caviar.SharedKernel.View
         public bool IsGenerateApi { get; set; }
         [DisplayName("EntitieName")]
         public string EntitieName { get; set; }
-        [DisplayName("EntitieName")]
+        [DisplayName("GenerateNamespace")]
         public string GenerateNamespace { get; set; } = "Caviar.CodeGeneration";
         /// <summary>
         /// 需要生成的实体对象
