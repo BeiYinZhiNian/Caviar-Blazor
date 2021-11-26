@@ -55,6 +55,7 @@
                                 <Button Type="@ButtonType.Primary" OnClick='()=>
                                                                             {
                                                                                 GenerateData.EntitieName = context.FieldName;
+                                                                                GenerateData.FullName = context.FullName;
                                                                                 OnNextClick();
                                                                             }'>选择</Button>
                             </SpaceItem>
@@ -77,9 +78,10 @@
                                 </AntDesign.Input>
                             </FormItem>
                             <FormItem Label="生成内容">
-                                <Checkbox @bind-Value="@context.IsGenerateApi">API</Checkbox>
                                 <Checkbox @bind-Value="@context.IsGenerateController">控制器</Checkbox>
-                                <Checkbox @bind-Value="@context.IsGeneratePage">页面</Checkbox>
+                                <Checkbox @bind-Value="@context.IsGenerateIndex">列表页面</Checkbox>
+                                <Checkbox @bind-Value="@context.IsGenerateDataTemplate">数据模板页面</Checkbox>
+                                <Checkbox @bind-Value="@context.IsGenerateViewModel">页面模型</Checkbox>
                             </FormItem>
                             <FormItem>
                                 <Switch @bind-Value="@context.IsCover" />

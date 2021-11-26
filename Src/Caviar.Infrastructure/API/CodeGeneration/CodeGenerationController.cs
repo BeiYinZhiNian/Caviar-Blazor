@@ -1,4 +1,5 @@
-﻿using Caviar.Core.Services.CodeGenerationServices;
+﻿using Caviar.Core;
+using Caviar.Core.Services.CodeGenerationServices;
 using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,15 +15,13 @@ namespace Caviar.Infrastructure.API.CodeGeneration
     /// </summary>
     public class CodeGenerationController : BaseApiController
     {
-        CodeGenerationServices CodeService;
-        public CodeGenerationController()
-        {
-            //创建service
-            CodeService = CreateService<CodeGenerationServices>();
-        }
         public IActionResult CodeFileGenerate(CodeGenerateOptions codeGenerateOptions,bool isPerview)
         {
-            var result = CodeService.CodePreview(codeGenerateOptions);
+            CodeGenerationServices CodeService = CreateService<CodeGenerationServices>();
+            //获取该类的所有字段
+            var fieldsData = FieldScannerServices.GetClassFields(codeGenerateOptions.EntitieName, codeGenerateOptions.FullName);//类信息
+            var entityData = FieldScannerServices.GetEntity(codeGenerateOptions.EntitieName, codeGenerateOptions.FullName);//类下字段信息
+            var result = CodeService.CodePreview(entityData,fieldsData, codeGenerateOptions,"管理员"); //生成预览代码
             if (isPerview)
             {
                 //将生成的代码输出

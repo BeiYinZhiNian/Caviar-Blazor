@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,18 @@ namespace Caviar.Infrastructure
             injection.AddInject(services);
 
         }
+
+        public static void ReadConfig()
+        {
+            var appsettingPath = "appsettings.json";
+            string appsettings = "{}";
+            if (File.Exists(appsettingPath))
+            {
+                appsettings = File.ReadAllText(appsettingPath);
+            }
+            var json = JObject.Parse(appsettings);
+        }
+
         /// <summary>
         /// 自定义用户表和角色表
         /// </summary>

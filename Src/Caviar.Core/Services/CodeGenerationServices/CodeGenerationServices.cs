@@ -17,20 +17,56 @@ namespace Caviar.Core.Services.CodeGenerationServices
         /// <summary>
         /// 代码预览
         /// </summary>
-        /// <param name="codeGenerateOptions">代码生成配置类</param>
-        /// <returns>代码结果</returns>
-        public List<PreviewCode> CodePreview(CodeGenerateOptions codeGenerateOptions)
+        /// <param name="entityData">实体信息</param>
+        /// <param name="fieldsData">实体字段信息</param>
+        /// <param name="codeGenerateOptions">代码生成配置信息</param>
+        /// <returns></returns>
+        public List<PreviewCode> CodePreview(ViewFields entityData, List<ViewFields> fieldsData, CodeGenerateOptions codeGenerateOptions,string producer)
         {
-            return null;
+            List<PreviewCode> list = new List<PreviewCode>();
+            var entitieName = codeGenerateOptions.EntitieName;
+            if (codeGenerateOptions.IsGenerateController)
+            {
+                var suffixName = "Controller";
+                var extendName = ".cs";
+                var codePreview = GetPreviewCode(entitieName, suffixName, extendName);
+                codePreview = PreviewCodeReplace(entityData, fieldsData, codePreview, producer);
+                list.Add(codePreview);
+            }
+            if (codeGenerateOptions.IsGenerateDataTemplate)
+            {
+                var suffixName = "DataTemplate";
+                var extendName = ".razor";
+                var codePreview = GetPreviewCode(entitieName, suffixName, extendName);
+                codePreview = PreviewCodeReplace(entityData, fieldsData, codePreview, producer);
+                list.Add(codePreview);
+            }
+            if (codeGenerateOptions.IsGenerateIndex)
+            {
+                var suffixName = "AntDesignIndex";
+                var extendName = ".razor";
+                var codePreview = GetPreviewCode(entitieName, suffixName, extendName);
+                codePreview = PreviewCodeReplace(entityData, fieldsData, codePreview, producer);
+                list.Add(codePreview);
+            }
+            if (codeGenerateOptions.IsGenerateViewModel)
+            {
+                var suffixName = "View";
+                var extendName = ".cs";
+                var codePreview = GetPreviewCode(entitieName, suffixName, extendName);
+                codePreview = PreviewCodeReplace(entityData, fieldsData, codePreview, producer);
+                list.Add(codePreview);
+            }
+            return list;
         }
         /// <summary>
-        /// 预览生成的代码
+        /// 获取未修改预览生成的代码
         /// </summary>
         /// <param name="entityName">实体名称</param>
         /// <param name="suffixName">后缀名</param>
         /// <param name="extendName">扩展名</param>
         /// <returns></returns>
-        protected PreviewCode PreviewCode(string entityName,string suffixName,string extendName)
+        protected PreviewCode GetPreviewCode(string entityName,string suffixName,string extendName)
         {
             string path = $"{AppDomain.CurrentDomain.BaseDirectory}{CurrencyConstant.CodeGenerateFilePath}{suffixName}.txt";
             if (!File.Exists(path))
@@ -51,18 +87,18 @@ namespace Caviar.Core.Services.CodeGenerationServices
         /// <summary>
         /// 替换文件生成内容
         /// </summary>
-        /// <param name="classData">类的信息</param>
+        /// <param name="entityData">类的信息</param>
         /// <param name="fieldsData">类的字段信息</param>
         /// <param name="codePreview">预览的代码</param>
         /// <param name="producer">生成者</param>
         /// <returns></returns>
-        protected PreviewCode PreviewCodeReplace(ViewFields classData,List<ViewFields> fieldsData, PreviewCode codePreview,string producer)
+        protected PreviewCode PreviewCodeReplace(ViewFields entityData,List<ViewFields> fieldsData, PreviewCode codePreview,string producer)
         {
             StringBuilder txt = new StringBuilder(codePreview.Content);
             txt = txt.Replace("{GenerationTime}", DateTime.Now.ToString());
             txt = txt.Replace("{Producer}", producer);
-            txt = txt.Replace("{EntityNamespace}", classData.EntityNamespace);
-            txt = txt.Replace("{EntityName}", classData.Entity.FieldName);
+            txt = txt.Replace("{EntityNamespace}", entityData.EntityNamespace);
+            txt = txt.Replace("{EntityName}", entityData.Entity.FieldName);
             txt = txt.Replace("{FormItem}", CreateFormItem(fieldsData));
             codePreview.Content = txt.ToString();
             return codePreview;

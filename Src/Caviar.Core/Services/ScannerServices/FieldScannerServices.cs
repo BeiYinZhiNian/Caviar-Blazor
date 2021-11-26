@@ -24,7 +24,7 @@ namespace Caviar.Core
             var fields = new List<ViewFields>();
             foreach (var item in entityList)
             {
-                var _field = GetClassFields(item.Name);
+                var _field = GetClassFields(item.Name,item.FullName);
                 fields.AddRange(_field);
             }
             return fields;
@@ -46,11 +46,27 @@ namespace Caviar.Core
                     {
                         FieldName = item.Name,
                         DisplayName = displayName,
-                        FullName = item.FullName.Replace("." + item.Name, "")
+                        FullName = item.FullName
                     }
                 });
             }
             return fields;
+        }
+        /// <summary>
+        /// 获取指定实体类信息
+        /// </summary>
+        /// <returns></returns>
+        public static ViewFields GetEntity(string name, string fullName)
+        {
+            var listFields = GetEntitys();
+            foreach (var item in listFields)
+            {
+                if(item.Entity.FieldName == name && item.Entity.FullName == fullName)
+                {
+                    return item;
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -58,15 +74,18 @@ namespace Caviar.Core
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static List<ViewFields> GetClassFields(string name)
+        public static List<ViewFields> GetClassFields(string name,string fullName)
         {
             var assemblyList = CommonHelper.GetAssembly();
             Type type = null;
             foreach (var item in assemblyList)
             {
-                type = item.GetTypes().SingleOrDefault(u => u.Name.ToLower() == name.ToLower());
+                type = item.GetTypes().SingleOrDefault(u => 
+                u.Name.ToLower() == name.ToLower() &&
+                u.FullName.ToLower() == fullName.ToLower());
                 if (type != null) break;
             }
+            if (type == null) throw new Exception("未找到该类：" + name);
             return GetClassFields(type);
         }
         /// <summary>
@@ -101,7 +120,7 @@ namespace Caviar.Core
                             FieldName = item.Name,
                             DisplayName = dispLayName,
                             FieldLen = fieldLen,
-                            FullName = type.Name,
+                            FullName = type.FullName,
                             BaseFullName = baseType?.Name,
                             IsDisable = true,
                         },

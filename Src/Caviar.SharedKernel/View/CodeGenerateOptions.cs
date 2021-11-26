@@ -10,14 +10,18 @@ namespace Caviar.SharedKernel.View
 {
     public class CodeGenerateOptions
     {
-        [DisplayName("IsGeneratePage")]
-        public bool IsGeneratePage { get; set; } = true;
+        [DisplayName("IsGenerateIndex")]
+        public bool IsGenerateIndex { get; set; } = true;
         [DisplayName("IsGenerateController")]
         public bool IsGenerateController { get; set; } = true;
-        [DisplayName("IsGenerateApi")]
-        public bool IsGenerateApi { get; set; } = true;
+        [DisplayName("IsGenerateDataTemplate")]
+        public bool IsGenerateDataTemplate { get; set; } = true;
+        [DisplayName("IsGenerateViewModel")]
+        public bool IsGenerateViewModel { get; set; } = true;
         [DisplayName("实体")]
         public string EntitieName { get; set; }
+        [DisplayName("命名空间")]
+        public string FullName { get; set; }
         [DisplayName("标签名称")]
         [Required(ErrorMessage = "请输入要生成的标签名称")]
         public string LabelName { get; set; }

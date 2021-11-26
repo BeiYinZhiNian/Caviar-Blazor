@@ -18,7 +18,7 @@ namespace Caviar.UnitTest
             var suffixName = "View";
             var extendName = ".cs";
             var fileName = entitieName + suffixName + extendName;
-            var tab = codeGenerationServices.PreviewCode(entitieName, suffixName, extendName);
+            var tab = codeGenerationServices.GetPreviewCode(entitieName, suffixName, extendName);
             Assert.IsNotNull(tab);
             Assert.AreNotEqual(tab.Content, "");
             Assert.AreEqual(fileName, tab.KeyName);
@@ -32,7 +32,7 @@ namespace Caviar.UnitTest
             var suffixName = "Controller";
             var extendName = ".cs";
             var fileName = entitieName + suffixName + extendName;
-            var tab = codeGenerationServices.PreviewCode(entitieName, suffixName, extendName);
+            var tab = codeGenerationServices.GetPreviewCode(entitieName, suffixName, extendName);
             Assert.IsNotNull(tab);
             Assert.AreNotEqual(tab.Content, "");
             Assert.AreEqual(fileName, tab.KeyName);
