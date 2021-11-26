@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Text.Json;
 
-namespace Caviar.AntDesignUI.Pages.Code
+namespace Caviar.AntDesignUI.Pages.CodeGeneration
 {
     public partial class CodeFileGenerate
     {
@@ -38,15 +38,9 @@ namespace Caviar.AntDesignUI.Pages.Code
             if (result.Status != StatusCodes.Status200OK) return;
             Entitys = result.Data;
         }
-        static string[] _pageOptions = { "列表","数据模板" };
-        static string[] _webApi = { "控制器" ,"模型", "模型操作器" };
-        static string[] _configOptions = { "覆盖" , "创建按钮" };
 
 
-        CodeGenerateOptions GenerateData = new CodeGenerateOptions()
-        { 
-            ViewFields = new ViewFields()
-        };
+        CodeGenerateOptions GenerateData = new CodeGenerateOptions();
         Form<CodeGenerateOptions> GenerateFrom;
         void OnPreClick()
         {

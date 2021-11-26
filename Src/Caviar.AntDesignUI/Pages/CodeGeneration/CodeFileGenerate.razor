@@ -1,4 +1,4 @@
-﻿@page "/Code/CodeFileGenerate"
+﻿@page "/CodeGeneration/CodeFileGenerate"
 @using System.Text.Json
 <div>
     <Steps Current="current">
@@ -45,6 +45,8 @@
                     <Table TItem="SharedKernel.Entities.SysFields" DataSource="@Source">
                         <Column @bind-Field="@context.FieldName">
                         </Column>
+                        <Column @bind-Field="@context.FullName">
+                        </Column>
                         <Column @bind-Field="@context.DisplayName">
                     </Column>
                     <ActionColumn Title="操作">
@@ -53,7 +55,6 @@
                                 <Button Type="@ButtonType.Primary" OnClick='()=>
                                                                             {
                                                                                 GenerateData.EntitieName = context.FieldName;
-                                                                                GenerateData.ViewFields.Entity = context;
                                                                                 OnNextClick();
                                                                             }'>选择</Button>
                             </SpaceItem>
@@ -65,14 +66,23 @@
                 break;
             case 1:
                 <div style="margin-bottom:16px;margin-top:16px;">
-                    <Form Model="GenerateData" @ref="GenerateFrom">
+                    <Form Model="@GenerateData" @ref="GenerateFrom">
                         <Space Direction="DirectionVHType.Vertical" Size="@("large")">
                             <FormItem>
                                 <AntDesign.Input Disabled="true" @bind-Value="@context.EntitieName">
                                 </AntDesign.Input>
                             </FormItem>
                             <FormItem>
-                                <Switch @bind-Checked="@context.IsCover" />
+                                <AntDesign.Input Placeholder="XX管理" @bind-Value="@context.LabelName">
+                                </AntDesign.Input>
+                            </FormItem>
+                            <FormItem Label="生成内容">
+                                <Checkbox @bind-Value="@context.IsGenerateApi">API</Checkbox>
+                                <Checkbox @bind-Value="@context.IsGenerateController">控制器</Checkbox>
+                                <Checkbox @bind-Value="@context.IsGeneratePage">页面</Checkbox>
+                            </FormItem>
+                            <FormItem>
+                                <Switch @bind-Value="@context.IsCover" />
                             </FormItem>
                         </Space>
 

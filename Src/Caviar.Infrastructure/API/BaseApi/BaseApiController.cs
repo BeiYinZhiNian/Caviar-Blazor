@@ -50,26 +50,32 @@ namespace Caviar.Infrastructure.API
             Interactor.Stopwatch.Stop();
         }
 
+        public T CreateService<T>() where T: BaseServices
+        {
+            var service = HttpContext.RequestServices.GetRequiredService<T>();
+            service.DbContext = HttpContext.RequestServices.GetRequiredService<IAppDbContext>();
+            return service;
+        }
     }
 
 
     public class EasyBaseApiController<Vm, T>: BaseApiController where T : class, IBaseEntity, new() where Vm : IView<T>
     {
-        IEasyBaseServices<T> sdk;
-        IEasyBaseServices<T> Sdk
+        IEasyBaseServices<T> _service;
+        IEasyBaseServices<T> Service
         {
             get
             {
-                if (sdk == null)
+                if (_service == null)
                 {
-                    sdk = HttpContext.RequestServices.GetRequiredService<IEasyBaseServices<T>>();
-                    sdk.DbContext = HttpContext.RequestServices.GetRequiredService<IEasyDbContext<T>>();
+                    _service = HttpContext.RequestServices.GetRequiredService<IEasyBaseServices<T>>();
+                    _service.DbContext = HttpContext.RequestServices.GetRequiredService<IEasyDbContext<T>>();
                 }
-                return sdk;
+                return _service;
             }
             set
             {
-                sdk = value;
+                _service = value;
             }
         }
 
@@ -77,28 +83,28 @@ namespace Caviar.Infrastructure.API
         [HttpPost]
         public virtual async Task<IActionResult> CreateEntity(Vm vm)
         {
-            var id = await Sdk.CreateEntity(vm.Entity);
+            var id = await Service.CreateEntity(vm.Entity);
             return Ok(id);
         }
 
         [HttpPost]
         public virtual async Task<IActionResult> UpdateEntity(Vm vm)
         {
-            await Sdk.UpdateEntity(vm.Entity);
+            await Service.UpdateEntity(vm.Entity);
             return Ok();
         }
 
         [HttpPost]
         public virtual async Task<IActionResult> DeleteEntity(Vm vm)
         {
-            await Sdk.DeleteEntity(vm.Entity);
+            await Service.DeleteEntity(vm.Entity);
             return Ok();
         }
 
         [HttpPost]
         public virtual async Task<IActionResult> GetEntity(int id)
         {
-            var entity = await Sdk.GetEntity(id);
+            var entity = await Service.GetEntity(id);
             return Ok(entity);
         }
     }

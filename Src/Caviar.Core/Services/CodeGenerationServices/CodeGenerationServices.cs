@@ -14,15 +14,15 @@ namespace Caviar.Core.Services.CodeGenerationServices
     /// </summary>
     public class CodeGenerationServices : BaseServices
     {
-        ///// <summary>
-        ///// 代码预览
-        ///// </summary>
-        ///// <param name="codeGenerateOptions">代码生成配置类</param>
-        ///// <returns>代码结果</returns>
-        //public List<CodePreviewTab> CodePreview(CodeGenerateOptions codeGenerateOptions)
-        //{
-
-        //}
+        /// <summary>
+        /// 代码预览
+        /// </summary>
+        /// <param name="codeGenerateOptions">代码生成配置类</param>
+        /// <returns>代码结果</returns>
+        public List<PreviewCode> CodePreview(CodeGenerateOptions codeGenerateOptions)
+        {
+            return null;
+        }
         /// <summary>
         /// 预览生成的代码
         /// </summary>
@@ -30,7 +30,7 @@ namespace Caviar.Core.Services.CodeGenerationServices
         /// <param name="suffixName">后缀名</param>
         /// <param name="extendName">扩展名</param>
         /// <returns></returns>
-        public PreviewCode PreviewCode(string entityName,string suffixName,string extendName)
+        protected PreviewCode PreviewCode(string entityName,string suffixName,string extendName)
         {
             string path = $"{AppDomain.CurrentDomain.BaseDirectory}{CurrencyConstant.CodeGenerateFilePath}{suffixName}.txt";
             if (!File.Exists(path))
@@ -47,7 +47,7 @@ namespace Caviar.Core.Services.CodeGenerationServices
             };
             return codePreviewTab;
         }
-        
+
         /// <summary>
         /// 替换文件生成内容
         /// </summary>
@@ -56,7 +56,7 @@ namespace Caviar.Core.Services.CodeGenerationServices
         /// <param name="codePreview">预览的代码</param>
         /// <param name="producer">生成者</param>
         /// <returns></returns>
-        public PreviewCode PreviewCodeReplace(ViewFields classData,List<ViewFields> fieldsData, PreviewCode codePreview,string producer)
+        protected PreviewCode PreviewCodeReplace(ViewFields classData,List<ViewFields> fieldsData, PreviewCode codePreview,string producer)
         {
             StringBuilder txt = new StringBuilder(codePreview.Content);
             txt = txt.Replace("{GenerationTime}", DateTime.Now.ToString());
@@ -251,7 +251,7 @@ namespace Caviar.Core.Services.CodeGenerationServices
             return formatHtml;
         }
 
-        public string GetSpace(int count)
+        protected string GetSpace(int count)
         {
             string space = "    ";
             for (int i = 0; i < count; i++)
