@@ -50,10 +50,23 @@ namespace Caviar.Infrastructure.API.BaseApi
             Interactor.Stopwatch.Stop();
         }
 
-        public T CreateService<T>() where T: BaseServices
+        public T CreateService<T>()
+        {
+            var service = HttpContext.RequestServices.GetRequiredService<T>();
+            return service;
+        }
+
+        public T CreateDbService<T>() where T: DbServices
         {
             var service = HttpContext.RequestServices.GetRequiredService<T>();
             service.DbContext = HttpContext.RequestServices.GetRequiredService<IAppDbContext>();
+            return service;
+        }
+
+        public T CreateEasyService<T>() where T : class, IBaseEntity, IEasyBaseServices<T>,new()
+        {
+            var service = HttpContext.RequestServices.GetRequiredService<T>();
+            service.DbContext = HttpContext.RequestServices.GetRequiredService<IEasyDbContext<T>>();
             return service;
         }
     }

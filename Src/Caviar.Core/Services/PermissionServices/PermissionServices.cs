@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Core.Services.PermissionServices
 {
-    public class PermissionServices: BaseServices
+    public class PermissionServices: DbServices
     {
     }
 }

@@ -14,18 +14,31 @@ namespace Caviar.Core.Services
     [DIInject]
     public partial class BaseServices
     {
+
+    }
+    
+    public partial class DbServices : BaseServices
+    {
         protected IAppDbContext _dbContext;
         public IAppDbContext DbContext
         {
             get
             {
                 if (_dbContext != null) return _dbContext;
-                throw new ApplicationException("未向Sdk注入DbContext");
+                throw new ApplicationException("未向Service注入DbContext");
             }
             set
             {
                 _dbContext = value;
             }
+        }
+        public DbServices()
+        {
+
+        }
+        public DbServices(IAppDbContext dbContext)
+        {
+            DbContext = dbContext;
         }
 
 
@@ -99,19 +112,29 @@ namespace Caviar.Core.Services
     }
 
     
-    public partial class EasyBaseServices<T> : BaseServices,IEasyBaseServices<T>   where T: class,IBaseEntity, new()
+    public partial class EasyBaseServices<T> : DbServices,IEasyBaseServices<T>   where T: class,IBaseEntity, new()
     {
         private new IEasyDbContext<T> _dbContext;
         public new IEasyDbContext<T> DbContext { 
             get 
             {
                 if (_dbContext != null) return _dbContext;
-                throw new ApplicationException("未向Sdk注入DbContext");
+                throw new ApplicationException("未向Service注入DbContext");
             }
             set
             {
                 _dbContext = value;
             }
+        }
+
+        public EasyBaseServices()
+        {
+
+        }
+
+        public EasyBaseServices(IEasyDbContext<T> dbContext)
+        {
+            DbContext = dbContext;
         }
 
         /// <summary>
