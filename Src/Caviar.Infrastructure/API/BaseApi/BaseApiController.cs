@@ -114,10 +114,17 @@ namespace Caviar.Infrastructure.API.BaseApi
             return Ok();
         }
 
-        [HttpPost]
+        [HttpGet]
         public virtual async Task<IActionResult> GetEntity(int id)
         {
             var entity = await Service.GetEntity(id);
+            return Ok(entity);
+        }
+
+        [HttpGet]
+        public virtual async Task<IActionResult> GetPages(int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true)
+        {
+            var entity = await Service.GetPages(null, pageIndex, pageSize, isOrder, isNoTracking);
             return Ok(entity);
         }
     }

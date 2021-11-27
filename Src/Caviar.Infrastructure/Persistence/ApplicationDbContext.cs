@@ -221,7 +221,10 @@ namespace Caviar.Infrastructure.Persistence
             data = isOrder ?
                 data.OrderBy(orderBy).OrderByDescending(u => u.CreatTime) :
                 data.OrderByDescending(orderBy).OrderByDescending(u => u.CreatTime);
-            data = data.Where(whereLambda);
+            if(whereLambda != null)
+            {
+                data = data.Where(whereLambda);
+            }
             PageData<T> pageData = new PageData<T>
             {
                 PageIndex = pageIndex,
