@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Src\Caviar.AntDesignUI\Caviar.AntDesignUI.csproj" />
+    <ProjectReference Include="..\Caviar.Demo.Model\Caviar.Demo.Model.csproj" />
   </ItemGroup>
 
 </Project>

@@ -8,17 +8,23 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Caviar.SharedKernel.Entities.Base;
+
 namespace Caviar.Infrastructure
 {
     public static class Configure
     {
         public static bool HasDataInit { get; set; }
+
+        public static CaviarConfig CaviarConfig { get; set; }
 
         public static void AddCaviar(this IServiceCollection services)
         {
@@ -29,18 +35,17 @@ namespace Caviar.Infrastructure
             AutomaticInjection injection = new AutomaticInjection();
             injection.AddIBaseModel(services);
             injection.AddInject(services);
-
+            ReadConfig("appsettings.json");
         }
 
-        public static void ReadConfig()
+        public static void ReadConfig(string appsettingPath)
         {
-            var appsettingPath = "appsettings.json";
             string appsettings = "{}";
             if (File.Exists(appsettingPath))
             {
                 appsettings = File.ReadAllText(appsettingPath);
             }
-            var json = JObject.Parse(appsettings);
+            CaviarConfig = JsonConvert.DeserializeObject<CaviarConfig>(appsettings);
         }
 
         /// <summary>

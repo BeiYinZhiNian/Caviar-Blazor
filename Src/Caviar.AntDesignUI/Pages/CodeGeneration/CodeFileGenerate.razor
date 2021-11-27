@@ -70,11 +70,11 @@
                     <Form Model="@GenerateData" @ref="GenerateFrom">
                         <Space Direction="DirectionVHType.Vertical" Size="@("large")">
                             <FormItem>
-                                <AntDesign.Input Disabled="true" @bind-Value="@context.EntitieName">
+                                <AntDesign.Input Placeholder="XX管理" @bind-Value="@context.LabelName">
                                 </AntDesign.Input>
                             </FormItem>
                             <FormItem>
-                                <AntDesign.Input Placeholder="XX管理" @bind-Value="@context.LabelName">
+                                <AntDesign.Input Disabled="true" @bind-Value="@context.EntitieName">
                                 </AntDesign.Input>
                             </FormItem>
                             <FormItem Label="生成内容">

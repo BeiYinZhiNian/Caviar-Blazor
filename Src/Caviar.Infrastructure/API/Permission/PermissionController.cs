@@ -1,6 +1,7 @@
 ﻿using Caviar.Core;
 using Caviar.Core.Services.PermissionServices;
 using Microsoft.AspNetCore.Mvc;
+using Caviar.Infrastructure.API.BaseApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;

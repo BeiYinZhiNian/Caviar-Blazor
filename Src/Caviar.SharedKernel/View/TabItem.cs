@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Caviar.SharedKernel.Entities.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,5 +24,9 @@ namespace Caviar.SharedKernel.View
         /// 代码内容
         /// </summary>
         public string Content { get; set; }
+        /// <summary>
+        /// 配置
+        /// </summary>
+        public CodeGeneration Options { get; set; }
     }
 }

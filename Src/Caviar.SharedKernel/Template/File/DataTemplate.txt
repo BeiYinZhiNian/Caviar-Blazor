@@ -7,7 +7,7 @@
 *@
 @page "/{EntityName}/Add"
 @page "/{EntityName}/Update"
-@using {EntityNamespace}.View
+@using {BaseEntityNamespace}.View
 @inherits DataComponentBase<{EntityName}View>
 
 <Form @ref="_meunForm" Model="@DataSource" OnFinish="FormSubmit">

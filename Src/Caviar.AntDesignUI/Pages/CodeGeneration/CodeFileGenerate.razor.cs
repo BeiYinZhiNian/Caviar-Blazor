@@ -70,12 +70,12 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
         string ResultSubTitle = "";
         async void OnGenerateClick()
         {
-            var result = await Http.PostJson<CodeGenerateOptions, List<PreviewCode>>($"{Url}?isPerview=false", GenerateData);
+            var result = await Http.PostJson<CodeGenerateOptions, string>($"{Url}?isPerview=false", GenerateData);
             if (result.Status == StatusCodes.Status200OK)
             {
                 ResultStatus = "success";
-                ReusltTitle = "代码生成完毕";
-                ResultSubTitle = "代码生效需要关闭程序重新编译运行";
+                ReusltTitle = result.Title;
+                ResultSubTitle = "代码生成完毕,代码生效需要关闭程序重新编译运行";
             }
             else
             {

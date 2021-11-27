@@ -7,7 +7,7 @@ using Caviar.Core.Interface;
 using Caviar.SharedKernel;
 using Caviar.Infrastructure.Persistence;
 
-namespace Caviar.Infrastructure.API
+namespace Caviar.Infrastructure.API.BaseApi
 {
     [Route("api/[controller]/[action]")]
     [ApiController]

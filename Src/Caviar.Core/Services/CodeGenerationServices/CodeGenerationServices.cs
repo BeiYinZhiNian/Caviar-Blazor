@@ -1,4 +1,5 @@
 ﻿using Caviar.SharedKernel;
+using Caviar.SharedKernel.Entities.Base;
 using Caviar.SharedKernel.View;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,40 @@ namespace Caviar.Core.Services.CodeGenerationServices
     /// </summary>
     public class CodeGenerationServices : BaseServices
     {
+        public string WriteCodeFile(List<PreviewCode> previewCodes,CodeGenerateOptions codeGenerateOptions)
+        {
+            int count = 0;
+            int writeCount = 0;
+            int coverCount = 0;
+            int skipCount = 0;
+            foreach (var item in previewCodes)
+            {
+                count++;
+                var storePath = item.Options.StorePath + $"{codeGenerateOptions.EntitieName}/";
+                if (!Directory.Exists(storePath))
+                {
+                    Directory.CreateDirectory(storePath);
+                }
+                var outName = storePath + item.KeyName;
+                if (!File.Exists(outName) || codeGenerateOptions.IsCover)
+                {
+                    if (File.Exists(outName)) coverCount++;
+                    string fileData = "文件夹为空则不进行任何替换";
+                    if (File.Exists(outName)) fileData = File.ReadAllText(outName);
+                    if (!string.IsNullOrEmpty(fileData))
+                    {
+                        writeCount++;
+                        File.WriteAllText(outName, item.Content);
+                    }
+                }
+                else
+                {
+                    skipCount++;
+                }
+            }
+            return $"共{count}个文件，写出文件{writeCount}个，跳过文件{skipCount}个，覆盖文件{coverCount}个";
+        }
+
         /// <summary>
         /// 代码预览
         /// </summary>
@@ -21,7 +56,7 @@ namespace Caviar.Core.Services.CodeGenerationServices
         /// <param name="fieldsData">实体字段信息</param>
         /// <param name="codeGenerateOptions">代码生成配置信息</param>
         /// <returns></returns>
-        public List<PreviewCode> CodePreview(ViewFields entityData, List<ViewFields> fieldsData, CodeGenerateOptions codeGenerateOptions,string producer)
+        public List<PreviewCode> CodePreview(ViewFields entityData, List<ViewFields> fieldsData, CodeGenerateOptions codeGenerateOptions,CaviarConfig config,string producer)
         {
             List<PreviewCode> list = new List<PreviewCode>();
             var entitieName = codeGenerateOptions.EntitieName;
@@ -29,32 +64,32 @@ namespace Caviar.Core.Services.CodeGenerationServices
             {
                 var suffixName = "Controller";
                 var extendName = ".cs";
-                var codePreview = GetPreviewCode(entitieName, suffixName, extendName);
-                codePreview = PreviewCodeReplace(entityData, fieldsData, codePreview, producer);
+                var codePreview = GetPreviewCode(entitieName, suffixName, extendName, config.ControllerOptions);
+                codePreview = PreviewCodeReplace(entityData, fieldsData, codePreview, codeGenerateOptions, producer);
                 list.Add(codePreview);
             }
             if (codeGenerateOptions.IsGenerateDataTemplate)
             {
                 var suffixName = "DataTemplate";
                 var extendName = ".razor";
-                var codePreview = GetPreviewCode(entitieName, suffixName, extendName);
-                codePreview = PreviewCodeReplace(entityData, fieldsData, codePreview, producer);
+                var codePreview = GetPreviewCode(entitieName, suffixName, extendName, config.DataTemplateOptions);
+                codePreview = PreviewCodeReplace(entityData, fieldsData, codePreview, codeGenerateOptions, producer);
                 list.Add(codePreview);
             }
             if (codeGenerateOptions.IsGenerateIndex)
             {
                 var suffixName = "AntDesignIndex";
                 var extendName = ".razor";
-                var codePreview = GetPreviewCode(entitieName, suffixName, extendName);
-                codePreview = PreviewCodeReplace(entityData, fieldsData, codePreview, producer);
+                var codePreview = GetPreviewCode(entitieName, suffixName, extendName, config.IndexOptions);
+                codePreview = PreviewCodeReplace(entityData, fieldsData, codePreview, codeGenerateOptions, producer);
                 list.Add(codePreview);
             }
             if (codeGenerateOptions.IsGenerateViewModel)
             {
                 var suffixName = "View";
                 var extendName = ".cs";
-                var codePreview = GetPreviewCode(entitieName, suffixName, extendName);
-                codePreview = PreviewCodeReplace(entityData, fieldsData, codePreview, producer);
+                var codePreview = GetPreviewCode(entitieName, suffixName, extendName, config.ViewModelOptions);
+                codePreview = PreviewCodeReplace(entityData, fieldsData, codePreview, codeGenerateOptions, producer);
                 list.Add(codePreview);
             }
             return list;
@@ -66,7 +101,7 @@ namespace Caviar.Core.Services.CodeGenerationServices
         /// <param name="suffixName">后缀名</param>
         /// <param name="extendName">扩展名</param>
         /// <returns></returns>
-        protected PreviewCode GetPreviewCode(string entityName,string suffixName,string extendName)
+        protected PreviewCode GetPreviewCode(string entityName,string suffixName,string extendName, CodeGeneration options)
         {
             string path = $"{AppDomain.CurrentDomain.BaseDirectory}{CurrencyConstant.CodeGenerateFilePath}{suffixName}.txt";
             if (!File.Exists(path))
@@ -79,7 +114,8 @@ namespace Caviar.Core.Services.CodeGenerationServices
             {
                 TabName = name,
                 KeyName = name,
-                Content = txt
+                Content = txt,
+                Options = options
             };
             return codePreviewTab;
         }
@@ -92,14 +128,17 @@ namespace Caviar.Core.Services.CodeGenerationServices
         /// <param name="codePreview">预览的代码</param>
         /// <param name="producer">生成者</param>
         /// <returns></returns>
-        protected PreviewCode PreviewCodeReplace(ViewFields entityData,List<ViewFields> fieldsData, PreviewCode codePreview,string producer)
+        protected PreviewCode PreviewCodeReplace(ViewFields entityData,List<ViewFields> fieldsData, PreviewCode codePreview,CodeGenerateOptions codeGenerateOptions , string producer)
         {
             StringBuilder txt = new StringBuilder(codePreview.Content);
-            txt = txt.Replace("{GenerationTime}", DateTime.Now.ToString());
+            var baseEntityNaemspace = entityData.Entity.FullName.Replace($".{entityData.Entity.FieldName}", "");
+            txt = txt.Replace("{GenerationTime}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             txt = txt.Replace("{Producer}", producer);
-            txt = txt.Replace("{EntityNamespace}", entityData.EntityNamespace);
+            txt = txt.Replace("{EntityNamespace}", codePreview.Options.NameSpace);
+            txt = txt.Replace("{BaseEntityNamespace}", baseEntityNaemspace);
             txt = txt.Replace("{EntityName}", entityData.Entity.FieldName);
             txt = txt.Replace("{FormItem}", CreateFormItem(fieldsData));
+            txt = txt.Replace("{Lable}", codeGenerateOptions.LabelName);
             codePreview.Content = txt.ToString();
             return codePreview;
         }
@@ -138,7 +177,7 @@ namespace Caviar.Core.Services.CodeGenerationServices
             var IsWrite = true;
             IsWrite = CreateSpecialAssembly(item, ref txt);
             if (IsWrite) return IsWrite;
-            var modelType = item.Entity.FullName.ToLower();
+            var modelType = item.EntityType.ToLower();
             switch (modelType)
             {
                 case "string":
