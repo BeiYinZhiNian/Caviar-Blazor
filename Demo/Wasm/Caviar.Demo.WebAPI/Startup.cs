@@ -64,6 +64,7 @@ namespace Caviar.Demo.WebApi
             {
                 endpoints.MapControllers();
             });
+            app.UseCaviar();
         }
     }
 }

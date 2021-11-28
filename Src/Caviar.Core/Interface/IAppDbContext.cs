@@ -13,6 +13,11 @@ namespace Caviar.Core.Interface
     public partial interface IAppDbContext
     {
         /// <summary>
+        /// 数据初始化
+        /// </summary>
+        /// <returns></returns>
+        Task<bool> DataInit();
+        /// <summary>
         /// 保存操作
         /// </summary>
         /// <param name="IsFieldCheck">确保为系统内部更改时，可以取消字段验证</param>

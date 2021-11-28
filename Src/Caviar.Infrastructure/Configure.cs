@@ -17,6 +17,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Caviar.SharedKernel.Entities.Base;
+using Microsoft.AspNetCore.Builder;
 
 namespace Caviar.Infrastructure
 {
@@ -26,7 +27,7 @@ namespace Caviar.Infrastructure
 
         public static CaviarConfig CaviarConfig { get; set; }
 
-        public static void AddCaviar(this IServiceCollection services)
+        public static IServiceCollection AddCaviar(this IServiceCollection services)
         {
             services.AddScoped<ILanguageService, InAssemblyLanguageService>();
             services.AddScoped<Interactor>();
@@ -36,6 +37,13 @@ namespace Caviar.Infrastructure
             injection.AddIBaseModel(services);
             injection.AddInject(services);
             ReadConfig("appsettings.json");
+            return services;
+        }
+
+        public static IApplicationBuilder UseCaviar(this IApplicationBuilder app)
+        {
+            //var dataInit = app.ApplicationServices.GetRequiredService<IAppDbContext>().DataInit().Result;
+            return app;
         }
 
         public static void ReadConfig(string appsettingPath)
