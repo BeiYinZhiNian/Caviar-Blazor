@@ -42,7 +42,7 @@ namespace Caviar.Infrastructure
 
         public static IApplicationBuilder UseCaviar(this IApplicationBuilder app)
         {
-            //var dataInit = app.ApplicationServices.GetRequiredService<IAppDbContext>().DataInit().Result;
+            
             return app;
         }
 
@@ -73,6 +73,12 @@ namespace Caviar.Infrastructure
                     .AddDefaultTokenProviders();
 
             services.AddTransient<IDbContext, SysDbContext<TUser, TRole, int>>();
+            //using (var context = new SysDbContext<ApplicationUser, ApplicationRole, int>())
+            //{
+            //    SysMenu menu = new SysMenu() { MenuName = "测试" };
+            //    var blog = context.Add(menu);
+            //    context.SaveChanges();
+            //}
         }
 
         /// <summary>

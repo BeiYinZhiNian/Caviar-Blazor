@@ -22,6 +22,11 @@ namespace Caviar.Infrastructure.Persistence.Sys
 
         }
 
+        public SysDbContext() : base()
+        {
+
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             var types = CommonHelper.GetEntityList();
