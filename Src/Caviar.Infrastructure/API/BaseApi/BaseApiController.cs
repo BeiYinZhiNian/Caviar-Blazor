@@ -32,10 +32,6 @@ namespace Caviar.Infrastructure.API.BaseApi
             Interactor.HttpContext = HttpContext;
             //请求参数
             Interactor.ActionArguments = context.ActionArguments;
-            if (!Configure.HasDataInit)
-            {
-                new DataInit(Interactor.DbContext);
-            }
         }
 
         public override void OnActionExecuted(ActionExecutedContext context)

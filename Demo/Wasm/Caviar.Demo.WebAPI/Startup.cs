@@ -55,7 +55,7 @@ namespace Caviar.Demo.WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Caviar.Demo.WebApi v1"));
             }
-
+            
             app.UseRouting();
 
             app.UseAuthorization();

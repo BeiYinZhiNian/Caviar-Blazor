@@ -1,7 +1,6 @@
 ﻿using Caviar.Core;
 using Caviar.Core.Interface;
 using Caviar.Infrastructure.Persistence;
-using Caviar.Infrastructure.Persistence.Sys;
 using Caviar.SharedKernel;
 using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Http;
@@ -42,7 +41,10 @@ namespace Caviar.Infrastructure
 
         public static IApplicationBuilder UseCaviar(this IApplicationBuilder app)
         {
-            
+            using(var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<SysDbContext<ApplicationUser, ApplicationRole, int>>();
+            }
             return app;
         }
 
@@ -73,12 +75,6 @@ namespace Caviar.Infrastructure
                     .AddDefaultTokenProviders();
 
             services.AddTransient<IDbContext, SysDbContext<TUser, TRole, int>>();
-            //using (var context = new SysDbContext<ApplicationUser, ApplicationRole, int>())
-            //{
-            //    SysMenu menu = new SysMenu() { MenuName = "测试" };
-            //    var blog = context.Add(menu);
-            //    context.SaveChanges();
-            //}
         }
 
         /// <summary>

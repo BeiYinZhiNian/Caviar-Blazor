@@ -1,16 +1,11 @@
-﻿using Caviar.Core;
-using Caviar.Core.Interface;
-using Caviar.SharedKernel;
+﻿using Caviar.SharedKernel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Caviar.Infrastructure.Persistence.Sys
+namespace Caviar.Infrastructure.Persistence
 {
     public class SysDbContext<TUser, TRole, TKey> : IdentityDbContext<TUser, TRole, TKey>, IDbContext
         where TUser : IdentityUser<TKey>

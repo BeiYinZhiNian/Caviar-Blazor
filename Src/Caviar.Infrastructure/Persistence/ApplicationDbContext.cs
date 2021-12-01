@@ -1,6 +1,5 @@
 ﻿using Caviar.Core;
 using Caviar.Core.Interface;
-using Caviar.Infrastructure.Persistence.Sys;
 using Caviar.SharedKernel;
 using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Identity;
@@ -17,7 +16,7 @@ namespace Caviar.Infrastructure.Persistence
 {
     public class ApplicationDbContext : IAppDbContext
     {
-        protected IDbContext DbContext { get;private set; }
+        public IDbContext DbContext { get;private set; }
         protected Interactor Interactor { get; private set; }
 
         protected ILanguageService LanguageService { get; set; }
@@ -27,23 +26,6 @@ namespace Caviar.Infrastructure.Persistence
             DbContext = identityDbContext;
             Interactor = interactor;
             LanguageService = languageService;
-        }
-
-
-        /// <summary>
-        /// 数据初始化
-        /// </summary>
-        /// <param name="allModules"></param>
-        /// <param name="IsSpa"></param>
-        /// <returns>返回true表示需要进行初始化数据操作，返回false即数据库已经存在或不需要初始化数据</returns>
-        public virtual async Task<bool> DataInit()
-        {
-            var isCreate = await DbContext.Database.EnsureCreatedAsync();
-            if (isCreate)
-            {
-
-            }
-            return isCreate;
         }
 
 
