@@ -1,4 +1,5 @@
-﻿using Caviar.SharedKernel;
+﻿using Caviar.Infrastructure.Identity;
+using Caviar.SharedKernel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -35,7 +36,13 @@ namespace Caviar.Infrastructure.Persistence
                 }
             }
             base.OnModelCreating(modelBuilder);
-
+            modelBuilder.Entity<ApplicationUser>().ToTable("SysUser");//不能创建SysUsers
+            modelBuilder.Entity<ApplicationRole>().ToTable("SysRoles");
+            modelBuilder.Entity<IdentityUserClaim<TKey>>().ToTable("SysUserClaims");
+            modelBuilder.Entity<IdentityUserLogin<TKey>>().ToTable("SysUserLogins");
+            modelBuilder.Entity<IdentityRoleClaim<TKey>>().ToTable("SysIdentityRoleClaims");
+            modelBuilder.Entity<IdentityUserRole<TKey>>().ToTable("SysUserRoles");
+            modelBuilder.Entity<IdentityUserToken<TKey>>().ToTable("SysUserTokens");
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using Caviar.Core;
-using Caviar.Core.Interface;
+﻿using Caviar.Core.Interface;
 using Caviar.Infrastructure.Persistence;
 using Caviar.SharedKernel;
 using Caviar.SharedKernel.Entities;
@@ -7,16 +6,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Caviar.SharedKernel.Entities.Base;
 using Microsoft.AspNetCore.Builder;
+using Caviar.Infrastructure.Identity;
 
 namespace Caviar.Infrastructure
 {
@@ -57,21 +54,23 @@ namespace Caviar.Infrastructure
 
         /// <summary>
         /// 自定义用户表和角色表
+        /// 后面很多情况暂时不支持自定义用户和角色表
         /// </summary>
         /// <typeparam name="TUser"></typeparam>
         /// <typeparam name="TRole"></typeparam>
         /// <param name="services"></param>
-        public static void AddCaviarDbContext<TUser, TRole>(this IServiceCollection services, Action<DbContextOptionsBuilder> optionsAction = null, ServiceLifetime contextLifetime = ServiceLifetime.Scoped, ServiceLifetime optionsLifetime = ServiceLifetime.Scoped)
-            where TUser : IdentityUser<int>, IBaseEntity
-            where TRole : IdentityRole<int>, IBaseEntity
+        public static IdentityBuilder AddCaviarDbContext<TUser, TRole>(this IServiceCollection services, Action<DbContextOptionsBuilder> optionsAction = null, ServiceLifetime contextLifetime = ServiceLifetime.Scoped, ServiceLifetime optionsLifetime = ServiceLifetime.Scoped)
+            where TUser : IdentityUser<int>, IUser
+            where TRole : IdentityRole<int>, IRole
         {
             services.AddDbContext<SysDbContext<TUser, TRole, int>>(optionsAction, contextLifetime, optionsLifetime);
-            services.AddIdentity<TUser, TRole>()
+            var identityBuilder = services.AddIdentity<TUser, TRole>()
                     .AddEntityFrameworkStores<SysDbContext<TUser, TRole, int>>()
                     .AddDefaultUI()
                     .AddDefaultTokenProviders();
 
-            services.AddTransient<IDbContext, SysDbContext<TUser, TRole, int>>();
+            services.AddScoped<IDbContext, SysDbContext<TUser, TRole, int>>();
+            return identityBuilder;
         }
 
         /// <summary>
@@ -80,9 +79,10 @@ namespace Caviar.Infrastructure
         /// <typeparam name="TUser"></typeparam>
         /// <typeparam name="TRole"></typeparam>
         /// <param name="services"></param>
-        public static void AddCaviarDbContext(this IServiceCollection services, Action<DbContextOptionsBuilder> optionsAction = null, ServiceLifetime contextLifetime = ServiceLifetime.Scoped, ServiceLifetime optionsLifetime = ServiceLifetime.Scoped)
+        public static IdentityBuilder AddCaviarDbContext(this IServiceCollection services, Action<DbContextOptionsBuilder> optionsAction = null, ServiceLifetime contextLifetime = ServiceLifetime.Scoped, ServiceLifetime optionsLifetime = ServiceLifetime.Scoped)
         {
-            services.AddCaviarDbContext<ApplicationUser, ApplicationRole>(optionsAction, contextLifetime, optionsLifetime);
+            var identityBuilder = services.AddCaviarDbContext<ApplicationUser, ApplicationRole>(optionsAction, contextLifetime, optionsLifetime);
+            return identityBuilder;
         }
 
 

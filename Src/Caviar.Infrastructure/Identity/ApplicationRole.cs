@@ -2,10 +2,12 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Caviar.SharedKernel;
+using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Identity;
-namespace Caviar.SharedKernel.Entities
+
+namespace Caviar.Infrastructure.Identity
 {
-    public class ApplicationRole : IdentityRole<int>, IBaseEntity, IRole
+    public class ApplicationRole : IdentityRole<int>, IRole
     {
         [DisplayName("RoleName")]
         public override string Name { get => base.Name; set => base.Name = value; }

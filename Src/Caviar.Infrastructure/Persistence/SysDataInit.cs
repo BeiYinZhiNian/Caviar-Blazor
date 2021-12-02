@@ -1,10 +1,13 @@
 ﻿using Caviar.Core;
 using Caviar.Core.Interface;
 using Caviar.SharedKernel.Entities;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using Microsoft.AspNetCore.Identity;
+using Caviar.SharedKernel;
+using Caviar.Infrastructure.Identity;
 
 namespace Caviar.Infrastructure.Persistence
 {
@@ -24,8 +27,9 @@ namespace Caviar.Infrastructure.Persistence
             {
                 var dbAppContext = serviceScope.ServiceProvider.GetRequiredService<IAppDbContext>();
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<IDbContext>();
-                await DatabaseInit(dbContext);
+                var isDatabaseInit = await DatabaseInit(dbContext);
                 await FieldsInit(dbAppContext);
+                await CreateData(serviceScope, isDatabaseInit);
             }
         }
         /// <summary>
@@ -61,6 +65,16 @@ namespace Caviar.Infrastructure.Persistence
         protected virtual Task<bool> DatabaseInit(IDbContext dbContext)
         {
             return dbContext.Database.EnsureCreatedAsync();
+        }
+
+        protected virtual async Task CreateData(IServiceScope provider,bool isDatabaseInit)
+        {
+            if (!isDatabaseInit) return;
+            var userManager = provider.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var user = new ApplicationUser { Email = "1031622947@qq.com", UserName = "admin" };
+            var result = await userManager.CreateAsync(user, "1031622947@qq.COM");
+            if (!result.Succeeded) throw new Exception("创建用户失败，数据初始化停止");
+
         }
 
     }
