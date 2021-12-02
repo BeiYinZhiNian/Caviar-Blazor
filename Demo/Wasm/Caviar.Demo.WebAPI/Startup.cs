@@ -31,7 +31,7 @@ namespace Caviar.Demo.WebApi
             services.AddCaviar();
             services.AddCaviarDbContext(options =>
                 options.UseSqlServer(
-            Configuration.GetConnectionString("DefaultConnection")));
+            Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Caviar.Demo.WebApi")));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
