@@ -41,10 +41,7 @@ namespace Caviar.Infrastructure
 
         public static IApplicationBuilder UseCaviar(this IApplicationBuilder app)
         {
-            using(var serviceScope = app.ApplicationServices.CreateScope())
-            {
-                var context = serviceScope.ServiceProvider.GetRequiredService<SysDbContext<ApplicationUser, ApplicationRole, int>>();
-            }
+            new SysDataInit().StartInit(app.ApplicationServices).Wait();
             return app;
         }
 
