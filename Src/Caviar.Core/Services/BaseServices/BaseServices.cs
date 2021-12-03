@@ -36,6 +36,7 @@ namespace Caviar.Core.Services
         {
 
         }
+
         public DbServices(IAppDbContext dbContext)
         {
             DbContext = dbContext;
@@ -131,8 +132,7 @@ namespace Caviar.Core.Services
         {
 
         }
-
-        public EasyBaseServices(IEasyDbContext<T> dbContext)
+        public EasyBaseServices(IEasyDbContext<T> dbContext):base(dbContext)
         {
             DbContext = dbContext;
         }

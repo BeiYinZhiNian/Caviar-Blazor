@@ -8,7 +8,7 @@ using Caviar.SharedKernel.Entities.View;
 /// 代码由代码生成器自动生成，更改的代码可能被进行替换
 /// 可在上层目录使用partial关键字进行扩展
 /// </summary>
-namespace Caviar.SharedKernel.Entities.Controller
+namespace Caviar.Infrastructure.API.SysMenuController
 {
     /// <summary>
     /// 菜单管理控制器

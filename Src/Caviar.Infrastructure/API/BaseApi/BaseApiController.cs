@@ -49,25 +49,20 @@ namespace Caviar.Infrastructure.API.BaseApi
             Interactor.Stopwatch.Stop();
         }
 
-        public T CreateService<T>()
+        public static T CreateService<T>() where T : new()
         {
-            var service = HttpContext.RequestServices.GetRequiredService<T>();
+            T service = new T();
+            var isExistence = service.ContainProperty("DbContext");
+            if (isExistence)
+            {
+                var serviceScope = Configure.ServiceProvider.CreateScope();
+                var dbContext = serviceScope.ServiceProvider.GetRequiredService<IAppDbContext>();
+                service.SetProperty("DbContext", dbContext);
+            }
+            
             return service;
         }
 
-        public T CreateDbService<T>() where T: DbServices
-        {
-            var service = HttpContext.RequestServices.GetRequiredService<T>();
-            service.DbContext = HttpContext.RequestServices.GetRequiredService<IAppDbContext>();
-            return service;
-        }
-
-        public T CreateEasyService<T>() where T : class, IBaseEntity, IEasyBaseServices<T>,new()
-        {
-            var service = HttpContext.RequestServices.GetRequiredService<T>();
-            service.DbContext = HttpContext.RequestServices.GetRequiredService<IEasyDbContext<T>>();
-            return service;
-        }
     }
 
 
@@ -99,7 +94,7 @@ namespace Caviar.Infrastructure.API.BaseApi
         [HttpGet]
         public virtual async Task<IActionResult> GetFields()
         {
-            var permissionServices = CreateDbService<PermissionServices>();
+            var permissionServices = CreateService<PermissionServices>();
             var fieldName = typeof(T).Name;
             var fullName = typeof(T).FullName;
             var fields = FieldScannerServices.GetClassFields(fieldName, fullName);

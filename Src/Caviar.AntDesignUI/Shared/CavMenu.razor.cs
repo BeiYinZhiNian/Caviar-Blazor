@@ -85,7 +85,7 @@ namespace Caviar.AntDesignUI.Shared
 
         protected override async Task OnInitializedAsync()
         {
-            //SysMenus = await GetMenus();
+            SysMenus = await GetMenus();
         }
 
         private List<SysMenuView> SysMenus;
@@ -98,7 +98,7 @@ namespace Caviar.AntDesignUI.Shared
 
         async Task<List<SysMenuView>> GetMenus()
         {
-            var result = await Http.GetJson<List<SysMenuView>> ("Menu/GetMenus");
+            var result = await Http.GetJson<List<SysMenuView>> ("SysMenu/GetMenuBar");
             if (result.Status != StatusCodes.Status200OK) return new List<SysMenuView>();
             return result.Data;
         }

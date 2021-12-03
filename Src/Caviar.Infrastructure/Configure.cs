@@ -24,6 +24,8 @@ namespace Caviar.Infrastructure
 
         public static CaviarConfig CaviarConfig { get; set; }
 
+        public static IServiceProvider ServiceProvider { get; set; }
+
         public static IServiceCollection AddCaviar(this IServiceCollection services)
         {
             services.AddScoped<ILanguageService, InAssemblyLanguageService>();
@@ -40,6 +42,7 @@ namespace Caviar.Infrastructure
 
         public static IApplicationBuilder UseCaviar(this IApplicationBuilder app)
         {
+            ServiceProvider = app.ApplicationServices;
             new SysDataInit().StartInit(app.ApplicationServices).Wait();
             return app;
         }
