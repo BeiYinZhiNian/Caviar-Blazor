@@ -93,8 +93,33 @@ namespace Caviar.Infrastructure.Persistence
                 {
                     MenuName = "系统管理",
                     Icon = "windows"
+                },
+                new SysMenu()
+                {
+                    MenuName = "首页",
+                    Icon = "home",
+                    MenuType = MenuType.Menu,
+                    Url = "/",
+                    Number = "10"
+                },
+                new SysMenu()
+                {
+                    MenuName = "菜单管理",
+                    Icon = "profile",
+                    Url = "SysMenu/Index",
+                    MenuType = MenuType.Menu,
+                    ParentId = 1
+                },
+                new SysMenu()
+                {
+                    MenuName = "角色管理",
+                    Icon = "user-switch",
+                    Url = "SysRole/Index",
+                    MenuType = MenuType.Menu,
+                    ParentId = 1
                 }
             };
+            menus.Reverse();
             DbContext.AddRange(menus);
             await DbContext.SaveChangesAsync();
         }

@@ -1,4 +1,5 @@
 ﻿using Caviar.Core.Services.SysMenuServices;
+using Caviar.SharedKernel;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Caviar.Infrastructure.API.SysMenuController
         public async Task<IActionResult> GetMenuBar()
         {
             var menus = await MenuServices.GetMenuBar();
-            var menusVm = ToView(menus);
+            var menusVm = ToView(menus).ListToTree();
             return Ok(menusVm);
         }
     }
