@@ -386,30 +386,4 @@ namespace Caviar.Infrastructure.Persistence
             return query;
         }
     }
-
-    public class EasyDbContext<T> : ApplicationDbContext, IEasyDbContext<T> where T : class, IBaseEntity, new()
-    {
-        public EasyDbContext(IDbContext identityDbContext, Interactor interactor, ILanguageService languageService) : base(identityDbContext, interactor, languageService)
-        {
-        }
-        public Task<List<T>> GetAllAsync(bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false)
-        {
-            return base.GetAllAsync<T>(isNoTracking, isDataPermissions, isRecycleBin);
-        }
-
-        public Task<T> SingleOrDefaultAsync(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false)
-        {
-            return base.SingleOrDefaultAsync(where, isNoTracking, isDataPermissions, isRecycleBin);
-        }
-
-        public Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false)
-        {
-            return base.FirstOrDefaultAsync(where, isNoTracking, isDataPermissions, isRecycleBin);
-        }
-
-        public Task<List<T>> GetEntityAsync(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false)
-        {
-            return base.GetEntityAsync(where, isNoTracking, isDataPermissions, isRecycleBin);
-        }
-    }
 }

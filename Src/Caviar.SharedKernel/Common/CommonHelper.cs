@@ -345,28 +345,14 @@ namespace Caviar.SharedKernel
         /// <param name="instance">object</param>
         /// <param name="propertyName">需要判断的属性</param>
         /// <returns>是否包含</returns>
-        public static bool ContainProperty(this object instance, string propertyName)
+        public static PropertyInfo ContainProperty(this object instance, string propertyName,Type returnType)
         {
             if (instance != null && !string.IsNullOrEmpty(propertyName))
             {
-                PropertyInfo _findedPropertyInfo = instance.GetType().GetProperty(propertyName);
-                return (_findedPropertyInfo != null);
+                PropertyInfo _findedPropertyInfo = instance.GetType().GetProperty(propertyName,returnType);
+                return _findedPropertyInfo;
             }
-            return false;
-        }
-        /// <summary>
-        /// 利用反射来给某个属性写值
-        /// </summary>
-        /// <param name="instance"></param>
-        /// <param name="propertyName"></param>
-        /// <param name="value"></param>
-        public static void SetProperty(this object instance,string propertyName, object value)
-        {
-            if (instance != null)
-            {
-                PropertyInfo _findedPropertyInfo = instance.GetType().GetProperty(propertyName);
-                _findedPropertyInfo.SetValue(instance, value,null);
-            }
+            return null;
         }
 
     }

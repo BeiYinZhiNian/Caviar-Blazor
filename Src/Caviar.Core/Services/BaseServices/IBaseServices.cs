@@ -16,11 +16,7 @@ namespace Caviar.Core.Services
     /// <typeparam name="T"></typeparam>
     public interface IEasyBaseServices<T> : IDIinjectAtteribute where T : class, IBaseEntity, new()
     {
-        /// <summary>
-        /// 数据库上下文
-        /// </summary>
-        public IEasyDbContext<T> DbContext { get; set; }
-
+        public IAppDbContext DbContext { get; set; }
         /// <summary>
         /// 添加实体
         /// </summary>

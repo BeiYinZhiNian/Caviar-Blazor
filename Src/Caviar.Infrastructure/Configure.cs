@@ -31,7 +31,6 @@ namespace Caviar.Infrastructure
             services.AddScoped<ILanguageService, InAssemblyLanguageService>();
             services.AddScoped<Interactor>();
             services.AddScoped<IAppDbContext, ApplicationDbContext>();
-            services.AddScoped(typeof(IEasyDbContext<>),typeof(EasyDbContext<>));
             services.AddScoped(typeof(IEasyBaseServices<>),typeof(EasyBaseServices<>));
             AutomaticInjection injection = new AutomaticInjection();
             injection.AddIBaseModel(services);

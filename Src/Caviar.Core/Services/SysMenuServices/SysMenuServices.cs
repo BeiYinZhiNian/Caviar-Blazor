@@ -15,7 +15,7 @@ namespace Caviar.Core.Services.SysMenuServices
         /// <returns></returns>
         public async Task<List<SysMenu>> GetMenuBar()
         {
-            var menus = await DbContext.GetAllAsync();
+            var menus = await GetAllAsync();
             return menus;
         }
     }

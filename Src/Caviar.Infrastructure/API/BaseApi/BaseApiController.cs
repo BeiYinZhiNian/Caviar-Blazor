@@ -52,12 +52,12 @@ namespace Caviar.Infrastructure.API.BaseApi
         public static T CreateService<T>() where T : new()
         {
             T service = new T();
-            var isExistence = service.ContainProperty("DbContext");
-            if (isExistence)
+            var propertyInfo = service.ContainProperty("DbContext",typeof(IAppDbContext));
+            if (propertyInfo != null)
             {
                 var serviceScope = Configure.ServiceProvider.CreateScope();
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<IAppDbContext>();
-                service.SetProperty("DbContext", dbContext);
+                propertyInfo.SetValue(service, dbContext,null);
             }
             
             return service;
@@ -76,7 +76,7 @@ namespace Caviar.Infrastructure.API.BaseApi
                 if (_service == null)
                 {
                     _service = HttpContext.RequestServices.GetRequiredService<IEasyBaseServices<T>>();
-                    _service.DbContext = HttpContext.RequestServices.GetRequiredService<IEasyDbContext<T>>();
+                    _service.DbContext = HttpContext.RequestServices.GetRequiredService<IAppDbContext>();
                 }
                 return _service;
             }

@@ -115,24 +115,12 @@ namespace Caviar.Core.Services
     
     public partial class EasyBaseServices<T> : DbServices,IEasyBaseServices<T>   where T: class,IBaseEntity, new()
     {
-        private new IEasyDbContext<T> _dbContext;
-        public new IEasyDbContext<T> DbContext { 
-            get 
-            {
-                if (_dbContext != null) return _dbContext;
-                throw new ApplicationException("未向Service注入DbContext");
-            }
-            set
-            {
-                _dbContext = value;
-            }
-        }
 
         public EasyBaseServices()
         {
 
         }
-        public EasyBaseServices(IEasyDbContext<T> dbContext):base(dbContext)
+        public EasyBaseServices(IAppDbContext dbContext):base(dbContext)
         {
             DbContext = dbContext;
         }
@@ -147,7 +135,7 @@ namespace Caviar.Core.Services
             var id = await DbContext.AddEntityAsync(entity);
             return id;
         }
-       
+
         /// <summary>
         /// 删除指定实体
         /// </summary>
@@ -156,7 +144,7 @@ namespace Caviar.Core.Services
         {
             return await DbContext.DeleteEntityAsync(entity);
         }
-        
+
         /// <summary>
         /// 修改指定实体
         /// </summary>
@@ -165,7 +153,7 @@ namespace Caviar.Core.Services
         {
             return DbContext.UpdateEntityAsync(entity);
         }
-        
+
         /// <summary>
         /// 获取分页数据
         /// </summary>
@@ -196,12 +184,17 @@ namespace Caviar.Core.Services
 
         public virtual Task<T> GetEntity(int id)
         {
-            return DbContext.SingleOrDefaultAsync(u => u.Id == id);
+            return DbContext.SingleOrDefaultAsync<T>(u => u.Id == id);
         }
 
         public virtual Task<List<T>> GetEntity(Expression<Func<T, bool>> where)
         {
             return DbContext.GetEntityAsync(where);
+        }
+
+        public virtual Task<List<T>> GetAllAsync()
+        {
+            return DbContext.GetAllAsync<T>();
         }
     }
 }

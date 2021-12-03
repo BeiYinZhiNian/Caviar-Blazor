@@ -10,12 +10,12 @@ namespace Caviar.Infrastructure.API.SysMenuController
 {
     public partial class SysMenuController
     {
-        SysMenuServices MenuServices;
+        SysMenuServices MenuServices = CreateService<SysMenuServices>();
 
         public async Task<IActionResult> GetMenuBar()
         {
-
-            return Ok();
+            var menus = await MenuServices.GetMenuBar();
+            return Ok(menus);
         }
     }
 }
