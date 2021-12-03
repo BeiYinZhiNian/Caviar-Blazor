@@ -42,7 +42,7 @@ namespace Caviar.Infrastructure
         public static IApplicationBuilder UseCaviar(this IApplicationBuilder app)
         {
             ServiceProvider = app.ApplicationServices;
-            new SysDataInit().StartInit(app.ApplicationServices).Wait();
+            new SysDataInit(app.ApplicationServices).StartInit().Wait();
             return app;
         }
 

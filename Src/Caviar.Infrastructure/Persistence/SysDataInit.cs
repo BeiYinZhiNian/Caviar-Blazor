@@ -8,6 +8,8 @@ using System;
 using Microsoft.AspNetCore.Identity;
 using Caviar.SharedKernel;
 using Caviar.Infrastructure.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace Caviar.Infrastructure.Persistence
 {
@@ -16,31 +18,30 @@ namespace Caviar.Infrastructure.Persistence
     /// </summary>
     public class SysDataInit
     {
-        public SysDataInit()
+        public IDbContext DbContext;
+        public IServiceScope ServiceScope;
+        public SysDataInit(IServiceProvider provider)
         {
-
+            ServiceScope = provider.CreateScope();
+            DbContext = ServiceScope.ServiceProvider.GetRequiredService<IDbContext>();
         }
 
-        public async Task StartInit(IServiceProvider provider)
+        public async Task StartInit()
         {
-            using (var serviceScope = provider.CreateScope())
-            {
-                var dbAppContext = serviceScope.ServiceProvider.GetRequiredService<IAppDbContext>();
-                var dbContext = serviceScope.ServiceProvider.GetRequiredService<IDbContext>();
-                var isDatabaseInit = await DatabaseInit(dbContext);
-                await FieldsInit(dbAppContext);
-                await CreateData(serviceScope, isDatabaseInit);
-            }
+            var isDatabaseInit = await DatabaseInit(DbContext);
+            await FieldsInit();
+            await CreateData(isDatabaseInit);
         }
         /// <summary>
         /// 初始化系统字段
         /// </summary>
         /// <param name="dbContext"></param>
         /// <returns></returns>
-        protected virtual async Task FieldsInit(IAppDbContext dbContext)
+        protected virtual async Task FieldsInit()
         {
             var fields = FieldScannerServices.GetApplicationFields().Select(u => u.Entity);
-            var dataBaseFields = await dbContext.GetAllAsync<SysFields>(isDataPermissions: false);
+            var set = DbContext.Set<SysFields>();
+            var dataBaseFields = await set.AsNoTracking().Where(u=>true).ToListAsync();
             foreach (var sysField in fields)
             {
                 foreach (var dataBaseField in dataBaseFields)
@@ -54,8 +55,9 @@ namespace Caviar.Infrastructure.Persistence
             }
             var addFields = fields.Where(u => u.Id == 0).ToList();
             var deleteFields = dataBaseFields.Where(u => u.Id != 0).ToList();
-            await dbContext.DeleteEntityAsync(deleteFields, IsDelete: true);
-            await dbContext.AddEntityAsync(addFields);
+            DbContext.RemoveRange(deleteFields);
+            DbContext.AddRange(addFields);
+            await DbContext.SaveChangesAsync();
         }
         /// <summary>
         /// 初始化数据库
@@ -67,14 +69,34 @@ namespace Caviar.Infrastructure.Persistence
             return dbContext.Database.EnsureCreatedAsync();
         }
 
-        protected virtual async Task CreateData(IServiceScope provider,bool isDatabaseInit)
+        protected virtual async Task CreateData(bool isDatabaseInit)
         {
             if (!isDatabaseInit) return;
-            var userManager = provider.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            await CreatAdminUser();
+            await CreateMenu();
+
+        }
+
+        protected virtual async Task CreatAdminUser()
+        {
+            var userManager = ServiceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var user = new ApplicationUser { Email = "1031622947@qq.com", UserName = "admin" };
             var result = await userManager.CreateAsync(user, "1031622947@qq.COM");
             if (!result.Succeeded) throw new Exception("创建用户失败，数据初始化停止");
+        }
 
+        protected virtual async Task CreateMenu()
+        {
+            List<SysMenu> menus = new List<SysMenu>()
+            {
+                new SysMenu()
+                {
+                    MenuName = "系统管理",
+                    Icon = "windows"
+                }
+            };
+            DbContext.AddRange(menus);
+            await DbContext.SaveChangesAsync();
         }
 
     }

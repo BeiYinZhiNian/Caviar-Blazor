@@ -15,7 +15,8 @@ namespace Caviar.Infrastructure.API.SysMenuController
         public async Task<IActionResult> GetMenuBar()
         {
             var menus = await MenuServices.GetMenuBar();
-            return Ok(menus);
+            var menusVm = ToView(menus);
+            return Ok(menusVm);
         }
     }
 }

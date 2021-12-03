@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Http;
 using Caviar.SharedKernel;
+using Newtonsoft.Json;
 
 namespace Caviar.AntDesignUI.Helper
 {
@@ -108,7 +109,8 @@ namespace Caviar.AntDesignUI.Helper
                 if (responseMessage.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     //当这里解析失败，又找不到具体原因，试试使用Newtonsoft.json进行解析
-                    result = await responseMessage.Content.ReadFromJsonAsync<ResultMsg<T>>();
+                    var resultMsg = await responseMessage.Content.ReadAsStringAsync();
+                    result = JsonConvert.DeserializeObject<ResultMsg<T>>(resultMsg);
                 }
                 else
                 {
