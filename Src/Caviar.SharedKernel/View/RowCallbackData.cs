@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Caviar.SharedKernel.Entities.View;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace Caviar.SharedKernel.View
         /// <summary>
         /// 点击的菜单
         /// </summary>
-        public ViewMenu Menu { get; set; }
+        public SysMenuView Menu { get; set; }
         /// <summary>
         /// 回调数据
         /// </summary>

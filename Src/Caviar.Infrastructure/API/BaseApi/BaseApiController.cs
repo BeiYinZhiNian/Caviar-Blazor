@@ -6,6 +6,9 @@ using Caviar.Core.Services;
 using Caviar.Core.Interface;
 using Caviar.SharedKernel;
 using Caviar.Infrastructure.Persistence;
+using Caviar.Core;
+using Caviar.Core.Services.PermissionServices;
+using System.Collections.Generic;
 
 namespace Caviar.Infrastructure.API.BaseApi
 {
@@ -68,7 +71,7 @@ namespace Caviar.Infrastructure.API.BaseApi
     }
 
 
-    public class EasyBaseApiController<Vm, T>: BaseApiController where T : class, IBaseEntity, new() where Vm : IView<T>
+    public class EasyBaseApiController<Vm, T>: BaseApiController where T : class, IBaseEntity, new() where Vm : IView<T>,new()
     {
         IEasyBaseServices<T> _service;
         IEasyBaseServices<T> Service
@@ -88,6 +91,21 @@ namespace Caviar.Infrastructure.API.BaseApi
             }
         }
 
+        /// <summary>
+        /// 只能获取自身字段
+        /// </summary>
+        /// <param name="modelName"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public virtual async Task<IActionResult> GetFields()
+        {
+            var permissionServices = CreateDbService<PermissionServices>();
+            var fieldName = typeof(T).Name;
+            var fullName = typeof(T).FullName;
+            var fields = FieldScannerServices.GetClassFields(fieldName, fullName);
+            fields = await permissionServices.GetFields(fields, fieldName, fullName);
+            return Ok(fields);
+        }
 
         [HttpPost]
         public virtual async Task<IActionResult> CreateEntity(Vm vm)
@@ -114,14 +132,47 @@ namespace Caviar.Infrastructure.API.BaseApi
         public virtual async Task<IActionResult> GetEntity(int id)
         {
             var entity = await Service.GetEntity(id);
-            return Ok(entity);
+            var entityVm = ToView(entity);
+            return Ok(entityVm);
         }
 
         [HttpGet]
-        public virtual async Task<IActionResult> GetPages(int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true)
+        public virtual async Task<IActionResult> Index(int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true)
         {
             var entity = await Service.GetPages(null, pageIndex, pageSize, isOrder, isNoTracking);
-            return Ok(entity);
+            var entityVm = ToView(entity);
+            return Ok(entityVm);
+        }
+
+        protected virtual Vm ToView(T entity)
+        {
+            var vm = new Vm() {  Entity = entity};
+            return vm;
+        }
+
+        protected virtual List<Vm> ToView(List<T> entity)
+        {
+            if (entity == null) return null;
+            var vmList = new List<Vm>();
+            foreach (var item in entity)
+            {
+                var vm = new Vm(){ Entity = item };
+                vmList.Add(vm);
+            }
+            return vmList;
+        }
+
+        protected virtual PageData<Vm> ToView(PageData<T> page)
+        {
+
+            var pageVm = new PageData<Vm>()
+            {
+                Rows = ToView(page.Rows),
+                PageIndex = page.PageIndex,
+                PageSize = page.PageSize,
+                Total = page.Total
+            };
+            return pageVm;
         }
     }
 }

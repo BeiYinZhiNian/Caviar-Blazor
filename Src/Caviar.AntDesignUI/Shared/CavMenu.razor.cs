@@ -12,6 +12,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Caviar.SharedKernel.Entities.View;
 
 namespace Caviar.AntDesignUI.Shared
 {
@@ -54,7 +55,7 @@ namespace Caviar.AntDesignUI.Shared
         }
 
 
-        public void MenuItemClick(ViewMenu menu)
+        public void MenuItemClick(SysMenuView menu)
         {
             NavigationManager.NavigateTo(menu.Entity.Url);
         }
@@ -84,10 +85,10 @@ namespace Caviar.AntDesignUI.Shared
 
         protected override async Task OnInitializedAsync()
         {
-            SysMenus = await GetMenus();
+            //SysMenus = await GetMenus();
         }
 
-        private List<ViewMenu> SysMenus;
+        private List<SysMenuView> SysMenus;
 
         public async void Refresh()
         {
@@ -95,10 +96,10 @@ namespace Caviar.AntDesignUI.Shared
             StateHasChanged();
         }
 
-        async Task<List<ViewMenu>> GetMenus()
+        async Task<List<SysMenuView>> GetMenus()
         {
-            var result = await Http.GetJson<List<ViewMenu>> ("Menu/GetMenus");
-            if (result.Status != StatusCodes.Status200OK) return new List<ViewMenu>();
+            var result = await Http.GetJson<List<SysMenuView>> ("Menu/GetMenus");
+            if (result.Status != StatusCodes.Status200OK) return new List<SysMenuView>();
             return result.Data;
         }
 

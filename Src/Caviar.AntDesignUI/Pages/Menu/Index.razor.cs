@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Caviar.SharedKernel.Entities.View;
 
 namespace Caviar.AntDesignUI.Pages.Menu
 {
@@ -37,7 +38,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
         //    return;
         //}
 
-        async Task ConfirmDelete(string url,ViewMenu data)
+        async Task ConfirmDelete(string url, SysMenuView data)
         {
             if (data.Children!=null && data.Children.Count > 0)
             {

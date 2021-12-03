@@ -92,29 +92,31 @@ namespace Caviar.AntDesignUI.Helper
             ResultMsg<T> result = default;
             try
             {
+                HttpResponseMessage responseMessage;
                 if (model.ToLower() == "get")
                 {
-                    result = await Http.GetFromJsonAsync<ResultMsg<T>>(address);
+                    responseMessage = await Http.GetAsync(address);
                 }
                 else if(model.ToLower() == "post")
                 {
-                    var response = await Http.PostAsJsonAsync(address, data);
-                    if(response.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                        result = await response.Content.ReadFromJsonAsync<ResultMsg<T>>();
-                    }
-                    else
-                    {
-                        result = new ResultMsg<T>()
-                        {
-                            Title = "请求失败:" + response.ReasonPhrase,
-                            Status = (int)response.StatusCode,
-                        };
-                    }
+                    responseMessage = await Http.PostAsJsonAsync(address, data);
                 }
                 else
                 {
                     throw new Exception("暂不支持的请求方法");
+                }
+                if (responseMessage.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    //当这里解析失败，又找不到具体原因，试试使用Newtonsoft.json进行解析
+                    result = await responseMessage.Content.ReadFromJsonAsync<ResultMsg<T>>();
+                }
+                else
+                {
+                    result = new ResultMsg<T>()
+                    {
+                        Title = "请求失败:" + responseMessage.ReasonPhrase,
+                        Status = (int)responseMessage.StatusCode,
+                    };
                 }
             }
             catch(Exception e)

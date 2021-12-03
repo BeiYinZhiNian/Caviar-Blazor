@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using AntDesign;
 using Microsoft.AspNetCore.Http;
 using Caviar.SharedKernel;
+using Caviar.SharedKernel.Entities.View;
 
 namespace Caviar.AntDesignUI.Pages.Permission
 {
@@ -22,7 +23,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
         public ViewRole DataSource { get; set; }
         [Parameter]
         public string Url { get; set; }
-        List<ViewMenu> ViewMenus { get; set; }
+        List<SysMenuView> ViewMenus { get; set; }
         protected override async Task OnInitializedAsync()
         {
             await GetSelectMenus();//获取已选择数据
@@ -30,7 +31,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
 
         async Task GetSelectMenus()
         {
-            var result = await Http.GetJson<List<ViewMenu>>($"{Url}?roleId={DataSource.Id}");
+            var result = await Http.GetJson<List<SysMenuView>>($"{Url}?roleId={DataSource.Id}");
             if (result.Status != StatusCodes.Status200OK) return;
             if (result.Data != null)
             {
@@ -41,7 +42,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
 
         public async Task<bool> Validate()
         {
-            List<ViewMenu> menus = new List<ViewMenu>();
+            List<SysMenuView> menus = new List<SysMenuView>();
             ViewMenus.TreeToList(menus);
             var ids = menus.Where(u => u.IsPermission).Select(u => u.Id);
             var result = await Http.PostJson($"{Url}?roleId={DataSource.Id}", ids);

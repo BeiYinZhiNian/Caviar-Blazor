@@ -2,16 +2,14 @@
 using Caviar.SharedKernel.View;
 using Caviar.AntDesignUI.Helper;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Text.Json;
 using System.Web;
 using Caviar.SharedKernel;
+using Caviar.SharedKernel.Entities.View;
 
 namespace Caviar.AntDesignUI.Shared
 {
@@ -48,7 +46,7 @@ namespace Caviar.AntDesignUI.Shared
         /// 按钮
         /// </summary>
         [Parameter]
-        public List<ViewMenu> Buttons { get; set; }
+        public List<SysMenuView> Buttons { get; set; }
         /// <summary>
         /// 模型名称
         /// </summary>
@@ -99,7 +97,7 @@ namespace Caviar.AntDesignUI.Shared
         [Inject]
         CavModal CavModal { get; set; }
         RowCallbackData<TData> CurrRow { get; set; }
-        async void ButtonClick(ViewMenu menu, TData data)
+        async void ButtonClick(SysMenuView menu, TData data)
         {
             CurrRow = new RowCallbackData<TData>()
             {

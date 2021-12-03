@@ -78,7 +78,7 @@ namespace Caviar.Core.Services.CodeGenerationServices
             }
             if (codeGenerateOptions.IsGenerateIndex)
             {
-                var suffixName = "AntDesignIndex";
+                var suffixName = "Index";
                 var extendName = ".razor";
                 var codePreview = GetPreviewCode(entitieName, suffixName, extendName, config.IndexOptions);
                 codePreview = PreviewCodeReplace(entityData, fieldsData, codePreview, codeGenerateOptions, producer);
@@ -183,21 +183,21 @@ namespace Caviar.Core.Services.CodeGenerationServices
                 case "string":
                     if (item.Entity.FieldLen != null && item.Entity.FieldLen >= 200)
                     {
-                        txt += $"<TextArea @bind-Value='@context.{item.Entity.FieldName}' Style='width:53%'/>";
+                        txt += $"<TextArea @bind-Value='@context.Entity.{item.Entity.FieldName}' Style='width:53%'/>";
                     }
                     else
                     {
-                        txt += $"<Input @bind-Value='@context.{item.Entity.FieldName}' Style='width:50%' />";
+                        txt += $"<Input @bind-Value='@context.Entity.{item.Entity.FieldName}' Style='width:50%' />";
                     }
                     break;
                 case "int32":
-                    txt += $"<AntDesign.InputNumber @bind-Value='@context.{item.Entity.FieldName}' Style='width:50%'/>";
+                    txt += $"<AntDesign.InputNumber @bind-Value='@context.Entity.{item.Entity.FieldName}' Style='width:50%'/>";
                     break;
                 case "boolean":
-                    txt += $"<Switch @bind-Value='@context.{item.Entity.FieldName}'/>";
+                    txt += $"<Switch @bind-Value='@context.Entity.{item.Entity.FieldName}'/>";
                     break;
                 case "datetime":
-                    txt += $"<DatePicker @bind-Value='@context.{item.Entity.FieldName}'/>";
+                    txt += $"<DatePicker @bind-Value='@context.Entity.{item.Entity.FieldName}'/>";
                     break;
                 default:
                     return false;

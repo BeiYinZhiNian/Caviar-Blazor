@@ -16,7 +16,7 @@
                Total="Total"
                Buttons="Buttons"
                Query="Query"
-               ViewModelFields="ViewModelFields"
+               ViewFields="ViewFields"
                PageIndexChanged="PageIndexChanged"
                RowCallback="RowCallback"
                Loading="Loading"

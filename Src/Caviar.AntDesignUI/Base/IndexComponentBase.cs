@@ -1,6 +1,7 @@
 ﻿using AntDesign;
 using Caviar.AntDesignUI.Helper;
 using Caviar.SharedKernel;
+using Caviar.SharedKernel.Entities.View;
 using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
@@ -35,7 +36,7 @@ namespace Caviar.AntDesignUI
         /// <summary>
         /// 按钮
         /// </summary>
-        protected List<ViewMenu> Buttons { get; set; } = new List<ViewMenu>();
+        protected List<SysMenuView> Buttons { get; set; } = new List<SysMenuView>();
         /// <summary>
         /// 模型字段
         /// </summary>
@@ -74,9 +75,9 @@ namespace Caviar.AntDesignUI
         /// 获取按钮需要到Menu控制器下
         /// </summary>
         /// <returns></returns>
-        protected virtual async Task<List<ViewMenu>> GetPowerButtons()
+        protected virtual async Task<List<SysMenuView>> GetPowerButtons()
         {
-            var result = await Http.GetJson<List<ViewMenu>>("Menu/GetButtons?url=" + Url);
+            var result = await Http.GetJson<List<SysMenuView>>("Menu/GetButtons?url=" + Url);
             if (result.Status != StatusCodes.Status200OK) return null;
             Buttons = result.Data;
             var queryButton = Buttons.SingleOrDefault(u => u.Entity.Url == BaseController + "/FuzzyQuery");
@@ -166,7 +167,7 @@ namespace Caviar.AntDesignUI
             BaseController = CommonHelper.GetLeftText(Url, "/");
             await GetModelFields();//获取模型字段
             await GetPages();//获取数据源
-            await GetPowerButtons();//获取按钮
+            //await GetPowerButtons();//获取按钮
             Loading = false;
         }
         #endregion

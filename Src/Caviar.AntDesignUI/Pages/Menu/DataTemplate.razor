@@ -7,7 +7,7 @@
 *@
 @using Caviar.SharedKernel
 @namespace Caviar.AntDesignUI.Pages.Menu
-@inherits DataComponentBase<ViewMenu>
+@inherits DataComponentBase<SysMenuView>
 @page "/Menu/Add"
 @page "/Menu/Update"
 <Form @ref="_meunForm" Model="@DataSource" OnFinish="FormSubmit">
@@ -24,7 +24,7 @@
                       IsLeafExpression="x => x.DataItem.Children?.Count == 0"
                       KeyExpression="x => x.DataItem.Id.ToString()"
                       OnClick='e=>EventRecord(e)'
-                      TItem="ViewMenu">
+                      TItem="SysMenuView">
                 </Tree>
             </Overlay>
             <ChildContent>

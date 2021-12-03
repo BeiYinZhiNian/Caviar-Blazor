@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Caviar.SharedKernel;
+using Caviar.SharedKernel.Entities.View;
 
 namespace Caviar.AntDesignUI.Pages.Menu
 {
@@ -18,16 +19,16 @@ namespace Caviar.AntDesignUI.Pages.Menu
             await base.OnInitializedAsync();
         }
 
-        private List<ViewMenu> SysMenus = new List<ViewMenu>();
+        private List<SysMenuView> SysMenus = new List<SysMenuView>();
         string ParentMenuName { get; set; } = "无上层目录";
 
         async Task GetMenus()
         {
-            var result = await Http.GetJson<PageData<ViewMenu>>("Menu/Index?pageSize=100");
+            var result = await Http.GetJson<PageData<SysMenuView>>("Menu/Index?pageSize=100");
             if (result.Status != StatusCodes.Status200OK) return;
             if (DataSource.ParentId > 0)
             {
-                List<ViewMenu> listData = new List<ViewMenu>();
+                List<SysMenuView> listData = new List<SysMenuView>();
                 result.Data.Rows.TreeToList(listData);
                 var parent = listData.SingleOrDefault(u => u.Id == DataSource.ParentId);
                 if (parent != null)
@@ -40,16 +41,16 @@ namespace Caviar.AntDesignUI.Pages.Menu
 
         
 
-        void EventRecord(TreeEventArgs<ViewMenu> args)
+        void EventRecord(TreeEventArgs<SysMenuView> args)
         {
             ParentMenuName = args.Node.Title;
-            DataSource.ParentId = int.Parse(args.Node.Key);
+            DataSource.Entity.ParentId = int.Parse(args.Node.Key);
         }
 
         void RemoveRecord()
         {
             ParentMenuName = "无上层目录";
-            DataSource.ParentId = 0;
+            DataSource.Entity.ParentId = 0;
         }
     }
 }

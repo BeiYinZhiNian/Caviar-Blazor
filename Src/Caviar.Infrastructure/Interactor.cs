@@ -1,5 +1,6 @@
 ﻿using Caviar.Core;
 using Caviar.Core.Interface;
+using Caviar.SharedKernel.Entities.View;
 using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +26,7 @@ namespace Caviar.Infrastructure
         /// <summary>
         /// 当前访问菜单
         /// </summary>
-        public ViewMenu CurrentMenu { get; set; }
+        public SysMenuView CurrentMenu { get; set; }
         /// <summary>
         /// 当前请求路径
         /// </summary>
@@ -49,7 +50,7 @@ namespace Caviar.Infrastructure
         /// 全局缓存
         /// 菜单列表
         /// </summary>
-        public List<ViewMenu> SysMenus { get; set; }
+        public List<SysMenuView> SysMenus { get; set; }
 
         /// <summary>
         /// 请求参数

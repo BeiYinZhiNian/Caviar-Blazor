@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using Caviar.SharedKernel.Entities.Base;
 using Microsoft.AspNetCore.Builder;
 using Caviar.Infrastructure.Identity;
+using Caviar.Core.Services;
 
 namespace Caviar.Infrastructure
 {
@@ -27,8 +28,9 @@ namespace Caviar.Infrastructure
         {
             services.AddScoped<ILanguageService, InAssemblyLanguageService>();
             services.AddScoped<Interactor>();
-            services.AddTransient<IAppDbContext, ApplicationDbContext>();
-            services.AddTransient(typeof(IEasyDbContext<>),typeof(EasyDbContext<>));
+            services.AddScoped<IAppDbContext, ApplicationDbContext>();
+            services.AddScoped(typeof(IEasyDbContext<>),typeof(EasyDbContext<>));
+            services.AddScoped(typeof(IEasyBaseServices<>),typeof(EasyBaseServices<>));
             AutomaticInjection injection = new AutomaticInjection();
             injection.AddIBaseModel(services);
             injection.AddInject(services);
