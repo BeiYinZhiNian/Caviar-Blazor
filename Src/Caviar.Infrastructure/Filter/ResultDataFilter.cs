@@ -95,7 +95,7 @@ namespace Caviar.Infrastructure
         /// <param name="data"></param>
         public void ArgumentsFields(Type type, object data)
         {
-            var baseType = CommonHelper.GetBaseClass(type);
+            var baseType = type.ContainBaseClass(typeof(SysBaseEntity));
             if (baseType == null) return;
             foreach (PropertyInfo sp in baseType.GetProperties())//获得类型的属性字段
             {

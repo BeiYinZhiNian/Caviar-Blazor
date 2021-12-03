@@ -110,7 +110,7 @@ namespace Caviar.Core
                             typeName = Arguments[0].Name;
                         }
                     }
-                    var baseType = CommonHelper.GetBaseClass(type);
+                    var baseType = typeof(SysBaseEntity);
                     var dispLayName = item.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
                     var fieldLen = item.GetCustomAttributes<StringLengthAttribute>()?.Cast<StringLengthAttribute>().SingleOrDefault()?.MaximumLength;
                     var field = new ViewFields()

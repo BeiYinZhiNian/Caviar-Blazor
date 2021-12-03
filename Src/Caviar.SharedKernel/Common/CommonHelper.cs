@@ -309,25 +309,24 @@ namespace Caviar.SharedKernel
         }
 
         /// <summary>
-        /// 获取类型的父类
-        /// 主要用于继承以后寻找到继承了IBaseEntity的子类
+        /// 用于查找该类是否继承了指定父类
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static Type GetBaseClass(Type type)
+        public static Type ContainBaseClass(this Type type,Type contrast)
         {
             var baseType = type.BaseType;
             if (baseType == null)
             {
                 return null;
             }
-            else if (baseType.Name == CurrencyConstant.BaseEntityName)
+            else if (baseType == contrast)
             {
                 return type;
             }
             else
             {
-                return GetBaseClass(baseType);
+                return baseType.ContainBaseClass(contrast);
             }
         }
 

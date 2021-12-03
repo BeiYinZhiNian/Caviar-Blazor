@@ -1,6 +1,7 @@
 ﻿using Caviar.Core;
 using Caviar.Core.Interface;
 using Caviar.SharedKernel;
+using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -285,7 +286,7 @@ namespace Caviar.Infrastructure.Persistence
                         baseEntity.OperatorUp = Interactor.UserName;
                         baseEntity.UpdateTime = DateTime.Now;
                         var entityType = entity.GetType();
-                        var baseType = CommonHelper.GetBaseClass(entityType);
+                        var baseType = typeof(SysBaseEntity);
                         var fields = FieldScannerServices.GetClassFields(baseType);
                         foreach (var fieldItem in fields)
                         {
@@ -306,7 +307,7 @@ namespace Caviar.Infrastructure.Persistence
                                 default:
                                     break;
                             }
-                            var field = Interactor.UserData.Fields.FirstOrDefault(u => u.BaseFullName == baseType.Name && fieldItem.Entity.FieldName == u.FieldName);
+                            var field = Interactor.UserData.Fields.FirstOrDefault(u => fieldItem.Entity.FullName == u.FullName);
                             if (field == null)
                             {
                                 item.Property(fieldItem.Entity.FieldName).IsModified = false;

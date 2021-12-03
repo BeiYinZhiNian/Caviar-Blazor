@@ -28,11 +28,11 @@ namespace Caviar.Demo.WebApi
                         .AllowAnyMethod()
                         .AllowAnyHeader());
             });
+            services.AddControllers();
             services.AddCaviar();
             services.AddCaviarDbContext(options =>
                 options.UseSqlServer(
             Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Caviar.Demo.WebApi")));
-            services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Caviar.Demo.WebApi", Version = "v1" });
