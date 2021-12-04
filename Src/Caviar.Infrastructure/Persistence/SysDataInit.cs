@@ -40,7 +40,15 @@ namespace Caviar.Infrastructure.Persistence
             };
             var controllerList = ApiScannerServices.GetAllController(typeof(BaseApiController), baseController);
             var methodsList = ApiScannerServices.GetAllMethods(controllerList, typeof(HttpMethodAttribute));
-            _dbContext.AddRange(methodsList);
+            var set = _dbContext.Set<SysMenu>();
+            foreach (var item in methodsList)
+            {
+                var menu = await set.SingleOrDefaultAsync(u => u.Url == item.Url);
+                if (menu == null)
+                {
+                    _dbContext.Add(item);
+                }
+            }
             await _dbContext.SaveChangesAsync();
         }
 
