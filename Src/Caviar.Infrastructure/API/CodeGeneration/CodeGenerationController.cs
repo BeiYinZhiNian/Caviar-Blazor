@@ -16,6 +16,7 @@ namespace Caviar.Infrastructure.API.CodeGeneration
     /// </summary>
     public class CodeGenerationController : BaseApiController
     {
+        [HttpPost]
         public IActionResult CodeFileGenerate(CodeGenerateOptions codeGenerateOptions,bool isPerview)
         {
             CodeGenerationServices CodeService = CreateService<CodeGenerationServices>();

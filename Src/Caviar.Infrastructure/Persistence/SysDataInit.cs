@@ -9,11 +9,9 @@ using Caviar.SharedKernel;
 using Caviar.Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc;
-using System.Reflection;
 using Caviar.Infrastructure.API.BaseApi;
 using Caviar.Core.Services.ScannerServices;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace Caviar.Infrastructure.Persistence
 {
@@ -34,16 +32,22 @@ namespace Caviar.Infrastructure.Persistence
         /// 系统API初始化
         /// </summary>
         /// <returns></returns>
-        public async Task ActionInit()
+        public async Task HttpMethodsInit()
         {
-            ApiScannerServices.GetAllApi(typeof(BaseApiController));
-
+            List<Type> baseController = new List<Type>()
+            {
+                typeof(EasyBaseApiController<,>)
+            };
+            var controllerList = ApiScannerServices.GetAllController(typeof(BaseApiController), baseController);
+            var methodsList = ApiScannerServices.GetAllMethods(controllerList, typeof(HttpMethodAttribute));
+            _dbContext.AddRange(methodsList);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task StartInit()
         {
             var isDatabaseInit = await DatabaseInit(_dbContext);
-            await ActionInit();
+            await HttpMethodsInit();
             await FieldsInit();
             await CreateData(isDatabaseInit);
             
@@ -107,12 +111,12 @@ namespace Caviar.Infrastructure.Persistence
             {
                 new SysMenu()
                 {
-                    MenuName = "系统管理",
+                    MenuName = "SysManagement",
                     Icon = "windows"
                 },
                 new SysMenu()
                 {
-                    MenuName = "首页",
+                    MenuName = "Home",
                     Icon = "home",
                     MenuType = MenuType.Menu,
                     Url = "/",
@@ -120,23 +124,23 @@ namespace Caviar.Infrastructure.Persistence
                 },
                 new SysMenu()
                 {
-                    MenuName = "菜单管理",
-                    Icon = "profile",
-                    Url = "SysMenu/Index",
+                    MenuName = "index",
                     MenuType = MenuType.Menu,
-                    ParentId = 1
-                },
-                new SysMenu()
-                {
-                    MenuName = "角色管理",
-                    Icon = "user-switch",
-                    Url = "SysRole/Index",
-                    MenuType = MenuType.Menu,
-                    ParentId = 1
+                    Icon = "code",
+                    Url = "CodeGeneration/Index",
+                    ControllerName = "CodeGeneration"
                 }
             };
-            menus.Reverse();
             _dbContext.AddRange(menus);
+            await _dbContext.SaveChangesAsync();
+            var set = _dbContext.Set<SysMenu>();
+            var menuBars = set.Where(u => u.MenuName == "index");
+            foreach (var item in menuBars)
+            {
+                item.MenuType = MenuType.Menu;
+                item.MenuName = item.ControllerName;
+                item.ParentId = menus.Single(u => u.MenuName == "SysManagement").Id;
+            }
             await _dbContext.SaveChangesAsync();
         }
 

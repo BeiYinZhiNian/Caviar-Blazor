@@ -13,6 +13,7 @@ namespace Caviar.Infrastructure.API.SysMenuController
     {
         SysMenuServices MenuServices = CreateService<SysMenuServices>();
 
+        [HttpGet]
         public async Task<IActionResult> GetMenuBar()
         {
             var menus = await MenuServices.GetMenuBar();

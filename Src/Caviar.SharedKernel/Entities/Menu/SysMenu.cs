@@ -37,6 +37,12 @@ namespace Caviar.SharedKernel.Entities
 
         [DisplayName("IsDoubleTrue")]
         public bool IsDoubleTrue { get; set; }
+
+        [DisplayName("HttpMethods")]
+        public string HttpMethods { get; set; }
+
+        [DisplayName("ControllerName")]
+        public string ControllerName { get; set; }
     }
 
 
