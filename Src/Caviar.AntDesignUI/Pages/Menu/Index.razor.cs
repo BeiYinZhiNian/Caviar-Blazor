@@ -17,26 +17,26 @@ namespace Caviar.AntDesignUI.Pages.Menu
     {
         [Inject]
         UserConfig UserConfig { get; set; }
-        //protected override Task<List<ViewMenu>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
-        //{
-        //    pageSize = 100;
-        //    return base.GetPages(pageIndex, pageSize, isOrder);
-        //}
+        protected override Task<List<SysMenuView>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
+        {
+            pageSize = 100;
+            return base.GetPages(pageIndex, pageSize, isOrder);
+        }
 
-        //protected override async Task RowCallback(RowCallbackData<ViewMenu> row)
-        //{
-        //    switch (row.Menu.Entity.MenuName)
-        //    {
-        //        case "删除":
-        //            await ConfirmDelete(row.Menu.Url, row.Data);
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //    UserConfig.RefreshMenuAction.Invoke();//更新菜单
-        //    Refresh();
-        //    return;
-        //}
+        protected override async Task RowCallback(RowCallbackData<SysMenuView> row)
+        {
+            switch (row.Menu.Entity.MenuName)
+            {
+                case "删除":
+                    await ConfirmDelete(row.Menu.Entity.Url, row.Data);
+                    break;
+                default:
+                    break;
+            }
+            UserConfig.RefreshMenuAction.Invoke();//更新菜单
+            Refresh();
+            return;
+        }
 
         async Task ConfirmDelete(string url, SysMenuView data)
         {

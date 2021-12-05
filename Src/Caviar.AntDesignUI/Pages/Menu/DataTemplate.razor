@@ -8,8 +8,8 @@
 @using Caviar.SharedKernel
 @namespace Caviar.AntDesignUI.Pages.Menu
 @inherits DataComponentBase<SysMenuView>
-@page "/Menu/Add"
-@page "/Menu/Update"
+@page "/SysMenu/Add"
+@page "/SysMenu/Update"
 <Form @ref="_meunForm" Model="@DataSource" OnFinish="FormSubmit">
     <FormItem Label='菜单名称'>
         <Input @bind-Value="@context.Entity.MenuName" Style="width:50%" />

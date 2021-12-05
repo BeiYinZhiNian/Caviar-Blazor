@@ -69,7 +69,7 @@ namespace Caviar.Infrastructure.API.BaseApi
     public class EasyBaseApiController<Vm, T>: BaseApiController where T : class, IBaseEntity, new() where Vm : IView<T>,new()
     {
         IEasyBaseServices<T> _service;
-        IEasyBaseServices<T> Service
+        protected IEasyBaseServices<T> Service
         {
             get
             {

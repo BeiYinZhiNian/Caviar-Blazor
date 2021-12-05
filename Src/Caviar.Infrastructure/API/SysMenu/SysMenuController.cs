@@ -20,5 +20,14 @@ namespace Caviar.Infrastructure.API.SysMenuController
             var menusVm = ToView(menus).ListToTree();
             return Ok(menusVm);
         }
+
+        [HttpGet]
+        public override async Task<IActionResult> Index(int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true)
+        {
+            var entity = await Service.GetPages(null, pageIndex, pageSize, isOrder, isNoTracking);
+            var entityVm = ToView(entity);
+            entityVm.Rows = entityVm.Rows.ListToTree();
+            return Ok(entityVm);
+        }
     }
 }

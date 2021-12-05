@@ -137,6 +137,11 @@ namespace Caviar.Infrastructure.Persistence
                     Icon = "code",
                     Url = "CodeGeneration/Index",
                     ControllerName = "CodeGeneration"
+                },
+                new SysMenu()
+                {
+                    MenuName = "API",
+                    MenuType = MenuType.API
                 }
             };
             _dbContext.AddRange(menus);
@@ -150,7 +155,28 @@ namespace Caviar.Infrastructure.Persistence
                 item.ParentId = menus.Single(u => u.MenuName == "SysManagement").Id;
             }
             await _dbContext.SaveChangesAsync();
+            var subMenu = set.AsEnumerable().Where(u => u.ControllerName != null && u.ControllerName != u.MenuName).GroupBy(u => u.ControllerName);
+            List<SysMenu> catalogueList = new List<SysMenu>();
+            foreach (var item in subMenu)
+            {
+                var catalogue = set.SingleOrDefault(u => u.ControllerName == item.Key && u.MenuName == item.Key);
+                var id = 0;
+                if (catalogue == null)
+                {
+                    id = menus.Single(u => u.MenuName == "API").Id;
+                }
+                else
+                {
+                    id = catalogue.Id;
+                }
+                foreach (var menu_item in item)
+                {
+                    menu_item.ParentId = id;
+                    catalogueList.Add(menu_item);
+                }
+            }
+            _dbContext.UpdateRange(catalogueList);
+            await _dbContext.SaveChangesAsync();
         }
-
     }
 }
