@@ -55,7 +55,6 @@ namespace Caviar.Infrastructure.Persistence
         public async Task StartInit()
         {
             var isDatabaseInit = await DatabaseInit(_dbContext);
-            await HttpMethodsInit();
             await FieldsInit();
             await CreateData(isDatabaseInit);
             
@@ -69,7 +68,7 @@ namespace Caviar.Infrastructure.Persistence
         {
             var fields = FieldScannerServices.GetApplicationFields().Select(u => u.Entity);
             var set = _dbContext.Set<SysFields>();
-            var dataBaseFields = await set.AsNoTracking().Where(u=>true).ToListAsync();
+            var dataBaseFields = set.AsNoTracking().ToList();
             foreach (var sysField in fields)
             {
                 foreach (var dataBaseField in dataBaseFields)
@@ -100,9 +99,9 @@ namespace Caviar.Infrastructure.Persistence
         protected virtual async Task CreateData(bool isDatabaseInit)
         {
             if (!isDatabaseInit) return;
+            await HttpMethodsInit();
             await CreatAdminUser();
             await CreateMenu();
-
         }
 
         protected virtual async Task CreatAdminUser()
