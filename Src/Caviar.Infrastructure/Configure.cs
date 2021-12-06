@@ -64,8 +64,8 @@ namespace Caviar.Infrastructure
         /// <typeparam name="TRole"></typeparam>
         /// <param name="services"></param>
         public static IdentityBuilder AddCaviarDbContext<TUser, TRole>(this IServiceCollection services, Action<DbContextOptionsBuilder> optionsAction = null, ServiceLifetime contextLifetime = ServiceLifetime.Scoped, ServiceLifetime optionsLifetime = ServiceLifetime.Scoped)
-            where TUser : IdentityUser<int>, IUser
-            where TRole : IdentityRole<int>, IRole
+            where TUser : IdentityUser<int>
+            where TRole : IdentityRole<int>
         {
             services.AddDbContext<SysDbContext<TUser, TRole, int>>(optionsAction, contextLifetime, optionsLifetime);
             var identityBuilder = services.AddIdentity<TUser, TRole>()

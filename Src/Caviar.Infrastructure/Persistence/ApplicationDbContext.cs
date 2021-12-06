@@ -282,8 +282,6 @@ namespace Caviar.Infrastructure.Persistence
                         break;
                     case EntityState.Modified:
                         if (!IsFieldCheck) break;
-                        IsEntityNull(Interactor?.UserData?.Fields);
-                        baseEntity.OperatorUp = Interactor.UserName;
                         baseEntity.UpdateTime = DateTime.Now;
                         var entityType = entity.GetType();
                         var baseType = typeof(SysBaseEntity);
@@ -307,16 +305,10 @@ namespace Caviar.Infrastructure.Persistence
                                 default:
                                     break;
                             }
-                            var field = Interactor.UserData.Fields.FirstOrDefault(u => fieldItem.Entity.FullName == u.FullName);
-                            if (field == null)
-                            {
-                                item.Property(fieldItem.Entity.FieldName).IsModified = false;
-                            }
                         }
                         break;
                     case EntityState.Added:
                         baseEntity.CreatTime = DateTime.Now;
-                        baseEntity.OperatorCare = Interactor.UserName;
                         break;
                     default:
                         break;
@@ -365,24 +357,6 @@ namespace Caviar.Infrastructure.Persistence
             }
             if (isDataPermissions)
             {
-                //定义总的lambda树
-                var lambdaTotalTree = PredicateBuilder.True<T>();
-                //定义或lambda数
-                var lambdaTree = PredicateBuilder.False<T>();
-                lambdaTree = lambdaTree.Or(u => u.DataId == 0);
-                if (Interactor?.UserData?.UserGroup != null)
-                {
-                    lambdaTree = lambdaTree.Or(u => u.DataId == Interactor.UserData.UserGroup.Id);
-                    if (Interactor.UserData.SubordinateUserGroup != null && Interactor.UserData.SubordinateUserGroup.Count != 0)
-                    {
-                        foreach (var item in Interactor.UserData.SubordinateUserGroup)
-                        {
-                            lambdaTree = lambdaTree.Or(u => u.DataId == item.Id);
-                        }
-                    }
-                }
-                lambdaTotalTree.And(lambdaTree);
-                query = query.Where(lambdaTotalTree);
             }
             return query;
         }

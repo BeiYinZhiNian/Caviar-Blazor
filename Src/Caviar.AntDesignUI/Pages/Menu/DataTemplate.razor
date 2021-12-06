@@ -5,11 +5,11 @@
     界面如需更改，建议直接将内容剪切到自己的文件内，保留此空白文件
     菜单列表
 *@
-@using Caviar.SharedKernel
+@using Caviar.SharedKernel.Entities
 @namespace Caviar.AntDesignUI.Pages.Menu
-@inherits DataComponentBase<SysMenuView>
-@page "/SysMenu/Add"
-@page "/SysMenu/Update"
+@inherits DataComponentBase<SysMenuView,SysMenu>
+@page "/SysMenu/CreateEntity"
+@page "/SysMenu/UpdateEntity"
 <Form @ref="_meunForm" Model="@DataSource" OnFinish="FormSubmit">
     <FormItem Label='菜单名称'>
         <Input @bind-Value="@context.Entity.MenuName" Style="width:50%" />
@@ -66,11 +66,6 @@
         <Input @bind-Value="@context.Entity.Number" Style="width: 20%;">
     </FormItem>
     <FormItem Label='数据权限'>
-        <CavUserGroup DataSource='ViewUserGroups'
-                      UserGroupName='@UserGroupName'
-                      OnSelect='OnUserGroupSelect'
-                      OnCancel='OnUserGroupCancel'>
-        </CavUserGroup>
     </FormItem>
 </Form>
 

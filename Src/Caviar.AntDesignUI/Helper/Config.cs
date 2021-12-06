@@ -23,7 +23,6 @@ namespace Caviar.AntDesignUI
             services.AddScoped<HttpHelper>();
             services.AddScoped<CavModal>();
             services.AddSingleton<UserConfig>();
-            services.AddSingleton<ViewUserToken>();
             services.AddSingleton<ModalService>();
             services.AddSingleton<MessageService>();
             services.AddScoped<IPrismHighlighter, PrismHighlighter>();

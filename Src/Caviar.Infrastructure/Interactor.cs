@@ -16,10 +16,6 @@ namespace Caviar.Infrastructure
     public partial class Interactor
     {
         /// <summary>
-        /// 数据上下文
-        /// </summary>
-        public IAppDbContext DbContext => HttpContext.RequestServices.GetRequiredService<IAppDbContext>();
-        /// <summary>
         /// 计时器
         /// </summary>
         public Stopwatch Stopwatch { get; set; } = new Stopwatch();
@@ -57,20 +53,9 @@ namespace Caviar.Infrastructure
         /// </summary>
         public IDictionary<string, object> ActionArguments { get; set; }
 
-        public string UserName => UserToken.UserName;
 
-        public int Id => UserToken.Id;
-        public bool IsLogin
-        {
-            get
-            {
-                return Id > 0;
-            }
-        }
 
         public virtual bool IsAdmin { get; }
-        public UserData UserData { get; set; } = new UserData();
-        public UserToken UserToken { get; set; } = new UserToken();
 
     }
 }

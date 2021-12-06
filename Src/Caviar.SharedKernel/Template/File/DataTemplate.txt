@@ -5,10 +5,10 @@
 界面如需更改，建议直接将内容剪切到自己的文件内，保留此空白文件
 {EntityDisplayName}数据操作模板
 *@
-@page "/{EntityName}/Add"
-@page "/{EntityName}/Update"
+@page "/{EntityName}/CreateEntity"
+@page "/{EntityName}/UpdateEntity"
 @using {BaseEntityNamespace}.View
-@inherits DataComponentBase<{EntityName}View>
+@inherits DataComponentBase<{EntityName}View,{EntityName}>
 
 <Form @ref="_meunForm" Model="@DataSource" OnFinish="FormSubmit">
 {FormItem}

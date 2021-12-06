@@ -110,6 +110,11 @@ namespace Caviar.Core.Services
             return DbContext.GetEntityAsync(where);
         }
 
+        public virtual Task<T> GetEntity<T>(Expression<Func<T, bool>> where,bool isSingle) where T : class, IBaseEntity, new()
+        {
+            return DbContext.SingleOrDefaultAsync<T>(where);
+        }
+
     }
 
     
@@ -195,6 +200,11 @@ namespace Caviar.Core.Services
         public virtual Task<List<T>> GetAllAsync()
         {
             return DbContext.GetAllAsync<T>();
+        }
+
+        public virtual Task<T> GetEntity(Expression<Func<T, bool>> where, bool isSingle)
+        {
+            return DbContext.SingleOrDefaultAsync(where);
         }
     }
 }

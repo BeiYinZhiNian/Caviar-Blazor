@@ -1,23 +1,15 @@
 ﻿<Space>
     <SpaceItem>
-        <Avatar Style="background-color: #87d068" Src="@UserToken.HeadPortrait" Icon="user" />
+        <Avatar Style="background-color: #87d068" Src="" Icon="user" />
     </SpaceItem>
     <SpaceItem>
         <Popover ContentTemplate="@_content" Placement="@Placement.BottomRight">
-            <Text>@UserToken.UserName</Text>
+            <Text></Text>
         </Popover>
     </SpaceItem>
 </Space>
 
 @code{
-    [Inject]
-    public ViewUserToken UserToken { get; set; }
-    protected override async Task OnInitializedAsync()
-    {
-
-        await UserToken.GetUserToken();
-        await base.OnInitializedAsync();
-    }
 
 
     RenderFragment _content =

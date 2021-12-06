@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Caviar.Infrastructure.Identity
 {
-    public class ApplicationRole : IdentityRole<int>, IRole
+    public class ApplicationRole : IdentityRole<int>
     {
         [DisplayName("RoleName")]
         public override string Name { get => base.Name; set => base.Name = value; }

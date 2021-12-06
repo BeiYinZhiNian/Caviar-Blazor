@@ -10,44 +10,25 @@ using Caviar.SharedKernel;
 
 namespace Caviar.AntDesignUI
 {
-    public partial class DataComponentBase<ViewT> : CavComponentBase,ITableTemplate
+    public partial class DataComponentBase<ViewT,T> : CavComponentBase,ITableTemplate where ViewT:IView<T>,new() where T: IBaseEntity,new()
     {
         #region 参数
         [Parameter]
-        public ViewT DataSource { get; set; }
+        public ViewT DataSource { get; set; } = new ViewT()
+        {
+            Entity = new T()
+        };
 
         [Parameter]
         public string Url { get; set; }
 
         [Parameter]
         public string SuccMsg { get; set; } = "操作成功";
-
-        public List<ViewUserGroup> ViewUserGroups { get; set; }
         #endregion
-
-        [Inject]
-        public ViewUserToken UserToken { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            if (DataSource is IBaseEntity)
-            {
-                var data = (IBaseEntity)DataSource;
-                var result = await Http.GetJson<List<ViewUserGroup>>("Permission/GetPermissionGroup");
-                if (result.Status == StatusCodes.Status200OK)
-                {
-                    ViewUserGroups = result.Data;
-                }
-                var list = ViewUserGroups?.ListToTree();
-                if (data.Id == 0)
-                {
-                    data.Number = "999";
-                    data.DataId = UserToken.UserGroupId;
-                }
-                var userGroup = list?.FirstOrDefault(u => u.Id == data.DataId);
-                if (userGroup != null) UserGroupName = userGroup.Entity.Name;
-                await base.OnInitializedAsync();
-            }
+
         }
 
 
@@ -85,18 +66,6 @@ namespace Caviar.AntDesignUI
             return false;
         }
 
-        public string UserGroupName = "请选择部门";
-        public void OnUserGroupCancel()
-        {
-            UserGroupName = "请选择部门";
-            ((IBaseEntity)DataSource).DataId = 0;
-        }
-
-        public void OnUserGroupSelect(TreeEventArgs<ViewUserGroup> args)
-        {
-            UserGroupName = args.Node.Title;
-            ((IBaseEntity)DataSource).DataId = int.Parse(args.Node.Key);
-        }
         #endregion
     }
 }

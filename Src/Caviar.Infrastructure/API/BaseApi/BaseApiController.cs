@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Caviar.Core.Services;
 using Caviar.Core.Interface;
 using Caviar.SharedKernel;
-using Caviar.Infrastructure.Persistence;
 using Caviar.Core;
 using Caviar.Core.Services.PermissionServices;
 using System.Collections.Generic;
@@ -49,7 +48,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             Interactor.Stopwatch.Stop();
         }
 
-        public static T CreateService<T>() where T : new()
+        protected static T CreateService<T>() where T : new()
         {
             T service = new T();
             var propertyInfo = service.ContainProperty("DbContext",typeof(IAppDbContext));
@@ -132,7 +131,7 @@ namespace Caviar.Infrastructure.API.BaseApi
         }
 
         [HttpGet]
-        public virtual async Task<IActionResult> Index(int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true)
+        public virtual async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10, bool isOrder = true, bool isNoTracking = true)
         {
             var entity = await Service.GetPages(null, pageIndex, pageSize, isOrder, isNoTracking);
             var entityVm = ToView(entity);

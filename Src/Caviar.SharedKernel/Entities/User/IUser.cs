@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel.Entities
 {
-    public interface IUser:IBaseEntity
+    public class IUser: SysBaseEntity,IBaseEntity
     {
         public string UserName { get; set; }
 

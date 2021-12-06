@@ -62,5 +62,7 @@ namespace Caviar.Core.Services
         /// <param name="where"></param>
         /// <returns></returns>
         public Task<List<T>> GetEntity(Expression<Func<T, bool>> where);
+
+        public Task<T> GetEntity(Expression<Func<T, bool>> where, bool isSingle);
     }
 }

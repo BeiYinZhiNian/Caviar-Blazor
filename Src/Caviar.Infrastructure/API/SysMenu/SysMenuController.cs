@@ -22,12 +22,20 @@ namespace Caviar.Infrastructure.API.SysMenuController
         }
 
         [HttpGet]
-        public override async Task<IActionResult> Index(int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true)
+        public override async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10, bool isOrder = true, bool isNoTracking = true)
         {
             var entity = await Service.GetPages(null, pageIndex, pageSize, isOrder, isNoTracking);
             var entityVm = ToView(entity);
             entityVm.Rows = entityVm.Rows.ListToTree();
             return Ok(entityVm);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetApiList(string url)
+        {
+            var apiList = await MenuServices.GetApiList(url, null);
+            var Vm = ToView(apiList);
+            return Ok(Vm);
         }
     }
 }

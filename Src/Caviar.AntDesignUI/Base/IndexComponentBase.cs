@@ -34,8 +34,9 @@ namespace Caviar.AntDesignUI
         /// </summary>
         protected int PageSize { get; set; }
         /// <summary>
-        /// 按钮
+        /// API组
         /// </summary>
+        protected List<SysMenuView> APIList { get; set; } = new List<SysMenuView>();
         protected List<SysMenuView> Buttons { get; set; } = new List<SysMenuView>();
         /// <summary>
         /// 模型字段
@@ -71,21 +72,22 @@ namespace Caviar.AntDesignUI
             return null;
         }
         /// <summary>
-        /// 获取按钮
-        /// 获取按钮需要到Menu控制器下
+        /// 获取API
+        /// 获取该页面下的API
         /// </summary>
         /// <returns></returns>
-        protected virtual async Task<List<SysMenuView>> GetPowerButtons()
+        protected virtual async Task<List<SysMenuView>> GetApiList()
         {
-            var result = await Http.GetJson<List<SysMenuView>>("Menu/GetButtons?url=" + Url);
+            var result = await Http.GetJson<List<SysMenuView>>("SysMenu/GetApiList?url=" + Url);
             if (result.Status != StatusCodes.Status200OK) return null;
-            Buttons = result.Data;
-            var queryButton = Buttons.SingleOrDefault(u => u.Entity.Url == BaseController + "/FuzzyQuery");
+            APIList = result.Data;
+            var queryButton = APIList.SingleOrDefault(u => u.Entity.MenuName == "FuzzyQuery");
             if (queryButton != null)
             {
                 Query = new ViewQuery();
             }
-            return Buttons;
+            Buttons = APIList.Where(u => u.Entity.ControllerName == BaseController).ToList();
+            return APIList;
         }
         /// <summary>
         /// 获取模型字段
@@ -167,7 +169,7 @@ namespace Caviar.AntDesignUI
             BaseController = CommonHelper.GetLeftText(Url, "/");
             await GetModelFields();//获取模型字段
             await GetPages();//获取数据源
-            //await GetPowerButtons();//获取按钮
+            await GetApiList();//获取API集合
             Loading = false;
         }
         #endregion

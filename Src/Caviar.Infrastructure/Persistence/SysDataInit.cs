@@ -172,6 +172,29 @@ namespace Caviar.Infrastructure.Persistence
                 foreach (var menu_item in item)
                 {
                     menu_item.ParentId = id;
+                    switch (menu_item.MenuName)
+                    {
+                        case "CreateEntity":
+                            menu_item.MenuType = MenuType.Button;
+                            menu_item.Icon = "appstore-add";
+                            menu_item.TargetType = TargetType.EjectPage;
+                            break;
+                        case "UpdateEntity":
+                            menu_item.MenuType = MenuType.Button;
+                            menu_item.ButtonPosition = ButtonPosition.Row;
+                            menu_item.Icon = "edit";
+                            menu_item.TargetType = TargetType.EjectPage;
+                            break;
+                        case "DeleteEntity":
+                            menu_item.MenuType = MenuType.Button;
+                            menu_item.ButtonPosition = ButtonPosition.Row;
+                            menu_item.IsDoubleTrue = true;
+                            menu_item.Icon = "delete";
+                            menu_item.TargetType = TargetType.Callback;
+                            break;
+                        default:
+                            break;
+                    }
                     catalogueList.Add(menu_item);
                 }
             }

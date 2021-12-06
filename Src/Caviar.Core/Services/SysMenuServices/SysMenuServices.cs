@@ -18,5 +18,21 @@ namespace Caviar.Core.Services.SysMenuServices
             var menus = await GetAllAsync();
             return menus;
         }
+
+        public async Task<List<SysMenu>> GetApiList(string url,string[] controllerList)
+        {
+            var entity = await GetEntity(u => u.Url == url,true);
+            var apiList = await GetEntity(u => u.ControllerName == entity.ControllerName);
+            if(controllerList != null)
+            {
+                foreach (var item in controllerList)
+                {
+                    var otherApi = await GetEntity(u => u.ControllerName == item);
+                    apiList.AddRange(otherApi);
+                }
+            }
+            
+            return apiList;
+        }
     }
 }

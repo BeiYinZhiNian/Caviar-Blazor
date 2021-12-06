@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Caviar.Infrastructure.Identity
 {
-    public class ApplicationUser: IdentityUser<int>, IUser
+    public class ApplicationUser: IdentityUser<int>
     {
         /// <summary>
         /// 创建时间
