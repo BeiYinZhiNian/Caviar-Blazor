@@ -149,8 +149,6 @@ namespace Caviar.AntDesignUI.Helper
                     _navigationManager.NavigateTo(result.Title);
                     break;
                 case StatusCodes.Status404NotFound:
-                    _navigationManager.NavigateTo("/Exception/404");
-                    break;
                 case StatusCodes.Status500InternalServerError://发生严重错误
                 default:
                     string msg = "";

@@ -27,7 +27,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
         {
             switch (row.Menu.Entity.MenuName)
             {
-                case "删除":
+                case "DeleteEntity":
                     await ConfirmDelete(row.Menu.Entity.Url, row.Data);
                     break;
                 default:

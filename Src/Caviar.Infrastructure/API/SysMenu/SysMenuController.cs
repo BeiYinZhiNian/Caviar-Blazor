@@ -1,5 +1,6 @@
 ﻿using Caviar.Core.Services.SysMenuServices;
 using Caviar.SharedKernel;
+using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,20 @@ namespace Caviar.Infrastructure.API.SysMenuController
             var apiList = await MenuServices.GetApiList(url, null);
             var Vm = ToView(apiList);
             return Ok(Vm);
+        }
+
+        [HttpPost]
+        public override async Task<IActionResult> DeleteEntity(SysMenuView vm)
+        {
+            if (vm.IsDeleteAll)
+            {
+                List<SysMenuView> menuViews = new List<SysMenuView>();
+                vm.TreeToList(menuViews);
+                var menus = ToEntity(menuViews);
+                await MenuServices.DeleteEntityAll(menus);
+            }
+            await MenuServices.DeleteEntity(vm.Entity);
+            return Ok();
         }
     }
 }

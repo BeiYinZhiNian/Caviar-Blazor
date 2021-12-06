@@ -34,5 +34,27 @@ namespace Caviar.Core.Services.SysMenuServices
             
             return apiList;
         }
+
+        public async Task DeleteEntityAll(List<SysMenu> menus)
+        {
+            await base.DeleteEntity(menus);
+        }
+
+        public override async Task<bool> DeleteEntity(SysMenu menus)
+        {
+            List<SysMenu> menuList = await GetEntity(u => u.ParentId == menus.Id);
+            if (menuList != null && menuList.Count > 1)
+            {
+                foreach (var item in menuList)
+                {
+                    if (item.ParentId == menus.Id)
+                    {
+                        item.ParentId = menus.ParentId;
+                    }
+                }
+                await base.UpdateEntity(menuList);
+            }
+            return await base.DeleteEntity(menus);
+        }
     }
 }

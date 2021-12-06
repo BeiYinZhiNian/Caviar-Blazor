@@ -168,5 +168,16 @@ namespace Caviar.Infrastructure.API.BaseApi
             };
             return pageVm;
         }
+
+        protected virtual List<T> ToEntity(List<Vm> vm)
+        {
+            if (vm == null) return null;
+            var entitys = new List<T>();
+            foreach (var item in vm)
+            {
+                entitys.Add(item.Entity);
+            }
+            return entitys;
+        }
     }
 }
