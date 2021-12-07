@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Caviar.SharedKernel;
+using Caviar.SharedKernel.Entities.View;
 
 namespace Caviar.AntDesignUI
 {
@@ -19,17 +20,10 @@ namespace Caviar.AntDesignUI
             Entity = new T()
         };
 
-        [Parameter]
-        public string Url { get; set; }
 
         [Parameter]
         public string SuccMsg { get; set; } = "操作成功";
         #endregion
-
-        protected override async Task OnInitializedAsync()
-        {
-
-        }
 
 
         #region 回调

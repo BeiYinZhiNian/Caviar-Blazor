@@ -90,7 +90,7 @@ namespace Caviar.AntDesignUI.Helper
         async Task<ResultMsg<T>> HttpRequest<K,T>(string address,string model, K data, EventCallback eventCallback)
         {
             await SetCookies();
-            ResultMsg<T> result = default;
+            ResultMsg<T> result;
             try
             {
                 HttpResponseMessage responseMessage;

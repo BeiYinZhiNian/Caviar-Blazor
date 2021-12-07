@@ -1,6 +1,8 @@
 ﻿using AntDesign;
 using Caviar.AntDesignUI.Helper;
+using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +29,50 @@ namespace Caviar.AntDesignUI
         /// </summary>
         [Inject]
         protected NavigationManager NavigationManager { get; set; }
+
+        /// <summary>
+        /// API组
+        /// </summary>
+        [Parameter]
+        public List<SysMenuView> APIList { get; set; } = new List<SysMenuView>();
+
+        protected UrlAccessor UrlList { get; set; }
+        /// <summary>
+        /// 需要获取url的控制器集合
+        /// </summary>
+        public List<string> ControllerList = new List<string>();
+
+        [Parameter]
+        public string Url { get; set; }
         #endregion
+
+        /// <summary>
+        /// 获取API
+        /// 获取该页面下的API
+        /// </summary>
+        /// <returns></returns>
+        protected virtual async Task<List<SysMenuView>> GetApiList()
+        {
+            var splicing = "";
+            foreach (var item in ControllerList)
+            {
+                splicing += item + "|";
+            }
+            var result = await Http.GetJson<List<SysMenuView>>($"SysMenu/GetApiList?url={Url}&splicing={splicing}");
+            if (result.Status != StatusCodes.Status200OK) return null;
+            return result.Data;
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            await base.OnInitializedAsync();
+            if (string.IsNullOrEmpty(Url))
+            {
+                Url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
+            }
+            APIList = await GetApiList();
+            UrlList = new UrlAccessor(APIList);
+        }
 
         /// <summary>
         /// 刷新
@@ -37,6 +82,32 @@ namespace Caviar.AntDesignUI
         {
             await OnInitializedAsync();
             StateHasChanged();
+        }
+    }
+
+    public class UrlAccessor
+    {
+        public UrlAccessor(List<SysMenuView> apiList)
+        {
+            APIList = apiList;
+        }
+
+        public List<SysMenuView> APIList { get; set; }
+
+
+        public string this[string name] { 
+            get 
+            { 
+                return APIList?.FirstOrDefault(u => u.Entity.MenuName.ToLower() == name.ToLower())?.Entity.Url; 
+            } 
+        }
+
+        public string this[string name, string controller]
+        {
+            get
+            {
+                return APIList?.SingleOrDefault(u => u.Entity.MenuName.ToLower() == name.ToLower() && u.Entity.ControllerName.ToLower() == controller.ToLower())?.Entity.Url;
+            }
         }
     }
 }

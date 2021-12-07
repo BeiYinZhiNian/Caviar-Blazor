@@ -21,12 +21,14 @@ namespace Caviar.Core.Services.SysMenuServices
 
         public async Task<List<SysMenu>> GetApiList(string url,string[] controllerList)
         {
+            if (url == null) throw new Exception("url不能为null");
             var entity = await GetEntity(u => u.Url == url,true);
             var apiList = await GetEntity(u => u.ControllerName == entity.ControllerName);
             if(controllerList != null)
             {
                 foreach (var item in controllerList)
                 {
+                    if (item == "") continue;
                     var otherApi = await GetEntity(u => u.ControllerName == item);
                     apiList.AddRange(otherApi);
                 }

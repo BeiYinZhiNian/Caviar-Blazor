@@ -14,9 +14,9 @@ namespace Caviar.AntDesignUI.Pages.Menu
     {
         protected override async Task OnInitializedAsync()
         {
+            await base.OnInitializedAsync();
             await GetMenus();
             CheckMenuType();
-            await base.OnInitializedAsync();
         }
 
         private List<SysMenuView> SysMenus = new List<SysMenuView>();
@@ -24,7 +24,8 @@ namespace Caviar.AntDesignUI.Pages.Menu
 
         async Task GetMenus()
         {
-            var result = await Http.GetJson<PageData<SysMenuView>>("SysMenu/Index?pageSize=100");
+            
+            var result = await Http.GetJson<PageData<SysMenuView>>($"{UrlList["SysMenu"]}?pageSize=100");
             if (result.Status != StatusCodes.Status200OK) return;
             if (DataSource.ParentId > 0)
             {

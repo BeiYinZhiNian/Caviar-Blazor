@@ -33,10 +33,7 @@ namespace Caviar.AntDesignUI
         /// 页面大小
         /// </summary>
         protected int PageSize { get; set; }
-        /// <summary>
-        /// API组
-        /// </summary>
-        protected List<SysMenuView> APIList { get; set; } = new List<SysMenuView>();
+        
         protected List<SysMenuView> Buttons { get; set; } = new List<SysMenuView>();
         /// <summary>
         /// 模型字段
@@ -45,8 +42,7 @@ namespace Caviar.AntDesignUI
         public ViewQuery Query { get; set; }
         protected string BaseController { get; set; }
         public bool Loading { get; set; }
-        [Parameter]
-        public string Url { get; set; }
+        
         #endregion
 
         #region 方法
@@ -72,22 +68,17 @@ namespace Caviar.AntDesignUI
             return null;
         }
         /// <summary>
-        /// 获取API
-        /// 获取该页面下的API
+        /// 加载按钮
         /// </summary>
         /// <returns></returns>
-        protected virtual async Task<List<SysMenuView>> GetApiList()
+        protected virtual void LoadButton()
         {
-            var result = await Http.GetJson<List<SysMenuView>>("SysMenu/GetApiList?url=" + Url);
-            if (result.Status != StatusCodes.Status200OK) return null;
-            APIList = result.Data;
-            var queryButton = APIList.SingleOrDefault(u => u.Entity.MenuName == "FuzzyQuery");
+            var queryButton = UrlList["FuzzyQuery"];
             if (queryButton != null)
             {
                 Query = new ViewQuery();
             }
             Buttons = APIList.Where(u => u.Entity.ControllerName == BaseController).ToList();
-            return APIList;
         }
         /// <summary>
         /// 获取模型字段
@@ -95,7 +86,7 @@ namespace Caviar.AntDesignUI
         /// <returns></returns>
         protected virtual async Task<List<ViewFields>> GetModelFields()
         {
-            var result = await Http.GetJson<List<ViewFields>>($"{BaseController}/GetFields");
+            var result = await Http.GetJson<List<ViewFields>>(UrlList["GetFields"]);
             if (result.Status != StatusCodes.Status200OK) return null;
             ViewFields = result.Data;
             return ViewFields;
@@ -139,7 +130,7 @@ namespace Caviar.AntDesignUI
         /// <param name="Query"></param>
         protected virtual async void FuzzyQueryCallback()
         {
-            var result = await Http.PostJson<ViewQuery, PageData<ViewT>>(BaseController + "/FuzzyQuery", Query);
+            var result = await Http.PostJson<ViewQuery, PageData<ViewT>>(UrlList["FuzzyQuery"], Query);
             if (result.Status != StatusCodes.Status200OK) return;
             DataSource = result.Data.Rows;
             Total = result.Data.Total;
@@ -160,16 +151,12 @@ namespace Caviar.AntDesignUI
         #region 重写
         protected override async Task OnInitializedAsync()
         {
+            await base.OnInitializedAsync();
             Loading = true;
-            if (string.IsNullOrEmpty(Url))
-            {
-                var url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
-                Url = url;
-            }
             BaseController = CommonHelper.GetLeftText(Url, "/");
+            LoadButton();//加载按钮
             await GetModelFields();//获取模型字段
             await GetPages();//获取数据源
-            await GetApiList();//获取API集合
             Loading = false;
         }
         #endregion
