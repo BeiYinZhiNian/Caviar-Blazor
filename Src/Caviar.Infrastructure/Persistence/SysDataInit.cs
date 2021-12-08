@@ -140,7 +140,8 @@ namespace Caviar.Infrastructure.Persistence
                 new SysMenu()
                 {
                     MenuName = "API",
-                    MenuType = MenuType.API
+                    MenuType = MenuType.API,
+                    ControllerName = "API"
                 }
             };
             _dbContext.AddRange(menus);
