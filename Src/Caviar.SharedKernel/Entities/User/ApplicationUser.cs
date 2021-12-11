@@ -1,13 +1,11 @@
-﻿using Caviar.Infrastructure.Identity;
-using Caviar.SharedKernel.Entities;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Caviar.Infrastructure.Identity
+namespace Caviar.SharedKernel.Entities
 {
-    public class ApplicationUser: IdentityUser<int>
+    public class ApplicationUser: IdentityUser<int>, IBaseEntity
     {
         /// <summary>
         /// 创建时间

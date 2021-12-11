@@ -35,13 +35,17 @@ namespace Caviar.AntDesignUI
         /// </summary>
         [Parameter]
         public List<SysMenuView> APIList { get; set; } = new List<SysMenuView>();
-
+        /// <summary>
+        /// url读取器
+        /// </summary>
         protected UrlAccessor UrlList { get; set; }
         /// <summary>
         /// 需要获取url的控制器集合
         /// </summary>
         public List<string> ControllerList = new List<string>();
-
+        /// <summary>
+        /// 当前url
+        /// </summary>
         [Parameter]
         public string Url { get; set; }
         #endregion

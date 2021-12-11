@@ -7,6 +7,7 @@
 *@
 @page "/{EntityName}/CreateEntity"
 @page "/{EntityName}/UpdateEntity"
+@using {BaseEntityNamespace}
 @using {BaseEntityNamespace}.View
 @inherits DataComponentBase<{EntityName}View,{EntityName}>
 

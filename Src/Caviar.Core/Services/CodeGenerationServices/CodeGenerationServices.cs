@@ -24,7 +24,7 @@ namespace Caviar.Core.Services.CodeGenerationServices
             foreach (var item in previewCodes)
             {
                 count++;
-                var storePath = item.Options.StorePath + $"{codeGenerateOptions.EntitieName}/";
+                var storePath = item.Options.StorePath + $"{codeGenerateOptions.EntitieName}s/";
                 if (!Directory.Exists(storePath))
                 {
                     Directory.CreateDirectory(storePath);
@@ -155,7 +155,12 @@ namespace Caviar.Core.Services.CodeGenerationServices
             foreach (var item in headers)
             {
                 var txt = "";
-                txt += $"<FormItem Label='{item.Entity.DisplayName}'>";
+                var label = item.Entity.DisplayName;
+                if (string.IsNullOrEmpty(label))
+                {
+                    label = item.Entity.FieldName;
+                }
+                txt += $"<FormItem Label='{label}'>";
                 var IsWrite = CreateCurrencyAssembly(item, ref txt);
                 txt += "</FormItem>";
                 if (IsWrite) html += txt;

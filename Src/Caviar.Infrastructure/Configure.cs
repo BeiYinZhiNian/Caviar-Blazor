@@ -13,7 +13,6 @@ using System.Text;
 using Newtonsoft.Json;
 using Caviar.SharedKernel.Entities.Base;
 using Microsoft.AspNetCore.Builder;
-using Caviar.Infrastructure.Identity;
 using Caviar.Core.Services;
 
 namespace Caviar.Infrastructure

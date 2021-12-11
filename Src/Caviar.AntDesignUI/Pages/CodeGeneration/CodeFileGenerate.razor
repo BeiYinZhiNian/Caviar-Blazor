@@ -1,5 +1,5 @@
 ﻿@page "/CodeGeneration/Index"
-@using System.Text.Json
+@inherits CavComponentBase
 <div>
     <Steps Current="current">
         @foreach (var item in steps)
@@ -39,7 +39,7 @@
         @switch (current)
         {
             case 0:
-                if (Entitys != null && Entitys.Count!=0)
+                if (Entitys != null && Entitys.Count != 0)
                 {
                     var Source = Entitys.Select(u => u.Entity);
                     <Table TItem="SharedKernel.Entities.SysFields" DataSource="@Source">
@@ -48,19 +48,21 @@
                         <Column @bind-Field="@context.FullName">
                         </Column>
                         <Column @bind-Field="@context.DisplayName">
-                    </Column>
-                    <ActionColumn Title="操作">
-                        <Space Size=@("middle")>
-                            <SpaceItem>
-                                <Button Type="@ButtonType.Primary" OnClick='()=>
+                        </Column>
+                        <ActionColumn Title="操作">
+                            <Space Size=@("middle")>
+                                <SpaceItem>
+                                    <Button Type="@ButtonType.Primary" OnClick='()=>
                                                                             {
                                                                                 GenerateData.EntitieName = context.FieldName;
                                                                                 GenerateData.FullName = context.FullName;
                                                                                 OnNextClick();
-                                                                            }'>选择</Button>
-                            </SpaceItem>
-                        </Space>
-                    </ActionColumn>
+                                                                            }'>
+                                        选择
+                                    </Button>
+                                </SpaceItem>
+                            </Space>
+                        </ActionColumn>
 
                     </Table>
                 }

@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using Microsoft.AspNetCore.Identity;
 using Caviar.SharedKernel;
-using Caviar.Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using Caviar.Infrastructure.API.BaseApi;

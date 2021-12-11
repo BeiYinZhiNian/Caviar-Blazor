@@ -1,13 +1,12 @@
 ﻿using AntDesign;
+using Blazored.LocalStorage;
 using Caviar.AntDesignUI.Helper;
-using Caviar.SharedKernel.View;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Caviar.AntDesignUI
 {
@@ -26,6 +25,10 @@ namespace Caviar.AntDesignUI
             services.AddSingleton<ModalService>();
             services.AddSingleton<MessageService>();
             services.AddScoped<IPrismHighlighter, PrismHighlighter>();
+            services.AddBlazoredLocalStorage();
+            services.AddAuthorizationCore();
+            services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
+            services.AddScoped<IAuthService, AuthService>();
             if (assemblies != null)
             {
                 AdditionalAssemblies = new List<Assembly>();

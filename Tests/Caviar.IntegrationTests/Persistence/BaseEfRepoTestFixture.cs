@@ -6,7 +6,6 @@ using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Caviar.SharedKernel;
-using Caviar.Infrastructure.Identity;
 
 namespace Caviar.IntegrationTests.Persistence
 {

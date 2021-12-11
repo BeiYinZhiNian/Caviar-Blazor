@@ -12,29 +12,23 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
 {
     public partial class CodeFileGenerate
     {
-
         List<ViewFields> Entitys { get; set; }
-        [Inject]
-        NavigationManager NavigationManager { get; set; }
-        [Inject]
-        HttpHelper Http { get; set; }
-        [Inject]
-        MessageService _message { get; set; }
-        public string Url { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             #if DEBUG
+            ControllerList.Add("Permission");
+            await base.OnInitializedAsync();
             await GetModels();
-            Url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
             #else
-            _message.Error("代码生成只能在debug模式下进行！");
+            Message.Error("代码生成只能在debug模式下进行！");
             #endif
         }
 
 
         public async Task GetModels()
         {
-            var result = await Http.GetJson<List<ViewFields>>("Permission/GetEntitys");
+            var result = await Http.GetJson<List<ViewFields>>(UrlList["GetEntitys"]);
             if (result.Status != StatusCodes.Status200OK) return;
             Entitys = result.Data;
         }
@@ -55,7 +49,7 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
                 {
                     return;
                 }
-                var result = await Http.PostJson<CodeGenerateOptions,List<PreviewCode>>($"{Url}?isPerview=true", GenerateData);
+                var result = await Http.PostJson<CodeGenerateOptions,List<PreviewCode>>($"{UrlList["CodeFileGenerate"]}?isPerview=true", GenerateData);
                 if (result.Status == StatusCodes.Status200OK)
                 {
                     lstTabs = result.Data;
@@ -70,7 +64,7 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
         string ResultSubTitle = "";
         async void OnGenerateClick()
         {
-            var result = await Http.PostJson<CodeGenerateOptions, string>($"{Url}?isPerview=false", GenerateData);
+            var result = await Http.PostJson<CodeGenerateOptions, string>($"{UrlList["CodeFileGenerate"]}?isPerview=false", GenerateData);
             if (result.Status == StatusCodes.Status200OK)
             {
                 ResultStatus = "success";
