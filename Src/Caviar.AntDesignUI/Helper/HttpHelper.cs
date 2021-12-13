@@ -9,6 +9,9 @@ using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Http;
 using Caviar.SharedKernel;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Components.Authorization;
+using Blazored.LocalStorage;
+using System.Net.Http.Headers;
 
 namespace Caviar.AntDesignUI.Helper
 {
@@ -18,48 +21,23 @@ namespace Caviar.AntDesignUI.Helper
         NavigationManager _navigationManager;
         MessageService _message;
         IJSRuntime _jSRuntime;
+        ILocalStorageService _localStorageService;
         public string TokenName => CurrencyConstant.Authorization;
-        public HttpHelper(HttpClient http, NotificationService _notice,NavigationManager navigationManager, MessageService message,IJSRuntime JsRuntime)
+        public HttpHelper(HttpClient http, 
+            NotificationService _notice,
+            NavigationManager navigationManager, 
+            MessageService message,
+            IJSRuntime JsRuntime,
+            ILocalStorageService localStorageService)
         {
             Http = http;
             _notificationService = _notice;
             _navigationManager = navigationManager;
             _message = message;
             _jSRuntime = JsRuntime;
+            _localStorageService = localStorageService;
         }
 
-        static object cookiesOb = new object();
-        /// <summary>
-        /// 设置为false 用于更新cookies
-        /// </summary>
-        public bool IsSetCookie { get; set; } = false;
-        async Task SetCookies()
-        {
-            if (IsSetCookie) return;
-            var cookie = await GetToken();
-            //这里为什么要用双锁呢，被逼的~
-            lock (cookiesOb)
-            {
-                if (IsSetCookie) return;
-                Http.DefaultRequestHeaders.TryGetValues(TokenName, out IEnumerable<string> values);
-                if (Http.DefaultRequestHeaders.Contains(TokenName))
-                {
-                    Http.DefaultRequestHeaders.Remove(TokenName);
-                }
-                if (!string.IsNullOrEmpty(cookie))
-                {
-                    Http.DefaultRequestHeaders.Add(TokenName,CurrencyConstant.JWT + cookie);
-                    IsSetCookie = true;
-                }
-            }
-            
-        }
-
-        public async Task<string> GetToken()
-        {
-            var cookie = await _jSRuntime.InvokeAsync<string>("getCookie", Config.CookieName);
-            return cookie;
-        }
 
 
         public HttpClient Http { get; }
@@ -89,7 +67,8 @@ namespace Caviar.AntDesignUI.Helper
 
         async Task<ResultMsg<T>> HttpRequest<K,T>(string address,string model, K data, EventCallback eventCallback)
         {
-            await SetCookies();
+            var savedToken = await _localStorageService.GetItemAsync<string>(Config.TokenName);
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", savedToken);
             ResultMsg<T> result;
             try
             {
@@ -144,11 +123,10 @@ namespace Caviar.AntDesignUI.Helper
                     _navigationManager.NavigateTo(result.Title);
                     break;
                 case StatusCodes.Status401Unauthorized://退出登录
-                    await _jSRuntime.InvokeVoidAsync("delCookie", Config.CookieName);
-                    IsSetCookie = false;
-                    _navigationManager.NavigateTo(result.Title);
+                    Http.DefaultRequestHeaders.Authorization = null;
                     break;
                 case StatusCodes.Status404NotFound:
+                case StatusCodes.Status400BadRequest:
                 case StatusCodes.Status500InternalServerError://发生严重错误
                 default:
                     string msg = "";

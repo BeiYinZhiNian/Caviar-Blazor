@@ -54,7 +54,7 @@ namespace Caviar.AntDesignUI
             var result = await Http.PostJson(Url, DataSource);
             if (result.Status == StatusCodes.Status200OK)
             {
-                Message.Success(SuccMsg);
+                await Message.Success(SuccMsg);
                 return true;
             }
             return false;

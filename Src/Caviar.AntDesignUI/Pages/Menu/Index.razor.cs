@@ -55,7 +55,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
             var result = await Http.PostJson(url, data);
             if (result.Status == StatusCodes.Status200OK)
             {
-                Message.Success("删除成功");
+                await Message.Success("删除成功");
             }
         }
 

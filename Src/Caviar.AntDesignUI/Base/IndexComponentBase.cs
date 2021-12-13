@@ -100,7 +100,7 @@ namespace Caviar.AntDesignUI
             //删除单条
             var result = await Http.PostJson(url, data);
             if (result.Status != StatusCodes.Status200OK) return false;
-            Message.Success("删除成功");
+            await Message.Success("删除成功");
             return true;
         }
         #endregion

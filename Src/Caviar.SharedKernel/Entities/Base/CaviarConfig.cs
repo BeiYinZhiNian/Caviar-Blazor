@@ -30,7 +30,7 @@ namespace Caviar.SharedKernel.Entities.Base
             NameSpace = "Caviar.SharedKernel.View"
         };
 
-        public JWTOptions JWTOptions { get; set; }
+        public JWTOptions JWTOptions { get; set; } = new JWTOptions();
     }
 
     public class CodeGeneration

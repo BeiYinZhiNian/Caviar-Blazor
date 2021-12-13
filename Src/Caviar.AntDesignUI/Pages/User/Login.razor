@@ -1,0 +1,48 @@
+﻿@page "/User/Login"
+
+@layout CavEmptyLayout
+<div class="login-NavLogin">
+    <div style="padding:30px">
+        <Card Bordered="true" Title=@("用户登录") Style="width:400px" Hoverable="true">
+            <Body>
+                <Form Model="@ApplicationUser" OnFinish="SubmitLogin">
+                    <FormItem Label="">
+                        <AntDesign.Input Placeholder="请输入用户名/手机号/邮箱" Size="large" @bind-Value="@context.UserName">
+                            <Prefix><Icon Type="user" /></Prefix>
+                        </AntDesign.Input>
+                    </FormItem>
+                    <FormItem Label="">
+                        <AntDesign.Input Placeholder="请输入密码" Size="large" @bind-Value="@context.PasswordHash" Type="password">
+                            <Prefix><Icon Type="lock" /></Prefix>
+                        </AntDesign.Input>
+                    </FormItem>
+                    <Space Direction="DirectionVHType.Vertical" Style="width:100%">
+                        <SpaceItem>
+                            <Spin Spinning="Loading">
+                                <Button Type="@ButtonType.Primary" HtmlType="submit" Class="submit" Size="large" Block>登&nbsp;录</Button>
+                            </Spin>
+                        </SpaceItem>
+                        <SpaceItem>
+                            <div class="other">
+                                <a class="register">注册账户</a>
+                                <a style="float: right;">
+                                    忘记密码
+                                </a>
+                            </div>
+                        </SpaceItem>
+                    </Space>
+                </Form>
+            </Body>
+        </Card>
+    </div>
+</div>
+
+
+<style>
+    .login-NavLogin {
+        position: absolute;
+        left: 50%;
+        top: 40%;
+        transform: translate(-50%, -50%);
+    }
+</style>

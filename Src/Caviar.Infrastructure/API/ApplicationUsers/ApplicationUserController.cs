@@ -53,13 +53,13 @@ namespace Caviar.Infrastructure.API
         [HttpPost]
         public async Task<IActionResult> Login(ApplicationUserView login)
         {
-            var result = await _signInManager.PasswordSignInAsync(login.Entity.Email, login.Entity.PasswordHash, false, false);
+            var result = await _signInManager.PasswordSignInAsync(login.Entity.UserName, login.Entity.PasswordHash, false, false);
 
             if (!result.Succeeded) return BadRequest("Username and password are invalid.");
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, login.Entity.Email)
+                new Claim(ClaimTypes.Name, login.Entity.UserName)
             };
             var jwt = Configure.CaviarConfig.JWTOptions;
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.JwtSecurityKey));

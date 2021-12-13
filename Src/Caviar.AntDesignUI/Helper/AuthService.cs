@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.AntDesignUI.Helper
 {
-    public class AuthService : IAuthService
+    public class AuthService
     {
         private readonly HttpHelper _httpClient;
         private readonly AuthenticationStateProvider _authenticationStateProvider;

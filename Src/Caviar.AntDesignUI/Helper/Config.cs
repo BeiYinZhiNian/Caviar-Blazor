@@ -12,9 +12,10 @@ namespace Caviar.AntDesignUI
 {
     public static class Config
     {
-        public static string CookieName { get; set; } = "token";
 
         public static List<Assembly> AdditionalAssemblies;
+
+        public static string TokenName { get; } = "authToken";
 
         public static IServiceCollection AddCaviar(this IServiceCollection services, Type[] assemblies)
         {
@@ -28,7 +29,7 @@ namespace Caviar.AntDesignUI
             services.AddBlazoredLocalStorage();
             services.AddAuthorizationCore();
             services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
-            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<AuthService>();
             if (assemblies != null)
             {
                 AdditionalAssemblies = new List<Assembly>();

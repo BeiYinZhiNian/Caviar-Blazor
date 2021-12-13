@@ -10,7 +10,7 @@
         </a>
     </MenuItem>
     <MenuDivider />
-    <MenuItem @key="3" OnClick="UserOut">
+    <MenuItem @key="3">
         退出登录
     </MenuItem>
 </Menu>
@@ -25,14 +25,6 @@
     MessageService messageService { get; set; }
     [Inject]
     CavModal CavModal { get; set; }
-
-    public async void UserOut()
-    {
-        await jSRuntime.InvokeVoidAsync("delCookie", Config.CookieName);
-        Http.IsSetCookie = false;
-        navigationManager.NavigateTo("/",true);
-        messageService.Success("退出登录成功");
-    }
 
     public void UserCenter()
     {

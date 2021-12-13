@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.Demo.WebApi", "Demo\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.Demo.AntDesignUI", "Demo\Wasm\Caviar.Demo.AntDesignUI\Caviar.Demo.AntDesignUI.csproj", "{72F4AB7A-719F-4220-8852-E065932C2A06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caviar.Demo.Model", "Demo\Wasm\Caviar.Demo.Model\Caviar.Demo.Model.csproj", "{0AB0E409-E719-4122-8BA1-C578ABD89860}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.Demo.Model", "Demo\Wasm\Caviar.Demo.Model\Caviar.Demo.Model.csproj", "{0AB0E409-E719-4122-8BA1-C578ABD89860}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
