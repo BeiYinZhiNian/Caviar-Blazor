@@ -58,7 +58,7 @@ namespace Caviar.AntDesignUI.Pages.User
 
         protected override void OnInitialized()
         {
-            string backgroundImage = "_content/Caviar.AntDesignPages/Images/e613f3b11ffd2a7c9db467cd25a694c8.jpeg";
+            string backgroundImage = "_content/Caviar.AntDesignUI/Images/grov.jpg";
             var style = $"min-height:100vh;background-image: url({backgroundImage});";
             LayoutStyleCallBack.InvokeAsync(style);
             base.OnInitialized();
