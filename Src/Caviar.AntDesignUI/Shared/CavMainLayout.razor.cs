@@ -14,6 +14,7 @@ using System.Text.Json;
 using Caviar.AntDesignUI.Helper;
 using AntDesign.JsInterop;
 using Microsoft.JSInterop;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Caviar.AntDesignUI.Shared
 {
@@ -33,10 +34,18 @@ namespace Caviar.AntDesignUI.Shared
         [Inject]
         public IJSRuntime JSRuntime { get; set; }
 
+        [Inject] 
+        public NavigationManager NavigationManager { get; set; }
+
+        [Inject]
+        private AuthenticationStateProvider authenticationStateTask { get; set; }
+
         public void StateHasAction()
         {
             StateHasChanged();
         }
+
+        
 
         /// <summary>
         /// 面包屑数据同步
@@ -46,6 +55,12 @@ namespace Caviar.AntDesignUI.Shared
         {
             UserConfig.StateHasAction = StateHasAction;
             await base.OnParametersSetAsync();
+            var authenticationState = await authenticationStateTask.GetAuthenticationStateAsync();
+            
+            if (!authenticationState.User.Identity.IsAuthenticated)
+            {
+                NavigationManager.NavigateTo(Config.LoginPagePath);
+            }
         }
         protected override async Task OnInitializedAsync()
         {

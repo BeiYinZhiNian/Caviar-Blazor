@@ -15,6 +15,8 @@ namespace Caviar.AntDesignUI
 
         public static List<Assembly> AdditionalAssemblies;
 
+        public static string LoginPagePath = "/User/Login";
+
         public static string TokenName { get; } = "authToken";
 
         public static IServiceCollection AddCaviar(this IServiceCollection services, Type[] assemblies)
