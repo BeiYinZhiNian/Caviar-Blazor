@@ -41,7 +41,6 @@ namespace Caviar.AntDesignUI
         protected List<ViewFields> ViewFields { get; set; } = new List<ViewFields>();
         public ViewQuery Query { get; set; }
         protected string BaseController { get; set; }
-        public bool Loading { get; set; }
         
         #endregion
 

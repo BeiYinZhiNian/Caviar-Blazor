@@ -21,7 +21,6 @@ namespace Caviar.AntDesignUI.Pages.User
     {
         public ApplicationUser ApplicationUser { get; set; } = new ApplicationUser() { UserName = "admin",PasswordHash= "1031622947@qq.COM" };
 
-        bool Loading = false;
         [CascadingParameter]
         public EventCallback LayoutStyleCallBack { get; set; }
         [Inject]

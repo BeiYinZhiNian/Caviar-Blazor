@@ -44,6 +44,10 @@ namespace Caviar.AntDesignUI
         /// </summary>
         public List<string> ControllerList = new List<string>();
         /// <summary>
+        /// 加载等待
+        /// </summary>
+        public bool Loading = false;
+        /// <summary>
         /// 当前url
         /// </summary>
         [Parameter]
@@ -69,13 +73,15 @@ namespace Caviar.AntDesignUI
 
         protected override async Task OnInitializedAsync()
         {
-            await base.OnInitializedAsync();
+            Loading = true;
             if (string.IsNullOrEmpty(Url))
             {
                 Url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
             }
             APIList = await GetApiList();
             UrlList = new UrlAccessor(APIList);
+            Loading = false;
+            await base.OnInitializedAsync();
         }
 
         /// <summary>
