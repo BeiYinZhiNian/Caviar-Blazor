@@ -61,14 +61,14 @@ namespace Caviar.Infrastructure.API
             {
                 new Claim(ClaimTypes.Name, login.Entity.Email)
             };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSecurityKey"]));
+            var jwt = Configure.CaviarConfig.JWTOptions;
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.JwtSecurityKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expiry = DateTime.Now.AddDays(Convert.ToInt32(_configuration["JwtExpiryInDays"]));
+            var expiry = DateTime.Now.AddDays(Convert.ToInt32(jwt.JwtExpiryInDays));
 
             var token = new JwtSecurityToken(
-                _configuration["JwtIssuer"],
-                _configuration["JwtAudience"],
+                jwt.JwtIssuer,
+                jwt.JwtAudience,
                 claims,
                 expires: expiry,
                 signingCredentials: creds

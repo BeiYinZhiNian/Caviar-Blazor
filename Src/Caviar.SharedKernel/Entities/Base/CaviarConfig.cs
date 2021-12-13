@@ -29,6 +29,8 @@ namespace Caviar.SharedKernel.Entities.Base
             StorePath = "../Caviar.Demo.Model/Template/View/",
             NameSpace = "Caviar.SharedKernel.View"
         };
+
+        public JWTOptions JWTOptions { get; set; }
     }
 
     public class CodeGeneration
@@ -41,5 +43,16 @@ namespace Caviar.SharedKernel.Entities.Base
         /// 类命名空间
         /// </summary>
         public string NameSpace { get; set; }
+    }
+
+    public class JWTOptions
+    {
+        public string JwtSecurityKey { get; set; } = "RANDOM_KEY_MUST_NOT_BE_SHARED";
+
+        public int JwtExpiryInDays { get; set; } = 1;
+
+        public string JwtIssuer { get; set; } = "https://localhost";
+
+        public string JwtAudience { get; set; } = "https://localhost";
     }
 }
