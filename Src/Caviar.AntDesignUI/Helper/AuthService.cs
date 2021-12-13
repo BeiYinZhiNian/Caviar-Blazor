@@ -22,7 +22,7 @@ namespace Caviar.AntDesignUI.Helper
 
         public async Task Logout()
         {
-            await _localStorage.RemoveItemAsync("authToken");
+            await _localStorage.RemoveItemAsync(Config.TokenName);
             ((ApiAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
             _httpClient.Http.DefaultRequestHeaders.Authorization = null;
         }

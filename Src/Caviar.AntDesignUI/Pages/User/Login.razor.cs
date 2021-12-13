@@ -40,6 +40,7 @@ namespace Caviar.AntDesignUI.Pages.User
         IJSRuntime JsRuntime { get; set; }
         public async void SubmitLogin()
         {
+            
             Loading = true;
             ApplicationUserView applicationUser = new ApplicationUserView() { Entity = ApplicationUser };
             var result = await http.PostJson<ApplicationUserView, string>("ApplicationUser/Login", applicationUser);
@@ -47,7 +48,7 @@ namespace Caviar.AntDesignUI.Pages.User
             Loading = false;
             if (result.Status == 200)
             {
-                await localStorage.SetItemAsync("authToken", result.Title);
+                await localStorage.SetItemAsync(Config.TokenName, result.Title);
                 NavigationManager.NavigateTo("/");
                 await _message.Success("登录成功，欢迎回来");
                 return;

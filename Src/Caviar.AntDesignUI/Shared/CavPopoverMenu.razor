@@ -10,7 +10,7 @@
         </a>
     </MenuItem>
     <MenuDivider />
-    <MenuItem @key="3">
+    <MenuItem @key="3" OnClick="Logout">
         退出登录
     </MenuItem>
 </Menu>
@@ -25,6 +25,8 @@
     MessageService messageService { get; set; }
     [Inject]
     CavModal CavModal { get; set; }
+    [Inject]
+    AuthService AuthService { get; set; }
 
     public void UserCenter()
     {
@@ -35,5 +37,11 @@
     public async void ChangePassword()
     {
         await CavModal.Create("user/UpdatePwd", "修改密码");
+    }
+
+    public async Task Logout()
+    {
+        await AuthService.Logout();
+        navigationManager.NavigateTo("/");
     }
 }

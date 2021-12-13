@@ -4,14 +4,26 @@
     </SpaceItem>
     <SpaceItem>
         <Popover ContentTemplate="@_content" Placement="@Placement.BottomRight">
-            <Text></Text>
+            <Text>@userName</Text>
         </Popover>
     </SpaceItem>
 </Space>
 
 @code{
+    [Inject]
+    private AuthenticationStateProvider authenticationStateTask { get; set; }
+    string userName { get; set; } = "未登录用户";
+    protected override async Task OnInitializedAsync()
+    {
 
+        var authentication = await authenticationStateTask.GetAuthenticationStateAsync();
+        if (authentication.User.Identity.IsAuthenticated)
+        {
+            userName = authentication.User.Identity.Name;
+        }
 
+        await base.OnInitializedAsync();
+    }
     RenderFragment _content =
     @<CavPopoverMenu></CavPopoverMenu>
     ;
