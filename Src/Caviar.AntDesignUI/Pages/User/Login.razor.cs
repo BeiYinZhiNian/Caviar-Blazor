@@ -19,38 +19,27 @@ namespace Caviar.AntDesignUI.Pages.User
 {
     public partial class Login
     {
-        bool Loading { get; set; }
         public ApplicationUser ApplicationUser { get; set; } = new ApplicationUser() { UserName = "admin",PasswordHash= "1031622947@qq.COM" };
-        [Inject] public NavigationManager NavigationManager { get; set; }
 
-        [Inject]
-        MessageService _message { get; set; }
-
-        [Inject]
-        IConfiguration Configuration { get; set; }
-
+        bool Loading = false;
         [CascadingParameter]
         public EventCallback LayoutStyleCallBack { get; set; }
         [Inject]
-        HttpHelper http { get; set; }
-        [Inject]
         ILocalStorageService localStorage { get; set; }
 
-        [Inject]
-        IJSRuntime JsRuntime { get; set; }
         public async void SubmitLogin()
         {
             
             Loading = true;
             ApplicationUserView applicationUser = new ApplicationUserView() { Entity = ApplicationUser };
-            var result = await http.PostJson<ApplicationUserView, string>("ApplicationUser/Login", applicationUser);
+            var result = await Http.PostJson<ApplicationUserView, string>(UrlList["login"], applicationUser);
             ApplicationUser.PasswordHash = "";
             Loading = false;
             if (result.Status == 200)
             {
                 await localStorage.SetItemAsync(Config.TokenName, result.Title);
-                NavigationManager.NavigateTo("/");
-                await _message.Success("登录成功，欢迎回来");
+                NavigationManager.NavigateTo(Config.PathList.Home);
+                await Message.Success("登录成功，欢迎回来");
                 return;
             }
             this.StateHasChanged();

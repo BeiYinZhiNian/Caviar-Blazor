@@ -59,7 +59,7 @@ namespace Caviar.AntDesignUI.Shared
             
             if (!authenticationState.User.Identity.IsAuthenticated)
             {
-                NavigationManager.NavigateTo(Config.LoginPagePath);
+                NavigationManager.NavigateTo(Config.PathList.LoginPagePath);
             }
         }
         protected override async Task OnInitializedAsync()

@@ -15,7 +15,7 @@ namespace Caviar.AntDesignUI
 
         public static List<Assembly> AdditionalAssemblies;
 
-        public static string LoginPagePath = "/User/Login";
+        public static PathList PathList = new PathList();
 
         public static string TokenName { get; } = "authToken";
 
@@ -42,5 +42,15 @@ namespace Caviar.AntDesignUI
             }
             return services;
         }
+    }
+
+    public class PathList
+    {
+        public string Home { get; set; } = "/";
+        public string LoginPagePath { get; set; } = "/ApplicationUser/Login";
+
+        public string MyDetails { get; set; } = "/ApplicationUser/MyDetails";
+
+        public string UpdatePwd { get; set; } = "/ApplicationUserUpdatePwd";
     }
 }

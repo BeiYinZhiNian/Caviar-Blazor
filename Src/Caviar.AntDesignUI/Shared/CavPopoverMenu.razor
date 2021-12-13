@@ -30,18 +30,17 @@
 
     public void UserCenter()
     {
-        string url = "User/MyDetails";
-        navigationManager.NavigateTo(url);
+        navigationManager.NavigateTo(Config.PathList.MyDetails);
     }
 
     public async void ChangePassword()
     {
-        await CavModal.Create("user/UpdatePwd", "修改密码");
+        await CavModal.Create(Config.PathList.UpdatePwd, "修改密码");
     }
 
     public async Task Logout()
     {
         await AuthService.Logout();
-        navigationManager.NavigateTo("/");
+        navigationManager.NavigateTo(Config.PathList.LoginPagePath);
     }
 }

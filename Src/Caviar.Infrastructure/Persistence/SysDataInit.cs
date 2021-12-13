@@ -97,8 +97,8 @@ namespace Caviar.Infrastructure.Persistence
 
         protected virtual async Task CreateData(bool isDatabaseInit)
         {
-            if (!isDatabaseInit) return;
             await HttpMethodsInit();
+            if (!isDatabaseInit) return;
             await CreatAdminUser();
             await CreateMenu();
         }
