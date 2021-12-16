@@ -19,6 +19,11 @@ namespace Caviar.Infrastructure.API.SysMenuController
         {
             var menus = await MenuServices.GetMenuBar();
             var menusVm = ToView(menus).ListToTree();
+            foreach (var item in menus)
+            {
+                string key = $"SharedKernel.MenuBar.{item.MenuName}";
+                item.MenuName = LanguageService[key];
+            }
             return Ok(menusVm);
         }
 

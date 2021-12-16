@@ -12,5 +12,7 @@ namespace Caviar.SharedKernel
         event EventHandler<CultureInfo> LanguageChanged;
 
         void SetLanguage(CultureInfo culture);
+
+        string this[string name] { get; }
     }
 }

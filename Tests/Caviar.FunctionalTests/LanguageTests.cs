@@ -14,7 +14,7 @@ namespace Caviar.FunctionalTests
         {
             var culture = CultureInfo.GetCultureInfo("zh-CN");
             ILanguageService languageService = new InAssemblyLanguageService(culture);
-            var text = languageService.Resources["Language.test"].ToString();
+            var text = languageService["LanguageTest"];
             Assert.AreEqual("∂‡”Ô—‘π¶ƒ‹≤‚ ‘", text);
         }
 
@@ -23,7 +23,7 @@ namespace Caviar.FunctionalTests
         {
             var culture = CultureInfo.GetCultureInfo("en-US");
             ILanguageService languageService = new InAssemblyLanguageService(culture);
-            var text = languageService.Resources["Language.test"].ToString();
+            var text = languageService.Resources["LanguageTest"].ToString();
             Assert.AreEqual("Multilingual function test", text);
         }
     }

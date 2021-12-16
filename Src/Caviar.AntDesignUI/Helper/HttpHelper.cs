@@ -30,7 +30,7 @@ namespace Caviar.AntDesignUI.Helper
             IJSRuntime JsRuntime,
             ILocalStorageService localStorageService)
         {
-            Http = http;
+            HttpClient = http;
             _notificationService = _notice;
             _navigationManager = navigationManager;
             _message = message;
@@ -40,46 +40,46 @@ namespace Caviar.AntDesignUI.Helper
 
 
 
-        public HttpClient Http { get; }
-        public async Task<ResultMsg<T>> GetJson<T>(string address, EventCallback eventCallback = default)
+        public HttpClient HttpClient { get; }
+        public async Task<ResultMsg<T>> GetJson<T>(string address)
         {
-            var result = await HttpRequest<T,T>(address,"get",default,eventCallback);
+            var result = await HttpRequest<T,T>(address,"get",default);
             return result;
         }
 
-        public async Task<ResultMsg> GetJson(string address, EventCallback eventCallback = default)
+        public async Task<ResultMsg> GetJson(string address)
         {
-            var result = await HttpRequest<object,object>(address, "get", default, eventCallback);
+            var result = await HttpRequest<object,object>(address, "get", default);
             return result;
         }
 
-        public async Task<ResultMsg<T>> PostJson<K, T>(string address,K data, EventCallback eventCallback = default)
+        public async Task<ResultMsg<T>> PostJson<K, T>(string address,K data)
         {
-            var result = await HttpRequest<K,T>(address, "post", data, eventCallback);
+            var result = await HttpRequest<K,T>(address, "post", data);
             return result;
         }
 
-        public async Task<ResultMsg> PostJson<K>(string address, K data, EventCallback eventCallback = default)
+        public async Task<ResultMsg> PostJson<K>(string address, K data)
         {
-            var result = await HttpRequest<K, object>(address, "post", data, eventCallback);
+            var result = await HttpRequest<K, object>(address, "post", data);
             return result;
         }
 
-        async Task<ResultMsg<T>> HttpRequest<K,T>(string address,string model, K data, EventCallback eventCallback)
+        async Task<ResultMsg<T>> HttpRequest<K,T>(string address,string model, K data)
         {
-            var savedToken = await _localStorageService.GetItemAsync<string>(Config.TokenName);
-            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", savedToken);
+            var token = await _localStorageService.GetItemAsync<string>(Config.TokenName);
+            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
             ResultMsg<T> result;
             try
             {
                 HttpResponseMessage responseMessage;
                 if (model.ToLower() == "get")
                 {
-                    responseMessage = await Http.GetAsync(address);
+                    responseMessage = await HttpClient.GetAsync(address);
                 }
                 else if(model.ToLower() == "post")
                 {
-                    responseMessage = await Http.PostAsJsonAsync(address, data);
+                    responseMessage = await HttpClient.PostAsJsonAsync(address, data);
                 }
                 else
                 {
@@ -123,7 +123,7 @@ namespace Caviar.AntDesignUI.Helper
                     _navigationManager.NavigateTo(result.Title);
                     break;
                 case StatusCodes.Status401Unauthorized://退出登录
-                    Http.DefaultRequestHeaders.Authorization = null;
+                    HttpClient.DefaultRequestHeaders.Authorization = null;
                     break;
                 case StatusCodes.Status404NotFound:
                 case StatusCodes.Status400BadRequest:

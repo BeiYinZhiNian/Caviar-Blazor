@@ -1,5 +1,5 @@
 {
-  "Language.test": "Multilingual function test",
+  "LanguageTest": "Multilingual function test",
   "app": {
     "null": {
       "entity": "Data operation failed, object {entityname} is null"

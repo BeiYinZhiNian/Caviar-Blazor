@@ -1,5 +1,5 @@
 {
-  "Language.test": "多语言功能测试",
+  "LanguageTest": "多语言功能测试",
   "app": {
     "null": {
       "Db": "数据操作失败，对象{entityName}为null"
@@ -70,11 +70,17 @@
       "Error": "错误",
       "Critical": "关键",
       "None": "无"
-
     },
     "ErrorMessage": {
       "LengthErrorMsg": "{EntitysName}输入长度不能超过{length}字符",
       "RequiredErrorMsg": "{EntitysName}为必填项"
+    },
+    "MenuBar": {
+      "Home": "首页",
+      "SysManagement": "系统管理",
+      "ApplicationUser": "用户管理",
+      "SysMenu": "菜单管理",
+      "CodeGeneration": "代码生成"
     }
   }
 }

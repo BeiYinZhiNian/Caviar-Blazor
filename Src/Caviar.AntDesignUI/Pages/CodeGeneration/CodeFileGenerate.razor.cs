@@ -28,7 +28,7 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
 
         public async Task GetModels()
         {
-            var result = await Http.GetJson<List<ViewFields>>(UrlList["GetEntitys"]);
+            var result = await HttpService.GetJson<List<ViewFields>>(UrlList["GetEntitys"]);
             if (result.Status != StatusCodes.Status200OK) return;
             Entitys = result.Data;
         }
@@ -49,7 +49,7 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
                 {
                     return;
                 }
-                var result = await Http.PostJson<CodeGenerateOptions,List<PreviewCode>>($"{UrlList["CodeFileGenerate"]}?isPerview=true", GenerateData);
+                var result = await HttpService.PostJson<CodeGenerateOptions,List<PreviewCode>>($"{UrlList["CodeFileGenerate"]}?isPerview=true", GenerateData);
                 if (result.Status == StatusCodes.Status200OK)
                 {
                     lstTabs = result.Data;
@@ -64,7 +64,7 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
         string ResultSubTitle = "";
         async void OnGenerateClick()
         {
-            var result = await Http.PostJson<CodeGenerateOptions, string>($"{UrlList["CodeFileGenerate"]}?isPerview=false", GenerateData);
+            var result = await HttpService.PostJson<CodeGenerateOptions, string>($"{UrlList["CodeFileGenerate"]}?isPerview=false", GenerateData);
             if (result.Status == StatusCodes.Status200OK)
             {
                 ResultStatus = "success";

@@ -52,10 +52,10 @@ namespace Caviar.AntDesignUI.Pages.Menu
                     return;
                 }
             }
-            var result = await Http.PostJson(url, data);
+            var result = await HttpService.PostJson(url, data);
             if (result.Status == StatusCodes.Status200OK)
             {
-                await Message.Success("删除成功");
+                await MessageService.Success("删除成功");
             }
         }
 

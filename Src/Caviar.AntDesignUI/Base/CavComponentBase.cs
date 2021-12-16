@@ -18,12 +18,12 @@ namespace Caviar.AntDesignUI
         /// HttpClient
         /// </summary>
         [Inject]
-        protected HttpHelper Http { get; set; }
+        protected HttpHelper HttpService { get; set; }
         /// <summary>
         /// 全局提示
         /// </summary>
         [Inject]
-        protected MessageService Message { get; set; }
+        protected MessageService MessageService { get; set; }
         /// <summary>
         /// 导航管理器
         /// </summary>
@@ -66,7 +66,7 @@ namespace Caviar.AntDesignUI
             {
                 splicing += item + "|";
             }
-            var result = await Http.GetJson<List<SysMenuView>>($"SysMenu/GetApiList?url={Url}&splicing={splicing}");
+            var result = await HttpService.GetJson<List<SysMenuView>>($"SysMenu/GetApiList?url={Url}&splicing={splicing}");
             if (result.Status != StatusCodes.Status200OK) return null;
             return result.Data;
         }

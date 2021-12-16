@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -11,54 +12,62 @@ namespace Caviar.SharedKernel
     {
         private readonly Assembly _resourcesAssembly;
 
+        private static Dictionary<string, JObject> ResourcesCache { get; set; } = new Dictionary<string, JObject>();
+
         public InAssemblyLanguageService(CultureInfo culture)
         {
             _resourcesAssembly = Assembly.GetExecutingAssembly();
-            SetDefaultLanguage(culture);
+            SetLanguage(culture);
         }
 
         public InAssemblyLanguageService()
         {
             _resourcesAssembly = Assembly.GetExecutingAssembly();
-            SetDefaultLanguage(CultureInfo.CurrentCulture);
+            var culture = CultureInfo.GetCultureInfo("zh-CN");
+            SetLanguage(culture);
         }
 
         public CultureInfo CurrentCulture { get; private set; }
 
         public JObject Resources { get; private set; }
 
+        public string this[string name] 
+        { 
+            get 
+            {
+                if (string.IsNullOrEmpty(name)) return "";
+                var arr = name.Split(".");
+                JToken jtoken = null;
+                foreach (var item in arr)
+                {
+                    if(jtoken == null)
+                    {
+                        jtoken = Resources[item];
+                    }
+                    else
+                    {
+                        jtoken = jtoken[item];
+                    }
+                    
+                }
+                if (jtoken == null) return arr[arr.Length - 1];
+                return jtoken.ToString();
+            } 
+        }
+
         public event EventHandler<CultureInfo> LanguageChanged;
 
-        private void SetDefaultLanguage(CultureInfo culture)
-        {
-            var availableResources = _resourcesAssembly
-                .GetManifestResourceNames()
-                .Select(x => Regex.Match(x, @"^.*Resources.Language\.(.+)\.json"))
-                .Where(x => x.Success)
-                .Select(x => (CultureName: x.Groups[1].Value, ResourceName: x.Value))
-                .ToList();
-
-            var (_, resourceName) = availableResources.FirstOrDefault(x => x.CultureName.Equals(culture.Name, StringComparison.OrdinalIgnoreCase));
-
-            if (resourceName == null)
-            {
-                (_, resourceName) = availableResources.FirstOrDefault(x => x.CultureName.Equals("en-US", StringComparison.OrdinalIgnoreCase));
-                culture = CultureInfo.GetCultureInfo("en-US");
-            }
-
-            CultureInfo.CurrentCulture = culture;
-            CultureInfo.DefaultThreadCurrentCulture = culture;
-            CultureInfo.DefaultThreadCurrentUICulture = culture;
-
-            CurrentCulture = culture;
-            Resources = GetKeysFromCulture(culture.Name, resourceName);
-
-            if (Resources == null)
-                throw new FileNotFoundException($"There is no language files existing in the Resource folder within '{_resourcesAssembly.GetName().Name}' assembly");
-        }
 
         public void SetLanguage(CultureInfo culture)
         {
+            if (ResourcesCache.ContainsKey(culture.Name))
+            {
+                Resources = ResourcesCache[culture.Name];
+                CurrentCulture = culture;
+                CultureInfo.DefaultThreadCurrentCulture = culture;
+                CultureInfo.DefaultThreadCurrentUICulture = culture;
+                return;
+            }
             if (!culture.Equals(CultureInfo.CurrentCulture))
             {
                 CultureInfo.CurrentCulture = culture;
@@ -69,32 +78,24 @@ namespace Caviar.SharedKernel
                 CurrentCulture = culture;
                 CultureInfo.DefaultThreadCurrentCulture = culture;
                 CultureInfo.DefaultThreadCurrentUICulture = culture;
-
-                string fileName = $"{_resourcesAssembly.GetName().Name}.Resources.{culture.Name}.json";
-
-                Resources = GetKeysFromCulture(culture.Name, fileName);
-
-                if (Resources == null)
-                    throw new FileNotFoundException($"There is no language files for '{culture.Name}' existing in the Resources folder within '{_resourcesAssembly.GetName().Name}' assembly");
-
+                Resources = GetKeysFromCulture(culture.Name);
+                ResourcesCache.Add(culture.Name, Resources);
                 LanguageChanged?.Invoke(this, culture);
             }
         }
 
-        private JObject GetKeysFromCulture(string culture, string fileName)
+        private JObject GetKeysFromCulture(string culture)
         {
+            string dir = AppDomain.CurrentDomain.BaseDirectory;
+            string path = $"{dir}Resources/Language/{culture}.json";
             try
             {
-                // Read the file
-                using var fileStream = _resourcesAssembly.GetManifestResourceStream(fileName);
-                if (fileStream == null) return null;
-                using var streamReader = new StreamReader(fileStream);
-                var content = streamReader.ReadToEnd();
+                var content = File.ReadAllText(path);
                 return JObject.Parse(content);
             }
             catch
             {
-                return null;
+                throw new FileNotFoundException($"没有语言文件 '{culture}'");
             }
         }
     }

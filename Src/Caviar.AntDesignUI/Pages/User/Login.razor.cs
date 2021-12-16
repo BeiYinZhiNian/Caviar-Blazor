@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Web;
@@ -31,14 +32,15 @@ namespace Caviar.AntDesignUI.Pages.User
             
             Loading = true;
             ApplicationUserView applicationUser = new ApplicationUserView() { Entity = ApplicationUser };
-            var result = await Http.PostJson<ApplicationUserView, string>(UrlList["login"], applicationUser);
+            var result = await HttpService.PostJson<ApplicationUserView, string>(UrlList["login"], applicationUser);
             ApplicationUser.PasswordHash = "";
             Loading = false;
             if (result.Status == 200)
             {
                 await localStorage.SetItemAsync(Config.TokenName, result.Title);
+                HttpService.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.Title);
                 NavigationManager.NavigateTo(Config.PathList.Home);
-                await Message.Success("登录成功，欢迎回来");
+                await MessageService.Success("登录成功，欢迎回来");
                 return;
             }
             this.StateHasChanged();

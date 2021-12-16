@@ -54,7 +54,7 @@ namespace Caviar.AntDesignUI
         /// <returns></returns>
         protected virtual async Task<List<ViewT>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
-            var result = await Http.GetJson<PageData<ViewT>>($"{Url}?pageIndex={pageIndex}&pageSize={pageSize}&isOrder={isOrder}");
+            var result = await HttpService.GetJson<PageData<ViewT>>($"{Url}?pageIndex={pageIndex}&pageSize={pageSize}&isOrder={isOrder}");
             if (result.Status != StatusCodes.Status200OK) return null;
             if (result.Data != null)
             {
@@ -85,7 +85,7 @@ namespace Caviar.AntDesignUI
         /// <returns></returns>
         protected virtual async Task<List<ViewFields>> GetModelFields()
         {
-            var result = await Http.GetJson<List<ViewFields>>(UrlList["GetFields"]);
+            var result = await HttpService.GetJson<List<ViewFields>>(UrlList["GetFields"]);
             if (result.Status != StatusCodes.Status200OK) return null;
             ViewFields = result.Data;
             return ViewFields;
@@ -97,9 +97,9 @@ namespace Caviar.AntDesignUI
         protected virtual async Task<bool> Delete(string url, ViewT data)
         {
             //删除单条
-            var result = await Http.PostJson(url, data);
+            var result = await HttpService.PostJson(url, data);
             if (result.Status != StatusCodes.Status200OK) return false;
-            await Message.Success("删除成功");
+            await MessageService.Success("删除成功");
             return true;
         }
         #endregion
@@ -129,7 +129,7 @@ namespace Caviar.AntDesignUI
         /// <param name="Query"></param>
         protected virtual async void FuzzyQueryCallback()
         {
-            var result = await Http.PostJson<ViewQuery, PageData<ViewT>>(UrlList["FuzzyQuery"], Query);
+            var result = await HttpService.PostJson<ViewQuery, PageData<ViewT>>(UrlList["FuzzyQuery"], Query);
             if (result.Status != StatusCodes.Status200OK) return;
             DataSource = result.Data.Rows;
             Total = result.Data.Total;

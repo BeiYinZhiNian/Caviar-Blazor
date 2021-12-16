@@ -8,6 +8,7 @@ using Caviar.SharedKernel;
 using Caviar.Core;
 using Caviar.Core.Services.PermissionServices;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace Caviar.Infrastructure.API.BaseApi
 {
@@ -18,6 +19,8 @@ namespace Caviar.Infrastructure.API.BaseApi
         protected Interactor Interactor;
 
         private ResultDataFilter DataFilter = new ResultDataFilter();
+
+        protected ILanguageService LanguageService { get; set; }
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
@@ -34,6 +37,20 @@ namespace Caviar.Infrastructure.API.BaseApi
             Interactor.HttpContext = HttpContext;
             //请求参数
             Interactor.ActionArguments = context.ActionArguments;
+            
+            var acceptLanguage = context.HttpContext.Request.Headers["Current-Language"];
+            SetLanguage(acceptLanguage);
+        }
+
+        void SetLanguage(string acceptLanguage)
+        {
+            using (var serviceScope = Configure.ServiceProvider.CreateScope())
+            {
+                if (string.IsNullOrEmpty(acceptLanguage)) acceptLanguage = "zh-CN";
+                var culture = CultureInfo.GetCultureInfo(acceptLanguage);
+                LanguageService = serviceScope.ServiceProvider.GetRequiredService<ILanguageService>();
+                LanguageService.SetLanguage(culture);
+            }
         }
 
         public override void OnActionExecuted(ActionExecutedContext context)
@@ -98,6 +115,19 @@ namespace Caviar.Infrastructure.API.BaseApi
             var fullName = typeof(T).FullName;
             var fields = FieldScannerServices.GetClassFields(fieldName, fullName);
             fields = await permissionServices.GetFields(fields, fieldName, fullName);
+            foreach (var item in fields)
+            {
+                string key = null;
+                if (string.IsNullOrEmpty(item.Entity.DisplayName))
+                {
+                    key = $"SharedKernel.EntitysName.{item.Entity.FieldName}";
+                }
+                else
+                {
+                    key = $"SharedKernel.EntitysName.{item.Entity.DisplayName}";
+                }
+                item.Entity.DisplayName = LanguageService[key];
+            }
             return Ok(fields);
         }
 
