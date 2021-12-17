@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -16,6 +17,11 @@ namespace Caviar.SharedKernel.Entities
         [Required(ErrorMessage = "RequiredErrorMsg")]
         [StringLength(50, ErrorMessage = "LengthErrorMsg")]
         public string MenuName { get; set; }
+        /// <summary>
+        /// 用于menuName的显示，读取与语言配置文件
+        /// </summary>
+        [NotMapped]
+        public string DisplayName { get; set; }
         [DisplayName("MenuType")]
         public MenuType MenuType { get; set; }
 

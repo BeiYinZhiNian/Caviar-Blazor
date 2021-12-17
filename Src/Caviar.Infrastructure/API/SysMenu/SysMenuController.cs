@@ -1,5 +1,6 @@
 ﻿using Caviar.Core.Services.SysMenuServices;
 using Caviar.SharedKernel;
+using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -19,11 +20,6 @@ namespace Caviar.Infrastructure.API.SysMenuController
         {
             var menus = await MenuServices.GetMenuBar();
             var menusVm = ToView(menus).ListToTree();
-            foreach (var item in menus)
-            {
-                string key = $"SharedKernel.MenuBar.{item.MenuName}";
-                item.MenuName = LanguageService[key];
-            }
             return Ok(menusVm);
         }
 
@@ -34,6 +30,16 @@ namespace Caviar.Infrastructure.API.SysMenuController
             var entityVm = ToView(entity);
             entityVm.Rows = entityVm.Rows.ListToTree();
             return Ok(entityVm);
+        }
+
+        protected override List<SysMenuView> ToView(List<SysMenu> entity)
+        {
+            foreach (var item in entity)
+            {
+                string key = $"SharedKernel.MenuBar.{item.MenuName}";
+                item.DisplayName = LanguageService[key];
+            }
+            return base.ToView(entity);
         }
 
         [HttpGet]

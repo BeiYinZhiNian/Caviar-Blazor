@@ -177,12 +177,14 @@ namespace Caviar.Infrastructure.Persistence
                             menu_item.MenuType = MenuType.Button;
                             menu_item.Icon = "appstore-add";
                             menu_item.TargetType = TargetType.EjectPage;
+                            menu_item.Number = "997";
                             break;
                         case "UpdateEntity":
                             menu_item.MenuType = MenuType.Button;
                             menu_item.ButtonPosition = ButtonPosition.Row;
                             menu_item.Icon = "edit";
                             menu_item.TargetType = TargetType.EjectPage;
+                            menu_item.Number = "998";
                             break;
                         case "DeleteEntity":
                             menu_item.MenuType = MenuType.Button;
@@ -190,6 +192,7 @@ namespace Caviar.Infrastructure.Persistence
                             menu_item.IsDoubleTrue = true;
                             menu_item.Icon = "delete";
                             menu_item.TargetType = TargetType.Callback;
+                            menu_item.Number = "999";
                             break;
                         default:
                             break;

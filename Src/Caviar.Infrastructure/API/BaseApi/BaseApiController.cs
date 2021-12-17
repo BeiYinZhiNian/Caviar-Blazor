@@ -9,7 +9,7 @@ using Caviar.Core;
 using Caviar.Core.Services.PermissionServices;
 using System.Collections.Generic;
 using System.Globalization;
-
+using System.Linq;
 namespace Caviar.Infrastructure.API.BaseApi
 {
     [Route("api/[controller]/[action]")]
@@ -174,11 +174,12 @@ namespace Caviar.Infrastructure.API.BaseApi
             return vm;
         }
 
-        protected virtual List<Vm> ToView(List<T> entity)
+        protected virtual List<Vm> ToView(List<T> entitys)
         {
-            if (entity == null) return null;
+            if (entitys == null) return null;
+            entitys = entitys.OrderBy(u => u.Number).ToList();
             var vmList = new List<Vm>();
-            foreach (var item in entity)
+            foreach (var item in entitys)
             {
                 var vm = new Vm(){ Entity = item };
                 vmList.Add(vm);

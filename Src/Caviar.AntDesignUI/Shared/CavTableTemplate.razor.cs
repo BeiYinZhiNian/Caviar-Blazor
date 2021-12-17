@@ -124,7 +124,7 @@ namespace Caviar.AntDesignUI.Shared
                         paramenter.Add("DataSource", dataSource);
                     }
                     paramenter.Add("Url", menu.Entity.Url);
-                    await CavModal.Create(menu.Entity.Url, menu.Entity.MenuName, HandleOk, paramenter);
+                    await CavModal.Create(menu.Entity.Url, menu.Entity.DisplayName, HandleOk, paramenter);
                     break;
                 case TargetType.NewLabel:
                     //await JSRuntime.InvokeVoidAsync("open", menu.Url, "_blank");

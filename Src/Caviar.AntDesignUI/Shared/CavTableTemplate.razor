@@ -275,7 +275,7 @@
         RenderFragment render = null;
         if (menu.Entity.IsDoubleTrue)
         {
-            string title = $"确认{menu.Entity.MenuName}该数据吗";
+            string title = $"确认{menu.Entity.DisplayName}该数据吗";
             render =@<Popconfirm Title='@title'
                                  OkText='确认'
                                  CancelText="取消"
@@ -299,11 +299,11 @@ bool danger = menu.Entity.IsDoubleTrue == true ? true : false;
 render =@<Button Icon="@menu.Entity.Icon" Type="@type" Danger="danger" Style="margin-bottom:16px" OnClick="() => doubleTrueClick(menu, context)">
     @if (menu.Entity.TargetType == TargetType.NewLabel)
     {
-        <a href="@menu.Entity.Url" target="_blank">@menu.Entity.MenuName</a>
+        <a href="@menu.Entity.Url" target="_blank">@menu.Entity.DisplayName</a>
     }
     else
     {
-        @menu.Entity.MenuName
+        @menu.Entity.DisplayName
     }
 </Button>;
 return render;

@@ -18,7 +18,7 @@
         <Dropdown>
             <Overlay>
                 <Tree ShowIcon DataSource="SysMenus"
-                      TitleExpression="x => x.DataItem.Entity.MenuName"
+                      TitleExpression="x => x.DataItem.Entity.DisplayName"
                       ChildrenExpression="x => x.DataItem.Children"
                       IconExpression="x => x.DataItem.Entity.Icon"
                       IsLeafExpression="x => x.DataItem.Children?.Count == 0"
