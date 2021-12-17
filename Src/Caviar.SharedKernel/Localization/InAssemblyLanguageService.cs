@@ -67,19 +67,13 @@ namespace Caviar.SharedKernel
             lock (_resourceLock)
             {
                 if (QueryCache(culture)) return;
-                if (!culture.Equals(CultureInfo.CurrentCulture))
-                {
-                    CultureInfo.CurrentCulture = culture;
-                }
-                if (CurrentCulture == null || !CurrentCulture.Equals(culture))
-                {
-                    CurrentCulture = culture;
-                    CultureInfo.DefaultThreadCurrentCulture = culture;
-                    CultureInfo.DefaultThreadCurrentUICulture = culture;
-                    Resources = GetKeysFromCulture(culture.Name);
-                    _resourcesCache.Add(culture.Name, Resources);
-                    LanguageChanged?.Invoke(this, culture);
-                }
+                //设置当请语言
+                CurrentCulture = culture;
+                CultureInfo.DefaultThreadCurrentCulture = culture;
+                CultureInfo.DefaultThreadCurrentUICulture = culture;
+                Resources = GetKeysFromCulture(culture.Name);
+                _resourcesCache.Add(culture.Name, Resources);
+                LanguageChanged?.Invoke(this, culture);
             }
         }
 
@@ -88,7 +82,7 @@ namespace Caviar.SharedKernel
             if (_resourcesCache.ContainsKey(culture.Name))
             {
                 Resources = _resourcesCache[culture.Name];
-                if (CurrentCulture == null || CurrentCulture.Name == culture.Name)
+                if (CurrentCulture == null || !CurrentCulture.Equals(culture))
                 {
                     CurrentCulture = culture;
                     CultureInfo.DefaultThreadCurrentCulture = culture;
