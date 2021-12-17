@@ -12,7 +12,9 @@ namespace Caviar.SharedKernel
     {
         private readonly Assembly _resourcesAssembly;
 
-        private static Dictionary<string, JObject> ResourcesCache { get; set; } = new Dictionary<string, JObject>();
+        private static Dictionary<string, JObject> _resourcesCache { get; set; } = new Dictionary<string, JObject>();
+
+        private static object _resourceLock = new object();
 
         public InAssemblyLanguageService(CultureInfo culture)
         {
@@ -60,28 +62,41 @@ namespace Caviar.SharedKernel
 
         public void SetLanguage(CultureInfo culture)
         {
-            if (ResourcesCache.ContainsKey(culture.Name))
+            if (QueryCache(culture)) return;
+            //防止_resourcesCache多次添加对象
+            lock (_resourceLock)
             {
-                Resources = ResourcesCache[culture.Name];
-                CurrentCulture = culture;
-                CultureInfo.DefaultThreadCurrentCulture = culture;
-                CultureInfo.DefaultThreadCurrentUICulture = culture;
-                return;
+                if (QueryCache(culture)) return;
+                if (!culture.Equals(CultureInfo.CurrentCulture))
+                {
+                    CultureInfo.CurrentCulture = culture;
+                }
+                if (CurrentCulture == null || !CurrentCulture.Equals(culture))
+                {
+                    CurrentCulture = culture;
+                    CultureInfo.DefaultThreadCurrentCulture = culture;
+                    CultureInfo.DefaultThreadCurrentUICulture = culture;
+                    Resources = GetKeysFromCulture(culture.Name);
+                    _resourcesCache.Add(culture.Name, Resources);
+                    LanguageChanged?.Invoke(this, culture);
+                }
             }
-            if (!culture.Equals(CultureInfo.CurrentCulture))
-            {
-                CultureInfo.CurrentCulture = culture;
-            }
+        }
 
-            if (CurrentCulture == null || !CurrentCulture.Equals(culture))
+        private bool QueryCache(CultureInfo culture)
+        {
+            if (_resourcesCache.ContainsKey(culture.Name))
             {
-                CurrentCulture = culture;
-                CultureInfo.DefaultThreadCurrentCulture = culture;
-                CultureInfo.DefaultThreadCurrentUICulture = culture;
-                Resources = GetKeysFromCulture(culture.Name);
-                ResourcesCache.Add(culture.Name, Resources);
-                LanguageChanged?.Invoke(this, culture);
+                Resources = _resourcesCache[culture.Name];
+                if (CurrentCulture == null || CurrentCulture.Name == culture.Name)
+                {
+                    CurrentCulture = culture;
+                    CultureInfo.DefaultThreadCurrentCulture = culture;
+                    CultureInfo.DefaultThreadCurrentUICulture = culture;
+                }
+                return true;
             }
+            return false;
         }
 
         private JObject GetKeysFromCulture(string culture)
