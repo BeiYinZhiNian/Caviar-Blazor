@@ -177,7 +177,7 @@ namespace Caviar.Infrastructure.API.BaseApi
         protected virtual List<Vm> ToView(List<T> entitys)
         {
             if (entitys == null) return null;
-            entitys = entitys.OrderBy(u => u.Number).ToList();
+            entitys = Sort(entitys);
             var vmList = new List<Vm>();
             foreach (var item in entitys)
             {
@@ -185,6 +185,11 @@ namespace Caviar.Infrastructure.API.BaseApi
                 vmList.Add(vm);
             }
             return vmList;
+        }
+
+        protected virtual List<T> Sort(List<T> entitys)
+        {
+            return entitys.OrderBy(u => u.Number).ToList();
         }
 
         protected virtual PageData<Vm> ToView(PageData<T> page)
