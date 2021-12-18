@@ -139,7 +139,7 @@ namespace Caviar.Core
             return fields;
         }
 
-        public static Dictionary<string,string> TurnMeaningDic { get; set; }
+        public static Dictionary<string, string> TurnMeaningDic { get; set; } = new Dictionary<string, string>();
 
         /// <summary>
         /// 字段类型转义
