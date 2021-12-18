@@ -66,7 +66,7 @@ namespace Caviar.AntDesignUI
             {
                 splicing += item + "|";
             }
-            var result = await HttpService.GetJson<List<SysMenuView>>($"SysMenu/GetApiList?url={Url}&splicing={splicing}");
+            var result = await HttpService.GetJson<List<SysMenuView>>($"{Config.PathList.GetApiList}?url={Url}&splicing={splicing}");
             if (result.Status != StatusCodes.Status200OK) return null;
             return result.Data;
         }

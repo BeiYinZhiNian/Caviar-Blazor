@@ -52,5 +52,7 @@ namespace Caviar.AntDesignUI
         public string MyDetails { get; set; } = "/ApplicationUser/MyDetails";
 
         public string UpdatePwd { get; set; } = "/ApplicationUserUpdatePwd";
+
+        public string GetApiList { get; set; } = "SysMenu/GetApiList";
     }
 }
