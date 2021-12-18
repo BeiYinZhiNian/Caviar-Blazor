@@ -60,9 +60,15 @@ namespace Caviar.Infrastructure.API.BaseApi
             var resultMsg = DataFilter.ResultHandle(result);
             if (resultMsg != null)
             {
+                ModificationTips(resultMsg);
                 context.Result = Ok(resultMsg);
             }
             Interactor.Stopwatch.Stop();
+        }
+
+        protected virtual void ModificationTips(ResultMsg resultMsg)
+        {
+            resultMsg.Title = LanguageService[$"SharedKernel.ResuleMsg.Title.{resultMsg.Title}"];
         }
 
         protected static T CreateService<T>() where T : new()

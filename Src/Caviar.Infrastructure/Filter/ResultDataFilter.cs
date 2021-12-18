@@ -36,6 +36,15 @@ namespace Caviar.Infrastructure
                 ArgumentsModel(value.GetType(), value);
             }
             var code = StatusCode == null ? 200 : (int)StatusCode;
+            if (value is ResultMsg)
+            {
+                var msg = (ResultMsg)value;
+                if (code != 200)
+                {
+                    msg.Status = code;
+                }
+                return msg;
+            }
             var resultMsg = ResultCheck(code, value);
             return resultMsg;
         }

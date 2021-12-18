@@ -12,7 +12,7 @@ using System.Text;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Configuration;
-
+using Caviar.SharedKernel;
 
 namespace Caviar.Infrastructure.API
 {
@@ -30,6 +30,7 @@ namespace Caviar.Infrastructure.API
         [HttpPost]
         public virtual async Task<IActionResult> Register(ApplicationUserView model)
         {
+            ResultMsg<string> resultMsg = new ResultMsg<string>();
             var newUser = model.Entity;
 
             var result = await _userManager.CreateAsync(newUser);
@@ -41,16 +42,21 @@ namespace Caviar.Infrastructure.API
                 return BadRequest(errors);
 
             }
-            return Ok("账号注册成功");
+            resultMsg.Title = "Registration succeeded";
+            return Ok(resultMsg);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(ApplicationUserView login)
+        public virtual async Task<IActionResult> Login(ApplicationUserView login)
         {
+            ResultMsg<string> resultMsg = new ResultMsg<string>();
             var result = await _signInManager.PasswordSignInAsync(login.Entity.UserName, login.Entity.PasswordHash, false, false);
 
-            if (!result.Succeeded) return BadRequest("Username and password are invalid.");
-
+            if (!result.Succeeded) 
+            {
+                resultMsg.Title = "Username and password are invalid";
+                return BadRequest(resultMsg);
+            }
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, login.Entity.UserName)
@@ -67,9 +73,9 @@ namespace Caviar.Infrastructure.API
                 expires: expiry,
                 signingCredentials: creds
             );
-
-            return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+            resultMsg.Data = new JwtSecurityTokenHandler().WriteToken(token);
+            resultMsg.Title = "Login Succeeded";
+            return Ok(resultMsg);
         }
-
     }
 }

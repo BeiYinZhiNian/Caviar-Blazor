@@ -84,6 +84,14 @@
       "CreateEntity": "创建",
       "DeleteEntity": "删除",
       "UpdateEntity": "修改"
+    },
+    "ResuleMsg": {
+      "Title": {
+        "Login Succeeded": "登录成功，欢迎回来",
+        "Username and password are invalid": "用户名或密码错误",
+        "Registration succeeded": "账号注册成功",
+        "Succeeded": "操作成功"
+      }
     }
   }
 }

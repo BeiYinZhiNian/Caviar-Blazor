@@ -13,7 +13,7 @@ namespace Caviar.SharedKernel
         /// 问题类型的简短、可读的摘要
         /// 可根据不同的http状态码承载不同的信息
         /// </summary>
-        public string Title { get; set; } = "操作完成";
+        public string Title { get; set; } = "Succeeded";
         /// <summary>
         /// 承载url地址
         /// </summary>

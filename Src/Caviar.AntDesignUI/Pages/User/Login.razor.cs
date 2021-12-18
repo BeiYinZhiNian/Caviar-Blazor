@@ -37,10 +37,10 @@ namespace Caviar.AntDesignUI.Pages.User
             Loading = false;
             if (result.Status == 200)
             {
-                await localStorage.SetItemAsync(Config.TokenName, result.Title);
+                await localStorage.SetItemAsync(Config.TokenName, result.Data);
                 HttpService.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.Title);
                 NavigationManager.NavigateTo(Config.PathList.Home);
-                await MessageService.Success("登录成功，欢迎回来");
+                await MessageService.Success(result.Title);
                 return;
             }
             this.StateHasChanged();
