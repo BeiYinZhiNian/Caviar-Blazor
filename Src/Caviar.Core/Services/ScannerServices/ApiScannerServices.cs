@@ -61,7 +61,7 @@ namespace Caviar.Core.Services.ScannerServices
                     var dispLayName = info_item.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
                     foreach (var attrs_item in attrsList)
                     {
-                        var httpMethods = (string[])attrs_item.GetObjValue("HttpMethods");
+                        var httpMethods = (List<string>)attrs_item.GetObjValue("HttpMethods");
                         foreach (var httpMethod_item in httpMethods)
                         {
                             SysMenu menu = new SysMenu()
