@@ -79,7 +79,7 @@ namespace Caviar.AntDesignUI
                 Url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
             }
             APIList = await GetApiList();
-            UrlList = new UrlAccessor(APIList);
+            UrlList = new UrlAccessor(APIList, MessageService);
             Loading = false;
             await base.OnInitializedAsync();
         }
@@ -97,9 +97,11 @@ namespace Caviar.AntDesignUI
 
     public class UrlAccessor
     {
-        public UrlAccessor(List<SysMenuView> apiList)
+        MessageService MessageService { get; set; }
+        public UrlAccessor(List<SysMenuView> apiList, MessageService messageService)
         {
             APIList = apiList;
+            MessageService = messageService;
         }
 
         public List<SysMenuView> APIList { get; set; }
@@ -107,8 +109,13 @@ namespace Caviar.AntDesignUI
 
         public string this[string name] { 
             get 
-            { 
-                return APIList?.FirstOrDefault(u => u.Entity.MenuName.ToLower() == name.ToLower())?.Entity.Url; 
+            {
+                var url = APIList?.FirstOrDefault(u => u.Entity.Key.ToLower() == name.ToLower())?.Entity.Url;
+                if(url == null)
+                {
+                    MessageService.Warning($"{name}不存在");
+                }
+                return url; 
             } 
         }
 
@@ -116,7 +123,12 @@ namespace Caviar.AntDesignUI
         {
             get
             {
-                return APIList?.SingleOrDefault(u => u.Entity.MenuName.ToLower() == name.ToLower() && u.Entity.ControllerName.ToLower() == controller.ToLower())?.Entity.Url;
+                var url = APIList?.SingleOrDefault(u => u.Entity.Key.ToLower() == name.ToLower() && u.Entity.ControllerName.ToLower() == controller.ToLower())?.Entity.Url;
+                if (url == null)
+                {
+                    MessageService.Warning($"{name}不存在");
+                }
+                return url;
             }
         }
     }

@@ -58,11 +58,10 @@ namespace Caviar.AntDesignUI
             if (result.Status != StatusCodes.Status200OK) return null;
             if (result.Data != null)
             {
-                DataSource = result.Data.Rows;
                 Total = result.Data.Total;
                 PageIndex = result.Data.PageIndex;
                 PageSize = result.Data.PageSize;
-                return DataSource;
+                return result.Data.Rows;
             }
             return null;
         }
@@ -87,8 +86,7 @@ namespace Caviar.AntDesignUI
         {
             var result = await HttpService.GetJson<List<ViewFields>>(UrlList["GetFields"]);
             if (result.Status != StatusCodes.Status200OK) return null;
-            ViewFields = result.Data;
-            return ViewFields;
+            return result.Data;
         }
         /// <summary>
         /// 删除数据
@@ -109,14 +107,15 @@ namespace Caviar.AntDesignUI
         CavModal CavModal { get; set; }
         protected virtual async Task RowCallback(RowCallbackData<ViewT> row)
         {
-            switch (row.Menu.Entity.MenuName)
+            switch (row.Menu.Entity.Key)
             {
-                case "删除":
-                    await Delete(row.Menu.Entity.MenuName, row.Data);
+                //case "Menu Key"
+                case "DeleteEntity":
+                    await Delete(UrlList[row.Menu.Entity.Key], row.Data);
                     break;
-                case "修改":
+                case "UpdateEntity":
                     break;
-                case "新增":
+                case "CreateEntity":
                     break;
                 default:
                     break;
@@ -154,8 +153,8 @@ namespace Caviar.AntDesignUI
             Loading = true;
             BaseController = CommonHelper.GetLeftText(Url, "/");
             LoadButton();//加载按钮
-            await GetModelFields();//获取模型字段
-            await GetPages();//获取数据源
+            ViewFields = await GetModelFields();//获取模型字段
+            DataSource = await GetPages();//获取数据源
             Loading = false;
         }
         #endregion

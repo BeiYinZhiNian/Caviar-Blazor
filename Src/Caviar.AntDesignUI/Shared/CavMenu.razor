@@ -33,12 +33,12 @@
             {
                 case MenuType.Catalog:
                      ViewSubMenu +=
-                     @<SubMenu Key="@item.MenuName" TitleTemplate="subTitle">
+                     @<SubMenu Key="@item.Key" TitleTemplate="subTitle">
                      @GetSubMenu(viewMenu.Children)
                      </SubMenu>;
                      break;
                 case MenuType.Menu:
-                ViewSubMenu += @<MenuItem Key="@item.MenuName" RouterLink="@item.Url">@subTitle</MenuItem>;
+                ViewSubMenu += @<MenuItem Key="@item.Key" RouterLink="@item.Url">@subTitle</MenuItem>;
                     break;
                 default:
                     break;

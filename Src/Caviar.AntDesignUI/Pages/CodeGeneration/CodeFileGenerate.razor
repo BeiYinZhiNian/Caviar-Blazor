@@ -1,5 +1,5 @@
 ﻿@page "/CodeGeneration/Index"
-@inherits CavComponentBase
+@inherits IndexComponentBase<ViewFields>
 <div>
     <Steps Current="current">
         @foreach (var item in steps)
@@ -39,10 +39,16 @@
         @switch (current)
         {
             case 0:
-                if (Entitys != null && Entitys.Count != 0)
+                if (DataSource != null && DataSource.Count != 0)
                 {
-                    var Source = Entitys.Select(u => u.Entity);
-                    <Table TItem="SharedKernel.Entities.SysFields" DataSource="@Source">
+                    <CavTableTemplate TData="ViewFields"
+                          DataSource="DataSource"
+                          Buttons="Buttons"
+                          ViewFields="ViewFields"
+                          RowCallback="RowCallback"
+                          Loading="Loading">
+                    </CavTableTemplate>
+@*                    <Table TItem="SharedKernel.Entities.SysFields" DataSource="@Source">
                         <Column @bind-Field="@context.FieldName">
                         </Column>
                         <Column @bind-Field="@context.FullName">
@@ -64,7 +70,7 @@
                             </Space>
                         </ActionColumn>
 
-                    </Table>
+                    </Table>*@
                 }
                 break;
             case 1:

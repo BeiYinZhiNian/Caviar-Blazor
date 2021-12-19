@@ -12,25 +12,23 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
 {
     public partial class CodeFileGenerate
     {
-        List<ViewFields> Entitys { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             #if DEBUG
             ControllerList.Add("Permission");
             await base.OnInitializedAsync();
-            await GetModels();
             #else
             Message.Error("代码生成只能在debug模式下进行！");
             #endif
         }
 
 
-        public async Task GetModels()
+        protected override async Task<List<ViewFields>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
             var result = await HttpService.GetJson<List<ViewFields>>(UrlList["GetEntitys"]);
-            if (result.Status != StatusCodes.Status200OK) return;
-            Entitys = result.Data;
+            if (result.Status != StatusCodes.Status200OK) return null;
+            return result.Data;
         }
 
 

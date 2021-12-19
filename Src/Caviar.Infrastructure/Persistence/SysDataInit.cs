@@ -117,12 +117,12 @@ namespace Caviar.Infrastructure.Persistence
             {
                 new SysMenu()
                 {
-                    MenuName = "SysManagement",
+                    Key = "SysManagement",
                     Icon = "windows"
                 },
                 new SysMenu()
                 {
-                    MenuName = "Home",
+                    Key = "Home",
                     Icon = "home",
                     MenuType = MenuType.Menu,
                     Url = "/",
@@ -130,7 +130,7 @@ namespace Caviar.Infrastructure.Persistence
                 },
                 new SysMenu()
                 {
-                    MenuName = "index",
+                    Key = "index",
                     MenuType = MenuType.Menu,
                     Icon = "code",
                     Url = "CodeGeneration/Index",
@@ -138,7 +138,7 @@ namespace Caviar.Infrastructure.Persistence
                 },
                 new SysMenu()
                 {
-                    MenuName = "API",
+                    Key = "API",
                     MenuType = MenuType.API,
                     ControllerName = "API"
                 }
@@ -146,23 +146,23 @@ namespace Caviar.Infrastructure.Persistence
             _dbContext.AddRange(menus);
             await _dbContext.SaveChangesAsync();
             var set = _dbContext.Set<SysMenu>();
-            var menuBars = set.Where(u => u.MenuName == "index");
+            var menuBars = set.Where(u => u.Key == "index");
             foreach (var item in menuBars)
             {
                 item.MenuType = MenuType.Menu;
-                item.MenuName = item.ControllerName;
-                item.ParentId = menus.Single(u => u.MenuName == "SysManagement").Id;
+                item.Key = item.ControllerName;
+                item.ParentId = menus.Single(u => u.Key == "SysManagement").Id;
             }
             await _dbContext.SaveChangesAsync();
-            var subMenu = set.AsEnumerable().Where(u => u.ControllerName != null && u.ControllerName != u.MenuName).GroupBy(u => u.ControllerName);
+            var subMenu = set.AsEnumerable().Where(u => u.ControllerName != null && u.ControllerName != u.Key).GroupBy(u => u.ControllerName);
             List<SysMenu> catalogueList = new List<SysMenu>();
             foreach (var item in subMenu)
             {
-                var catalogue = set.SingleOrDefault(u => u.ControllerName == item.Key && u.MenuName == item.Key);
+                var catalogue = set.SingleOrDefault(u => u.ControllerName == item.Key && u.Key == item.Key);
                 var id = 0;
                 if (catalogue == null)
                 {
-                    id = menus.Single(u => u.MenuName == "API").Id;
+                    id = menus.Single(u => u.Key == "API").Id;
                 }
                 else
                 {
@@ -171,7 +171,7 @@ namespace Caviar.Infrastructure.Persistence
                 foreach (var menu_item in item)
                 {
                     menu_item.ParentId = id;
-                    switch (menu_item.MenuName)
+                    switch (menu_item.Key)
                     {
                         case "CreateEntity":
                             menu_item.MenuType = MenuType.Button;

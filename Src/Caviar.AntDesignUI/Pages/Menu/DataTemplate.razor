@@ -12,7 +12,7 @@
 @page "/SysMenu/UpdateEntity"
 <Form @ref="_meunForm" Model="@DataSource" OnFinish="FormSubmit">
     <FormItem Label='菜单名称'>
-        <Input @bind-Value="@context.Entity.MenuName" Style="width:50%" />
+        <Input @bind-Value="@context.Entity.Key" Style="width:50%" />
     </FormItem>
     <FormItem Label="上层目录">
         <Dropdown>

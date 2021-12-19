@@ -69,7 +69,7 @@ namespace Caviar.Core.Services.ScannerServices
                                 MenuType = MenuType.API,
                                 HttpMethods = httpMethod_item,
                                 Url = $"{item.Name.Replace("Controller", "")}/{info_item.Name}",
-                                MenuName = dispLayName != null ? dispLayName : $"{info_item.Name}",
+                                Key = dispLayName != null ? dispLayName : $"{info_item.Name}",
                                 ControllerName = item.Name.Replace("Controller", ""),
                                 TargetType = TargetType.Callback
                             };

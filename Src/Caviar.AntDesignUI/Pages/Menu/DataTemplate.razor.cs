@@ -34,7 +34,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
                 var parent = listData.SingleOrDefault(u => u.Id == DataSource.ParentId);
                 if (parent != null)
                 {
-                    ParentMenuName = parent.Entity.MenuName;
+                    ParentMenuName = parent.Entity.Key;
                 }
             }
             SysMenus = result.Data.Rows;
