@@ -14,5 +14,11 @@ namespace Caviar.SharedKernel
         void SetLanguage(CultureInfo culture);
 
         string this[string name] { get; }
+
+        /// <summary>
+        /// 获取支持的语言列表
+        /// </summary>
+        /// <returns></returns>
+        string[] GetLanguageList();
     }
 }

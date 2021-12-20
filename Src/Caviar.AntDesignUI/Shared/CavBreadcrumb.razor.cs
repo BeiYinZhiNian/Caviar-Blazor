@@ -24,12 +24,11 @@ namespace Caviar.AntDesignUI.Shared
         MenuItem _breadcrumbItemCav;
         List<string> BreadcrumbItemArr { get; set; }
 
-        string _homeTitle = "首页";
+        string _homeTitle = "Home";
 
         void CreatBreadcrumbItemCav(MenuItem menuItem)
         {
             if (menuItem == null) return;
-            Console.WriteLine(menuItem.RouterLink);
             var breadcrumbItemArr = new List<string>();
             var parent = menuItem.ParentMenu;
             while (parent != null)

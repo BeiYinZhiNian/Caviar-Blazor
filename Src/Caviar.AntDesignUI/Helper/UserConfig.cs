@@ -57,7 +57,7 @@ namespace Caviar.AntDesignUI.Helper
                 _theme = value; 
             } 
         }
-
+        public ILanguageService LanguageService { get; set; }
         public string Background { get; set; }
 
         public string ContentStyle { get; set; }

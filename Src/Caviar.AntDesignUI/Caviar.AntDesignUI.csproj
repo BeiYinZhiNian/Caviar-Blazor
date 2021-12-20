@@ -5,7 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\Language\en-US.json" />
+    <Content Remove="wwwroot\Language\zh-CN.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\Images\bg2.jpg" />
+    <None Include="wwwroot\Language\en-US.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Language\zh-CN.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   

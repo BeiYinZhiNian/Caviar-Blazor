@@ -107,5 +107,10 @@ namespace Caviar.SharedKernel
                 throw new FileNotFoundException($"没有语言文件 '{culture}'");
             }
         }
+
+        public string[] GetLanguageList()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
