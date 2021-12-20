@@ -110,7 +110,9 @@ namespace Caviar.SharedKernel
 
         public string[] GetLanguageList()
         {
-            throw new NotImplementedException();
+            string dir = AppDomain.CurrentDomain.BaseDirectory;
+            string[] files = Directory.GetFiles(dir, "*.json");
+            return files;
         }
     }
 }

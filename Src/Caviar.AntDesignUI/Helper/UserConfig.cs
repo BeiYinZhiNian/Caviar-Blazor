@@ -14,12 +14,13 @@ namespace Caviar.AntDesignUI.Helper
     public class UserConfig
     {
         public string White = "#F8F8FF";
-        public UserConfig(IJSRuntime jSRuntime)
+        public UserConfig(IJSRuntime jSRuntime, ILanguageService languageService)
         {
             JSRuntime = jSRuntime;
             Background = $"background:{White};";
             ContentStyle = $"margin: 6px 16px;padding: 24px;min-height: 280px;{Background}";
             HeaderStyle = $"padding:0;{Background}";
+            LanguageService = languageService;
         }
         public IJSRuntime JSRuntime { get; set; }
 
@@ -57,6 +58,7 @@ namespace Caviar.AntDesignUI.Helper
                 _theme = value; 
             } 
         }
+
         public ILanguageService LanguageService { get; set; }
         public string Background { get; set; }
 

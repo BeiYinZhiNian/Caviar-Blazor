@@ -14,7 +14,7 @@ namespace Caviar.AntDesignUI.Shared
         public UserConfig UserConfig { get; set; }
         protected override Task OnInitializedAsync()
         {
-            
+            var list = UserConfig.LanguageService.GetLanguageList();
             return base.OnInitializedAsync();
         }
     }

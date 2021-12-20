@@ -1,6 +1,7 @@
 ﻿using AntDesign;
 using Blazored.LocalStorage;
 using Caviar.AntDesignUI.Helper;
+using Caviar.SharedKernel;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -27,6 +28,8 @@ namespace Caviar.AntDesignUI
             services.AddSingleton<UserConfig>();
             services.AddSingleton<ModalService>();
             services.AddSingleton<MessageService>();
+            services.AddSingleton<ILanguageService, InAssemblyLanguageService>();
+
             services.AddScoped<IPrismHighlighter, PrismHighlighter>();
             services.AddBlazoredLocalStorage();
             services.AddAuthorizationCore();
