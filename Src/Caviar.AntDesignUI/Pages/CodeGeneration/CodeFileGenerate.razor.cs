@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Text.Json;
+using Caviar.SharedKernel.Entities.View;
 
 namespace Caviar.AntDesignUI.Pages.CodeGeneration
 {
@@ -33,6 +34,19 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
             return result.Data;
         }
 
+        protected override Task RowCallback(RowCallbackData<ViewFields> row)
+        {
+            switch (row.Menu.Entity.Key)
+            {
+                //case "Menu Key"
+                case "Select":
+                    GenerateData.EntitieName = row.Data.Entity.FieldName;
+                    GenerateData.FullName = row.Data.Entity.FullName;
+                    OnNextClick();
+                    break;
+            }
+            return base.RowCallback(row);
+        }
 
         CodeGenerateOptions GenerateData = new CodeGenerateOptions();
         Form<CodeGenerateOptions> GenerateFrom;

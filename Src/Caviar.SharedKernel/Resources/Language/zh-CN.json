@@ -70,7 +70,8 @@
       "Error": "错误",
       "Critical": "关键",
       "None": "无",
-      "FildName": "模型名称"
+      "FildName": "模型名称",
+      "Select": "选择"
     },
     "ErrorMessage": {
       "LengthErrorMsg": "{EntitysName}输入长度不能超过{length}字符",

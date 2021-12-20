@@ -69,14 +69,15 @@ namespace Caviar.AntDesignUI
         /// 加载按钮
         /// </summary>
         /// <returns></returns>
-        protected virtual void LoadButton()
+        protected virtual Task<List<SysMenuView>> LoadButton()
         {
             var queryButton = Url["FuzzyQuery"];
             if (queryButton != null)
             {
                 Query = new ViewQuery();
             }
-            Buttons = APIList.Where(u => u.Entity.ControllerName == BaseController).ToList();
+            var buttons = APIList.Where(u => u.Entity.ControllerName == BaseController).ToList();
+            return Task.FromResult(buttons);
         }
         /// <summary>
         /// 获取模型字段
@@ -152,7 +153,7 @@ namespace Caviar.AntDesignUI
             await base.OnInitializedAsync();
             Loading = true;
             BaseController = CommonHelper.GetLeftText(CurrentUrl, "/");
-            LoadButton();//加载按钮
+            Buttons = await LoadButton();//加载按钮
             ViewFields = await GetModelFields();//获取模型字段
             DataSource = await GetPages();//获取数据源
             Loading = false;

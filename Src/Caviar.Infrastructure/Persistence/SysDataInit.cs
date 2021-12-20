@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using Caviar.Infrastructure.API.BaseApi;
 using Caviar.Core.Services.ScannerServices;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Caviar.SharedKernel.Entities.View;
 
 namespace Caviar.Infrastructure.Persistence
 {
@@ -113,45 +114,78 @@ namespace Caviar.Infrastructure.Persistence
 
         protected virtual async Task CreateMenu()
         {
-            List<SysMenu> menus = new List<SysMenu>()
+            List<SysMenuView> menus = new List<SysMenuView>()
             {
-                new SysMenu()
+                new SysMenuView()
                 {
-                    Key = "SysManagement",
-                    Icon = "windows"
+                    Entity = new SysMenu()
+                    {
+                        Key = "SysManagement",
+                        Icon = "windows"
+                    }
+                    
                 },
-                new SysMenu()
+                new SysMenuView()
                 {
-                    Key = "Home",
-                    Icon = "home",
-                    MenuType = MenuType.Menu,
-                    Url = "/",
-                    Number = "10"
+                    Entity = new SysMenu()
+                    {
+                        Key = "Home",
+                        Icon = "home",
+                        MenuType = MenuType.Menu,
+                        Url = "/",
+                        Number = "10"
+                    }
+                    
                 },
-                new SysMenu()
+                new SysMenuView()
                 {
-                    Key = "index",
-                    MenuType = MenuType.Menu,
-                    Icon = "code",
-                    Url = "CodeGeneration/Index",
-                    ControllerName = "CodeGeneration"
+                    Entity = new SysMenu()
+                    {
+                        Key = "index",
+                        MenuType = MenuType.Menu,
+                        Icon = "code",
+                        Url = "CodeGeneration/Index",
+                        ControllerName = "CodeGeneration"
+                    },
+                    Children = new List<SysMenuView>()
+                    {
+                        new SysMenuView()
+                        {
+                            Entity = new SysMenu()
+                            {
+                                Key = "Select",
+                                MenuType = MenuType.Button,
+                                TargetType = TargetType.Callback,
+                                ControllerName = "CodeGeneration",
+                                ButtonPosition = ButtonPosition.Row
+                            }
+                        }
+                    }
+
                 },
-                new SysMenu()
+                new SysMenuView()
                 {
-                    Key = "API",
-                    MenuType = MenuType.API,
-                    ControllerName = "API"
+                    Entity = new SysMenu()
+                    {
+                        Key = "API",
+                        MenuType = MenuType.API,
+                        ControllerName = "API"
+                    }
                 }
             };
-            _dbContext.AddRange(menus);
-            await _dbContext.SaveChangesAsync();
+            await AddMenus(menus);
+
             var set = _dbContext.Set<SysMenu>();
             var menuBars = set.Where(u => u.Key == "index");
             foreach (var item in menuBars)
             {
                 item.MenuType = MenuType.Menu;
                 item.Key = item.ControllerName;
-                item.ParentId = menus.Single(u => u.Key == "SysManagement").Id;
+                if (MenuIconDic.TryGetValue(item.Key, out string value))
+                {
+                    item.Icon = value;
+                }
+                item.ParentId = menus.Single(u => u.Entity.Key == "SysManagement").Id;
             }
             await _dbContext.SaveChangesAsync();
             var subMenu = set.AsEnumerable().Where(u => u.ControllerName != null && u.ControllerName != u.Key).GroupBy(u => u.ControllerName);
@@ -162,7 +196,7 @@ namespace Caviar.Infrastructure.Persistence
                 var id = 0;
                 if (catalogue == null)
                 {
-                    id = menus.Single(u => u.Key == "API").Id;
+                    id = menus.Single(u => u.Entity.Key == "API").Id;
                 }
                 else
                 {
@@ -203,5 +237,27 @@ namespace Caviar.Infrastructure.Persistence
             _dbContext.UpdateRange(catalogueList);
             await _dbContext.SaveChangesAsync();
         }
+
+        private async Task AddMenus(List<SysMenuView> sysMenuViews,int parentId = 0)
+        {
+            foreach (var item in sysMenuViews)
+            {
+                item.Entity.ParentId = parentId;
+                _dbContext.Add(item.Entity);
+                if (item.Children != null)
+                {
+                    await _dbContext.SaveChangesAsync();
+                    await AddMenus(item.Children, item.Id);
+                }
+            }
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public Dictionary<string,string> MenuIconDic { get; set; } =  new Dictionary<string, string>()
+        {
+            {"SysMenu","profile"} ,
+            {"ApplicationUser","user" }
+            
+        };
     }
 }
