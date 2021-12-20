@@ -10,6 +10,7 @@ using System.Text.Json;
 using System.Web;
 using Caviar.SharedKernel;
 using Caviar.SharedKernel.Entities.View;
+using System.Threading.Tasks;
 
 namespace Caviar.AntDesignUI.Shared
 {
@@ -123,7 +124,7 @@ namespace Caviar.AntDesignUI.Shared
                         CurrRow.Data.AToB(out TData dataSource);
                         paramenter.Add("DataSource", dataSource);
                     }
-                    paramenter.Add("Url", menu.Entity.Url);
+                    paramenter.Add(CurrencyConstant.CavModelUrl, menu.Entity.Url);
                     await CavModal.Create(menu.Entity.Url, menu.Entity.DisplayName, HandleOk, paramenter);
                     break;
                 case TargetType.NewLabel:
@@ -140,6 +141,19 @@ namespace Caviar.AntDesignUI.Shared
         public void HandleOk()
         {
             RoleAction(CurrRow);
+        }
+
+        protected override Task OnInitializedAsync()
+        {
+            if (PageIndex == 0)
+            {
+                PageIndex = 1;
+            }
+            if (PageSize == 0)
+            {
+                PageSize = 10;
+            }
+            return base.OnInitializedAsync();
         }
 
         #region 查询条件

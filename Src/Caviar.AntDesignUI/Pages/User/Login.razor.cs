@@ -32,7 +32,7 @@ namespace Caviar.AntDesignUI.Pages.User
             
             Loading = true;
             ApplicationUserView applicationUser = new ApplicationUserView() { Entity = ApplicationUser };
-            var result = await HttpService.PostJson<ApplicationUserView, string>(UrlList["login"], applicationUser);
+            var result = await HttpService.PostJson<ApplicationUserView, string>(Url["login"], applicationUser);
             ApplicationUser.PasswordHash = "";
             Loading = false;
             if (result.Status == 200)

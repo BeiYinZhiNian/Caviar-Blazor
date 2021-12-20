@@ -39,39 +39,15 @@
         @switch (current)
         {
             case 0:
-                if (DataSource != null && DataSource.Count != 0)
-                {
-                    <CavTableTemplate TData="ViewFields"
+                <CavTableTemplate TData="ViewFields"
                           DataSource="DataSource"
                           Buttons="Buttons"
                           ViewFields="ViewFields"
                           RowCallback="RowCallback"
+                          Total="Total"
+                          PageSize="PageSize"
                           Loading="Loading">
                     </CavTableTemplate>
-@*                    <Table TItem="SharedKernel.Entities.SysFields" DataSource="@Source">
-                        <Column @bind-Field="@context.FieldName">
-                        </Column>
-                        <Column @bind-Field="@context.FullName">
-                        </Column>
-                        <Column @bind-Field="@context.DisplayName">
-                        </Column>
-                        <ActionColumn Title="操作">
-                            <Space Size=@("middle")>
-                                <SpaceItem>
-                                    <Button Type="@ButtonType.Primary" OnClick='()=>
-                                                                            {
-                                                                                GenerateData.EntitieName = context.FieldName;
-                                                                                GenerateData.FullName = context.FullName;
-                                                                                OnNextClick();
-                                                                            }'>
-                                        选择
-                                    </Button>
-                                </SpaceItem>
-                            </Space>
-                        </ActionColumn>
-
-                    </Table>*@
-                }
                 break;
             case 1:
                 <div style="margin-bottom:16px;margin-top:16px;">

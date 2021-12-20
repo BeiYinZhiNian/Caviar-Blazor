@@ -10,6 +10,8 @@ using Caviar.Core.Services.PermissionServices;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Caviar.SharedKernel.View;
+
 namespace Caviar.Infrastructure.API.BaseApi
 {
     [Route("api/[controller]/[action]")]
@@ -85,6 +87,35 @@ namespace Caviar.Infrastructure.API.BaseApi
             return service;
         }
 
+
+        /// <summary>
+        /// 只能获取自身字段
+        /// </summary>
+        /// <param name="modelName"></param>
+        /// <returns></returns>
+        protected virtual async Task<List<ViewFields>> GetFields<T>()
+        {
+            var permissionServices = CreateService<PermissionServices>();
+            var fieldName = typeof(T).Name;
+            var fullName = typeof(T).FullName;
+            var fields = FieldScannerServices.GetClassFields(fieldName, fullName);
+            fields = await permissionServices.GetFields(fields, fieldName, fullName);
+            foreach (var item in fields)
+            {
+                string key;
+                if (string.IsNullOrEmpty(item.Entity.DisplayName))
+                {
+                    key = $"SharedKernel.EntitysName.{item.Entity.FieldName}";
+                }
+                else
+                {
+                    key = $"SharedKernel.EntitysName.{item.Entity.DisplayName}";
+                }
+                item.Entity.DisplayName = LanguageService[key];
+            }
+            return fields;
+        }
+
     }
 
 
@@ -116,24 +147,7 @@ namespace Caviar.Infrastructure.API.BaseApi
         [HttpGet]
         public virtual async Task<IActionResult> GetFields()
         {
-            var permissionServices = CreateService<PermissionServices>();
-            var fieldName = typeof(T).Name;
-            var fullName = typeof(T).FullName;
-            var fields = FieldScannerServices.GetClassFields(fieldName, fullName);
-            fields = await permissionServices.GetFields(fields, fieldName, fullName);
-            foreach (var item in fields)
-            {
-                string key = null;
-                if (string.IsNullOrEmpty(item.Entity.DisplayName))
-                {
-                    key = $"SharedKernel.EntitysName.{item.Entity.FieldName}";
-                }
-                else
-                {
-                    key = $"SharedKernel.EntitysName.{item.Entity.DisplayName}";
-                }
-                item.Entity.DisplayName = LanguageService[key];
-            }
+            var fields = await GetFields<T>();
             return Ok(fields);
         }
 

@@ -26,8 +26,10 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
 
         protected override async Task<List<ViewFields>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
-            var result = await HttpService.GetJson<List<ViewFields>>(UrlList["GetEntitys"]);
+            var result = await HttpService.GetJson<List<ViewFields>>(Url["GetEntitys"]);
             if (result.Status != StatusCodes.Status200OK) return null;
+            Total = result.Data.Count;
+            PageSize = result.Data.Count;
             return result.Data;
         }
 
@@ -47,7 +49,7 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
                 {
                     return;
                 }
-                var result = await HttpService.PostJson<CodeGenerateOptions,List<PreviewCode>>($"{UrlList["CodeFileGenerate"]}?isPerview=true", GenerateData);
+                var result = await HttpService.PostJson<CodeGenerateOptions,List<PreviewCode>>($"{Url["CodeFileGenerate"]}?isPerview=true", GenerateData);
                 if (result.Status == StatusCodes.Status200OK)
                 {
                     lstTabs = result.Data;
@@ -62,7 +64,7 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
         string ResultSubTitle = "";
         async void OnGenerateClick()
         {
-            var result = await HttpService.PostJson<CodeGenerateOptions, string>($"{UrlList["CodeFileGenerate"]}?isPerview=false", GenerateData);
+            var result = await HttpService.PostJson<CodeGenerateOptions, string>($"{Url["CodeFileGenerate"]}?isPerview=false", GenerateData);
             if (result.Status == StatusCodes.Status200OK)
             {
                 ResultStatus = "success";

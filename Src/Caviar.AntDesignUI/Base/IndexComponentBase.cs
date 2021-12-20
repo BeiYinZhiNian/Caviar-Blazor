@@ -54,7 +54,7 @@ namespace Caviar.AntDesignUI
         /// <returns></returns>
         protected virtual async Task<List<ViewT>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
-            var result = await HttpService.GetJson<PageData<ViewT>>($"{Url}?pageIndex={pageIndex}&pageSize={pageSize}&isOrder={isOrder}");
+            var result = await HttpService.GetJson<PageData<ViewT>>($"{CurrentUrl}?pageIndex={pageIndex}&pageSize={pageSize}&isOrder={isOrder}");
             if (result.Status != StatusCodes.Status200OK) return null;
             if (result.Data != null)
             {
@@ -71,7 +71,7 @@ namespace Caviar.AntDesignUI
         /// <returns></returns>
         protected virtual void LoadButton()
         {
-            var queryButton = UrlList["FuzzyQuery"];
+            var queryButton = Url["FuzzyQuery"];
             if (queryButton != null)
             {
                 Query = new ViewQuery();
@@ -84,7 +84,7 @@ namespace Caviar.AntDesignUI
         /// <returns></returns>
         protected virtual async Task<List<ViewFields>> GetModelFields()
         {
-            var result = await HttpService.GetJson<List<ViewFields>>(UrlList["GetFields"]);
+            var result = await HttpService.GetJson<List<ViewFields>>(Url["GetFields"]);
             if (result.Status != StatusCodes.Status200OK) return null;
             return result.Data;
         }
@@ -111,7 +111,7 @@ namespace Caviar.AntDesignUI
             {
                 //case "Menu Key"
                 case "DeleteEntity":
-                    await Delete(UrlList[row.Menu.Entity.Key], row.Data);
+                    await Delete(Url[row.Menu.Entity.Key], row.Data);
                     break;
                 case "UpdateEntity":
                     break;
@@ -128,7 +128,7 @@ namespace Caviar.AntDesignUI
         /// <param name="Query"></param>
         protected virtual async void FuzzyQueryCallback()
         {
-            var result = await HttpService.PostJson<ViewQuery, PageData<ViewT>>(UrlList["FuzzyQuery"], Query);
+            var result = await HttpService.PostJson<ViewQuery, PageData<ViewT>>(Url["FuzzyQuery"], Query);
             if (result.Status != StatusCodes.Status200OK) return;
             DataSource = result.Data.Rows;
             Total = result.Data.Total;
@@ -151,7 +151,7 @@ namespace Caviar.AntDesignUI
         {
             await base.OnInitializedAsync();
             Loading = true;
-            BaseController = CommonHelper.GetLeftText(Url, "/");
+            BaseController = CommonHelper.GetLeftText(CurrentUrl, "/");
             LoadButton();//加载按钮
             ViewFields = await GetModelFields();//获取模型字段
             DataSource = await GetPages();//获取数据源

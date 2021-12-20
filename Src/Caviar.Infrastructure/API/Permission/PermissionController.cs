@@ -22,6 +22,10 @@ namespace Caviar.Infrastructure.API.Permission
         public IActionResult GetEntitys()
         {
             var entitys = FieldScannerServices.GetEntitys();
+            foreach (var item in entitys)
+            {
+                item.Entity.DisplayName = LanguageService[$"SharedKernel.MenuBar.{item.Entity.FieldName}"];
+            }
             return Ok(entitys);
         }
     }

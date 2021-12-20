@@ -51,7 +51,7 @@ namespace Caviar.AntDesignUI
         /// <returns></returns>
         public virtual async Task<bool> FormSubmit()
         {
-            var result = await HttpService.PostJson(Url, DataSource);
+            var result = await HttpService.PostJson(CurrentUrl, DataSource);
             if (result.Status == StatusCodes.Status200OK)
             {
                 await MessageService.Success(SuccMsg);

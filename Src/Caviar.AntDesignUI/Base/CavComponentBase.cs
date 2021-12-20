@@ -38,7 +38,7 @@ namespace Caviar.AntDesignUI
         /// <summary>
         /// url读取器
         /// </summary>
-        protected UrlAccessor UrlList { get; set; }
+        protected UrlAccessor Url { get; set; }
         /// <summary>
         /// 需要获取url的控制器集合
         /// </summary>
@@ -51,7 +51,7 @@ namespace Caviar.AntDesignUI
         /// 当前url
         /// </summary>
         [Parameter]
-        public string Url { get; set; }
+        public string CurrentUrl { get; set; }
         #endregion
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Caviar.AntDesignUI
             {
                 splicing += item + "|";
             }
-            var result = await HttpService.GetJson<List<SysMenuView>>($"{Config.PathList.GetApiList}?url={Url}&splicing={splicing}");
+            var result = await HttpService.GetJson<List<SysMenuView>>($"{Config.PathList.GetApiList}?url={CurrentUrl}&splicing={splicing}");
             if (result.Status != StatusCodes.Status200OK) return null;
             return result.Data;
         }
@@ -74,12 +74,12 @@ namespace Caviar.AntDesignUI
         protected override async Task OnInitializedAsync()
         {
             Loading = true;
-            if (string.IsNullOrEmpty(Url))
+            if (string.IsNullOrEmpty(CurrentUrl))
             {
-                Url = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
+                CurrentUrl = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
             }
             APIList = await GetApiList();
-            UrlList = new UrlAccessor(APIList, MessageService);
+            Url = new UrlAccessor(APIList);
             Loading = false;
             await base.OnInitializedAsync();
         }
@@ -97,11 +97,9 @@ namespace Caviar.AntDesignUI
 
     public class UrlAccessor
     {
-        MessageService MessageService { get; set; }
-        public UrlAccessor(List<SysMenuView> apiList, MessageService messageService)
+        public UrlAccessor(List<SysMenuView> apiList)
         {
             APIList = apiList;
-            MessageService = messageService;
         }
 
         public List<SysMenuView> APIList { get; set; }
@@ -111,10 +109,6 @@ namespace Caviar.AntDesignUI
             get 
             {
                 var url = APIList?.FirstOrDefault(u => u.Entity.Key.ToLower() == name.ToLower())?.Entity.Url;
-                if(url == null)
-                {
-                    MessageService.Warning($"{name}不存在");
-                }
                 return url; 
             } 
         }
@@ -124,10 +118,6 @@ namespace Caviar.AntDesignUI
             get
             {
                 var url = APIList?.SingleOrDefault(u => u.Entity.Key.ToLower() == name.ToLower() && u.Entity.ControllerName.ToLower() == controller.ToLower())?.Entity.Url;
-                if (url == null)
-                {
-                    MessageService.Warning($"{name}不存在");
-                }
                 return url;
             }
         }

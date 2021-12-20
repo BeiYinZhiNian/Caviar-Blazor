@@ -20,7 +20,7 @@ namespace Caviar.SharedKernel
         /// <summary>
         /// url名称
         /// </summary>
-        public const string CavModelUrl = "Url";
+        public const string CavModelUrl = "CurrentUrl";
         /// <summary>
         /// jwt验证中token名称
         /// </summary>

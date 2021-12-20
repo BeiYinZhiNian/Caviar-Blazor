@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Caviar.Infrastructure.API.BaseApi;
+using Caviar.SharedKernel.Entities;
 
 namespace Caviar.Infrastructure.API.CodeGeneration
 {
@@ -31,6 +32,18 @@ namespace Caviar.Infrastructure.API.CodeGeneration
                 return Ok(msg);
             }
             return Ok(result);
+        }
+
+        /// <summary>
+        /// 只能获取自身字段
+        /// </summary>
+        /// <param name="modelName"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public virtual async Task<IActionResult> GetFields()
+        {
+            var fields = await GetFields<SysFields>();
+            return Ok(fields);
         }
     }
 }
