@@ -15,8 +15,6 @@ namespace Caviar.AntDesignUI.Pages.Menu
 {
     public partial class Index
     {
-        [Inject]
-        UserConfig UserConfig { get; set; }
         protected override Task<List<SysMenuView>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
             pageSize = 100;
@@ -55,7 +53,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
             var result = await HttpService.PostJson(url, data);
             if (result.Status == StatusCodes.Status200OK)
             {
-                await MessageService.Success("删除成功");
+                _ = MessageService.Success("删除成功");
             }
         }
 

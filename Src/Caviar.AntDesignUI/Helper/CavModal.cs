@@ -16,7 +16,7 @@ namespace Caviar.AntDesignUI.Helper
         ModalService Modal;
         UserConfig UserConfig;
         MessageService MessageService;
-
+        public string ModalStyle { get; set; } = "overflow-y: auto;height: 400px;";
         public CavModal(UserConfig userConfig,ModalService modalService, MessageService messageService)
         {
             UserConfig = userConfig;
@@ -63,6 +63,8 @@ namespace Caviar.AntDesignUI.Helper
                 {
                     var ComponentType = (Type)item.GetObjValue("Handler");
                     var index = 0;
+                    builder.OpenElement(index++, "div");
+                    builder.AddAttribute(index++, "style", ModalStyle);
                     builder.OpenComponent(index++, ComponentType);
                     if (paramenter != null && paramenter.Any())
                     {
@@ -70,6 +72,7 @@ namespace Caviar.AntDesignUI.Helper
                     }
                     builder.AddComponentReferenceCapture(index++, SetComponent);
                     builder.CloseComponent();
+                    builder.CloseElement();
                     return;
                 }
             }
