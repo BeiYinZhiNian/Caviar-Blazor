@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 namespace Caviar.SharedKernel
 {
@@ -15,6 +16,8 @@ namespace Caviar.SharedKernel
         void SetLanguage(CultureInfo culture);
 
         void SetLanguage(string cultureName);
+
+        void SetLanguage(ValueTask<string> cultureName);
 
         string this[string name] { get; }
 

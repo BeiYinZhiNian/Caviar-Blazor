@@ -40,20 +40,12 @@ namespace Caviar.AntDesignUI.Shared
         [Inject]
         private AuthenticationStateProvider authenticationStateTask { get; set; }
 
-        public void StateHasAction()
-        {
-            StateHasChanged();
-        }
-
-        
-
         /// <summary>
         /// 面包屑数据同步
         /// </summary>
         public MenuItem BreadcrumbItemCav;
         protected override async Task OnParametersSetAsync()
         {
-            UserConfig.StateHasAction = StateHasAction;
             await base.OnParametersSetAsync();
             var authenticationState = await authenticationStateTask.GetAuthenticationStateAsync();
             

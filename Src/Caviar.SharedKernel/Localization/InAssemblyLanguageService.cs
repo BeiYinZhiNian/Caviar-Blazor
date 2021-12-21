@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 namespace Caviar.SharedKernel
 {
@@ -124,6 +125,15 @@ namespace Caviar.SharedKernel
 
         public void SetLanguage(string cultureName)
         {
+            if (string.IsNullOrEmpty(cultureName)) return;
+            var culture = CultureInfo.GetCultureInfo(cultureName);
+            SetLanguage(culture);
+        }
+
+        public async void SetLanguage(ValueTask<string> taskCultureName)
+        {
+            var cultureName =  await taskCultureName;
+            if (string.IsNullOrEmpty(cultureName)) return;
             var culture = CultureInfo.GetCultureInfo(cultureName);
             SetLanguage(culture);
         }

@@ -25,7 +25,7 @@ namespace Caviar.AntDesignUI
             services.AddAntDesign();
             services.AddScoped<HttpHelper>();
             services.AddScoped<CavModal>();
-            services.AddSingleton<UserConfig>();
+            services.AddScoped<UserConfig>();
             services.AddSingleton<ModalService>();
             services.AddSingleton<MessageService>();
             services.AddSingleton<ILanguageService, InAssemblyLanguageService>();

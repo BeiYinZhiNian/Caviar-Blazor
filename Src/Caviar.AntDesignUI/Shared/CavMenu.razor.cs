@@ -32,8 +32,12 @@ namespace Caviar.AntDesignUI.Shared
 
         [Parameter]
         public MenuItem BreadcrumbItemCav { get; set; }
+
+        public Menu AntDesignMenu { get; set; }
         [Parameter]
         public EventCallback<MenuItem> BreadcrumbItemCavChanged { get; set; }
+
+        public string[] SelectedKeys { get; set; }
 
         public string[] OpenKeysNav { get; set; } = Array.Empty<string>();
 
@@ -94,6 +98,14 @@ namespace Caviar.AntDesignUI.Shared
         {
             await OnInitializedAsync();
             StateHasChanged();
+            foreach (var item in AntDesignMenu.MenuItems)
+            {
+                if(item.Key == AntDesignMenu.SelectedKeys.FirstOrDefault())
+                {
+                    OnMenuItemClickedNav(item);
+                }
+            }
+            
         }
 
         async Task<List<SysMenuView>> GetMenus()

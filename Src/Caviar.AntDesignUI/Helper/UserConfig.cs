@@ -1,4 +1,5 @@
-﻿using Caviar.SharedKernel;
+﻿using Blazored.LocalStorage;
+using Caviar.SharedKernel;
 using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
@@ -14,25 +15,41 @@ namespace Caviar.AntDesignUI.Helper
     public class UserConfig
     {
         public string White = "#F8F8FF";
-        public UserConfig(IJSRuntime jSRuntime, ILanguageService languageService)
+
+        protected ILocalStorageService _ILocalStorageService { get; set; }
+        public UserConfig(IJSRuntime jSRuntime, ILanguageService languageService,ILocalStorageService localStorage)
         {
             JSRuntime = jSRuntime;
             Background = $"background:{White};";
             ContentStyle = $"margin: 6px 16px;padding: 24px;min-height: 280px;{Background}";
             HeaderStyle = $"padding:0;{Background}";
+            _ILocalStorageService = localStorage;
+            var cultureName = localStorage.GetItemAsStringAsync(CurrencyConstant.LanguageHeader);
             LanguageService = languageService;
+            LanguageService.SetLanguage(cultureName);
+            LanguageService.LanguageChanged += LanguageService_LanguageChanged;
+            
         }
+
+        private void LanguageService_LanguageChanged(object sender, System.Globalization.CultureInfo e)
+        {
+            _ILocalStorageService.SetItemAsStringAsync(CurrencyConstant.LanguageHeader, e.Name);
+            RefreshMenuAction?.Invoke();
+            RefreshCurrentPage?.Invoke();
+        }
+
         public IJSRuntime JSRuntime { get; set; }
 
         public Router Router;
         /// <summary>
-        /// 更新面包屑数据
-        /// </summary>
-        public Action StateHasAction { get; set; }
-        /// <summary>
         /// 更新菜单数据
         /// </summary>
         public Action RefreshMenuAction { get; set; }
+
+        /// <summary>
+        /// 更新当前页面数据
+        /// </summary>
+        public Action RefreshCurrentPage { get; set; }
 
         IEnumerable _routes;
         public IEnumerable Routes()
@@ -93,10 +110,6 @@ namespace Caviar.AntDesignUI.Helper
                     ContentStyle = $"margin: 6px 16px;padding: 24px;min-height: 280px;{Background}";
                     HeaderStyle = $"padding:0;{Background}";
                     break;
-            }
-            if (StateHasAction != null)
-            {
-                StateHasAction.Invoke();
             }
         }
     }

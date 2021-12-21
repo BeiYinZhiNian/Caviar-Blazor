@@ -1,10 +1,12 @@
 ﻿<Menu Mode="MenuMode.Inline"
       Accordion=UserConfig.Accordion
       Theme="MenuTheme.Dark"
-      @bind-OpenKeys="@OpenKeysNav"
+      @bind-OpenKeys="OpenKeysNav"
       InlineCollapsed="InlineCollapsed"
       Selectable="false"
-      OnMenuItemClicked="OnMenuItemClickedNav">
+      OnMenuItemClicked="OnMenuItemClickedNav"
+      @bind-SelectedKeys="SelectedKeys"
+      @ref="AntDesignMenu">
     @if (SysMenus != null)
     {
         var menu = GetSubMenu(SysMenus);

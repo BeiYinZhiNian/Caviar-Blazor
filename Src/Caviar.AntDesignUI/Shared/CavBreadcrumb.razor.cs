@@ -1,4 +1,5 @@
 ﻿using AntDesign;
+using Caviar.AntDesignUI.Helper;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -24,8 +25,6 @@ namespace Caviar.AntDesignUI.Shared
         MenuItem _breadcrumbItemCav;
         List<string> BreadcrumbItemArr { get; set; }
 
-        string _homeTitle = "Home";
-
         void CreatBreadcrumbItemCav(MenuItem menuItem)
         {
             if (menuItem == null) return;
@@ -36,14 +35,7 @@ namespace Caviar.AntDesignUI.Shared
                 breadcrumbItemArr.Insert(0, parent.Key);
                 parent = parent.Parent;
             }
-            if (menuItem.RouterLink != "/")
-            {
-                breadcrumbItemArr.Add(menuItem.Key);
-            }
-            else
-            {
-                _homeTitle = menuItem.Key;
-            }
+            breadcrumbItemArr.Add(menuItem.Key);
             BreadcrumbItemArr = breadcrumbItemArr;
         }
 

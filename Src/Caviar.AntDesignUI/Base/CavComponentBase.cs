@@ -52,6 +52,9 @@ namespace Caviar.AntDesignUI
         /// </summary>
         [Parameter]
         public string CurrentUrl { get; set; }
+
+        [Inject]
+        public UserConfig UserConfig { get; set; }
         #endregion
 
         /// <summary>
@@ -69,6 +72,12 @@ namespace Caviar.AntDesignUI
             var result = await HttpService.GetJson<List<SysMenuView>>($"{Config.PathList.GetApiList}?url={CurrentUrl}&splicing={splicing}");
             if (result.Status != StatusCodes.Status200OK) return null;
             return result.Data;
+        }
+
+        protected override void OnParametersSet()
+        {
+            UserConfig.RefreshCurrentPage = Refresh;
+            base.OnParametersSet();
         }
 
         protected override async Task OnInitializedAsync()
