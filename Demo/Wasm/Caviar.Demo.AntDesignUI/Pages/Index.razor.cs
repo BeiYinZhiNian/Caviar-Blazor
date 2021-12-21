@@ -12,7 +12,8 @@ namespace Caviar.Demo.AntDesignUI.Pages
         UserConfig UserConfig { get; set; }
         public void test()
         {
-            var list = UserConfig.LanguageService.GetLanguageList();
+            
+            
         }
     }
 }

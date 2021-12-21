@@ -88,31 +88,44 @@ namespace Caviar.SharedKernel
                     CultureInfo.DefaultThreadCurrentCulture = culture;
                     CultureInfo.DefaultThreadCurrentUICulture = culture;
                 }
+                LanguageChanged?.Invoke(this, culture);
                 return true;
             }
             return false;
         }
 
-        private JObject GetKeysFromCulture(string culture)
+        private JObject GetKeysFromCulture(string name)
         {
-            string dir = AppDomain.CurrentDomain.BaseDirectory;
-            string path = $"{dir}Resources/Language/{culture}.json";
+            var availableResources = GetLanguageList();
+            var (_, resourceName) = availableResources.FirstOrDefault(x => x.CultureName.Equals(name, StringComparison.OrdinalIgnoreCase));
             try
             {
-                var content = File.ReadAllText(path);
+                using var fileStream = _resourcesAssembly.GetManifestResourceStream(resourceName);
+                using var streamReader = new StreamReader(fileStream);
+                var content = streamReader.ReadToEnd();
                 return JObject.Parse(content);
             }
             catch
             {
-                throw new FileNotFoundException($"没有语言文件 '{culture}'");
+                throw new FileNotFoundException($"没有语言文件 '{name}'");
             }
         }
 
-        public string[] GetLanguageList()
+        public List<(string CultureName,string ResourceName)> GetLanguageList()
         {
-            string dir = AppDomain.CurrentDomain.BaseDirectory;
-            string[] files = Directory.GetFiles(dir, "*.json");
-            return files;
+            var availableResources = _resourcesAssembly
+                .GetManifestResourceNames()
+                .Select(x => Regex.Match(x, @"^.*Resources.Language\.(.+)\.json"))
+                .Where(x => x.Success)
+                .Select(x => (CultureName: x.Groups[1].Value, ResourceName: x.Value))
+                .ToList();
+            return availableResources;
+        }
+
+        public void SetLanguage(string cultureName)
+        {
+            var culture = CultureInfo.GetCultureInfo(cultureName);
+            SetLanguage(culture);
         }
     }
 }

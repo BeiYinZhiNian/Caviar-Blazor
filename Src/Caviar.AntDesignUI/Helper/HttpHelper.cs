@@ -28,7 +28,8 @@ namespace Caviar.AntDesignUI.Helper
             NavigationManager navigationManager, 
             MessageService message,
             IJSRuntime JsRuntime,
-            ILocalStorageService localStorageService)
+            ILocalStorageService localStorageService,
+            UserConfig userConfig)
         {
             HttpClient = http;
             _notificationService = _notice;
@@ -36,8 +37,18 @@ namespace Caviar.AntDesignUI.Helper
             _message = message;
             _jSRuntime = JsRuntime;
             _localStorageService = localStorageService;
+            LanguageService_LanguageChanged(null, userConfig.LanguageService.CurrentCulture);
+            userConfig.LanguageService.LanguageChanged += LanguageService_LanguageChanged;
         }
 
+        private void LanguageService_LanguageChanged(object sender, System.Globalization.CultureInfo e)
+        {
+            if (HttpClient.DefaultRequestHeaders.Contains(CurrencyConstant.LanguageHeader))
+            {
+                HttpClient.DefaultRequestHeaders.Remove(CurrencyConstant.LanguageHeader);
+            }
+            HttpClient.DefaultRequestHeaders.Add(CurrencyConstant.LanguageHeader, e.Name);
+        }
 
 
         public HttpClient HttpClient { get; }

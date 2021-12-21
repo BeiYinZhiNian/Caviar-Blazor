@@ -41,5 +41,13 @@ namespace Caviar.SharedKernel
         /// 视图类代码文件路径
         /// </summary>
         public const string CodeGenerateFilePath = "/Template/File/";
+
+        public static Dictionary<string, string> LanguageDic = new Dictionary<string, string>() 
+        {
+            {"zh-CN","中文" },
+            {"en-US","English" },
+        };
+
+        public static string LanguageHeader = "Current-Language";
     }
 }

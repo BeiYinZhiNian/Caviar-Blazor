@@ -40,7 +40,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             //请求参数
             Interactor.ActionArguments = context.ActionArguments;
             
-            var acceptLanguage = context.HttpContext.Request.Headers["Current-Language"];
+            var acceptLanguage = context.HttpContext.Request.Headers[CurrencyConstant.LanguageHeader];
             SetLanguage(acceptLanguage);
         }
 

@@ -60,6 +60,9 @@ namespace Caviar.AntDesignUI.Helper
         }
 
         public ILanguageService LanguageService { get; set; }
+
+        public string CurrentLanguage => LanguageService.CurrentCulture.Name;
+
         public string Background { get; set; }
 
         public string ContentStyle { get; set; }
