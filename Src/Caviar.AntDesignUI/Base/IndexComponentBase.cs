@@ -153,9 +153,13 @@ namespace Caviar.AntDesignUI
             await base.OnInitializedAsync();
             Loading = true;
             BaseController = CommonHelper.GetLeftText(CurrentUrl, "/");
-            Buttons = await LoadButton();//加载按钮
-            ViewFields = await GetModelFields();//获取模型字段
-            DataSource = await GetPages();//获取数据源
+            var buttonTask = LoadButton();//加载按钮
+            var fieldsTask = GetModelFields();//获取模型字段
+            var pagesTask = GetPages();//获取数据源
+            //先请求后获取结果，加快请求速度
+            Buttons = await buttonTask;
+            ViewFields = await fieldsTask;
+            DataSource = await pagesTask;
             Loading = false;
         }
         #endregion
