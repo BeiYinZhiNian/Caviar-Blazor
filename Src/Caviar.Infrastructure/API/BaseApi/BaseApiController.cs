@@ -98,7 +98,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             var permissionServices = CreateService<PermissionServices>();
             var fieldName = typeof(T).Name;
             var fullName = typeof(T).FullName;
-            var fields = FieldScannerServices.GetClassFields(fieldName, fullName);
+            var fields = FieldScannerServices.GetClassFields(fieldName, fullName, LanguageService);
             fields = await permissionServices.GetFields(fields, fieldName, fullName);
             foreach (var item in fields)
             {

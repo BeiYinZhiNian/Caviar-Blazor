@@ -94,6 +94,22 @@
         "Registration succeeded": "账号注册成功",
         "Succeeded": "操作成功"
       }
+    },
+    "Enum": {
+      "Catalog": "目录",
+      "Menu": "菜单",
+      "Button": "按钮",
+      "API": "API",
+      "CurrentPage": "当前窗口",
+      "EjectPage": "弹出窗口",
+      "NewLabel": "新建页面",
+      "Callback": "回调",
+      "Default": "默认",
+      "Row": "行",
+      "Field": "字段",
+      "User": "用户",
+      "Role": "角色",
+      "UserGroup": "用户组"
     }
   }
 }

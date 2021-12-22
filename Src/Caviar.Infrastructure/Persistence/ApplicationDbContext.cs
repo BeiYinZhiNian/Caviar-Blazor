@@ -285,7 +285,7 @@ namespace Caviar.Infrastructure.Persistence
                         baseEntity.UpdateTime = DateTime.Now;
                         var entityType = entity.GetType();
                         var baseType = typeof(SysBaseEntity);
-                        var fields = FieldScannerServices.GetClassFields(baseType);
+                        var fields = FieldScannerServices.GetClassFields(baseType,LanguageService);
                         foreach (var fieldItem in fields)
                         {
                             switch (fieldItem.Entity.FieldName.ToLower())

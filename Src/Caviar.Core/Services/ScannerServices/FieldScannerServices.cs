@@ -18,13 +18,13 @@ namespace Caviar.Core
         /// 获取继承了IBaseEntity类的所有字段字段信息
         /// </summary>
         /// <returns></returns>
-        public static List<ViewFields> GetApplicationFields()
+        public static List<ViewFields> GetApplicationFields(ILanguageService languageService)
         {
             var entityList = CommonHelper.GetEntityList();
             var fields = new List<ViewFields>();
             foreach (var item in entityList)
             {
-                var _field = GetClassFields(item.Name,item.FullName);
+                var _field = GetClassFields(item.Name,item.FullName, languageService);
                 fields.AddRange(_field);
             }
             return fields;
@@ -74,7 +74,7 @@ namespace Caviar.Core
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static List<ViewFields> GetClassFields(string name,string fullName)
+        public static List<ViewFields> GetClassFields(string name,string fullName, ILanguageService languageService)
         {
             var assemblyList = CommonHelper.GetAssembly();
             Type type = null;
@@ -86,7 +86,7 @@ namespace Caviar.Core
                 if (type != null) break;
             }
             if (type == null) throw new Exception("未找到该类：" + name);
-            return GetClassFields(type);
+            return GetClassFields(type, languageService);
         }
         /// <summary>
         /// 获取一个类的字段信息
@@ -94,7 +94,7 @@ namespace Caviar.Core
         /// <param name="type"></param>
         /// <param name="isFieldTurnMeaning">是否开启转义，默认开启</param>
         /// <returns></returns>
-        public static List<ViewFields> GetClassFields(Type type,bool isFieldTurnMeaning = true)
+        public static List<ViewFields> GetClassFields(Type type,ILanguageService languageService,bool isFieldTurnMeaning = true)
         {
             List<ViewFields> fields = new List<ViewFields>();
             if (type != null)
@@ -111,7 +111,7 @@ namespace Caviar.Core
                         }
                     }
                     var baseType = typeof(SysBaseEntity);
-                    var dispLayName = item.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
+                    var dispLayName = languageService[$"SharedKernel.EntitysName.{item.Name}"];
                     var fieldLen = item.GetCustomAttributes<StringLengthAttribute>()?.Cast<StringLengthAttribute>().SingleOrDefault()?.MaximumLength;
                     var field = new ViewFields()
                     {
@@ -130,7 +130,7 @@ namespace Caviar.Core
 
                     if (field.IsEnum)
                     {
-                        field.EnumValueName = CommonHelper.GetEnenuModelHeader(item.PropertyType);
+                        field.EnumValueName = CommonHelper.GetEnenuModelHeader(item.PropertyType, languageService);
                     }
                     if(isFieldTurnMeaning) field = FieldTurnMeaning(field);
                     fields.Add(field);

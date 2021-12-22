@@ -272,7 +272,7 @@ namespace Caviar.SharedKernel
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static Dictionary<int, string> GetEnenuModelHeader(Type type)
+        public static Dictionary<int, string> GetEnenuModelHeader(Type type,ILanguageService languageService)
         {
             if(!type.IsEnum) return null;
             var enumFields = type.GetFields();
@@ -283,8 +283,8 @@ namespace Caviar.SharedKernel
                 for (int i = 0; i < enumFields.Length; i++)
                 {
                     if (enumFields[i].Name == "value__") continue;
-                    var enumName = enumFields[i].GetCustomAttribute<DisplayAttribute>()?.Name;
                     var value = (int)enumFields[i].GetValue(null);
+                    var enumName = languageService[$"SharedKernel.Enum.{enumFields[i].Name}"];
                     dic.Add(value, enumName);
                 }
             }

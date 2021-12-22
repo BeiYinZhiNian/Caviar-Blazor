@@ -22,7 +22,7 @@ namespace Caviar.Infrastructure.API.CodeGeneration
         {
             CodeGenerationServices CodeService = CreateService<CodeGenerationServices>();
             //获取该类的所有字段
-            var fieldsData = FieldScannerServices.GetClassFields(codeGenerateOptions.EntitieName, codeGenerateOptions.FullName);//类信息
+            var fieldsData = FieldScannerServices.GetClassFields(codeGenerateOptions.EntitieName, codeGenerateOptions.FullName, LanguageService);//类信息
             var entityData = FieldScannerServices.GetEntity(codeGenerateOptions.EntitieName, codeGenerateOptions.FullName);//类下字段信息
             var result = CodeService.CodePreview(entityData,fieldsData, codeGenerateOptions,Configure.CaviarConfig,""); //生成预览代码
             if (!isPerview)

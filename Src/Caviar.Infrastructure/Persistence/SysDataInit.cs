@@ -22,11 +22,14 @@ namespace Caviar.Infrastructure.Persistence
     {
         IDbContext _dbContext;
         IServiceScope _serviceScope;
+        ILanguageService _languageService;
         public SysDataInit(IServiceProvider provider)
         {
             _serviceScope = provider.CreateScope();
             _dbContext = _serviceScope.ServiceProvider.GetRequiredService<IDbContext>();
-            
+            _languageService = _serviceScope.ServiceProvider.GetRequiredService<ILanguageService>();
+
+
         }
         /// <summary>
         /// 系统API初始化
@@ -66,7 +69,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <returns></returns>
         protected virtual async Task FieldsInit()
         {
-            var fields = FieldScannerServices.GetApplicationFields().Select(u => u.Entity);
+            var fields = FieldScannerServices.GetApplicationFields(_languageService).Select(u => u.Entity);
             var set = _dbContext.Set<SysFields>();
             var dataBaseFields = set.AsNoTracking().ToList();
             foreach (var sysField in fields)

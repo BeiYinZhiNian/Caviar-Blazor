@@ -8,41 +8,30 @@ using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel.Entities
 {
-    [DisplayName("SysLog")]
     public partial class SysLog: SysBaseEntity, IBaseEntity
     {
-        [DisplayName("UserName")]
         [StringLength(50, ErrorMessage = "LengthErrorMsg")]
         public string UserName { get; set; }
-        [DisplayName("ControllerName")]
         [StringLength(50, ErrorMessage = "LengthErrorMsg")]
         public string ControllerName { get; set; }
-        [DisplayName("UserId")]
         public int? UserId { get; set; }
-        [DisplayName("AbsoluteUri")]
         [StringLength(1024, ErrorMessage = "LengthErrorMsg")]
         public string AbsoluteUri { get; set; }
-        [DisplayName("Ipaddress")]
         [StringLength(50, ErrorMessage = "LengthErrorMsg")]
         public string Ipaddress { get; set; }
-        [DisplayName("Elapsed")]
         public double Elapsed { get; set; }
-        [DisplayName("Status")]
         public int Status { get; set; }
-        [DisplayName("Msg")]
         [StringLength(2048, ErrorMessage = "LengthErrorMsg")]
         public string Msg { get; set; }
-        [DisplayName("Browser")]
         [StringLength(1024, ErrorMessage = "LengthErrorMsg")]
         public string Browser { get; set; }
-        [DisplayName("LogLevel")]
         public CavLogLevel LogLevel { get; set; }
-        [DisplayName("IsAutomatic")]
         public bool IsAutomatic { get; set; }
-        [DisplayName("Method")]
         [StringLength(10, ErrorMessage = "LengthErrorMsg")]
         public string Method { get; set; }
-        [DisplayName("PostData")]
+        /// <summary>
+        /// post所提交的数据
+        /// </summary>
         public string PostData { get; set; }
     }
 
