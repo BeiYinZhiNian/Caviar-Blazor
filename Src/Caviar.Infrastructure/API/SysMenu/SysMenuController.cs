@@ -36,7 +36,7 @@ namespace Caviar.Infrastructure.API.SysMenuController
         {
             foreach (var item in entity)
             {
-                string key = $"SharedKernel.MenuBar.{item.Key}";
+                string key = $"{CurrencyConstant.MenuBar}.{item.Key}";
                 item.DisplayName = LanguageService[key];
             }
             return base.ToView(entity);

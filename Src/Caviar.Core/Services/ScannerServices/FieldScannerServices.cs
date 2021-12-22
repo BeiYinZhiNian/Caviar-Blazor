@@ -111,7 +111,7 @@ namespace Caviar.Core
                         }
                     }
                     var baseType = typeof(SysBaseEntity);
-                    var dispLayName = languageService[$"SharedKernel.EntitysName.{item.Name}"];
+                    var dispLayName = languageService[$"{CurrencyConstant.EntitysName}.{item.Name}"];
                     var fieldLen = item.GetCustomAttributes<StringLengthAttribute>()?.Cast<StringLengthAttribute>().SingleOrDefault()?.MaximumLength;
                     var field = new ViewFields()
                     {

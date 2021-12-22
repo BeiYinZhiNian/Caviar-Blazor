@@ -284,7 +284,7 @@ namespace Caviar.SharedKernel
                 {
                     if (enumFields[i].Name == "value__") continue;
                     var value = (int)enumFields[i].GetValue(null);
-                    var enumName = languageService[$"SharedKernel.Enum.{enumFields[i].Name}"];
+                    var enumName = languageService[$"{CurrencyConstant.Enum}.{enumFields[i].Name}"];
                     dic.Add(value, enumName);
                 }
             }

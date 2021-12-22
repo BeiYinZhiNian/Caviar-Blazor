@@ -70,7 +70,7 @@ namespace Caviar.Infrastructure.API.BaseApi
 
         protected virtual void ModificationTips(ResultMsg resultMsg)
         {
-            resultMsg.Title = LanguageService[$"SharedKernel.ResuleMsg.Title.{resultMsg.Title}"];
+            resultMsg.Title = LanguageService[$"{CurrencyConstant.ResuleMsg}.Title.{resultMsg.Title}"];
         }
 
         protected static T CreateService<T>() where T : new()
@@ -105,11 +105,11 @@ namespace Caviar.Infrastructure.API.BaseApi
                 string key;
                 if (string.IsNullOrEmpty(item.Entity.DisplayName))
                 {
-                    key = $"SharedKernel.EntitysName.{item.Entity.FieldName}";
+                    key = $"{CurrencyConstant.EntitysName}.{item.Entity.FieldName}";
                 }
                 else
                 {
-                    key = $"SharedKernel.EntitysName.{item.Entity.DisplayName}";
+                    key = $"{CurrencyConstant.EntitysName}.{item.Entity.DisplayName}";
                 }
                 item.Entity.DisplayName = LanguageService[key];
             }

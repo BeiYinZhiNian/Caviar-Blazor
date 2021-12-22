@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Caviar.SharedKernel;
 
 namespace Caviar.Infrastructure.API.Permission
 {
@@ -24,7 +25,7 @@ namespace Caviar.Infrastructure.API.Permission
             var entitys = FieldScannerServices.GetEntitys();
             foreach (var item in entitys)
             {
-                item.Entity.DisplayName = LanguageService[$"SharedKernel.MenuBar.{item.Entity.FieldName}"];
+                item.Entity.DisplayName = LanguageService[$"{CurrencyConstant.MenuBar}.{item.Entity.FieldName}"];
             }
             return Ok(entitys);
         }

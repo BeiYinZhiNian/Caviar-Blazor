@@ -49,5 +49,12 @@ namespace Caviar.SharedKernel
         };
 
         public static string LanguageHeader = "Current-Language";
+
+        public static string EntitysName = "SharedKernel.EntitysName";
+        public static string MenuBar = "SharedKernel.MenuBar";
+        public static string ResuleMsg = "SharedKernel.ResuleMsg";
+        public static string Enum = "SharedKernel.Enum";
+        public static string ErrorMessage = "SharedKernel.ErrorMessage";
+        public static string AppNull = "app.null";
     }
 }

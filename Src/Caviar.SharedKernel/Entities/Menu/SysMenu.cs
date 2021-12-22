@@ -20,6 +20,7 @@ namespace Caviar.SharedKernel.Entities
         /// 用于menuName的显示，读取与语言配置文件
         /// </summary>
         [NotMapped]
+        [Required(ErrorMessage = "RequiredErrorMsg")]
         public string DisplayName { get; set; }
 
         public MenuType MenuType { get; set; }

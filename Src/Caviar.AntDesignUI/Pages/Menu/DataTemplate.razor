@@ -11,8 +11,11 @@
 @page "/SysMenu/CreateEntity"
 @page "/SysMenu/UpdateEntity"
 <Form @ref="_meunForm" Model="@DataSource" OnFinish="FormSubmit">
-    <FormItem Label='菜单名称'>
+    <FormItem Label='@LanguageService[$"{CurrencyConstant.EntitysName}.Key"]'>
         <Input @bind-Value="@context.Entity.Key" Style="width:50%" />
+    </FormItem>
+    <FormItem Label='@LanguageService[$"{CurrencyConstant.EntitysName}.DisplayName"]'>
+        <Input @bind-Value="@context.Entity.DisplayName" Style="width:50%" />
     </FormItem>
     <FormItem Label="上层目录">
         <Dropdown>

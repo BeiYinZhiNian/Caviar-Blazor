@@ -1,5 +1,6 @@
 ﻿using AntDesign;
 using Caviar.AntDesignUI.Helper;
+using Caviar.SharedKernel;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
@@ -55,6 +56,8 @@ namespace Caviar.AntDesignUI
 
         [Inject]
         public UserConfig UserConfig { get; set; }
+
+        public ILanguageService LanguageService => UserConfig.LanguageService;
         #endregion
 
         /// <summary>

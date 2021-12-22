@@ -34,7 +34,7 @@ namespace Caviar.Infrastructure.Persistence
         {
             if (entity == null)
             {
-                var errorMsg = LanguageService.Resources["app"]["null"]["Db"].ToString();
+                var errorMsg = LanguageService[$"{CurrencyConstant.AppNull}.Db"];
                 var name = typeof(T).Name;
                 errorMsg = errorMsg.Replace("{entityName}", name);
                 throw new DbException(errorMsg);

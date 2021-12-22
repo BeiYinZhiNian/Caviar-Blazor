@@ -137,12 +137,15 @@ namespace Caviar.Infrastructure
                 }
                 else if(value is string)
                 {
-                    resultMsg = new ResultMsg<object>();
                     resultMsg.Title = (string)value;
                 }
                 else
                 {
-                    resultMsg = new ResultMsg<object>(value);
+                    resultMsg.Data = value;
+                    if(statusCode != 200)
+                    {
+                        resultMsg.Title = "处理数据失败";
+                    }
                 }
             }
             resultMsg.Status = statusCode;
