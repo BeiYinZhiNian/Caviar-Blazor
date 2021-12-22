@@ -7,14 +7,14 @@
             <Space Size=@(("8", "8")) Wrap>
                 <SpaceItem>
                     <Select Mode="multiple"
-                            Placeholder="选择查询的字段"
-                            @bind-Values="@_selectedValues"
-                            TItemValue="string"
-                            TItem="string"
-                            Style="width: 200px;"
-                            EnableSearch
-                            OnSelectedItemsChanged="OnSelectedItemsChanged"
-                            AllowClear>
+                        Placeholder="选择查询的字段"
+                        @bind-Values="@_selectedValues"
+                        TItemValue="string"
+                        TItem="string"
+                        Style="width: 200px;"
+                        EnableSearch
+                        OnSelectedItemsChanged="OnSelectedItemsChanged"
+                        AllowClear>
                         <SelectOptions>
                             @if (ViewFields != null)
                             {
@@ -47,10 +47,10 @@
                             @if (field.IsEnum)
                             {
                                 <Select TItem="string"
-                                        TItemValue="string"
-                                        @bind-Value="@Query.QueryData[key]"
-                                        Placeholder="@($"{field.Entity.DisplayName}")"
-                                        Style="width:200px">
+                        TItemValue="string"
+                        @bind-Value="@Query.QueryData[key]"
+                        Placeholder="@($"{field.Entity.DisplayName}")"
+                        Style="width:200px">
                                     <SelectOptions>
                                         @foreach (var item in field.EnumValueName)
                                         {
@@ -121,7 +121,7 @@
             }
             if (isEnum)
             {
-                <Column Title="@item.Entity.DisplayName"  TData="string" Width="@item.Entity.TableWidth">
+                <Column Title="@item.Entity.DisplayName" TData="string" Width="@item.Entity.TableWidth">
                     @{
                         var obj = context.GetObjValue("Entity").GetObjValue(item.Entity.FieldName);
                         if (obj != null)
@@ -134,8 +134,9 @@
                 continue;
             }
             var entityType = item.EntityType.ToLower();
-                        
-            switch (entityType){
+
+            switch (entityType)
+            {
                 case "string":
                     <Column Title="@item.Entity.DisplayName" DataIndex="@fieldName" TData="string" Width="@item.Entity.TableWidth" />
                     break;
@@ -214,47 +215,47 @@
 
         if (Buttons != null && Buttons.Count > 0)
         {
-                List<SysMenuView> but = Buttons.Where(u => u.Entity.ButtonPosition == ButtonPosition.Row && u.Entity.MenuType == MenuType.Button).ToList();
-                if (but.Count > 0)
-                {
-                    <ActionColumn Title="操作">
-                        @if (but.Count >= 3)
-                        {
-                            <Dropdown>
-                                <Overlay>
-                                    <Menu>
-                                        @foreach (var item in but)
-                                        {
-                                            <MenuItem>
-                                                @CreatePackButton(item, context)
-                                            </MenuItem>
-                                        }
+            List<SysMenuView> but = Buttons.Where(u => u.Entity.ButtonPosition == ButtonPosition.Row && u.Entity.MenuType == MenuType.Button).ToList();
+            if (but.Count > 0)
+            {
+                <ActionColumn Title="操作">
+                    @if (but.Count >= 3)
+                    {
+                        <Dropdown>
+                            <Overlay>
+                                <Menu>
+                                    @foreach (var item in but)
+                                    {
+                                        <MenuItem>
+                                            @CreatePackButton(item, context)
+                                        </MenuItem>
+                                    }
 
-                                    </Menu>
-                                </Overlay>
-                                <ChildContent>
-                                    <a class="ant-dropdown-link" @onclick:preventDefault>
-                                        更多 <Icon Type="down" />
-                                    </a>
-                                </ChildContent>
-                            </Dropdown>
+                                </Menu>
+                            </Overlay>
+                            <ChildContent>
+                                <a class="ant-dropdown-link" @onclick:preventDefault>
+                                    更多 <Icon Type="down" />
+                                </a>
+                            </ChildContent>
+                        </Dropdown>
 
-                        }
-                        else
-                        {
-                            <Space>
-                                @foreach (var item in but)
-                                {
-                                    <SpaceItem>
-                                        @CreatePackButton(item, context)
-                                    </SpaceItem>
-                                }
-                            </Space>
+                    }
+                    else
+                    {
+                        <Space>
+                            @foreach (var item in but)
+                            {
+                                <SpaceItem>
+                                    @CreatePackButton(item, context)
+                                </SpaceItem>
+                            }
+                        </Space>
 
 
-                        }
-                    </ActionColumn>
-                }
+                    }
+                </ActionColumn>
+            }
         }
 
     }
@@ -269,7 +270,7 @@
 </div>
 
 
-@code{
+@code {
     RenderFragment CreatePackButton(SysMenuView menu, TData context)
     {
         RenderFragment render = null;
@@ -282,38 +283,43 @@
                                  OnConfirm="()=>ButtonClick(menu,context)">
         @CreateButton(menu, context)
     </Popconfirm>;
-}
-else
-{
-render = CreateButton(menu, context);
-}
-return render;
-}
-
-RenderFragment CreateButton(SysMenuView menu, TData context)
-{
-
-RenderFragment render = null;
-string type = menu.Entity.ButtonPosition == ButtonPosition.Default ? "primary" : "link";
-bool danger = menu.Entity.IsDoubleTrue == true ? true : false;
-render =@<Button Icon="@menu.Entity.Icon" Type="@type" Danger="danger" Style="margin-bottom:16px" OnClick="() => doubleTrueClick(menu, context)">
-    @if (menu.Entity.TargetType == TargetType.NewLabel)
-    {
-        <a href="@menu.Entity.Url" target="_blank">@menu.Entity.DisplayName</a>
+        }
+        else
+        {
+            render = CreateButton(menu, context);
+        }
+        return render;
     }
-    else
+
+    RenderFragment CreateButton(SysMenuView menu, TData context)
     {
+
+        RenderFragment render = null;
+        string type = menu.Entity.ButtonPosition == ButtonPosition.Default ? "primary" : "link";
+        bool danger = menu.Entity.IsDoubleTrue == true ? true : false;
+        
+        @if (menu.Entity.TargetType == TargetType.NewLabel)
+        {
+            render =
+            @<a href="@menu.Entity.Url" target="_blank"><Button Icon="@menu.Entity.Icon" Type="@type" Danger="danger" Style="margin-bottom:16px" OnClick="() => doubleTrueClick(menu, context)">
         @menu.Entity.DisplayName
+        </Button></a>
+            ;
+        }
+        else{
+            render =@<Button Icon="@menu.Entity.Icon" Type="@type" Danger="danger" Style="margin-bottom:16px" OnClick="() => doubleTrueClick(menu, context)">
+        @menu.Entity.DisplayName
+        </Button>;
+        }
+        
+        return render;
     }
-</Button>;
-return render;
-}
 
-void doubleTrueClick(SysMenuView menu, TData context)
-{
-if (menu.Entity.IsDoubleTrue) return;
-ButtonClick(menu, context);
-}
+    void doubleTrueClick(SysMenuView menu, TData context)
+    {
+        if (menu.Entity.IsDoubleTrue) return;
+        ButtonClick(menu, context);
+    }
 
-Func<PaginationTotalContext, string> showTotal = ctx => $"{ctx.Range.Item1}-{ctx.Range.Item2} 共 {ctx.Total} 条";
+    Func<PaginationTotalContext, string> showTotal = ctx => $"{ctx.Range.Item1}-{ctx.Range.Item2} 共 {ctx.Total} 条";
 }
