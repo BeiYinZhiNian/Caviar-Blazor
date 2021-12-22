@@ -10,7 +10,7 @@
 @inherits DataComponentBase<SysMenuView,SysMenu>
 @page "/SysMenu/CreateEntity"
 @page "/SysMenu/UpdateEntity"
-<Form @ref="_meunForm" Model="@DataSource" OnFinish="FormSubmit" ValidateMode="@FormValidateMode.Rules">
+<Form @ref="_meunForm" Model="@DataSource" OnFinish="FormSubmit" ValidateMode="@FormValidateMode.Rules" ValidateOnChange="true">
     <FormItem Label='@LanguageService[$"{CurrencyConstant.EntitysName}.Key"]'>
         <Input @bind-Value="@context.Entity.Key" Style="width:50%" />
     </FormItem>
@@ -36,17 +36,16 @@
         </Dropdown>
     </FormItem>
     <FormItem Label="菜单类型">
-        <CavEnum TData="MenuType" @bind-Value="@context.Entity.MenuType"
-                 OnChange="EventCallback.Factory.Create<MenuType>(this, CheckMenuType)"></CavEnum>
+        <EnumRadioGroup TEnum="MenuType" @bind-Value="context.Entity.MenuType" OnChange="EventCallback.Factory.Create<MenuType>(this, CheckMenuType)"></EnumRadioGroup>
     </FormItem>
     <FormItem Label="按钮位置" Style="@buttonStrle">
-        <CavEnum TData="ButtonPosition" @bind-Value="@context.Entity.ButtonPosition"></CavEnum>
+        <EnumRadioGroup TEnum="ButtonPosition" @bind-Value="context.Entity.ButtonPosition"></EnumRadioGroup>
     </FormItem>
     <FormItem Label="请求地址" Style="@visibility">
         <Input @bind-Value="@context.Entity.Url">
     </FormItem>
     <FormItem Label="打开方式" Style="@visibility">
-        <CavEnum TData="TargetType" @bind-Value="@context.Entity.TargetType"></CavEnum>
+        <EnumRadioGroup TEnum="TargetType" @bind-Value="context.Entity.TargetType"></EnumRadioGroup>
     </FormItem>
     <FormItem Style="@buttonStrle">
         <Checkbox @bind-Value="@context.Entity.IsDoubleTrue">需要二次确认</Checkbox>
