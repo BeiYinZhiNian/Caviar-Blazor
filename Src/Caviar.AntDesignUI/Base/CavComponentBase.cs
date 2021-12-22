@@ -105,6 +105,17 @@ namespace Caviar.AntDesignUI
             await OnInitializedAsync();
             StateHasChanged();
         }
+
+        public RadioOption<T>[] GetRadioOptions<T>()
+        {
+            var enumDic = CommonHelper.GetEnumModelHeader<T>(typeof(T), LanguageService);
+            List<RadioOption<T>> radioOptions = new List<RadioOption<T>>();
+            foreach (var item in enumDic)
+            {
+                radioOptions.Add(new RadioOption<T>() { Value = item.Key, Label = item.Value });
+            }
+            return radioOptions.ToArray();
+        }
     }
 
     public class UrlAccessor

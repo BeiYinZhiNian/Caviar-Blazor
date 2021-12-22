@@ -36,16 +36,18 @@
         </Dropdown>
     </FormItem>
     <FormItem Label="菜单类型">
-        <EnumRadioGroup TEnum="MenuType" @bind-Value="context.Entity.MenuType" OnChange="EventCallback.Factory.Create<MenuType>(this, CheckMenuType)"></EnumRadioGroup>
+        <EnumRadioGroup TEnum="MenuType" @bind-Value="context.Entity.MenuType" 
+        OnChange="EventCallback.Factory.Create<MenuType>(this, CheckMenuType)"
+            Options="GetRadioOptions<MenuType>()"></EnumRadioGroup>
     </FormItem>
     <FormItem Label="按钮位置" Style="@buttonStrle">
-        <EnumRadioGroup TEnum="ButtonPosition" @bind-Value="context.Entity.ButtonPosition"></EnumRadioGroup>
+        <EnumRadioGroup TEnum="ButtonPosition" @bind-Value="context.Entity.ButtonPosition" Options="GetRadioOptions<ButtonPosition>()"></EnumRadioGroup>
     </FormItem>
     <FormItem Label="请求地址" Style="@visibility">
         <Input @bind-Value="@context.Entity.Url">
     </FormItem>
     <FormItem Label="打开方式" Style="@visibility">
-        <EnumRadioGroup TEnum="TargetType" @bind-Value="context.Entity.TargetType"></EnumRadioGroup>
+        <EnumRadioGroup TEnum="TargetType" @bind-Value="context.Entity.TargetType"  Options="GetRadioOptions<TargetType>()"></EnumRadioGroup>
     </FormItem>
     <FormItem Style="@buttonStrle">
         <Checkbox @bind-Value="@context.Entity.IsDoubleTrue">需要二次确认</Checkbox>

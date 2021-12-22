@@ -272,18 +272,18 @@ namespace Caviar.SharedKernel
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static Dictionary<int, string> GetEnenuModelHeader(Type type,ILanguageService languageService)
+        public static Dictionary<T, string> GetEnumModelHeader<T>(Type type,ILanguageService languageService)
         {
             if(!type.IsEnum) return null;
             var enumFields = type.GetFields();
-            Dictionary<int, string> dic = null;
+            Dictionary<T, string> dic = null;
             if (enumFields != null && enumFields.Length >= 2)//枚举有一个隐藏的int所以要从下一位置开始
             {
-                dic = new Dictionary<int, string>();
+                dic = new Dictionary<T, string>();
                 for (int i = 0; i < enumFields.Length; i++)
                 {
                     if (enumFields[i].Name == "value__") continue;
-                    var value = (int)enumFields[i].GetValue(null);
+                    var value = (T)enumFields[i].GetValue(null);
                     var enumName = languageService[$"{CurrencyConstant.Enum}.{enumFields[i].Name}"];
                     dic.Add(value, enumName);
                 }

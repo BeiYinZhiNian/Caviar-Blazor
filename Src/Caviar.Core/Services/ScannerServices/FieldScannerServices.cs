@@ -130,7 +130,7 @@ namespace Caviar.Core
 
                     if (field.IsEnum)
                     {
-                        field.EnumValueName = CommonHelper.GetEnenuModelHeader(item.PropertyType, languageService);
+                        field.EnumValueName = CommonHelper.GetEnumModelHeader<int>(item.PropertyType, languageService);
                     }
                     if(isFieldTurnMeaning) field = FieldTurnMeaning(field);
                     fields.Add(field);
