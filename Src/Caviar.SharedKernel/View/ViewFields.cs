@@ -17,6 +17,10 @@ namespace Caviar.SharedKernel.View
         /// </summary>
         public string EntityType { get; set; }
         /// <summary>
+        /// 显示名称
+        /// </summary>
+        public string DisplayName { get; set; }
+        /// <summary>
         /// 字段值
         /// </summary>
         public object Value { get; set; }

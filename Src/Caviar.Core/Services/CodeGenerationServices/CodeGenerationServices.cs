@@ -155,7 +155,7 @@ namespace Caviar.Core.Services.CodeGenerationServices
             foreach (var item in headers)
             {
                 var txt = "";
-                var label = item.Entity.DisplayName;
+                var label = item.DisplayName;
                 if (string.IsNullOrEmpty(label))
                 {
                     label = item.Entity.FieldName;

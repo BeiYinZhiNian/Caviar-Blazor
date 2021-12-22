@@ -18,11 +18,6 @@ namespace Caviar.SharedKernel.Entities
         [StringLength(50, ErrorMessage = "LengthErrorMsg")]
         public string FieldName { get; set; }
         /// <summary>
-        /// 显示名称
-        /// </summary>
-        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
-        public string DisplayName { get; set; }
-        /// <summary>
         /// 获取类型的完全限定名，包括其命名空间，但不包括其名称空间
         /// </summary>
         [StringLength(50, ErrorMessage = "LengthErrorMsg")]

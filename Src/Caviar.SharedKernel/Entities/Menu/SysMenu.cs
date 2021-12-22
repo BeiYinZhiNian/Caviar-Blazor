@@ -16,12 +16,6 @@ namespace Caviar.SharedKernel.Entities
         [Required(ErrorMessage = "RequiredErrorMsg")]
         [StringLength(50, ErrorMessage = "LengthErrorMsg")]
         public string Key { get; set; }
-        /// <summary>
-        /// 用于menuName的显示，读取与语言配置文件
-        /// </summary>
-        [NotMapped]
-        [Required(ErrorMessage = "RequiredErrorMsg")]
-        public string DisplayName { get; set; }
 
         public MenuType MenuType { get; set; }
 

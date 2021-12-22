@@ -22,11 +22,7 @@ namespace Caviar.Infrastructure.API.Permission
         [HttpGet]
         public IActionResult GetEntitys()
         {
-            var entitys = FieldScannerServices.GetEntitys();
-            foreach (var item in entitys)
-            {
-                item.Entity.DisplayName = LanguageService[$"{CurrencyConstant.MenuBar}.{item.Entity.FieldName}"];
-            }
+            var entitys = FieldScannerServices.GetEntitys(LanguageService);
             return Ok(entitys);
         }
     }

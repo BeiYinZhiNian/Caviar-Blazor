@@ -15,13 +15,13 @@
         <Input @bind-Value="@context.Entity.Key" Style="width:50%" />
     </FormItem>
     <FormItem Label='@LanguageService[$"{CurrencyConstant.EntitysName}.DisplayName"]'>
-        <Input @bind-Value="@context.Entity.DisplayName" Style="width:50%" />
+        <Input @bind-Value="@context.DisplayName" Style="width:50%" />
     </FormItem>
     <FormItem Label="上层目录">
         <Dropdown>
             <Overlay>
                 <Tree ShowIcon DataSource="SysMenus"
-                      TitleExpression="x => x.DataItem.Entity.DisplayName"
+                      TitleExpression="x => x.DataItem.DisplayName"
                       ChildrenExpression="x => x.DataItem.Children"
                       IconExpression="x => x.DataItem.Entity.Icon"
                       IsLeafExpression="x => x.DataItem.Children?.Count == 0"

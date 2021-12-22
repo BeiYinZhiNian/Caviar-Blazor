@@ -100,19 +100,6 @@ namespace Caviar.Infrastructure.API.BaseApi
             var fullName = typeof(T).FullName;
             var fields = FieldScannerServices.GetClassFields(fieldName, fullName, LanguageService);
             fields = await permissionServices.GetFields(fields, fieldName, fullName);
-            foreach (var item in fields)
-            {
-                string key;
-                if (string.IsNullOrEmpty(item.Entity.DisplayName))
-                {
-                    key = $"{CurrencyConstant.EntitysName}.{item.Entity.FieldName}";
-                }
-                else
-                {
-                    key = $"{CurrencyConstant.EntitysName}.{item.Entity.DisplayName}";
-                }
-                item.Entity.DisplayName = LanguageService[key];
-            }
             return fields;
         }
 

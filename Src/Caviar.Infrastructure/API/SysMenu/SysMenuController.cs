@@ -34,12 +34,13 @@ namespace Caviar.Infrastructure.API.SysMenuController
 
         protected override List<SysMenuView> ToView(List<SysMenu> entity)
         {
-            foreach (var item in entity)
+            var vm = base.ToView(entity);
+            foreach (var item in vm)
             {
-                string key = $"{CurrencyConstant.MenuBar}.{item.Key}";
-                item.DisplayName = LanguageService[key];
+                string key = $"{CurrencyConstant.MenuBar}.{item.Entity.Key}";
+                item.DisplayName = LanguageService[key];//翻译显示名称
             }
-            return base.ToView(entity);
+            return vm;
         }
 
         [HttpGet]

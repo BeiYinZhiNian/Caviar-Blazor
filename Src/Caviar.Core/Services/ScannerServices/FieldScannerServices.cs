@@ -34,18 +34,18 @@ namespace Caviar.Core
         /// 获取继承了IBaseEntity实体信息
         /// </summary>
         /// <returns></returns>
-        public static List<ViewFields> GetEntitys()
+        public static List<ViewFields> GetEntitys(ILanguageService languageService)
         {
             var entityList = CommonHelper.GetEntityList();
             var fields = new List<ViewFields>();
             foreach (var item in entityList)
             {
-                var displayName = item.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
+                
                 fields.Add(new ViewFields() { 
+                    DisplayName = languageService[$"{CurrencyConstant.EntitysName}.{item.Name}"],
                     Entity = new SysFields()
                     {
                         FieldName = item.Name,
-                        DisplayName = displayName,
                         FullName = item.FullName
                     }
                 });
@@ -56,9 +56,9 @@ namespace Caviar.Core
         /// 获取指定实体类信息
         /// </summary>
         /// <returns></returns>
-        public static ViewFields GetEntity(string name, string fullName)
+        public static ViewFields GetEntity(string name, string fullName, ILanguageService languageService)
         {
-            var listFields = GetEntitys();
+            var listFields = GetEntitys(languageService);
             foreach (var item in listFields)
             {
                 if(item.Entity.FieldName == name && item.Entity.FullName == fullName)
@@ -118,13 +118,13 @@ namespace Caviar.Core
                         Entity = new SysFields()
                         {
                             FieldName = item.Name,
-                            DisplayName = dispLayName,
                             FieldLen = fieldLen,
                             FullName = type.FullName,
                             BaseFullName = baseType?.Name,
                             IsDisable = true,
                         },
                         EntityType = typeName,
+                        DisplayName = dispLayName,
                         IsEnum = item.PropertyType.IsEnum
                     };
 
