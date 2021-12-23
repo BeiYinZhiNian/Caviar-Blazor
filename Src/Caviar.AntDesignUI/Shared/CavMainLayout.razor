@@ -1,13 +1,24 @@
 ﻿@inherits CavLayoutBase
 <Layout Style="min-height:100vh;">
-    <Sider Collapsible CollapsedWidth="CollapsedWidth" Collapsed=@Collapsed 
+    @if (IsDrawer)
+    {
+        <Drawer Closable="true" Visible="!Collapsed" Placement="left" Title='GetLogo()' OnClose="_=>DrawerClose()">
+            <CavMenu Theme="MenuTheme.Light" InlineCollapsed="false" @bind-BreadcrumbItemCav="BreadcrumbItemCav"></CavMenu>
+        </Drawer>
+    }
+    else
+    {
+        <Sider Collapsible CollapsedWidth="CollapsedWidth" Collapsed=@Collapsed
            OnCollapse=@OnCollapse NoTrigger Breakpoint="@BreakpointType.Lg"
            Style="overflow: auto; height: 100vh; position: fixed; left: 0;">
-        <div class="logo" align="center">
-            <img src="@LogoImgSrc" height="32" />
-        </div>
-        <CavMenu InlineCollapsed="@Collapsed" @bind-BreadcrumbItemCav="BreadcrumbItemCav"></CavMenu>
-    </Sider>
+            <div class="logo" align="center">
+                <img src="@LogoImgSrc" height="32" />
+            </div>
+            <CavMenu InlineCollapsed="@Collapsed" @bind-BreadcrumbItemCav="BreadcrumbItemCav"></CavMenu>
+        </Sider>
+    }
+
+
     <Layout Style="@HeaderStyle">
         <Header Style="@UserConfig.HeaderStyle">
             @if (Collapsed)
@@ -39,12 +50,33 @@
         cursor: pointer;
         transition: color 0.3s;
     }
-    .trigger:hover {
-        color: #1890ff;
-    }
+
+        .trigger:hover {
+            color: #1890ff;
+        }
+
     .logo {
         height: 32px;
         margin: 16px;
     }
 
 </style>
+
+@code {
+
+
+    public RenderFragment GetLogo()
+    {
+        RenderFragment logo =
+    @<div class="logo" align="center">
+        <img src="@LogoImgSrc" height="32" />
+    </div>
+    ;
+        return logo;
+    }
+
+    void DrawerClose()
+    {
+        Collapsed = true;
+    }
+}

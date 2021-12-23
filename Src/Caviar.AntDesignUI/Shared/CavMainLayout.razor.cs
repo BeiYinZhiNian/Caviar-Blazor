@@ -80,6 +80,10 @@ namespace Caviar.AntDesignUI.Shared
         }
 
         int CollapsedWidth { get; set; } = 0;
+        /// <summary>
+        /// 是否使用遮罩
+        /// </summary>
+        bool IsDrawer { get; set; } = false;
 
         /// <summary>
         /// 按钮点击时触发
@@ -104,6 +108,7 @@ namespace Caviar.AntDesignUI.Shared
         async void CollapseCallback(bool collapsed)
         {
             var clientWidth = await JSRuntime.InvokeAsync<int>("getClientWidth");
+            IsDrawer = clientWidth < 576;
             if (collapsed)
             {
                 if (clientWidth >= 576)
@@ -121,7 +126,8 @@ namespace Caviar.AntDesignUI.Shared
             }
             else
             {
-                HeaderStyle = "margin-left: 200px";
+                if(!IsDrawer)//是否使用遮罩
+                    HeaderStyle = "margin-left: 200px";
                 LogoImgSrc = LogoImg;
             }
             StateHasChanged();

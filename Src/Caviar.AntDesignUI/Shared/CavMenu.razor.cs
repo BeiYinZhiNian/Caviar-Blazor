@@ -32,6 +32,8 @@ namespace Caviar.AntDesignUI.Shared
 
         [Parameter]
         public MenuItem BreadcrumbItemCav { get; set; }
+        [Parameter]
+        public MenuTheme Theme { get; set; } = MenuTheme.Dark;
 
         public Menu AntDesignMenu { get; set; }
         [Parameter]
