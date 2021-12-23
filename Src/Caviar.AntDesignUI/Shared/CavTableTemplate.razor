@@ -98,8 +98,9 @@
 
 
 <Table DataSource="DataSource"
-       ScrollX="2300"
-       Bordered="true"
+       @ref="Table"
+       ScrollX="@ScrollX"
+       Bordered="Bordered"
        HidePagination
        PageSize="PageSize"
        TItem="TData"
@@ -138,7 +139,7 @@
             switch (entityType)
             {
                 case "string":
-                    <Column Title="@item.DisplayName" DataIndex="@fieldName" TData="string" Width="@item.Entity.TableWidth" />
+                    <Column Title="@item.DisplayName" DataIndex="@fieldName" TData="string" Width="@item.Entity.TableWidth" Ellipsis="IsEllipsis"/>
                     break;
                 case "int32":
                     <Column Title="@item.DisplayName" DataIndex="@fieldName" TData="int?" />
@@ -218,7 +219,7 @@
             List<SysMenuView> but = Buttons.Where(u => u.Entity.ButtonPosition == ButtonPosition.Row && u.Entity.MenuType == MenuType.Button).ToList();
             if (but.Count > 0)
             {
-                <ActionColumn Title="操作">
+                <ActionColumn Title="操作" Width="@(but.Count>=3?"100":"200")" Fixed="@Fixed">
                     @if (but.Count >= 3)
                     {
                         <Dropdown>
@@ -243,7 +244,7 @@
                     }
                     else
                     {
-                        <Space>
+                        <Space Size=@("small")>
                             @foreach (var item in but)
                             {
                                 <SpaceItem>
@@ -251,8 +252,6 @@
                                 </SpaceItem>
                             }
                         </Space>
-
-
                     }
                 </ActionColumn>
             }
@@ -301,13 +300,13 @@
         @if (menu.Entity.TargetType == TargetType.NewLabel)
         {
             render =
-            @<a href="@menu.Entity.Url" target="_blank"><Button Icon="@menu.Entity.Icon" Type="@type" Danger="danger" Style="margin-bottom:16px" OnClick="() => doubleTrueClick(menu, context)">
+            @<a href="@menu.Entity.Url" target="_blank"><Button Icon="@menu.Entity.Icon" Type="@type" Danger="danger" OnClick="() => doubleTrueClick(menu, context)">
         @menu.DisplayName
         </Button></a>
             ;
         }
         else{
-            render =@<Button Icon="@menu.Entity.Icon" Type="@type" Danger="danger" Style="margin-bottom:16px" OnClick="() => doubleTrueClick(menu, context)">
+            render =@<Button Icon="@menu.Entity.Icon" Type="@type" Danger="danger" OnClick="() => doubleTrueClick(menu, context)">
         @menu.DisplayName
         </Button>;
         }

@@ -21,6 +21,30 @@ namespace Caviar.AntDesignUI.Shared
         /// </summary>
         [Inject]
         HttpHelper Http { get; set; }
+        /// <summary>
+        /// 表格
+        /// </summary>
+        [Parameter]
+        public Table<TData> Table { get; set; }
+        /// <summary>
+        /// 是否自动忽略过长的字段
+        /// </summary>
+        [Parameter]
+        public bool IsEllipsis { get; set; }
+        /// <summary>
+        /// 固定右侧操作列，设为空则不固定
+        /// </summary>
+        [Parameter]
+        public string Fixed { get; set; } = "right";
+
+        [Parameter]
+        public string ScrollX { get; set; } = "2800";
+        /// <summary>
+        /// 包含边界
+        /// </summary>
+        [Parameter]
+        public bool Bordered { get; set; } = false;
+
         [Inject]
         MessageService MessageService { get; set; }
         /// <summary>
