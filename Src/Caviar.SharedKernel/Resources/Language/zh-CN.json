@@ -85,7 +85,8 @@
       "CodeGeneration": "代码生成",
       "CreateEntity": "创建",
       "DeleteEntity": "删除",
-      "UpdateEntity": "修改"
+      "UpdateEntity": "修改",
+      "Select": "选择"
     },
     "ResuleMsg": {
       "Title": {

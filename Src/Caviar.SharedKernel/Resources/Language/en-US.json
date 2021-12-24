@@ -75,6 +75,16 @@
     "ErrorMessage": {
       "LengthErrorMsg": "{EntitysName} Input length cannot exceed {length} character",
       "RequiredErrorMsg": "{EntitysName} Is required"
+    },
+    "MenuBar": {
+      "Home": "Home",
+      "SysManagement": "SysManagement",
+      "ApplicationUser": "User",
+      "SysMenu": "Menu",
+      "CodeGeneration": "CodeGeneration",
+      "CreateEntity": "Create",
+      "DeleteEntity": "Delete",
+      "UpdateEntity": "Update"
     }
   }
 }
