@@ -24,10 +24,10 @@ namespace Caviar.AntDesignUI.Helper
             ContentStyle = $"margin: 6px 16px;padding: 24px;min-height: 280px;{Background}";
             HeaderStyle = $"padding:0;{Background}";
             _ILocalStorageService = localStorage;
-            var cultureName = localStorage.GetItemAsStringAsync(CurrencyConstant.LanguageHeader);
+            //var cultureName = localStorage.GetItemAsStringAsync(CurrencyConstant.LanguageHeader);
             LanguageService = languageService;
-            LanguageService.SetLanguage(cultureName);
-            LanguageService.LanguageChanged += LanguageService_LanguageChanged;
+            //LanguageService.SetLanguage(cultureName);
+            //LanguageService.LanguageChanged += LanguageService_LanguageChanged;
             
         }
 

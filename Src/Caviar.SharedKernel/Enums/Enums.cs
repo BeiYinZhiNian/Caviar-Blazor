@@ -78,4 +78,18 @@ namespace Caviar.SharedKernel
         Role,
         UserGroup
     }
+
+    public enum HybridType
+    {
+        ServerSide,
+        WebAssembly,
+        HybridManual,
+        HybridOnNavigation,
+        HybridOnReady
+    }
+
+    public class HybridOptions
+    {
+        public HybridType HybridType { get; set; }
+    }
 }
