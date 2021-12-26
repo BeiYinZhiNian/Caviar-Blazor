@@ -3,16 +3,16 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:13163",
+      "applicationUrl": "http://localhost:55246",
       "sslPort": 0
     }
   },
   "profiles": {
-    "Caviar.Demo.Server": {
+    "Caviar.Demo.Hybrid": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:5056",
+      "applicationUrl": "http://localhost:5252",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

@@ -1,0 +1,38 @@
+﻿@page "_Host"
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Caviar.AntDesignUI
+@using Caviar.Infrastructure
+@using Caviar.SharedKernel
+@using Microsoft.Extensions.Options
+
+@inject IOptions<HybridOptions> HybridOptions
+@{
+    var hybridType = HybridOptions?.Value?.HybridType ?? HybridType.HybridOnNavigation; 
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Caviar</title>
+    <base href="/" />
+    <link href="css/site.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <app>
+         <component type="typeof(Caviar.AntDesignUI.App)" render-mode="ServerPrerendered" />
+         <persist-component-state />
+    </app>
+    <script src="_framework/blazor.server.js"></script>
+
+    <link href="_content/AntDesign/css/ant-design-blazor.css" rel="stylesheet" id="uiCss" media="screen">
+    <script src="_content/AntDesign/js/ant-design-blazor.js"></script>
+    <script src="_content/Caviar.AntDesignUI/js/Caviar.js"></script>
+    <script src="_content/Caviar.AntDesignUI/js/prism.js"></script>
+    <link href="_content/Caviar.AntDesignUI/js/prism.css" rel="stylesheet" />
+</body>
+
+</html>

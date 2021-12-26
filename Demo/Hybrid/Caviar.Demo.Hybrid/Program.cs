@@ -1,6 +1,4 @@
-using Caviar.AntDesignUI;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+﻿using Caviar.AntDesignUI;
 
 var builder = WebApplication.CreateBuilder(args);
 

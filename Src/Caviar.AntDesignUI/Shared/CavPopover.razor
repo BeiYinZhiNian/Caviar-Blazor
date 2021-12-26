@@ -21,11 +21,11 @@
     protected override async Task OnInitializedAsync()
     {
 
-        var authentication = await authenticationStateTask.GetAuthenticationStateAsync();
-        if (authentication.User.Identity.IsAuthenticated)
-        {
-            userName = authentication.User.Identity.Name;
-        }
+        //var authentication = await authenticationStateTask.GetAuthenticationStateAsync();
+        //if (authentication.User.Identity.IsAuthenticated)
+        //{
+        //    userName = authentication.User.Identity.Name;
+        //}
 
         await base.OnInitializedAsync();
     }

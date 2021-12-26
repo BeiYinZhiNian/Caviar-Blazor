@@ -78,8 +78,8 @@ namespace Caviar.AntDesignUI.Helper
 
         async Task<ResultMsg<T>> HttpRequest<K,T>(string address,string model, K data)
         {
-            var token = await _localStorageService.GetItemAsync<string>(Config.TokenName);
-            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+            //var token = await _localStorageService.GetItemAsync<string>(Config.TokenName);
+            //HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
             ResultMsg<T> result;
             try
             {

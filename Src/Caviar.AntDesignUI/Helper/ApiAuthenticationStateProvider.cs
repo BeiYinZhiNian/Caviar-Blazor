@@ -25,7 +25,7 @@ namespace Caviar.AntDesignUI
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var savedToken = await _localStorage.GetItemAsync<string>(Config.TokenName);
+            var savedToken = "";
 
             if (string.IsNullOrWhiteSpace(savedToken))
             {

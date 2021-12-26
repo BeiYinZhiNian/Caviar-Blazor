@@ -47,12 +47,12 @@ namespace Caviar.AntDesignUI.Shared
         protected override async Task OnParametersSetAsync()
         {
             await base.OnParametersSetAsync();
-            var authenticationState = await authenticationStateTask.GetAuthenticationStateAsync();
+            //var authenticationState = await authenticationStateTask.GetAuthenticationStateAsync();
             
-            if (!authenticationState.User.Identity.IsAuthenticated)
-            {
-                NavigationManager.NavigateTo(Config.PathList.LoginPagePath);
-            }
+            //if (!authenticationState.User.Identity.IsAuthenticated)
+            //{
+            //    NavigationManager.NavigateTo(Config.PathList.LoginPagePath);
+            //}
         }
         protected override async Task OnInitializedAsync()
         {
