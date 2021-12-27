@@ -29,12 +29,11 @@ namespace Caviar.AntDesignUI
             services.AddScoped<ModalService>();
             services.AddScoped<MessageService>();
             services.AddSingleton<ILanguageService, InAssemblyLanguageService>();
-
+            services.AddScoped<HostAuthenticationStateProvider>();
+            services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<HostAuthenticationStateProvider>());
             services.AddScoped<IPrismHighlighter, PrismHighlighter>();
             services.AddBlazoredLocalStorage();
             services.AddAuthorizationCore();
-            services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
-            services.AddScoped<AuthService>();
             if (assemblies != null)
             {
                 AdditionalAssemblies = new List<Assembly>();
@@ -50,7 +49,11 @@ namespace Caviar.AntDesignUI
     public class PathList
     {
         public string Home { get; set; } = "/";
-        public string LoginPagePath { get; set; } = "/ApplicationUser/Login";
+        public string Login { get; set; } = "/ApplicationUser/Login";
+
+        public string CurrentUserInfo { get; set; } = "/ApplicationUser/CurrentUserInfo";
+
+        public string Logout { get; set; } = "/ApplicationUser/Logout";
 
         public string MyDetails { get; set; } = "/ApplicationUser/MyDetails";
 

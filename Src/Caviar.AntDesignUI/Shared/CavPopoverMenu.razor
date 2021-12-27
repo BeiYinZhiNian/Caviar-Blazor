@@ -10,7 +10,7 @@
         </a>
     </MenuItem>
     <MenuDivider />
-    <MenuItem @key="3" OnClick="Logout">
+    <MenuItem @key="3" OnClick="BeginSignOut">
         退出登录
     </MenuItem>
 </Menu>
@@ -18,19 +18,17 @@
     [Inject]
     IJSRuntime jSRuntime { get; set; }
     [Inject]
-    NavigationManager navigationManager { get; set; }
-    [Inject]
     HttpHelper Http { get; set; }
     [Inject]
     MessageService messageService { get; set; }
     [Inject]
     CavModal CavModal { get; set; }
-    [Inject]
-    AuthService AuthService { get; set; }
 
+    [Inject] NavigationManager Navigation { get; set; }
+    [Inject] HostAuthenticationStateProvider AuthStateProvider { get; set; }
     public void UserCenter()
     {
-        navigationManager.NavigateTo(Config.PathList.MyDetails);
+        Navigation.NavigateTo(Config.PathList.MyDetails);
     }
 
     public async void ChangePassword()
@@ -38,9 +36,16 @@
         await CavModal.Create(Config.PathList.UpdatePwd, "修改密码");
     }
 
-    public async Task Logout()
+    private async Task BeginSignOut()
     {
-        await AuthService.Logout();
-        navigationManager.NavigateTo(Config.PathList.LoginPagePath);
+        var result = await AuthStateProvider.Logout();
+        if (!string.IsNullOrEmpty(result))
+        {
+            Navigation.NavigateTo(Config.PathList.Logout, forceLoad: true);
+        }
+        else
+        {
+            Navigation.NavigateTo(Config.PathList.Home);
+        }
     }
 }

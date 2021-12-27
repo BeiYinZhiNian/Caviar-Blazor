@@ -13,6 +13,8 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Configuration;
 using Caviar.SharedKernel;
+using Caviar.SharedKernel.Entities.User;
+using Caviar.SharedKernel.Interface;
 
 namespace Caviar.Infrastructure.API
 {
@@ -20,6 +22,7 @@ namespace Caviar.Infrastructure.API
     {
         protected readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+
         public ApplicationUserController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager)
         {
@@ -47,35 +50,39 @@ namespace Caviar.Infrastructure.API
         }
 
         [HttpPost]
-        public virtual async Task<IActionResult> Login(ApplicationUserView login)
+        public virtual async Task<IActionResult> Login(UserLogin login, string returnUrl)
         {
-            ResultMsg<string> resultMsg = new ResultMsg<string>();
-            var result = await _signInManager.PasswordSignInAsync(login.Entity.UserName, login.Entity.PasswordHash, false, false);
+            var user = await _userManager.FindByNameAsync(login.UserName);
+            if (user == null) return BadRequest(LanguageService["Username and password are invalid"]);
+            var singInResult = await _signInManager.CheckPasswordSignInAsync(user, login.Password, false);
+            if (!singInResult.Succeeded) return BadRequest(LanguageService["Username and password are invalid"]);
+            await _signInManager.SignInAsync(user, login.RememberMe);
+            return Ok(new ResultMsg() { Title = LanguageService["Login Succeeded"], Url = returnUrl });
+        }
 
-            if (!result.Succeeded) 
+        [HttpGet("/[action]")]
+        public async Task<IActionResult> SignInActual(string t)
+        {
+            var data = t;
+            var parts = data.Split('|');
+
+            var identityUser = await _userManager.FindByIdAsync(parts[0]);
+
+            var isTokenValid = await _userManager.VerifyUserTokenAsync(identityUser, TokenOptions.DefaultProvider, "SignIn", parts[1]);
+
+            if (isTokenValid)
             {
-                resultMsg.Title = "Username and password are invalid";
-                return BadRequest(resultMsg);
+                await _signInManager.SignInAsync(identityUser, true);
+                if (parts.Length == 3 && Url.IsLocalUrl(parts[2]))
+                {
+                    return Redirect(parts[2]);
+                }
+                return Redirect("/");
             }
-            var claims = new[]
+            else
             {
-                new Claim(ClaimTypes.Name, login.Entity.UserName)
-            };
-            var jwt = Configure.CaviarConfig.JWTOptions;
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.JwtSecurityKey));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expiry = DateTime.Now.AddDays(Convert.ToInt32(jwt.JwtExpiryInDays));
-
-            var token = new JwtSecurityToken(
-                jwt.JwtIssuer,
-                jwt.JwtAudience,
-                claims,
-                expires: expiry,
-                signingCredentials: creds
-            );
-            resultMsg.Data = new JwtSecurityTokenHandler().WriteToken(token);
-            resultMsg.Title = "Login Succeeded";
-            return Ok(resultMsg);
+                return Unauthorized("STOP!");
+            }
         }
     }
 }

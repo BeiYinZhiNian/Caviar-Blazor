@@ -3,7 +3,16 @@
         <Popover ContentTemplate="@_popoverMenu" Placement="@Placement.BottomRight">
             <Button Type="@ButtonType.Text">
                 <Avatar Style="background-color: #87d068" Src="" Icon="user" />
-                @userName
+                <AuthorizeView Context="_">
+                    <NotAuthorized>
+                        未登录用户
+                    </NotAuthorized>
+                </AuthorizeView>
+                <AuthorizeView Context="authCountext">
+                    <Authorized>
+                        @authCountext.User.Identity.Name
+                    </Authorized>
+                </AuthorizeView>
             </Button>
         </Popover>
     </SpaceItem>
@@ -17,18 +26,7 @@
 @code{
     [Inject]
     private AuthenticationStateProvider authenticationStateTask { get; set; }
-    string userName { get; set; } = "未登录用户";
-    protected override async Task OnInitializedAsync()
-    {
 
-        //var authentication = await authenticationStateTask.GetAuthenticationStateAsync();
-        //if (authentication.User.Identity.IsAuthenticated)
-        //{
-        //    userName = authentication.User.Identity.Name;
-        //}
-
-        await base.OnInitializedAsync();
-    }
     RenderFragment _popoverMenu =
     @<CavPopoverMenu></CavPopoverMenu>
     ;

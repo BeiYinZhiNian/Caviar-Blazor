@@ -81,10 +81,25 @@ namespace Caviar.SharedKernel
 
     public enum HybridType
     {
+        /// <summary>
+        /// Application only works as Server
+        /// </summary>
         ServerSide,
+        /// <summary>
+        /// Application only works as WebAssembly
+        /// </summary>
         WebAssembly,
+        /// <summary>
+        /// Switch to WebAssembly manually by calling switchToWasm
+        /// </summary>
         HybridManual,
+        /// <summary>
+        /// Switch to WebAssembly when navigating
+        /// </summary>
         HybridOnNavigation,
+        /// <summary>
+        /// Switch to WebAssembly as soon as it loads
+        /// </summary>
         HybridOnReady
     }
 

@@ -1,9 +1,7 @@
 ﻿using Caviar.AntDesignUI;
 using Caviar.Infrastructure;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 namespace Caviar.Demo.Server
 {
@@ -23,7 +21,7 @@ namespace Caviar.Demo.Server
             services.AddRazorPages();
             services.AddServerSideBlazor();
             var ServerUrl = $"{Configuration["urls"]}/api/";
-            services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(ServerUrl) });
+            services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(ServerUrl) });
             services.AddAdminCaviar(new Type[] { typeof(Program) });
             services.AddCors(options =>
             {
@@ -37,20 +35,19 @@ namespace Caviar.Demo.Server
             services.AddCaviarDbContext(options =>
                 options.UseSqlServer(
             Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Caviar.Demo.WebApi")));
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = Configuration["JwtIssuer"],
-                        ValidAudience = Configuration["JwtAudience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSecurityKey"]))
-                    };
-                });
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+
+                options.Lockout.AllowedForNewUsers = true;
+                options.Lockout.MaxFailedAccessAttempts = 10;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+
+                options.User.RequireUniqueEmail = true;
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

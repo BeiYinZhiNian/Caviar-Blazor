@@ -3,6 +3,7 @@ using Blazored.LocalStorage;
 using Caviar.AntDesignUI.Helper;
 using Caviar.SharedKernel;
 using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.User;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
@@ -20,27 +21,26 @@ namespace Caviar.AntDesignUI.Pages.User
 {
     public partial class Login
     {
-        public ApplicationUser ApplicationUser { get; set; } = new ApplicationUser() { UserName = "admin",PasswordHash= "1031622947@qq.COM" };
+        public UserLogin ApplicationUser { get; set; } = new UserLogin() { UserName = "admin",Password= "1031622947@qq.COM" };
 
         [CascadingParameter]
         public EventCallback LayoutStyleCallBack { get; set; }
-        [Inject]
-        ILocalStorageService localStorage { get; set; }
+
+        [Inject] 
+        HostAuthenticationStateProvider AuthStateProvider { get; set; }
 
         public async void SubmitLogin()
         {
             
             Loading = true;
-            ApplicationUserView applicationUser = new ApplicationUserView() { Entity = ApplicationUser };
-            var result = await HttpService.PostJson<ApplicationUserView, string>(Url["login"], applicationUser);
-            ApplicationUser.PasswordHash = "";
+            var returnUrl = HttpUtility.ParseQueryString(new Uri(NavigationManager.Uri).Query)["returnUrl"];
+            var result = await AuthStateProvider.Login(ApplicationUser, returnUrl);
+            ApplicationUser.Password = "";
             Loading = false;
             if (result.Status == 200)
             {
-                await localStorage.SetItemAsync(Config.TokenName, result.Data);
-                HttpService.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.Title);
-                NavigationManager.NavigateTo(Config.PathList.Home);
-                await MessageService.Success(result.Title);
+                NavigationManager.NavigateTo(result.Url,forceLoad:true);
+                _ = MessageService.Success(result.Title);
                 return;
             }
             this.StateHasChanged();

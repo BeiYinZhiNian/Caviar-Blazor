@@ -21,14 +21,12 @@ namespace Caviar.AntDesignUI.Helper
         NavigationManager _navigationManager;
         MessageService _message;
         IJSRuntime _jSRuntime;
-        ILocalStorageService _localStorageService;
         public string TokenName => CurrencyConstant.Authorization;
         public HttpHelper(HttpClient http, 
             NotificationService _notice,
             NavigationManager navigationManager, 
             MessageService message,
             IJSRuntime JsRuntime,
-            ILocalStorageService localStorageService,
             UserConfig userConfig)
         {
             HttpClient = http;
@@ -36,7 +34,6 @@ namespace Caviar.AntDesignUI.Helper
             _navigationManager = navigationManager;
             _message = message;
             _jSRuntime = JsRuntime;
-            _localStorageService = localStorageService;
             LanguageService_LanguageChanged(null, userConfig.LanguageService.CurrentCulture);
             userConfig.LanguageService.LanguageChanged += LanguageService_LanguageChanged;
         }
@@ -78,8 +75,6 @@ namespace Caviar.AntDesignUI.Helper
 
         async Task<ResultMsg<T>> HttpRequest<K,T>(string address,string model, K data)
         {
-            //var token = await _localStorageService.GetItemAsync<string>(Config.TokenName);
-            //HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
             ResultMsg<T> result;
             try
             {
