@@ -15,7 +15,7 @@ namespace Caviar.Demo.AntDesignUI
             builder.RootComponents.Add<Caviar.AntDesignUI.App>("#app");
             var ServerUrl = "http://localhost:5215/api/";
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(ServerUrl) });
-            builder.Services.AddCaviar(new Type[] { typeof(Program) });
+            builder.Services.AddAdminCaviar(new Type[] { typeof(Program) });
             await builder.Build().RunAsync();
         }
     }

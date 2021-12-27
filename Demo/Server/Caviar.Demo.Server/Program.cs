@@ -1,28 +1,19 @@
-using Caviar.AntDesignUI;
+﻿
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
-var ServerUrl = "http://localhost:5215/api/";
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(ServerUrl) });
-builder.Services.AddCaviar(new Type[] { typeof(Program) });
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+namespace Caviar.Demo.Server
 {
-    app.UseExceptionHandler("/Error");
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CreateHostBuilder(args).Build().Run();
+        }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
+    }
 }
-
-
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.MapBlazorHub();
-app.MapFallbackToPage("/_Host");
-
-app.Run();

@@ -20,7 +20,7 @@ namespace Caviar.AntDesignUI
 
         public static string TokenName { get; } = "authToken";
 
-        public static IServiceCollection AddCaviar(this IServiceCollection services, Type[] assemblies)
+        public static IServiceCollection AddAdminCaviar(this IServiceCollection services, Type[] assemblies)
         {
             services.AddAntDesign();
             services.AddTransient<HttpHelper>();
