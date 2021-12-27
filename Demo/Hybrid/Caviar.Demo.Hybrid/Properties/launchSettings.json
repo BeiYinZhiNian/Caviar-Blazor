@@ -10,12 +10,13 @@
   "profiles": {
     "Caviar.Demo.Hybrid": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:5252",
+      "launchUrl": "http://localhost:5215",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "http://localhost:5215",
+      "dotnetRunMessages": true
     },
     "IIS Express": {
       "commandName": "IISExpress",

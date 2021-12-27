@@ -23,11 +23,11 @@ namespace Caviar.AntDesignUI
         public static IServiceCollection AddAdminCaviar(this IServiceCollection services, Type[] assemblies)
         {
             services.AddAntDesign();
-            services.AddTransient<HttpHelper>();
-            services.AddTransient<CavModal>();
-            services.AddTransient<UserConfig>();
-            services.AddTransient<ModalService>();
-            services.AddTransient<MessageService>();
+            services.AddScoped<HttpHelper>();
+            services.AddScoped<CavModal>();
+            services.AddScoped<UserConfig>();
+            services.AddScoped<ModalService>();
+            services.AddScoped<MessageService>();
             services.AddSingleton<ILanguageService, InAssemblyLanguageService>();
 
             services.AddScoped<IPrismHighlighter, PrismHighlighter>();
