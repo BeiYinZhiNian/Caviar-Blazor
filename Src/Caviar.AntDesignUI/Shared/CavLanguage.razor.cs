@@ -13,9 +13,11 @@ namespace Caviar.AntDesignUI.Shared
     public partial class CavLanguage
     {
         [Inject]
-        public UserConfig UserConfig { get; set; }
-        public NavLinkMatch RouterMatch { get; set; } = NavLinkMatch.Prefix;
-        public List<(string CultureName, string ResourceName)> LanguageList { get; set; }
+        UserConfig UserConfig { get; set; }
+        [Inject]
+        NavigationManager NavigationManager { get; set; }
+        NavLinkMatch RouterMatch { get; set; } = NavLinkMatch.Prefix;
+        List<(string CultureName, string ResourceName)> LanguageList { get; set; }
 
         protected override Task OnInitializedAsync()
         {
@@ -25,7 +27,7 @@ namespace Caviar.AntDesignUI.Shared
 
         public void SelectLanguage(MenuItem menuItem)
         {
-            UserConfig.LanguageService.SetLanguage(menuItem.Key);
+            NavigationManager.NavigateTo($"{Config.PathList.SetCookieLanguage}?acceptLanguage={menuItem.Key}&returnUrl={NavigationManager.Uri}", true);
         }
     }
 }

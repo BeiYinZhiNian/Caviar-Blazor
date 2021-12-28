@@ -59,6 +59,10 @@ namespace Caviar.AntDesignUI
 
         public string UpdatePwd { get; set; } = "/ApplicationUserUpdatePwd";
 
+
+
         public string GetApiList { get; set; } = "SysMenu/GetApiList";
+
+        public string SetCookieLanguage { get; set; } = "api/SysMenu/SetCookieLanguage";
     }
 }

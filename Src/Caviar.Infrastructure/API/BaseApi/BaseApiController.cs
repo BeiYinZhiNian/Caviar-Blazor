@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Caviar.SharedKernel.View;
+using Microsoft.AspNetCore.Http;
+using System;
 
 namespace Caviar.Infrastructure.API.BaseApi
 {
@@ -40,7 +42,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             //请求参数
             Interactor.ActionArguments = context.ActionArguments;
             
-            var acceptLanguage = context.HttpContext.Request.Headers[CurrencyConstant.LanguageHeader];
+            var acceptLanguage = context.HttpContext.Request.Cookies.SingleOrDefault(c => c.Key == CurrencyConstant.LanguageHeader).Value;
             SetLanguage(acceptLanguage);
         }
 
@@ -54,6 +56,7 @@ namespace Caviar.Infrastructure.API.BaseApi
                 LanguageService.SetLanguage(culture);
             }
         }
+
 
         public override void OnActionExecuted(ActionExecutedContext context)
         {

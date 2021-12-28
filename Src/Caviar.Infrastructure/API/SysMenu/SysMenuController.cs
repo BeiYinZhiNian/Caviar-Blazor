@@ -2,6 +2,7 @@
 using Caviar.SharedKernel;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -64,6 +65,27 @@ namespace Caviar.Infrastructure.API.SysMenuController
             }
             await MenuServices.DeleteEntity(vm.Entity);
             return Ok();
+        }
+
+
+        [HttpGet]
+        public IActionResult SetCookieLanguage(string acceptLanguage, string returnUrl)
+        {
+            var idCookiaName = CurrencyConstant.LanguageHeader;
+            var idCookieOptions = new CookieOptions
+            {
+                Path = "/",
+                Secure = true,
+                HttpOnly = true,
+                IsEssential = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.Now.AddYears(100),
+            };
+            HttpContext.Response.Cookies.Append(
+                key: idCookiaName,
+                value: acceptLanguage,
+                options: idCookieOptions);
+            return Redirect(returnUrl);
         }
     }
 }

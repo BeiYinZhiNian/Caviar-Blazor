@@ -44,7 +44,7 @@ namespace Caviar.Infrastructure
             new SysDataInit(app.ApplicationServices).StartInit().Wait();
             app.Use((context, next) =>
             {
-                var idCookiaName = "hubrid-instance-id";
+                var idCookiaName = CurrencyConstant.LanguageHeader;
                 if (!context.Request.Cookies.Any(c => c.Key == idCookiaName))
                 {
                     var idCookieOptions = new CookieOptions
@@ -58,7 +58,7 @@ namespace Caviar.Infrastructure
                     };
                     context.Response.Cookies.Append(
                         key: idCookiaName,
-                        value: Guid.NewGuid().ToString(),
+                        value: "zh-CN",
                         options: idCookieOptions);
                 }
                 return next();

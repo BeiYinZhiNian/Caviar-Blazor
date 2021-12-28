@@ -26,27 +26,14 @@ namespace Caviar.AntDesignUI.Helper
             NotificationService _notice,
             NavigationManager navigationManager, 
             MessageService message,
-            IJSRuntime JsRuntime,
-            UserConfig userConfig)
+            IJSRuntime JsRuntime)
         {
             HttpClient = http;
             _notificationService = _notice;
             _navigationManager = navigationManager;
             _message = message;
             _jSRuntime = JsRuntime;
-            LanguageService_LanguageChanged(null, userConfig.LanguageService.CurrentCulture);
-            userConfig.LanguageService.LanguageChanged += LanguageService_LanguageChanged;
         }
-
-        private void LanguageService_LanguageChanged(object sender, System.Globalization.CultureInfo e)
-        {
-            if (HttpClient.DefaultRequestHeaders.Contains(CurrencyConstant.LanguageHeader))
-            {
-                HttpClient.DefaultRequestHeaders.Remove(CurrencyConstant.LanguageHeader);
-            }
-            HttpClient.DefaultRequestHeaders.Add(CurrencyConstant.LanguageHeader, e.Name);
-        }
-
 
         public HttpClient HttpClient { get; }
         public async Task<ResultMsg<T>> GetJson<T>(string address)

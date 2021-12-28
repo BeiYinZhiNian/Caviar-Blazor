@@ -3,6 +3,7 @@ using Caviar.SharedKernel;
 using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.AspNetCore.Http;
 using Microsoft.JSInterop;
 using System;
 using System.Collections;
@@ -16,26 +17,16 @@ namespace Caviar.AntDesignUI.Helper
     {
         public string White = "#F8F8FF";
 
-        protected ILocalStorageService _ILocalStorageService { get; set; }
-        public UserConfig(IJSRuntime jSRuntime, ILanguageService languageService,ILocalStorageService localStorage)
+
+        public UserConfig(IJSRuntime jSRuntime, ILanguageService languageService, IHttpContextAccessor httpContext)
         {
             JSRuntime = jSRuntime;
             Background = $"background:{White};";
             ContentStyle = $"margin: 6px 16px;padding: 24px;min-height: 280px;{Background}";
             HeaderStyle = $"padding:0;{Background}";
-            _ILocalStorageService = localStorage;
-            //var cultureName = localStorage.GetItemAsStringAsync(CurrencyConstant.LanguageHeader);
             LanguageService = languageService;
-            //LanguageService.SetLanguage(cultureName);
-            //LanguageService.LanguageChanged += LanguageService_LanguageChanged;
-            
-        }
-
-        private void LanguageService_LanguageChanged(object sender, System.Globalization.CultureInfo e)
-        {
-            _ILocalStorageService.SetItemAsStringAsync(CurrencyConstant.LanguageHeader, e.Name);
-            RefreshMenuAction?.Invoke();
-            RefreshCurrentPage?.Invoke();
+            var language = httpContext.HttpContext.Request.Cookies.SingleOrDefault(c => c.Key == CurrencyConstant.LanguageHeader).Value;
+            LanguageService.SetLanguage(language);
         }
 
         public IJSRuntime JSRuntime { get; set; }

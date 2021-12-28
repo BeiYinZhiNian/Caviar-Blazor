@@ -54,8 +54,7 @@ namespace Caviar.Demo.Hybrid
             {
                 var env = sp.GetService<IWebHostEnvironment>();
                 var httpContextAccessor = sp.GetService<IHttpContextAccessor>();
-                var httpContext = httpContextAccessor.HttpContext;
-                
+                var httpContext = httpContextAccessor?.HttpContext;
                 var cookies = httpContext.Request.Cookies;
                 var cookieContainer = new System.Net.CookieContainer();
                 foreach (var c in cookies)
@@ -68,7 +67,6 @@ namespace Caviar.Demo.Hybrid
                 {
                     handler.ServerCertificateCustomValidationCallback = (c, v, b, n) => { return true; };
                 }
-
                 return handler;
             });
             services.AddTransient(sp =>
