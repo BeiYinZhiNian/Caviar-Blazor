@@ -116,8 +116,6 @@ namespace Caviar.AntDesignUI.Shared
             
         }
         [Inject]
-        IJSRuntime JSRuntime { get; set; }
-        [Inject]
         NavigationManager Navigation { get; set; }
         [Inject]
         CavModal CavModal { get; set; }

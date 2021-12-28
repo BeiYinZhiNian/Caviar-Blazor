@@ -95,9 +95,9 @@
 
     </SpaceItem>
 </Space>
-
-
-<Table DataSource="DataSource"
+@if (ViewFields != null && ViewFields.Count > 0)
+{
+    <Table DataSource="DataSource"
        @ref="Table"
        ScrollX="@ScrollX"
        Bordered="Bordered"
@@ -106,8 +106,7 @@
        TItem="TData"
        Loading="Loading"
        TreeChildren="TreeChildren">
-    @if (ViewFields != null && ViewFields.Count > 0)
-    {
+    @{
         foreach (var item in ViewFields)
         {
             if (!item.Entity.IsPanel) continue;
@@ -256,9 +255,16 @@
                 </ActionColumn>
             }
         }
-
     }
+
 </Table>
+
+}
+else{
+    <Empty Description="false" />
+}
+
+
 <div style="float:right;margin-top:20px">
     <Pagination Total="Total"
                 ShowTotal=showTotal
