@@ -39,18 +39,21 @@ namespace Caviar.AntDesignUI.Pages.User
             Loading = false;
             if (result.Status == 200)
             {
-                NavigationManager.NavigateTo(result.Url,forceLoad:true);
+                NavigationManager.NavigateTo(result.Url,true);
                 _ = MessageService.Success(result.Title);
                 return;
             }
             this.StateHasChanged();
         }
 
+        public string Style { get; set; }
+
         protected override void OnInitialized()
         {
+            CurrentUrl = Config.PathList.Login;
             string backgroundImage = "_content/Caviar.AntDesignUI/Images/grov.jpg";
-            var style = $"min-height:100vh;background-image: url({backgroundImage});";
-            LayoutStyleCallBack.InvokeAsync(style);
+            Style = $"min-height:100vh;background-image: url({backgroundImage});";
+            
             base.OnInitialized();
         }
 

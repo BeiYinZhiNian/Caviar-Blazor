@@ -1,21 +1,33 @@
 @using Caviar.AntDesignUI.Helper;
-<Router @ref="UserConfig.Router" AppAssembly="@typeof(Caviar.AntDesignUI.Config).Assembly"
-        AdditionalAssemblies="Config.AdditionalAssemblies"
-        PreferExactMatches="@true">
-    <Found Context="routeData">
-        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(CavMainLayout)" />
-        @*<ReuseTabsRouteView RouteData="@routeData" DefaultLayout="@typeof(CavMainLayout)" />*@
-    </Found>
-    <NotFound>
-        <LayoutView>
-            <AntDesign.Pro.Template.Pages.Exception._404></AntDesign.Pro.Template.Pages.Exception._404>
-        </LayoutView>
-    </NotFound>
-</Router>
-
-<AntContainer />
-
-@code{
+<CascadingAuthenticationState>
+    <Router @ref="UserConfig.Router" AppAssembly="@typeof(Caviar.AntDesignUI.Config).Assembly"
+            AdditionalAssemblies="Config.AdditionalAssemblies"
+            PreferExactMatches="@true">
+        <Found Context="routeData">
+            <AuthorizeView>
+                <Authorized>
+                    <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(CavMainLayout)" />
+                    @*<ReuseTabsRouteView RouteData="@routeData" DefaultLayout="@typeof(CavMainLayout)" />*@
+                </Authorized>
+                <NotAuthorized>
+                    <Caviar.AntDesignUI.Pages.User.Login></Caviar.AntDesignUI.Pages.User.Login>
+                </NotAuthorized>
+            </AuthorizeView>
+        </Found>
+        <NotFound>
+            <AuthorizeView>
+                <Authorized>
+                    <Caviar.AntDesignUI.Pages.Exception._404._404></Caviar.AntDesignUI.Pages.Exception._404._404>
+                </Authorized>
+                <NotAuthorized>
+                    <Caviar.AntDesignUI.Pages.User.Login></Caviar.AntDesignUI.Pages.User.Login>
+                </NotAuthorized>
+            </AuthorizeView>
+        </NotFound>
+    </Router>
+    <AntContainer />
+</CascadingAuthenticationState>
+@code {
     [Inject]
     UserConfig UserConfig { get; set; }
 

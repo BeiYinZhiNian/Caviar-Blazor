@@ -53,7 +53,7 @@ namespace Caviar.Infrastructure.API
                 {
                     data += $"|{returnUrl}";
                 }
-                return new ResultMsg() { Url = "/SignInActual?t=" + Uri.EscapeDataString(data) };
+                return new ResultMsg() { Url = "/api/ApplicationUser/SignInActual?t=" + Uri.EscapeDataString(data) };
             }
             else
             {
@@ -64,7 +64,7 @@ namespace Caviar.Infrastructure.API
 
         public Task<string> Logout()
         {
-            return Task.FromResult("logoutServer");
+            return Task.FromResult("/api/ApplicationUser/LogoutServer");
         }
     }
 }

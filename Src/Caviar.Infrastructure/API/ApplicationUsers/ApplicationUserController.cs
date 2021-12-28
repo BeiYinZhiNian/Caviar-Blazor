@@ -60,7 +60,7 @@ namespace Caviar.Infrastructure.API
             return Ok(new ResultMsg() { Title = LanguageService["Login Succeeded"], Url = returnUrl });
         }
 
-        [HttpGet("/[action]")]
+        [HttpGet]
         public async Task<IActionResult> SignInActual(string t)
         {
             var data = t;
@@ -83,6 +83,31 @@ namespace Caviar.Infrastructure.API
             {
                 return Unauthorized("STOP!");
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return Ok();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LogoutServer()
+        {
+            await _signInManager.SignOutAsync();
+            return Redirect("/");
+        }
+
+        [HttpGet]
+        public CurrentUser CurrentUserInfo()
+        {
+            return new CurrentUser
+            {
+                IsAuthenticated = User.Identity.IsAuthenticated,
+                UserName = User.Identity.Name,
+                Claims = User.Claims.ToDictionary(c => c.Type, c => c.Value)
+            };
         }
     }
 }

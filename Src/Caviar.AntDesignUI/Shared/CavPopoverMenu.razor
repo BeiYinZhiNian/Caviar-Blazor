@@ -39,13 +39,6 @@
     private async Task BeginSignOut()
     {
         var result = await AuthStateProvider.Logout();
-        if (!string.IsNullOrEmpty(result))
-        {
-            Navigation.NavigateTo(Config.PathList.Logout, forceLoad: true);
-        }
-        else
-        {
-            Navigation.NavigateTo(Config.PathList.Home);
-        }
+        Navigation.NavigateTo(result, forceLoad: true);
     }
 }
