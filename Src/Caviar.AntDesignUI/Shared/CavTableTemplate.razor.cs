@@ -26,12 +26,6 @@ namespace Caviar.AntDesignUI.Shared
         /// </summary>
         [Parameter]
         public Table<TData> Table { get; set; }
-        /// <summary>
-        /// 是否自动忽略过长的字段
-        /// </summary>
-        [Parameter]
-        public bool IsEllipsis { get; set; }
-        /// <summary>
         /// 固定右侧操作列，设为空则不固定
         /// </summary>
         [Parameter]
@@ -47,6 +41,28 @@ namespace Caviar.AntDesignUI.Shared
 
         [Inject]
         MessageService MessageService { get; set; }
+
+        /// <summary>
+        /// 当字符超过n个自动忽略显示，并且使用Tooltip文字提示
+        /// 默认20个字符
+        /// </summary>
+        [Parameter]
+        public int EllipsisLen { get; set; } = 20;
+        /// <summary>
+        /// 当发生忽略时显示的长度
+        /// </summary>
+        [Parameter]
+        public int DisplayCount { get; set; } = 7;
+        /// <summary>
+        /// 操作按钮列所占最大宽度
+        /// </summary>
+        [Parameter]
+        public string ActionColumnMaxWidth { get; set; } = "220";
+        /// <summary>
+        /// 操作按钮列所占最小宽度
+        /// </summary>
+        [Parameter]
+        public string ActionColumnMinWidth { get; set; } = "100";
         /// <summary>
         /// 数据源
         /// </summary>

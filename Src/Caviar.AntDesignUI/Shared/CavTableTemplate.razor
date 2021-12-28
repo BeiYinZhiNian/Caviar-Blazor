@@ -138,7 +138,26 @@
             switch (entityType)
             {
                 case "string":
-                    <Column Title="@item.DisplayName" DataIndex="@fieldName" TData="string" Width="@item.Entity.TableWidth" Ellipsis="IsEllipsis"/>
+                    <Column Title="@item.DisplayName" DataIndex="@fieldName" TData="string" Width="@item.Entity.TableWidth">
+                            @{
+                                var obj = context.GetObjValue("Entity").GetObjValue(item.Entity.FieldName);
+                                if (obj != null)
+                                {
+                                    var value = (string)obj;
+                                    if (value.Count() >= EllipsisLen)
+                                    {
+                                        var txt = value.Substring(0, DisplayCount) + "...";
+                                        <Tooltip Title="@value">
+                                            <span>@txt</span>
+                                        </Tooltip>
+                                    }
+                                    else{
+                                        <span>@value</span>
+                                    }
+                                }
+                            }
+                    </Column>
+
                     break;
                 case "int32":
                     <Column Title="@item.DisplayName" DataIndex="@fieldName" TData="int?" />
@@ -218,7 +237,7 @@
             List<SysMenuView> but = Buttons.Where(u => u.Entity.ButtonPosition == ButtonPosition.Row && u.Entity.MenuType == MenuType.Button).ToList();
             if (but.Count > 0)
             {
-                <ActionColumn Title="操作" Width="@(but.Count==2?"200":"100")" Fixed="@Fixed">
+                <ActionColumn Title="操作" Width="@(but.Count==2?ActionColumnMaxWidth:ActionColumnMinWidth)" Fixed="@Fixed">
                     @if (but.Count >= 3)
                     {
                         <Dropdown>
