@@ -7,13 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Src\Caviar.AntDesignUI\Caviar.AntDesignUI.csproj" />
     <ProjectReference Include="..\..\..\Src\Caviar.Infrastructure\Caviar.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\..\Src\Caviar.SharedKernel\Caviar.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\Wasm\Caviar.Demo.Wasm\Caviar.Demo.Wasm.csproj" />
   </ItemGroup>
 
 </Project>

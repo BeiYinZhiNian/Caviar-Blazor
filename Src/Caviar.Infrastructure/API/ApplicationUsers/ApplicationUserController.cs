@@ -100,14 +100,14 @@ namespace Caviar.Infrastructure.API
         }
 
         [HttpGet]
-        public CurrentUser CurrentUserInfo()
+        public IActionResult CurrentUserInfo()
         {
-            return new CurrentUser
+            return Ok(new CurrentUser
             {
                 IsAuthenticated = User.Identity.IsAuthenticated,
                 UserName = User.Identity.Name,
                 Claims = User.Claims.ToDictionary(c => c.Type, c => c.Value)
-            };
+            });
         }
     }
 }

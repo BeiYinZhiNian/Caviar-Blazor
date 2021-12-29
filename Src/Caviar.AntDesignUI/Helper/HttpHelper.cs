@@ -21,7 +21,6 @@ namespace Caviar.AntDesignUI.Helper
         NavigationManager _navigationManager;
         MessageService _message;
         IJSRuntime _jSRuntime;
-        public string TokenName => CurrencyConstant.Authorization;
         public HttpHelper(HttpClient http, 
             NotificationService _notice,
             NavigationManager navigationManager, 

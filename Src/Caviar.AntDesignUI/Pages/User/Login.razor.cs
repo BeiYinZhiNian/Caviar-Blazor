@@ -21,7 +21,7 @@ namespace Caviar.AntDesignUI.Pages.User
 {
     public partial class Login
     {
-        public UserLogin ApplicationUser { get; set; } = new UserLogin() { UserName = "admin",Password= "1031622947@qq.COM" };
+        public UserLogin ApplicationUser { get; set; } = new UserLogin() { UserName = "admin",Password= "1031622947@qq.COM",RememberMe=true };
 
         [CascadingParameter]
         public EventCallback LayoutStyleCallBack { get; set; }
@@ -34,6 +34,7 @@ namespace Caviar.AntDesignUI.Pages.User
             
             Loading = true;
             var returnUrl = HttpUtility.ParseQueryString(new Uri(NavigationManager.Uri).Query)["returnUrl"];
+            if (returnUrl == null) returnUrl = "/";
             var result = await AuthStateProvider.Login(ApplicationUser, returnUrl);
             ApplicationUser.Password = "";
             Loading = false;

@@ -18,15 +18,13 @@ namespace Caviar.AntDesignUI.Helper
         public string White = "#F8F8FF";
 
 
-        public UserConfig(IJSRuntime jSRuntime, ILanguageService languageService, IHttpContextAccessor httpContext)
+        public UserConfig(IJSRuntime jSRuntime, ILanguageService languageService)
         {
             JSRuntime = jSRuntime;
             Background = $"background:{White};";
             ContentStyle = $"margin: 6px 16px;padding: 24px;min-height: 280px;{Background}";
             HeaderStyle = $"padding:0;{Background}";
             LanguageService = languageService;
-            var language = httpContext.HttpContext.Request.Cookies.SingleOrDefault(c => c.Key == CurrencyConstant.LanguageHeader).Value;
-            LanguageService.SetLanguage(language);
         }
 
         public IJSRuntime JSRuntime { get; set; }

@@ -42,27 +42,8 @@ namespace Caviar.Infrastructure
         {
             ServiceProvider = app.ApplicationServices;
             new SysDataInit(app.ApplicationServices).StartInit().Wait();
-            app.Use((context, next) =>
-            {
-                var idCookiaName = CurrencyConstant.LanguageHeader;
-                if (!context.Request.Cookies.Any(c => c.Key == idCookiaName))
-                {
-                    var idCookieOptions = new CookieOptions
-                    {
-                        Path = "/",
-                        Secure = true,
-                        HttpOnly = true,
-                        IsEssential = true,
-                        SameSite = SameSiteMode.Strict,
-                        Expires = DateTime.Now.AddYears(100),
-                    };
-                    context.Response.Cookies.Append(
-                        key: idCookiaName,
-                        value: "zh-CN",
-                        options: idCookieOptions);
-                }
-                return next();
-            });
+            app.UseAuthentication();
+            app.UseAuthorization();
             return app;
         }
 

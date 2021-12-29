@@ -3,9 +3,11 @@ using Blazored.LocalStorage;
 using Caviar.AntDesignUI.Helper;
 using Caviar.SharedKernel;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Reflection;
 
 
@@ -17,8 +19,6 @@ namespace Caviar.AntDesignUI
         public static List<Assembly> AdditionalAssemblies;
 
         public static PathList PathList = new PathList();
-
-        public static string TokenName { get; } = "authToken";
 
         public static IServiceCollection AddAdminCaviar(this IServiceCollection services, Type[] assemblies)
         {
@@ -32,8 +32,6 @@ namespace Caviar.AntDesignUI
             services.AddScoped<HostAuthenticationStateProvider>();
             services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<HostAuthenticationStateProvider>());
             services.AddScoped<IPrismHighlighter, PrismHighlighter>();
-            services.AddBlazoredLocalStorage();
-            services.AddAuthorizationCore();
             if (assemblies != null)
             {
                 AdditionalAssemblies = new List<Assembly>();
@@ -49,18 +47,18 @@ namespace Caviar.AntDesignUI
     public class PathList
     {
         public string Home { get; set; } = "/";
-        public string Login { get; set; } = "/ApplicationUser/Login";
+        public string Login { get; set; } = "ApplicationUser/Login";
 
-        public string CurrentUserInfo { get; set; } = "/ApplicationUser/CurrentUserInfo";
+        
 
-        public string Logout { get; set; } = "/ApplicationUser/Logout";
+        public string Logout { get; set; } = "ApplicationUser/Logout";
 
-        public string MyDetails { get; set; } = "/ApplicationUser/MyDetails";
+        public string MyDetails { get; set; } = "ApplicationUser/MyDetails";
 
-        public string UpdatePwd { get; set; } = "/ApplicationUserUpdatePwd";
+        public string UpdatePwd { get; set; } = "ApplicationUserUpdatePwd";
 
 
-
+        public string CurrentUserInfo { get; set; } = "ApplicationUser/CurrentUserInfo";
         public string GetApiList { get; set; } = "SysMenu/GetApiList";
 
         public string SetCookieLanguage { get; set; } = "api/SysMenu/SetCookieLanguage";

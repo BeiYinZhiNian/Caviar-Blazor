@@ -114,11 +114,12 @@ namespace Caviar.Demo.Hybrid
             {
                 app.UseExceptionHandler("/Error");
             }
+
+            app.UseBlazorFrameworkFiles();
+            
             app.UseStaticFiles();
             app.UseRouting();
             app.UseCaviar();
-            app.UseAuthentication();
-            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
