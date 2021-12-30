@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Src\Caviar.Infrastructure\Caviar.Infrastructure.csproj" />
-    <ProjectReference Include="..\Caviar.Demo.Model\Caviar.Demo.Model.csproj" />
   </ItemGroup>
 
   <ItemGroup>
