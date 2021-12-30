@@ -2,7 +2,7 @@
     <SpaceItem>
         <Popover ContentTemplate="@_runtime" Placement="@Placement.BottomRight">
             <Button Type="@ButtonType.Text">
-                <b>@HybridType</b>
+                <b>@Runtime</b>
             </Button>
         </Popover>
     </SpaceItem>
@@ -10,11 +10,6 @@
         <Popover ContentTemplate="@_popoverMenu" Placement="@Placement.BottomRight">
             <Button Type="@ButtonType.Text">
                 <Avatar Style="background-color: #87d068" Src="" Icon="user" />
-                <AuthorizeView Context="_">
-                    <NotAuthorized>
-                        未登录用户
-                    </NotAuthorized>
-                </AuthorizeView>
                 <AuthorizeView Context="authCountext">
                     <Authorized>
                         @authCountext.User.Identity.Name
@@ -49,11 +44,7 @@
     private string HybridType { get; set; }
     [Inject] IJSRuntime JSRuntime { get; set; }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-        HybridType = await JSRuntime.InvokeAsync<string>("getHybridType");
-        StateHasChanged();
-    }
+    private string Runtime => System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier;
+
 
 }

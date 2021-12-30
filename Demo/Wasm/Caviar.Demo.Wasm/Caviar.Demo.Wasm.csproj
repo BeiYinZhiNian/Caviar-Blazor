@@ -13,16 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Src\Caviar.AntDesignUI\Caviar.AntDesignUI.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="Pages\Index.razor">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </Content>
-    <Content Update="wwwroot\index.html">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
+    <ProjectReference Include="..\..\..\Src\Caviar.SharedKernel\Caviar.SharedKernel.csproj" />
   </ItemGroup>
 
 </Project>
