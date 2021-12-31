@@ -42,6 +42,8 @@ namespace Caviar.SharedKernel
         /// </summary>
         public const string CodeGenerateFilePath = "/Template/File/";
 
+        public const string ServerName = "server";
+
         public static Dictionary<string, string> LanguageDic = new Dictionary<string, string>() 
         {
             {"zh-CN","中文" },

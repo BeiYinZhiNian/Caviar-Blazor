@@ -28,7 +28,7 @@ namespace Caviar.AntDesignUI
             services.AddScoped<UserConfig>();
             services.AddScoped<ModalService>();
             services.AddScoped<MessageService>();
-            services.AddSingleton<ILanguageService, InAssemblyLanguageService>();
+            services.AddScoped<ILanguageService, InAssemblyLanguageService>();
             services.AddScoped<HostAuthenticationStateProvider>();
             services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<HostAuthenticationStateProvider>());
             services.AddScoped<IPrismHighlighter, PrismHighlighter>();

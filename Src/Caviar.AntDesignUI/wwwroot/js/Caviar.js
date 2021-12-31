@@ -41,3 +41,14 @@ function createjscssfile(filename, filetype) {
 	}
 	return fileref
 }
+
+//框架内发送消息
+function IframeMessage(message) {
+	window.parent.postMessage(message, '*');
+}
+
+
+//框架外监听
+window.addEventListener('message', function (e) {
+	console.log(e.data);
+})

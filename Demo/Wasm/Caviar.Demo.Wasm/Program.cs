@@ -21,7 +21,6 @@ namespace Caviar.Demo.Wasm
             builder.Services.AddAuthorizationCore();
             builder.Services.AddSingleton<IAuthorizationPolicyProvider, DefaultAuthorizationPolicyProvider>();
             builder.Services.AddSingleton<IAuthorizationService, DefaultAuthorizationService>();
-            builder.RootComponents.Add<Caviar.AntDesignUI.App>("#app");
             var baseAddress = new Uri(builder.HostEnvironment.BaseAddress + "api/");
             baseAddress = new Uri("http://localhost:5215/api/");
             builder.Services.AddScoped(sp =>

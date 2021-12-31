@@ -18,13 +18,16 @@ namespace Caviar.AntDesignUI.Helper
         public string White = "#F8F8FF";
 
 
-        public UserConfig(IJSRuntime jSRuntime, ILanguageService languageService)
+        public UserConfig(IJSRuntime jSRuntime, ILanguageService languageService,NavigationManager navigationManager)
         {
             JSRuntime = jSRuntime;
             Background = $"background:{White};";
             ContentStyle = $"margin: 6px 16px;padding: 24px;min-height: 280px;{Background}";
             HeaderStyle = $"padding:0;{Background}";
             LanguageService = languageService;
+            var uri = navigationManager.Uri;
+            IsServer = uri.IndexOf($"/?{CurrencyConstant.ServerName}") != -1;
+            Console.WriteLine(IsServer ? "Currently Server" : "Currently Wasm");
         }
 
         public IJSRuntime JSRuntime { get; set; }
@@ -39,6 +42,11 @@ namespace Caviar.AntDesignUI.Helper
         /// 更新当前页面数据
         /// </summary>
         public Action RefreshCurrentPage { get; set; }
+
+        /// <summary>
+        /// 是否为server模式
+        /// </summary>
+        public bool IsServer { get; set; }
 
         IEnumerable _routes;
         public IEnumerable Routes()
