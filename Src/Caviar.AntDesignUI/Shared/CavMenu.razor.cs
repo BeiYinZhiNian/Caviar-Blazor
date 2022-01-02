@@ -57,7 +57,7 @@ namespace Caviar.AntDesignUI.Shared
         public async void OnMenuItemClickedNav(MenuItem menuItem)
         {
             BreadcrumbItemCav = menuItem;
-            _ = jSRuntime.InvokeVoidAsync("IframeMessage", menuItem.RouterLink);
+            _ = jSRuntime.InvokeVoidAsync("iframeMessage", menuItem.RouterLink);
             if (BreadcrumbItemCavChanged.HasDelegate)
             {
                 await BreadcrumbItemCavChanged.InvokeAsync(BreadcrumbItemCav);

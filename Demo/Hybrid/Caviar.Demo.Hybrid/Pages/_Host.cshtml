@@ -22,7 +22,7 @@
 
 <body>
 
-    @if (IsServer)
+    @if(IsServer)
     {
         <app>
             <component type="typeof(Caviar.AntDesignUI.App)" render-mode="ServerPrerendered" />
@@ -33,7 +33,7 @@
     else
     {
         <iframe id="iframe_Server" src='@serverHost' style="width:100%; height:100%;border:medium none"></iframe>
-        <app style="display: none;">
+        <app id="wasm_app" style="display: none;">
             <component type="typeof(Caviar.AntDesignUI.App)" render-mode="WebAssemblyPrerendered">
         </app>
         <script src="_framework/blazor.webassembly.js"></script>

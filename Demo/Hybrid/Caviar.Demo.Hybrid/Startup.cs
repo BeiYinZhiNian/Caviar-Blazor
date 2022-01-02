@@ -103,7 +103,6 @@ namespace Caviar.Demo.Hybrid
             services.AddCaviarDbContext(options =>
                 options.UseSqlServer(
             Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Caviar.Demo.WebApi")));
-            services.Configure<HybridOptions>(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

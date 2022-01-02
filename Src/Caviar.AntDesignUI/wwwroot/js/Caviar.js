@@ -42,13 +42,17 @@ function createjscssfile(filename, filetype) {
 	return fileref
 }
 
-//框架内发送消息
-function IframeMessage(message) {
+//iframe内发送消息
+function iframeMessage(message) {
 	window.parent.postMessage(message, '*');
 }
 
 
-//框架外监听
+//iframe外监听
 window.addEventListener('message', function (e) {
+	//wasm_app = document.getElementById("wasm_app");
+	//iframe_Server = document.getElementById("iframe_Server");
+	//wasm_app.style.display = "block";
+	//iframe_Server.style.display = "none";
 	console.log(e.data);
 })
