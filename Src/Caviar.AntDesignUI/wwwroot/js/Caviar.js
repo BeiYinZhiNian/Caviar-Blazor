@@ -49,7 +49,7 @@ function iframeMessage(message) {
 
 
 //iframe外监听
-window.addEventListener('message', function (e) {
+window.addEventListener('message', function (e) { 
 	//wasm_app = document.getElementById("wasm_app");
 	//iframe_Server = document.getElementById("iframe_Server");
 	//wasm_app.style.display = "block";
