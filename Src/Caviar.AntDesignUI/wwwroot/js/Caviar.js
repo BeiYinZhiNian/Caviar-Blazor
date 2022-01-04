@@ -48,15 +48,19 @@ function iframeMessage(message) {
 }
 
 
-function switch_wasm(url) {
+
+
+
+function switch_wasm(data) {
 	wasm_app = document.getElementById("wasm_app");
 	iframe_Server = document.getElementById("iframe_Server");
 	wasm_app.style.display = "block";
 	iframe_Server.style.display = "none";
 }
 
+
 //iframe外监听
 window.addEventListener('message', function (e) { 
 	console.log(e.data);
-	e.data.action(e.data.data)
+	e.data.ref.invokeMethod(e.data.action)
 })

@@ -28,6 +28,7 @@ namespace Caviar.AntDesignUI
             services.AddScoped<UserConfig>();
             services.AddScoped<ModalService>();
             services.AddScoped<MessageService>();
+            services.AddScoped<IframeMessage>();
             services.AddScoped<ILanguageService, InAssemblyLanguageService>();
             services.AddScoped<HostAuthenticationStateProvider>();
             services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<HostAuthenticationStateProvider>());
