@@ -59,7 +59,7 @@ namespace Caviar.AntDesignUI.Shared
             BreadcrumbItemCav = menuItem;
             IframeMessage iframeMessage = new IframeMessage()
             {
-                Action = "test",
+                Action = "switch_wasm",
                 Data = menuItem.RouterLink
             };
             _ = jSRuntime.InvokeVoidAsync("iframeMessage", iframeMessage);

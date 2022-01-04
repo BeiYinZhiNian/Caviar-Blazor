@@ -48,11 +48,15 @@ function iframeMessage(message) {
 }
 
 
+function switch_wasm(url) {
+	wasm_app = document.getElementById("wasm_app");
+	iframe_Server = document.getElementById("iframe_Server");
+	wasm_app.style.display = "block";
+	iframe_Server.style.display = "none";
+}
+
 //iframe外监听
 window.addEventListener('message', function (e) { 
-	//wasm_app = document.getElementById("wasm_app");
-	//iframe_Server = document.getElementById("iframe_Server");
-	//wasm_app.style.display = "block";
-	//iframe_Server.style.display = "none";
 	console.log(e.data);
+	e.data.action(e.data.data)
 })
