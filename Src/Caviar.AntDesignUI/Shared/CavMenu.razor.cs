@@ -55,26 +55,23 @@ namespace Caviar.AntDesignUI.Shared
         [Inject]
         IJSRuntime jSRuntime { get; set; }
 
-        [Inject]
-        IframeMessage IframeMessage { get; set; }
 
         public async void OnMenuItemClickedNav(MenuItem menuItem)
         {
+            //在server模式下且需要自动切换
+            if (Config.IsServer && UserConfig.IsAutomaticSwitchWasm)
+            {
+                var iframeMessage = new IframeMessage();
+                iframeMessage.Pattern = Pattern.Wasm;
+                iframeMessage.Url = menuItem.RouterLink;
+                _ = jSRuntime.InvokeVoidAsync("iframeMessage", iframeMessage);
+            }
             BreadcrumbItemCav = menuItem;
-            IframeMessage.Action = "JsNavigation";
-            IframeMessage.Data = menuItem.RouterLink;
-            _ = jSRuntime.InvokeVoidAsync("iframeMessage", IframeMessage);
             if (BreadcrumbItemCavChanged.HasDelegate)
             {
                 await BreadcrumbItemCavChanged.InvokeAsync(BreadcrumbItemCav);
                 
             }
-        }
-
-
-        public void MenuItemClick(SysMenuView menu)
-        {
-            NavigationManager.NavigateTo(menu.Entity.Url);
         }
 
         /// <summary>
@@ -103,6 +100,11 @@ namespace Caviar.AntDesignUI.Shared
         protected override async Task OnInitializedAsync()
         {
             SysMenus = await GetMenus();
+        }
+
+        protected override void OnAfterRender(bool firstRender)
+        {            
+            base.OnAfterRender(firstRender);
         }
 
         private List<SysMenuView> SysMenus;

@@ -89,6 +89,7 @@ namespace Caviar.Demo.Hybrid
 
                 return new HttpClient(handler) { BaseAddress = new Uri($"{uri.Scheme}://localhost:{uri.Port}/api/") };
             });
+            Config.IsServer = true;
             services.AddAdminCaviar(new Type[] { typeof(Program),typeof(Wasm.Program) });
             services.AddScoped<IAuthService, ServerAuthService>();
             services.AddCors(options =>

@@ -13,30 +13,41 @@ namespace Caviar.AntDesignUI
     /// </summary>
     public class IframeMessage
     {
-        private NavigationManager _navigationManager;
-
-        public IframeMessage(NavigationManager navigationManager)
-        {
-            _navigationManager = navigationManager;
-            Ref = DotNetObjectReference.Create(this);
-        }
         /// <summary>
-        /// 调用的方法
+        /// 调用的模式
         /// </summary>
-        public string Action { get; set; }
+        public Pattern Pattern { get; set; }
+        /// <summary>
+        /// 转到的地址
+        /// </summary>
+        public string Url { get; set; }
         /// <summary>
         /// 传输的数据
         /// </summary>
         public object Data { get; set; }
 
-        public DotNetObjectReference<IframeMessage> Ref { get; set; }
+
+        public delegate void JSScheduling(IframeMessage message);
+
+        public static event JSScheduling SwitchWasm;
 
         [JSInvokable]
-        public void JsNavigation()
+        public static void JsNavigation(IframeMessage message)
         {
-            Console.WriteLine("test");
-            //_navigationManager.NavigateTo(url);
+            switch (message.Pattern)
+            {
+                case Pattern.Wasm:
+                    SwitchWasm?.Invoke(message);
+                    break;
+                default:
+                    break;
+            }
         }
+    }
 
+    public enum Pattern
+    {
+        Wasm,
+        Server
     }
 }

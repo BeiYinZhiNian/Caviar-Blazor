@@ -51,16 +51,18 @@ function iframeMessage(message) {
 
 
 
-function switch_wasm(data) {
+function switch_wasm() {
 	wasm_app = document.getElementById("wasm_app");
-	iframe_Server = document.getElementById("iframe_Server");
+	iframe_Server = document.getElementById("iframe_div");
 	wasm_app.style.display = "block";
 	iframe_Server.style.display = "none";
+	var iframe = document.getElementById("iframe_Server");
+	iframe.parentNode.removeChild(iframe);
 }
 
 
 //iframe外监听
 window.addEventListener('message', function (e) { 
 	console.log(e.data);
-	e.data.ref.invokeMethod(e.data.action)
+	DotNet.invokeMethod("Caviar.AntDesignUI", "JsNavigation", e.data)
 })

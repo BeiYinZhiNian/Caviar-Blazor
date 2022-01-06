@@ -37,13 +37,11 @@ namespace Caviar.AntDesignUI.Shared
         [Inject] 
         public NavigationManager NavigationManager { get; set; }
 
-        [Inject]
-        private AuthenticationStateProvider authenticationStateTask { get; set; }
-
         /// <summary>
         /// 面包屑数据同步
         /// </summary>
         public MenuItem BreadcrumbItemCav;
+
         protected override async Task OnInitializedAsync()
         {
             LogoImg = "_content/Caviar.AntDesignUI/Images/logo.png";
@@ -51,6 +49,7 @@ namespace Caviar.AntDesignUI.Shared
             LogoImgSrc = LogoImg;
             await base.OnInitializedAsync();
         }
+
 
         bool _collapsed;
         /// <summary>

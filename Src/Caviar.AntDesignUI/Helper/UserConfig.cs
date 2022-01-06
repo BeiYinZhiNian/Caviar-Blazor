@@ -26,12 +26,15 @@ namespace Caviar.AntDesignUI.Helper
             HeaderStyle = $"padding:0;{Background}";
             LanguageService = languageService;
             var uri = navigationManager.Uri;
-            IsServer = uri.IndexOf($"/?{CurrencyConstant.ServerName}") != -1;
-            Console.WriteLine(IsServer ? "Currently Server" : "Currently Wasm");
         }
-
+        /// <summary>
+        /// 是否自动切换为wasm模式
+        /// </summary>
+        public bool IsAutomaticSwitchWasm { get; set; } = true;
         public IJSRuntime JSRuntime { get; set; }
-
+        /// <summary>
+        /// 路由
+        /// </summary>
         public Router Router;
         /// <summary>
         /// 更新菜单数据
@@ -42,11 +45,6 @@ namespace Caviar.AntDesignUI.Helper
         /// 更新当前页面数据
         /// </summary>
         public Action RefreshCurrentPage { get; set; }
-
-        /// <summary>
-        /// 是否为server模式
-        /// </summary>
-        public bool IsServer { get; set; }
 
         IEnumerable _routes;
         public IEnumerable Routes()

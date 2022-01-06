@@ -16,6 +16,7 @@ namespace Caviar.Demo.Wasm
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
+            Config.IsServer = false;
             builder.Services.AddScoped<IAuthService, WasmAuthService>();
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();

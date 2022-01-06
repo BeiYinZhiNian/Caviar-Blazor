@@ -32,7 +32,9 @@
     }
     else
     {
-        <iframe id="iframe_Server" src='@serverHost' style="width:100%; height:100%;border:medium none"></iframe>
+        <div id="iframe_div" style="width:100%; height:100%;border:medium none">
+            <iframe id="iframe_Server" src='@serverHost' style="width:100%; height:100%;border:medium none"></iframe>
+        </div>
         <app id="wasm_app" style="display: none;">
             <component type="typeof(Caviar.AntDesignUI.App)" render-mode="WebAssemblyPrerendered">
         </app>
