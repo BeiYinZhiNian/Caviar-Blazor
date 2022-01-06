@@ -42,22 +42,33 @@ function createjscssfile(filename, filetype) {
 	return fileref
 }
 
-//iframe内发送消息
-function iframeMessage(message) {
-	window.parent.postMessage(message, '*');
-}
-
 
 
 
 
 function switch_wasm() {
 	wasm_app = document.getElementById("wasm_app");
-	iframe_Server = document.getElementById("iframe_div");
+	iframe_div = document.getElementById("iframe_div");
 	wasm_app.style.display = "block";
-	iframe_Server.style.display = "none";
+	iframe_div.style.display = "none";
 	var iframe = document.getElementById("iframe_Server");
 	iframe.parentNode.removeChild(iframe);
+}
+
+function switch_server(url) {
+	wasm_app = document.getElementById("wasm_app");
+	wasm_app.style.display = "none";
+	iframe_div = document.getElementById("iframe_div");
+	iframe_div.innerHTML = '<iframe id="iframe_Server" src="' + url + '?IsAutomaticSwitchWasm=false&server=true" style="width:100%; height:100%;border:medium none"></iframe>'
+	iframe_div.style.display = "block"
+
+}
+
+
+
+//iframe内发送消息
+function iframeMessage(message) {
+	window.parent.postMessage(message, '*');
 }
 
 

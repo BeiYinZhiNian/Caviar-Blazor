@@ -1,4 +1,5 @@
 @using Caviar.AntDesignUI.Helper;
+@using System.Web
 <CascadingAuthenticationState>
     <Router @ref="UserConfig.Router" AppAssembly="@typeof(Caviar.AntDesignUI.Config).Assembly"
             AdditionalAssemblies="Config.AdditionalAssemblies"
@@ -37,6 +38,16 @@
             //wasm模式初始化完成，接收事件
             IframeMessage.SwitchWasm += SwitchWasm_RefChanged;
         }
+        else
+        {
+            var uri = new Uri(NavigationManager.Uri);
+            var collection = HttpUtility.ParseQueryString(uri.Query);
+            if (!string.IsNullOrEmpty(collection["IsAutomaticSwitchWasm"]))
+            {
+                UserConfig.IsAutomaticSwitchWasm = bool.Parse(collection["IsAutomaticSwitchWasm"]);
+            }
+        }
+        
         base.OnParametersSet();
     }
 
