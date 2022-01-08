@@ -3,6 +3,7 @@ using Caviar.SharedKernel.Entities.User;
 using Caviar.SharedKernel.Interface;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Caviar.AntDesignUI.Helper
@@ -19,7 +20,7 @@ namespace Caviar.AntDesignUI.Helper
         public async Task<CurrentUser> CurrentUserInfo()
         {
             var result = await httpHelper.GetJson<CurrentUser>(Config.PathList.CurrentUserInfo);
-            if (result.Status != StatusCodes.Status200OK) return null;
+            if (result.Status != HttpStatusCode.OK) return null;
             return result.Data;
         }
 

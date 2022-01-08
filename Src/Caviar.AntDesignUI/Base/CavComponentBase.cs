@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -74,7 +75,7 @@ namespace Caviar.AntDesignUI
             }
             var uri = new Uri(NavigationManager.Uri);
             var result = await HttpService.GetJson<List<SysMenuView>>($"{Config.PathList.GetApiList}?url={uri.LocalPath}&splicing={splicing}");
-            if (result.Status != StatusCodes.Status200OK) return null;
+            if (result.Status != HttpStatusCode.OK) return null;
             return result.Data;
         }
 

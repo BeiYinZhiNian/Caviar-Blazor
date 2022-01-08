@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Caviar.SharedKernel.Entities.View;
+using System.Net;
 
 namespace Caviar.AntDesignUI.Pages.Menu
 {
@@ -51,7 +52,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
                 }
             }
             var result = await HttpService.PostJson(url, data);
-            if (result.Status == StatusCodes.Status200OK)
+            if (result.Status == HttpStatusCode.OK)
             {
                 _ = MessageService.Success("删除成功");
             }

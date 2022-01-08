@@ -8,6 +8,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Caviar.SharedKernel;
 using Caviar.SharedKernel.Entities.View;
+using System.Net;
 
 namespace Caviar.AntDesignUI
 {
@@ -52,7 +53,7 @@ namespace Caviar.AntDesignUI
         public virtual async Task<bool> FormSubmit()
         {
             var result = await HttpService.PostJson(CurrentUrl, DataSource);
-            if (result.Status == StatusCodes.Status200OK)
+            if (result.Status == HttpStatusCode.OK)
             {
                 await MessageService.Success(SuccMsg);
                 return true;

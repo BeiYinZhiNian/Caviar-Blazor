@@ -36,15 +36,14 @@ namespace Caviar.AntDesignUI.Pages.User
             var returnUrl = HttpUtility.ParseQueryString(new Uri(NavigationManager.Uri).Query)["returnUrl"];
             if (returnUrl == null) returnUrl = "/";
             var result = await AuthStateProvider.Login(ApplicationUser, returnUrl);
-            ApplicationUser.Password = "";
             Loading = false;
-            if (result.Status == 200)
+            if (result.Status == System.Net.HttpStatusCode.OK)
             {
-                NavigationManager.NavigateTo(result.Url,true);
                 _ = MessageService.Success(result.Title);
+                NavigationManager.NavigateTo(result.Url,true,true);
                 return;
             }
-            this.StateHasChanged();
+            StateHasChanged();
         }
 
         public string Style { get; set; }

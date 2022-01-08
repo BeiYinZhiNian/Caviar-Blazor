@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Text.Json;
 using Caviar.SharedKernel.Entities.View;
+using System.Net;
 
 namespace Caviar.AntDesignUI.Pages.CodeGeneration
 {
@@ -28,7 +29,7 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
         protected override async Task<List<ViewFields>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
             var result = await HttpService.GetJson<List<ViewFields>>(Url["GetEntitys"]);
-            if (result.Status != StatusCodes.Status200OK) return null;
+            if (result.Status != HttpStatusCode.OK) return null;
             Total = result.Data.Count;
             PageSize = result.Data.Count;
             return result.Data;
@@ -64,7 +65,7 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
                     return;
                 }
                 var result = await HttpService.PostJson<CodeGenerateOptions,List<PreviewCode>>($"{Url["CodeFileGenerate"]}?isPerview=true", GenerateData);
-                if (result.Status == StatusCodes.Status200OK)
+                if (result.Status == HttpStatusCode.OK)
                 {
                     lstTabs = result.Data;
                 }
@@ -79,7 +80,7 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
         async void OnGenerateClick()
         {
             var result = await HttpService.PostJson<CodeGenerateOptions, string>($"{Url["CodeFileGenerate"]}?isPerview=false", GenerateData);
-            if (result.Status == StatusCodes.Status200OK)
+            if (result.Status == HttpStatusCode.OK)
             {
                 ResultStatus = "success";
                 ReusltTitle = result.Title;

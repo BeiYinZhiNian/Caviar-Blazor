@@ -1,10 +1,12 @@
-﻿using Caviar.SharedKernel;
+﻿using AntDesign;
+using Caviar.SharedKernel;
 using Caviar.SharedKernel.Entities.User;
 using Caviar.SharedKernel.Interface;
 using Microsoft.AspNetCore.Components.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
@@ -16,10 +18,11 @@ namespace Caviar.AntDesignUI.Helper
     {
         private readonly IAuthService api;
         private CurrentUser _currentUser;
-
-        public HostAuthenticationStateProvider(IAuthService api)
+        MessageService _message;
+        public HostAuthenticationStateProvider(IAuthService api, MessageService messageService)
         {
             this.api = api;
+            _message = messageService;
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -62,6 +65,10 @@ namespace Caviar.AntDesignUI.Helper
         {
             var result = await api.Login(loginParameters, returnUrl);
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+            if(result.Status != HttpStatusCode.OK)
+            {
+                _ = _message.Error(result.Title);
+            }
             return result;
         }
     }

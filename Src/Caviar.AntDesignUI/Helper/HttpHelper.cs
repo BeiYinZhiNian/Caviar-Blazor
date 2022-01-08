@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Components.Authorization;
 using Blazored.LocalStorage;
 using System.Net.Http.Headers;
+using System.Net;
 
 namespace Caviar.AntDesignUI.Helper
 {
@@ -88,7 +89,7 @@ namespace Caviar.AntDesignUI.Helper
                     result = new ResultMsg<T>()
                     {
                         Title = "请求失败:" + responseMessage.ReasonPhrase,
-                        Status = (int)responseMessage.StatusCode,
+                        Status = responseMessage.StatusCode,
                     };
                 }
             }
@@ -98,7 +99,7 @@ namespace Caviar.AntDesignUI.Helper
                 {
                     Title = "请求失败，发生请求错误",
                     Detail = e.Message,
-                    Status = 500,
+                    Status = HttpStatusCode.InternalServerError,
                 };
             }
             Response(result);
@@ -109,17 +110,12 @@ namespace Caviar.AntDesignUI.Helper
         {
             switch (result.Status)
             {
-                case StatusCodes.Status200OK://正确响应
+                case HttpStatusCode.OK://正确响应
                     break;
-                case StatusCodes.Status307TemporaryRedirect://重定向专用
+                case HttpStatusCode.Redirect://重定向
                     _navigationManager.NavigateTo(result.Title);
                     break;
-                case StatusCodes.Status401Unauthorized://退出登录
-                    HttpClient.DefaultRequestHeaders.Authorization = null;
-                    break;
-                case StatusCodes.Status404NotFound:
-                case StatusCodes.Status400BadRequest:
-                case StatusCodes.Status500InternalServerError://发生严重错误
+                case HttpStatusCode.InternalServerError://发生严重错误
                 default:
                     string msg = "";
                     if (!string.IsNullOrEmpty(result.Detail))

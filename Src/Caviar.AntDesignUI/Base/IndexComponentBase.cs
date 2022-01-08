@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -55,7 +56,7 @@ namespace Caviar.AntDesignUI
         protected virtual async Task<List<ViewT>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
             var result = await HttpService.GetJson<PageData<ViewT>>($"{CurrentUrl}?pageIndex={pageIndex}&pageSize={pageSize}&isOrder={isOrder}");
-            if (result.Status != StatusCodes.Status200OK) return null;
+            if (result.Status != HttpStatusCode.OK) return null;
             if (result.Data != null)
             {
                 Total = result.Data.Total;
@@ -86,7 +87,7 @@ namespace Caviar.AntDesignUI
         protected virtual async Task<List<ViewFields>> GetModelFields()
         {
             var result = await HttpService.GetJson<List<ViewFields>>(Url["GetFields"]);
-            if (result.Status != StatusCodes.Status200OK) return null;
+            if (result.Status != HttpStatusCode.OK) return null;
             return result.Data;
         }
         /// <summary>
@@ -97,7 +98,7 @@ namespace Caviar.AntDesignUI
         {
             //删除单条
             var result = await HttpService.PostJson(url, data);
-            if (result.Status != StatusCodes.Status200OK) return false;
+            if (result.Status != HttpStatusCode.OK) return false;
             _ = MessageService.Success("删除成功");
             return true;
         }
@@ -130,7 +131,7 @@ namespace Caviar.AntDesignUI
         protected virtual async void FuzzyQueryCallback()
         {
             var result = await HttpService.PostJson<ViewQuery, PageData<ViewT>>(Url["FuzzyQuery"], Query);
-            if (result.Status != StatusCodes.Status200OK) return;
+            if (result.Status != HttpStatusCode.OK) return;
             DataSource = result.Data.Rows;
             Total = result.Data.Total;
             PageIndex = result.Data.PageIndex;

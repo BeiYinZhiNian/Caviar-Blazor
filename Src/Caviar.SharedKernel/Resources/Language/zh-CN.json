@@ -71,7 +71,20 @@
       "Critical": "关键",
       "None": "无",
       "FildName": "模型名称",
-      "Select": "选择"
+      "Select": "选择",
+      "HeadPortrait": "头像",
+      "NormalizedUserName": "规范化用户名",
+      "Email": "邮箱",
+      "NormalizedEmail": "规范化邮箱",
+      "EmailConfirmed": "电子邮件确认",
+      "PasswordHash": "哈希密码",
+      "SecurityStamp": "安全戳",
+      "ConcurrencyStamp": "并发戳",
+      "PhoneNumber": "手机号码",
+      "PhoneNumberConfirmed": "手机号码确认",
+      "TwoFactorEnabled": "双因子验证",
+      "LockoutEnabled": "启用锁定",
+      "AccessFailedCount": "失败访问次数"
     },
     "ErrorMessage": {
       "LengthErrorMsg": "{EntitysName}输入长度不能超过{length}字符",

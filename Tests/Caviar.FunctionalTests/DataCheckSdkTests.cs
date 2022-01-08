@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using Caviar.SharedKernel;
 using Caviar.Infrastructure;
 using Caviar.Infrastructure.API.BaseApi;
+using System.Net;
 
 namespace Caviar.FunctionalTests
 {
@@ -53,7 +54,7 @@ namespace Caviar.FunctionalTests
         {
             var result = OkResult();
             var resultMsg = DataCheckSdk.ResultHandle(result);
-            Assert.AreEqual(StatusCodes.Status200OK, resultMsg.Status);
+            Assert.AreEqual(HttpStatusCode.OK, resultMsg.Status);
         }
 
         [TestMethod]

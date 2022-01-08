@@ -57,7 +57,7 @@ namespace Caviar.Infrastructure.API
             }
             else
             {
-                return new ResultMsg() { Title = _languageService["ResuleMsg.Title.Username and password are invalid"], Status = StatusCodes.Status400BadRequest };
+                return new ResultMsg() { Title = _languageService["ResuleMsg.Title.Username and password are invalid"], Status = System.Net.HttpStatusCode.Unauthorized };
             }
         }
 

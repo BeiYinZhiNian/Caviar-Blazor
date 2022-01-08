@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 
 namespace Caviar.SharedKernel
 {
@@ -8,7 +9,7 @@ namespace Caviar.SharedKernel
         /// <summary>
         /// HTTP 状态代码
         /// </summary>
-        public int Status { get; set; } = 200;
+        public HttpStatusCode Status { get; set; } = HttpStatusCode.OK;
         /// <summary>
         /// 问题类型的简短、可读的摘要
         /// 可根据不同的http状态码承载不同的信息

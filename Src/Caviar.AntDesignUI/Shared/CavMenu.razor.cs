@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.JSInterop;
+using System.Net;
 
 namespace Caviar.AntDesignUI.Shared
 {
@@ -126,7 +127,7 @@ namespace Caviar.AntDesignUI.Shared
         async Task<List<SysMenuView>> GetMenus()
         {
             var result = await Http.GetJson<List<SysMenuView>> ("SysMenu/GetMenuBar");
-            if (result.Status != StatusCodes.Status200OK) return new List<SysMenuView>();
+            if (result.Status != HttpStatusCode.OK) return new List<SysMenuView>();
             return result.Data;
         }
 

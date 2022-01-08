@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Caviar.SharedKernel;
+using System.Net;
 
 namespace Caviar.Infrastructure
 {
@@ -35,11 +36,11 @@ namespace Caviar.Infrastructure
             {
                 ArgumentsModel(value.GetType(), value);
             }
-            var code = StatusCode == null ? 200 : (int)StatusCode;
+            var code = StatusCode == null ? HttpStatusCode.OK : (HttpStatusCode)StatusCode;
             if (value is ResultMsg)
             {
                 var msg = (ResultMsg)value;
-                if (code != 200)
+                if (code != HttpStatusCode.OK)
                 {
                     msg.Status = code;
                 }
@@ -126,7 +127,7 @@ namespace Caviar.Infrastructure
 
         }
 
-        public ResultMsg<object> ResultCheck(int statusCode,object value)
+        public ResultMsg<object> ResultCheck(HttpStatusCode statusCode,object value)
         {
             ResultMsg<object> resultMsg = new ResultMsg<object>();
             if (value != null)
@@ -142,7 +143,7 @@ namespace Caviar.Infrastructure
                 else
                 {
                     resultMsg.Data = value;
-                    if(statusCode != 200)
+                    if(statusCode != HttpStatusCode.OK)
                     {
                         resultMsg.Title = "处理数据失败";
                     }

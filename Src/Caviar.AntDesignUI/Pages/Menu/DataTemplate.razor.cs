@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Caviar.SharedKernel;
 using Caviar.SharedKernel.Entities.View;
+using System.Net;
 
 namespace Caviar.AntDesignUI.Pages.Menu
 {
@@ -26,7 +27,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
         {
             
             var result = await HttpService.GetJson<PageData<SysMenuView>>($"{Url["SysMenu"]}?pageSize=100");
-            if (result.Status != StatusCodes.Status200OK) return;
+            if (result.Status != HttpStatusCode.OK) return;
             if (DataSource.ParentId > 0)
             {
                 List<SysMenuView> listData = new List<SysMenuView>();
