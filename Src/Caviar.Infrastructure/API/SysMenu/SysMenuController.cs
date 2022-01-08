@@ -76,7 +76,6 @@ namespace Caviar.Infrastructure.API.SysMenuController
             {
                 Path = "/",
                 Secure = true,
-                HttpOnly = true,
                 IsEssential = true,
                 SameSite = SameSiteMode.Strict,
                 Expires = DateTime.Now.AddYears(100),

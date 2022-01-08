@@ -47,8 +47,17 @@
                 UserConfig.IsAutomaticSwitchWasm = bool.Parse(collection["IsAutomaticSwitchWasm"]);
             }
         }
-        
         base.OnParametersSet();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var language = await JSRuntime.InvokeAsync<string>("getCookie", CurrencyConstant.LanguageHeader);
+            UserConfig.LanguageService.SetLanguage(language);
+        }
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     private void SwitchWasm_RefChanged(IframeMessage message)

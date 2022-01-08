@@ -25,7 +25,7 @@ namespace Caviar.AntDesignUI.Helper
             ContentStyle = $"margin: 6px 16px;padding: 24px;min-height: 280px;{Background}";
             HeaderStyle = $"padding:0;{Background}";
             LanguageService = languageService;
-            var uri = navigationManager.Uri;
+
         }
         /// <summary>
         /// 是否自动切换为wasm模式
