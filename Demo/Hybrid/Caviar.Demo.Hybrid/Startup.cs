@@ -4,6 +4,7 @@ using Caviar.Infrastructure;
 using Caviar.Infrastructure.API;
 using Caviar.SharedKernel;
 using Caviar.SharedKernel.Interface;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Identity;
@@ -20,10 +21,10 @@ namespace Caviar.Demo.Hybrid
         }
 
         public IConfiguration Configuration { get; }
-        private IServerAddressesFeature ServerAddressesFeature { get; set; }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            //身份验证配置
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = false;
@@ -37,6 +38,13 @@ namespace Caviar.Demo.Hybrid
 
                 options.User.RequireUniqueEmail = true;
             });
+            //cookies配置
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+            });
+            //cookies验证配置
             services
                 .AddAuthentication(cfg =>
                 {
@@ -49,49 +57,16 @@ namespace Caviar.Demo.Hybrid
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            services.AddHttpContextAccessor();
-            services.AddTransient(sp =>
-            {
-                var env = sp.GetService<IWebHostEnvironment>();
-                var httpContextAccessor = sp.GetService<IHttpContextAccessor>();
-                var httpContext = httpContextAccessor?.HttpContext;
-                var cookies = httpContext.Request.Cookies;
-                var cookieContainer = new System.Net.CookieContainer();
-                foreach (var c in cookies)
-                {
-                    cookieContainer.Add(new System.Net.Cookie(c.Key, c.Value) { Domain = httpContext.Request.Host.Host });
-                }
-                var user = httpContext.User.Identity.IsAuthenticated;
-                var handler = new HttpClientHandler { CookieContainer = cookieContainer };
-                if (env.IsDevelopment())
-                {
-                    handler.ServerCertificateCustomValidationCallback = (c, v, b, n) => { return true; };
-                }
-                return handler;
-            });
-            services.AddTransient(sp =>
-            {
-                var handler = sp.GetService<HttpClientHandler>();
-
-                if (ServerAddressesFeature?.Addresses == null
-                 || ServerAddressesFeature.Addresses.Count == 0)
-                {
-                    return new HttpClient(handler);
-                }
-
-                var insideIIS = Environment.GetEnvironmentVariable("APP_POOL_ID") is string;
-
-                var address = ServerAddressesFeature.Addresses
-                    .FirstOrDefault(a => a.StartsWith($"http{(insideIIS ? "s" : "")}:"))
-                    ?? ServerAddressesFeature.Addresses.First();
-
-                var uri = new Uri(address);
-
-                return new HttpClient(handler) { BaseAddress = new Uri($"{uri.Scheme}://localhost:{uri.Port}/api/") };
-            });
-            Config.IsServer = true;
+            //客户端配置
+            services.AddCaviarServer();
             services.AddAdminCaviar(new Type[] { typeof(Program),typeof(Wasm.Program) });
-            services.AddScoped<IAuthService, ServerAuthService>();
+
+            //服务端配置
+            services.AddCaviar();
+            services.AddCaviarDbContext(options =>
+                options.UseSqlServer(
+            Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Caviar.Demo.Hybrid")));
+            //跨域
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
@@ -99,16 +74,13 @@ namespace Caviar.Demo.Hybrid
                         .AllowAnyMethod()
                         .AllowAnyHeader());
             });
+            //控制器
             services.AddControllers();
-            services.AddCaviar();
-            services.AddCaviarDbContext(options =>
-                options.UseSqlServer(
-            Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Caviar.Demo.WebApi")));
+            
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            ServerAddressesFeature = app.ServerFeatures.Get<IServerAddressesFeature>();
             // Configure the HTTP request pipeline.
             if (!env.IsDevelopment())
             {

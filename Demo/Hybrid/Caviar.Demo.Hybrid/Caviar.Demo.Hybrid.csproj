@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Src\Caviar.Infrastructure\Caviar.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\Wasm\Caviar.Demo.Wasm\Caviar.Demo.Wasm.csproj" />
+    <ProjectReference Include="..\Caviar.Demo.Wasm\Caviar.Demo.Wasm.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,11 +2,16 @@
 using Blazored.LocalStorage;
 using Caviar.AntDesignUI.Helper;
 using Caviar.SharedKernel;
+using Caviar.SharedKernel.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 
@@ -23,6 +28,17 @@ namespace Caviar.AntDesignUI
         public static List<Assembly> AdditionalAssemblies;
 
         public static PathList PathList = new PathList();
+
+        public static WebAssemblyHostBuilder AddCavWasm(this WebAssemblyHostBuilder builder)
+        {
+            IsServer = false;
+            builder.Services.AddScoped<IAuthService, WasmAuthService>();
+            builder.Services.AddOptions();
+            builder.Services.AddAuthorizationCore();
+            builder.Services.AddSingleton<IAuthorizationPolicyProvider, DefaultAuthorizationPolicyProvider>();
+            builder.Services.AddSingleton<IAuthorizationService, DefaultAuthorizationService>();
+            return builder;
+        }
 
         public static IServiceCollection AddAdminCaviar(this IServiceCollection services, Type[] assemblies)
         {

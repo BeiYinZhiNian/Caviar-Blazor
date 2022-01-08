@@ -14,6 +14,12 @@ using Newtonsoft.Json;
 using Caviar.SharedKernel.Entities.Base;
 using Microsoft.AspNetCore.Builder;
 using Caviar.Core.Services;
+using Microsoft.AspNetCore.Hosting.Server.Features;
+using Caviar.SharedKernel.Interface;
+using Caviar.Infrastructure.API;
+using Microsoft.AspNetCore.Hosting;
+using System.Net.Http;
+using Microsoft.Extensions.Hosting;
 
 namespace Caviar.Infrastructure
 {
@@ -25,8 +31,57 @@ namespace Caviar.Infrastructure
 
         public static IServiceProvider ServiceProvider { get; set; }
 
+        private static IServerAddressesFeature ServerAddressesFeature { get; set; }
+
+        public static IServiceCollection AddCaviarServer(this IServiceCollection services)
+        {
+            services.AddHttpContextAccessor();
+            services.AddTransient(sp =>
+            {
+                var env = sp.GetService<IWebHostEnvironment>();
+                var httpContextAccessor = sp.GetService<IHttpContextAccessor>();
+                var httpContext = httpContextAccessor?.HttpContext;
+                var cookies = httpContext.Request.Cookies;
+                var cookieContainer = new System.Net.CookieContainer();
+                foreach (var c in cookies)
+                {
+                    cookieContainer.Add(new System.Net.Cookie(c.Key, c.Value) { Domain = httpContext.Request.Host.Host });
+                }
+                var user = httpContext.User.Identity.IsAuthenticated;
+                var handler = new HttpClientHandler { CookieContainer = cookieContainer };
+                if (env.IsDevelopment())
+                {
+                    handler.ServerCertificateCustomValidationCallback = (c, v, b, n) => { return true; };
+                }
+                return handler;
+            });
+            services.AddTransient(sp =>
+            {
+                var handler = sp.GetService<HttpClientHandler>();
+
+                if (ServerAddressesFeature?.Addresses == null
+                 || ServerAddressesFeature.Addresses.Count == 0)
+                {
+                    return new HttpClient(handler);
+                }
+
+                var insideIIS = Environment.GetEnvironmentVariable("APP_POOL_ID") is string;
+
+                var address = ServerAddressesFeature.Addresses
+                    .FirstOrDefault(a => a.StartsWith($"http{(insideIIS ? "s" : "")}:"))
+                    ?? ServerAddressesFeature.Addresses.First();
+
+                var uri = new Uri(address);
+
+                return new HttpClient(handler) { BaseAddress = new Uri($"{uri.Scheme}://localhost:{uri.Port}/api/") };
+            });
+            return services;
+        }
+
+
         public static IServiceCollection AddCaviar(this IServiceCollection services)
         {
+            services.AddScoped<IAuthService, ServerAuthService>();
             services.AddScoped<ILanguageService, InAssemblyLanguageService>();
             services.AddScoped<Interactor>();
             services.AddScoped<IAppDbContext, ApplicationDbContext>();
@@ -40,6 +95,7 @@ namespace Caviar.Infrastructure
 
         public static IApplicationBuilder UseCaviar(this IApplicationBuilder app)
         {
+            ServerAddressesFeature = app.ServerFeatures.Get<IServerAddressesFeature>();
             ServiceProvider = app.ApplicationServices;
             new SysDataInit(app.ApplicationServices).StartInit().Wait();
             app.UseAuthentication();
