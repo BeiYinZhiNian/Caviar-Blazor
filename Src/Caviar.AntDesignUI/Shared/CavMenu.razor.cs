@@ -8,6 +8,7 @@ using Caviar.SharedKernel.Entities.View;
 using Microsoft.JSInterop;
 using System.Net;
 using Caviar.AntDesignUI.Core;
+using Caviar.SharedKernel;
 
 namespace Caviar.AntDesignUI.Shared
 {
@@ -44,10 +45,12 @@ namespace Caviar.AntDesignUI.Shared
         HttpHelper Http { get; set; }
         [Inject]
         UserConfig UserConfig { get; set; }
-        [Inject] NavigationManager NavigationManager { get; set; }
+
+        [Inject] 
+        NavigationManager NavigationManager { get; set; }
 
         [Inject]
-        IJSRuntime jSRuntime { get; set; }
+        IJSRuntime JSRuntime { get; set; }
 
 
         public async void OnMenuItemClickedNav(MenuItem menuItem)
@@ -58,7 +61,7 @@ namespace Caviar.AntDesignUI.Shared
                 var iframeMessage = new IframeMessage();
                 iframeMessage.Pattern = Pattern.Wasm;
                 iframeMessage.Url = menuItem.RouterLink;
-                _ = jSRuntime.InvokeVoidAsync("iframeMessage", iframeMessage);
+                _ = JSRuntime.InvokeVoidAsync(CurrencyConstant.JsIframeMessage, iframeMessage);
             }
             BreadcrumbItemCav = menuItem;
             if (BreadcrumbItemCavChanged.HasDelegate)

@@ -31,6 +31,8 @@ namespace Caviar.AntDesignUI.Core
 
         public static event JSScheduling SwitchWasm;
 
+        public static event JSScheduling ForceLoad;
+
         [JSInvokable]
         public static void JsNavigation(IframeMessage message)
         {
@@ -38,6 +40,9 @@ namespace Caviar.AntDesignUI.Core
             {
                 case Pattern.Wasm:
                     SwitchWasm?.Invoke(message);
+                    break;
+                case Pattern.ForceLoad:
+                    ForceLoad?.Invoke(message);
                     break;
                 default:
                     break;
@@ -48,6 +53,6 @@ namespace Caviar.AntDesignUI.Core
     public enum Pattern
     {
         Wasm,
-        Server
+        ForceLoad
     }
 }

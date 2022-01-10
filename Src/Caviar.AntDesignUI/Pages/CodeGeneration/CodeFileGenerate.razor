@@ -92,7 +92,7 @@
                         Title="@ReusltTitle"
                         SubTitle="@ResultSubTitle">
                     <Extra>
-                        <Button Type="@ButtonType.Primary" OnClick='()=> { navigation.NavigateTo("/"); }'>返回首页</Button>
+                        <Button Type="@ButtonType.Primary" OnClick='()=> { NavigationManager.NavigateTo("/"); }'>返回首页</Button>
                         <Button OnClick='()=> { current = 0; }'>继续生成</Button>
                     </Extra>
 
@@ -110,8 +110,9 @@
         margin-top: 16px;
         border: 3px dashed #e9e9e9;
         border-radius: 6px;
-        @UserConfig.Background
         text-align: center;
+        background:@UserConfig.White;
+        
     }
 
     .steps-action {
@@ -119,8 +120,6 @@
     }
 </style>
 
-@inject NavigationManager navigation
-@inject UserConfig UserConfig
 @code {
     public class StepItem
     {

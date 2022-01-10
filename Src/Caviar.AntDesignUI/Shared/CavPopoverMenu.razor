@@ -16,7 +16,7 @@
 </Menu>
 @code {
     [Inject]
-    IJSRuntime jSRuntime { get; set; }
+    IJSRuntime JSRuntime { get; set; }
     [Inject]
     HttpHelper Http { get; set; }
     [Inject]
@@ -24,11 +24,13 @@
     [Inject]
     CavModal CavModal { get; set; }
 
-    [Inject] NavigationManager Navigation { get; set; }
+    [Inject] 
+    NavigationManager NavigationManager { get; set; }
+
     [Inject] HostAuthenticationStateProvider AuthStateProvider { get; set; }
     public void UserCenter()
     {
-        Navigation.NavigateTo(Config.PathList.MyDetails);
+        NavigationManager.NavigateTo(Config.PathList.MyDetails);
     }
 
     public async void ChangePassword()
@@ -39,6 +41,6 @@
     private async Task BeginSignOut()
     {
         var result = await AuthStateProvider.Logout();
-        Navigation.NavigateTo(result, true);
+        NavigationManager.NavigateTo(JSRuntime, result);
     }
 }

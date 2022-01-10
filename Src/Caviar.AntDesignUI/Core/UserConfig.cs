@@ -96,16 +96,15 @@ namespace Caviar.AntDesignUI.Core
             switch (newThemeName)
             {
                 case "ant-design-blazor.dark.css":
-                    Background = "background:#2E2E2E";
-                    ContentStyle = $"margin: 6px 16px;padding: 24px;min-height: 280px;{Background}";
-                    HeaderStyle = $"padding:0;{Background}";
+                    White = "#2E2E2E";
                     break;
                 default:
-                    Background = "background:" + White;
-                    ContentStyle = $"margin: 6px 16px;padding: 24px;min-height: 280px;{Background}";
-                    HeaderStyle = $"padding:0;{Background}";
+                    White = "#F8F8FF";
                     break;
             }
+            Background = $"background:{White};";
+            ContentStyle = $"margin: 6px 16px;padding: 24px;min-height: 280px;{Background}";
+            HeaderStyle = $"padding:0;{Background}";
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using AntDesign;
-using Blazored.LocalStorage;
 using Caviar.AntDesignUI.Core;
 using Caviar.SharedKernel;
 using Caviar.SharedKernel.Interface;
@@ -7,13 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.AspNetCore.Hosting.Server.Features;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Reflection;
 
 
@@ -53,7 +48,6 @@ namespace Caviar.AntDesignUI
             services.AddScoped<HostAuthenticationStateProvider>();
             services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<HostAuthenticationStateProvider>());
             services.AddScoped<IPrismHighlighter, PrismHighlighter>();
-            services.AddScoped<CavNavigationManager>();
             if (assemblies != null)
             {
                 AdditionalAssemblies = new List<Assembly>();

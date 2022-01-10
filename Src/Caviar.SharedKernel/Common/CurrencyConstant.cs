@@ -50,6 +50,8 @@ namespace Caviar.SharedKernel
             {"en-US","English" },
         };
 
+        public static string JsIframeMessage = "iframeMessage";
+
         public static string LanguageHeader = "Current-Language";
 
         public static string EntitysName = "SharedKernel.EntitysName";

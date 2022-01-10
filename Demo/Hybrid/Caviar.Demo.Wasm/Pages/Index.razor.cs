@@ -8,8 +8,6 @@ namespace Caviar.Demo.AntDesignUI.Pages
 {
     partial class Index
     {
-        [Inject]
-        UserConfig UserConfig { get; set; }
         public void test()
         {
             

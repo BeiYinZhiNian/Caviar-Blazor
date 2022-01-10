@@ -29,6 +29,9 @@ namespace Caviar.AntDesignUI.Pages.User
         [Inject] 
         HostAuthenticationStateProvider AuthStateProvider { get; set; }
 
+        [Inject]
+        IJSRuntime JSRuntime { get; set; }
+
         public async void SubmitLogin()
         {
             
@@ -40,7 +43,7 @@ namespace Caviar.AntDesignUI.Pages.User
             if (result.Status == System.Net.HttpStatusCode.OK)
             {
                 _ = MessageService.Success(result.Title);
-                NavigationManager.NavigateTo(result.Url,true,true);
+                NavigationManager.NavigateTo(JSRuntime, result.Url);
                 return;
             }
             StateHasChanged();
