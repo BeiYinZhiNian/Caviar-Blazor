@@ -1,6 +1,6 @@
 ﻿using AntDesign;
 using Blazored.LocalStorage;
-using Caviar.AntDesignUI.Helper;
+using Caviar.AntDesignUI.Core;
 using Caviar.SharedKernel;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.User;

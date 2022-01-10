@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-namespace Caviar.AntDesignUI.Helper
+namespace Caviar.AntDesignUI.Core
 {
     public class PrismHighlighter : IPrismHighlighter
     {

@@ -39,6 +39,6 @@
     private async Task BeginSignOut()
     {
         var result = await AuthStateProvider.Logout();
-        Navigation.NavigateTo(result, forceLoad: true);
+        Navigation.NavigateTo(result, true);
     }
 }

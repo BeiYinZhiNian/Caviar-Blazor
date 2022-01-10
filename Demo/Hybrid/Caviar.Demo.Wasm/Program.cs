@@ -1,5 +1,4 @@
 using Caviar.AntDesignUI;
-using Caviar.AntDesignUI.Helper;
 using Caviar.Demo.Wasm;
 using Caviar.SharedKernel.Interface;
 using Microsoft.AspNetCore.Authorization;

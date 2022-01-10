@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Caviar.AntDesignUI.Helper
+namespace Caviar.AntDesignUI.Core
 {
     public class BootstrapDynamicComponent
     {

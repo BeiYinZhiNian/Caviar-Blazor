@@ -1,5 +1,4 @@
 ﻿using AntDesign;
-using Caviar.AntDesignUI.Helper;
 using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ using Caviar.SharedKernel;
 using Caviar.SharedKernel.Entities.View;
 using System.Net;
 
-namespace Caviar.AntDesignUI
+namespace Caviar.AntDesignUI.Core
 {
     public partial class DataComponentBase<ViewT,T> : CavComponentBase,ITableTemplate where ViewT:IView<T>,new() where T: IBaseEntity,new()
     {

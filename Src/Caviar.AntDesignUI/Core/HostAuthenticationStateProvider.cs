@@ -12,7 +12,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.AntDesignUI.Helper
+namespace Caviar.AntDesignUI.Core
 {
     public class HostAuthenticationStateProvider : AuthenticationStateProvider
     {

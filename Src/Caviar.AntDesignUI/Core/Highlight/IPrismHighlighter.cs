@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
-namespace Caviar.AntDesignUI.Helper
+namespace Caviar.AntDesignUI.Core
 {
     public interface IPrismHighlighter
     {

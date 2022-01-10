@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.AntDesignUI.Helper
+namespace Caviar.AntDesignUI.Core
 {
     public class CavModal
     {

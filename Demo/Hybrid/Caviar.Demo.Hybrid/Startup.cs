@@ -1,5 +1,4 @@
 ﻿using Caviar.AntDesignUI;
-using Caviar.AntDesignUI.Helper;
 using Caviar.Infrastructure;
 using Caviar.Infrastructure.API;
 using Caviar.SharedKernel;

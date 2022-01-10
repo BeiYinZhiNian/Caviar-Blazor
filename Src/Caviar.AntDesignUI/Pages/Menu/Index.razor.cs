@@ -1,6 +1,5 @@
 ﻿using AntDesign;
 using Caviar.SharedKernel.View;
-using Caviar.AntDesignUI.Helper;
 using Caviar.AntDesignUI.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;

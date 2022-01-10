@@ -111,3 +111,8 @@ function getCookie(name) {
 	}
 	return "";
 }
+
+window.onbeforeunload = onbeforeunload_handler;
+function onbeforeunload_handler() {
+	console.log(document.activeElement.href);
+}

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.AntDesignUI
+namespace Caviar.AntDesignUI.Core
 {
     /// <summary>
     /// iframe与框架通信类

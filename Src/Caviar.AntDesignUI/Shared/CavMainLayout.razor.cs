@@ -11,10 +11,10 @@ using Caviar.SharedKernel.View;
 using System.Text;
 using System.Web;
 using System.Text.Json;
-using Caviar.AntDesignUI.Helper;
 using AntDesign.JsInterop;
 using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Components.Authorization;
+using Caviar.AntDesignUI.Core;
 
 namespace Caviar.AntDesignUI.Shared
 {

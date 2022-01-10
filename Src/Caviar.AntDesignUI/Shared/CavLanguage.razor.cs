@@ -1,5 +1,5 @@
 ﻿using AntDesign;
-using Caviar.AntDesignUI.Helper;
+using Caviar.AntDesignUI.Core;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using System;

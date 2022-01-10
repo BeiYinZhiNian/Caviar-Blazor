@@ -1,5 +1,5 @@
 ﻿using AntDesign;
-using Caviar.AntDesignUI.Helper;
+using Caviar.AntDesignUI.Core;
 using Caviar.SharedKernel;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Components;
@@ -11,7 +11,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.AntDesignUI
+namespace Caviar.AntDesignUI.Core
 {
     public partial class CavComponentBase : ComponentBase
     {

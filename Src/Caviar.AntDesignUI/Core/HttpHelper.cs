@@ -14,7 +14,7 @@ using Blazored.LocalStorage;
 using System.Net.Http.Headers;
 using System.Net;
 
-namespace Caviar.AntDesignUI.Helper
+namespace Caviar.AntDesignUI.Core
 {
     public partial class HttpHelper
     {
