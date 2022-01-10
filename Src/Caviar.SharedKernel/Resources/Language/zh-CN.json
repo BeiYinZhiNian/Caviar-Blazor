@@ -84,7 +84,8 @@
       "PhoneNumberConfirmed": "手机号码确认",
       "TwoFactorEnabled": "双因子验证",
       "LockoutEnabled": "启用锁定",
-      "AccessFailedCount": "失败访问次数"
+      "AccessFailedCount": "失败访问次数",
+      "Upper directory": "上层目录"
     },
     "ErrorMessage": {
       "LengthErrorMsg": "{EntitysName}输入长度不能超过{length}字符",

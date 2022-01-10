@@ -1,3 +1,35 @@
-﻿@if(text != null) {
-    @text
+﻿@typeparam ViewT
+@typeparam T
+@inherits DataComponentBase<ViewT,T>
+
+
+@if (ViewFields != null && ViewFields.Count > 0)
+{
+    <Form 
+        @ref="_meunForm" 
+        Model="@DataSource" 
+        OnFinish="FormSubmit" 
+        LabelColSpan="6"
+        WrapperColSpan="16"
+        ValidateMode="@FormValidateMode.Rules" 
+        ValidateOnChange="true">
+        @{
+            foreach(var item in ViewFields)
+            {
+                var entityType = item.EntityType.ToLower();
+
+            switch (entityType)
+            {
+                case "string":
+                    var obj = context.GetObjValue("Entity").GetObjValue(item.Entity.FieldName);
+                    <FormItem Label='@LanguageService[$"{CurrencyConstant.EntitysName}.{item.Entity.FieldName}"]'>
+                        <Input @bind-Value="@obj" />
+                    </FormItem>
+                    break;
+                default:
+                    break;
+            }
+            }
+        }
+    </Form>
 }

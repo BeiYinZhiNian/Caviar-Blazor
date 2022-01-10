@@ -7,104 +7,10 @@
 *@
 @using Caviar.SharedKernel.Entities
 @namespace Caviar.AntDesignUI.Pages.Menu
-@inherits DataComponentBase<SysMenuView,SysMenu>
 @page "/SysMenu/CreateEntity"
 @page "/SysMenu/UpdateEntity"
-<Form @ref="_meunForm" Model="@DataSource" OnFinish="FormSubmit" ValidateMode="@FormValidateMode.Rules" ValidateOnChange="true">
-    <FormItem Label='@LanguageService[$"{CurrencyConstant.EntitysName}.Key"]'>
-        <Input @bind-Value="@context.Entity.Key" Style="width:50%" />
-    </FormItem>
-    <FormItem Label='@LanguageService[$"{CurrencyConstant.EntitysName}.DisplayName"]'>
-        <Input @bind-Value="@context.DisplayName" Style="width:50%" />
-    </FormItem>
-    <FormItem Label="上层目录">
-        <Dropdown>
-            <Overlay>
-                <Tree ShowIcon DataSource="SysMenus"
-                      TitleExpression="x => x.DataItem.DisplayName"
-                      ChildrenExpression="x => x.DataItem.Children"
-                      IconExpression="x => x.DataItem.Entity.Icon"
-                      IsLeafExpression="x => x.DataItem.Children?.Count == 0"
-                      KeyExpression="x => x.DataItem.Id.ToString()"
-                      OnClick='e=>EventRecord(e)'
-                      TItem="SysMenuView">
-                </Tree>
-            </Overlay>
-            <ChildContent>
-                <Button OnClick="RemoveRecord">@ParentMenuName</Button>
-            </ChildContent>
-        </Dropdown>
-    </FormItem>
-    <FormItem Label="菜单类型">
-        <EnumRadioGroup TEnum="MenuType" @bind-Value="context.Entity.MenuType" 
-        OnChange="EventCallback.Factory.Create<MenuType>(this, CheckMenuType)"
-            Options="GetRadioOptions<MenuType>()"></EnumRadioGroup>
-    </FormItem>
-    <FormItem Label="按钮位置" Style="@buttonStrle">
-        <EnumRadioGroup TEnum="ButtonPosition" @bind-Value="context.Entity.ButtonPosition" Options="GetRadioOptions<ButtonPosition>()"></EnumRadioGroup>
-    </FormItem>
-    <FormItem Label="请求地址" Style="@visibility">
-        <Input @bind-Value="@context.Entity.Url">
-    </FormItem>
-    <FormItem Label="打开方式" Style="@visibility">
-        <EnumRadioGroup TEnum="TargetType" @bind-Value="context.Entity.TargetType"  Options="GetRadioOptions<TargetType>()"></EnumRadioGroup>
-    </FormItem>
-    <FormItem Style="@buttonStrle">
-        <Checkbox @bind-Value="@context.Entity.IsDoubleTrue">需要二次确认</Checkbox>
-    </FormItem>
-    <FormItem Label="图标">
-        <Space>
-            <SpaceItem>
-                <Button OnClick="()=> { _visible = true; }">图标库</Button>
-                <CavModalIcon @bind-IconValue="DataSource.Entity.Icon" @bind-Visible="_visible"></CavModalIcon>
-            </SpaceItem>
-            <SpaceItem>
-                @if (!string.IsNullOrEmpty(DataSource.Entity.Icon))
-                {
-                    <Icon Type="@DataSource.Entity.Icon" Theme="outline"></Icon>
-                }
-            </SpaceItem>
-        </Space>
-    </FormItem>
-    <FormItem Label="编号">
-        <Input @bind-Value="@context.Entity.Number" Style="width: 20%;">
-    </FormItem>
-    <FormItem Label='数据权限'>
-    </FormItem>
-</Form>
+@inherits CavComponentBase
 
-@code{
+<CavDataTemplate ViewT="SysMenuView" T="SysMenu">
 
-    bool _visible = false;
-
-    string visibility = "display:none;";
-    string buttonStrle = "display:none;";
-    public void CheckMenuType()
-    {
-        switch (DataSource.Entity.MenuType)
-        {
-            case MenuType.Catalog:
-                visibility = "display:none;";
-                buttonStrle = "display:none;";
-                DataSource.Entity.Url = "";
-                DataSource.Entity.ButtonPosition = ButtonPosition.Default;
-                DataSource.Entity.TargetType = TargetType.CurrentPage;
-                break;
-            case MenuType.Menu:
-            case MenuType.API:
-                buttonStrle = "display:none;";
-                visibility = "";
-                DataSource.Entity.ButtonPosition = ButtonPosition.Default;
-                DataSource.Entity.TargetType = TargetType.CurrentPage;
-                break;
-            case MenuType.Button:
-                visibility = "";
-                buttonStrle = "";
-                break;
-            default:
-                break;
-        }
-    }
-
-
-}
+</CavDataTemplate>

@@ -70,7 +70,7 @@ namespace Caviar.AntDesignUI.Core
                     {
                         builder.AddMultipleAttributes(index++, paramenter);
                     }
-                    builder.AddComponentReferenceCapture(index++, SetComponent);
+                    //builder.AddComponentReferenceCapture(index++, SetComponent);
                     builder.CloseComponent();
                     builder.CloseElement();
                     return;
