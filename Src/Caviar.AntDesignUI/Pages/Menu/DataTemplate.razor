@@ -10,7 +10,13 @@
 @inherits DataComponentBase<SysMenuView,SysMenu>
 @page "/SysMenu/CreateEntity"
 @page "/SysMenu/UpdateEntity"
-<Form @ref="_meunForm" Model="@DataSource" OnFinish="FormSubmit" ValidateMode="@FormValidateMode.Rules" ValidateOnChange="true">
+<Form @ref="_meunForm" 
+    LabelColSpan="6"
+    WrapperColSpan="16"
+    Model="@DataSource" 
+    OnFinish="FormSubmit" 
+    ValidateMode="@FormValidateMode.Rules" 
+    ValidateOnChange="true">
     <FormItem Label='@LanguageService[$"{CurrencyConstant.EntitysName}.Key"]'>
         <Input @bind-Value="@context.Entity.Key" Style="width:50%" />
     </FormItem>
