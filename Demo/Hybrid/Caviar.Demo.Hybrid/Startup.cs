@@ -1,13 +1,7 @@
 ﻿using Caviar.AntDesignUI;
 using Caviar.Infrastructure;
-using Caviar.Infrastructure.API;
-using Caviar.SharedKernel;
-using Caviar.SharedKernel.Interface;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 
 namespace Caviar.Demo.Hybrid
@@ -81,7 +75,12 @@ namespace Caviar.Demo.Hybrid
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             // Configure the HTTP request pipeline.
-            if (!env.IsDevelopment())
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseWebAssemblyDebugging();
+            }
+            else
             {
                 app.UseExceptionHandler("/Error");
             }
