@@ -89,8 +89,8 @@
       "Icon Library": "图标库"
     },
     "ErrorMessage": {
-      "LengthErrorMsg": "{EntitysName}输入长度不能超过{length}字符",
-      "RequiredErrorMsg": "{EntitysName}为必填项"
+      "LengthErrorMsg": "{fieldName}输入长度不能超过{length}字符",
+      "RequiredErrorMsg": "{fieldName}为必填项"
     },
     "MenuBar": {
       "Home": "首页",

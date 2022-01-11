@@ -17,13 +17,13 @@
     OnFinish="FormSubmit" 
     ValidateMode="@FormValidateMode.Rules" 
     ValidateOnChange="true">
-    <FormItem Label='@LanguageService[$"{CurrencyConstant.EntitysName}.Key"]'>
-        <Input @bind-Value="@context.Entity.Key" Style="width:50%" />
+    <FormItem Label='@LanguageService[$"{CurrencyConstant.EntitysName}.Key"]' Rules="@GetFormValidationRules(context.Entity,"Key")">
+        <Input @bind-Value="@context.Entity.Key"/>
     </FormItem>
-    <FormItem Label='@LanguageService[$"{CurrencyConstant.EntitysName}.DisplayName"]'>
-        <Input @bind-Value="@context.DisplayName" Style="width:50%" />
+    <FormItem Label='@LanguageService[$"{CurrencyConstant.EntitysName}.DisplayName"]' Rules="@GetFormValidationRules(context,"DisplayName")">
+        <Input @bind-Value="@context.DisplayName"/>
     </FormItem>
-    <FormItem Label="@LanguageService[$"{CurrencyConstant.EntitysName}.Upper directory"]">
+    <FormItem Label="@LanguageService[$"{CurrencyConstant.EntitysName}.Upper directory"]" Rules="@GetFormValidationRules(context.Entity,"Icon")">
         <Dropdown>
             <Overlay>
                 <Tree ShowIcon DataSource="SysMenus"

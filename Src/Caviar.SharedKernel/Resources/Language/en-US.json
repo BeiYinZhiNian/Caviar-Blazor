@@ -73,8 +73,8 @@
 
     },
     "ErrorMessage": {
-      "LengthErrorMsg": "{EntitysName} Input length cannot exceed {length} character",
-      "RequiredErrorMsg": "{EntitysName} Is required"
+      "LengthErrorMsg": "{fieldName} Input length cannot exceed {length} character",
+      "RequiredErrorMsg": "{fieldName} Is required"
     },
     "MenuBar": {
       "Home": "Home",
