@@ -17,13 +17,13 @@
     OnFinish="FormSubmit" 
     ValidateMode="@FormValidateMode.Rules" 
     ValidateOnChange="true">
-    <FormItem Label='@LanguageService[$"{CurrencyConstant.EntitysName}.Key"]' Rules="@GetFormValidationRules(context.Entity,"Key")">
+    <CavFormItem FieldName="Key" FieldRules="@context.Entity">
         <Input @bind-Value="@context.Entity.Key"/>
-    </FormItem>
-    <FormItem Label='@LanguageService[$"{CurrencyConstant.EntitysName}.DisplayName"]' Rules="@GetFormValidationRules(context,"DisplayName")">
+    </CavFormItem>
+    <CavFormItem FieldName="DisplayName" FieldRules="@context">
         <Input @bind-Value="@context.DisplayName"/>
-    </FormItem>
-    <FormItem Label="@LanguageService[$"{CurrencyConstant.EntitysName}.Upper directory"]" Rules="@GetFormValidationRules(context.Entity,"Icon")">
+    </CavFormItem>
+    <CavFormItem FieldName="DisplayName">
         <Dropdown>
             <Overlay>
                 <Tree ShowIcon DataSource="SysMenus"
@@ -40,25 +40,25 @@
                 <Button OnClick="RemoveRecord">@ParentMenuName</Button>
             </ChildContent>
         </Dropdown>
-    </FormItem>
-    <FormItem Label="@LanguageService[$"{CurrencyConstant.EntitysName}.MenuType"]">
+    </CavFormItem>
+    <CavFormItem FieldName="MenuType" FieldRules="@context.Entity">
         <EnumRadioGroup TEnum="MenuType" @bind-Value="context.Entity.MenuType" 
         OnChange="EventCallback.Factory.Create<MenuType>(this, CheckMenuType)"
             Options="GetRadioOptions<MenuType>()"></EnumRadioGroup>
-    </FormItem>
-    <FormItem Label="@LanguageService[$"{CurrencyConstant.EntitysName}.ButtonPosition"]" Style="@buttonStrle">
+    </CavFormItem>
+    <CavFormItem FieldName="ButtonPosition" FieldRules="@context.Entity">
         <EnumRadioGroup TEnum="ButtonPosition" @bind-Value="context.Entity.ButtonPosition" Options="GetRadioOptions<ButtonPosition>()"></EnumRadioGroup>
-    </FormItem>
-    <FormItem Label="@LanguageService[$"{CurrencyConstant.EntitysName}.Url"]" Style="@visibility">
+    </CavFormItem>
+    <CavFormItem Style="@visibility" FieldName="Url" FieldRules="@context.Entity">
         <Input @bind-Value="@context.Entity.Url">
-    </FormItem>
-    <FormItem Label="@LanguageService[$"{CurrencyConstant.EntitysName}.TargetType"]" Style="@visibility">
+    </CavFormItem>
+    <CavFormItem Style="@visibility" FieldName="TargetType" FieldRules="@context.Entity">
         <EnumRadioGroup TEnum="TargetType" @bind-Value="context.Entity.TargetType"  Options="GetRadioOptions<TargetType>()"></EnumRadioGroup>
-    </FormItem>
-    <FormItem Style="@buttonStrle">
+    </CavFormItem>
+    <CavFormItem Style="@buttonStrle" FieldName="IsDoubleTrue" FieldRules="@context.Entity">
         <Checkbox @bind-Value="@context.Entity.IsDoubleTrue">@LanguageService[$"{CurrencyConstant.EntitysName}.IsDoubleTrue"]</Checkbox>
-    </FormItem>
-    <FormItem Label="@LanguageService[$"{CurrencyConstant.EntitysName}.Icon"]">
+    </CavFormItem>
+    <CavFormItem FieldName="Icon" FieldRules="@context.Entity">
         <Space>
             <SpaceItem>
                 <Button OnClick="()=> { _visible = true; }">@LanguageService[$"{CurrencyConstant.EntitysName}.Icon Library"]</Button>
@@ -71,12 +71,12 @@
                 }
             </SpaceItem>
         </Space>
-    </FormItem>
-    <FormItem Label="@LanguageService[$"{CurrencyConstant.EntitysName}.Number"]">
+    </CavFormItem>
+    <CavFormItem FieldName="Number" FieldRules="@context.Entity">
         <Input @bind-Value="@context.Entity.Number" Style="width: 20%;">
-    </FormItem>
-    <FormItem Label='@LanguageService[$"{CurrencyConstant.EntitysName}.DataId"]'>
-    </FormItem>
+    </CavFormItem>
+    <CavFormItem FieldName="DataId" FieldRules="@context.Entity">
+    </CavFormItem>
 </Form>
 
 @code{
