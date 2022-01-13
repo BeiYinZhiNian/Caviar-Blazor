@@ -1,10 +1,5 @@
 using Caviar.AntDesignUI;
-using Caviar.Demo.Wasm;
-using Caviar.SharedKernel.Interface;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using System.Net;
 
 namespace Caviar.Demo.Wasm
 {

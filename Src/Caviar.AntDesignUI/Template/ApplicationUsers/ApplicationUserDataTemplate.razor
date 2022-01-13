@@ -1,72 +1,77 @@
 @*
-    生成者：
-    生成时间：2021-12-11 16:54:47
-    代码由代码生成器自动生成，更改的代码可能被进行替换
-    界面如需更改，建议直接将内容剪切到自己的文件内，保留此空白文件
-    {EntityDisplayName}数据操作模板
+生成者：
+生成时间：2022-01-13 10:09:07
+代码由代码生成器自动生成，更改的代码可能被进行替换
+界面如需更改，建议直接将内容剪切到自己的文件内，保留此空白文件
+Caviar ©2021 Created by 北音执念
+{EntityDisplayName} Data Template
 *@
 @page "/ApplicationUser/CreateEntity"
 @page "/ApplicationUser/UpdateEntity"
-@using Caviar.SharedKernel.Entities
-@using Caviar.SharedKernel.Entities.View
-@inherits DataComponentBase<ApplicationUserView, ApplicationUser>
+@inherits DataComponentBase<ApplicationUserView,ApplicationUser>
 
-<Form @ref="_meunForm" Model="@DataSource" OnFinish="FormSubmit">
-    <FormItem Label='Remark'>
-        <TextArea @bind-Value='@context.Entity.Remark' Style='width:53%' />
-    </FormItem>
-    <FormItem Label='IsDisable'>
-        <Switch @bind-Value='@context.Entity.IsDisable' />
-    </FormItem>
-    <FormItem Label='Number'>
-        <Input @bind-Value='@context.Entity.Number' Style='width:50%' />
-    </FormItem>
-    <FormItem Label='DataId'>
-        <AntDesign.InputNumber @bind-Value='@context.Entity.DataId' Style='width:50%' />
-    </FormItem>
-    <FormItem Label='HeadPortrait'>
-        <Input @bind-Value='@context.Entity.HeadPortrait' Style='width:50%' />
-    </FormItem>
-    <FormItem Label='UserGroupId'>
-        <AntDesign.InputNumber @bind-Value='@context.Entity.UserGroupId' Style='width:50%' />
-    </FormItem>
-    <FormItem Label='UserName'>
-        <Input @bind-Value='@context.Entity.UserName' Style='width:50%' />
-    </FormItem>
-    <FormItem Label='NormalizedUserName'>
-        <Input @bind-Value='@context.Entity.NormalizedUserName' Style='width:50%' />
-    </FormItem>
-    <FormItem Label='Email'>
-        <Input @bind-Value='@context.Entity.Email' Style='width:50%' />
-    </FormItem>
-    <FormItem Label='NormalizedEmail'>
-        <Input @bind-Value='@context.Entity.NormalizedEmail' Style='width:50%' />
-    </FormItem>
-    <FormItem Label='EmailConfirmed'>
-        <Switch @bind-Value='@context.Entity.EmailConfirmed' />
-    </FormItem>
-    <FormItem Label='PasswordHash'>
-        <Input @bind-Value='@context.Entity.PasswordHash' Style='width:50%' />
-    </FormItem>
-    <FormItem Label='SecurityStamp'>
-        <Input @bind-Value='@context.Entity.SecurityStamp' Style='width:50%' />
-    </FormItem>
-    <FormItem Label='ConcurrencyStamp'>
-        <Input @bind-Value='@context.Entity.ConcurrencyStamp' Style='width:50%' />
-    </FormItem>
-    <FormItem Label='PhoneNumber'>
-        <Input @bind-Value='@context.Entity.PhoneNumber' Style='width:50%' />
-    </FormItem>
-    <FormItem Label='PhoneNumberConfirmed'>
-        <Switch @bind-Value='@context.Entity.PhoneNumberConfirmed' />
-    </FormItem>
-    <FormItem Label='TwoFactorEnabled'>
-        <Switch @bind-Value='@context.Entity.TwoFactorEnabled' />
-    </FormItem>
-    <FormItem Label='LockoutEnabled'>
-        <Switch @bind-Value='@context.Entity.LockoutEnabled' />
-    </FormItem>
-    <FormItem Label='AccessFailedCount'>
-        <AntDesign.InputNumber @bind-Value='@context.Entity.AccessFailedCount' Style='width:50%' />
-    </FormItem>
+<Form @ref="_meunForm" 
+    LabelColSpan="6"
+    WrapperColSpan="16"
+    Model="@DataSource" 
+    OnFinish="FormSubmit" 
+    ValidateMode="@FormValidateMode.Rules" 
+    ValidateOnChange="true">
+    <CavFormItem  FieldName='Remark' FieldRules='@context.Entity'>
+        <Input @bind-Value='@context.Entity.Remark' />
+    </CavFormItem>
+    <CavFormItem  FieldName='IsDisable' FieldRules='@context.Entity'>
+        <Switch @bind-Value='@context.Entity.IsDisable'/>
+    </CavFormItem>
+    <CavFormItem  FieldName='Number' FieldRules='@context.Entity'>
+        <Input @bind-Value='@context.Entity.Number' />
+    </CavFormItem>
+    <CavFormItem  FieldName='DataId' FieldRules='@context.Entity'>
+        <AntDesign.InputNumber @bind-Value='@context.Entity.DataId' Style='width:50%'/>
+    </CavFormItem>
+    <CavFormItem  FieldName='HeadPortrait' FieldRules='@context.Entity'>
+        <Input @bind-Value='@context.Entity.HeadPortrait' />
+    </CavFormItem>
+    <CavFormItem  FieldName='UserGroupId' FieldRules='@context.Entity'>
+        <AntDesign.InputNumber @bind-Value='@context.Entity.UserGroupId' Style='width:50%'/>
+    </CavFormItem>
+    <CavFormItem  FieldName='UserName' FieldRules='@context.Entity'>
+        <Input @bind-Value='@context.Entity.UserName' />
+    </CavFormItem>
+    <CavFormItem  FieldName='NormalizedUserName' FieldRules='@context.Entity'>
+        <Input @bind-Value='@context.Entity.NormalizedUserName' />
+    </CavFormItem>
+    <CavFormItem  FieldName='Email' FieldRules='@context.Entity'>
+        <Input @bind-Value='@context.Entity.Email' />
+    </CavFormItem>
+    <CavFormItem  FieldName='NormalizedEmail' FieldRules='@context.Entity'>
+        <Input @bind-Value='@context.Entity.NormalizedEmail' />
+    </CavFormItem>
+    <CavFormItem  FieldName='EmailConfirmed' FieldRules='@context.Entity'>
+        <Switch @bind-Value='@context.Entity.EmailConfirmed'/>
+    </CavFormItem>
+    <CavFormItem  FieldName='PasswordHash' FieldRules='@context.Entity'>
+        <Input @bind-Value='@context.Entity.PasswordHash' />
+    </CavFormItem>
+    <CavFormItem  FieldName='SecurityStamp' FieldRules='@context.Entity'>
+        <Input @bind-Value='@context.Entity.SecurityStamp' />
+    </CavFormItem>
+    <CavFormItem  FieldName='ConcurrencyStamp' FieldRules='@context.Entity'>
+        <Input @bind-Value='@context.Entity.ConcurrencyStamp' />
+    </CavFormItem>
+    <CavFormItem  FieldName='PhoneNumber' FieldRules='@context.Entity'>
+        <Input @bind-Value='@context.Entity.PhoneNumber' />
+    </CavFormItem>
+    <CavFormItem  FieldName='PhoneNumberConfirmed' FieldRules='@context.Entity'>
+        <Switch @bind-Value='@context.Entity.PhoneNumberConfirmed'/>
+    </CavFormItem>
+    <CavFormItem  FieldName='TwoFactorEnabled' FieldRules='@context.Entity'>
+        <Switch @bind-Value='@context.Entity.TwoFactorEnabled'/>
+    </CavFormItem>
+    <CavFormItem  FieldName='LockoutEnabled' FieldRules='@context.Entity'>
+        <Switch @bind-Value='@context.Entity.LockoutEnabled'/>
+    </CavFormItem>
+    <CavFormItem  FieldName='AccessFailedCount' FieldRules='@context.Entity'>
+        <AntDesign.InputNumber @bind-Value='@context.Entity.AccessFailedCount' Style='width:50%'/>
+    </CavFormItem>
 </Form>

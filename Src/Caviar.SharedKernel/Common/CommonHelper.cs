@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Web;
 
-namespace Caviar.SharedKernel
+namespace Caviar.SharedKernel.Entities
 {
     public static class CommonHelper
     {

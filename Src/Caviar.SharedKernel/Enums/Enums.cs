@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.SharedKernel
+namespace Caviar.SharedKernel.Entities
 {
     /// <summary>
     /// 按钮类型

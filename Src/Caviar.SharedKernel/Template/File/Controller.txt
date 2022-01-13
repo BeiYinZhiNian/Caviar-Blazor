@@ -12,7 +12,7 @@ using {BaseEntityNamespace}.View;
 namespace {EntityNamespace}
 {
     /// <summary>
-    /// {Lable}控制器
+    /// {Lable}Controller
     /// </summary>
     public partial class {EntityName}Controller : EasyBaseApiController<{EntityName}View,{EntityName}>
     {

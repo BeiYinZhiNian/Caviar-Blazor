@@ -4,11 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Caviar.SharedKernel.Entities.View;
 using Microsoft.JSInterop;
 using System.Net;
 using Caviar.AntDesignUI.Core;
-using Caviar.SharedKernel;
+using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.View;
 
 namespace Caviar.AntDesignUI.Shared
 {

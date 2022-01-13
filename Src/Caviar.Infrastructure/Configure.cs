@@ -1,6 +1,5 @@
 ﻿using Caviar.Core.Interface;
 using Caviar.Infrastructure.Persistence;
-using Caviar.SharedKernel;
 using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -15,7 +14,6 @@ using Caviar.SharedKernel.Entities.Base;
 using Microsoft.AspNetCore.Builder;
 using Caviar.Core.Services;
 using Microsoft.AspNetCore.Hosting.Server.Features;
-using Caviar.SharedKernel.Interface;
 using Caviar.Infrastructure.API;
 using Microsoft.AspNetCore.Hosting;
 using System.Net.Http;

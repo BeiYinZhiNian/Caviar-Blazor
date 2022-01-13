@@ -1,4 +1,4 @@
-﻿using Caviar.SharedKernel;
+﻿using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 

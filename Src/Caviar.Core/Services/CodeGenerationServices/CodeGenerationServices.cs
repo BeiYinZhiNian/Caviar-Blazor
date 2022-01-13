@@ -1,4 +1,4 @@
-﻿using Caviar.SharedKernel;
+﻿using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.Base;
 using Caviar.SharedKernel.View;
 using System;
@@ -138,7 +138,7 @@ namespace Caviar.Core.Services.CodeGenerationServices
             txt = txt.Replace("{BaseEntityNamespace}", baseEntityNaemspace);
             txt = txt.Replace("{EntityName}", entityData.Entity.FieldName);
             txt = txt.Replace("{FormItem}", CreateFormItem(fieldsData));
-            txt = txt.Replace("{Lable}", codeGenerateOptions.LabelName);
+            txt = txt.Replace("{Lable}", codeGenerateOptions.EntitieName);
             codePreview.Content = txt.ToString();
             return codePreview;
         }
@@ -155,14 +155,9 @@ namespace Caviar.Core.Services.CodeGenerationServices
             foreach (var item in headers)
             {
                 var txt = "";
-                var label = item.DisplayName;
-                if (string.IsNullOrEmpty(label))
-                {
-                    label = item.Entity.FieldName;
-                }
-                txt += $"<FormItem Label='{label}'>";
+                txt += $"<CavFormItem  FieldName='{item.Entity.FieldName}' FieldRules='@context.Entity'>";
                 var IsWrite = CreateCurrencyAssembly(item, ref txt);
-                txt += "</FormItem>";
+                txt += "</CavFormItem>";
                 if (IsWrite) html += txt;
             }
             html = FormatHtml(html);
@@ -186,14 +181,7 @@ namespace Caviar.Core.Services.CodeGenerationServices
             switch (modelType)
             {
                 case "string":
-                    if (item.Entity.FieldLen != null && item.Entity.FieldLen >= 200)
-                    {
-                        txt += $"<TextArea @bind-Value='@context.Entity.{item.Entity.FieldName}' Style='width:53%'/>";
-                    }
-                    else
-                    {
-                        txt += $"<Input @bind-Value='@context.Entity.{item.Entity.FieldName}' Style='width:50%' />";
-                    }
+                    txt += $"<Input @bind-Value='@context.Entity.{item.Entity.FieldName}' />";
                     break;
                 case "int32":
                     txt += $"<AntDesign.InputNumber @bind-Value='@context.Entity.{item.Entity.FieldName}' Style='width:50%'/>";

@@ -1,20 +1,11 @@
 using Caviar.Infrastructure.API.BaseApi;
-using System.ComponentModel;
 using Caviar.SharedKernel.Entities;
-using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Linq;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.Extensions.Configuration;
-using Caviar.SharedKernel;
 using Caviar.SharedKernel.Entities.User;
-using Caviar.SharedKernel.Interface;
+using Caviar.SharedKernel.View;
 
 namespace Caviar.Infrastructure.API
 {

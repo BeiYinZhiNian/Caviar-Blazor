@@ -1,7 +1,7 @@
 using Caviar.Infrastructure.API.BaseApi;
 using System.ComponentModel;
 using Caviar.SharedKernel.Entities;
-using Caviar.SharedKernel.Entities.View;
+using Caviar.SharedKernel.View;
 /// <summary>
 /// 生成者：未登录用户
 /// 生成时间：2021-12-03 10:14:18

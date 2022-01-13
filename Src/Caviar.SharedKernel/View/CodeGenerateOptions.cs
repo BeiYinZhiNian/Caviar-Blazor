@@ -22,9 +22,6 @@ namespace Caviar.SharedKernel.View
         public string EntitieName { get; set; }
         [DisplayName("命名空间")]
         public string FullName { get; set; }
-        [DisplayName("标签名称")]
-        [Required(ErrorMessage = "请输入要生成的标签名称")]
-        public string LabelName { get; set; }
         /// <summary>
         /// 是否覆盖
         /// </summary>

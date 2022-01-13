@@ -1,7 +1,5 @@
-﻿using Caviar.SharedKernel;
-using Caviar.SharedKernel.Entities;
+﻿using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.User;
-using Caviar.SharedKernel.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;

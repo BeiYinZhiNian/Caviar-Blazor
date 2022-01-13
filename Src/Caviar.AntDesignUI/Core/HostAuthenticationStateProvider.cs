@@ -1,7 +1,6 @@
 ﻿using AntDesign;
-using Caviar.SharedKernel;
+using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.User;
-using Caviar.SharedKernel.Interface;
 using Microsoft.AspNetCore.Components.Authorization;
 using System;
 using System.Collections.Generic;

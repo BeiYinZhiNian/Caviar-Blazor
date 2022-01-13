@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.SharedKernel
+namespace Caviar.SharedKernel.Entities
 {
 
     public class PageData<T>

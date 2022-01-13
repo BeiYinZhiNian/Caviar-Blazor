@@ -4,13 +4,10 @@ using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
-using Microsoft.AspNetCore.Http;
-using Caviar.SharedKernel;
-using Caviar.SharedKernel.Entities.View;
 using System.Net;
-using Microsoft.AspNetCore.Components.Forms;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using Caviar.SharedKernel.Entities;
 
 namespace Caviar.AntDesignUI.Core
 {
@@ -125,7 +122,7 @@ namespace Caviar.AntDesignUI.Core
             var result = await HttpService.PostJson(CurrentUrl, DataSource);
             if (result.Status == HttpStatusCode.OK)
             {
-                await MessageService.Success(SuccMsg);
+                _ = MessageService.Success(SuccMsg);
                 return true;
             }
             return false;

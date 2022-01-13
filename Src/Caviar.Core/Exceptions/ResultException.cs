@@ -1,10 +1,5 @@
-﻿using Caviar.SharedKernel;
-using Caviar.SharedKernel.View;
+﻿using Caviar.SharedKernel.Entities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Caviar.Core.Exceptions
 {

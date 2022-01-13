@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
-namespace Caviar.SharedKernel
+namespace Caviar.SharedKernel.Entities
 {
     public class InAssemblyLanguageService:ILanguageService
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.SharedKernel.Interface
+namespace Caviar.SharedKernel.Entities
 {
     public interface IAuthService
     {

@@ -1,20 +1,9 @@
 ﻿using AntDesign;
-using Blazored.LocalStorage;
 using Caviar.AntDesignUI.Core;
-using Caviar.SharedKernel;
-using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.User;
-using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Configuration;
 using Microsoft.JSInterop;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading;
 using System.Web;
 
 namespace Caviar.AntDesignUI.Pages.User

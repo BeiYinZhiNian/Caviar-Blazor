@@ -7,7 +7,7 @@ using Caviar.SharedKernel.Entities;
 /// 代码由代码生成器自动生成，更改的代码可能被进行替换
 /// 可在上层目录使用partial关键字进行扩展
 /// </summary>
-namespace Caviar.SharedKernel.Entities.View
+namespace Caviar.SharedKernel.View
 {
     /// <summary>
     /// 菜单管理视图

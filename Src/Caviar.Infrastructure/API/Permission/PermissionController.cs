@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Caviar.SharedKernel;
+using Caviar.SharedKernel.Entities;
 
 namespace Caviar.Infrastructure.API.Permission
 {

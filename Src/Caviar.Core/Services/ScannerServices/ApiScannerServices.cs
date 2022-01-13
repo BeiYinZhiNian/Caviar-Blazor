@@ -1,5 +1,4 @@
-﻿using Caviar.SharedKernel;
-using Caviar.SharedKernel.Entities;
+﻿using Caviar.SharedKernel.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

@@ -1,13 +1,8 @@
-﻿using Caviar.SharedKernel.View;
-using System;
+﻿using Caviar.SharedKernel.Entities;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Caviar.SharedKernel.Entities.View
+namespace Caviar.SharedKernel.View
 {
     public partial class SysMenuView : ITree<SysMenuView>
     {

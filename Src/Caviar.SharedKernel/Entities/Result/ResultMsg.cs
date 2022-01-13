@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace Caviar.SharedKernel
+namespace Caviar.SharedKernel.Entities
 {
     [DIInject]
     public class ResultMsg

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
-namespace Caviar.SharedKernel
+namespace Caviar.SharedKernel.Entities
 {
     public interface ILanguageService
     {

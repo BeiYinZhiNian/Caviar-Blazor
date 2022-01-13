@@ -10,23 +10,23 @@ namespace Caviar.SharedKernel.Entities.Base
     {
         public CodeGeneration IndexOptions { get; set; } = new CodeGeneration()
         {
-            StorePath = "../Caviar.Demo.AntDesignUI/Template/",
-            NameSpace = "Caviar.AntDesignUI.Pages"
+            StorePath = "../Caviar.Demo.Wasm/Template/",
+            NameSpace = "Caviar.Demo.Wasm.Pages"
         };
         public CodeGeneration DataTemplateOptions { get; set; } = new CodeGeneration()
         {
-            StorePath = "../Caviar.Demo.AntDesignUI/Template/",
-            NameSpace = "Caviar.AntDesignUI.Pages"
+            StorePath = "../Caviar.Demo.Wasm/Template/",
+            NameSpace = "Caviar.Demo.Wasm.Pages"
         };
         public CodeGeneration ControllerOptions { get; set; } = new CodeGeneration()
         {
-            StorePath = "../Caviar.Demo.WebApi/Template/API/",
+            StorePath = "../Caviar.Demo.Hybrid/Template/API/",
             NameSpace = "Caviar.Infrastructure.API"
         };
 
         public CodeGeneration ViewModelOptions { get; set; } = new CodeGeneration()
         {
-            StorePath = "../Caviar.Demo.Model/Template/View/",
+            StorePath = "../Caviar.Demo.Hybrid/Template/View/",
             NameSpace = "Caviar.SharedKernel.View"
         };
 

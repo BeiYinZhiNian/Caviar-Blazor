@@ -1,9 +1,6 @@
 ﻿using Caviar.Core;
 using Caviar.Core.Interface;
-using Caviar.SharedKernel;
 using Caviar.SharedKernel.Entities;
-using Caviar.SharedKernel.View;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;

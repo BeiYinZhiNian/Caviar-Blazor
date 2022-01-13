@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Text.Json;
-using Caviar.SharedKernel.Entities.View;
 using System.Net;
 
 namespace Caviar.AntDesignUI.Pages.CodeGeneration

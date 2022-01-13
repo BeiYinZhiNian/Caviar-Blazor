@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Caviar.Core.Services;
 using Caviar.Core.Interface;
-using Caviar.SharedKernel;
+using Caviar.SharedKernel.Entities;
 using Caviar.Core;
 using Caviar.Core.Services.PermissionServices;
 using System.Collections.Generic;

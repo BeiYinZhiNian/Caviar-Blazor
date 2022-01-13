@@ -5,13 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Microsoft.AspNetCore.Identity;
-using Caviar.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using Caviar.Infrastructure.API.BaseApi;
 using Caviar.Core.Services.ScannerServices;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Caviar.SharedKernel.Entities.View;
+using Caviar.SharedKernel.View;
 
 namespace Caviar.Infrastructure.Persistence
 {

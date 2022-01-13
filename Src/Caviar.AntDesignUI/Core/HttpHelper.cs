@@ -4,15 +4,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using System;
 using AntDesign;
-using System.Collections.Generic;
 using Microsoft.JSInterop;
-using Microsoft.AspNetCore.Http;
-using Caviar.SharedKernel;
 using Newtonsoft.Json;
-using Microsoft.AspNetCore.Components.Authorization;
-using Blazored.LocalStorage;
-using System.Net.Http.Headers;
 using System.Net;
+using Caviar.SharedKernel.Entities;
 
 namespace Caviar.AntDesignUI.Core
 {

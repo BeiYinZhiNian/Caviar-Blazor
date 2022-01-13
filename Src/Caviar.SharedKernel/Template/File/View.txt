@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using Caviar.SharedKernel;
+using Caviar.SharedKernel.Entities;
 using {BaseEntityNamespace};
 
 /// <summary>
@@ -12,7 +12,7 @@ using {BaseEntityNamespace};
 namespace {BaseEntityNamespace}.View
 {
     /// <summary>
-    /// {Lable}视图
+    /// {Lable}View
     /// </summary>
     public partial class {EntityName}View : BaseView<{EntityName}>
     {

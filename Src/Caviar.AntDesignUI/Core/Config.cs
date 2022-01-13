@@ -1,9 +1,7 @@
 ﻿using AntDesign;
 using Caviar.AntDesignUI.Core;
-using Caviar.SharedKernel;
-using Caviar.SharedKernel.Interface;
+using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;

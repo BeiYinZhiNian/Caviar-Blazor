@@ -4,10 +4,9 @@
 代码由代码生成器自动生成，更改的代码可能被进行替换
 界面如需更改，建议直接将内容剪切到自己的文件内，保留此空白文件
 Caviar ©2021 Created by 北音执念
-{Lable}列表
+{Lable}List
 *@
 @page "/{EntityName}/Index"
-@using {BaseEntityNamespace}.View
 @inherits IndexComponentBase<{EntityName}View>
 
 <CavTableTemplate TData="{EntityName}View"
