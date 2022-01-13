@@ -65,6 +65,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             var resultMsg = DataFilter.ResultHandle(result);
             if (resultMsg != null)
             {
+                resultMsg.Title = LanguageService[$"{CurrencyConstant.ResuleMsg}.{resultMsg.Title}"];
                 ModificationTips(resultMsg);
                 context.Result = Ok(resultMsg);
             }

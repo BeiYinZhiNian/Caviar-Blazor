@@ -32,7 +32,7 @@ namespace Caviar.AntDesignUI.Core
         public async Task<string> Logout()
         {
             var result = await httpHelper.PostJson<string,string>(Config.PathList.Logout, null);
-            return result.Title;
+            return result.Url;
         }
     }
 }

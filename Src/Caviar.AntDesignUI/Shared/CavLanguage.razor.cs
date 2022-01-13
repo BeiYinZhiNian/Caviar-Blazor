@@ -2,6 +2,7 @@
 using Caviar.AntDesignUI.Core;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace Caviar.AntDesignUI.Shared
         NavigationManager NavigationManager { get; set; }
         NavLinkMatch RouterMatch { get; set; } = NavLinkMatch.Prefix;
         List<(string CultureName, string ResourceName)> LanguageList { get; set; }
+        [Inject]
+        IJSRuntime JSRuntime { get; set; }
 
         protected override Task OnInitializedAsync()
         {
@@ -27,7 +30,7 @@ namespace Caviar.AntDesignUI.Shared
 
         public void SelectLanguage(MenuItem menuItem)
         {
-            NavigationManager.NavigateTo($"{Config.PathList.SetCookieLanguage}?acceptLanguage={menuItem.Key}&returnUrl={NavigationManager.Uri}", true);
+            NavigationManager.NavigateTo(JSRuntime, $"{Config.PathList.SetCookieLanguage}?acceptLanguage={menuItem.Key}&returnUrl={NavigationManager.Uri}");
         }
     }
 }

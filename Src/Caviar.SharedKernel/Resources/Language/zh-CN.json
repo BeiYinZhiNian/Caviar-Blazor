@@ -104,12 +104,11 @@
       "Select": "选择"
     },
     "ResuleMsg": {
-      "Title": {
-        "Login Succeeded": "登录成功，欢迎回来",
-        "Username and password are invalid": "用户名或密码错误",
-        "Registration succeeded": "账号注册成功",
-        "Succeeded": "操作成功"
-      }
+      "Login Succeeded": "登录成功，欢迎回来",
+      "Username and password are invalid": "用户名或密码错误",
+      "Registration succeeded": "账号注册成功",
+      "Succeeded": "操作成功",
+      "Validation failed": "验证失败"
     },
     "Enum": {
       "Catalog": "目录",

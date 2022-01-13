@@ -54,8 +54,9 @@
                     <Form Model="@GenerateData" @ref="GenerateFrom">
                         <Space Direction="DirectionVHType.Vertical" Size="@("large")">
                             <FormItem>
-                                <AntDesign.Input Disabled="true" @bind-Value="@context.EntitieName">
-                                </AntDesign.Input>
+                                <Text>
+                                    @context.EntitieName
+                                </Text>
                             </FormItem>
                             <FormItem Label="生成内容">
                                 <Checkbox @bind-Value="@context.IsGenerateController">控制器</Checkbox>

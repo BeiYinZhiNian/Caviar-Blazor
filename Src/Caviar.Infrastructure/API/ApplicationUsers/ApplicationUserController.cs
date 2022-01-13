@@ -44,11 +44,11 @@ namespace Caviar.Infrastructure.API
         public virtual async Task<IActionResult> Login(UserLogin login, string returnUrl)
         {
             var user = await _userManager.FindByNameAsync(login.UserName);
-            if (user == null) return BadRequest(LanguageService["Username and password are invalid"]);
+            if (user == null) return BadRequest("Username and password are invalid");
             var singInResult = await _signInManager.CheckPasswordSignInAsync(user, login.Password, false);
-            if (!singInResult.Succeeded) return BadRequest(LanguageService["Username and password are invalid"]);
+            if (!singInResult.Succeeded) return BadRequest("Username and password are invalid");
             await _signInManager.SignInAsync(user, login.RememberMe);
-            return Ok(new ResultMsg() { Title = LanguageService["Login Succeeded"], Url = returnUrl });
+            return Ok(new ResultMsg() { Title = "Login Succeeded", Url = returnUrl });
         }
 
         [HttpGet]
@@ -72,7 +72,7 @@ namespace Caviar.Infrastructure.API
             }
             else
             {
-                return Unauthorized("STOP!");
+                return Unauthorized("Validation failed");
             }
         }
 
@@ -80,7 +80,7 @@ namespace Caviar.Infrastructure.API
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return Ok();
+            return Ok(new ResultMsg() { Url = "/"});
         }
 
         [HttpGet]

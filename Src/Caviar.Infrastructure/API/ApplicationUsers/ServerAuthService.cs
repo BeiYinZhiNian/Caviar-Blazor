@@ -51,11 +51,11 @@ namespace Caviar.Infrastructure.API
                 {
                     data += $"|{returnUrl}";
                 }
-                return new ResultMsg() { Url = "/api/ApplicationUser/SignInActual?t=" + Uri.EscapeDataString(data) };
+                return new ResultMsg() {Title = _languageService[$"{CurrencyConstant.ResuleMsg}.Login Succeeded"], Url = "/api/ApplicationUser/SignInActual?t=" + Uri.EscapeDataString(data) };
             }
             else
             {
-                return new ResultMsg() { Title = _languageService["ResuleMsg.Title.Username and password are invalid"], Status = System.Net.HttpStatusCode.Unauthorized };
+                return new ResultMsg() { Title = _languageService[$"{CurrencyConstant.ResuleMsg}.Username and password are invalid"], Status = System.Net.HttpStatusCode.Unauthorized };
             }
         }
 
