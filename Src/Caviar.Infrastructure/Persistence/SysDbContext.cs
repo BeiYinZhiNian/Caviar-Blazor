@@ -1,4 +1,5 @@
 ﻿using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

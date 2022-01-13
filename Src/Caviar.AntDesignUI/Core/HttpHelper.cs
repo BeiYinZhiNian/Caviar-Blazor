@@ -7,6 +7,7 @@ using AntDesign;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using System.Net;
+using Caviar.SharedKernel.Entities.View;
 using Caviar.SharedKernel.Entities;
 
 namespace Caviar.AntDesignUI.Core

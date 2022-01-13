@@ -1,8 +1,9 @@
-﻿using Caviar.SharedKernel.Entities;
-using Caviar.SharedKernel.View;
+﻿using Caviar.SharedKernel.Entities.View;
+
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using Caviar.SharedKernel.Entities;
 
 namespace Caviar.Core.Services.PermissionServices
 {

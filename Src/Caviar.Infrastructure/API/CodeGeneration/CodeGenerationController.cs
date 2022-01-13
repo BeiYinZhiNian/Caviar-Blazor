@@ -1,6 +1,6 @@
 ﻿using Caviar.Core;
 using Caviar.Core.Services.CodeGenerationServices;
-using Caviar.SharedKernel.View;
+
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Caviar.Infrastructure.API.BaseApi;
+using Caviar.SharedKernel.Entities.View;
 using Caviar.SharedKernel.Entities;
 
 namespace Caviar.Infrastructure.API.CodeGeneration

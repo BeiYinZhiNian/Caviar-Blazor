@@ -1,5 +1,5 @@
 ﻿using AntDesign;
-using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
 using Caviar.SharedKernel.Entities.User;
 using Microsoft.AspNetCore.Components.Authorization;
 using System;
@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Caviar.SharedKernel.Entities;
 
 namespace Caviar.AntDesignUI.Core
 {

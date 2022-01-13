@@ -1,5 +1,5 @@
-﻿using Caviar.SharedKernel.Entities;
-using Caviar.SharedKernel.View;
+﻿using Caviar.SharedKernel.Entities.View;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.SharedKernel.View
+namespace Caviar.SharedKernel.Entities.View
 {
     public partial class ViewFields : BaseView<SysFields>
     {

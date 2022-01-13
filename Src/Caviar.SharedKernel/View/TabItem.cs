@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.SharedKernel.View
+namespace Caviar.SharedKernel.Entities.View
 {
     /// <summary>
     /// 代码预览tab

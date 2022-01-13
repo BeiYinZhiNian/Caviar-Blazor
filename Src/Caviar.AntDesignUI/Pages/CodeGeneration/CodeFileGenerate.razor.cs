@@ -1,5 +1,5 @@
 ﻿using AntDesign;
-using Caviar.SharedKernel.View;
+
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Text.Json;
 using System.Net;
+using Caviar.SharedKernel.Entities.View;
 
 namespace Caviar.AntDesignUI.Pages.CodeGeneration
 {

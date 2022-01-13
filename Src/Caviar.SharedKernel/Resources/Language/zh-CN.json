@@ -11,6 +11,7 @@
   "SharedKernel": {
     "EntitysName": {
       "Id": "Id",
+      "Name": "名称",
       "CreatTime": "创建时间",
       "UpdateTime": "修改时间",
       "IsDelete": "是否删除",
@@ -74,6 +75,7 @@
       "Select": "选择",
       "HeadPortrait": "头像",
       "NormalizedUserName": "规范化用户名",
+      "NormalizedName": "规范化名称",
       "Email": "邮箱",
       "NormalizedEmail": "规范化邮箱",
       "EmailConfirmed": "电子邮件确认",
@@ -101,7 +103,8 @@
       "CreateEntity": "创建",
       "DeleteEntity": "删除",
       "UpdateEntity": "修改",
-      "Select": "选择"
+      "Select": "选择",
+      "ApplicationRole": "角色管理"
     },
     "ResuleMsg": {
       "Login Succeeded": "登录成功，欢迎回来",

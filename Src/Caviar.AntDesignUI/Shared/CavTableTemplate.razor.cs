@@ -1,5 +1,5 @@
 ﻿using AntDesign;
-using Caviar.SharedKernel.View;
+
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Web;
 using System.Threading.Tasks;
 using Caviar.AntDesignUI.Core;
+using Caviar.SharedKernel.Entities.View;
 using Caviar.SharedKernel.Entities;
 
 namespace Caviar.AntDesignUI.Shared

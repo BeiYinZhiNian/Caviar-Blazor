@@ -1,9 +1,10 @@
-﻿using Caviar.SharedKernel.Entities;
+﻿using Caviar.SharedKernel.Entities.View;
 using Caviar.SharedKernel.Entities.User;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using Caviar.SharedKernel.Entities;
 
 namespace Caviar.AntDesignUI.Core
 {

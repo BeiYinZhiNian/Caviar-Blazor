@@ -1,5 +1,3 @@
-using System.ComponentModel;
-using Caviar.SharedKernel.Entities;
 
 /// <summary>
 /// 生成者：
@@ -8,7 +6,7 @@ using Caviar.SharedKernel.Entities;
 /// 可在上层目录使用partial关键字进行扩展
 /// Caviar ©2021 Created by 北音执念
 /// </summary>
-namespace Caviar.SharedKernel.View
+namespace Caviar.SharedKernel.Entities.View
 {
     /// <summary>
     /// 用户管理视图

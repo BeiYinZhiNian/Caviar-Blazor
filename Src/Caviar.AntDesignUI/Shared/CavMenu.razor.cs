@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.JSInterop;
 using System.Net;
 using Caviar.AntDesignUI.Core;
+using Caviar.SharedKernel.Entities.View;
 using Caviar.SharedKernel.Entities;
-using Caviar.SharedKernel.View;
 
 namespace Caviar.AntDesignUI.Shared
 {

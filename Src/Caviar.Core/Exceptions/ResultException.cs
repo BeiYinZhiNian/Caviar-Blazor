@@ -1,4 +1,5 @@
 ﻿using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
 using System;
 
 namespace Caviar.Core.Exceptions

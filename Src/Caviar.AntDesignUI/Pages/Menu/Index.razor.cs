@@ -1,9 +1,9 @@
 ﻿using AntDesign;
-using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net;
+using Caviar.SharedKernel.Entities.View;
 
 namespace Caviar.AntDesignUI.Pages.Menu
 {

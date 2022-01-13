@@ -4,15 +4,16 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Caviar.Core.Services;
 using Caviar.Core.Interface;
-using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
 using Caviar.Core;
 using Caviar.Core.Services.PermissionServices;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Caviar.SharedKernel.View;
+
 using Microsoft.AspNetCore.Http;
 using System;
+using Caviar.SharedKernel.Entities;
 
 namespace Caviar.Infrastructure.API.BaseApi
 {

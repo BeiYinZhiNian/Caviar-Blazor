@@ -1,12 +1,13 @@
-﻿using Caviar.SharedKernel.Entities;
+﻿using Caviar.SharedKernel.Entities.View;
 using Caviar.SharedKernel.Entities.Base;
-using Caviar.SharedKernel.View;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Caviar.SharedKernel.Entities;
 
 namespace Caviar.Core.Services.CodeGenerationServices
 {

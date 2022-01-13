@@ -1,4 +1,4 @@
-﻿using Caviar.SharedKernel.Entities;
+﻿using Caviar.SharedKernel.Entities.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;

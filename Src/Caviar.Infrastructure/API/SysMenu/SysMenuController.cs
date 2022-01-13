@@ -1,6 +1,7 @@
 ﻿using Caviar.Core.Services.SysMenuServices;
 using Caviar.SharedKernel.Entities;
-using Caviar.SharedKernel.View;
+using Caviar.SharedKernel.Entities.View;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;

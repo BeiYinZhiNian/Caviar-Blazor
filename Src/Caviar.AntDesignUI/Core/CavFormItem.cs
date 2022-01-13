@@ -1,5 +1,6 @@
 ﻿using AntDesign;
 using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

@@ -1,5 +1,5 @@
-﻿using Caviar.SharedKernel.View;
-using Caviar.SharedKernel.Entities;
+﻿
+using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
+using Caviar.SharedKernel.Entities;
 
 namespace Caviar.Infrastructure
 {

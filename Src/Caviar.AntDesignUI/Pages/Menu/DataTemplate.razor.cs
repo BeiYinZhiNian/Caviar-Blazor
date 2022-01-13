@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
 using System.Net;
-using Caviar.SharedKernel.View;
+using Caviar.SharedKernel.Entities;
 
 namespace Caviar.AntDesignUI.Pages.Menu
 {

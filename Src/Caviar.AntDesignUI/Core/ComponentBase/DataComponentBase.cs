@@ -1,5 +1,4 @@
 ﻿using AntDesign;
-using Caviar.SharedKernel.View;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using Caviar.SharedKernel.Entities.View;
 using Caviar.SharedKernel.Entities;
 
 namespace Caviar.AntDesignUI.Core

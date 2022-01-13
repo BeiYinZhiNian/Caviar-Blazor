@@ -1,11 +1,11 @@
 using Caviar.Infrastructure.API.BaseApi;
-using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Linq;
 using Caviar.SharedKernel.Entities.User;
-using Caviar.SharedKernel.View;
+using Caviar.SharedKernel.Entities;
 
 namespace Caviar.Infrastructure.API
 {

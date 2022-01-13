@@ -1,6 +1,6 @@
 ﻿using Caviar.Core.Interface;
 using Caviar.Infrastructure.Persistence;
-using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +18,7 @@ using Caviar.Infrastructure.API;
 using Microsoft.AspNetCore.Hosting;
 using System.Net.Http;
 using Microsoft.Extensions.Hosting;
+using Caviar.SharedKernel.Entities;
 
 namespace Caviar.Infrastructure
 {
