@@ -102,14 +102,15 @@ namespace Caviar.AntDesignUI.Core
             return result;
         }
         
-        public async void Response(ResultMsg result)
+        public void Response(ResultMsg result)
         {
             switch (result.Status)
             {
                 case HttpStatusCode.OK://正确响应
                     break;
                 case HttpStatusCode.Redirect://重定向
-                    _navigationManager.NavigateTo(result.Title);
+                    _ = _message.Warning(result.Title);
+                    _navigationManager.NavigateTo(result.Url);
                     break;
                 case HttpStatusCode.InternalServerError://发生严重错误
                 default:
@@ -122,7 +123,7 @@ namespace Caviar.AntDesignUI.Core
                     {
                         msg += $"<a target='_Blank' href='{result.Url}'>点击查看解决办法</a><br>";
                     }
-                    await _notificationService.Open(new NotificationConfig()
+                    _ = _notificationService.Open(new NotificationConfig()
                     {
                         Message = result.Title,
                         Description = msg,

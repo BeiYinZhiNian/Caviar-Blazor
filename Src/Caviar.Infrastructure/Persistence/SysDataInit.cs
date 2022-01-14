@@ -104,15 +104,25 @@ namespace Caviar.Infrastructure.Persistence
         {
             await HttpMethodsInit();
             if (!isDatabaseInit) return;
-            await CreatAdminUser();
+            await CreateInitRole();
+            await CreateInitUser();
             await CreateMenu();
         }
 
-        protected virtual async Task CreatAdminUser()
+        protected virtual async Task CreateInitUser()
         {
             var userManager = _serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            var user = new ApplicationUser { Email = "1031622947@qq.com", UserName = "admin" };
+            var user = new ApplicationUser { Email = "1031622947@qq.com", UserName = "admin"};
             var result = await userManager.CreateAsync(user, "1031622947@qq.COM");
+            if (!result.Succeeded) throw new Exception("创建用户失败，数据初始化停止");
+            await userManager.AddToRoleAsync(user, "admin");
+        }
+
+        protected virtual async Task CreateInitRole()
+        {
+            var roleManager = _serviceScope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
+            var role = new ApplicationRole { Name = "admin" };
+            var result = await roleManager.CreateAsync(role);
             if (!result.Succeeded) throw new Exception("创建用户失败，数据初始化停止");
         }
 
@@ -264,7 +274,8 @@ namespace Caviar.Infrastructure.Persistence
         public Dictionary<string,string> MenuIconDic { get; set; } =  new Dictionary<string, string>()
         {
             {"SysMenu","profile"} ,
-            {"ApplicationUser","user" }
+            {"ApplicationUser","user" },
+            { "ApplicationRole","user-switch"}
             
         };
     }

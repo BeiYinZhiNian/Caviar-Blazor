@@ -92,5 +92,9 @@ namespace Caviar.SharedKernel.Entities
         public static string Enum = "SharedKernel.Enum";
         public static string ErrorMessage = "SharedKernel.ErrorMessage";
         public static string AppNull = "app.null";
+        /// <summary>
+        /// 登录地址
+        /// </summary>
+        public static string Login { get; set; } = "ApplicationUser/Login";
     }
 }

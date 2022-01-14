@@ -31,6 +31,7 @@ namespace Caviar.Infrastructure.API.BaseApi
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             Interactor = HttpContext.RequestServices.GetRequiredService<Interactor>();
+
             Interactor.Stopwatch.Start();
             base.OnActionExecuting(context);
             //获取ip地址
@@ -43,7 +44,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             Interactor.HttpContext = HttpContext;
             //请求参数
             Interactor.ActionArguments = context.ActionArguments;
-            
+
             var acceptLanguage = context.HttpContext.Request.Cookies.SingleOrDefault(c => c.Key == CurrencyConstant.LanguageHeader).Value;
             SetLanguage(acceptLanguage);
         }

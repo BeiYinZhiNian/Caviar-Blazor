@@ -26,7 +26,7 @@ namespace Caviar.AntDesignUI.Core
 
         public async Task<ResultMsg> Login(UserLogin loginRequest, string returnUrl)
         {
-            var result = await httpHelper.PostJson(Config.PathList.Login + "?returnUrl=" + returnUrl, loginRequest);
+            var result = await httpHelper.PostJson(CurrencyConstant.Login + "?returnUrl=" + returnUrl, loginRequest);
             return result;
         }
 

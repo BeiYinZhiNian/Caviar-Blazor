@@ -1,5 +1,6 @@
 ﻿using AntDesign;
 using Caviar.AntDesignUI.Core;
+using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.User;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -20,6 +21,14 @@ namespace Caviar.AntDesignUI.Pages.User
 
         [Inject]
         IJSRuntime JSRuntime { get; set; }
+
+        [Inject]
+        NavigationManager NavigationManager { get; set; }
+
+        [Inject]
+        MessageService MessageService { get; set; }
+
+        bool Loading { get; set; }
 
         public async void SubmitLogin()
         {
@@ -42,10 +51,8 @@ namespace Caviar.AntDesignUI.Pages.User
 
         protected override void OnInitialized()
         {
-            CurrentUrl = Config.PathList.Login;
             string backgroundImage = "_content/Caviar.AntDesignUI/Images/grov.jpg";
             Style = $"min-height:100vh;background-image: url({backgroundImage});";
-            
             base.OnInitialized();
         }
 

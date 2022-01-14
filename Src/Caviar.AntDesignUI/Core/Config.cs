@@ -62,9 +62,6 @@ namespace Caviar.AntDesignUI
     public class PathList
     {
         public string Home { get; set; } = "/";
-        public string Login { get; set; } = "ApplicationUser/Login";
-
-        
 
         public string Logout { get; set; } = "ApplicationUser/Logout";
 
