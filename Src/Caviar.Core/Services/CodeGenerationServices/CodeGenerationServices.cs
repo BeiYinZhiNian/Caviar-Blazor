@@ -1,6 +1,5 @@
 ﻿using Caviar.SharedKernel.Entities.View;
 using Caviar.SharedKernel.Entities.Base;
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,13 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Caviar.SharedKernel.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Caviar.Core.Services.CodeGenerationServices
 {
     /// <summary>
     /// 代码生成服务
     /// </summary>
-    public class CodeGenerationServices : BaseServices
+    public class CodeGenerationServices : DbServices
     {
         public string WriteCodeFile(List<PreviewCode> previewCodes,CodeGenerateOptions codeGenerateOptions)
         {

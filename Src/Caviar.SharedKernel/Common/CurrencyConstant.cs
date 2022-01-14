@@ -30,6 +30,10 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string Authorization = "Authorization";
         /// <summary>
+        /// 系统管理key
+        /// </summary>
+        public const string SysManagementKey = "SysManagement";
+        /// <summary>
         /// JWT验证
         /// </summary>
         public const string JWT = "JWT ";

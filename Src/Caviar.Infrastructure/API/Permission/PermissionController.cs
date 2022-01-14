@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Caviar.SharedKernel.Entities.View;
+using Caviar.Core.Services.ScannerServices;
 
 namespace Caviar.Infrastructure.API.Permission
 {

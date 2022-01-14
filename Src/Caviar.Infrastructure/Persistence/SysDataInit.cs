@@ -11,6 +11,7 @@ using Caviar.Infrastructure.API.BaseApi;
 using Caviar.Core.Services.ScannerServices;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Caviar.SharedKernel.Entities;
+using Caviar.Core.Interface;
 
 namespace Caviar.Infrastructure.Persistence
 {
@@ -36,6 +37,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <returns></returns>
         public async Task HttpMethodsInit()
         {
+            //需要忽略的控制器
             List<Type> baseController = new List<Type>()
             {
                 typeof(EasyBaseApiController<,>)
@@ -122,7 +124,7 @@ namespace Caviar.Infrastructure.Persistence
                 {
                     Entity = new SysMenu()
                     {
-                        Key = "SysManagement",
+                        Key = CurrencyConstant.SysManagementKey,
                         Icon = "windows"
                     }
                     
@@ -176,7 +178,11 @@ namespace Caviar.Infrastructure.Persistence
                 }
             };
             await AddMenus(menus);
+            await UpdateButton(menus);
+        }
 
+        private async Task UpdateButton(List<SysMenuView> menus)
+        {
             var set = _dbContext.Set<SysMenu>();
             var menuBars = set.Where(u => u.Key == "index");
             foreach (var item in menuBars)
@@ -187,7 +193,7 @@ namespace Caviar.Infrastructure.Persistence
                 {
                     item.Icon = value;
                 }
-                item.ParentId = menus.Single(u => u.Entity.Key == "SysManagement").Id;
+                item.ParentId = menus.Single(u => u.Entity.Key == CurrencyConstant.SysManagementKey).Id;
             }
             await _dbContext.SaveChangesAsync();
             var subMenu = set.AsEnumerable().Where(u => u.ControllerName != null && u.ControllerName != u.Key).GroupBy(u => u.ControllerName);

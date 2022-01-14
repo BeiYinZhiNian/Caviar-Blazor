@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Caviar.Infrastructure.API.BaseApi;
 using Caviar.SharedKernel.Entities.View;
 using Caviar.SharedKernel.Entities;
+using Caviar.Core.Services.ScannerServices;
 
 namespace Caviar.Infrastructure.API.CodeGeneration
 {
@@ -19,7 +20,7 @@ namespace Caviar.Infrastructure.API.CodeGeneration
     public class CodeGenerationController : BaseApiController
     {
         [HttpPost]
-        public IActionResult CodeFileGenerate(CodeGenerateOptions codeGenerateOptions,bool isPerview)
+        public async Task<IActionResult> CodeFileGenerate(CodeGenerateOptions codeGenerateOptions,bool isPerview)
         {
             CodeGenerationServices CodeService = CreateService<CodeGenerationServices>();
             //获取该类的所有字段
@@ -28,8 +29,16 @@ namespace Caviar.Infrastructure.API.CodeGeneration
             var result = CodeService.CodePreview(entityData,fieldsData, codeGenerateOptions,Configure.CaviarConfig,""); //生成预览代码
             if (!isPerview)
             {
+                var apiCount = 0;
+                //生成api
+                if (codeGenerateOptions.IsGenerateController)
+                {
+                    var dbContext = GetAppDbContext();
+                    apiCount = await ApiScannerServices.CreateInitApi(dbContext.DbContext, codeGenerateOptions);
+                }
                 //将生成的代码输出
                 var msg = CodeService.WriteCodeFile(result, codeGenerateOptions);
+                msg = $"生成api {apiCount}个，" + msg;
                 return Ok(msg);
             }
             return Ok(result);

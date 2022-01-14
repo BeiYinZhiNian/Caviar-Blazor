@@ -10,6 +10,7 @@ namespace Caviar.Core.Interface
 {
     public partial interface IAppDbContext
     {
+        IDbContext DbContext { get; }
         /// <summary>
         /// 保存操作
         /// </summary>

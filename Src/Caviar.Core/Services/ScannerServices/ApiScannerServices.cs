@@ -1,4 +1,5 @@
-﻿using Caviar.SharedKernel.Entities;
+﻿using Caviar.Core.Interface;
+using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,30 @@ namespace Caviar.Core.Services.ScannerServices
 {
     public static class ApiScannerServices
     {
+
+        public static async Task<int> CreateInitApi(IDbContext dbContext,CodeGenerateOptions codeGenerateOptions)
+        {
+            var menus = CreateInitMenus(codeGenerateOptions);
+            var set = dbContext.Set<SysMenu>(); //使用原生dbcontext跳过权限控制
+            var buttons = new List<SysMenu>();
+            foreach (var item in menus)
+            {
+                if (set.SingleOrDefault(u => u.Url == item.Url) == null)
+                {
+                    set.Add(item);
+                    buttons.Add(item);
+                }
+            }
+            await dbContext.SaveChangesAsync();
+            var subMenu = menus.Single(u => u.Key == u.ControllerName);//查找父id
+            buttons = UpdateInitButtons(buttons, subMenu.Id);
+            var sysManagement = set.Single(u => u.Key == CurrencyConstant.SysManagementKey);
+            subMenu.ParentId = sysManagement.Id; //父id
+            subMenu.MenuType = MenuType.Menu; // 改为菜单
+            set.UpdateRange(buttons);
+            await dbContext.SaveChangesAsync();
+            return buttons.Count;
+        }
         /// <summary>
         /// 获取所有控制器集合
         /// </summary>
@@ -64,16 +89,8 @@ namespace Caviar.Core.Services.ScannerServices
                         var httpMethods = (List<string>)attrs_item.GetObjValue("HttpMethods");
                         foreach (var httpMethod_item in httpMethods)
                         {
-                            SysMenu menu = new SysMenu()
-                            {
-                                MenuType = MenuType.API,
-                                HttpMethods = httpMethod_item,
-                                Url = $"{item.Name.Replace("Controller", "")}/{info_item.Name}",
-                                Key = dispLayName != null ? dispLayName : $"{info_item.Name}",
-                                ControllerName = item.Name.Replace("Controller", ""),
-                                TargetType = TargetType.Callback
-                            };
-                            ApiList.Add(menu);
+                            var fieldName = item.Name.Replace("Controller", "");
+                            ApiList.Add(CreatInitMenu(httpMethod_item, fieldName, info_item.Name));
                         }
 
                     }
@@ -81,5 +98,67 @@ namespace Caviar.Core.Services.ScannerServices
             }
             return ApiList;
         }
+
+        private static SysMenu CreatInitMenu(string httpMethod_item,string fieldName,string actionName,string key = null)
+        {
+            SysMenu menu = new SysMenu()
+            {
+                MenuType = MenuType.API,
+                HttpMethods = httpMethod_item,
+                Url = $"{fieldName}/{actionName}",
+                Key = key == null?actionName:key,
+                ControllerName = fieldName,
+                TargetType = TargetType.Callback
+            };
+            return menu;
+        }
+
+        public static List<SysMenu> CreateInitMenus(CodeGenerateOptions codeGenerateOptions)
+        {
+            List<SysMenu> ApiList = new List<SysMenu>();
+            ApiList.Add(CreatInitMenu("GET", codeGenerateOptions.EntitieName, "index", codeGenerateOptions.EntitieName));
+            ApiList.Add(CreatInitMenu("GET", codeGenerateOptions.EntitieName, "GetEntity"));
+            ApiList.Add(CreatInitMenu("GET", codeGenerateOptions.EntitieName, "GetFields"));
+            ApiList.Add(CreatInitMenu("POST", codeGenerateOptions.EntitieName, "DeleteEntity"));
+            ApiList.Add(CreatInitMenu("POST", codeGenerateOptions.EntitieName, "UpdateEntity"));
+            ApiList.Add(CreatInitMenu("POST", codeGenerateOptions.EntitieName, "CreateEntity"));
+            return ApiList;
+        }
+
+        public static List<SysMenu> UpdateInitButtons(List<SysMenu> menuList,int ParentId)
+        {
+            foreach (var menu_item in menuList)
+            {
+                menu_item.ParentId = ParentId;
+                switch (menu_item.Key)
+                {
+                    case "CreateEntity":
+                        menu_item.MenuType = MenuType.Button;
+                        menu_item.Icon = "appstore-add";
+                        menu_item.TargetType = TargetType.EjectPage;
+                        menu_item.Number = "997";
+                        break;
+                    case "UpdateEntity":
+                        menu_item.MenuType = MenuType.Button;
+                        menu_item.ButtonPosition = ButtonPosition.Row;
+                        menu_item.Icon = "edit";
+                        menu_item.TargetType = TargetType.EjectPage;
+                        menu_item.Number = "998";
+                        break;
+                    case "DeleteEntity":
+                        menu_item.MenuType = MenuType.Button;
+                        menu_item.ButtonPosition = ButtonPosition.Row;
+                        menu_item.IsDoubleTrue = true;
+                        menu_item.Icon = "delete";
+                        menu_item.TargetType = TargetType.Callback;
+                        menu_item.Number = "999";
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return menuList;
+        }
+
     }
 }

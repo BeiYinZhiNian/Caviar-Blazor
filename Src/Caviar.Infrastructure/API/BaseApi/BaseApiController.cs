@@ -14,6 +14,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using System;
 using Caviar.SharedKernel.Entities;
+using Caviar.Core.Services.ScannerServices;
 
 namespace Caviar.Infrastructure.API.BaseApi
 {
@@ -84,12 +85,18 @@ namespace Caviar.Infrastructure.API.BaseApi
             var propertyInfo = service.ContainProperty("DbContext",typeof(IAppDbContext));
             if (propertyInfo != null)
             {
-                var serviceScope = Configure.ServiceProvider.CreateScope();
-                var dbContext = serviceScope.ServiceProvider.GetRequiredService<IAppDbContext>();
+                var dbContext = GetAppDbContext();
                 propertyInfo.SetValue(service, dbContext,null);
             }
             
             return service;
+        }
+
+        protected static IAppDbContext GetAppDbContext()
+        {
+            var serviceScope = Configure.ServiceProvider.CreateScope();
+            var dbContext = serviceScope.ServiceProvider.GetRequiredService<IAppDbContext>();
+            return dbContext;
         }
 
 

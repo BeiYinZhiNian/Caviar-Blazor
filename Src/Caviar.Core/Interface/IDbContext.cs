@@ -10,7 +10,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Caviar.Infrastructure.Persistence
+namespace Caviar.Core.Interface
 {
     public interface IDbContext
     {
