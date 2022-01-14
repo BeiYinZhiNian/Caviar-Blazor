@@ -34,6 +34,34 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string SysManagementKey = "SysManagement";
         /// <summary>
+        /// 代码生成key
+        /// </summary>
+        public const string CodeGenerationKey = "CodeGeneration";
+        /// <summary>
+        /// 创建按钮key
+        /// </summary>
+        public const string CreateEntityKey = "CreateEntity";
+        /// <summary>
+        /// 修改按钮key
+        /// </summary>
+        public const string UpdateEntityKey = "UpdateEntity";
+        /// <summary>
+        /// 删除按钮key
+        /// </summary>
+        public const string DeleteEntityKey = "DeleteEntity";
+        /// <summary>
+        /// 获取实体
+        /// </summary>
+        public const string GetEntityKey = "GetEntity";
+        /// <summary>
+        /// 获取所有字段
+        /// </summary>
+        public const string GetFieldsKey = "GetFields";
+        /// <summary>
+        /// 首页
+        /// </summary>
+        public const string HomeIndex = "Index";
+        /// <summary>
         /// JWT验证
         /// </summary>
         public const string JWT = "JWT ";

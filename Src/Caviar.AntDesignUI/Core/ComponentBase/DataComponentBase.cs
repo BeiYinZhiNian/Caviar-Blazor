@@ -36,7 +36,7 @@ namespace Caviar.AntDesignUI.Core
         /// <returns></returns>
         protected virtual async Task<List<ViewFields>> GetModelFields()
         {
-            var result = await HttpService.GetJson<List<ViewFields>>(Url["GetFields"]);
+            var result = await HttpService.GetJson<List<ViewFields>>(Url[CurrencyConstant.GetFieldsKey]);
             if (result.Status != HttpStatusCode.OK) return null;
             return result.Data;
         }

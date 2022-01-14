@@ -116,12 +116,12 @@ namespace Caviar.Core.Services.ScannerServices
         public static List<SysMenu> CreateInitMenus(CodeGenerateOptions codeGenerateOptions)
         {
             List<SysMenu> ApiList = new List<SysMenu>();
-            ApiList.Add(CreatInitMenu("GET", codeGenerateOptions.EntitieName, "index", codeGenerateOptions.EntitieName));
-            ApiList.Add(CreatInitMenu("GET", codeGenerateOptions.EntitieName, "GetEntity"));
-            ApiList.Add(CreatInitMenu("GET", codeGenerateOptions.EntitieName, "GetFields"));
-            ApiList.Add(CreatInitMenu("POST", codeGenerateOptions.EntitieName, "DeleteEntity"));
-            ApiList.Add(CreatInitMenu("POST", codeGenerateOptions.EntitieName, "UpdateEntity"));
-            ApiList.Add(CreatInitMenu("POST", codeGenerateOptions.EntitieName, "CreateEntity"));
+            ApiList.Add(CreatInitMenu("GET", codeGenerateOptions.EntitieName, CurrencyConstant.HomeIndex, codeGenerateOptions.EntitieName));
+            ApiList.Add(CreatInitMenu("GET", codeGenerateOptions.EntitieName, CurrencyConstant.GetEntityKey));
+            ApiList.Add(CreatInitMenu("GET", codeGenerateOptions.EntitieName, CurrencyConstant.GetFieldsKey));
+            ApiList.Add(CreatInitMenu("POST", codeGenerateOptions.EntitieName, CurrencyConstant.DeleteEntityKey));
+            ApiList.Add(CreatInitMenu("POST", codeGenerateOptions.EntitieName, CurrencyConstant.UpdateEntityKey));
+            ApiList.Add(CreatInitMenu("POST", codeGenerateOptions.EntitieName, CurrencyConstant.CreateEntityKey));
             return ApiList;
         }
 
@@ -132,20 +132,20 @@ namespace Caviar.Core.Services.ScannerServices
                 menu_item.ParentId = ParentId;
                 switch (menu_item.Key)
                 {
-                    case "CreateEntity":
+                    case CurrencyConstant.CreateEntityKey:
                         menu_item.MenuType = MenuType.Button;
                         menu_item.Icon = "appstore-add";
                         menu_item.TargetType = TargetType.EjectPage;
                         menu_item.Number = "997";
                         break;
-                    case "UpdateEntity":
+                    case CurrencyConstant.UpdateEntityKey:
                         menu_item.MenuType = MenuType.Button;
                         menu_item.ButtonPosition = ButtonPosition.Row;
                         menu_item.Icon = "edit";
                         menu_item.TargetType = TargetType.EjectPage;
                         menu_item.Number = "998";
                         break;
-                    case "DeleteEntity":
+                    case CurrencyConstant.DeleteEntityKey:
                         menu_item.MenuType = MenuType.Button;
                         menu_item.ButtonPosition = ButtonPosition.Row;
                         menu_item.IsDoubleTrue = true;

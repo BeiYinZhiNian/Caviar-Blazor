@@ -81,7 +81,7 @@ namespace Caviar.AntDesignUI.Core
         /// <returns></returns>
         protected virtual async Task<List<ViewFields>> GetModelFields()
         {
-            var result = await HttpService.GetJson<List<ViewFields>>(Url["GetFields"]);
+            var result = await HttpService.GetJson<List<ViewFields>>(Url[CurrencyConstant.GetFieldsKey]);
             if (result.Status != HttpStatusCode.OK) return null;
             return result.Data;
         }
@@ -107,12 +107,12 @@ namespace Caviar.AntDesignUI.Core
             switch (row.Menu.Entity.Key)
             {
                 //case "Menu Key"
-                case "DeleteEntity":
+                case CurrencyConstant.DeleteEntityKey:
                     await Delete(Url[row.Menu.Entity.Key], row.Data);
                     break;
-                case "UpdateEntity":
+                case CurrencyConstant.UpdateEntityKey:
                     break;
-                case "CreateEntity":
+                case CurrencyConstant.CreateEntityKey:
                     break;
                 default:
                     break;

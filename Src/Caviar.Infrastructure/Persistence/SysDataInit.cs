@@ -145,11 +145,11 @@ namespace Caviar.Infrastructure.Persistence
                 {
                     Entity = new SysMenu()
                     {
-                        Key = "index",
+                        Key =  CurrencyConstant.HomeIndex,
                         MenuType = MenuType.Menu,
                         Icon = "code",
-                        Url = "CodeGeneration/Index",
-                        ControllerName = "CodeGeneration"
+                        Url = $"{CurrencyConstant.CodeGenerationKey}/{CurrencyConstant.HomeIndex}",
+                        ControllerName = CurrencyConstant.CodeGenerationKey
                     },
                     Children = new List<SysMenuView>()
                     {
@@ -160,7 +160,7 @@ namespace Caviar.Infrastructure.Persistence
                                 Key = "Select",
                                 MenuType = MenuType.Button,
                                 TargetType = TargetType.Callback,
-                                ControllerName = "CodeGeneration",
+                                ControllerName = CurrencyConstant.CodeGenerationKey,
                                 ButtonPosition = ButtonPosition.Row
                             }
                         }
@@ -184,7 +184,7 @@ namespace Caviar.Infrastructure.Persistence
         private async Task UpdateButton(List<SysMenuView> menus)
         {
             var set = _dbContext.Set<SysMenu>();
-            var menuBars = set.Where(u => u.Key == "index");
+            var menuBars = set.Where(u => u.Key == CurrencyConstant.HomeIndex);
             foreach (var item in menuBars)
             {
                 item.MenuType = MenuType.Menu;
@@ -215,20 +215,20 @@ namespace Caviar.Infrastructure.Persistence
                     menu_item.ParentId = id;
                     switch (menu_item.Key)
                     {
-                        case "CreateEntity":
+                        case CurrencyConstant.CreateEntityKey:
                             menu_item.MenuType = MenuType.Button;
                             menu_item.Icon = "appstore-add";
                             menu_item.TargetType = TargetType.EjectPage;
                             menu_item.Number = "997";
                             break;
-                        case "UpdateEntity":
+                        case CurrencyConstant.UpdateEntityKey:
                             menu_item.MenuType = MenuType.Button;
                             menu_item.ButtonPosition = ButtonPosition.Row;
                             menu_item.Icon = "edit";
                             menu_item.TargetType = TargetType.EjectPage;
                             menu_item.Number = "998";
                             break;
-                        case "DeleteEntity":
+                        case CurrencyConstant.DeleteEntityKey:
                             menu_item.MenuType = MenuType.Button;
                             menu_item.ButtonPosition = ButtonPosition.Row;
                             menu_item.IsDoubleTrue = true;
