@@ -103,6 +103,7 @@
       "CreateEntity": "创建",
       "DeleteEntity": "删除",
       "UpdateEntity": "修改",
+      "FieldPermissions": "字段权限",
       "Select": "选择",
       "ApplicationRole": "角色管理"
     },

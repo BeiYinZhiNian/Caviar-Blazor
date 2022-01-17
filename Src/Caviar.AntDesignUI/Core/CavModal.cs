@@ -56,6 +56,7 @@ namespace Caviar.AntDesignUI.Core
 
         RenderFragment Render(string url,string title, IEnumerable<KeyValuePair<string, object>> paramenter) => builder =>
         {
+            if(url[0] == '/') url = url[1..];
             var routes = UserConfig.Routes();
             foreach (var item in routes)
             {

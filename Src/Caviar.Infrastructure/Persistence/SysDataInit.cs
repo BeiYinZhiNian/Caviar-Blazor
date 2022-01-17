@@ -220,6 +220,7 @@ namespace Caviar.Infrastructure.Persistence
                 {
                     id = catalogue.Id;
                 }
+                await CreateButton(catalogue);
                 foreach (var menu_item in item)
                 {
                     menu_item.ParentId = id;
@@ -256,6 +257,30 @@ namespace Caviar.Infrastructure.Persistence
             await _dbContext.SaveChangesAsync();
         }
 
+        private async Task CreateButton(SysMenu sysMenu)
+        {
+            if (sysMenu == null) return;
+            switch (sysMenu.ControllerName)
+            {
+                case CurrencyConstant.ApplicationRoleKey:
+                    SysMenu permissionFields = new SysMenu()
+                    {
+                        ButtonPosition = ButtonPosition.Row,
+                        TargetType = TargetType.CurrentPage,
+                        Url = CurrencyConstant.FieldPermissionsUrl,
+                        Key = CurrencyConstant.FieldPermissionsKey,
+                        ControllerName = CurrencyConstant.PermissionKey,
+                        ParentId = sysMenu.ParentId,
+                        Number = "996",
+                        MenuType = MenuType.Button,
+                    };
+                    await _dbContext.AddAsync(permissionFields);
+                    break;
+                default:
+                    break;
+            }
+            await _dbContext.SaveChangesAsync();
+        }
         private async Task AddMenus(List<SysMenuView> sysMenuViews,int parentId = 0)
         {
             foreach (var item in sysMenuViews)

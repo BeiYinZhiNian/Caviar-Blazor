@@ -12,7 +12,7 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 附件映射路径
         /// </summary>
-        public const string Enclosure = "/Enclosure";
+        public const string Enclosure = "Enclosure";
         /// <summary>
         /// 头像文件夹名称
         /// </summary>
@@ -62,6 +62,26 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string HomeIndex = "Index";
         /// <summary>
+        /// 角色key
+        /// </summary>
+        public const string ApplicationRoleKey = "ApplicationRole";
+        /// <summary>
+        /// 用户key
+        /// </summary>
+        public const string ApplicationUserKey = "ApplicationUser";
+        /// <summary>
+        /// 字段权限key
+        /// </summary>
+        public const string FieldPermissionsKey = "FieldPermissions";
+        /// <summary>
+        /// 字段权限url
+        /// </summary>
+        public const string FieldPermissionsUrl = "Permission/RoleFields";
+        /// <summary>
+        /// 权限key
+        /// </summary>
+        public const string PermissionKey = "Permission";
+        /// <summary>
         /// JWT验证
         /// </summary>
         public const string JWT = "JWT ";
@@ -72,7 +92,7 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 视图类代码文件路径
         /// </summary>
-        public const string CodeGenerateFilePath = "/Template/File/";
+        public const string CodeGenerateFilePath = "Template/File/";
 
         public const string ServerName = "server";
 

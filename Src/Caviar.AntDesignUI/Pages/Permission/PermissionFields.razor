@@ -1,0 +1,128 @@
+﻿@page "/Permission/RoleFields"
+@inherits CavComponentBase
+
+<Row Gutter="@gutter">
+    <AntDesign.Col Flex="2">
+        <Card Bordered="false" Title=@(Role.Entity.Name + "-数据模型")>
+            <Body>
+                <Table TItem="ViewFields" DataSource="@Models">
+                    <Column @bind-Field="@context.EntityType">
+                    </Column>
+                    <Column @bind-Field="@context.DisplayName">
+                    </Column>
+                    <ActionColumn Title="操作">
+                        <Space>
+                            <SpaceItem>
+                                <Button Type="@ButtonType.Primary" OnClick="()=>GetFields(context)">
+                                    选择
+                                </Button>
+                            </SpaceItem>
+                        </Space>
+                    </ActionColumn>
+                </Table>
+            </Body>
+        </Card>
+
+    </AntDesign.Col>
+    <AntDesign.Col Flex="3">
+        <Card Bordered="false" Title="@FieldName">
+            <Extra>
+                <Button Type="@ButtonType.Primary" OnClick="Preservation">
+                    保存
+                </Button>
+            </Extra>
+            <Body>
+                <Table TItem="ViewFields" DataSource="@Fields" RowClassName="@(_=>"editable-row")" Bordered>
+                    <Column @bind-Field="@context.EntityType">
+                    </Column>
+                    <Column @bind-Field="@context.DisplayName">
+                        @{
+                            var _editId = context.EntityType + "-DisplayName";
+                            if (editId == _editId)
+                            {
+                                <Input Type="text" Style="width:50%" @bind-Value="context.DisplayName" OnBlur="()=>stopEdit(context)" AutoFocus />
+                            }
+                            else
+                            {
+                                <div class="editable-cell-value-wrap" @onclick="()=>startEdit(_editId)">
+                                    @context.DisplayName
+                                </div>
+                            }
+                        }
+                    </Column>
+                    <Column @bind-Field="@context.Entity.Number">
+                        @{
+                            var _editId = context.EntityType + "-Number";
+                            if (editId == _editId)
+                            {
+                                <Input Type="text" Style="width:50%" @bind-Value="context.Entity.Number" OnBlur="()=>stopEdit(context)" AutoFocus />
+                            }
+                            else
+                            {
+                                <div class="editable-cell-value-wrap" @onclick="()=>startEdit(_editId)">
+                                    @context.Entity.Number
+                                </div>
+                            }
+                        }
+                    </Column>
+                    <Column @bind-Field="@context.Entity.TableWidth">
+                        @{
+                            var _editId = context.EntityType + "-Width";
+                            if (editId == _editId)
+                            {
+                                <Input Type="text" Style="width:50%" @bind-Value="context.Entity.TableWidth" OnBlur="()=>stopEdit(context)" AutoFocus />
+                            }
+                            else
+                            {
+                                <div class="editable-cell-value-wrap" @onclick="()=>startEdit(_editId)">
+                                    @context.Entity.TableWidth
+                                </div>
+                            }
+                        }
+                    </Column>
+                    <Column @bind-Field="@context.Entity.IsPanel">
+                        <Switch @bind-Value="@context.Entity.IsPanel"></Switch>
+                    </Column>
+                    <Column @bind-Field="@context.IsPermission">
+                        <Switch @bind-Value="@context.IsPermission"></Switch>
+                    </Column>
+                </Table>
+            </Body>
+        </Card>
+    </AntDesign.Col>
+
+</Row>
+
+<style>
+    .editable-cell {
+        position: relative;
+    }
+
+    .editable-cell-value-wrap {
+        padding: 5px 12px;
+        cursor: pointer;
+    }
+
+    .editable-row:hover .editable-cell-value-wrap {
+        padding: 4px 11px;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+    }
+
+    [data-theme='dark'] .editable-row:hover .editable-cell-value-wrap {
+        border: 1px solid #434343;
+    }
+</style>
+
+
+@code{
+    Dictionary<string, int> gutter = new()
+    {
+        ["xs"] = 8,
+        ["sm"] = 16,
+        ["md"] = 24,
+        ["lg"] = 32,
+        ["xl"] = 48,
+        ["xxl"] = 64
+    };
+}
