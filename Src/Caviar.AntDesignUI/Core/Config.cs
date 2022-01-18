@@ -22,8 +22,6 @@ namespace Caviar.AntDesignUI
 
         public static List<Assembly> AdditionalAssemblies;
 
-        public static PathList PathList = new PathList();
-
         public static WebAssemblyHostBuilder AddCavWasm(this WebAssemblyHostBuilder builder)
         {
             IsServer = false;
@@ -38,7 +36,7 @@ namespace Caviar.AntDesignUI
         public static IServiceCollection AddAdminCaviar(this IServiceCollection services, Type[] assemblies)
         {
             services.AddAntDesign();
-            services.AddScoped<HttpHelper>();
+            services.AddScoped<HttpService>();
             services.AddScoped<CavModal>();
             services.AddScoped<UserConfig>();
             services.AddScoped<ModalService>();
@@ -57,22 +55,5 @@ namespace Caviar.AntDesignUI
             }
             return services;
         }
-    }
-
-    public class PathList
-    {
-        public string Home { get; set; } = "/";
-
-        public string Logout { get; set; } = "ApplicationUser/Logout";
-
-        public string MyDetails { get; set; } = "ApplicationUser/MyDetails";
-
-        public string UpdatePwd { get; set; } = "ApplicationUserUpdatePwd";
-
-
-        public string CurrentUserInfo { get; set; } = "ApplicationUser/CurrentUserInfo";
-        public string GetApiList { get; set; } = "SysMenu/GetApiList";
-
-        public string SetCookieLanguage { get; set; } = "api/SysMenu/SetCookieLanguage";
     }
 }

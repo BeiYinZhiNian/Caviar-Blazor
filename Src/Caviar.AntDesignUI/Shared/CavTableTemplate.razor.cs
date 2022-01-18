@@ -19,7 +19,7 @@ namespace Caviar.AntDesignUI.Shared
         /// http帮助类
         /// </summary>
         [Inject]
-        HttpHelper Http { get; set; }
+        HttpService Http { get; set; }
         /// <summary>
         /// 表格
         /// </summary>

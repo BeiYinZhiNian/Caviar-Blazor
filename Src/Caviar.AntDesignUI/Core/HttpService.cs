@@ -12,13 +12,13 @@ using Caviar.SharedKernel.Entities;
 
 namespace Caviar.AntDesignUI.Core
 {
-    public partial class HttpHelper
+    public partial class HttpService
     {
         NotificationService _notificationService;
         NavigationManager _navigationManager;
         MessageService _message;
         IJSRuntime _jSRuntime;
-        public HttpHelper(HttpClient http, 
+        public HttpService(HttpClient http, 
             NotificationService _notice,
             NavigationManager navigationManager, 
             MessageService message,

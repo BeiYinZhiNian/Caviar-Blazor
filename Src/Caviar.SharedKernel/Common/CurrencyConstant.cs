@@ -10,10 +10,6 @@ namespace Caviar.SharedKernel.Entities
     public static class CurrencyConstant
     {
         /// <summary>
-        /// 附件映射路径
-        /// </summary>
-        public const string Enclosure = "Enclosure";
-        /// <summary>
         /// 头像文件夹名称
         /// </summary>
         public const string HeadPortrait = "headPortrait";
@@ -73,10 +69,7 @@ namespace Caviar.SharedKernel.Entities
         /// 字段权限key
         /// </summary>
         public const string FieldPermissionsKey = "FieldPermissions";
-        /// <summary>
-        /// 字段权限url
-        /// </summary>
-        public const string FieldPermissionsUrl = "Permission/RoleFields";
+        
         /// <summary>
         /// 权限key
         /// </summary>
@@ -89,10 +82,7 @@ namespace Caviar.SharedKernel.Entities
         /// 基础实体名称
         /// </summary>
         public static string BaseEntityName = typeof(SysBaseEntity).Name;
-        /// <summary>
-        /// 视图类代码文件路径
-        /// </summary>
-        public const string CodeGenerateFilePath = "Template/File";
+       
 
         public const string ServerName = "server";
 
@@ -112,9 +102,6 @@ namespace Caviar.SharedKernel.Entities
         public static string Enum = "SharedKernel.Enum";
         public static string ErrorMessage = "SharedKernel.ErrorMessage";
         public static string AppNull = "app.null";
-        /// <summary>
-        /// 登录地址
-        /// </summary>
-        public static string Login { get; set; } = "ApplicationUser/Login";
+       
     }
 }

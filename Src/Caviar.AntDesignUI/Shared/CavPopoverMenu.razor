@@ -18,7 +18,7 @@
     [Inject]
     IJSRuntime JSRuntime { get; set; }
     [Inject]
-    HttpHelper Http { get; set; }
+    HttpService Http { get; set; }
     [Inject]
     MessageService messageService { get; set; }
     [Inject]
@@ -30,12 +30,12 @@
     [Inject] HostAuthenticationStateProvider AuthStateProvider { get; set; }
     public void UserCenter()
     {
-        NavigationManager.NavigateTo(Config.PathList.MyDetails);
+        NavigationManager.NavigateTo(UrlConfig.MyDetails);
     }
 
     public async void ChangePassword()
     {
-        await CavModal.Create(Config.PathList.UpdatePwd, "修改密码");
+        await CavModal.Create(UrlConfig.UpdatePwd, "修改密码");
     }
 
     private async Task BeginSignOut()

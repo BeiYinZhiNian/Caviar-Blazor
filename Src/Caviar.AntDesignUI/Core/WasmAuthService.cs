@@ -10,29 +10,29 @@ namespace Caviar.AntDesignUI.Core
 {
     public class WasmAuthService : IAuthService
     {
-        private readonly HttpHelper httpHelper;
+        private readonly HttpService httpHelper;
 
-        public WasmAuthService(HttpHelper httpClient)
+        public WasmAuthService(HttpService httpClient)
         {
             this.httpHelper = httpClient;
         }
 
         public async Task<CurrentUser> CurrentUserInfo()
         {
-            var result = await httpHelper.GetJson<CurrentUser>(Config.PathList.CurrentUserInfo);
+            var result = await httpHelper.GetJson<CurrentUser>(UrlConfig.CurrentUserInfo);
             if (result.Status != HttpStatusCode.OK) return null;
             return result.Data;
         }
 
         public async Task<ResultMsg> Login(UserLogin loginRequest, string returnUrl)
         {
-            var result = await httpHelper.PostJson(CurrencyConstant.Login + "?returnUrl=" + returnUrl, loginRequest);
+            var result = await httpHelper.PostJson(UrlConfig.Login + "?returnUrl=" + returnUrl, loginRequest);
             return result;
         }
 
         public async Task<string> Logout()
         {
-            var result = await httpHelper.PostJson<string,string>(Config.PathList.Logout, null);
+            var result = await httpHelper.PostJson<string,string>(UrlConfig.Logout, null);
             return result.Url;
         }
     }

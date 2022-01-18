@@ -24,7 +24,6 @@ namespace Caviar.Infrastructure.API
         [HttpPost]
         public virtual async Task<IActionResult> Register(ApplicationUserView model)
         {
-            ResultMsg<string> resultMsg = new ResultMsg<string>();
             var newUser = model.Entity;
 
             var result = await _userManager.CreateAsync(newUser);
@@ -36,8 +35,7 @@ namespace Caviar.Infrastructure.API
                 return BadRequest(errors);
 
             }
-            resultMsg.Title = "Registration succeeded";
-            return Ok(resultMsg);
+            return Ok(title: "Registration succeeded");
         }
 
         [HttpPost]
@@ -48,7 +46,7 @@ namespace Caviar.Infrastructure.API
             var singInResult = await _signInManager.CheckPasswordSignInAsync(user, login.Password, false);
             if (!singInResult.Succeeded) return BadRequest("Username and password are invalid");
             await _signInManager.SignInAsync(user, login.RememberMe);
-            return Ok(new ResultMsg() { Title = "Login Succeeded", Url = returnUrl });
+            return Ok(title: "Login Succeeded",url:returnUrl);
         }
 
         [HttpGet]
@@ -80,7 +78,7 @@ namespace Caviar.Infrastructure.API
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return Ok(new ResultMsg() { Url = "/"});
+            return Ok(url:"/");
         }
 
         [HttpGet]

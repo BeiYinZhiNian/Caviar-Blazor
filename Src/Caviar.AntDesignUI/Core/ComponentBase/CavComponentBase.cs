@@ -18,7 +18,7 @@ namespace Caviar.AntDesignUI.Core
         /// HttpClient
         /// </summary>
         [Inject]
-        protected HttpHelper HttpService { get; set; }
+        protected HttpService HttpService { get; set; }
         /// <summary>
         /// 全局提示
         /// </summary>
@@ -72,7 +72,7 @@ namespace Caviar.AntDesignUI.Core
                 splicing += item + "|";
             }
             var uri = new Uri(NavigationManager.Uri);
-            var result = await HttpService.GetJson<List<SysMenuView>>($"{Config.PathList.GetApiList}?url={uri.LocalPath}&splicing={splicing}");
+            var result = await HttpService.GetJson<List<SysMenuView>>($"{UrlConfig.GetApiList}?url={uri.LocalPath}&splicing={splicing}");
             if (result.Status != HttpStatusCode.OK) return null;
             return result.Data;
         }

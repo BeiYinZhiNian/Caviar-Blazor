@@ -42,7 +42,7 @@ namespace Caviar.AntDesignUI.Shared
         string[] _openKeysNae;
 
         [Inject]
-        HttpHelper Http { get; set; }
+        HttpService Http { get; set; }
         [Inject]
         UserConfig UserConfig { get; set; }
 

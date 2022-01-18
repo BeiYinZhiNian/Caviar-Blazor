@@ -26,5 +26,11 @@ namespace Caviar.Infrastructure.API.Permission
             var entitys = FieldScannerServices.GetEntitys(LanguageService);
             return Ok(entitys);
         }
+
+        [HttpGet]
+        public IActionResult GetRoleFields()
+        {
+            return Ok();
+        }
     }
 }

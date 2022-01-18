@@ -267,9 +267,9 @@ namespace Caviar.Infrastructure.Persistence
                     {
                         ButtonPosition = ButtonPosition.Row,
                         TargetType = TargetType.CurrentPage,
-                        Url = CurrencyConstant.FieldPermissionsUrl,
+                        Url = UrlConfig.FieldPermissionsUrl,
                         Key = CurrencyConstant.FieldPermissionsKey,
-                        ControllerName = CurrencyConstant.PermissionKey,
+                        ControllerName = CurrencyConstant.ApplicationRoleKey,
                         ParentId = sysMenu.ParentId,
                         Number = "996",
                         MenuType = MenuType.Button,

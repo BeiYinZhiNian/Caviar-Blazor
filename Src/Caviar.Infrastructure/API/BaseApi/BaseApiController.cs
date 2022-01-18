@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using Caviar.SharedKernel.Entities;
 using Caviar.Core.Services.ScannerServices;
+using System.Net;
 
 namespace Caviar.Infrastructure.API.BaseApi
 {
@@ -73,6 +74,19 @@ namespace Caviar.Infrastructure.API.BaseApi
                 context.Result = Ok(resultMsg);
             }
             Interactor.Stopwatch.Stop();
+        }
+
+        protected virtual IActionResult Ok(HttpStatusCode status = HttpStatusCode.OK,string title = "Succeeded",string url = null,string detail = null,object data = null)
+        {
+            var resultMst = new ResultMsg<object>
+            {
+                Status = status,
+                Title = title,
+                Url = url,
+                Detail = detail,
+                Data = data
+            };
+            return Ok(resultMst);
         }
 
         protected virtual void ModificationTips(ResultMsg resultMsg)

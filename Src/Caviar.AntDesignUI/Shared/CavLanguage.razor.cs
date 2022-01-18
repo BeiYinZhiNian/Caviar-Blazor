@@ -1,5 +1,6 @@
 ﻿using AntDesign;
 using Caviar.AntDesignUI.Core;
+using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.JSInterop;
@@ -30,7 +31,7 @@ namespace Caviar.AntDesignUI.Shared
 
         public void SelectLanguage(MenuItem menuItem)
         {
-            NavigationManager.NavigateTo(JSRuntime, $"{Config.PathList.SetCookieLanguage}?acceptLanguage={menuItem.Key}&returnUrl={NavigationManager.Uri}");
+            NavigationManager.NavigateTo(JSRuntime, $"api/{UrlConfig.SetCookieLanguage}?acceptLanguage={menuItem.Key}&returnUrl={NavigationManager.Uri}");
         }
     }
 }
