@@ -49,7 +49,6 @@
       "RoleName": "角色名称",
       "SysRole": "角色表",
       "SysRoleUser": "用户角色映射表",
-      "SysRoleUserGroup": "用户组角色映射表",
       "SysLog": "日志表",
       "UserName": "用户名",
       "ControllerName": "控制器名称",
@@ -88,7 +87,10 @@
       "LockoutEnabled": "启用锁定",
       "AccessFailedCount": "失败访问次数",
       "Upper directory": "上层目录",
-      "Icon Library": "图标库"
+      "Icon Library": "图标库",
+      "ApplicationRole": "角色表",
+      "ApplicationUser": "用户表",
+      "SysUserGroup": "用户组"
     },
     "ErrorMessage": {
       "LengthErrorMsg": "{fieldName}输入长度不能超过{length}字符",

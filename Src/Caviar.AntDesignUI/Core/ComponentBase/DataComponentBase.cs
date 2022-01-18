@@ -30,22 +30,9 @@ namespace Caviar.AntDesignUI.Core
         protected List<ViewFields> ViewFields { get; set; } = new List<ViewFields>();
         #endregion
 
-        /// <summary>
-        /// 获取模型字段
-        /// </summary>
-        /// <returns></returns>
-        protected virtual async Task<List<ViewFields>> GetModelFields()
-        {
-            var result = await HttpService.GetJson<List<ViewFields>>(Url[CurrencyConstant.GetFieldsKey]);
-            if (result.Status != HttpStatusCode.OK) return null;
-            return result.Data;
-        }
-
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-            var fieldsTask = GetModelFields();//获取模型字段
-            ViewFields = await fieldsTask;
         }
 
         protected virtual FormValidationRule[] GetFormValidationRules(object model, string fieldName)

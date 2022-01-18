@@ -104,7 +104,7 @@ namespace Caviar.Core.Services.CodeGenerationServices
         /// <returns></returns>
         protected PreviewCode GetPreviewCode(string entityName,string suffixName,string extendName, CodeGeneration options)
         {
-            string path = $"{AppDomain.CurrentDomain.BaseDirectory}{CurrencyConstant.CodeGenerateFilePath}{suffixName}.txt";
+            string path = $"{AppDomain.CurrentDomain.BaseDirectory}{CurrencyConstant.CodeGenerateFilePath}/{suffixName}.txt";
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException("代码生成文件未找到，请确认路径是否正确：" + path);

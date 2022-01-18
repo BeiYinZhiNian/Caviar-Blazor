@@ -92,7 +92,7 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 视图类代码文件路径
         /// </summary>
-        public const string CodeGenerateFilePath = "Template/File/";
+        public const string CodeGenerateFilePath = "Template/File";
 
         public const string ServerName = "server";
 

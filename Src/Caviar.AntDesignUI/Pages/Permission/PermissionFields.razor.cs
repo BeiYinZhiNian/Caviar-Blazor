@@ -21,8 +21,14 @@ namespace Caviar.AntDesignUI.Pages.Permission
 
         ApplicationRoleView Role { get; set; }
 
+
         protected override async Task OnInitializedAsync()
         {
+            var query = new Uri(NavigationManager.Uri).Query;
+            if (QueryHelpers.ParseQuery(query).TryGetValue("Parameter", out var Parameter))
+            {
+                Role = JsonConvert.DeserializeObject<ApplicationRoleView>(Parameter);
+            }
             ControllerList.Add("Permission");
             await base.OnInitializedAsync();
             await GetModels();

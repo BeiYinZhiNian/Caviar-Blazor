@@ -1,25 +1,23 @@
 ﻿@page "/Permission/RoleFields"
 @inherits CavComponentBase
-
 <Row Gutter="@gutter">
     <AntDesign.Col Flex="2">
         <Card Bordered="false" Title=@(Role.Entity.Name + "-数据模型")>
             <Body>
                 <Table TItem="ViewFields" DataSource="@Models">
-                    <Column @bind-Field="@context.EntityType">
-                    </Column>
-                    <Column @bind-Field="@context.DisplayName">
-                    </Column>
-                    <ActionColumn Title="操作">
-                        <Space>
-                            <SpaceItem>
-                                <Button Type="@ButtonType.Primary" OnClick="()=>GetFields(context)">
-                                    选择
-                                </Button>
-                            </SpaceItem>
-                        </Space>
-                    </ActionColumn>
-                </Table>
+
+                        <Column @bind-Field="@context.DisplayName" Title="模型">
+                        </Column>
+                        <ActionColumn Title="操作">
+                            <Space>
+                                <SpaceItem>
+                                    <Button Type="@ButtonType.Primary" OnClick="()=>GetFields(context)">
+                                        选择
+                                    </Button>
+                                </SpaceItem>
+                            </Space>
+                        </ActionColumn>
+                    </Table>
             </Body>
         </Card>
 
@@ -32,7 +30,13 @@
                 </Button>
             </Extra>
             <Body>
-                <Table TItem="ViewFields" DataSource="@Fields" RowClassName="@(_=>"editable-row")" Bordered>
+                @if(Fields == null || Fields.Count == 0)
+                {
+                    <Empty />
+                }
+                else
+                {
+                    <Table TItem="ViewFields" DataSource="@Fields" RowClassName="@(_=>"editable-row")" Bordered>
                     <Column @bind-Field="@context.EntityType">
                     </Column>
                     <Column @bind-Field="@context.DisplayName">
@@ -87,6 +91,7 @@
                         <Switch @bind-Value="@context.IsPermission"></Switch>
                     </Column>
                 </Table>
+                }
             </Body>
         </Card>
     </AntDesign.Col>
