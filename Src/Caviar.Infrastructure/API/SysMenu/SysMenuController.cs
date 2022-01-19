@@ -44,14 +44,6 @@ namespace Caviar.Infrastructure.API.SysMenuController
             return vm;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetApiList(string url,string splicing)
-        {
-            var controllerList = splicing?.Split("|");
-            var apiList = await MenuServices.GetApiList(url, controllerList);
-            var Vm = ToView(apiList);
-            return Ok(Vm);
-        }
 
         [HttpPost]
         public override async Task<IActionResult> DeleteEntity(SysMenuView vm)
@@ -67,24 +59,14 @@ namespace Caviar.Infrastructure.API.SysMenuController
             return Ok();
         }
 
-
         [HttpGet]
-        public IActionResult SetCookieLanguage(string acceptLanguage, string returnUrl)
+        public async Task<IActionResult> GetMenuList(string url, string splicing)
         {
-            var idCookiaName = CurrencyConstant.LanguageHeader;
-            var idCookieOptions = new CookieOptions
-            {
-                Path = "/",
-                Secure = true,
-                IsEssential = true,
-                SameSite = SameSiteMode.Strict,
-                Expires = DateTime.Now.AddYears(100),
-            };
-            HttpContext.Response.Cookies.Append(
-                key: idCookiaName,
-                value: acceptLanguage,
-                options: idCookieOptions);
-            return Redirect(returnUrl);
+            var controllerList = splicing?.Split("|");
+            var apiList = await MenuServices.GetApiList(url, controllerList);
+            var Vm = ToView(apiList);
+            return Ok(Vm);
         }
+
     }
 }

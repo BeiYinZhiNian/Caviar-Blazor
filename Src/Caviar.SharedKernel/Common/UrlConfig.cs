@@ -28,14 +28,31 @@ namespace Caviar.SharedKernel.Entities
         /// 首页
         /// </summary>
         public const string Home = "/";
-
+        /// <summary>
+        /// 设置语言
+        /// </summary>
+        public const string SetCookieLanguage = "Permission/SetCookieLanguage";
+        /// <summary>
+        /// 退出登录
+        /// </summary>
         public const string Logout = "ApplicationUser/Logout";
-
+        /// <summary>
+        /// 用户详细信息
+        /// </summary>
         public const string MyDetails = "ApplicationUser/MyDetails";
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        public const string UpdatePwd = "ApplicationUser/UpdatePwd";
 
-        public const string UpdatePwd = "ApplicationUserUpdatePwd";
+        /// <summary>
+        /// 当前用户信息
+        /// </summary>
         public const string CurrentUserInfo  = "ApplicationUser/CurrentUserInfo";
-        public const string GetApiList = "SysMenu/GetApiList";
-        public const string SetCookieLanguage = "SysMenu/SetCookieLanguage";
+        /// <summary>
+        /// 获取菜单列表
+        /// </summary>
+        public const string GetApiList = "SysMenu/GetMenuList";
+        
     }
 }

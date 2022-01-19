@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Caviar.SharedKernel.Entities.View;
 using Caviar.Core.Services.ScannerServices;
+using Caviar.SharedKernel.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace Caviar.Infrastructure.API.Permission
 {
@@ -27,10 +29,31 @@ namespace Caviar.Infrastructure.API.Permission
             return Ok(entitys);
         }
 
-        [HttpGet]
-        public IActionResult GetRoleFields()
+        public IActionResult GetFields(string name,string fullName,int roleId)
         {
-            return Ok();
+            var fields = FieldScannerServices.GetClassFields(name, fullName, LanguageService);
+            return Ok(fields);
         }
+        [HttpGet]
+        public IActionResult SetCookieLanguage(string acceptLanguage, string returnUrl)
+        {
+            var idCookiaName = CurrencyConstant.LanguageHeader;
+            var idCookieOptions = new CookieOptions
+            {
+                Path = "/",
+                Secure = true,
+                IsEssential = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.Now.AddYears(100),
+            };
+            HttpContext.Response.Cookies.Append(
+                key: idCookiaName,
+                value: acceptLanguage,
+                options: idCookieOptions);
+            return Redirect(returnUrl);
+        }
+
+
+
     }
 }
