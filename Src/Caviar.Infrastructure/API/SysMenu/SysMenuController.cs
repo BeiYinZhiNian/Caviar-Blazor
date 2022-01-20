@@ -38,7 +38,7 @@ namespace Caviar.Infrastructure.API.SysMenuController
             var vm = base.ToView(entity);
             foreach (var item in vm)
             {
-                string key = $"{CurrencyConstant.MenuBar}.{item.Entity.Key}";
+                string key = $"{CurrencyConstant.Menu}.{item.Entity.Key}";
                 item.DisplayName = LanguageService[key];//翻译显示名称
             }
             return vm;

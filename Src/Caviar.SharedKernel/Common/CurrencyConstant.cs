@@ -101,7 +101,7 @@ namespace Caviar.SharedKernel.Entities
         public const string LanguageHeader = "Current-Language";
 
         public const string EntitysName = "SharedKernel.EntitysName";
-        public const string MenuBar = "SharedKernel.MenuBar";
+        public const string Menu = "SharedKernel.Menu";
         public const string ResuleMsg = "SharedKernel.ResuleMsg";
         public const string Enum = "SharedKernel.Enum";
         public const string ErrorMessage = "SharedKernel.ErrorMessage";

@@ -91,13 +91,15 @@
       "ApplicationRole": "角色表",
       "ApplicationUser": "用户表",
       "SysUserGroup": "用户组",
-      "IsPermission": "是否授权"
+      "IsPermission": "是否授权",
+      "Model": "模型",
+      "DataField": "数据字段"
     },
     "ErrorMessage": {
       "LengthErrorMsg": "{fieldName}输入长度不能超过{length}字符",
       "RequiredErrorMsg": "{fieldName}为必填项"
     },
-    "MenuBar": {
+    "Menu": {
       "Home": "首页",
       "SysManagement": "系统管理",
       "ApplicationUser": "用户管理",
@@ -108,7 +110,9 @@
       "UpdateEntity": "修改",
       "FieldPermissions": "字段权限",
       "Select": "选择",
-      "ApplicationRole": "角色管理"
+      "ApplicationRole": "角色管理",
+      "Save": "保存",
+      "Action": "操作"
     },
     "ResuleMsg": {
       "Login Succeeded": "登录成功，欢迎回来",

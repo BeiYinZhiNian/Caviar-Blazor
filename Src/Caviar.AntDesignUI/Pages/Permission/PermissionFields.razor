@@ -2,17 +2,16 @@
 @inherits CavComponentBase
 <Row Gutter="@gutter">
     <AntDesign.Col Flex="2">
-        <Card Bordered="false" Title=@(Role.Entity.Name + "-数据模型")>
+        <Card Bordered="false" Title=@(Role.Entity.Name + "-" + LanguageService[$"{CurrencyConstant.EntitysName}.Model"])>
             <Body>
                 <Table TItem="ViewFields" DataSource="@Models">
-
-                        <Column @bind-Field="@context.DisplayName" Title="模型">
+                        <Column @bind-Field="@context.DisplayName" Title="@LanguageService[$"{CurrencyConstant.EntitysName}.Model"]">
                         </Column>
-                        <ActionColumn Title="操作">
+                        <ActionColumn Title="@LanguageService[$"{CurrencyConstant.Menu}.Action"]">
                             <Space>
                                 <SpaceItem>
                                     <Button Type="@ButtonType.Primary" OnClick="()=>GetFields(context)">
-                                        选择
+                                        @LanguageService[$"{CurrencyConstant.Menu}.Select"]
                                     </Button>
                                 </SpaceItem>
                             </Space>
@@ -26,7 +25,7 @@
         <Card Bordered="false" Title="@FieldName">
             <Extra>
                 <Button Type="@ButtonType.Primary" OnClick="Preservation">
-                    保存
+                    @LanguageService[$"{CurrencyConstant.Menu}.Save"]
                 </Button>
             </Extra>
             <Body>

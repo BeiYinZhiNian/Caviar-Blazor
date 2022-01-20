@@ -18,7 +18,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
         List<ViewFields> Models = new List<ViewFields>();
         List<ViewFields> Fields { get; set; }
         ViewFields CurrentModel { get; set; }
-        string FieldName { get; set; } = "请选择模型";
+        string FieldName { get; set; } = "";
 
         ApplicationRoleView Role { get; set; }
 
@@ -48,7 +48,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
             var result = await HttpService.GetJson<List<ViewFields>>($"{Url[CurrencyConstant.GetFieldsKey, CurrencyConstant.PermissionKey]}?name={model.Entity.FieldName}&fullName={model.Entity.FullName}&roleId={Role.Entity.Id}");
             if (result.Status != System.Net.HttpStatusCode.OK) return;
             CurrentModel = model;
-            FieldName = model.DisplayName + "-数据字段";
+            FieldName = model.DisplayName + "-" + LanguageService[$"{CurrencyConstant.EntitysName}.DataField"];
             Fields = result.Data;
         }
 
