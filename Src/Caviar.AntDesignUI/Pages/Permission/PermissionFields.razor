@@ -37,10 +37,10 @@
                 else
                 {
                     <Table TItem="ViewFields" DataSource="@Fields" RowClassName="@(_=>"editable-row")" Bordered>
-                    <Column Title="DisplayName" TData="string">
+                    <Column Title="@LanguageService[$"{CurrencyConstant.EntitysName}.DisplayName"]" TData="string">
                         <Text>@context.DisplayName</Text>
                     </Column>
-                    <Column Title="Number" TData="string">
+                    <Column Title="@LanguageService[$"{CurrencyConstant.EntitysName}.Number"]" TData="string">
                         @{
                             var _editid = context.Entity.FieldName + "-Number";
                             if (editId == _editid)
@@ -55,7 +55,7 @@
                             }
                         }
                     </Column>
-                    <Column Title="TableWidth" TData="string">
+                    <Column Title="@LanguageService[$"{CurrencyConstant.EntitysName}.TableWidth"]" TData="string">
                         @{
                             var _editId = context.Entity.FieldName + "-Width";
                             if (editId == _editId)
@@ -70,10 +70,10 @@
                             }
                         }
                     </Column>
-                    <Column Title="IsPanel" TData="bool">
+                    <Column Title="@LanguageService[$"{CurrencyConstant.EntitysName}.IsPanel"]" TData="bool">
                         <Switch @bind-Value="@context.Entity.IsPanel"></Switch>
                     </Column>
-                    <Column @bind-Field="@context.IsPermission">
+                    <Column Title="@LanguageService[$"{CurrencyConstant.EntitysName}.IsPermission"]" TData="bool">
                         <Switch @bind-Value="@context.IsPermission"></Switch>
                     </Column>
                 </Table>

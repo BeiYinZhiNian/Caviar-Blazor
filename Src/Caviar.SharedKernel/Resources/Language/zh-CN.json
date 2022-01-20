@@ -43,7 +43,7 @@
       "BaseFullName": "基类名称",
       "TableWidth": "表宽",
       "TableHeight": "表高",
-      "IsPanel": "显示在看板",
+      "IsPanel": "在看板显示",
       "FieldLen": "字段长度",
       "SysPermission": "权限映射表",
       "RoleName": "角色名称",
@@ -90,7 +90,8 @@
       "Icon Library": "图标库",
       "ApplicationRole": "角色表",
       "ApplicationUser": "用户表",
-      "SysUserGroup": "用户组"
+      "SysUserGroup": "用户组",
+      "IsPermission": "是否授权"
     },
     "ErrorMessage": {
       "LengthErrorMsg": "{fieldName}输入长度不能超过{length}字符",

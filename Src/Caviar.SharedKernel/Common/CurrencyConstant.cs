@@ -96,16 +96,16 @@ namespace Caviar.SharedKernel.Entities
             {"en-US","English" },
         };
 
-        public static string JsIframeMessage = "iframeMessage";
+        public const string JsIframeMessage = "iframeMessage";
 
-        public static string LanguageHeader = "Current-Language";
+        public const string LanguageHeader = "Current-Language";
 
-        public static string EntitysName = "SharedKernel.EntitysName";
-        public static string MenuBar = "SharedKernel.MenuBar";
-        public static string ResuleMsg = "SharedKernel.ResuleMsg";
-        public static string Enum = "SharedKernel.Enum";
-        public static string ErrorMessage = "SharedKernel.ErrorMessage";
-        public static string AppNull = "app.null";
+        public const string EntitysName = "SharedKernel.EntitysName";
+        public const string MenuBar = "SharedKernel.MenuBar";
+        public const string ResuleMsg = "SharedKernel.ResuleMsg";
+        public const string Enum = "SharedKernel.Enum";
+        public const string ErrorMessage = "SharedKernel.ErrorMessage";
+        public const string AppNull = "app.null";
        
     }
 }
