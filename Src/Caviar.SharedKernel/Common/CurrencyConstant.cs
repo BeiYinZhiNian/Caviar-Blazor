@@ -50,6 +50,10 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string GetEntityKey = "GetEntity";
         /// <summary>
+        /// 获取多个实体
+        /// </summary>
+        public const string GetEntityListKey = "GetEntitys";
+        /// <summary>
         /// 获取所有字段
         /// </summary>
         public const string GetFieldsKey = "GetFields";

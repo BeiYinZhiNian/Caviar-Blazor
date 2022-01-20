@@ -29,6 +29,7 @@ namespace Caviar.Infrastructure.API.Permission
             return Ok(entitys);
         }
 
+        [HttpGet]
         public IActionResult GetFields(string name,string fullName,int roleId)
         {
             var fields = FieldScannerServices.GetClassFields(name, fullName, LanguageService);

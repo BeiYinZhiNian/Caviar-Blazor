@@ -37,44 +37,30 @@
                 else
                 {
                     <Table TItem="ViewFields" DataSource="@Fields" RowClassName="@(_=>"editable-row")" Bordered>
-                    <Column @bind-Field="@context.EntityType">
+                    <Column Title="DisplayName" TData="string">
+                        <Text>@context.DisplayName</Text>
                     </Column>
-                    <Column @bind-Field="@context.DisplayName">
+                    <Column Title="Number" TData="string">
                         @{
-                            var _editId = context.EntityType + "-DisplayName";
-                            if (editId == _editId)
+                            var _editid = context.Entity.FieldName + "-Number";
+                            if (editId == _editid)
                             {
-                                <Input Type="text" Style="width:50%" @bind-Value="context.DisplayName" OnBlur="()=>stopEdit(context)" AutoFocus />
+                                <Input Type="text" @bind-Value="context.Entity.Number" OnBlur="()=>stopEdit(context)" AutoFocus />
                             }
                             else
                             {
-                                <div class="editable-cell-value-wrap" @onclick="()=>startEdit(_editId)">
-                                    @context.DisplayName
-                                </div>
-                            }
-                        }
-                    </Column>
-                    <Column @bind-Field="@context.Entity.Number">
-                        @{
-                            var _editId = context.EntityType + "-Number";
-                            if (editId == _editId)
-                            {
-                                <Input Type="text" Style="width:50%" @bind-Value="context.Entity.Number" OnBlur="()=>stopEdit(context)" AutoFocus />
-                            }
-                            else
-                            {
-                                <div class="editable-cell-value-wrap" @onclick="()=>startEdit(_editId)">
+                                <div class="editable-cell-value-wrap" @onclick="()=>startEdit(_editid)">
                                     @context.Entity.Number
                                 </div>
                             }
                         }
                     </Column>
-                    <Column @bind-Field="@context.Entity.TableWidth">
+                    <Column Title="TableWidth" TData="string">
                         @{
-                            var _editId = context.EntityType + "-Width";
+                            var _editId = context.Entity.FieldName + "-Width";
                             if (editId == _editId)
                             {
-                                <Input Type="text" Style="width:50%" @bind-Value="context.Entity.TableWidth" OnBlur="()=>stopEdit(context)" AutoFocus />
+                                <Input Type="text" @bind-Value="context.Entity.TableWidth" OnBlur="()=>stopEdit(context)" AutoFocus />
                             }
                             else
                             {
@@ -84,7 +70,7 @@
                             }
                         }
                     </Column>
-                    <Column @bind-Field="@context.Entity.IsPanel">
+                    <Column Title="IsPanel" TData="bool">
                         <Switch @bind-Value="@context.Entity.IsPanel"></Switch>
                     </Column>
                     <Column @bind-Field="@context.IsPermission">

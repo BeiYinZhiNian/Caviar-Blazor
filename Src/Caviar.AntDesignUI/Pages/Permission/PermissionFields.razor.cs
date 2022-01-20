@@ -1,5 +1,6 @@
 ﻿using AntDesign;
 using Caviar.AntDesignUI.Core;
+using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
@@ -29,7 +30,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
             {
                 Role = JsonConvert.DeserializeObject<ApplicationRoleView>(Parameter);
             }
-            ControllerList.Add("Permission");
+            ControllerList.Add(CurrencyConstant.PermissionKey);
             await base.OnInitializedAsync();
             await GetModels();
         }
@@ -37,14 +38,14 @@ namespace Caviar.AntDesignUI.Pages.Permission
 
         public async Task GetModels()
         {
-            var result = await HttpService.GetJson<List<ViewFields>>(Url["GetEntitys"]);
+            var result = await HttpService.GetJson<List<ViewFields>>(Url[CurrencyConstant.GetEntityListKey]);
             if (result.Status != System.Net.HttpStatusCode.OK) return;
             Models = result.Data;
         }
 
         public async Task GetFields(ViewFields model)
         {
-            var result = await HttpService.GetJson<List<ViewFields>>($"{Url["GetFields"]}?name={model.Entity.FieldName}&fullName={model.Entity.FullName}&roleId={Role.Entity.Id}");
+            var result = await HttpService.GetJson<List<ViewFields>>($"{Url[CurrencyConstant.GetFieldsKey, CurrencyConstant.PermissionKey]}?name={model.Entity.FieldName}&fullName={model.Entity.FullName}&roleId={Role.Entity.Id}");
             if (result.Status != System.Net.HttpStatusCode.OK) return;
             CurrentModel = model;
             FieldName = model.DisplayName + "-数据字段";
