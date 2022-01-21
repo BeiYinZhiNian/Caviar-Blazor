@@ -6,15 +6,11 @@ using Caviar.Core.Services;
 using Caviar.Core.Interface;
 using Caviar.SharedKernel.Entities.View;
 using Caviar.Core;
-using Caviar.Core.Services.PermissionServices;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-
 using Microsoft.AspNetCore.Http;
-using System;
 using Caviar.SharedKernel.Entities;
-using Caviar.Core.Services.ScannerServices;
 using System.Net;
 
 namespace Caviar.Infrastructure.API.BaseApi
@@ -212,13 +208,7 @@ namespace Caviar.Infrastructure.API.BaseApi
         {
             if (entitys == null) return null;
             entitys = Sort(entitys);
-            var vmList = new List<Vm>();
-            foreach (var item in entitys)
-            {
-                var vm = new Vm(){ Entity = item };
-                vmList.Add(vm);
-            }
-            return vmList;
+            return entitys.Select(x => new Vm() { Entity = x }).ToList();
         }
 
         protected virtual List<T> Sort(List<T> entitys)
@@ -242,12 +232,7 @@ namespace Caviar.Infrastructure.API.BaseApi
         protected virtual List<T> ToEntity(List<Vm> vm)
         {
             if (vm == null) return null;
-            var entitys = new List<T>();
-            foreach (var item in vm)
-            {
-                entitys.Add(item.Entity);
-            }
-            return entitys;
+            return vm.Select(v => v.Entity).ToList();
         }
     }
 }

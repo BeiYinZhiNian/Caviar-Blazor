@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Caviar.SharedKernel.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Caviar.Core.Services.CodeGenerationServices
+namespace Caviar.Core.Services
 {
     /// <summary>
     /// 代码生成服务

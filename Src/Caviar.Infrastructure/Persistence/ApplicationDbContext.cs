@@ -1,8 +1,7 @@
 ﻿using Caviar.Core;
 using Caviar.Core.Interface;
-using Caviar.Core.Services.ScannerServices;
+using Caviar.Core.Services;
 using Caviar.SharedKernel.Entities;
-using Caviar.SharedKernel.Entities.View;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;

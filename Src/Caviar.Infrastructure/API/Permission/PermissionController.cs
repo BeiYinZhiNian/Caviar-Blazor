@@ -1,5 +1,4 @@
 ﻿using Caviar.Core;
-using Caviar.Core.Services.PermissionServices;
 using Microsoft.AspNetCore.Mvc;
 using Caviar.Infrastructure.API.BaseApi;
 using System;
@@ -8,18 +7,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Caviar.SharedKernel.Entities.View;
-using Caviar.Core.Services.ScannerServices;
 using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Http;
+using Caviar.Core.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace Caviar.Infrastructure.API.Permission
 {
     public partial class PermissionController : BaseApiController
     {
-
-        public PermissionController(PermissionServices permissionSdk)
+        private readonly RoleManager<ApplicationRole> _roleManager;
+        public PermissionController(RoleManager<ApplicationRole> roleManager)
         {
-
+            _roleManager = roleManager;
         }
 
         [HttpGet]
@@ -28,11 +28,19 @@ namespace Caviar.Infrastructure.API.Permission
             var entitys = FieldScannerServices.GetEntitys(LanguageService);
             return Ok(entitys);
         }
-
+        /// <summary>
+        /// 获取类下所有字段
+        /// </summary>
+        /// <param name="name">类名</param>
+        /// <param name="fullName">命名空间</param>
+        /// <param name="roleId">角色id</param>
+        /// <returns></returns>
         [HttpGet]
-        public IActionResult GetFields(string name,string fullName,int roleId)
+        public async Task<IActionResult> GetFields(string name,string fullName,int roleId)
         {
             var fields = FieldScannerServices.GetClassFields(name, fullName, LanguageService);
+            var roleFieldServices = CreateService<RoleFieldServices>();
+            fields = await roleFieldServices.GetRoleFields(fields, _roleManager, fullName, roleId);
             return Ok(fields);
         }
         [HttpGet]
@@ -53,8 +61,17 @@ namespace Caviar.Infrastructure.API.Permission
                 options: idCookieOptions);
             return Redirect(returnUrl);
         }
-
-
+        /// <summary>
+        /// 保存角色字段权限
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> SaveRoleFields(List<ViewFields> fields, int roleId)
+        {
+            var roleFieldServices = CreateService<RoleFieldServices>();
+            fields = await roleFieldServices.SavRoleFields(fields,_roleManager, roleId);
+            return Ok(fields);
+        }
 
     }
 }

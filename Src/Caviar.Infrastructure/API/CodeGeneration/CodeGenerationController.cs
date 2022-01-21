@@ -1,16 +1,9 @@
-﻿using Caviar.Core;
-using Caviar.Core.Services.CodeGenerationServices;
-
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Caviar.Infrastructure.API.BaseApi;
 using Caviar.SharedKernel.Entities.View;
 using Caviar.SharedKernel.Entities;
-using Caviar.Core.Services.ScannerServices;
+using Caviar.Core.Services;
 
 namespace Caviar.Infrastructure.API.CodeGeneration
 {

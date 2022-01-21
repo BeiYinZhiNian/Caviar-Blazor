@@ -75,12 +75,12 @@ namespace Caviar.AntDesignUI.Pages.Permission
             if (editId != null) return;
             if (Fields == null || CurrentModel == null)
             {
-                await MessageService.Error("请先选择所要保存的模型");
+                _ = MessageService.Error("请先选择所要保存的模型");
                 return;
             }
-            var result = await HttpService.PostJson($"{Url}?fullName={CurrentModel.Entity.FieldName}&roleId={Role.Entity.Id}", Fields);
+            var result = await HttpService.PostJson($"{Url[CurrencyConstant.SaveRoleFields, CurrencyConstant.PermissionKey]}?roleId={Role.Entity.Id}", Fields);
             if (result.Status != System.Net.HttpStatusCode.OK) return;
-            await MessageService.Success("保存完毕");
+            _ = MessageService.Success("保存完毕");
         }
 
     }

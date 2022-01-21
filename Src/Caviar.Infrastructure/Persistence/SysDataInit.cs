@@ -1,5 +1,4 @@
-﻿using Caviar.Core;
-using Caviar.SharedKernel.Entities.View;
+﻿using Caviar.SharedKernel.Entities.View;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,10 +7,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using Caviar.Infrastructure.API.BaseApi;
-using Caviar.Core.Services.ScannerServices;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Caviar.SharedKernel.Entities;
 using Caviar.Core.Interface;
+using Caviar.Core.Services;
 
 namespace Caviar.Infrastructure.Persistence
 {

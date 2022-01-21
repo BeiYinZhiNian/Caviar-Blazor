@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Caviar.SharedKernel.Entities;
 
-namespace Caviar.Core.Services.PermissionServices
+namespace Caviar.Core.Services
 {
     public class PermissionServices: DbServices
     {

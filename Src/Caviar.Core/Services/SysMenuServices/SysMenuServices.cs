@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.Core.Services.SysMenuServices
+namespace Caviar.Core.Services
 {
     public partial class SysMenuServices: EasyBaseServices<SysMenu>
     {

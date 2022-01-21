@@ -58,6 +58,10 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string GetFieldsKey = "GetFields";
         /// <summary>
+        /// 保存角色字段权限
+        /// </summary>
+        public const string SaveRoleFields = "SaveRoleFields";
+        /// <summary>
         /// 首页
         /// </summary>
         public const string HomeIndex = "Index";
