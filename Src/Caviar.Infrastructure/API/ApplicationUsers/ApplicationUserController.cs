@@ -91,12 +91,13 @@ namespace Caviar.Infrastructure.API
         [HttpGet]
         public IActionResult CurrentUserInfo()
         {
-            return Ok(new CurrentUser
+            var currentUser = new CurrentUser
             {
                 IsAuthenticated = User.Identity.IsAuthenticated,
                 UserName = User.Identity.Name,
-                Claims = User.Claims.ToDictionary(c => c.Type, c => c.Value)
-            });
+                Claims = User.Claims.Select(u=>(new CaviarClaim(u)))
+            };
+            return Ok(currentUser);
         }
     }
 }

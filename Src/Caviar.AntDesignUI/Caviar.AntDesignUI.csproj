@@ -5,18 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\Language\en-US.json" />
-    <Content Remove="wwwroot\Language\zh-CN.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\Images\bg2.jpg" />
-    <EmbeddedResource Include="wwwroot\Language\en-US.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wwwroot\Language\zh-CN.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
   </ItemGroup>
 
   

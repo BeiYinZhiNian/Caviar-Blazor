@@ -44,12 +44,13 @@ namespace Caviar.Core.Services
             var sysFields = await GetEntity<SysFields>(u => u.FullName == fullName);
             var role = await roleManager.FindByIdAsync(roleId.ToString());
             var claims = await roleManager.GetClaimsAsync(role);
+            var type = PermissionType.Field.ToString();
             foreach (var item in fields)
             {
-                var type = PermissionType.Field.ToString();
                 var value = $"{item.Entity.FullName}-{item.Entity.FieldName}";
                 item.Entity = sysFields.SingleOrDefault(u => u.FieldName == item.Entity.FieldName);
-                item.IsPermission = claims.Contains(new Claim(type, value));
+                var claim = claims.SingleOrDefault(u => u.Type == type && u.Value == value);
+                item.IsPermission = claim != null ? true : false;
             }
             return fields;
         }

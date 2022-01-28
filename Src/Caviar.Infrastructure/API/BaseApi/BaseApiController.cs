@@ -92,7 +92,8 @@ namespace Caviar.Infrastructure.API.BaseApi
 
         protected static T CreateService<T>() where T : new()
         {
-            T service = new T();
+            var serviceScope = Configure.ServiceProvider.CreateScope();
+            T service = serviceScope.ServiceProvider.GetRequiredService<T>();
             var propertyInfo = service.ContainProperty("DbContext",typeof(IAppDbContext));
             if (propertyInfo != null)
             {

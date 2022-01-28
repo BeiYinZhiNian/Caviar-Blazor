@@ -31,7 +31,7 @@ namespace Caviar.AntDesignUI.Shared
         public string Fixed { get; set; } = "right";
 
         [Parameter]
-        public string ScrollX { get; set; } = "2800";
+        public string ScrollX { get; set; }
         /// <summary>
         /// 包含边界
         /// </summary>
@@ -191,6 +191,19 @@ namespace Caviar.AntDesignUI.Shared
                 PageSize = 10;
             }
             return base.OnInitializedAsync();
+        }
+
+        protected override void OnParametersSet()
+        {
+            base.OnParametersSet();
+            if (string.IsNullOrEmpty(ScrollX) && ViewFields.Count != 0)
+            {
+                var count = ViewFields?.Count(u => u.Entity.IsPanel);
+                if(count > 5)
+                {
+                    ScrollX = (count.Value * 200).ToString();
+                }
+            }
         }
 
         #region 查询条件

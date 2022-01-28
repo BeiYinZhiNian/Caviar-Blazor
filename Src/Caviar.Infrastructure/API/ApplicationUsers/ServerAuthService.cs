@@ -29,13 +29,13 @@ namespace Caviar.Infrastructure.API
         public Task<CurrentUser> CurrentUserInfo()
         {
             var user = _httpContextAccessor.HttpContext.User;
-            return Task.FromResult(new CurrentUser
+            var currentUser = new CurrentUser
             {
                 IsAuthenticated = user.Identity.IsAuthenticated,
                 UserName = user.Identity.Name,
-                Claims = user.Claims
-                .ToDictionary(c => c.Type, c => c.Value)
-            });
+                Claims = user.Claims.Select(u => new CaviarClaim(u))
+            };
+            return Task.FromResult(currentUser);
         }
 
         public async Task<ResultMsg> Login(UserLogin loginRequest, string returnUrl)
