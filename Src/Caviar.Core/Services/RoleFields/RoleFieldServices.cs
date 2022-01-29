@@ -24,7 +24,7 @@ namespace Caviar.Core.Services
             foreach (var item in fields)
             {
                 var type = PermissionType.Field.ToString();
-                var value =  $"{item.Entity.FullName}-{item.Entity.FieldName}";
+                var value = CommonHelper.GetClaimValue(item.Entity);
                 var claim = claims.SingleOrDefault(u => u.Type == type && u.Value == value);
                 if(item.IsPermission && claim == null)
                 {
@@ -47,7 +47,7 @@ namespace Caviar.Core.Services
             var type = PermissionType.Field.ToString();
             foreach (var item in fields)
             {
-                var value = $"{item.Entity.FullName}-{item.Entity.FieldName}";
+                var value = CommonHelper.GetClaimValue(item.Entity);
                 item.Entity = sysFields.SingleOrDefault(u => u.FieldName == item.Entity.FieldName);
                 var claim = claims.SingleOrDefault(u => u.Type == type && u.Value == value);
                 item.IsPermission = claim != null ? true : false;

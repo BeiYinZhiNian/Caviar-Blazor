@@ -58,8 +58,11 @@ namespace Caviar.Infrastructure.Persistence
         public async Task StartInit()
         {
             var isDatabaseInit = await DatabaseInit(_dbContext);
-            await FieldsInit();
+            var fields = FieldScannerServices.GetApplicationFields(_languageService).Select(u => u.Entity);
             await CreateData(isDatabaseInit);
+            await FieldsInit(fields);
+            await PermissionFields(fields, isDatabaseInit);
+            
             
         }
         /// <summary>
@@ -67,9 +70,8 @@ namespace Caviar.Infrastructure.Persistence
         /// </summary>
         /// <param name="dbContext"></param>
         /// <returns></returns>
-        protected virtual async Task FieldsInit()
+        protected virtual async Task FieldsInit(IEnumerable<SysFields> fields)
         {
-            var fields = FieldScannerServices.GetApplicationFields(_languageService).Select(u => u.Entity);
             var set = _dbContext.Set<SysFields>();
             var dataBaseFields = set.AsNoTracking().ToList();
             foreach (var sysField in fields)
@@ -88,6 +90,19 @@ namespace Caviar.Infrastructure.Persistence
             _dbContext.RemoveRange(deleteFields);
             _dbContext.AddRange(addFields);
             await _dbContext.SaveChangesAsync();
+        }
+
+        protected virtual async Task PermissionFields(IEnumerable<SysFields> fields,bool isDatabaseInit)
+        {
+            if (!isDatabaseInit) return;
+            var roleManager = _serviceScope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
+            var admin = await roleManager.FindByNameAsync(CurrencyConstant.Admin);
+            var type = PermissionType.Field.ToString();
+            foreach (var item in fields)
+            {
+                var value = CommonHelper.GetClaimValue(item);
+                await roleManager.AddClaimAsync(admin, new System.Security.Claims.Claim(type, value));
+            }
         }
         /// <summary>
         /// 初始化数据库
@@ -120,7 +135,7 @@ namespace Caviar.Infrastructure.Persistence
         protected virtual async Task CreateInitRole()
         {
             var roleManager = _serviceScope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
-            var role = new ApplicationRole { Name = "admin" };
+            var role = new ApplicationRole { Name = CurrencyConstant.Admin };
             var result = await roleManager.CreateAsync(role);
             if (!result.Succeeded) throw new Exception("创建用户失败，数据初始化停止");
         }

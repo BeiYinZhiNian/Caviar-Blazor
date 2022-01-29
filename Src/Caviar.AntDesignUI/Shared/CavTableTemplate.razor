@@ -109,7 +109,7 @@
     @{
         foreach (var item in ViewFields)
         {
-            if (!item.Entity.IsPanel) continue;
+            if (!item.Entity.IsPanel || !item.IsPermission) continue;
             item.Value = context;
             var tableItem = GetTableItems?.Invoke(item);
             var fieldName = "entity." + item.Entity.FieldName;

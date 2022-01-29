@@ -337,5 +337,10 @@ namespace Caviar.SharedKernel.Entities
             return null;
         }
 
+
+        public static string GetClaimValue(SysFields fields)
+        {
+            return $"{fields.FullName}-{fields.FieldName}";
+        }
     }
 }
