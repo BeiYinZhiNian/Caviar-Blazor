@@ -12,6 +12,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Caviar.SharedKernel.Entities;
 using System.Net;
+using Microsoft.AspNetCore.Identity;
 
 namespace Caviar.Infrastructure.API.BaseApi
 {
@@ -90,7 +91,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             resultMsg.Title = LanguageService[$"{CurrencyConstant.ResuleMsg}.Title.{resultMsg.Title}"];
         }
 
-        protected static T CreateService<T>() where T : new()
+        protected static T CreateService<T>()
         {
             var serviceScope = Configure.ServiceProvider.CreateScope();
             T service = serviceScope.ServiceProvider.GetRequiredService<T>();
@@ -123,7 +124,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             var fieldName = typeof(T).Name;
             var fullName = typeof(T).FullName;
             var fields = FieldScannerServices.GetClassFields(fieldName, fullName, LanguageService);
-            fields = await permissionServices.GetFields(fields, fieldName, fullName);
+            fields = await permissionServices.GetFields(fields, User.Claims, fieldName, fullName);
             return fields;
         }
 
