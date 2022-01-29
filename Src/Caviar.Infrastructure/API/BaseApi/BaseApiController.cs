@@ -63,6 +63,7 @@ namespace Caviar.Infrastructure.API.BaseApi
         {
             base.OnActionExecuted(context);
             var result = context.Result;
+            DataFilter.Claims = User.Claims;
             var resultMsg = DataFilter.ResultHandle(result);
             if (resultMsg != null)
             {
@@ -125,6 +126,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             var fullName = typeof(T).FullName;
             var fields = FieldScannerServices.GetClassFields(fieldName, fullName, LanguageService);
             fields = await permissionServices.GetFields(fields, User.Claims, fieldName, fullName);
+            fields = fields.OrderBy(u => u.Entity.Number).ToList();
             return fields;
         }
 

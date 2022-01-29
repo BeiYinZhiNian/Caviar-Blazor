@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using Caviar.SharedKernel.Entities;
+using System.Security.Claims;
 
 namespace Caviar.Infrastructure
 {
@@ -17,12 +18,14 @@ namespace Caviar.Infrastructure
         /// <summary>
         /// 是否开启数据过滤
         /// </summary>
-        public static bool IsDataFilter { get; set; }
+        public static bool IsDataFilter { get; set; } = true;
 
         /// <summary>
         /// 用户拥有的字段权限
         /// </summary>
-        public List<SysFields> Fields { get; set; }
+        public IEnumerable<Claim> Claims { get; set; }
+
+        public static List<string> IgnoreField { get; set; } = new List<string>() { "id","uid","key"  };
 
         public ResultMsg ResultHandle(IActionResult result)
         {
@@ -105,13 +108,15 @@ namespace Caviar.Infrastructure
         /// <param name="data"></param>
         public void ArgumentsFields(Type type, object data)
         {
-            var baseType = type.ContainBaseClass(typeof(SysBaseEntity));
+            var baseType = type.GetInterfaces().FirstOrDefault(u=>u == typeof(IBaseEntity));
             if (baseType == null) return;
-            foreach (PropertyInfo sp in baseType.GetProperties())//获得类型的属性字段
+            var permissionType = PermissionType.Field.ToString();
+            foreach (PropertyInfo sp in type.GetProperties())//获得类型的属性字段
             {
-                if (sp.Name.ToLower() == "id") continue;//忽略id字段
-                if (sp.Name.ToLower() == "uid") continue;//忽略uid字段
-                var field = Fields?.FirstOrDefault(u => u.BaseFullName == baseType.Name && sp.Name == u.FieldName);
+
+                if (IgnoreField.FirstOrDefault(u => u.ToLower() == sp.Name.ToLower()) != null) continue; //忽略字段
+                var value = $"{type.FullName}-{sp.Name}";
+                var field = Claims?.SingleOrDefault(u => u.Type == permissionType && u.Value == value);
                 if (field == null)//如果为null则标名没有字段权限
                 {
                     try

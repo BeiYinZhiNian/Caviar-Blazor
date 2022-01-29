@@ -41,6 +41,7 @@ namespace Caviar.Infrastructure.API.Permission
             var fields = FieldScannerServices.GetClassFields(name, fullName, LanguageService);
             var roleFieldServices = CreateService<RoleFieldServices>();
             fields = await roleFieldServices.GetRoleFields(fields, _roleManager, fullName, roleId);
+            fields = fields.OrderBy(u => u.Entity.Number).ToList();
             return Ok(fields);
         }
         [HttpGet]
