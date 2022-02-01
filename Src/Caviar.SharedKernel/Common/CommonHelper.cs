@@ -186,7 +186,10 @@ namespace Caviar.SharedKernel.Entities
                             //循环,并添注入
                             .ForEach(t =>
                             {
-                                types.Add(t);
+                                if(t != typeof(SysBaseEntity) && t != typeof(SysUseEntity))
+                                {
+                                    types.Add(t);
+                                }
                             });
                     }));
             return types;

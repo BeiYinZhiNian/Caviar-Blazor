@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel.Entities
 {
-    public class RoleFields : SysBaseEntity
+    public class SysPermission : SysBaseEntity
     {
-        public int FieldId { get; set; }
+        public int PermissionId { get; set; }
 
-        public int RoleId { get; set; }
+        public string EntityName { get; set; }
+
+        public PermissionType PermissionType { get; set; }
     }
 }

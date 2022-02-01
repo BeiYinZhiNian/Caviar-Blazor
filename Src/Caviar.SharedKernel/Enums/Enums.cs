@@ -66,8 +66,7 @@ namespace Caviar.SharedKernel.Entities
     /// </summary>
     public enum PermissionType
     {
-        Menu,
-        Field,
+        RoleFields
     }
     /// <summary>
     /// 权限身份

@@ -16,17 +16,17 @@ namespace Caviar.Core.Services
     
     public partial class DbServices : BaseServices
     {
-        protected IAppDbContext _dbContext;
-        public IAppDbContext DbContext
+        protected IAppDbContext _appDbContext;
+        public IAppDbContext AppDbContext
         {
             get
             {
-                if (_dbContext != null) return _dbContext;
+                if (_appDbContext != null) return _appDbContext;
                 throw new ApplicationException("未向Service注入DbContext");
             }
             set
             {
-                _dbContext = value;
+                _appDbContext = value;
             }
         }
         public DbServices()
@@ -36,7 +36,7 @@ namespace Caviar.Core.Services
 
         public DbServices(IAppDbContext dbContext)
         {
-            DbContext = dbContext;
+            AppDbContext = dbContext;
         }
 
 
@@ -47,7 +47,7 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public virtual async Task<int> CreateEntity<T>(T entity) where T : class, IUseEntity, new()
         {
-            var id = await DbContext.AddEntityAsync(entity);
+            var id = await AppDbContext.AddEntityAsync(entity);
             return id;
         }
 
@@ -57,7 +57,7 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public virtual async Task<bool> DeleteEntity<T>(T entity) where T : class, IUseEntity, new()
         {
-            return await DbContext.DeleteEntityAsync(entity);
+            return await AppDbContext.DeleteEntityAsync(entity);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public virtual Task UpdateEntity<T>(T entity) where T : class, IUseEntity, new()
         {
-            return DbContext.UpdateEntityAsync(entity);
+            return AppDbContext.UpdateEntityAsync(entity);
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public virtual async Task<PageData<T>> GetPages<T>(Expression<Func<T, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true) where T : class, IUseEntity, new()
         {
-            return await DbContext.GetPageAsync(where, u => u.Number, pageIndex, pageSize, isOrder, isNoTracking);
+            return await AppDbContext.GetPageAsync(where, u => u.Number, pageIndex, pageSize, isOrder, isNoTracking);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public virtual Task DeleteEntity<T>(IEnumerable<T> menus) where T : class, IUseEntity, new()
         {
-            return DbContext.DeleteEntityAsync(menus);
+            return AppDbContext.DeleteEntityAsync(menus);
         }
         /// <summary>
         /// 批量修改
@@ -94,22 +94,22 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public virtual Task UpdateEntity<T>(IEnumerable<T> menus) where T : class, IUseEntity, new()
         {
-            return DbContext.UpdateEntityAsync(menus);
+            return AppDbContext.UpdateEntityAsync(menus);
         }
 
         public virtual Task<T> GetEntity<T>(int id) where T : class, IUseEntity, new()
         {
-            return DbContext.SingleOrDefaultAsync<T>(u => u.Id == id);
+            return AppDbContext.SingleOrDefaultAsync<T>(u => u.Id == id);
         }
 
         public virtual Task<List<T>> GetEntity<T>(Expression<Func<T, bool>> where) where T : class, IUseEntity, new()
         {
-            return DbContext.GetEntityAsync(where);
+            return AppDbContext.GetEntityAsync(where);
         }
 
         public virtual Task<T> GetEntity<T>(Expression<Func<T, bool>> where,bool isSingle) where T : class, IUseEntity, new()
         {
-            return DbContext.SingleOrDefaultAsync<T>(where);
+            return AppDbContext.SingleOrDefaultAsync<T>(where);
         }
 
     }
@@ -124,7 +124,7 @@ namespace Caviar.Core.Services
         }
         public EasyBaseServices(IAppDbContext dbContext):base(dbContext)
         {
-            DbContext = dbContext;
+            AppDbContext = dbContext;
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public virtual async Task<int> CreateEntity(T entity)
         {
-            var id = await DbContext.AddEntityAsync(entity);
+            var id = await AppDbContext.AddEntityAsync(entity);
             return id;
         }
 
@@ -144,7 +144,7 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public virtual async Task<bool> DeleteEntity(T entity)
         {
-            return await DbContext.DeleteEntityAsync(entity);
+            return await AppDbContext.DeleteEntityAsync(entity);
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public virtual Task UpdateEntity(T entity)
         {
-            return DbContext.UpdateEntityAsync(entity);
+            return AppDbContext.UpdateEntityAsync(entity);
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public virtual async Task<PageData<T>> GetPages(Expression<Func<T, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true)
         {
-            return await DbContext.GetPageAsync(where, u => u.Number, pageIndex, pageSize, isOrder, isNoTracking);
+            return await AppDbContext.GetPageAsync(where, u => u.Number, pageIndex, pageSize, isOrder, isNoTracking);
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public virtual Task DeleteEntity(IEnumerable<T> menus)
         {
-            return DbContext.DeleteEntityAsync(menus);
+            return AppDbContext.DeleteEntityAsync(menus);
         }
         /// <summary>
         /// 批量修改
@@ -181,27 +181,27 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public virtual Task UpdateEntity(IEnumerable<T> menus)
         {
-            return DbContext.UpdateEntityAsync(menus);
+            return AppDbContext.UpdateEntityAsync(menus);
         }
 
         public virtual Task<T> GetEntity(int id)
         {
-            return DbContext.SingleOrDefaultAsync<T>(u => u.Id == id);
+            return AppDbContext.SingleOrDefaultAsync<T>(u => u.Id == id);
         }
 
         public virtual Task<List<T>> GetEntity(Expression<Func<T, bool>> where)
         {
-            return DbContext.GetEntityAsync(where);
+            return AppDbContext.GetEntityAsync(where);
         }
 
         public virtual Task<List<T>> GetAllAsync()
         {
-            return DbContext.GetAllAsync<T>();
+            return AppDbContext.GetAllAsync<T>();
         }
 
         public virtual Task<T> GetEntity(Expression<Func<T, bool>> where, bool isSingle)
         {
-            return DbContext.SingleOrDefaultAsync(where);
+            return AppDbContext.SingleOrDefaultAsync(where);
         }
     }
 }

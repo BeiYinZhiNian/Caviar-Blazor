@@ -33,14 +33,14 @@ namespace Caviar.Infrastructure.API.Permission
         /// </summary>
         /// <param name="name">类名</param>
         /// <param name="fullName">命名空间</param>
-        /// <param name="roleId">角色id</param>
+        /// <param name="roleName">角色id</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetFields(string name,string fullName,int roleId)
+        public async Task<IActionResult> GetFields(string name,string fullName,string roleName)
         {
             var fields = FieldScannerServices.GetClassFields(name, fullName, LanguageService);
             var roleFieldServices = CreateService<RoleFieldServices>();
-            fields = await roleFieldServices.GetRoleFields(fields, _roleManager, fullName, roleId);
+            fields = await roleFieldServices.GetRoleFields(fields, fullName, new List<string> { roleName });
             fields = fields.OrderBy(u => u.Entity.Number).ToList();
             return Ok(fields);
         }
@@ -67,10 +67,10 @@ namespace Caviar.Infrastructure.API.Permission
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> SaveRoleFields(List<ViewFields> fields, int roleId)
+        public async Task<IActionResult> SaveRoleFields(List<ViewFields> fields, string roleName)
         {
             var roleFieldServices = CreateService<RoleFieldServices>();
-            fields = await roleFieldServices.SavRoleFields(fields,_roleManager, roleId);
+            fields = await roleFieldServices.SavRoleFields(fields, roleName);
             return Ok(fields);
         }
 

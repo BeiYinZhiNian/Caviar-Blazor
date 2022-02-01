@@ -96,7 +96,7 @@ namespace Caviar.Infrastructure.API.BaseApi
         {
             var serviceScope = Configure.ServiceProvider.CreateScope();
             T service = serviceScope.ServiceProvider.GetRequiredService<T>();
-            var propertyInfo = service.ContainProperty("DbContext",typeof(IAppDbContext));
+            var propertyInfo = service.ContainProperty("AppDbContext", typeof(IAppDbContext));
             if (propertyInfo != null)
             {
                 var dbContext = GetAppDbContext();
@@ -121,11 +121,14 @@ namespace Caviar.Infrastructure.API.BaseApi
         /// <returns></returns>
         protected virtual async Task<List<ViewFields>> GetFields<T>() where T:IUseEntity
         {
-            var permissionServices = CreateService<PermissionServices>();
+            var permissionServices = CreateService<RoleFieldServices>();
             var fieldName = typeof(T).Name;
             var fullName = typeof(T).FullName;
             var fields = FieldScannerServices.GetClassFields(fieldName, fullName, LanguageService);
-            fields = await permissionServices.GetFields(fields, User.Claims, fieldName, fullName);
+            var userManager = CreateService<UserManager<ApplicationUser>>();
+            var user = await userManager.FindByNameAsync(User.Identity.Name);
+            var roles = await userManager.GetRolesAsync(user);
+            fields = await permissionServices.GetRoleFields(fields, fullName, roles);
             fields = fields.OrderBy(u => u.Entity.Number).ToList();
             return fields;
         }
@@ -143,7 +146,7 @@ namespace Caviar.Infrastructure.API.BaseApi
                 if (_service == null)
                 {
                     _service = HttpContext.RequestServices.GetRequiredService<IEasyBaseServices<T>>();
-                    _service.DbContext = HttpContext.RequestServices.GetRequiredService<IAppDbContext>();
+                    _service.AppDbContext = HttpContext.RequestServices.GetRequiredService<IAppDbContext>();
                 }
                 return _service;
             }

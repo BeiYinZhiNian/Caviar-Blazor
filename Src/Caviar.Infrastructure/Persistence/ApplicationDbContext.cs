@@ -270,6 +270,7 @@ namespace Caviar.Infrastructure.Persistence
                 var entity = item.Entity;
                 if (entity == null) continue;
                 baseEntity = entity as IUseEntity;
+                if(baseEntity == null) continue;
                 switch (item.State)
                 {
                     case EntityState.Detached:

@@ -95,14 +95,16 @@ namespace Caviar.Infrastructure.Persistence
         protected virtual async Task PermissionFields(IEnumerable<SysFields> fields,bool isDatabaseInit)
         {
             if (!isDatabaseInit) return;
-            var roleManager = _serviceScope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
-            var admin = await roleManager.FindByNameAsync(CurrencyConstant.Admin);
-            var type = PermissionType.Field.ToString();
             foreach (var item in fields)
             {
-                var value = CommonHelper.GetClaimValue(item);
-                await roleManager.AddClaimAsync(admin, new System.Security.Claims.Claim(type, value));
+                _dbContext.Add(new SysPermission()
+                {
+                    EntityName = CurrencyConstant.Admin,
+                    PermissionId = item.Id,
+                    PermissionType = PermissionType.RoleFields
+                });
             }
+            await _dbContext.SaveChangesAsync();
         }
         /// <summary>
         /// 初始化数据库

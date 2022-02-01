@@ -45,7 +45,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
 
         public async Task GetFields(ViewFields model)
         {
-            var result = await HttpService.GetJson<List<ViewFields>>($"{Url[CurrencyConstant.GetFieldsKey, CurrencyConstant.PermissionKey]}?name={model.Entity.FieldName}&fullName={model.Entity.FullName}&roleId={Role.Entity.Id}");
+            var result = await HttpService.GetJson<List<ViewFields>>($"{Url[CurrencyConstant.GetFieldsKey, CurrencyConstant.PermissionKey]}?name={model.Entity.FieldName}&fullName={model.Entity.FullName}&roleName={Role.Entity.Name}");
             if (result.Status != System.Net.HttpStatusCode.OK) return;
             CurrentModel = model;
             FieldName = model.DisplayName + "-" + LanguageService[$"{CurrencyConstant.EntitysName}.DataField"];
@@ -78,7 +78,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
                 _ = MessageService.Error("请先选择所要保存的模型");
                 return;
             }
-            var result = await HttpService.PostJson($"{Url[CurrencyConstant.SaveRoleFields, CurrencyConstant.PermissionKey]}?roleId={Role.Entity.Id}", Fields);
+            var result = await HttpService.PostJson($"{Url[CurrencyConstant.SaveRoleFields, CurrencyConstant.PermissionKey]}?roleName={Role.Entity.Name}", Fields);
             if (result.Status != System.Net.HttpStatusCode.OK) return;
             _ = MessageService.Success("保存完毕");
         }

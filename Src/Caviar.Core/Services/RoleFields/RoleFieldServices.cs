@@ -15,42 +15,40 @@ namespace Caviar.Core.Services
         /// 保存角色字段权限
         /// </summary>
         /// <returns></returns>
-        public async Task<List<ViewFields>> SavRoleFields<T>(List<ViewFields> fields,RoleManager<T> roleManager, int roleId) where T : class
+        public async Task<List<ViewFields>> SavRoleFields(List<ViewFields> fields, string roleName) 
         {
             var entity = fields.Select(x => x.Entity).ToList();
-            await DbContext.UpdateEntityAsync(entity);
-            var role = await roleManager.FindByIdAsync(roleId.ToString());
-            var claims = await roleManager.GetClaimsAsync(role);
+            await AppDbContext.UpdateEntityAsync(entity);
             foreach (var item in fields)
             {
-                var type = PermissionType.Field.ToString();
+                var type = PermissionType.RoleFields.ToString();
                 var value = CommonHelper.GetClaimValue(item.Entity);
-                var claim = claims.SingleOrDefault(u => u.Type == type && u.Value == value);
-                if(item.IsPermission && claim == null)
+                var set = AppDbContext.DbContext.Set<SysPermission>();
+                var permission = set.SingleOrDefault(u => u.PermissionId == item.Entity.Id && u.EntityName == roleName && u.PermissionType == PermissionType.RoleFields);
+                if (item.IsPermission && permission == null)
                 {
-                    claim = new Claim(type, value);
-                    await roleManager.AddClaimAsync(role, claim);
+                    permission = new SysPermission() { EntityName = roleName, PermissionId = item.Entity.Id, PermissionType = PermissionType.RoleFields };
+                    set.Add(permission);
                 }
-                else if(!item.IsPermission && claim != null)
+                else if(!item.IsPermission && permission != null)
                 {
-                    await roleManager.RemoveClaimAsync(role, claim);
+                    set.Remove(permission);
                 }
+                await AppDbContext.SaveChangesAsync();
             }
             return fields;
         }
 
-        public async Task<List<ViewFields>> GetRoleFields<T>(List<ViewFields> fields, RoleManager<T> roleManager, string fullName, int roleId) where T : class
+
+        public async Task<List<ViewFields>> GetRoleFields(List<ViewFields> fields, string fullName, IList<string> roleNames)
         {
             var sysFields = await GetEntity<SysFields>(u => u.FullName == fullName);
-            var role = await roleManager.FindByIdAsync(roleId.ToString());
-            var claims = await roleManager.GetClaimsAsync(role);
-            var type = PermissionType.Field.ToString();
             foreach (var item in fields)
             {
-                var value = CommonHelper.GetClaimValue(item.Entity);
                 item.Entity = sysFields.SingleOrDefault(u => u.FieldName == item.Entity.FieldName);
-                var claim = claims.SingleOrDefault(u => u.Type == type && u.Value == value);
-                item.IsPermission = claim != null ? true : false;
+                var set = AppDbContext.DbContext.Set<SysPermission>();
+                var permission = set.SingleOrDefault(u => u.PermissionId == item.Entity.Id && roleNames.Contains(u.EntityName) && u.PermissionType == PermissionType.RoleFields);
+                item.IsPermission = permission != null;
             }
             return fields;
         }

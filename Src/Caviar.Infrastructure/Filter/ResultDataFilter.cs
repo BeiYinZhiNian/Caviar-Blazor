@@ -110,14 +110,11 @@ namespace Caviar.Infrastructure
         {
             var baseType = type.GetInterfaces().FirstOrDefault(u=>u == typeof(IUseEntity));
             if (baseType == null) return;
-            var permissionType = PermissionType.Field.ToString();
             foreach (PropertyInfo sp in type.GetProperties())//获得类型的属性字段
             {
 
                 if (IgnoreField.FirstOrDefault(u => u.ToLower() == sp.Name.ToLower()) != null) continue; //忽略字段
-                var value = $"{type.FullName}-{sp.Name}";
-                var field = Claims?.SingleOrDefault(u => u.Type == permissionType && u.Value == value);
-                if (field == null)//如果为null则标名没有字段权限
+                if (false)//如果为null则标名没有字段权限
                 {
                     try
                     {
