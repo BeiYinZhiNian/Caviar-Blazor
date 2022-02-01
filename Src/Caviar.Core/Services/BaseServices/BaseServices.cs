@@ -45,7 +45,7 @@ namespace Caviar.Core.Services
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public virtual async Task<int> CreateEntity<T>(T entity) where T : class, IBaseEntity, new()
+        public virtual async Task<int> CreateEntity<T>(T entity) where T : class, IUseEntity, new()
         {
             var id = await DbContext.AddEntityAsync(entity);
             return id;
@@ -55,7 +55,7 @@ namespace Caviar.Core.Services
         /// 删除指定实体
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<bool> DeleteEntity<T>(T entity) where T : class, IBaseEntity, new()
+        public virtual async Task<bool> DeleteEntity<T>(T entity) where T : class, IUseEntity, new()
         {
             return await DbContext.DeleteEntityAsync(entity);
         }
@@ -64,7 +64,7 @@ namespace Caviar.Core.Services
         /// 修改指定实体
         /// </summary>
         /// <returns></returns>
-        public virtual Task UpdateEntity<T>(T entity) where T : class, IBaseEntity, new()
+        public virtual Task UpdateEntity<T>(T entity) where T : class, IUseEntity, new()
         {
             return DbContext.UpdateEntityAsync(entity);
         }
@@ -73,7 +73,7 @@ namespace Caviar.Core.Services
         /// 获取分页数据
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<PageData<T>> GetPages<T>(Expression<Func<T, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true) where T : class, IBaseEntity, new()
+        public virtual async Task<PageData<T>> GetPages<T>(Expression<Func<T, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true) where T : class, IUseEntity, new()
         {
             return await DbContext.GetPageAsync(where, u => u.Number, pageIndex, pageSize, isOrder, isNoTracking);
         }
@@ -83,7 +83,7 @@ namespace Caviar.Core.Services
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
-        public virtual Task DeleteEntity<T>(IEnumerable<T> menus) where T : class, IBaseEntity, new()
+        public virtual Task DeleteEntity<T>(IEnumerable<T> menus) where T : class, IUseEntity, new()
         {
             return DbContext.DeleteEntityAsync(menus);
         }
@@ -92,22 +92,22 @@ namespace Caviar.Core.Services
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
-        public virtual Task UpdateEntity<T>(IEnumerable<T> menus) where T : class, IBaseEntity, new()
+        public virtual Task UpdateEntity<T>(IEnumerable<T> menus) where T : class, IUseEntity, new()
         {
             return DbContext.UpdateEntityAsync(menus);
         }
 
-        public virtual Task<T> GetEntity<T>(int id) where T : class, IBaseEntity, new()
+        public virtual Task<T> GetEntity<T>(int id) where T : class, IUseEntity, new()
         {
             return DbContext.SingleOrDefaultAsync<T>(u => u.Id == id);
         }
 
-        public virtual Task<List<T>> GetEntity<T>(Expression<Func<T, bool>> where) where T : class, IBaseEntity, new()
+        public virtual Task<List<T>> GetEntity<T>(Expression<Func<T, bool>> where) where T : class, IUseEntity, new()
         {
             return DbContext.GetEntityAsync(where);
         }
 
-        public virtual Task<T> GetEntity<T>(Expression<Func<T, bool>> where,bool isSingle) where T : class, IBaseEntity, new()
+        public virtual Task<T> GetEntity<T>(Expression<Func<T, bool>> where,bool isSingle) where T : class, IUseEntity, new()
         {
             return DbContext.SingleOrDefaultAsync<T>(where);
         }
@@ -115,7 +115,7 @@ namespace Caviar.Core.Services
     }
 
     
-    public partial class EasyBaseServices<T> : DbServices,IEasyBaseServices<T>   where T: class,IBaseEntity, new()
+    public partial class EasyBaseServices<T> : DbServices,IEasyBaseServices<T>   where T: class,IUseEntity, new()
     {
 
         public EasyBaseServices()

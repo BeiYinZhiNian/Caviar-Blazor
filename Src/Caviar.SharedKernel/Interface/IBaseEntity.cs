@@ -8,7 +8,12 @@ using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel.Entities
 {
-    public partial interface IBaseEntity: IDIinjectAtteribute
+    public partial interface IBaseEntity : IDIinjectAtteribute
+    {
+
+    }
+
+    public partial interface IUseEntity: IBaseEntity
     {
         /// <summary>
         /// id

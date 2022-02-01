@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Caviar.SharedKernel.Entities
 {
-    public class ApplicationRole : IdentityRole<int>, IBaseEntity
+    public class ApplicationRole : IdentityRole<int>, IUseEntity
     {
         /// <summary>
         /// 创建时间

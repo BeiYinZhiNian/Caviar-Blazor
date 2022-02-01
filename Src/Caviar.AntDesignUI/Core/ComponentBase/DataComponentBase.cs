@@ -11,7 +11,7 @@ using Caviar.SharedKernel.Entities;
 
 namespace Caviar.AntDesignUI.Core
 {
-    public partial class DataComponentBase<ViewT,T> : CavComponentBase,ITableTemplate where ViewT:IView<T>,new() where T: IBaseEntity,new()
+    public partial class DataComponentBase<ViewT,T> : CavComponentBase,ITableTemplate where ViewT:IView<T>,new() where T: IUseEntity,new()
     {
         #region 参数
         [Parameter]

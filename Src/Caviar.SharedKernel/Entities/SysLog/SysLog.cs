@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel.Entities
 {
-    public partial class SysLog: SysBaseEntity, IBaseEntity
+    public partial class SysLog: SysUseEntity
     {
         [StringLength(50, ErrorMessage = "LengthErrorMsg")]
         public string UserName { get; set; }

@@ -2,7 +2,7 @@
 
 namespace Caviar.SharedKernel.Entities
 {
-    public partial class SysMenu : SysBaseEntity, IBaseEntity
+    public partial class SysMenu : SysUseEntity
     {
 
         [Required(ErrorMessage = "RequiredErrorMsg")]

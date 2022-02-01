@@ -74,7 +74,7 @@ namespace Caviar.Infrastructure
                 return;
             }
             bool isBaseModel;
-            isBaseModel = type.GetInterfaces().Contains(typeof(IBaseEntity));
+            isBaseModel = type.GetInterfaces().Contains(typeof(IUseEntity));
             if (isBaseModel)
             {
                 if (data == null) return;
@@ -108,7 +108,7 @@ namespace Caviar.Infrastructure
         /// <param name="data"></param>
         public void ArgumentsFields(Type type, object data)
         {
-            var baseType = type.GetInterfaces().FirstOrDefault(u=>u == typeof(IBaseEntity));
+            var baseType = type.GetInterfaces().FirstOrDefault(u=>u == typeof(IUseEntity));
             if (baseType == null) return;
             var permissionType = PermissionType.Field.ToString();
             foreach (PropertyInfo sp in type.GetProperties())//获得类型的属性字段

@@ -9,10 +9,19 @@ using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel.Entities
 {
+
+    public partial class SysBaseEntity : IBaseEntity
+    {
+        /// <summary>
+        /// id
+        /// </summary>
+        [Key]
+        public virtual int Id { get; set; }
+    }
     /// <summary>
     /// 数据基础类
     /// </summary>
-    public partial class SysBaseEntity
+    public partial class SysUseEntity:IUseEntity
     {
         /// <summary>
         /// id

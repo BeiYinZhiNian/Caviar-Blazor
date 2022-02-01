@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel.Entities
 {
-    public partial class SysEnclosure: SysBaseEntity, IBaseEntity
+    public partial class SysEnclosure: SysUseEntity
     {
         [Required(ErrorMessage = "RequiredErrorMsg")]
         [StringLength(50, ErrorMessage = "LengthErrorMsg")]

@@ -47,7 +47,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <param name="entity"></param>
         /// <param name="isSaveChange">默认为立刻保存</param>
         /// <returns></returns>
-        public virtual async Task<int> AddEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IBaseEntity, new()
+        public virtual async Task<int> AddEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IUseEntity, new()
         {
             IsEntityNull(entity);
             DbContext.Entry(entity).State = EntityState.Added;
@@ -66,7 +66,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <param name="entity"></param>
         /// <param name="isSaveChange"></param>
         /// <returns></returns>
-        public virtual async Task<bool> AddEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true) where T : class, IBaseEntity, new()
+        public virtual async Task<bool> AddEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true) where T : class, IUseEntity, new()
         {
             IsEntityNull(entity);
             DbContext.AddRange(entity);
@@ -85,7 +85,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <param name="entity"></param>
         /// <param name="isSaveChange">默认为立刻保存</param>
         /// <returns></returns>
-        public virtual async Task UpdateEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IBaseEntity,new()
+        public virtual async Task UpdateEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IUseEntity,new()
         {
             IsEntityNull(entity);
             DbContext.Entry(entity).State = EntityState.Modified;
@@ -102,7 +102,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <param name="fieldExp"></param>
         /// <param name="isSaveChange">默认为立刻保存</param>
         /// <returns></returns>
-        public virtual async Task UpdateEntityAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class, IBaseEntity,new()
+        public virtual async Task UpdateEntityAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class, IUseEntity,new()
         {
             IsEntityNull(entity);
             DbContext.Entry(entity).Property(fieldExp).IsModified = true;
@@ -120,7 +120,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <param name="fieldExp"></param>
         /// <param name="isSaveChange"></param>
         /// <returns></returns>
-        public virtual async Task UpdateEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true) where T : class, IBaseEntity,new()
+        public virtual async Task UpdateEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true) where T : class, IUseEntity,new()
         {
             IsEntityNull(entity);
             DbContext.UpdateRange(entity);
@@ -139,7 +139,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <param name="isSaveChange">默认立刻保存</param>
         /// <param name="IsDelete">是否立刻删除，默认不删除，只修改IsDelete,设为true则立刻删除</param>
         /// <returns>返回代表是否真正删除了实体，如果为true则是物理删除，如果为false则是逻辑删除</returns>
-        public virtual async Task<bool> DeleteEntityAsync<T>(T entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IBaseEntity, new()
+        public virtual async Task<bool> DeleteEntityAsync<T>(T entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IUseEntity, new()
         {
             IsEntityNull(entity);
             if (entity.IsDelete || IsDelete)
@@ -166,7 +166,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <param name="isSaveChange"></param>
         /// <param name="IsDelete"></param>
         /// <returns></returns>
-        public virtual async Task DeleteEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IBaseEntity, new()
+        public virtual async Task DeleteEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IUseEntity, new()
         {
             IsEntityNull(entity);
             var removeList = entity.Where(u => u.IsDelete);//取出物理删除数据
@@ -184,7 +184,7 @@ namespace Caviar.Infrastructure.Persistence
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public virtual Task<List<T>> GetAllAsync<T>(bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity, new()
+        public virtual Task<List<T>> GetAllAsync<T>(bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IUseEntity, new()
         {
             return GetContext<T>(isNoTracking, isDataPermissions, isRecycleBin).ToListAsync();
         }
@@ -200,7 +200,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <param name="isOrder"></param>
         /// <param name="isNoTracking"></param>
         /// <returns></returns>
-        public virtual async Task<PageData<T>> GetPageAsync<T, TOrder>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TOrder>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity, new()
+        public virtual async Task<PageData<T>> GetPageAsync<T, TOrder>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TOrder>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IUseEntity, new()
         {
             IQueryable<T> data = GetContext<T>(isNoTracking, isDataPermissions, isRecycleBin);
             data = isOrder ?
@@ -229,7 +229,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual Task<List<T>> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity, new()
+        public virtual Task<List<T>> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IUseEntity, new()
         {
             return GetContext<T>(isNoTracking, isDataPermissions, isRecycleBin).Where(where).ToListAsync();
         }
@@ -239,7 +239,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual Task<T> SingleOrDefaultAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity, new()
+        public virtual Task<T> SingleOrDefaultAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IUseEntity, new()
         {
             return GetContext<T>(isNoTracking, isDataPermissions, isRecycleBin).Where(where).SingleOrDefaultAsync();
         }
@@ -249,7 +249,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual Task<T> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity, new()
+        public virtual Task<T> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IUseEntity, new()
         {
             return GetContext<T>(isNoTracking, isDataPermissions, isRecycleBin).Where(where).FirstOrDefaultAsync();
         }
@@ -266,10 +266,10 @@ namespace Caviar.Infrastructure.Persistence
             var entries = DbContext.ChangeTracker.Entries();
             foreach (var item in entries)
             {
-                IBaseEntity baseEntity;
+                IUseEntity baseEntity;
                 var entity = item.Entity;
                 if (entity == null) continue;
-                baseEntity = entity as IBaseEntity;
+                baseEntity = entity as IUseEntity;
                 switch (item.State)
                 {
                     case EntityState.Detached:
@@ -282,7 +282,7 @@ namespace Caviar.Infrastructure.Persistence
                         if (!IsFieldCheck) break;
                         baseEntity.UpdateTime = DateTime.Now;
                         var entityType = entity.GetType();
-                        var baseType = typeof(SysBaseEntity);
+                        var baseType = typeof(SysUseEntity);
                         var fields = FieldScannerServices.GetClassFields(baseType,LanguageService);
                         foreach (var fieldItem in fields)
                         {
@@ -344,7 +344,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <param name="isDataPermissions">是否启动数据权限</param>
         /// <param name="isRecycleBin">是否获取回收站数据</param>
         /// <returns></returns>
-        private IQueryable<T> GetContext<T>(bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IBaseEntity
+        private IQueryable<T> GetContext<T>(bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IUseEntity
         {
             var set = DbContext.Set<T>();
             IQueryable<T> query;

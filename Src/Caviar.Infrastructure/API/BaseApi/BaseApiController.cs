@@ -119,7 +119,7 @@ namespace Caviar.Infrastructure.API.BaseApi
         /// </summary>
         /// <param name="modelName"></param>
         /// <returns></returns>
-        protected virtual async Task<List<ViewFields>> GetFields<T>() where T:IBaseEntity
+        protected virtual async Task<List<ViewFields>> GetFields<T>() where T:IUseEntity
         {
             var permissionServices = CreateService<PermissionServices>();
             var fieldName = typeof(T).Name;
@@ -133,7 +133,7 @@ namespace Caviar.Infrastructure.API.BaseApi
     }
 
 
-    public class EasyBaseApiController<Vm, T>: BaseApiController where T : class, IBaseEntity, new() where Vm : IView<T>,new()
+    public class EasyBaseApiController<Vm, T>: BaseApiController where T : class, IUseEntity, new() where Vm : IView<T>,new()
     {
         IEasyBaseServices<T> _service;
         protected IEasyBaseServices<T> Service

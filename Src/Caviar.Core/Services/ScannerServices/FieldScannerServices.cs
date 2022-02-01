@@ -110,7 +110,7 @@ namespace Caviar.Core.Services
                             typeName = Arguments[0].Name;
                         }
                     }
-                    var baseType = typeof(SysBaseEntity);
+                    var baseType = typeof(SysUseEntity);
                     var dispLayName = languageService[$"{CurrencyConstant.EntitysName}.{item.Name}"];
                     var fieldLen = item.GetCustomAttributes<StringLengthAttribute>()?.Cast<StringLengthAttribute>().SingleOrDefault()?.MaximumLength;
                     var field = new ViewFields()

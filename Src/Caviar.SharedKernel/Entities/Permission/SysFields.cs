@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel.Entities
 {
-    public class SysFields: SysBaseEntity, IBaseEntity
+    public class SysFields: SysUseEntity
     {
         /// <summary>
         /// 类型名称，判断是否为同一属性的唯一条件

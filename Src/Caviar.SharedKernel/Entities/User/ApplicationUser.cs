@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Caviar.SharedKernel.Entities
 {
-    public class ApplicationUser: IdentityUser<int>, IBaseEntity
+    public class ApplicationUser: IdentityUser<int>, IUseEntity
     {
         /// <summary>
         /// 创建时间

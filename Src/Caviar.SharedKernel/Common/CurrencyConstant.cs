@@ -89,7 +89,7 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 基础实体名称
         /// </summary>
-        public static string BaseEntityName = typeof(SysBaseEntity).Name;
+        public static string BaseEntityName = typeof(SysUseEntity).Name;
        
 
         public const string ServerName = "server";
