@@ -56,8 +56,15 @@
     {
         if (firstRender)
         {
-            var language = await JSRuntime.InvokeAsync<string>("getCookie", CurrencyConstant.LanguageHeader);
-            UserConfig.LanguageService.SetLanguage(language);
+            try
+            {
+                var language = await JSRuntime.InvokeAsync<string>("getCookie", CurrencyConstant.LanguageHeader);
+                UserConfig.LanguageService.SetLanguage(language);
+            }
+            catch
+            {
+                //任务被取消
+            }
         }
         await base.OnAfterRenderAsync(firstRender);
     }
