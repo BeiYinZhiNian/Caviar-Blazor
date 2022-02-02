@@ -101,7 +101,7 @@ namespace Caviar.AntDesignUI.Shared
         /// 模型字段
         /// </summary>
         [Parameter]
-        public List<ViewFields> ViewFields { get; set; }
+        public List<ViewFields> ViewFields { get; set; } = new List<ViewFields>();
         /// <summary>
         /// 翻页回调
         /// </summary>

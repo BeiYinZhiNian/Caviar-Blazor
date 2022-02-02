@@ -95,8 +95,7 @@
 
     </SpaceItem>
 </Space>
-@if (ViewFields != null && ViewFields.Count > 0)
-{
+
     <Table DataSource="DataSource"
        @ref="Table"
        ScrollX="@ScrollX"
@@ -277,11 +276,6 @@
     }
 
 </Table>
-
-}
-else{
-    <Empty Description="false" />
-}
 
 
 <div style="float:right;margin-top:20px">
