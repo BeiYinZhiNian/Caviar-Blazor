@@ -6,7 +6,7 @@
             <div style="padding:30px">
                 <Card Bordered="true" Title=@("用户登录") Style="width:400px" Hoverable="true">
                     <Body>
-                        <Form Model="@ApplicationUser" OnFinish="SubmitLogin">
+                        <Form Model="@ApplicationUser">
                             <FormItem Label="">
                                 <AntDesign.Input Placeholder="请输入用户名/手机号/邮箱" Size="large" @bind-Value="@context.UserName">
                                     <Prefix><Icon Type="user" /></Prefix>
@@ -20,7 +20,7 @@
                             <Space Direction="DirectionVHType.Vertical" Style="width:100%">
                                 <SpaceItem>
                                     <Spin Spinning="Loading">
-                                        <Button Type="@ButtonType.Primary" HtmlType="submit" Class="submit" Size="large" Block>登&nbsp;录</Button>
+                                        <Button Type="@ButtonType.Primary" OnClick="SubmitLogin"  Class="submit" Size="large" Block>登&nbsp;录</Button>
                                     </Spin>
                                 </SpaceItem>
                                 <SpaceItem>

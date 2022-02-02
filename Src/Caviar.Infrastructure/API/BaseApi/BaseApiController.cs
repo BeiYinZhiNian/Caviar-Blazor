@@ -58,6 +58,7 @@ namespace Caviar.Infrastructure.API.BaseApi
 
         protected async Task<IList<string>> GetRoles()
         {
+            if(!User.Identity.IsAuthenticated) return new List<string>();
             var userManager = CreateService<UserManager<ApplicationUser>>();
             var user = await userManager.FindByNameAsync(User.Identity.Name);
             var roles = await userManager.GetRolesAsync(user);

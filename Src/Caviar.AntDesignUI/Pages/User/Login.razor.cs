@@ -28,7 +28,7 @@ namespace Caviar.AntDesignUI.Pages.User
         [Inject]
         MessageService MessageService { get; set; }
 
-        bool Loading { get; set; }
+        bool Loading { get; set; } = true;
 
         public async void SubmitLogin()
         {
@@ -44,7 +44,6 @@ namespace Caviar.AntDesignUI.Pages.User
                 NavigationManager.NavigateTo(JSRuntime, result.Url);
                 return;
             }
-            StateHasChanged();
         }
 
         public string Style { get; set; }
@@ -53,6 +52,7 @@ namespace Caviar.AntDesignUI.Pages.User
         {
             string backgroundImage = "_content/Caviar.AntDesignUI/Images/grov.jpg";
             Style = $"min-height:100vh;background-image: url({backgroundImage});";
+            Loading = false;
             base.OnInitialized();
         }
 
