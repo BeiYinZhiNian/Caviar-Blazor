@@ -99,8 +99,8 @@ namespace Caviar.Infrastructure.Persistence
             {
                 _dbContext.Add(new SysPermission()
                 {
-                    EntityName = CurrencyConstant.Admin,
-                    PermissionId = item.Id,
+                    Entity = CurrencyConstant.Admin,
+                    Permission = (item.FullName + item.FieldName),
                     PermissionType = PermissionType.RoleFields
                 });
             }

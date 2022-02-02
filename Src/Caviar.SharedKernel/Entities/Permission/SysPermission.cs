@@ -9,9 +9,11 @@ namespace Caviar.SharedKernel.Entities
 {
     public class SysPermission : SysBaseEntity
     {
-        public int PermissionId { get; set; }
+        [StringLength(200, ErrorMessage = "LengthErrorMsg")]
+        public string Permission { get; set; }
 
-        public string EntityName { get; set; }
+        [StringLength(200, ErrorMessage = "LengthErrorMsg")]
+        public string Entity { get; set; }
 
         public PermissionType PermissionType { get; set; }
     }

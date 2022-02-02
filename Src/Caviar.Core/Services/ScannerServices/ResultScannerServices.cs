@@ -1,6 +1,4 @@
 ﻿
-using Caviar.SharedKernel.Entities.View;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,24 +8,21 @@ using System.Threading.Tasks;
 using System.Net;
 using Caviar.SharedKernel.Entities;
 using System.Security.Claims;
+using Caviar.Core.Services;
+using Caviar.Core.Interface;
 
 namespace Caviar.Infrastructure
 {
-    public class ResultDataFilter
+    public class ResultScannerServices:DbServices
     {
         /// <summary>
         /// 是否开启数据过滤
         /// </summary>
         public static bool IsDataFilter { get; set; } = true;
 
-        /// <summary>
-        /// 用户拥有的字段权限
-        /// </summary>
-        public IEnumerable<Claim> Claims { get; set; }
-
         public static List<string> IgnoreField { get; set; } = new List<string>() { "id","uid","key"  };
 
-        public ResultMsg ResultHandle(IActionResult result)
+        public ResultMsg ResultHandle(object result)
         {
             var StatusCode = result.GetObjValue("StatusCode");
             var value = result.GetObjValue("Value");
@@ -101,6 +96,14 @@ namespace Caviar.Infrastructure
 
         }
 
+        protected List<SysPermission> Permissions { get; set; }
+
+        public void SetRole(IList<string> roles)
+        {
+            var permissionsSet = AppDbContext.DbContext.Set<SysPermission>();
+            Permissions = permissionsSet.Where(u => roles.Contains(u.Entity) && u.PermissionType == PermissionType.RoleFields).ToList();
+        }
+
         /// <summary>
         /// 过滤返回的参数，检查是否含有未授权的字段
         /// </summary>
@@ -112,12 +115,12 @@ namespace Caviar.Infrastructure
             if (baseType == null) return;
             foreach (PropertyInfo sp in type.GetProperties())//获得类型的属性字段
             {
-
                 if (IgnoreField.FirstOrDefault(u => u.ToLower() == sp.Name.ToLower()) != null) continue; //忽略字段
-                if (false)//如果为null则标名没有字段权限
+                var permissions = Permissions?.SingleOrDefault(u => u.Permission == (type.FullName + sp.Name));
+                if (permissions == null)//如果为null则标名没有字段权限
                 {
                     try
-                    {
+                    { 
                         sp.SetValue(data, default, null);//设置为默认字段
                     }
                     catch

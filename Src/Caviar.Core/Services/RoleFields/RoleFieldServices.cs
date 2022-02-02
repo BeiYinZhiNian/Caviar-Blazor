@@ -24,10 +24,10 @@ namespace Caviar.Core.Services
                 var type = PermissionType.RoleFields.ToString();
                 var value = CommonHelper.GetClaimValue(item.Entity);
                 var set = AppDbContext.DbContext.Set<SysPermission>();
-                var permission = set.SingleOrDefault(u => u.PermissionId == item.Entity.Id && u.EntityName == roleName && u.PermissionType == PermissionType.RoleFields);
+                var permission = set.SingleOrDefault(u => u.Permission == (item.Entity.FullName + item.Entity.FieldName) && u.Entity == roleName && u.PermissionType == PermissionType.RoleFields);
                 if (item.IsPermission && permission == null)
                 {
-                    permission = new SysPermission() { EntityName = roleName, PermissionId = item.Entity.Id, PermissionType = PermissionType.RoleFields };
+                    permission = new SysPermission() { Entity = roleName, Permission = (item.Entity.FullName + item.Entity.FieldName), PermissionType = PermissionType.RoleFields };
                     set.Add(permission);
                 }
                 else if(!item.IsPermission && permission != null)
@@ -47,7 +47,7 @@ namespace Caviar.Core.Services
             {
                 item.Entity = sysFields.SingleOrDefault(u => u.FieldName == item.Entity.FieldName);
                 var set = AppDbContext.DbContext.Set<SysPermission>();
-                var permission = set.SingleOrDefault(u => u.PermissionId == item.Entity.Id && roleNames.Contains(u.EntityName) && u.PermissionType == PermissionType.RoleFields);
+                var permission = set.SingleOrDefault(u => u.Permission == (item.Entity.FullName + item.Entity.FieldName) && roleNames.Contains(u.Entity) && u.PermissionType == PermissionType.RoleFields);
                 item.IsPermission = permission != null;
             }
             return fields;

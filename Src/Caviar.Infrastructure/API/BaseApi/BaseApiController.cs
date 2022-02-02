@@ -22,8 +22,6 @@ namespace Caviar.Infrastructure.API.BaseApi
     {
         protected Interactor Interactor;
 
-        private ResultDataFilter DataFilter = new ResultDataFilter();
-
         protected ILanguageService LanguageService { get; set; }
 
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -58,13 +56,22 @@ namespace Caviar.Infrastructure.API.BaseApi
             }
         }
 
+        protected async Task<IList<string>> GetRoles()
+        {
+            var userManager = CreateService<UserManager<ApplicationUser>>();
+            var user = await userManager.FindByNameAsync(User.Identity.Name);
+            var roles = await userManager.GetRolesAsync(user);
+            return roles;
+        }
 
         public override void OnActionExecuted(ActionExecutedContext context)
         {
             base.OnActionExecuted(context);
             var result = context.Result;
-            DataFilter.Claims = User.Claims;
-            var resultMsg = DataFilter.ResultHandle(result);
+            var resultScanner = CreateService<ResultScannerServices>();
+            var roles = GetRoles().Result;
+            resultScanner.SetRole(roles);
+            var resultMsg = resultScanner.ResultHandle(result);
             if (resultMsg != null)
             {
                 resultMsg.Title = LanguageService[$"{CurrencyConstant.ResuleMsg}.{resultMsg.Title}"];
@@ -125,9 +132,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             var fieldName = typeof(T).Name;
             var fullName = typeof(T).FullName;
             var fields = FieldScannerServices.GetClassFields(fieldName, fullName, LanguageService);
-            var userManager = CreateService<UserManager<ApplicationUser>>();
-            var user = await userManager.FindByNameAsync(User.Identity.Name);
-            var roles = await userManager.GetRolesAsync(user);
+            var roles = await GetRoles();
             fields = await permissionServices.GetRoleFields(fields, fullName, roles);
             fields = fields.OrderBy(u => u.Entity.Number).ToList();
             return fields;
