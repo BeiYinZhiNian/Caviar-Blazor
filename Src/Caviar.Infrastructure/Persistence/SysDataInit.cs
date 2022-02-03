@@ -34,17 +34,10 @@ namespace Caviar.Infrastructure.Persistence
         /// 系统API初始化
         /// </summary>
         /// <returns></returns>
-        public async Task HttpMethodsInit()
+        public async Task HttpMethodsInit(List<SysMenu> menus)
         {
-            //需要忽略的控制器
-            List<Type> baseController = new List<Type>()
-            {
-                typeof(EasyBaseApiController<,>)
-            };
-            var controllerList = ApiScannerServices.GetAllController(typeof(BaseApiController), baseController);
-            var methodsList = ApiScannerServices.GetAllMethods(controllerList, typeof(HttpMethodAttribute));
             var set = _dbContext.Set<SysMenu>();
-            foreach (var item in methodsList)
+            foreach (var item in menus)
             {
                 var menu = await set.SingleOrDefaultAsync(u => u.Url == item.Url);
                 if (menu == null)
@@ -53,6 +46,18 @@ namespace Caviar.Infrastructure.Persistence
                 }
             }
             await _dbContext.SaveChangesAsync();
+        }
+
+        public List<SysMenu> GetSysMenu()
+        {
+            //需要忽略的控制器
+            List<Type> baseController = new List<Type>()
+            {
+                typeof(EasyBaseApiController<,>)
+            };
+            var controllerList = ApiScannerServices.GetAllController(typeof(BaseApiController), baseController);
+            var methodsList = ApiScannerServices.GetAllMethods(controllerList, typeof(HttpMethodAttribute));
+            return methodsList;
         }
 
         public async Task StartInit()
@@ -118,11 +123,23 @@ namespace Caviar.Infrastructure.Persistence
 
         protected virtual async Task CreateData(bool isDatabaseInit)
         {
-            await HttpMethodsInit();
+            var menus = GetSysMenu();
+            await HttpMethodsInit(menus);
             if (!isDatabaseInit) return;
             await CreateInitRole();
             await CreateInitUser();
             await CreateMenu();
+            await CreatePermissionMenu(menus);
+        }
+
+        protected virtual async Task CreatePermissionMenu(List<SysMenu> menus)
+        {
+            var set = _dbContext.Set<SysPermission>();
+            foreach (var item in menus)
+            {
+                set.Add(new SysPermission() { Permission = item.Url,Entity = CurrencyConstant.Admin ,PermissionType = PermissionType.RoleMenus});
+            }
+            await _dbContext.SaveChangesAsync();
         }
 
         protected virtual async Task CreateInitUser()
