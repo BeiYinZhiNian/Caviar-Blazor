@@ -52,7 +52,11 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 获取多个实体
         /// </summary>
-        public const string GetEntityListKey = "GetEntitys";
+        public const string GetEntitysKey = "GetEntitys";
+        /// <summary>
+        /// 获取授权菜单列表
+        /// </summary>
+        public const string GetMenusKey = "GetMenus";
         /// <summary>
         /// 获取所有字段
         /// </summary>
@@ -77,6 +81,10 @@ namespace Caviar.SharedKernel.Entities
         /// 字段权限key
         /// </summary>
         public const string FieldPermissionsKey = "FieldPermissions";
+        /// <summary>
+        /// 菜单权限
+        /// </summary>
+        public const string MenuPermissionsKey = "MenuPermissions";
         
         /// <summary>
         /// 权限key

@@ -7,6 +7,7 @@ using System;
 using System.Text.Json;
 using System.Net;
 using Caviar.SharedKernel.Entities.View;
+using Caviar.SharedKernel.Entities;
 
 namespace Caviar.AntDesignUI.Pages.CodeGeneration
 {
@@ -26,7 +27,7 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
 
         protected override async Task<List<ViewFields>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
-            var result = await HttpService.GetJson<List<ViewFields>>(Url["GetEntitys"]);
+            var result = await HttpService.GetJson<List<ViewFields>>(Url[CurrencyConstant.GetEntitysKey]);
             if (result.Status != HttpStatusCode.OK) return null;
             Total = result.Data.Count;
             PageSize = result.Data.Count;

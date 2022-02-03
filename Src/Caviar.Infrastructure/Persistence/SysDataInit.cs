@@ -279,18 +279,33 @@ namespace Caviar.Infrastructure.Persistence
             switch (sysMenu.ControllerName)
             {
                 case CurrencyConstant.ApplicationRoleKey:
-                    SysMenu permissionFields = new SysMenu()
+                    List<SysMenu> menus = new List<SysMenu>()
                     {
-                        ButtonPosition = ButtonPosition.Row,
-                        TargetType = TargetType.CurrentPage,
-                        Url = UrlConfig.FieldPermissionsUrl,
-                        Key = CurrencyConstant.FieldPermissionsKey,
-                        ControllerName = CurrencyConstant.ApplicationRoleKey,
-                        ParentId = sysMenu.ParentId,
-                        Number = "996",
-                        MenuType = MenuType.Button,
+                        new SysMenu()
+                        {
+                            ButtonPosition = ButtonPosition.Row,
+                            TargetType = TargetType.CurrentPage,
+                            Url = UrlConfig.FieldPermissionsUrl,
+                            Key = CurrencyConstant.FieldPermissionsKey,
+                            ControllerName = CurrencyConstant.ApplicationRoleKey,
+                            ParentId = sysMenu.ParentId,
+                            Number = "996",
+                            MenuType = MenuType.Button,
+                        },
+                        new SysMenu()
+                        {
+                            ButtonPosition = ButtonPosition.Row,
+                            TargetType = TargetType.EjectPage,
+                            Url = UrlConfig.MenuPermissionsUrl,
+                            Key = CurrencyConstant.MenuPermissionsKey,
+                            ControllerName = CurrencyConstant.ApplicationRoleKey,
+                            ParentId = sysMenu.ParentId,
+                            Number = "996",
+                            MenuType = MenuType.Button,
+                        }
                     };
-                    await _dbContext.AddAsync(permissionFields);
+                    await _dbContext.AddRangeAsync(menus);
+
                     break;
                 default:
                     break;

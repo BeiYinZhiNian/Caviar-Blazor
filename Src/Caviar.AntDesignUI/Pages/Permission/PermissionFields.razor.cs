@@ -38,7 +38,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
 
         public async Task GetModels()
         {
-            var result = await HttpService.GetJson<List<ViewFields>>(Url[CurrencyConstant.GetEntityListKey]);
+            var result = await HttpService.GetJson<List<ViewFields>>(Url[CurrencyConstant.GetEntitysKey]);
             if (result.Status != System.Net.HttpStatusCode.OK) return;
             Models = result.Data;
         }

@@ -44,6 +44,7 @@ namespace Caviar.Infrastructure.API.Permission
             fields = fields.OrderBy(u => u.Entity.Number).ToList();
             return Ok(fields);
         }
+
         [HttpGet]
         public IActionResult SetCookieLanguage(string acceptLanguage, string returnUrl)
         {

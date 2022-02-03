@@ -13,6 +13,10 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string FieldPermissionsUrl = "Permission/RoleFields";
         /// <summary>
+        /// 菜单权限url
+        /// </summary>
+        public const string MenuPermissionsUrl = "/Permission/RoleMenus";
+        /// <summary>
         /// 视图类代码文件路径
         /// </summary>
         public const string CodeGenerateFilePath = "Template/File";
@@ -52,7 +56,7 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 获取菜单列表
         /// </summary>
-        public const string GetApiList = "SysMenu/GetMenuList";
+        public const string GetApiList = "SysMenu/GetMenus";
         
     }
 }
