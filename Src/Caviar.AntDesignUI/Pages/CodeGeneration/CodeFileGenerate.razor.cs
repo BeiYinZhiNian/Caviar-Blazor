@@ -20,7 +20,7 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
             ControllerList.Add("Permission");
             await base.OnInitializedAsync();
             #else
-            Message.Error("代码生成只能在debug模式下进行！");
+            await MessageService.Error("代码生成只能在debug模式下进行！");
             #endif
         }
 
