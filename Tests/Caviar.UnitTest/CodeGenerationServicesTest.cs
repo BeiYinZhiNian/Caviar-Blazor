@@ -1,4 +1,3 @@
-using Caviar.Core.Services.CodeGenerationServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Xunit.Sdk;
 using Caviar.SharedKernel.Entities.View;
