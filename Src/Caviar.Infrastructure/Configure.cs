@@ -42,41 +42,45 @@ namespace Caviar.Infrastructure
                 var httpContext = httpContextAccessor?.HttpContext;
                 var cookies = httpContext.Request.Cookies;
                 var cookieContainer = new System.Net.CookieContainer();
+                var uri = GetServerUri();
+                var domain = uri == null ? httpContext.Request.Host.Host : uri.Host;
                 foreach (var c in cookies)
                 {
-                    cookieContainer.Add(new System.Net.Cookie(c.Key, c.Value) { Domain = httpContext.Request.Host.Host });
+                    cookieContainer.Add(new System.Net.Cookie(c.Key, c.Value) { Domain = "localhost" });
                 }
-                var user = httpContext.User.Identity.IsAuthenticated;
                 var handler = new HttpClientHandler { CookieContainer = cookieContainer };
-                if (env.IsDevelopment())
-                {
-                    handler.ServerCertificateCustomValidationCallback = (c, v, b, n) => { return true; };
-                }
                 return handler;
             });
             services.AddTransient(sp =>
             {
                 var handler = sp.GetService<HttpClientHandler>();
-
-                if (ServerAddressesFeature?.Addresses == null
-                 || ServerAddressesFeature.Addresses.Count == 0)
+                HttpClient client = new HttpClient(handler);
+                var uri = GetServerUri();
+                if (uri != null)
                 {
-                    return new HttpClient(handler);
+                    client.BaseAddress = new Uri($"{uri.Scheme}://localhost:{uri.Port}/api/");
                 }
-
-                var insideIIS = Environment.GetEnvironmentVariable("APP_POOL_ID") is string;
-
-                var address = ServerAddressesFeature.Addresses
-                    .FirstOrDefault(a => a.StartsWith($"http{(insideIIS ? "s" : "")}:"))
-                    ?? ServerAddressesFeature.Addresses.First();
-
-                var uri = new Uri(address);
-
-                return new HttpClient(handler) { BaseAddress = new Uri($"{uri.Scheme}://localhost:{uri.Port}/api/") };
+                return client;
             });
             return services;
         }
 
+        static Uri GetServerUri()
+        {
+            if (ServerAddressesFeature?.Addresses == null
+                 || ServerAddressesFeature.Addresses.Count == 0)
+            {
+                return null;
+            }
+            var insideIIS = Environment.GetEnvironmentVariable("APP_POOL_ID") is string;
+
+            var address = ServerAddressesFeature.Addresses
+                .FirstOrDefault(a => a.StartsWith($"http{(insideIIS ? "s" : "")}:"))
+                ?? ServerAddressesFeature.Addresses.First();
+
+            var uri = new Uri(address);
+            return uri;
+        }
 
         public static IServiceCollection AddCaviar(this IServiceCollection services)
         {
