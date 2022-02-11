@@ -122,7 +122,7 @@ namespace Caviar.AntDesignUI.Shared
 
         async Task<List<SysMenuView>> GetMenus()
         {
-            var result = await Http.GetJson<List<SysMenuView>> ("SysMenu/GetMenuBar");
+            var result = await Http.GetJson<List<SysMenuView>> (UrlConfig.GetMenuBar);
             if (result.Status != HttpStatusCode.OK) return new List<SysMenuView>();
             return result.Data;
         }

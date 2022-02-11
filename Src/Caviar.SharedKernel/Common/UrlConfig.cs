@@ -8,6 +8,7 @@ namespace Caviar.SharedKernel.Entities
 {
     public static class UrlConfig
     {
+        public const string GetMenuBar = "SysMenu/GetMenuBar";
         /// <summary>
         /// 字段权限url
         /// </summary>

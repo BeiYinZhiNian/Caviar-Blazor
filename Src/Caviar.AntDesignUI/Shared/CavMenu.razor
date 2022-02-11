@@ -19,7 +19,6 @@
     {
         RenderFragment ViewSubMenu = null;
         if (ViewMenus == null || ViewMenus.Count == 0) return ViewSubMenu;
-        ViewMenus = ViewMenus.OrderBy(u => u.Entity.Number).ToList();
         foreach (var viewMenu in ViewMenus)
         {
             var item = viewMenu.Entity;
@@ -31,7 +30,7 @@
             }
             <span>@viewMenu.DisplayName</span>
             </span>;
-            switch (item.MenuType)
+            switch (viewMenu.Entity.MenuType)
             {
                 case MenuType.Catalog:
                      ViewSubMenu +=

@@ -116,9 +116,18 @@ namespace Caviar.Infrastructure.Persistence
         /// </summary>
         /// <param name="dbContext"></param>
         /// <returns></returns>
-        protected virtual Task<bool> DatabaseInit(IDbContext dbContext)
+        protected virtual async Task<bool> DatabaseInit(IDbContext dbContext)
         {
-            return dbContext.Database.EnsureCreatedAsync();
+            try
+            {
+                return await dbContext.Database.EnsureCreatedAsync();
+            }
+            catch (InvalidCastException ex)
+            {
+                //此错误为mysql数据库已经存在时报错
+                Console.WriteLine(ex.Message);
+                return false;
+            }
         }
 
         protected virtual async Task CreateData(bool isDatabaseInit)

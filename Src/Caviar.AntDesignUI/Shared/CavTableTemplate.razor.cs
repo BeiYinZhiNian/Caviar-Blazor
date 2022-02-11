@@ -196,7 +196,7 @@ namespace Caviar.AntDesignUI.Shared
         protected override void OnParametersSet()
         {
             base.OnParametersSet();
-            if (string.IsNullOrEmpty(ScrollX) && ViewFields.Count != 0)
+            if (string.IsNullOrEmpty(ScrollX) && ViewFields?.Count != 0)
             {
                 var count = ViewFields?.Count(u => u.Entity.IsPanel);
                 if(count > 5)

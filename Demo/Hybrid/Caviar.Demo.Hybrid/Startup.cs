@@ -57,8 +57,12 @@ namespace Caviar.Demo.Hybrid
             //服务端配置
             services.AddCaviar();
             services.AddCaviarDbContext(options =>
-                options.UseSqlServer(
-            Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Caviar.Demo.Hybrid")));
+            //选择使用mysql或者sqlserver，其他的数据库只要efcore支持，本框架都支持
+            options.UseSqlServer(
+            Configuration.GetConnectionString("DefaultConnection")
+            //options.UseMySQL(
+            //Configuration.GetConnectionString("DefaultConnection")
+            , b => b.MigrationsAssembly("Caviar.Demo.Hybrid")));
             //跨域
             services.AddCors(options =>
             {

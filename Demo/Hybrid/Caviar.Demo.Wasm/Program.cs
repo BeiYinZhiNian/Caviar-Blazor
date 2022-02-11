@@ -10,7 +10,6 @@ namespace Caviar.Demo.Wasm
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             var baseAddress = new Uri(builder.HostEnvironment.BaseAddress + "api/");
-            baseAddress = new Uri("http://localhost:5215/api/");
             builder.Services.AddScoped(sp =>
             {
                 return new HttpClient() { BaseAddress = baseAddress };

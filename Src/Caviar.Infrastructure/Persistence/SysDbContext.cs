@@ -37,6 +37,13 @@ namespace Caviar.Infrastructure.Persistence
                 }
             }
             base.OnModelCreating(modelBuilder);
+            //和设置的表主键对应，在mysql主键不能过长，因此修改主键长度
+            modelBuilder.Entity<IdentityUserLogin<TKey>>(e => e.Property(p => p.LoginProvider).HasMaxLength(128));
+            modelBuilder.Entity<IdentityUserLogin<TKey>>(e => e.Property(p => p.ProviderKey).HasMaxLength(128));
+
+            modelBuilder.Entity<IdentityUserToken<TKey>>(e => e.Property(p => p.LoginProvider).HasMaxLength(128));
+            modelBuilder.Entity<IdentityUserToken<TKey>>(e => e.Property(p => p.Name).HasMaxLength(128));
+
             modelBuilder.Entity<ApplicationUser>().ToTable("SysUser");//不能创建SysUsers
             modelBuilder.Entity<ApplicationRole>().ToTable("SysRoles");
             modelBuilder.Entity<IdentityUserClaim<TKey>>().ToTable("SysUserClaims");
