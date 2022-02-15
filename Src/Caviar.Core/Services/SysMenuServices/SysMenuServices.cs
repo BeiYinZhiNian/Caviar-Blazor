@@ -11,6 +11,7 @@ namespace Caviar.Core.Services
 {
     public partial class SysMenuServices: EasyBaseServices<SysMenu>
     {
+        public List<SysPermission> MenuPermissions { get; set; }
         public SysMenuServices(IAppDbContext appDbContext):base(appDbContext)
         {
 

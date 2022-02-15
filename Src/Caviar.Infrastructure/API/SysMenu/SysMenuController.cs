@@ -2,6 +2,7 @@
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,6 +15,13 @@ namespace Caviar.Infrastructure.API.SysMenuController
         public SysMenuController(SysMenuServices sysMenuServices)
         {
             _menuServices = sysMenuServices;
+        }
+
+        public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        {
+            await base.OnActionExecutionAsync(context, next);
+            var menuPermission = await UserServices.GetPermissions(u => u.PermissionType == PermissionType.RoleMenus);
+            _menuServices.MenuPermissions = menuPermission;
         }
 
         [HttpGet]
