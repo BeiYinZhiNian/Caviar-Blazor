@@ -9,12 +9,17 @@ namespace Caviar.Infrastructure.API.SysMenuController
 {
     public partial class SysMenuController
     {
-        SysMenuServices MenuServices = CreateService<SysMenuServices>();
+        SysMenuServices _menuServices;
+
+        public SysMenuController(SysMenuServices sysMenuServices)
+        {
+            _menuServices = sysMenuServices;
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetMenuBar()
         {
-            var menus = await MenuServices.GetMenuBar();
+            var menus = await _menuServices.GetMenuBar();
             var menusVm = ToView(menus).ListToTree();
             return Ok(menusVm);
         }
@@ -48,9 +53,9 @@ namespace Caviar.Infrastructure.API.SysMenuController
                 List<SysMenuView> menuViews = new List<SysMenuView>();
                 vm.TreeToList(menuViews);
                 var menus = ToEntity(menuViews);
-                await MenuServices.DeleteEntityAll(menus);
+                await _menuServices.DeleteEntityAll(menus);
             }
-            await MenuServices.DeleteEntity(vm.Entity);
+            await _menuServices.DeleteEntity(vm.Entity);
             return Ok();
         }
 
@@ -58,7 +63,7 @@ namespace Caviar.Infrastructure.API.SysMenuController
         public async Task<IActionResult> GetMenus(string url, string splicing)
         {
             var controllerList = splicing?.Split("|");
-            var apiList = await MenuServices.GetApiList(url, controllerList);
+            var apiList = await _menuServices.GetApiList(url, controllerList);
             var Vm = ToView(apiList);
             return Ok(Vm);
         }

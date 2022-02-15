@@ -13,7 +13,7 @@ using Caviar.Core.Interface;
 
 namespace Caviar.Infrastructure
 {
-    public class ResultScannerServices:DbServices
+    public class ResultScannerServices:BaseServices
     {
         /// <summary>
         /// 是否开启数据过滤
@@ -96,13 +96,8 @@ namespace Caviar.Infrastructure
 
         }
 
-        protected List<SysPermission> Permissions { get; set; }
+        public List<SysPermission> PermissionFieldss { get; set; }
 
-        public void SetRole(IList<string> roles)
-        {
-            var permissionsSet = AppDbContext.DbContext.Set<SysPermission>();
-            Permissions = permissionsSet.Where(u => roles.Contains(u.Entity) && u.PermissionType == PermissionType.RoleFields).ToList();
-        }
 
         /// <summary>
         /// 过滤返回的参数，检查是否含有未授权的字段
@@ -116,7 +111,7 @@ namespace Caviar.Infrastructure
             foreach (PropertyInfo sp in type.GetProperties())//获得类型的属性字段
             {
                 if (IgnoreField.FirstOrDefault(u => u.ToLower() == sp.Name.ToLower()) != null) continue; //忽略字段
-                var permissions = Permissions?.SingleOrDefault(u => u.Permission == (type.FullName + sp.Name));
+                var permissions = PermissionFieldss?.SingleOrDefault(u => u.Permission == (type.FullName + sp.Name));
                 if (permissions == null)//如果为null则标名没有字段权限
                 {
                     try

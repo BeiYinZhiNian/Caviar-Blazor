@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using Caviar.SharedKernel.Entities;
 using System.Net;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace Caviar.Infrastructure.API.BaseApi
 {
@@ -24,12 +25,23 @@ namespace Caviar.Infrastructure.API.BaseApi
 
         protected ILanguageService LanguageService { get; set; }
 
-        public override void OnActionExecuting(ActionExecutingContext context)
+        protected UserServices<ApplicationUser> UserServices { get; set; }
+
+        void SetLanguage(string acceptLanguage)
         {
-            Interactor = HttpContext.RequestServices.GetRequiredService<Interactor>();
+            if (string.IsNullOrEmpty(acceptLanguage)) acceptLanguage = CurrencyConstant.DefaultLanguage;
+            var culture = CultureInfo.GetCultureInfo(acceptLanguage);
+            LanguageService = CreateService<ILanguageService>();
+            LanguageService.SetLanguage(culture);
+        }
+
+        public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        {
+            Interactor = CreateService<Interactor>();
+            UserServices = CreateService<UserServices<ApplicationUser>>();
 
             Interactor.Stopwatch.Start();
-            base.OnActionExecuting(context);
+
             //获取ip地址
             Interactor.Current_Ipaddress = context.HttpContext.GetUserIp();
             //获取完整Url
@@ -40,46 +52,30 @@ namespace Caviar.Infrastructure.API.BaseApi
             Interactor.HttpContext = HttpContext;
             //请求参数
             Interactor.ActionArguments = context.ActionArguments;
-
+            //用户信息
+            Interactor.User = context.HttpContext.User;
+            //设置语言信息
             var acceptLanguage = context.HttpContext.Request.Cookies.SingleOrDefault(c => c.Key == CurrencyConstant.LanguageHeader).Value;
             SetLanguage(acceptLanguage);
-        }
 
-        void SetLanguage(string acceptLanguage)
-        {
-            using (var serviceScope = Configure.ServiceProvider.CreateScope())
-            {
-                if (string.IsNullOrEmpty(acceptLanguage)) acceptLanguage = "zh-CN";
-                var culture = CultureInfo.GetCultureInfo(acceptLanguage);
-                LanguageService = serviceScope.ServiceProvider.GetRequiredService<ILanguageService>();
-                LanguageService.SetLanguage(culture);
-            }
-        }
-
-        protected async Task<IList<string>> GetRoles()
-        {
-            if(!User.Identity.IsAuthenticated) return new List<string>();
-            var userManager = CreateService<UserManager<ApplicationUser>>();
-            var user = await userManager.FindByNameAsync(User.Identity.Name);
-            var roles = await userManager.GetRolesAsync(user);
-            return roles;
+            return base.OnActionExecutionAsync(context, next);
         }
 
         public override void OnActionExecuted(ActionExecutedContext context)
         {
-            base.OnActionExecuted(context);
             var result = context.Result;
             var resultScanner = CreateService<ResultScannerServices>();
-            var roles = GetRoles().Result;
-            resultScanner.SetRole(roles);
+            //赋值字段权限
+            resultScanner.PermissionFieldss = UserServices.GetPermissions(u => u.PermissionType == PermissionType.RoleFields).Result;
             var resultMsg = resultScanner.ResultHandle(result);
             if (resultMsg != null)
             {
                 resultMsg.Title = LanguageService[$"{CurrencyConstant.ResuleMsg}.{resultMsg.Title}"];
                 ModificationTips(resultMsg);
-                context.Result = Ok(resultMsg);
+                context.Result = base.Ok(resultMsg);
             }
             Interactor.Stopwatch.Stop();
+            base.OnActionExecuted(context);
         }
 
         protected virtual IActionResult Ok(HttpStatusCode status = HttpStatusCode.OK,string title = "Succeeded",string url = null,string detail = null,object data = null)
@@ -100,25 +96,17 @@ namespace Caviar.Infrastructure.API.BaseApi
             resultMsg.Title = LanguageService[$"{CurrencyConstant.ResuleMsg}.Title.{resultMsg.Title}"];
         }
 
-        protected static T CreateService<T>()
+        protected virtual T CreateService<T>()
         {
-            var serviceScope = Configure.ServiceProvider.CreateScope();
-            T service = serviceScope.ServiceProvider.GetRequiredService<T>();
+            T service = HttpContext.RequestServices.GetRequiredService<T>();
             var propertyInfo = service.ContainProperty("AppDbContext", typeof(IAppDbContext));
             if (propertyInfo != null)
             {
-                var dbContext = GetAppDbContext();
-                propertyInfo.SetValue(service, dbContext,null);
+                var dbContext = HttpContext.RequestServices.GetRequiredService<IAppDbContext>();
+                propertyInfo.SetValue(service, dbContext, null);
             }
-            
-            return service;
-        }
 
-        protected static IAppDbContext GetAppDbContext()
-        {
-            var serviceScope = Configure.ServiceProvider.CreateScope();
-            var dbContext = serviceScope.ServiceProvider.GetRequiredService<IAppDbContext>();
-            return dbContext;
+            return service;
         }
 
 
@@ -133,7 +121,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             var fieldName = typeof(T).Name;
             var fullName = typeof(T).FullName;
             var fields = FieldScannerServices.GetClassFields(fieldName, fullName, LanguageService);
-            var roles = await GetRoles();
+            var roles = await UserServices.GetRoles();
             fields = await permissionServices.GetRoleFields(fields, fullName, roles);
             fields = fields.OrderBy(u => u.Entity.Number).ToList();
             return fields;
@@ -151,8 +139,8 @@ namespace Caviar.Infrastructure.API.BaseApi
             {
                 if (_service == null)
                 {
-                    _service = HttpContext.RequestServices.GetRequiredService<IEasyBaseServices<T>>();
-                    _service.AppDbContext = HttpContext.RequestServices.GetRequiredService<IAppDbContext>();
+                    _service = CreateService<IEasyBaseServices<T>>();
+                    _service.AppDbContext = CreateService<IAppDbContext>();
                 }
                 return _service;
             }

@@ -26,7 +26,7 @@ namespace Caviar.SharedKernel.Entities
         public InAssemblyLanguageService()
         {
             _resourcesAssembly = Assembly.GetExecutingAssembly();
-            var culture = CultureInfo.GetCultureInfo("zh-CN");
+            var culture = CultureInfo.GetCultureInfo(CurrencyConstant.DefaultLanguage);
             SetLanguage(culture);
         }
 

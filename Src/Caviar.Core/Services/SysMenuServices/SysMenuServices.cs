@@ -1,4 +1,5 @@
-﻿using Caviar.SharedKernel.Entities;
+﻿using Caviar.Core.Interface;
+using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,10 @@ namespace Caviar.Core.Services
 {
     public partial class SysMenuServices: EasyBaseServices<SysMenu>
     {
+        public SysMenuServices(IAppDbContext appDbContext):base(appDbContext)
+        {
+
+        }
         /// <summary>
         /// 获取当前菜单
         /// </summary>

@@ -122,6 +122,7 @@ namespace Caviar.Core.Services
         {
 
         }
+
         public EasyBaseServices(IAppDbContext dbContext):base(dbContext)
         {
             AppDbContext = dbContext;

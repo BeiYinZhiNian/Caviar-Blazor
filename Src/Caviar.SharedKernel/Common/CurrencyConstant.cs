@@ -101,6 +101,10 @@ namespace Caviar.SharedKernel.Entities
        
 
         public const string ServerName = "server";
+        /// <summary>
+        /// 默认语言
+        /// </summary>
+        public const string DefaultLanguage = "zh-CN";
 
         public static Dictionary<string, string> LanguageDic = new Dictionary<string, string>() 
         {

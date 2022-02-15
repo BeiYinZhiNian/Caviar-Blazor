@@ -4,6 +4,7 @@ using Caviar.Infrastructure.API.BaseApi;
 using Caviar.SharedKernel.Entities.View;
 using Caviar.SharedKernel.Entities;
 using Caviar.Core.Services;
+using Caviar.Core.Interface;
 
 namespace Caviar.Infrastructure.API.CodeGeneration
 {
@@ -26,7 +27,7 @@ namespace Caviar.Infrastructure.API.CodeGeneration
                 //生成api
                 if (codeGenerateOptions.IsGenerateController)
                 {
-                    var dbContext = GetAppDbContext();
+                    var dbContext = CreateService<IAppDbContext>();
                     apiCount = await ApiScannerServices.CreateInitApi(dbContext.DbContext, codeGenerateOptions);
                 }
                 //将生成的代码输出

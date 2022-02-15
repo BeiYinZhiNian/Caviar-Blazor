@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Security.Claims;
 
-namespace Caviar.Infrastructure
+namespace Caviar.SharedKernel.Entities
 {
     public partial class Interactor
     {
@@ -45,7 +46,10 @@ namespace Caviar.Infrastructure
         /// </summary>
         public IDictionary<string, object> ActionArguments { get; set; }
 
-
+        /// <summary>
+        /// 当前用户信息
+        /// </summary>
+        public ClaimsPrincipal User { get; set; }
 
         public virtual bool IsAdmin { get; }
 
