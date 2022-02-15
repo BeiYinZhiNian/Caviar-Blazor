@@ -1,4 +1,5 @@
-﻿using Caviar.SharedKernel.Entities;
+﻿using Caviar.Core.Interface;
+using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace Caviar.Core.Services
     {
         Interactor _interactor;
         UserManager<T> _userManager;
-        public UserServices(Interactor interactor,UserManager<T> userManager)
+        public UserServices(Interactor interactor,UserManager<T> userManager,IAppDbContext appDbContext):base(appDbContext)
         {
             _interactor = interactor;
             _userManager = userManager;

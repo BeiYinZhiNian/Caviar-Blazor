@@ -17,7 +17,7 @@ namespace Caviar.Core.Services
     public partial class DbServices : BaseServices
     {
         protected IAppDbContext _appDbContext;
-        public IAppDbContext AppDbContext
+        protected IAppDbContext AppDbContext
         {
             get
             {
@@ -29,11 +29,6 @@ namespace Caviar.Core.Services
                 _appDbContext = value;
             }
         }
-        public DbServices()
-        {
-
-        }
-
         public DbServices(IAppDbContext dbContext)
         {
             AppDbContext = dbContext;
@@ -117,11 +112,6 @@ namespace Caviar.Core.Services
     
     public partial class EasyBaseServices<T> : DbServices,IEasyBaseServices<T>   where T: class,IUseEntity, new()
     {
-
-        public EasyBaseServices()
-        {
-
-        }
 
         public EasyBaseServices(IAppDbContext dbContext):base(dbContext)
         {

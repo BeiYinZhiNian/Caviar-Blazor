@@ -7,10 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Claims;
+using Caviar.Core.Interface;
+
 namespace Caviar.Core.Services
 {
     public class RoleFieldServices : DbServices
     {
+        public RoleFieldServices(IAppDbContext dbContext) : base(dbContext)
+        {
+        }
+
         /// <summary>
         /// 保存角色字段权限
         /// </summary>

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Caviar.SharedKernel.Entities;
 using Microsoft.EntityFrameworkCore;
+using Caviar.Core.Interface;
 
 namespace Caviar.Core.Services
 {
@@ -16,6 +17,10 @@ namespace Caviar.Core.Services
     /// </summary>
     public class CodeGenerationServices : DbServices
     {
+        public CodeGenerationServices(IAppDbContext dbContext) : base(dbContext)
+        {
+        }
+
         public string WriteCodeFile(List<PreviewCode> previewCodes,CodeGenerateOptions codeGenerateOptions)
         {
             int count = 0;

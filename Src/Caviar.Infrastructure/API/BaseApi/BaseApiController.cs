@@ -99,13 +99,6 @@ namespace Caviar.Infrastructure.API.BaseApi
         protected virtual T CreateService<T>()
         {
             T service = HttpContext.RequestServices.GetRequiredService<T>();
-            var propertyInfo = service.ContainProperty("AppDbContext", typeof(IAppDbContext));
-            if (propertyInfo != null)
-            {
-                var dbContext = HttpContext.RequestServices.GetRequiredService<IAppDbContext>();
-                propertyInfo.SetValue(service, dbContext, null);
-            }
-
             return service;
         }
 
@@ -140,7 +133,6 @@ namespace Caviar.Infrastructure.API.BaseApi
                 if (_service == null)
                 {
                     _service = CreateService<IEasyBaseServices<T>>();
-                    _service.AppDbContext = CreateService<IAppDbContext>();
                 }
                 return _service;
             }
