@@ -1,5 +1,4 @@
-﻿using Blazored.LocalStorage;
-using Caviar.SharedKernel.Entities;
+﻿using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
