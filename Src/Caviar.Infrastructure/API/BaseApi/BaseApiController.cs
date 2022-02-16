@@ -156,16 +156,16 @@ namespace Caviar.Infrastructure.API.BaseApi
     }
 
 
-    public class EasyBaseApiController<Vm, T>: BaseApiController where T : class, IUseEntity, new() where Vm : IView<T>,new()
+    public class EasyBaseApiController<Vm, T>: BaseApiController where T : class, IUseEntity, new() where Vm : class,IView<T>,new()
     {
-        IEasyBaseServices<T> _service;
-        protected IEasyBaseServices<T> Service
+        IEasyBaseServices<T,Vm> _service;
+        protected IEasyBaseServices<T, Vm> Service
         {
             get
             {
                 if (_service == null)
                 {
-                    _service = CreateService<IEasyBaseServices<T>>();
+                    _service = CreateService<IEasyBaseServices<T, Vm>>();
                 }
                 return _service;
             }
@@ -190,69 +190,36 @@ namespace Caviar.Infrastructure.API.BaseApi
         [HttpPost]
         public virtual async Task<IActionResult> CreateEntity(Vm vm)
         {
-            var id = await Service.CreateEntity(vm.Entity);
+            var id = await Service.AddEntityAsync(vm.Entity);
             return Ok(id);
         }
 
         [HttpPost]
         public virtual async Task<IActionResult> UpdateEntity(Vm vm)
         {
-            await Service.UpdateEntity(vm.Entity);
+            await Service.UpdateEntityAsync(vm.Entity);
             return Ok();
         }
 
         [HttpPost]
         public virtual async Task<IActionResult> DeleteEntity(Vm vm)
         {
-            await Service.DeleteEntity(vm.Entity);
+            await Service.DeleteEntityAsync(vm.Entity);
             return Ok();
         }
 
         [HttpGet]
         public virtual async Task<IActionResult> GetEntity(int id)
         {
-            var entity = await Service.GetEntity(id);
-            var entityVm = ToView(entity);
-            return Ok(entityVm);
+            var entity = await Service.SingleByIdAsync(id);
+            return Ok(entity);
         }
 
         [HttpGet]
         public virtual async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10, bool isOrder = true, bool isNoTracking = true)
         {
-            var entity = await Service.GetPages(null, pageIndex, pageSize, isOrder, isNoTracking);
-            var entityVm = ToView(entity);
-            return Ok(entityVm);
-        }
-
-        protected virtual Vm ToView(T entity)
-        {
-            var vm = new Vm() {  Entity = entity};
-            return vm;
-        }
-
-        protected virtual List<Vm> ToView(List<T> entitys)
-        {
-            if (entitys == null) return null;
-            entitys = Sort(entitys);
-            return entitys.Select(x => new Vm() { Entity = x }).ToList();
-        }
-
-        protected virtual List<T> Sort(List<T> entitys)
-        {
-            return entitys.OrderBy(u => u.Number).ToList();
-        }
-
-        protected virtual PageData<Vm> ToView(PageData<T> page)
-        {
-
-            var pageVm = new PageData<Vm>()
-            {
-                Rows = ToView(page.Rows),
-                PageIndex = page.PageIndex,
-                PageSize = page.PageSize,
-                Total = page.Total
-            };
-            return pageVm;
+            var pages = await Service.GetPageAsync(null, pageIndex, pageSize, isOrder, isNoTracking);
+            return Ok(pages);
         }
 
         protected virtual List<T> ToEntity(List<Vm> vm)

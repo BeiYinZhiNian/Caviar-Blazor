@@ -12,10 +12,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Caviar.Core.Services
 {
-    public class RoleFieldServices : DbServices
+    public class RoleFieldServices : BaseServices
     {
-        public RoleFieldServices(IAppDbContext dbContext) : base(dbContext)
+        private IAppDbContext _appDbContext;
+        public RoleFieldServices(IAppDbContext dbContext)
         {
+            _appDbContext = dbContext;
         }
 
         /// <summary>
@@ -25,12 +27,12 @@ namespace Caviar.Core.Services
         public async Task<List<ViewFields>> SavRoleFields(List<ViewFields> fields, string roleName) 
         {
             var entity = fields.Select(x => x.Entity).ToList();
-            await AppDbContext.UpdateEntityAsync(entity);
+            await _appDbContext.UpdateEntityAsync(entity);
             foreach (var item in fields)
             {
                 var type = PermissionType.RoleFields.ToString();
                 var value = CommonHelper.GetClaimValue(item.Entity);
-                var set = AppDbContext.DbContext.Set<SysPermission>();
+                var set = _appDbContext.DbContext.Set<SysPermission>();
                 var permission = set.SingleOrDefault(u => u.Permission == (item.Entity.FullName + item.Entity.FieldName) && u.Entity == roleName && u.PermissionType == PermissionType.RoleFields);
                 if (item.IsPermission && permission == null)
                 {
@@ -41,7 +43,7 @@ namespace Caviar.Core.Services
                 {
                     set.Remove(permission);
                 }
-                await AppDbContext.SaveChangesAsync();
+                await _appDbContext.SaveChangesAsync();
             }
             return fields;
         }
@@ -49,11 +51,11 @@ namespace Caviar.Core.Services
 
         public async Task<List<ViewFields>> GetRoleFields(List<ViewFields> fields, string fullName, IList<string> roleNames)
         {
-            var sysFields = await GetEntity<SysFields>(u => u.FullName == fullName).ToListAsync();
+            var sysFields = await _appDbContext.GetEntityAsync<SysFields>(u => u.FullName == fullName).ToListAsync();
             foreach (var item in fields)
             {
                 item.Entity = sysFields.SingleOrDefault(u => u.FieldName == item.Entity.FieldName);
-                var set = AppDbContext.DbContext.Set<SysPermission>();
+                var set = _appDbContext.DbContext.Set<SysPermission>();
                 var permission = set.SingleOrDefault(u => u.Permission == (item.Entity.FullName + item.Entity.FieldName) && roleNames.Contains(u.Entity) && u.PermissionType == PermissionType.RoleFields);
                 item.IsPermission = permission != null;
             }

@@ -15,11 +15,8 @@ namespace Caviar.Core.Services
     /// <summary>
     /// 代码生成服务
     /// </summary>
-    public class CodeGenerationServices : DbServices
+    public class CodeGenerationServices : BaseServices
     {
-        public CodeGenerationServices(IAppDbContext dbContext) : base(dbContext)
-        {
-        }
 
         public string WriteCodeFile(List<PreviewCode> previewCodes,CodeGenerateOptions codeGenerateOptions)
         {

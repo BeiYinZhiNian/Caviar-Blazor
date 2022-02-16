@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.Core.Services
 {
-    public partial class SysMenuServices: EasyBaseServices<SysMenu>
+    public partial class SysMenuServices: EasyBaseServices<SysMenu,SysMenuView>
     {
         public List<string> PermissionUrls { get; set; }
 
@@ -24,14 +24,14 @@ namespace Caviar.Core.Services
             _languageService = languageService;
         }
 
-        public override IQueryable<SysMenu> GetEntity(Expression<Func<SysMenu, bool>> where)
+        public override IQueryable<SysMenu> GetEntityAsync(Expression<Func<SysMenu, bool>> where)
         {
-            return base.GetEntity(where).Where(_menuWhere);
+            return base.GetEntityAsync(where).Where(_menuWhere);
         }
 
         public override Task<List<SysMenu>> GetAllAsync()
         {
-            return base.GetEntity(_menuWhere).ToListAsync();
+            return base.GetEntityAsync(_menuWhere).ToListAsync();
         }
 
         public override async Task<SysMenu> SingleOrDefaultAsync(Expression<Func<SysMenu, bool>> where)
@@ -47,22 +47,29 @@ namespace Caviar.Core.Services
             throw new NotificationException(message);
         }
 
-        public override Task<SysMenu> GetEntity(int id)
+        protected override List<SysMenuView> ToView(List<SysMenu> entity)
         {
-            return SingleOrDefaultAsync(u=>u.Id == id);
+            var vm = base.ToView(entity);
+            foreach (var item in vm)
+            {
+                string key = $"{CurrencyConstant.Menu}.{item.Entity.Key}";
+                item.DisplayName = _languageService[key];//翻译显示名称
+            }
+            return vm;
         }
+
         /// <summary>
         /// 获取当前菜单
         /// </summary>
         /// <returns></returns>
-        public async Task<List<SysMenu>> GetMenuBar()
+        public async Task<List<SysMenuView>> GetMenuBar()
         {
-            if (PermissionUrls == null) return new List<SysMenu>();
+            if (PermissionUrls == null) return new List<SysMenuView>();
             var menus = await GetAllAsync();
-            return menus;
+            return ToView(menus).ListToTree();
         }
 
-        public async Task<List<SysMenu>> GetApiList(string url,string[] controllerList)
+        public async Task<List<SysMenuView>> GetApiList(string url,string[] controllerList)
         {
             if (url == null)
             {
@@ -72,17 +79,17 @@ namespace Caviar.Core.Services
             if (url[0] == '/' && url.Count() > 1) url = url.Substring(1);
             var entity = await SingleOrDefaultAsync(u => u.Url.ToLower() == url.ToLower());
             if (entity == null) throw new NotificationException($"未找到{url}所需资源");
-            var apiList = await GetEntity(u => u.ControllerName == entity.ControllerName).ToListAsync();
+            var apiList = await GetEntityAsync(u => u.ControllerName == entity.ControllerName).ToListAsync();
             if(controllerList != null)
             {
                 foreach (var item in controllerList)
                 {
                     if (item == "") continue;
-                    var otherApi = await GetEntity(u => u.ControllerName == item).ToListAsync();
+                    var otherApi = await GetEntityAsync(u => u.ControllerName == item).ToListAsync();
                     apiList.AddRange(otherApi);
                 }
             }
-            return apiList;
+            return ToView(apiList);
         }
 
         public async Task<List<SysMenuView>> GetPermissionMenus()
@@ -98,12 +105,12 @@ namespace Caviar.Core.Services
 
         public async Task DeleteEntityAll(List<SysMenu> menus)
         {
-            await base.DeleteEntity(menus);
+            await base.DeleteEntityAsync(menus);
         }
 
-        public override async Task<bool> DeleteEntity(SysMenu menus)
+        public override async Task<bool> DeleteEntityAsync(SysMenu menus)
         {
-            List<SysMenu> menuList = await GetEntity(u => u.ParentId == menus.Id).ToListAsync();
+            List<SysMenu> menuList = await GetEntityAsync(u => u.ParentId == menus.Id).ToListAsync();
             if (menuList != null && menuList.Count > 1)
             {
                 foreach (var item in menuList)
@@ -113,9 +120,9 @@ namespace Caviar.Core.Services
                         item.ParentId = menus.ParentId;
                     }
                 }
-                await base.UpdateEntity(menuList);
+                await base.UpdateEntityAsync(menuList);
             }
-            return await base.DeleteEntity(menus);
+            return await base.DeleteEntityAsync(menus);
         }
     }
 }

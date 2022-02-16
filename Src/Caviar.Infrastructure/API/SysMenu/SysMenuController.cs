@@ -28,29 +28,18 @@ namespace Caviar.Infrastructure.API.SysMenuController
         public async Task<IActionResult> GetMenuBar()
         {
             var menus = await _menuServices.GetMenuBar();
-            var menusVm = ToView(menus).ListToTree();
-            return Ok(menusVm);
+            return Ok(menus);
         }
 
         [HttpGet]
         public override async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10, bool isOrder = true, bool isNoTracking = true)
         {
-            var entity = await Service.GetPages(null, pageIndex, pageSize, isOrder, isNoTracking);
-            var entityVm = ToView(entity);
-            entityVm.Rows = entityVm.Rows.ListToTree();
-            return Ok(entityVm);
+            var entity = await Service.GetPageAsync(null, pageIndex, pageSize, isOrder, isNoTracking);
+            entity.Rows = entity.Rows.ListToTree();
+            return Ok(entity);
         }
 
-        protected override List<SysMenuView> ToView(List<SysMenu> entity)
-        {
-            var vm = base.ToView(entity);
-            foreach (var item in vm)
-            {
-                string key = $"{CurrencyConstant.Menu}.{item.Entity.Key}";
-                item.DisplayName = LanguageService[key];//翻译显示名称
-            }
-            return vm;
-        }
+
 
 
         [HttpPost]
@@ -63,7 +52,7 @@ namespace Caviar.Infrastructure.API.SysMenuController
                 var menus = ToEntity(menuViews);
                 await _menuServices.DeleteEntityAll(menus);
             }
-            await _menuServices.DeleteEntity(vm.Entity);
+            await _menuServices.DeleteEntityAsync(vm.Entity);
             return Ok();
         }
 
@@ -72,8 +61,7 @@ namespace Caviar.Infrastructure.API.SysMenuController
         {
             var controllerList = splicing?.Split("|");
             var apiList = await _menuServices.GetApiList(url, controllerList);
-            var Vm = ToView(apiList);
-            return Ok(Vm);
+            return Ok(apiList);
         }
 
     }
