@@ -3,6 +3,7 @@ using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -97,7 +98,7 @@ namespace Caviar.Core.Services
             return AppDbContext.SingleOrDefaultAsync<T>(u => u.Id == id);
         }
 
-        public virtual Task<List<T>> GetEntity<T>(Expression<Func<T, bool>> where) where T : class, IUseEntity, new()
+        public virtual IQueryable<T> GetEntity<T>(Expression<Func<T, bool>> where) where T : class, IUseEntity, new()
         {
             return AppDbContext.GetEntityAsync(where);
         }
@@ -180,7 +181,7 @@ namespace Caviar.Core.Services
             return AppDbContext.SingleOrDefaultAsync<T>(u => u.Id == id);
         }
 
-        public virtual Task<List<T>> GetEntity(Expression<Func<T, bool>> where)
+        public virtual IQueryable<T> GetEntity(Expression<Func<T, bool>> where)
         {
             return AppDbContext.GetEntityAsync(where);
         }
@@ -190,7 +191,7 @@ namespace Caviar.Core.Services
             return AppDbContext.GetAllAsync<T>();
         }
 
-        public virtual Task<T> GetEntity(Expression<Func<T, bool>> where, bool isSingle)
+        public virtual Task<T> SingleOrDefaultAsync(Expression<Func<T, bool>> where)
         {
             return AppDbContext.SingleOrDefaultAsync(where);
         }

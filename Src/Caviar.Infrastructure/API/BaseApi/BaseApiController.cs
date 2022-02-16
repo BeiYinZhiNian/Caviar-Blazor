@@ -35,7 +35,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             LanguageService.SetLanguage(culture);
         }
 
-        public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             Interactor = CreateService<Interactor>();
             UserServices = CreateService<UserServices<ApplicationUser>>();
@@ -58,7 +58,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             var acceptLanguage = context.HttpContext.Request.Cookies.SingleOrDefault(c => c.Key == CurrencyConstant.LanguageHeader).Value;
             SetLanguage(acceptLanguage);
 
-            return base.OnActionExecutionAsync(context, next);
+            await base.OnActionExecutionAsync(context, next);
         }
 
         public override void OnActionExecuted(ActionExecutedContext context)

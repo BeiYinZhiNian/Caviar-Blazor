@@ -146,8 +146,10 @@ namespace Caviar.Infrastructure.Persistence
             var set = _dbContext.Set<SysPermission>();
             foreach (var item in menus)
             {
-                set.Add(new SysPermission() { Permission = item.Url,Entity = CurrencyConstant.Admin ,PermissionType = PermissionType.RoleMenus});
+                set.Add(new SysPermission() { Permission = item.Key,Entity = CurrencyConstant.Admin ,PermissionType = PermissionType.RoleMenus});
             }
+            set.Add(new SysPermission() { Permission = CurrencyConstant.HomeKey, Entity = CurrencyConstant.Admin, PermissionType = PermissionType.RoleMenus });
+            set.Add(new SysPermission() { Permission = CurrencyConstant.SysManagementKey, Entity = CurrencyConstant.Admin, PermissionType = PermissionType.RoleMenus });
             await _dbContext.SaveChangesAsync();
         }
 
@@ -185,7 +187,7 @@ namespace Caviar.Infrastructure.Persistence
                 {
                     Entity = new SysMenu()
                     {
-                        Key = "Home",
+                        Key = CurrencyConstant.HomeKey,
                         Icon = "home",
                         MenuType = MenuType.Menu,
                         Url = "/",
@@ -197,10 +199,10 @@ namespace Caviar.Infrastructure.Persistence
                 {
                     Entity = new SysMenu()
                     {
-                        Key =  CurrencyConstant.HomeIndex,
+                        Key =  CurrencyConstant.Index,
                         MenuType = MenuType.Menu,
                         Icon = "code",
-                        Url = $"{CurrencyConstant.CodeGenerationKey}/{CurrencyConstant.HomeIndex}",
+                        Url = $"{CurrencyConstant.CodeGenerationKey}/{CurrencyConstant.Index}",
                         ControllerName = CurrencyConstant.CodeGenerationKey
                     },
                     Children = new List<SysMenuView>()
@@ -236,7 +238,7 @@ namespace Caviar.Infrastructure.Persistence
         private async Task UpdateButton(List<SysMenuView> menus)
         {
             var set = _dbContext.Set<SysMenu>();
-            var menuBars = set.Where(u => u.Key == CurrencyConstant.HomeIndex);
+            var menuBars = set.Where(u => u.Key == CurrencyConstant.Index);
             foreach (var item in menuBars)
             {
                 item.MenuType = MenuType.Menu;

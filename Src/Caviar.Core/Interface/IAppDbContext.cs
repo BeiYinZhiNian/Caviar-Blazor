@@ -3,6 +3,7 @@ using Caviar.SharedKernel.Entities.View;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -89,7 +90,7 @@ namespace Caviar.Core.Interface
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public Task<List<T>> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IUseEntity, new();
+        public IQueryable<T> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IUseEntity, new();
         /// <summary>
         /// 根据条件获取单个实体
         /// </summary>

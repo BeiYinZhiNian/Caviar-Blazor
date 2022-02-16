@@ -3,6 +3,7 @@ using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -58,8 +59,8 @@ namespace Caviar.Core.Services
         /// </summary>
         /// <param name="where"></param>
         /// <returns></returns>
-        public Task<List<T>> GetEntity(Expression<Func<T, bool>> where);
+        public IQueryable<T> GetEntity(Expression<Func<T, bool>> where);
 
-        public Task<T> GetEntity(Expression<Func<T, bool>> where, bool isSingle);
+        public Task<T> SingleOrDefaultAsync(Expression<Func<T, bool>> where);
     }
 }

@@ -30,6 +30,10 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string SysManagementKey = "SysManagement";
         /// <summary>
+        /// 首页key
+        /// </summary>
+        public const string HomeKey = "Home";
+        /// <summary>
         /// 代码生成key
         /// </summary>
         public const string CodeGenerationKey = "CodeGeneration";
@@ -68,7 +72,7 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 首页
         /// </summary>
-        public const string HomeIndex = "Index";
+        public const string Index = "Index";
         /// <summary>
         /// 角色key
         /// </summary>

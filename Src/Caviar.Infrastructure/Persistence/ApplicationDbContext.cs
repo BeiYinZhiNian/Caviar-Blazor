@@ -229,9 +229,9 @@ namespace Caviar.Infrastructure.Persistence
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual Task<List<T>> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IUseEntity, new()
+        public virtual IQueryable<T> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IUseEntity, new()
         {
-            return GetContext<T>(isNoTracking, isDataPermissions, isRecycleBin).Where(where).ToListAsync();
+            return GetContext<T>(isNoTracking, isDataPermissions, isRecycleBin).Where(where);
         }
         /// <summary>
         /// 根据条件获取单个实体

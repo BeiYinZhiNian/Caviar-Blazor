@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using Caviar.Core.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace Caviar.Core.Services
 {
@@ -48,7 +49,7 @@ namespace Caviar.Core.Services
 
         public async Task<List<ViewFields>> GetRoleFields(List<ViewFields> fields, string fullName, IList<string> roleNames)
         {
-            var sysFields = await GetEntity<SysFields>(u => u.FullName == fullName);
+            var sysFields = await GetEntity<SysFields>(u => u.FullName == fullName).ToListAsync();
             foreach (var item in fields)
             {
                 item.Entity = sysFields.SingleOrDefault(u => u.FieldName == item.Entity.FieldName);

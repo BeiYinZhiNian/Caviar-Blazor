@@ -17,11 +17,12 @@ namespace Caviar.Infrastructure.API.SysMenuController
             _menuServices = sysMenuServices;
         }
 
-        public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
-            await base.OnActionExecutionAsync(context, next);
-            var menuPermission = await UserServices.GetPermissions(u => u.PermissionType == PermissionType.RoleMenus);
+            var menuPermission = UserServices.GetPermissions(u => u.PermissionType == PermissionType.RoleMenus).Result;
             _menuServices.MenuPermissions = menuPermission;
+            base.OnActionExecuting(context);
         }
 
         [HttpGet]

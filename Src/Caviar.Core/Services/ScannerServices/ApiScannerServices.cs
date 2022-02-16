@@ -116,7 +116,7 @@ namespace Caviar.Core.Services
         public static List<SysMenu> CreateInitMenus(CodeGenerateOptions codeGenerateOptions)
         {
             List<SysMenu> ApiList = new List<SysMenu>();
-            ApiList.Add(CreatInitMenu("GET", codeGenerateOptions.EntitieName, CurrencyConstant.HomeIndex, codeGenerateOptions.EntitieName));
+            ApiList.Add(CreatInitMenu("GET", codeGenerateOptions.EntitieName, CurrencyConstant.Index, codeGenerateOptions.EntitieName));
             ApiList.Add(CreatInitMenu("GET", codeGenerateOptions.EntitieName, CurrencyConstant.GetEntityKey));
             ApiList.Add(CreatInitMenu("GET", codeGenerateOptions.EntitieName, CurrencyConstant.GetFieldsKey));
             ApiList.Add(CreatInitMenu("POST", codeGenerateOptions.EntitieName, CurrencyConstant.DeleteEntityKey));

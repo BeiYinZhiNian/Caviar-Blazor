@@ -146,8 +146,8 @@ namespace Caviar.AntDesignUI.Core
         #region 重写
         protected override async Task OnInitializedAsync()
         {
-            await base.OnInitializedAsync();
             Loading = true;
+            await base.OnInitializedAsync();
             BaseController = CommonHelper.GetLeftText(CurrentUrl, "/");
             var buttonTask = LoadButton();//加载按钮
             var fieldsTask = GetModelFields();//获取模型字段
