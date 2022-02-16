@@ -27,6 +27,13 @@ namespace Caviar.Infrastructure.API.BaseApi
 
         protected UserServices<ApplicationUser> UserServices { get; set; }
 
+        protected List<string> PermissionUrls { get; private set; }
+
+        protected List<string> IgnoreUrl => new List<string>() { 
+            UrlConfig.CurrentUserInfo,
+            UrlConfig.SignInActual
+        };
+
         void SetLanguage(string acceptLanguage)
         {
             if (string.IsNullOrEmpty(acceptLanguage)) acceptLanguage = CurrencyConstant.DefaultLanguage;
@@ -39,7 +46,6 @@ namespace Caviar.Infrastructure.API.BaseApi
         {
             Interactor = CreateService<Interactor>();
             UserServices = CreateService<UserServices<ApplicationUser>>();
-
             Interactor.Stopwatch.Start();
 
             //获取ip地址
@@ -58,8 +64,35 @@ namespace Caviar.Infrastructure.API.BaseApi
             var acceptLanguage = context.HttpContext.Request.Cookies.SingleOrDefault(c => c.Key == CurrencyConstant.LanguageHeader).Value;
             SetLanguage(acceptLanguage);
 
+            if (!UrlCheck())
+            {
+                UrlUnauthorized(context);
+                return;
+            }
+
             await base.OnActionExecutionAsync(context, next);
         }
+
+        /// <summary>
+        /// 检查url权限
+        /// </summary>
+        /// <returns></returns>
+        protected virtual bool UrlCheck()
+        {
+            //设置url权限
+            var menuPermission = UserServices.GetPermissions(u => u.PermissionType == PermissionType.RoleMenus).Result;
+            PermissionUrls = menuPermission.Select(u => u.Permission).ToList();
+            var url = Interactor.Current_Action.Remove(0,"/api/".Length);
+            if (IgnoreUrl.Contains(url)) return true;
+            return PermissionUrls.Contains(url);
+        }
+
+        protected virtual void UrlUnauthorized(ActionExecutingContext context)
+        {
+            context.Result = Ok(HttpStatusCode.Unauthorized, CurrencyConstant.Unauthorized);
+        }
+
+
 
         public override void OnActionExecuted(ActionExecutedContext context)
         {

@@ -55,6 +55,10 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string CurrentUserInfo  = "ApplicationUser/CurrentUserInfo";
         /// <summary>
+        /// 登录
+        /// </summary>
+        public const string SignInActual = "ApplicationUser/SignInActual";
+        /// <summary>
         /// 获取菜单列表
         /// </summary>
         public const string GetApiList = "SysMenu/GetMenus";

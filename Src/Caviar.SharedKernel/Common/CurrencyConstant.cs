@@ -125,8 +125,22 @@ namespace Caviar.SharedKernel.Entities
         public const string ResuleMsg = "SharedKernel.ResuleMsg";
         public const string Enum = "SharedKernel.Enum";
         public const string ErrorMessage = "SharedKernel.ErrorMessage";
+        public const string ExceptionMessage = "SharedKernel.ExceptionMessage";
         public const string AppNull = "app.null";
         public const string Admin = "admin";
-       
+        /// <summary>
+        /// 未授权
+        /// </summary>
+        public const string Unauthorized = "Unauthorized";
+        /// <summary>
+        /// 服务器发生错误
+        /// </summary>
+        public const string InternalServerError = "InternalServerError";
+        /// <summary>
+        /// 自定义处理发生错误
+        /// </summary>
+        public const string NotificationException = "NotificationException";
+
+        public const string Null = "null";
     }
 }

@@ -20,8 +20,7 @@ namespace Caviar.Infrastructure.API.SysMenuController
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var menuPermission = UserServices.GetPermissions(u => u.PermissionType == PermissionType.RoleMenus).Result;
-            _menuServices.MenuPermissions = menuPermission;
+            _menuServices.PermissionUrls = PermissionUrls;
             base.OnActionExecuting(context);
         }
 

@@ -137,6 +137,11 @@
       "User": "用户",
       "Role": "角色",
       "UserGroup": "用户组"
+    },
+    "ExceptionMessage": {
+      "Unauthorized": "未授权",
+      "null": "该数据为空",
+      "Not Found" : "未找到该资源"
     }
   }
 }

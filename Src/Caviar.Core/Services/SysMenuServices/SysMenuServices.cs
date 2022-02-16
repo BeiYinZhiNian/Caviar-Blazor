@@ -13,31 +13,38 @@ namespace Caviar.Core.Services
 {
     public partial class SysMenuServices: EasyBaseServices<SysMenu>
     {
-        public List<SysPermission> MenuPermissions {  set { MenuKeys = value.Select(u => u.Permission).ToList(); } }
+        public List<string> PermissionUrls { get; set; }
 
-        private List<string> MenuKeys;
+        private Expression<Func<SysMenu, bool>> _menuWhere;
 
-        public SysMenuServices(IAppDbContext appDbContext):base(appDbContext)
+        private ILanguageService _languageService;
+        public SysMenuServices(IAppDbContext appDbContext,ILanguageService languageService):base(appDbContext)
         {
-
+            _menuWhere = u => PermissionUrls.Contains(u.Url) || string.IsNullOrEmpty(u.Url);
+            _languageService = languageService;
         }
 
         public override IQueryable<SysMenu> GetEntity(Expression<Func<SysMenu, bool>> where)
         {
-            return base.GetEntity(where).Where(u=>MenuKeys.Contains(u.Key));
+            return base.GetEntity(where).Where(_menuWhere);
         }
 
         public override Task<List<SysMenu>> GetAllAsync()
         {
-            return base.GetEntity(u => MenuKeys.Contains(u.Key)).ToListAsync();
+            return base.GetEntity(_menuWhere).ToListAsync();
         }
 
         public override async Task<SysMenu> SingleOrDefaultAsync(Expression<Func<SysMenu, bool>> where)
         {
             var entity = await base.SingleOrDefaultAsync(where);
             if (entity == null) return null;
-            if(MenuKeys.Contains(entity.Key)) return entity;
-            return null;
+            if (PermissionUrls == null) return null;
+            var func = _menuWhere.Compile();
+            if (func(entity)) return entity;
+            var unauthorized = _languageService[$"{CurrencyConstant.ExceptionMessage}.{CurrencyConstant.Unauthorized}"];
+            var neme = _languageService[$"{CurrencyConstant.Menu}.{entity.Key}"];
+            var message = neme + unauthorized;
+            throw new NotificationException(message);
         }
 
         public override Task<SysMenu> GetEntity(int id)
@@ -50,17 +57,21 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public async Task<List<SysMenu>> GetMenuBar()
         {
-            if (MenuKeys == null) return new List<SysMenu>();
+            if (PermissionUrls == null) return new List<SysMenu>();
             var menus = await GetAllAsync();
             return menus;
         }
 
         public async Task<List<SysMenu>> GetApiList(string url,string[] controllerList)
         {
-            if (url == null) throw new Exception("url不能为null");
+            if (url == null)
+            {
+                var unauthorized = _languageService[$"{CurrencyConstant.ExceptionMessage}.{CurrencyConstant.Null}"];
+                throw new NotificationException("url" + unauthorized);
+            }
             if (url[0] == '/' && url.Count() > 1) url = url.Substring(1);
             var entity = await SingleOrDefaultAsync(u => u.Url.ToLower() == url.ToLower());
-            if (entity == null) throw new Exception($"未找到{url}所需资源");
+            if (entity == null) throw new NotificationException($"未找到{url}所需资源");
             var apiList = await GetEntity(u => u.ControllerName == entity.ControllerName).ToListAsync();
             if(controllerList != null)
             {
@@ -72,6 +83,17 @@ namespace Caviar.Core.Services
                 }
             }
             return apiList;
+        }
+
+        public async Task<List<SysMenuView>> GetPermissionMenus()
+        {
+            var menus = await base.GetAllAsync();
+            var menuViews = menus.Select(u => new SysMenuView() { Entity = u }).ToList();
+            foreach (var item in menuViews)
+            {
+                item.IsPermission = PermissionUrls.Contains(item.Entity.Key);
+            }
+            return menuViews;
         }
 
         public async Task DeleteEntityAll(List<SysMenu> menus)

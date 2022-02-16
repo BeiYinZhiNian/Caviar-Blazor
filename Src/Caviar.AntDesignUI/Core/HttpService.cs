@@ -112,6 +112,7 @@ namespace Caviar.AntDesignUI.Core
                     _ = _message.Warning(result.Title);
                     _navigationManager.NavigateTo(result.Url);
                     break;
+                case HttpStatusCode.Unauthorized://权限不足
                 case HttpStatusCode.InternalServerError://发生严重错误
                 default:
                     string msg = "";

@@ -146,10 +146,9 @@ namespace Caviar.Infrastructure.Persistence
             var set = _dbContext.Set<SysPermission>();
             foreach (var item in menus)
             {
-                set.Add(new SysPermission() { Permission = item.Key,Entity = CurrencyConstant.Admin ,PermissionType = PermissionType.RoleMenus});
+                set.Add(new SysPermission() { Permission = item.Url,Entity = CurrencyConstant.Admin ,PermissionType = PermissionType.RoleMenus});
             }
-            set.Add(new SysPermission() { Permission = CurrencyConstant.HomeKey, Entity = CurrencyConstant.Admin, PermissionType = PermissionType.RoleMenus });
-            set.Add(new SysPermission() { Permission = CurrencyConstant.SysManagementKey, Entity = CurrencyConstant.Admin, PermissionType = PermissionType.RoleMenus });
+            set.Add(new SysPermission() { Permission = UrlConfig.Home, Entity = CurrencyConstant.Admin, PermissionType = PermissionType.RoleMenus });
             await _dbContext.SaveChangesAsync();
         }
 
@@ -190,7 +189,7 @@ namespace Caviar.Infrastructure.Persistence
                         Key = CurrencyConstant.HomeKey,
                         Icon = "home",
                         MenuType = MenuType.Menu,
-                        Url = "/",
+                        Url = UrlConfig.Home,
                         Number = "10"
                     }
                     

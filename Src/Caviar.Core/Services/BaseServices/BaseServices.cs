@@ -35,7 +35,6 @@ namespace Caviar.Core.Services
             AppDbContext = dbContext;
         }
 
-
         /// <summary>
         /// 添加指定实体
         /// </summary>
@@ -114,9 +113,9 @@ namespace Caviar.Core.Services
     public partial class EasyBaseServices<T> : DbServices,IEasyBaseServices<T>   where T: class,IUseEntity, new()
     {
 
-        public EasyBaseServices(IAppDbContext dbContext):base(dbContext)
+        public EasyBaseServices(IAppDbContext dbContext) : base(dbContext)
         {
-            AppDbContext = dbContext;
+
         }
 
         /// <summary>

@@ -1,6 +1,5 @@
 ﻿using Caviar.Core.Interface;
 using Caviar.Infrastructure.Persistence;
-using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +16,6 @@ using Microsoft.AspNetCore.Hosting.Server.Features;
 using Caviar.Infrastructure.API;
 using Microsoft.AspNetCore.Hosting;
 using System.Net.Http;
-using Microsoft.Extensions.Hosting;
 using Caviar.SharedKernel.Entities;
 
 namespace Caviar.Infrastructure
@@ -103,6 +101,7 @@ namespace Caviar.Infrastructure
             new SysDataInit(app.ApplicationServices).StartInit().Wait();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseGlobalExceptionHandling();
             return app;
         }
 
