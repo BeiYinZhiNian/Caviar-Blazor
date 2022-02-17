@@ -221,11 +221,5 @@ namespace Caviar.Infrastructure.API.BaseApi
             var pages = await Service.GetPageAsync(null, pageIndex, pageSize, isOrder, isNoTracking);
             return Ok(pages);
         }
-
-        protected virtual List<T> ToEntity(List<Vm> vm)
-        {
-            if (vm == null) return null;
-            return vm.Select(v => v.Entity).ToList();
-        }
     }
 }

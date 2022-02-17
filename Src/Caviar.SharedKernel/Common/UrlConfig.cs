@@ -16,7 +16,7 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 菜单权限url
         /// </summary>
-        public const string MenuPermissionsUrl = "/Permission/RoleMenus";
+        public const string MenuPermissionsUrl = "Permission/RoleMenus";
         /// <summary>
         /// 视图类代码文件路径
         /// </summary>

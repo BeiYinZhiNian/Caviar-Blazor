@@ -29,7 +29,7 @@ namespace Caviar.Core.Services
         /// 修改实体
         /// </summary>
         /// <returns>修改后实体</returns>
-        public Task UpdateEntityAsync(T entity);
+        public Task<T> UpdateEntityAsync(T entity);
         /// <summary>
         /// 获取分页数据
         /// </summary>
@@ -41,13 +41,13 @@ namespace Caviar.Core.Services
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
-        public Task DeleteEntityAsync(IEnumerable<T> menus);
+        public Task<int> DeleteEntityAsync(IEnumerable<T> menus);
         /// <summary>
         /// 批量修改
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
-        public Task UpdateEntityAsync(IEnumerable<T> menus);
+        public Task<int> UpdateEntityAsync(IEnumerable<T> menus);
         /// <summary>
         /// 获取指定实体
         /// </summary>

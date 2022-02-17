@@ -70,7 +70,7 @@ namespace Caviar.Core.Services
         /// 修改指定实体
         /// </summary>
         /// <returns></returns>
-        public virtual Task UpdateEntityAsync(T entity)
+        public virtual Task<T> UpdateEntityAsync(T entity)
         {
             return AppDbContext.UpdateEntityAsync(entity);
         }
@@ -90,7 +90,7 @@ namespace Caviar.Core.Services
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
-        public virtual Task DeleteEntityAsync(IEnumerable<T> menus)
+        public virtual Task<int> DeleteEntityAsync(IEnumerable<T> menus)
         {
             return AppDbContext.DeleteEntityAsync(menus);
         }
@@ -99,7 +99,7 @@ namespace Caviar.Core.Services
         /// </summary>
         /// <param name="menus"></param>
         /// <returns></returns>
-        public virtual Task UpdateEntityAsync(IEnumerable<T> menus)
+        public virtual Task<int> UpdateEntityAsync(IEnumerable<T> menus)
         {
             return AppDbContext.UpdateEntityAsync(menus);
         }

@@ -140,7 +140,13 @@ namespace Caviar.SharedKernel.Entities
         /// 自定义处理发生错误
         /// </summary>
         public const string NotificationException = "NotificationException";
-
+        /// <summary>
+        /// 数据为空
+        /// </summary>
         public const string Null = "null";
+        /// <summary>
+        /// 为找到资源
+        /// </summary>
+        public const string NotFound = "Not Found";
     }
 }

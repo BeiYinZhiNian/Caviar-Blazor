@@ -132,13 +132,14 @@ namespace Caviar.Infrastructure.Persistence
 
         protected virtual async Task CreateData(bool isDatabaseInit)
         {
-            var menus = GetSysMenu();
-            await HttpMethodsInit(menus);
+            var sysMenus = GetSysMenu();
+            await HttpMethodsInit(sysMenus);
             if (!isDatabaseInit) return;
             await CreateInitRole();
             await CreateInitUser();
-            await CreateMenu();
-            await CreatePermissionMenu(menus);
+            var createMenus = await CreateMenu();
+            await CreatePermissionMenu(sysMenus);
+            await CreatePermissionMenu(createMenus);
         }
 
         protected virtual async Task CreatePermissionMenu(List<SysMenu> menus)
@@ -146,9 +147,11 @@ namespace Caviar.Infrastructure.Persistence
             var set = _dbContext.Set<SysPermission>();
             foreach (var item in menus)
             {
+                if (string.IsNullOrEmpty(item.Url)) continue;
+                var menu = await set.SingleOrDefaultAsync(u => u.Permission == item.Url && u.PermissionType == PermissionType.RoleMenus);
+                if (menu != null) continue;
                 set.Add(new SysPermission() { Permission = item.Url,Entity = CurrencyConstant.Admin ,PermissionType = PermissionType.RoleMenus});
             }
-            set.Add(new SysPermission() { Permission = UrlConfig.Home, Entity = CurrencyConstant.Admin, PermissionType = PermissionType.RoleMenus });
             await _dbContext.SaveChangesAsync();
         }
 
@@ -158,7 +161,7 @@ namespace Caviar.Infrastructure.Persistence
             var user = new ApplicationUser { Email = "1031622947@qq.com", UserName = "admin"};
             var result = await userManager.CreateAsync(user, "1031622947@qq.COM");
             if (!result.Succeeded) throw new Exception("创建用户失败，数据初始化停止");
-            await userManager.AddToRoleAsync(user, "admin");
+            await userManager.AddToRoleAsync(user, CurrencyConstant.Admin);
         }
 
         protected virtual async Task CreateInitRole()
@@ -169,8 +172,9 @@ namespace Caviar.Infrastructure.Persistence
             if (!result.Succeeded) throw new Exception("创建用户失败，数据初始化停止");
         }
 
-        protected virtual async Task CreateMenu()
+        protected virtual async Task<List<SysMenu>> CreateMenu()
         {
+            List<SysMenu> permissionMenu = new List<SysMenu>();
             List<SysMenuView> menus = new List<SysMenuView>()
             {
                 new SysMenuView()
@@ -230,12 +234,16 @@ namespace Caviar.Infrastructure.Persistence
                     }
                 }
             };
+            permissionMenu.AddRange(menus.Select(u => u.Entity));
             await AddMenus(menus);
-            await UpdateButton(menus);
+            var buttons = await AddButton(menus);
+            permissionMenu.AddRange(buttons);
+            return permissionMenu;
         }
 
-        private async Task UpdateButton(List<SysMenuView> menus)
+        private async Task<List<SysMenu>> AddButton(List<SysMenuView> menus)
         {
+            List<SysMenu> addButtons = new List<SysMenu>();//新增的按钮
             var set = _dbContext.Set<SysMenu>();
             var menuBars = set.Where(u => u.Key == CurrencyConstant.Index);
             foreach (var item in menuBars)
@@ -263,7 +271,8 @@ namespace Caviar.Infrastructure.Persistence
                 {
                     id = catalogue.Id;
                 }
-                await CreateButton(catalogue);
+                var buttons = await AddOtherButton(catalogue);
+                addButtons.AddRange(buttons);
                 foreach (var menu_item in item)
                 {
                     menu_item.ParentId = id;
@@ -298,15 +307,17 @@ namespace Caviar.Infrastructure.Persistence
             }
             _dbContext.UpdateRange(catalogueList);
             await _dbContext.SaveChangesAsync();
+            return addButtons;
         }
 
-        private async Task CreateButton(SysMenu sysMenu)
+        private async Task<List<SysMenu>> AddOtherButton(SysMenu sysMenu)
         {
-            if (sysMenu == null) return;
+            List<SysMenu> menus = new List<SysMenu>();
+            if (sysMenu == null) return menus;
             switch (sysMenu.ControllerName)
             {
                 case CurrencyConstant.ApplicationRoleKey:
-                    List<SysMenu> menus = new List<SysMenu>()
+                    menus = new List<SysMenu>()
                     {
                         new SysMenu()
                         {
@@ -338,6 +349,7 @@ namespace Caviar.Infrastructure.Persistence
                     break;
             }
             await _dbContext.SaveChangesAsync();
+            return menus;
         }
         private async Task AddMenus(List<SysMenuView> sysMenuViews,int parentId = 0)
         {

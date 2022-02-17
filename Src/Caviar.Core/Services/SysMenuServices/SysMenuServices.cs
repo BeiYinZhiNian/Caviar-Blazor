@@ -47,6 +47,13 @@ namespace Caviar.Core.Services
             throw new NotificationException(message);
         }
 
+        protected List<SysMenu> ToEntity(SysMenuView vm)
+        {
+            List<SysMenuView> menuViews = new List<SysMenuView>();
+            vm.TreeToList(menuViews);
+            return base.ToEntity(menuViews);
+        }
+
         protected override List<SysMenuView> ToView(List<SysMenu> entity)
         {
             var vm = base.ToView(entity);
@@ -56,6 +63,14 @@ namespace Caviar.Core.Services
                 item.DisplayName = _languageService[key];//翻译显示名称
             }
             return vm;
+        }
+
+        public override async Task<PageData<SysMenuView>> GetPageAsync(Expression<Func<SysMenu, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true)
+        {
+            var pages = await AppDbContext.GetPageAsync(where, u => u.Number, pageIndex, pageSize, isOrder, isNoTracking);
+            var pageViews = ToView(pages);
+            pageViews.Rows = pageViews.Rows.ListToTree();
+            return pageViews;
         }
 
         /// <summary>
@@ -74,11 +89,15 @@ namespace Caviar.Core.Services
             if (url == null)
             {
                 var unauthorized = _languageService[$"{CurrencyConstant.ExceptionMessage}.{CurrencyConstant.Null}"];
-                throw new NotificationException("url" + unauthorized);
+                throw new NotificationException($"{url}:{unauthorized}");
             }
             if (url[0] == '/' && url.Count() > 1) url = url.Substring(1);
             var entity = await SingleOrDefaultAsync(u => u.Url.ToLower() == url.ToLower());
-            if (entity == null) throw new NotificationException($"未找到{url}所需资源");
+            if (entity == null)
+            {
+                var notFound = _languageService[$"{CurrencyConstant.ExceptionMessage}.{CurrencyConstant.NotFound}"];
+                throw new NotificationException($"{url}:{notFound}");
+            }
             var apiList = await GetEntityAsync(u => u.ControllerName == entity.ControllerName).ToListAsync();
             if(controllerList != null)
             {
@@ -103,9 +122,11 @@ namespace Caviar.Core.Services
             return menuViews;
         }
 
-        public async Task DeleteEntityAll(List<SysMenu> menus)
+        public async Task<int> DeleteEntityAll(SysMenuView menuViews)
         {
-            await base.DeleteEntityAsync(menus);
+            var menus = ToEntity(menuViews);
+            var count = await base.DeleteEntityAsync(menus);
+            return count;
         }
 
         public override async Task<bool> DeleteEntityAsync(SysMenu menus)

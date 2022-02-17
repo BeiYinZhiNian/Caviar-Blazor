@@ -38,7 +38,7 @@ namespace Caviar.Core.Interface
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public Task UpdateEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IUseEntity, new();
+        public Task<T> UpdateEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IUseEntity, new();
         /// <summary>
         /// 修改部分实体
         /// </summary>
@@ -47,7 +47,7 @@ namespace Caviar.Core.Interface
         /// <param name="updatePropertyIEnumerable"></param>
         /// <param name="modified"></param>
         /// <returns></returns>
-        public Task UpdateEntityAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class, IUseEntity, new();
+        public Task<T> UpdateEntityAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class, IUseEntity, new();
         /// <summary>
         /// 批量修改
         /// </summary>
@@ -56,7 +56,7 @@ namespace Caviar.Core.Interface
         /// <param name="fieldExp"></param>
         /// <param name="isSaveChange"></param>
         /// <returns></returns>
-        public Task UpdateEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true) where T : class, IUseEntity, new();
+        public Task<int> UpdateEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true) where T : class, IUseEntity, new();
 
         /// <summary>
         /// 删除实体
@@ -74,7 +74,7 @@ namespace Caviar.Core.Interface
         /// <param name="isSaveChange"></param>
         /// <param name="IsDelete"></param>
         /// <returns></returns>
-        public Task DeleteEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IUseEntity, new();
+        public Task<int> DeleteEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IUseEntity, new();
         /// <summary>
         /// 异步获取所有数据
         /// </summary>

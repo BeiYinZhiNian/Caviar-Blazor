@@ -139,7 +139,7 @@
       "UserGroup": "用户组"
     },
     "ExceptionMessage": {
-      "Unauthorized": "未授权",
+      "Unauthorized": "访问未授权数据",
       "null": "该数据为空",
       "Not Found" : "未找到该资源"
     }

@@ -34,9 +34,8 @@ namespace Caviar.Infrastructure.API.SysMenuController
         [HttpGet]
         public override async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10, bool isOrder = true, bool isNoTracking = true)
         {
-            var entity = await Service.GetPageAsync(null, pageIndex, pageSize, isOrder, isNoTracking);
-            entity.Rows = entity.Rows.ListToTree();
-            return Ok(entity);
+            var pages = await _menuServices.GetPageAsync(null, pageIndex, pageSize, isOrder, isNoTracking);
+            return Ok(pages);
         }
 
 
@@ -47,10 +46,7 @@ namespace Caviar.Infrastructure.API.SysMenuController
         {
             if (vm.IsDeleteAll)
             {
-                List<SysMenuView> menuViews = new List<SysMenuView>();
-                vm.TreeToList(menuViews);
-                var menus = ToEntity(menuViews);
-                await _menuServices.DeleteEntityAll(menus);
+                await _menuServices.DeleteEntityAll(vm);
             }
             await _menuServices.DeleteEntityAsync(vm.Entity);
             return Ok();

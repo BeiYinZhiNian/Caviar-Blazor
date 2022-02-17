@@ -85,7 +85,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <param name="entity"></param>
         /// <param name="isSaveChange">默认为立刻保存</param>
         /// <returns></returns>
-        public virtual async Task UpdateEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IUseEntity,new()
+        public virtual async Task<T> UpdateEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IUseEntity,new()
         {
             IsEntityNull(entity);
             DbContext.Entry(entity).State = EntityState.Modified;
@@ -93,6 +93,7 @@ namespace Caviar.Infrastructure.Persistence
             {
                 await SaveChangesAsync();
             }
+            return entity;
         }
         /// <summary>
         /// 修改部分实体
@@ -102,7 +103,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <param name="fieldExp"></param>
         /// <param name="isSaveChange">默认为立刻保存</param>
         /// <returns></returns>
-        public virtual async Task UpdateEntityAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class, IUseEntity,new()
+        public virtual async Task<T> UpdateEntityAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class, IUseEntity,new()
         {
             IsEntityNull(entity);
             DbContext.Entry(entity).Property(fieldExp).IsModified = true;
@@ -110,6 +111,7 @@ namespace Caviar.Infrastructure.Persistence
             {
                 await SaveChangesAsync();
             }
+            return entity;
         }
 
         /// <summary>
@@ -120,14 +122,15 @@ namespace Caviar.Infrastructure.Persistence
         /// <param name="fieldExp"></param>
         /// <param name="isSaveChange"></param>
         /// <returns></returns>
-        public virtual async Task UpdateEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true) where T : class, IUseEntity,new()
+        public virtual async Task<int> UpdateEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true) where T : class, IUseEntity,new()
         {
             IsEntityNull(entity);
             DbContext.UpdateRange(entity);
             if (isSaveChange)
             {
-                await SaveChangesAsync();
+                return await SaveChangesAsync();
             }
+            return 0;
         }
 
 
@@ -166,18 +169,19 @@ namespace Caviar.Infrastructure.Persistence
         /// <param name="isSaveChange"></param>
         /// <param name="IsDelete"></param>
         /// <returns></returns>
-        public virtual async Task DeleteEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IUseEntity, new()
+        public virtual async Task<int> DeleteEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IUseEntity, new()
         {
             IsEntityNull(entity);
-            var removeList = entity.Where(u => u.IsDelete);//取出物理删除数据
+            var removeList = entity.Where(u => u.IsDelete).ToList();//取出物理删除数据
             DbContext.RemoveRange(removeList);
-            removeList = entity.Where(u => u.IsDelete == false);//取出逻辑删除数据
-            removeList.ToList().ForEach(w => w.IsDelete = true);
+            removeList = entity.Where(u => u.IsDelete == false).ToList();//取出逻辑删除数据
+            removeList.ForEach(w => w.IsDelete = true);
             DbContext.UpdateRange(removeList);
             if (isSaveChange)
             {
-                await SaveChangesAsync();
+                return await SaveChangesAsync();
             }
+            return 0;
         }
         /// <summary>
         /// 获取所有实体
@@ -262,57 +266,6 @@ namespace Caviar.Infrastructure.Persistence
         /// <returns></returns>
         public virtual async Task<int> SaveChangesAsync(bool IsFieldCheck = true)
         {
-            DbContext.ChangeTracker.DetectChanges(); // Important!
-            var entries = DbContext.ChangeTracker.Entries();
-            foreach (var item in entries)
-            {
-                IUseEntity baseEntity;
-                var entity = item.Entity;
-                if (entity == null) continue;
-                baseEntity = entity as IUseEntity;
-                if(baseEntity == null) continue;
-                switch (item.State)
-                {
-                    case EntityState.Detached:
-                        break;
-                    case EntityState.Unchanged:
-                        break;
-                    case EntityState.Deleted:
-                        break;
-                    case EntityState.Modified:
-                        if (!IsFieldCheck) break;
-                        baseEntity.UpdateTime = DateTime.Now;
-                        var entityType = entity.GetType();
-                        var baseType = typeof(SysUseEntity);
-                        var fields = FieldScannerServices.GetClassFields(baseType,LanguageService);
-                        foreach (var fieldItem in fields)
-                        {
-                            switch (fieldItem.Entity.FieldName.ToLower())
-                            {
-                                //不可更新字段
-                                case "id":
-                                case "uid":
-                                    item.Property(fieldItem.Entity.FieldName).IsModified = false;
-                                    continue;
-                                //系统更新字段
-                                case "creattime":
-                                case "updatetime":
-                                case "operatorup":
-                                case "isdelete":
-                                    item.Property(fieldItem.Entity.FieldName).IsModified = true;
-                                    continue;
-                                default:
-                                    break;
-                            }
-                        }
-                        break;
-                    case EntityState.Added:
-                        baseEntity.CreatTime = DateTime.Now;
-                        break;
-                    default:
-                        break;
-                }
-            }
             return await DbContext.SaveChangesAsync();
         }
 
