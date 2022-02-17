@@ -123,7 +123,9 @@
       "Register": "注册",
       "LogoutServer": "server模式退出",
       "CurrentUserInfo": "当前用户信息",
-      "SignInActual": "token登录"
+      "SignInActual": "token登录",
+      "GetPermissionMenus": "获取权限菜单",
+      "SavePermissionMenus": "保存权限菜单"
     },
     "ResuleMsg": {
       "Login Succeeded": "登录成功，欢迎回来",
@@ -149,7 +151,7 @@
       "UserGroup": "用户组"
     },
     "ExceptionMessage": {
-      "Unauthorized": "访问未授权数据",
+      "Unauthorized": "未取得访问权限",
       "null": "该数据为空",
       "Not Found": "未找到该资源",
       "Login expiration": "您的登录已过期，请重新登录"

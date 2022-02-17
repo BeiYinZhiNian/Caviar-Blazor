@@ -96,5 +96,12 @@ namespace Caviar.Infrastructure.API.Permission
             var menus = await _sysMenuServices.GetPermissionMenus(permissionUrls);
             return Ok(menus);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> SavePermissionMenus(string roleName,List<string> urls)
+        {
+            var count = await _userServices.SavePermissionMenus(roleName, urls);
+            return Ok(title:$"成功修改{count}条权限");
+        }
     }
 }

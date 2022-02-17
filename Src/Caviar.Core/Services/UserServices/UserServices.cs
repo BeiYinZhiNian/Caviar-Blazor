@@ -43,6 +43,17 @@ namespace Caviar.Core.Services
             return permissionsSet.Where(u => roleName.Contains(u.Entity)).Where(whereLambda).ToListAsync();
         }
 
+        public async Task<int> SavePermissionMenus(string roleName, List<string> urls)
+        {
+            var permissionMenus = await GetPermissions(new List<string>() { roleName }, u => u.PermissionType == PermissionType.RoleMenus);
+            var menuUrls = GetPermissions(permissionMenus);
+            var reomveMenus = permissionMenus.Where(u => !urls.Contains(u.Permission)).ToList();
+            AppDbContext.DbContext.RemoveRange(reomveMenus);
+            var addMenus = urls.Where(u=> !menuUrls.Contains(u)).Select(u => new SysPermission() { Permission = u, PermissionType = PermissionType.RoleMenus, Entity = roleName }).ToList();
+            AppDbContext.DbContext.AddRange(addMenus);
+            return await AppDbContext.DbContext.SaveChangesAsync();
+        }
+
         /// <summary>
         /// 获取当前用户所有权限或者指定权限
         /// </summary>

@@ -60,7 +60,11 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 获取授权菜单列表
         /// </summary>
-        public const string GetMenusKey = "GetPermissionMenus";
+        public const string GetPermissionMenus = "GetPermissionMenus";
+        /// <summary>
+        /// 保存菜单权限
+        /// </summary>
+        public const string SavePermissionMenu = "SavePermissionMenus";
         /// <summary>
         /// 获取所有字段
         /// </summary>

@@ -80,7 +80,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
             }
             var result = await HttpService.PostJson($"{Url[CurrencyConstant.SaveRoleFields, CurrencyConstant.PermissionKey]}?roleName={Role.Entity.Name}", Fields);
             if (result.Status != System.Net.HttpStatusCode.OK) return;
-            _ = MessageService.Success("保存完毕");
+            _ = MessageService.Success(result.Title);
         }
 
     }

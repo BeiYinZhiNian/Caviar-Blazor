@@ -26,7 +26,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
 
         async Task GetSelectMenus()
         {
-            var result = await HttpService.GetJson<List<SysMenuView>>($"{Url[CurrencyConstant.GetMenusKey]}?roleName={DataSource.Entity.Name}");
+            var result = await HttpService.GetJson<List<SysMenuView>>($"{Url[CurrencyConstant.GetPermissionMenus,CurrencyConstant.PermissionKey]}?roleName={DataSource.Entity.Name}");
             if (result.Status != HttpStatusCode.OK) return;
             if (result.Data != null)
             {
@@ -38,10 +38,10 @@ namespace Caviar.AntDesignUI.Pages.Permission
         {
             List<SysMenuView> menus = new List<SysMenuView>();
             Menus.TreeToList(menus);
-            var ids = menus.Where(u => u.IsPermission).Select(u => u.Id);
-            var result = await HttpService.PostJson($"{Url}?roleName={DataSource.Entity.Name}", ids);
+            var urls = menus.Where(u => u.IsPermission && !string.IsNullOrEmpty(u.Entity.Url)).Select(u => u.Entity.Url);
+            var result = await HttpService.PostJson($"{Url[CurrencyConstant.SavePermissionMenu, CurrencyConstant.PermissionKey]}?roleName={DataSource.Entity.Name}", urls);
             if (result.Status != HttpStatusCode.OK) return false;
-            _ = MessageService.Success("操作成功");
+            _ = MessageService.Success(result.Title);
             return true;
         }
     }
