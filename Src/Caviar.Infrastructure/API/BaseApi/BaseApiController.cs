@@ -81,7 +81,7 @@ namespace Caviar.Infrastructure.API.BaseApi
         {
             //设置url权限
             var menuPermission = UserServices.GetPermissions(u => u.PermissionType == PermissionType.RoleMenus).Result;
-            PermissionUrls = menuPermission.Select(u => u.Permission).ToList();
+            PermissionUrls = UserServices.GetPermissions(menuPermission);
             var url = Interactor.Current_Action.Remove(0,"/api/".Length);
             if (IgnoreUrl.Contains(url)) return true;
             return PermissionUrls.Contains(url);
@@ -89,7 +89,16 @@ namespace Caviar.Infrastructure.API.BaseApi
 
         protected virtual void UrlUnauthorized(ActionExecutingContext context)
         {
-            context.Result = Ok(HttpStatusCode.Unauthorized, CurrencyConstant.Unauthorized);
+            if (User.Identity.IsAuthenticated)
+            {
+                var msg = LanguageService[$"{CurrencyConstant.ExceptionMessage}.{CurrencyConstant.Unauthorized}"];
+                context.Result = Ok(HttpStatusCode.Unauthorized, msg);
+            }
+            else
+            {
+                var msg = LanguageService[$"{CurrencyConstant.ExceptionMessage}.{CurrencyConstant.LoginExpiration}"];
+                context.Result = Ok(HttpStatusCode.Redirect, msg,UrlConfig.Login);
+            }
         }
 
 
@@ -208,12 +217,6 @@ namespace Caviar.Infrastructure.API.BaseApi
             return Ok();
         }
 
-        [HttpGet]
-        public virtual async Task<IActionResult> GetEntity(int id)
-        {
-            var entity = await Service.SingleByIdAsync(id);
-            return Ok(entity);
-        }
 
         [HttpGet]
         public virtual async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10, bool isOrder = true, bool isNoTracking = true)

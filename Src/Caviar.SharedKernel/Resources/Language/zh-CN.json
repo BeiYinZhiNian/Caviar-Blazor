@@ -113,7 +113,17 @@
       "Select": "选择",
       "ApplicationRole": "角色管理",
       "Save": "保存",
-      "Action": "操作"
+      "Action": "操作",
+      "GetFields": "获取字段",
+      "GetEntity": "获取单体",
+      "GetMenus": "获取菜单列表",
+      "GetMenuBar": "获取菜单栏",
+      "Login": "登录",
+      "Logout": "退出",
+      "Register": "注册",
+      "LogoutServer": "server模式退出",
+      "CurrentUserInfo": "当前用户信息",
+      "SignInActual": "token登录"
     },
     "ResuleMsg": {
       "Login Succeeded": "登录成功，欢迎回来",
@@ -141,7 +151,8 @@
     "ExceptionMessage": {
       "Unauthorized": "访问未授权数据",
       "null": "该数据为空",
-      "Not Found" : "未找到该资源"
+      "Not Found": "未找到该资源",
+      "Login expiration": "您的登录已过期，请重新登录"
     }
   }
 }

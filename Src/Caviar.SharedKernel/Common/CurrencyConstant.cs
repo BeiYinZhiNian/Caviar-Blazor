@@ -60,7 +60,7 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 获取授权菜单列表
         /// </summary>
-        public const string GetMenusKey = "GetMenus";
+        public const string GetMenusKey = "GetPermissionMenus";
         /// <summary>
         /// 获取所有字段
         /// </summary>
@@ -140,6 +140,10 @@ namespace Caviar.SharedKernel.Entities
         /// 自定义处理发生错误
         /// </summary>
         public const string NotificationException = "NotificationException";
+        /// <summary>
+        /// 登录过期
+        /// </summary>
+        public const string LoginExpiration = "Login expiration";
         /// <summary>
         /// 数据为空
         /// </summary>

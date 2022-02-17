@@ -314,7 +314,7 @@ namespace Caviar.Infrastructure.Persistence
         {
             List<SysMenu> menus = new List<SysMenu>();
             if (sysMenu == null) return menus;
-            switch (sysMenu.ControllerName)
+            switch (sysMenu.Key)
             {
                 case CurrencyConstant.ApplicationRoleKey:
                     menus = new List<SysMenu>()
@@ -326,7 +326,7 @@ namespace Caviar.Infrastructure.Persistence
                             Url = UrlConfig.FieldPermissionsUrl,
                             Key = CurrencyConstant.FieldPermissionsKey,
                             ControllerName = CurrencyConstant.ApplicationRoleKey,
-                            ParentId = sysMenu.ParentId,
+                            ParentId = sysMenu.Id,
                             Number = "996",
                             MenuType = MenuType.Button,
                         },
@@ -337,7 +337,7 @@ namespace Caviar.Infrastructure.Persistence
                             Url = UrlConfig.MenuPermissionsUrl,
                             Key = CurrencyConstant.MenuPermissionsKey,
                             ControllerName = CurrencyConstant.ApplicationRoleKey,
-                            ParentId = sysMenu.ParentId,
+                            ParentId = sysMenu.Id,
                             Number = "996",
                             MenuType = MenuType.Button,
                         }

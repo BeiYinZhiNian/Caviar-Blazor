@@ -11,15 +11,30 @@ using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Http;
 using Caviar.Core.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Caviar.Infrastructure.API.Permission
 {
     public partial class PermissionController : BaseApiController
     {
         private readonly RoleManager<ApplicationRole> _roleManager;
-        public PermissionController(RoleManager<ApplicationRole> roleManager)
+        private readonly RoleFieldServices _roleFieldServices;
+        private readonly SysMenuServices _sysMenuServices;
+        private readonly UserServices<ApplicationUser> _userServices;
+        public PermissionController(RoleManager<ApplicationRole> roleManager, 
+            RoleFieldServices roleFieldServices,
+            SysMenuServices sysMenuServices,
+            UserServices<ApplicationUser> userServices)
         {
             _roleManager = roleManager;
+            _roleFieldServices = roleFieldServices;
+            _sysMenuServices = sysMenuServices;
+            _userServices = userServices;
+        }
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            _sysMenuServices.PermissionUrls = PermissionUrls;
+            base.OnActionExecuting(context);
         }
 
         [HttpGet]
@@ -39,9 +54,7 @@ namespace Caviar.Infrastructure.API.Permission
         public async Task<IActionResult> GetFields(string name,string fullName,string roleName)
         {
             var fields = FieldScannerServices.GetClassFields(name, fullName, LanguageService);
-            var roleFieldServices = CreateService<RoleFieldServices>();
-            fields = await roleFieldServices.GetRoleFields(fields, fullName, new List<string> { roleName });
-            fields = fields.OrderBy(u => u.Entity.Number).ToList();
+            fields = await _roleFieldServices.GetRoleFields(fields, fullName, new List<string> { roleName });
             return Ok(fields);
         }
 
@@ -70,10 +83,18 @@ namespace Caviar.Infrastructure.API.Permission
         [HttpPost]
         public async Task<IActionResult> SaveRoleFields(List<ViewFields> fields, string roleName)
         {
-            var roleFieldServices = CreateService<RoleFieldServices>();
-            fields = await roleFieldServices.SavRoleFields(fields, roleName);
+            fields = await _roleFieldServices.SavRoleFields(fields, roleName);
             return Ok(fields);
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> GetPermissionMenus(string roleName)
+        {
+            var permissions = await _userServices.GetPermissions(new List<string>() { roleName }, u => u.PermissionType == PermissionType.RoleMenus);
+            var permissionUrls = _userServices.GetPermissions(permissions);
+            var menus = await _sysMenuServices.GetPermissionMenus(permissionUrls);
+            return Ok(menus);
+        }
     }
 }

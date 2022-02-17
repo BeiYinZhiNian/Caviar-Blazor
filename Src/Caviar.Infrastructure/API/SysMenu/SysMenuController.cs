@@ -10,31 +10,31 @@ namespace Caviar.Infrastructure.API.SysMenuController
 {
     public partial class SysMenuController
     {
-        SysMenuServices _menuServices;
+        SysMenuServices _sysMenuServices;
 
         public SysMenuController(SysMenuServices sysMenuServices)
         {
-            _menuServices = sysMenuServices;
+            _sysMenuServices = sysMenuServices;
         }
 
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            _menuServices.PermissionUrls = PermissionUrls;
+            _sysMenuServices.PermissionUrls = PermissionUrls;
             base.OnActionExecuting(context);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetMenuBar()
         {
-            var menus = await _menuServices.GetMenuBar();
+            var menus = await _sysMenuServices.GetMenuBar(PermissionUrls);
             return Ok(menus);
         }
 
         [HttpGet]
         public override async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10, bool isOrder = true, bool isNoTracking = true)
         {
-            var pages = await _menuServices.GetPageAsync(null, pageIndex, pageSize, isOrder, isNoTracking);
+            var pages = await _sysMenuServices.GetPageAsync(null, pageIndex, pageSize, isOrder, isNoTracking);
             return Ok(pages);
         }
 
@@ -46,9 +46,9 @@ namespace Caviar.Infrastructure.API.SysMenuController
         {
             if (vm.IsDeleteAll)
             {
-                await _menuServices.DeleteEntityAll(vm);
+                await _sysMenuServices.DeleteEntityAll(vm);
             }
-            await _menuServices.DeleteEntityAsync(vm.Entity);
+            await _sysMenuServices.DeleteEntityAsync(vm.Entity);
             return Ok();
         }
 
@@ -56,9 +56,11 @@ namespace Caviar.Infrastructure.API.SysMenuController
         public async Task<IActionResult> GetMenus(string url, string splicing)
         {
             var controllerList = splicing?.Split("|");
-            var apiList = await _menuServices.GetApiList(url, controllerList);
+            var apiList = await _sysMenuServices.GetMenus(url, controllerList);
             return Ok(apiList);
         }
+
+        
 
     }
 }

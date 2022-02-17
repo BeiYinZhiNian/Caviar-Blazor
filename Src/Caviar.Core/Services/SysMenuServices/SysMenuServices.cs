@@ -34,6 +34,8 @@ namespace Caviar.Core.Services
             return base.GetEntityAsync(_menuWhere).ToListAsync();
         }
 
+
+
         public override async Task<SysMenu> SingleOrDefaultAsync(Expression<Func<SysMenu, bool>> where)
         {
             var entity = await base.SingleOrDefaultAsync(where);
@@ -67,24 +69,30 @@ namespace Caviar.Core.Services
 
         public override async Task<PageData<SysMenuView>> GetPageAsync(Expression<Func<SysMenu, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true)
         {
-            var pages = await AppDbContext.GetPageAsync(where, u => u.Number, pageIndex, pageSize, isOrder, isNoTracking);
+            var pages = await AppDbContext.GetPageAsync(_menuWhere.And(where), u => u.Number, pageIndex, pageSize, isOrder, isNoTracking);
             var pageViews = ToView(pages);
             pageViews.Rows = pageViews.Rows.ListToTree();
             return pageViews;
         }
 
         /// <summary>
-        /// 获取当前菜单
+        /// 获取左侧菜单栏
         /// </summary>
         /// <returns></returns>
-        public async Task<List<SysMenuView>> GetMenuBar()
+        public async Task<List<SysMenuView>> GetMenuBar(List<string> permissionUrls)
         {
             if (PermissionUrls == null) return new List<SysMenuView>();
             var menus = await GetAllAsync();
             return ToView(menus).ListToTree();
         }
-
-        public async Task<List<SysMenuView>> GetApiList(string url,string[] controllerList)
+        /// <summary>
+        /// 获取当前url下可用api
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="controllerList"></param>
+        /// <returns></returns>
+        /// <exception cref="NotificationException"></exception>
+        public async Task<List<SysMenuView>> GetMenus(string url,string[] controllerList)
         {
             if (url == null)
             {
@@ -110,25 +118,44 @@ namespace Caviar.Core.Services
             }
             return ToView(apiList);
         }
-
-        public async Task<List<SysMenuView>> GetPermissionMenus()
+        /// <summary>
+        /// 获取权限菜单
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<SysMenuView>> GetPermissionMenus(List<string> permissionUrls)
         {
             var menus = await base.GetAllAsync();
-            var menuViews = menus.Select(u => new SysMenuView() { Entity = u }).ToList();
+            var menuViews = ToView(menus);
             foreach (var item in menuViews)
             {
-                item.IsPermission = PermissionUrls.Contains(item.Entity.Key);
+                if (string.IsNullOrEmpty(item.Entity.Url))
+                {
+                    item.IsPermission = true;
+                }
+                else
+                {
+                    item.IsPermission = permissionUrls.Contains(item.Entity.Url);
+                }
             }
+            menuViews = menuViews.ListToTree();
             return menuViews;
         }
-
+        /// <summary>
+        /// 删除所有菜单数
+        /// </summary>
+        /// <param name="menuViews"></param>
+        /// <returns></returns>
         public async Task<int> DeleteEntityAll(SysMenuView menuViews)
         {
             var menus = ToEntity(menuViews);
             var count = await base.DeleteEntityAsync(menus);
             return count;
         }
-
+        /// <summary>
+        /// 删除菜单
+        /// </summary>
+        /// <param name="menus"></param>
+        /// <returns></returns>
         public override async Task<bool> DeleteEntityAsync(SysMenu menus)
         {
             List<SysMenu> menuList = await GetEntityAsync(u => u.ParentId == menus.Id).ToListAsync();

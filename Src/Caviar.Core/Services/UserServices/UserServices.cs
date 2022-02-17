@@ -1,6 +1,7 @@
 ﻿using Caviar.Core.Interface;
 using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,16 @@ namespace Caviar.Core.Services
         }
 
         /// <summary>
+        /// 获取指定角色所有权限
+        /// </summary>
+        /// <returns></returns>
+        public Task<List<SysPermission>> GetPermissions(List<string> roleName,Expression<Func<SysPermission, bool>> whereLambda)
+        {
+            var permissionsSet = AppDbContext.DbContext.Set<SysPermission>();
+            return permissionsSet.Where(u => roleName.Contains(u.Entity)).Where(whereLambda).ToListAsync();
+        }
+
+        /// <summary>
         /// 获取当前用户所有权限或者指定权限
         /// </summary>
         /// <returns></returns>
@@ -52,6 +63,15 @@ namespace Caviar.Core.Services
             var roles = await GetRoles();
             var permissionsSet = AppDbContext.DbContext.Set<SysPermission>();
             return permissionsSet.Where(u => roles.Contains(u.Entity)).ToList();
+        }
+        /// <summary>
+        /// 获取权限实体
+        /// </summary>
+        /// <param name="sysPermissions"></param>
+        /// <returns></returns>
+        public List<string> GetPermissions(List<SysPermission> sysPermissions)
+        {
+            return sysPermissions.Select(u => u.Permission).ToList();
         }
     }
 }
