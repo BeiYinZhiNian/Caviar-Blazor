@@ -97,7 +97,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             else
             {
                 var msg = LanguageService[$"{CurrencyConstant.ExceptionMessage}.{CurrencyConstant.LoginExpiration}"];
-                context.Result = Ok(HttpStatusCode.Redirect, msg,UrlConfig.Login);
+                context.Result = Ok(HttpStatusCode.RedirectMethod, msg,UrlConfig.Login);
             }
         }
 
