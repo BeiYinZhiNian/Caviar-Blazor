@@ -8,6 +8,8 @@ namespace Caviar.SharedKernel.Entities
 {
     public class ApplicationRole : IdentityRole<int>, IUseEntity
     {
+        [Required(ErrorMessage = "RequiredErrorMsg")]
+        public new string Name { get; set; }
         /// <summary>
         /// 创建时间
         /// </summary>

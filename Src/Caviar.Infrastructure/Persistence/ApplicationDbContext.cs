@@ -146,21 +146,28 @@ namespace Caviar.Infrastructure.Persistence
         public virtual async Task<bool> DeleteEntityAsync<T>(T entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IUseEntity, new()
         {
             IsEntityNull(entity);
-            if (entity.IsDelete || IsDelete)
+            //逻辑删除在后面更新
+            DbContext.Entry(entity).State = EntityState.Deleted;
+            if (isSaveChange)
             {
-                DbContext.Entry(entity).State = EntityState.Deleted;
-                if (isSaveChange)
-                {
-                    await SaveChangesAsync();
-                }
-                return true;
+                await SaveChangesAsync();
             }
-            else
-            {
-                entity.IsDelete = true;
-                await UpdateEntityAsync(entity, isSaveChange);
-                return false;
-            }
+            return true;
+            //if (entity.IsDelete || IsDelete)
+            //{
+            //    DbContext.Entry(entity).State = EntityState.Deleted;
+            //    if (isSaveChange)
+            //    {
+            //        await SaveChangesAsync();
+            //    }
+            //    return true;
+            //}
+            //else
+            //{
+            //    entity.IsDelete = true;
+            //    await UpdateEntityAsync(entity, isSaveChange);
+            //    return false;
+            //}
         }
         /// <summary>
         /// 批量删除
