@@ -125,7 +125,8 @@
       "CurrentUserInfo": "当前用户信息",
       "SignInActual": "token登录",
       "GetPermissionMenus": "获取权限菜单",
-      "SavePermissionMenus": "保存权限菜单"
+      "SavePermissionMenus": "保存权限菜单",
+      "SysUserGroup": "部门管理"
     },
     "ResuleMsg": {
       "Login Succeeded": "登录成功，欢迎回来",

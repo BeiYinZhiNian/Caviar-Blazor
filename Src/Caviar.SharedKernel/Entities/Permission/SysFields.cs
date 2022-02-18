@@ -15,17 +15,17 @@ namespace Caviar.SharedKernel.Entities
         /// 修改后需要重新设置，或者同步设置
         /// </summary>
         [Required(ErrorMessage = "RequiredErrorMsg")]
-        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(100, ErrorMessage = "LengthErrorMsg")]
         public string FieldName { get; set; }
         /// <summary>
         /// 获取类型的完全限定名，包括其命名空间，但不包括其名称空间
         /// </summary>
-        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(100, ErrorMessage = "LengthErrorMsg")]
         public string FullName { get; set; }
         /// <summary>
         /// 判断父类的唯一条件
         /// </summary>
-        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(100, ErrorMessage = "LengthErrorMsg")]
         public string BaseFullName { get; set; }
         /// <summary>
         /// 字段需要的宽度

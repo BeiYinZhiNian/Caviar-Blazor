@@ -48,8 +48,11 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public int DataId { get; set; }
         [DisplayName("HeadPortrait")]
+        [StringLength(300, ErrorMessage = "LengthErrorMsg")]
         public string HeadPortrait { get; set; }
-
+        /// <summary>
+        /// 所在用户组
+        /// </summary>
         public int UserGroupId { get; set; }
     }
 }
