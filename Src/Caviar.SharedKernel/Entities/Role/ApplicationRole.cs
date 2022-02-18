@@ -47,9 +47,5 @@ namespace Caviar.SharedKernel.Entities
         /// 数据权限
         /// </summary>
         public int DataId { get; set; }
-        /// <summary>
-        /// 父id
-        /// </summary>
-        public int ParentId { get; set; }
     }
 }
