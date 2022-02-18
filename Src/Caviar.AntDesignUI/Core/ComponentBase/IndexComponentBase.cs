@@ -50,7 +50,7 @@ namespace Caviar.AntDesignUI.Core
         /// <returns></returns>
         protected virtual async Task<List<ViewT>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
-            var result = await HttpService.GetJson<PageData<ViewT>>($"{CurrentUrl}?pageIndex={pageIndex}&pageSize={pageSize}&isOrder={isOrder}");
+            var result = await HttpService.GetJson<PageData<ViewT>>($"{SubmitUrl}?pageIndex={pageIndex}&pageSize={pageSize}&isOrder={isOrder}");
             if (result.Status != HttpStatusCode.OK) return null;
             if (result.Data != null)
             {
@@ -72,7 +72,7 @@ namespace Caviar.AntDesignUI.Core
             {
                 Query = new QueryView();
             }
-            var buttons = APIList.Where(u => u.Entity.ControllerName == BaseController).ToList();
+            var buttons = APIList.Where(u => u.Entity.ControllerName == ControllerName).ToList();
             return Task.FromResult(buttons);
         }
         /// <summary>
@@ -148,7 +148,6 @@ namespace Caviar.AntDesignUI.Core
         {
             Loading = true;
             await base.OnInitializedAsync();
-            BaseController = CommonHelper.GetLeftText(CurrentUrl, "/");
             var buttonTask = LoadButton();//加载按钮
             var fieldsTask = GetModelFields();//获取模型字段
             var pagesTask = GetPages();//获取数据源

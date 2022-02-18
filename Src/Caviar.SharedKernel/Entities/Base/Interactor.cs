@@ -51,7 +51,6 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public ClaimsPrincipal User { get; set; }
 
-        public virtual bool IsAdmin { get; }
-
+        public ApplicationUser UserInfo { get; set; }
     }
 }

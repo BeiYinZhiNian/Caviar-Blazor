@@ -253,7 +253,7 @@ namespace Caviar.Core.Services
         protected virtual List<FieldsView> CreateOrUpFilterField(List<FieldsView> headers)
         {
             if (headers == null) return null;
-            string[] violation = new string[] { "id", "Uid", "CreatTime", "UpdateTime", "IsDelete", "OperatorCare", "OperatorUp", "ParentId" };
+            string[] violation = new string[] { "id", "Uid", "CreatTime", "UpdateTime", "IsDelete", "OperatorCare", "OperatorUp", "ParentId","DataId" };
             var result = new List<FieldsView>();
             foreach (var item in headers)
             {

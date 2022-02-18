@@ -62,6 +62,9 @@ namespace Caviar.SharedKernel.Entities
         /// 获取菜单列表
         /// </summary>
         public const string GetApiList = "SysMenu/GetMenus";
-        
+        /// <summary>
+        /// 数据范围
+        /// </summary>
+        public const string DataRange = "SysUserGroup/DataRange";
     }
 }

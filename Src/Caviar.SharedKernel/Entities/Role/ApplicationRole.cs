@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
@@ -47,5 +48,13 @@ namespace Caviar.SharedKernel.Entities
         /// 数据权限
         /// </summary>
         public int DataId { get; set; }
+        /// <summary>
+        /// 数据范围
+        /// </summary>
+        public DataRange DataRange { get; set; }
+        /// <summary>
+        /// 范围集合"1;2;3;5"储存权限id
+        /// </summary>
+        public string DataList { get; set; }
     }
 }

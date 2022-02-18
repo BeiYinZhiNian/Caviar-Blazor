@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Caviar.Infrastructure.Persistence
@@ -262,10 +263,63 @@ namespace Caviar.Infrastructure.Persistence
         /// <summary>
         /// 保存所有更改
         /// </summary>
-        /// <param name="IsFieldCheck">确保为系统内部更改时，可以取消验证</param>
+        /// <param name="IsFieldCheck">确保为系统内部更改时</param>
         /// <returns></returns>
-        public virtual async Task<int> SaveChangesAsync(bool IsFieldCheck = true)
+        public virtual async Task<int> SaveChangesAsync()
         {
+            DbContext.ChangeTracker.DetectChanges(); // Important!
+            var entries = DbContext.ChangeTracker.Entries();
+            foreach (var item in entries)
+            {
+                IUseEntity baseEntity;
+                var entity = item.Entity;
+                if (entity == null) continue;
+                if (entity is not IUseEntity) continue;
+                baseEntity = entity as IUseEntity;
+                switch (item.State)
+                {
+                    case EntityState.Detached:
+                        break;
+                    case EntityState.Unchanged:
+                        break;
+                    case EntityState.Deleted:
+                        break;
+                    case EntityState.Modified:
+                        baseEntity.OperatorUp = Interactor.UserInfo.UserName;
+                        baseEntity.UpdateTime = DateTime.Now;
+                        var entityType = entity.GetType();
+                        var baseType = typeof(SysUseEntity);
+                        var fields = FieldScannerServices.GetClassFields(baseType, LanguageService);
+                        foreach (var fieldItem in fields)
+                        {
+                            switch (fieldItem.Entity.FieldName.ToLower())
+                            {
+                                //不可更新字段
+                                case "id":
+                                case "uid":
+                                    item.Property(fieldItem.Entity.FieldName).IsModified = false;
+                                    continue;
+                                //系统更新字段
+                                //case "creattime":
+                                //case "updatetime":
+                                //case "operatorup":
+                                //case "isdelete":
+                                //    item.Property(fieldItem.Entity.FieldName).IsModified = true;
+                                //    continue;
+                                default:
+                                    break;
+                            }
+                        }
+                        break;
+                    case EntityState.Added:
+                        baseEntity.CreatTime = DateTime.Now;
+                        baseEntity.OperatorCare = Interactor.UserInfo.UserName;
+                        baseEntity.DataId = Interactor.UserInfo.UserGroupId;
+                        break;
+                    default:
+                        break;
+                }
+            }
             return await DbContext.SaveChangesAsync();
         }
 

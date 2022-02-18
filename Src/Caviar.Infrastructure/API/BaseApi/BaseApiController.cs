@@ -47,7 +47,9 @@ namespace Caviar.Infrastructure.API.BaseApi
             Interactor = CreateService<Interactor>();
             UserServices = CreateService<UserServices<ApplicationUser>>();
             Interactor.Stopwatch.Start();
-
+            //用户信息
+            Interactor.User = context.HttpContext.User;
+            Interactor.UserInfo = await UserServices.GetUserInfo();
             //获取ip地址
             Interactor.Current_Ipaddress = context.HttpContext.GetUserIp();
             //获取完整Url
@@ -58,8 +60,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             Interactor.HttpContext = HttpContext;
             //请求参数
             Interactor.ActionArguments = context.ActionArguments;
-            //用户信息
-            Interactor.User = context.HttpContext.User;
+            
             //设置语言信息
             var acceptLanguage = context.HttpContext.Request.Cookies.SingleOrDefault(c => c.Key == CurrencyConstant.LanguageHeader).Value;
             SetLanguage(acceptLanguage);

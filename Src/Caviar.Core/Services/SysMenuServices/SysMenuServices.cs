@@ -88,26 +88,19 @@ namespace Caviar.Core.Services
         /// <summary>
         /// 获取当前url下可用api
         /// </summary>
-        /// <param name="url"></param>
+        /// <param name="crcontrollerName"></param>
         /// <param name="controllerList"></param>
         /// <returns></returns>
         /// <exception cref="NotificationException"></exception>
-        public async Task<List<SysMenuView>> GetMenus(string url,string[] controllerList)
+        public async Task<List<SysMenuView>> GetMenus(string crcontrollerName,string[] controllerList)
         {
-            if (url == null)
+            if (crcontrollerName == null)
             {
                 var unauthorized = _languageService[$"{CurrencyConstant.ExceptionMessage}.{CurrencyConstant.Null}"];
-                throw new NotificationException($"{url}:{unauthorized}");
+                throw new NotificationException($"{crcontrollerName}:{unauthorized}");
             }
-            if (url[0] == '/' && url.Count() > 1) url = url.Substring(1);
-            var entity = await SingleOrDefaultAsync(u => u.Url.ToLower() == url.ToLower());
-            if (entity == null)
-            {
-                var notFound = _languageService[$"{CurrencyConstant.ExceptionMessage}.{CurrencyConstant.NotFound}"];
-                throw new NotificationException($"{url}:{notFound}");
-            }
-            var apiList = await GetEntityAsync(u => u.ControllerName == entity.ControllerName).ToListAsync();
-            if(controllerList != null)
+            var apiList = await GetEntityAsync(u => u.ControllerName.ToLower() == crcontrollerName.ToLower()).ToListAsync();
+            if (controllerList != null)
             {
                 foreach (var item in controllerList)
                 {

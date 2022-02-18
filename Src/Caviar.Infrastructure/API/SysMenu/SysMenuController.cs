@@ -53,10 +53,10 @@ namespace Caviar.Infrastructure.API.SysMenuController
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetMenus(string url, string splicing)
+        public async Task<IActionResult> GetMenus(string controllerName, string splicing)
         {
             var controllerList = splicing?.Split("|");
-            var apiList = await _sysMenuServices.GetMenus(url, controllerList);
+            var apiList = await _sysMenuServices.GetMenus(controllerName, controllerList);
             return Ok(apiList);
         }
 

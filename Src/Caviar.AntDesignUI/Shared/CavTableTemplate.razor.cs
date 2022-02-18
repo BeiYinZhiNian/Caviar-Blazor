@@ -161,7 +161,7 @@ namespace Caviar.AntDesignUI.Shared
                         CurrRow.Data.AToB(out TData dataSource);
                         paramenter.Add("DataSource", dataSource);
                     }
-                    paramenter.Add(CurrencyConstant.CavModelUrl, menu.Entity.Url);
+                    paramenter.Add(CurrencyConstant.ControllerName, menu.Entity.Url);
                     await CavModal.Create(menu.Entity.Url, menu.DisplayName, HandleOk, paramenter);
                     break;
                 case TargetType.NewLabel:

@@ -48,10 +48,30 @@ namespace Caviar.AntDesignUI.Core
         /// </summary>
         public bool Loading { get; set; }
         /// <summary>
-        /// 当前url
+        /// 当前控制器
         /// </summary>
         [Parameter]
-        public string CurrentUrl { get; set; }
+        public string ControllerName 
+        {
+            get
+            {
+                return _controllerName;
+            }
+            set 
+            {
+                var split = value.Split('/');
+                if (split.Length > 0)
+                {
+                    _controllerName = split[0];
+                }
+            }
+        }
+
+        [Parameter]
+        public string SubmitUrl { get; set; }
+
+
+        string _controllerName;
 
         [Inject]
         public UserConfig UserConfig { get; set; }
@@ -71,8 +91,7 @@ namespace Caviar.AntDesignUI.Core
             {
                 splicing += item + "|";
             }
-            var uri = new Uri(NavigationManager.Uri);
-            var result = await HttpService.GetJson<List<SysMenuView>>($"{UrlConfig.GetApiList}?url={uri.LocalPath}&splicing={splicing}");
+            var result = await HttpService.GetJson<List<SysMenuView>>($"{UrlConfig.GetApiList}?controllerName={ControllerName}&splicing={splicing}");
             if (result.Status != HttpStatusCode.OK) return null;
             return result.Data;
         }
@@ -85,9 +104,13 @@ namespace Caviar.AntDesignUI.Core
 
         protected override async Task OnInitializedAsync()
         {
-            if (string.IsNullOrEmpty(CurrentUrl))
+            if (string.IsNullOrEmpty(ControllerName))
             {
-                CurrentUrl = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
+                ControllerName = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
+            }
+            if (string.IsNullOrEmpty(SubmitUrl))
+            {
+                SubmitUrl = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
             }
             APIList = await GetApiList();
             Url = new UrlAccessor(APIList);

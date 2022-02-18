@@ -14,9 +14,13 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string HeadPortrait = "headPortrait";
         /// <summary>
-        /// url名称
+        /// 提交地址
         /// </summary>
-        public const string CavModelUrl = "CurrentUrl";
+        public const string CavModelSubmitUrl = "SubmitUrl";
+        /// <summary>
+        /// controllerName名称
+        /// </summary>
+        public const string ControllerName = "ControllerName";
         /// <summary>
         /// jwt验证中token名称
         /// </summary>

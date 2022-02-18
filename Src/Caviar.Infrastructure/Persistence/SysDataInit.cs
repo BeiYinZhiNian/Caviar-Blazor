@@ -22,6 +22,7 @@ namespace Caviar.Infrastructure.Persistence
         IDbContext _dbContext;
         IServiceScope _serviceScope;
         ILanguageService _languageService;
+        private int DataId = 1;//数据权限
         public SysDataInit(IServiceProvider provider)
         {
             _serviceScope = provider.CreateScope();
@@ -42,6 +43,7 @@ namespace Caviar.Infrastructure.Persistence
                 var menu = await set.SingleOrDefaultAsync(u => u.Url == item.Url);
                 if (menu == null)
                 {
+                    item.DataId = DataId;
                     _dbContext.Add(item);
                 }
             }
@@ -136,8 +138,9 @@ namespace Caviar.Infrastructure.Persistence
             await HttpMethodsInit(sysMenus);
             if (!isDatabaseInit) return;
             await CreateInitRole();
-            await CreateInitUser();
             await CreateInitUserGroup();
+            await CreateInitUser();
+            
             var createMenus = await CreateMenu();
             await CreatePermissionMenu(sysMenus);
             await CreatePermissionMenu(createMenus);
@@ -159,13 +162,13 @@ namespace Caviar.Infrastructure.Persistence
         protected virtual async Task CreateInitUserGroup()
         {
             var set = _dbContext.Set<SysUserGroup>();
-            set.Add(new SysUserGroup() { Name = "总部" });
+            set.Add(new SysUserGroup() { Name = "总部",DataId = DataId });
             await _dbContext.SaveChangesAsync();
         }
         protected virtual async Task CreateInitUser()
         {
             var userManager = _serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            var user = new ApplicationUser { Email = "1031622947@qq.com", UserName = "admin"};
+            var user = new ApplicationUser { Email = "1031622947@qq.com", UserName = "admin",UserGroupId = DataId,DataId = DataId};
             var result = await userManager.CreateAsync(user, CommonHelper.SHA256EncryptString("1031622947@qq.COM"));
             if (!result.Succeeded) throw new Exception("创建用户失败，数据初始化停止");
             await userManager.AddToRoleAsync(user, CurrencyConstant.Admin);
@@ -174,7 +177,7 @@ namespace Caviar.Infrastructure.Persistence
         protected virtual async Task CreateInitRole()
         {
             var roleManager = _serviceScope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
-            var role = new ApplicationRole { Name = CurrencyConstant.Admin };
+            var role = new ApplicationRole { Name = CurrencyConstant.Admin ,DataId = DataId ,DataRange = DataRange.All };
             var result = await roleManager.CreateAsync(role);
             if (!result.Succeeded) throw new Exception("创建用户失败，数据初始化停止");
         }
@@ -189,7 +192,8 @@ namespace Caviar.Infrastructure.Persistence
                     Entity = new SysMenu()
                     {
                         Key = CurrencyConstant.SysManagementKey,
-                        Icon = "windows"
+                        Icon = "windows",
+                        DataId = DataId ,
                     }
                     
                 },
@@ -201,7 +205,8 @@ namespace Caviar.Infrastructure.Persistence
                         Icon = "home",
                         MenuType = MenuType.Menu,
                         Url = UrlConfig.Home,
-                        Number = "10"
+                        Number = "10",
+                        DataId = DataId ,
                     }
                     
                 },
@@ -213,7 +218,8 @@ namespace Caviar.Infrastructure.Persistence
                         MenuType = MenuType.Menu,
                         Icon = "code",
                         Url = $"{CurrencyConstant.CodeGenerationKey}/{CurrencyConstant.Index}",
-                        ControllerName = CurrencyConstant.CodeGenerationKey
+                        ControllerName = CurrencyConstant.CodeGenerationKey,
+                        DataId = DataId ,
                     },
                     Children = new List<SysMenuView>()
                     {
@@ -225,7 +231,8 @@ namespace Caviar.Infrastructure.Persistence
                                 MenuType = MenuType.Button,
                                 TargetType = TargetType.Callback,
                                 ControllerName = CurrencyConstant.CodeGenerationKey,
-                                ButtonPosition = ButtonPosition.Row
+                                ButtonPosition = ButtonPosition.Row,
+                                DataId = DataId ,
                             }
                         }
                     }
@@ -237,7 +244,8 @@ namespace Caviar.Infrastructure.Persistence
                     {
                         Key = "API",
                         MenuType = MenuType.API,
-                        ControllerName = "API"
+                        ControllerName = "API",
+                        DataId = DataId ,
                     }
                 }
             };
@@ -261,6 +269,7 @@ namespace Caviar.Infrastructure.Persistence
                 {
                     item.Icon = value;
                 }
+                item.DataId = DataId;
                 item.ParentId = menus.Single(u => u.Entity.Key == CurrencyConstant.SysManagementKey).Id;
             }
             await _dbContext.SaveChangesAsync();
@@ -283,6 +292,7 @@ namespace Caviar.Infrastructure.Persistence
                 foreach (var menu_item in item)
                 {
                     menu_item.ParentId = id;
+                    menu_item.DataId = DataId;
                     switch (menu_item.Key)
                     {
                         case CurrencyConstant.CreateEntityKey:
@@ -336,6 +346,7 @@ namespace Caviar.Infrastructure.Persistence
                             ParentId = sysMenu.Id,
                             Number = "996",
                             MenuType = MenuType.Button,
+                            DataId = DataId,
                         },
                         new SysMenu()
                         {
@@ -347,6 +358,7 @@ namespace Caviar.Infrastructure.Persistence
                             ParentId = sysMenu.Id,
                             Number = "996",
                             MenuType = MenuType.Button,
+                            DataId = DataId,
                         }
                     };
                     await _dbContext.AddRangeAsync(menus);
@@ -363,6 +375,7 @@ namespace Caviar.Infrastructure.Persistence
             foreach (var item in sysMenuViews)
             {
                 item.Entity.ParentId = parentId;
+                item.Entity.DataId = DataId;
                 _dbContext.Add(item.Entity);
                 if (item.Children != null)
                 {

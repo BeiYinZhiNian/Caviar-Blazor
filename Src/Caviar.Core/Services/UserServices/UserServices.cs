@@ -27,8 +27,8 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public async Task<IList<string>> GetRoles()
         {
-            if (!_interactor.User.Identity.IsAuthenticated) return new List<string>();
-            var user = await _userManager.FindByNameAsync(_interactor.User.Identity.Name);
+            var user = await GetUserInfo();
+            if (user == null) return new List<string>();
             var roles = await _userManager.GetRolesAsync(user);
             return roles;
         }
@@ -83,6 +83,13 @@ namespace Caviar.Core.Services
         public List<string> GetPermissions(List<SysPermission> sysPermissions)
         {
             return sysPermissions.Select(u => u.Permission).ToList();
+        }
+
+        public async Task<T> GetUserInfo()
+        {
+            if (!_interactor.User.Identity.IsAuthenticated) return null;
+            var user = await _userManager.FindByNameAsync(_interactor.User.Identity.Name);
+            return user;
         }
     }
 }

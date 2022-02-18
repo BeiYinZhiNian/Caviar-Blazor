@@ -17,7 +17,7 @@ namespace Caviar.Core.Interface
         /// </summary>
         /// <param name="IsFieldCheck">确保为系统内部更改时，可以取消字段验证</param>
         /// <returns></returns>
-        Task<int> SaveChangesAsync(bool IsFieldCheck = true);
+        Task<int> SaveChangesAsync();
 
         /// <summary>
         /// 添加实体

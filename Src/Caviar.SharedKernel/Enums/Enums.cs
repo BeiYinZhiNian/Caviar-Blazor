@@ -66,45 +66,37 @@ namespace Caviar.SharedKernel.Entities
     /// </summary>
     public enum PermissionType
     {
+        /// <summary>
+        /// 角色字段
+        /// </summary>
         RoleFields,
+        /// <summary>
+        /// 角色菜单
+        /// </summary>
         RoleMenus
     }
     /// <summary>
-    /// 权限身份
+    /// 数据范围
     /// </summary>
-    public enum PermissionIdentity
+    public enum DataRange
     {
-        User,
-        Role,
-        UserGroup
+        /// <summary>
+        /// 本级别
+        /// </summary>
+        Level,
+        /// <summary>
+        /// 本级和下级
+        /// </summary>
+        Subordinate,
+        /// <summary>
+        /// 所有数据权限
+        /// </summary>
+        All,
+        /// <summary>
+        /// 自定义
+        /// </summary>
+        Custom
     }
 
-    public enum HybridType
-    {
-        /// <summary>
-        /// Application only works as Server
-        /// </summary>
-        ServerSide,
-        /// <summary>
-        /// Application only works as WebAssembly
-        /// </summary>
-        WebAssembly,
-        /// <summary>
-        /// Switch to WebAssembly manually by calling switchToWasm
-        /// </summary>
-        HybridManual,
-        /// <summary>
-        /// Switch to WebAssembly when navigating
-        /// </summary>
-        HybridOnNavigation,
-        /// <summary>
-        /// Switch to WebAssembly as soon as it loads
-        /// </summary>
-        HybridOnReady
-    }
 
-    public class HybridOptions
-    {
-        public HybridType HybridType { get; set; }
-    }
 }

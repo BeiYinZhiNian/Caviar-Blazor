@@ -93,7 +93,8 @@
       "SysUserGroup": "用户组",
       "IsPermission": "是否授权",
       "Model": "模型",
-      "DataField": "数据字段"
+      "DataField": "数据字段",
+      "DataRange": "数据范围"
     },
     "ErrorMessage": {
       "LengthErrorMsg": "{fieldName}输入长度不能超过{length}字符",

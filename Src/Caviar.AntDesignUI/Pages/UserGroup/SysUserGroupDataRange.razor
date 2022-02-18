@@ -1,0 +1,17 @@
+﻿@page "/SysUserGroup/DataRange"
+@inherits CavComponentBase
+
+<Text>请选择 @DataSource.Entity.Name 可访问的菜单</Text>
+<Tree
+      Style="margin-top:20px"
+      TItem="SysUserGroupView"
+      BlockNode
+      ShowIcon DataSource="UserGroups"
+      TitleExpression="x => x.DataItem.Entity.Name"
+      ChildrenExpression="x => x.DataItem.Children"
+      IsLeafExpression="x => x.DataItem.Children?.Count == 0"
+      KeyExpression="x => x.DataItem.Id.ToString()">
+    <TitleIconTemplate Context="node">
+        <Checkbox @bind-Checked="node.DataItem.IsPermission"></Checkbox>
+    </TitleIconTemplate>
+</Tree>

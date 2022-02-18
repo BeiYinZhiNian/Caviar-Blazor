@@ -15,6 +15,9 @@ namespace Caviar.SharedKernel.Entities.View
         /// 孩子节点
         /// </summary>
         public List<SysUserGroupView> Children { get; set; } = new List<SysUserGroupView>();
-        
+        /// <summary>
+        /// 是否授权
+        /// </summary>
+        public bool IsPermission { get; set; }
     }
 }
