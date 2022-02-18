@@ -137,6 +137,7 @@ namespace Caviar.Infrastructure.Persistence
             if (!isDatabaseInit) return;
             await CreateInitRole();
             await CreateInitUser();
+            await CreateInitUserGroup();
             var createMenus = await CreateMenu();
             await CreatePermissionMenu(sysMenus);
             await CreatePermissionMenu(createMenus);
@@ -155,6 +156,12 @@ namespace Caviar.Infrastructure.Persistence
             await _dbContext.SaveChangesAsync();
         }
 
+        protected virtual async Task CreateInitUserGroup()
+        {
+            var set = _dbContext.Set<SysUserGroup>();
+            set.Add(new SysUserGroup() { Name = "总部" });
+            await _dbContext.SaveChangesAsync();
+        }
         protected virtual async Task CreateInitUser()
         {
             var userManager = _serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
@@ -368,10 +375,10 @@ namespace Caviar.Infrastructure.Persistence
 
         public Dictionary<string,string> MenuIconDic { get; set; } =  new Dictionary<string, string>()
         {
-            {"SysMenu","profile"} ,
-            {"ApplicationUser","user" },
-            { "ApplicationRole","user-switch"}
-            
+            {CurrencyConstant.SysMenuKey,"profile"} ,
+            {CurrencyConstant.ApplicationUserKey,"user" },
+            {CurrencyConstant.ApplicationRoleKey,"user-switch"},
+            {CurrencyConstant.SysUserGroupKey,"usergroup-add" }
         };
     }
 }

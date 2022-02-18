@@ -78,6 +78,10 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string Index = "Index";
         /// <summary>
+        /// 菜单key
+        /// </summary>
+        public const string SysMenuKey = "SysMenu";
+        /// <summary>
         /// 角色key
         /// </summary>
         public const string ApplicationRoleKey = "ApplicationRole";
@@ -85,6 +89,10 @@ namespace Caviar.SharedKernel.Entities
         /// 用户key
         /// </summary>
         public const string ApplicationUserKey = "ApplicationUser";
+        /// <summary>
+        /// 用户组key
+        /// </summary>
+        public const string SysUserGroupKey = "SysUserGroup";
         /// <summary>
         /// 字段权限key
         /// </summary>
