@@ -24,90 +24,113 @@ namespace Caviar.AntDesignUI.Core
             Modal = modalService;
             MessageService = messageService;
         }
-        ModalRef modalRef;
-        Action OnOK;
-        public async Task<ModalRef> Create(string url,string title ,Action OnOK = null, Dictionary<string,object> paramenter = null)
+
+        public async Task<ModalRef> Create(string url, string title, Action OnOK = null, Dictionary<string, object> paramenter = null)
         {
-            if (paramenter == null) paramenter = new Dictionary<string, object>();
-            if (!paramenter.ContainsKey(CurrencyConstant.CavModelSubmitUrl))
-            {
-                paramenter.Add(CurrencyConstant.CavModelSubmitUrl, url);//不提供url时候默认url一致
-            }
-            ModalOptions options = new ModalOptions()
-            {
-                OnOk = HandleOk,
-                OnCancel = HandleCancel,
-                MaskClosable = false,
-                Content = Render(url, title, paramenter),
-                Title = title,
-                Visible = true,
-                OkText = "确定",
-                CancelText = "取消",
-                DestroyOnClose = true
-            };
-            if (!string.IsNullOrEmpty(title))
-            {
-                options.Draggable = true;
-            }
-            this.OnOK = OnOK;
-            modalRef = await Modal.CreateModalAsync(options);
-            return modalRef;
+            var modelHandle = new ModalHandle(UserConfig, Modal, MessageService);
+            return await modelHandle.Create(url, title, OnOK, paramenter);
         }
 
-        RenderFragment Render(string url,string title, IEnumerable<KeyValuePair<string, object>> paramenter) => builder =>
+        protected class ModalHandle
         {
-            if(url[0] == '/') url = url[1..];
-            var routes = UserConfig.Routes();
-            foreach (var item in routes)
+            public string ModalStyle { get; set; } = "overflow-y: auto;height: 400px;";
+            ModalService Modal;
+            UserConfig UserConfig;
+            MessageService MessageService;
+            public ModalHandle(UserConfig userConfig, ModalService modalService, MessageService messageService)
             {
-                var page = (string)item.GetObjValue("Template").GetObjValue("TemplateText");
-                if (page.ToLower() == url.ToLower())
+                UserConfig = userConfig;
+                Modal = modalService;
+                MessageService = messageService;
+            }
+
+            ModalRef modalRef;
+            Action OnOK;
+            public async Task<ModalRef> Create(string url, string title, Action OnOK = null, Dictionary<string, object> paramenter = null)
+            {
+                if (paramenter == null) paramenter = new Dictionary<string, object>();
+                if (!paramenter.ContainsKey(CurrencyConstant.CavModelSubmitUrl))
                 {
-                    var ComponentType = (Type)item.GetObjValue("Handler");
-                    var index = 0;
-                    builder.OpenElement(index++, "div");
-                    builder.AddAttribute(index++, "style", ModalStyle);
-                    builder.OpenComponent(index++, ComponentType);
-                    if (paramenter != null && paramenter.Any())
+                    paramenter.Add(CurrencyConstant.CavModelSubmitUrl, url);//不提供url时候默认url一致
+                }
+                ModalOptions options = new ModalOptions()
+                {
+                    OnOk = HandleOk,
+                    OnCancel = HandleCancel,
+                    MaskClosable = false,
+                    Content = Render(url, title, paramenter),
+                    Title = title,
+                    Visible = true,
+                    OkText = "确定",
+                    CancelText = "取消",
+                    DestroyOnClose = true
+                };
+                if (!string.IsNullOrEmpty(title))
+                {
+                    options.Draggable = true;
+                }
+                this.OnOK = OnOK;
+                modalRef = await Modal.CreateModalAsync(options);
+                return modalRef;
+            }
+
+            RenderFragment Render(string url, string title, IEnumerable<KeyValuePair<string, object>> paramenter) => builder =>
+            {
+                if (url[0] == '/') url = url[1..];
+                var routes = UserConfig.Routes();
+                foreach (var item in routes)
+                {
+                    var page = (string)item.GetObjValue("Template").GetObjValue("TemplateText");
+                    if (page.ToLower() == url.ToLower())
                     {
-                        builder.AddMultipleAttributes(index++, paramenter);
+                        var ComponentType = (Type)item.GetObjValue("Handler");
+                        var index = 0;
+                        builder.OpenElement(index++, "div");
+                        builder.AddAttribute(index++, "style", ModalStyle);
+                        builder.OpenComponent(index++, ComponentType);
+                        if (paramenter != null && paramenter.Any())
+                        {
+                            builder.AddMultipleAttributes(index++, paramenter);
+                        }
+                        builder.AddComponentReferenceCapture(index++, SetComponent);
+                        builder.CloseComponent();
+                        builder.CloseElement();
+                        return;
                     }
-                    builder.AddComponentReferenceCapture(index++, SetComponent);
-                    builder.CloseComponent();
-                    builder.CloseElement();
-                    return;
+                }
+                MessageService.Error($"未找到{title}组件，请检查url地址：{url}");
+            };
+
+            ITableTemplate menuAdd;
+
+            void SetComponent(object e)
+            {
+                menuAdd = (ITableTemplate)e;
+            }
+
+            private async Task HandleOk(MouseEventArgs e)
+            {
+                modalRef.Config.ConfirmLoading = true;
+                var res = true;
+                if (menuAdd != null)
+                {
+                    res = await menuAdd.Validate();
+                }
+                modalRef.Config.ConfirmLoading = false;
+                modalRef.Config.Visible = !res;
+                if (res)
+                {
+                    OnOK?.Invoke();
                 }
             }
-            MessageService.Error($"未找到{title}组件，请检查url地址：{url}");
-        };
 
-        ITableTemplate menuAdd;
-
-        void SetComponent(object e)
-        {
-            menuAdd = (ITableTemplate)e;
-        }
-
-        private async Task HandleOk(MouseEventArgs e)
-        {
-            modalRef.Config.ConfirmLoading = true;
-            var res = true;
-            if (menuAdd != null)
+            private Task HandleCancel(MouseEventArgs e)
             {
-                res = await menuAdd.Validate();
+                modalRef.Config.Visible = false;
+                return Task.CompletedTask;
             }
-            modalRef.Config.ConfirmLoading = false;
-            modalRef.Config.Visible = !res;
-            if (res)
-            {
-                OnOK?.Invoke();
-            }
-        }
-
-        private Task HandleCancel(MouseEventArgs e)
-        {
-            modalRef.Config.Visible = false;
-            return Task.CompletedTask;
         }
     }
+
+    
 }
