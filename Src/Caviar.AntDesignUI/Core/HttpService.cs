@@ -114,7 +114,7 @@ namespace Caviar.AntDesignUI.Core
                     break;
                 case HttpStatusCode.RedirectMethod://强制重定向
                     _ = _message.Warning(result.Title);
-                    _navigationManager.NavigateTo(result.Url,true);
+                    _navigationManager.NavigateTo(_jSRuntime,result.Url);
                     break;
                 case HttpStatusCode.Unauthorized://权限不足
                 case HttpStatusCode.InternalServerError://发生严重错误
