@@ -25,16 +25,16 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
         }
 
 
-        protected override async Task<List<ViewFields>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
+        protected override async Task<List<FieldsView>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
-            var result = await HttpService.GetJson<List<ViewFields>>(Url[CurrencyConstant.GetEntitysKey]);
+            var result = await HttpService.GetJson<List<FieldsView>>(Url[CurrencyConstant.GetEntitysKey]);
             if (result.Status != HttpStatusCode.OK) return null;
             Total = result.Data.Count;
             PageSize = result.Data.Count;
             return result.Data;
         }
 
-        protected override Task RowCallback(RowCallbackData<ViewFields> row)
+        protected override Task RowCallback(RowCallbackData<FieldsView> row)
         {
             switch (row.Menu.Entity.Key)
             {

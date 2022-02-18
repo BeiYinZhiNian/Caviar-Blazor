@@ -32,10 +32,10 @@ namespace Caviar.AntDesignUI.Pages.User
 
         public async void SubmitLogin()
         {
-            
             Loading = true;
             var returnUrl = HttpUtility.ParseQueryString(new Uri(NavigationManager.Uri).Query)["returnUrl"];
             if (returnUrl == null) returnUrl = "/";
+            ApplicationUser.Password = CommonHelper.SHA256EncryptString(ApplicationUser.Password);
             var result = await AuthStateProvider.Login(ApplicationUser, returnUrl);
             Loading = false;
             if (result.Status == System.Net.HttpStatusCode.OK)
@@ -44,6 +44,8 @@ namespace Caviar.AntDesignUI.Pages.User
                 NavigationManager.NavigateTo(JSRuntime, result.Url);
                 return;
             }
+            ApplicationUser.Password = "";
+            StateHasChanged();
         }
 
         public string Style { get; set; }

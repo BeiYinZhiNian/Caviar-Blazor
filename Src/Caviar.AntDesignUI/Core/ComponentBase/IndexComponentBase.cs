@@ -34,8 +34,8 @@ namespace Caviar.AntDesignUI.Core
         /// <summary>
         /// 模型字段
         /// </summary>
-        protected List<ViewFields> ViewFields { get; set; } = new List<ViewFields>();
-        public ViewQuery Query { get; set; }
+        protected List<FieldsView> ViewFields { get; set; } = new List<FieldsView>();
+        public QueryView Query { get; set; }
         protected string BaseController { get; set; }
         
         #endregion
@@ -70,7 +70,7 @@ namespace Caviar.AntDesignUI.Core
             var queryButton = Url["FuzzyQuery"];
             if (queryButton != null)
             {
-                Query = new ViewQuery();
+                Query = new QueryView();
             }
             var buttons = APIList.Where(u => u.Entity.ControllerName == BaseController).ToList();
             return Task.FromResult(buttons);
@@ -79,9 +79,9 @@ namespace Caviar.AntDesignUI.Core
         /// 获取模型字段
         /// </summary>
         /// <returns></returns>
-        protected virtual async Task<List<ViewFields>> GetModelFields()
+        protected virtual async Task<List<FieldsView>> GetModelFields()
         {
-            var result = await HttpService.GetJson<List<ViewFields>>(Url[CurrencyConstant.GetFieldsKey]);
+            var result = await HttpService.GetJson<List<FieldsView>>(Url[CurrencyConstant.GetFieldsKey]);
             if (result.Status != HttpStatusCode.OK) return null;
             return result.Data;
         }
@@ -125,7 +125,7 @@ namespace Caviar.AntDesignUI.Core
         /// <param name="Query"></param>
         protected virtual async void FuzzyQueryCallback()
         {
-            var result = await HttpService.PostJson<ViewQuery, PageData<ViewT>>(Url["FuzzyQuery"], Query);
+            var result = await HttpService.PostJson<QueryView, PageData<ViewT>>(Url["FuzzyQuery"], Query);
             if (result.Status != HttpStatusCode.OK) return;
             DataSource = result.Data.Rows;
             Total = result.Data.Total;

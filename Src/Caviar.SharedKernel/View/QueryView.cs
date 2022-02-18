@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel.Entities.View
 {
-    public class ViewQuery
+    public class QueryView
     {
         /// <summary>
         /// 状态

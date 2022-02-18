@@ -81,7 +81,7 @@ namespace Caviar.Infrastructure.API.Permission
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> SaveRoleFields(List<ViewFields> fields, string roleName)
+        public async Task<IActionResult> SaveRoleFields(List<FieldsView> fields, string roleName)
         {
             fields = await _roleFieldServices.SavRoleFields(fields, roleName);
             return Ok(fields);

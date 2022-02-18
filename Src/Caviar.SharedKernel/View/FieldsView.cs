@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel.Entities.View
 {
-    public partial class ViewFields : BaseView<SysFields>
+    public partial class FieldsView : BaseView<SysFields>
     {
         /// <summary>
         /// 类型名称如string,int等

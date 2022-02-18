@@ -4,7 +4,7 @@
     <AntDesign.Col Flex="2">
         <Card Bordered="false" Title=@(Role.Entity.Name + "-" + LanguageService[$"{CurrencyConstant.EntitysName}.Model"])>
             <Body>
-                <Table TItem="ViewFields" DataSource="@Models">
+                <Table TItem="FieldsView" DataSource="@Models">
                         <Column @bind-Field="@context.DisplayName" Title="@LanguageService[$"{CurrencyConstant.EntitysName}.Model"]">
                         </Column>
                         <ActionColumn Title="@LanguageService[$"{CurrencyConstant.Menu}.Action"]">
@@ -35,7 +35,7 @@
                 }
                 else
                 {
-                    <Table TItem="ViewFields" DataSource="@Fields" RowClassName="@(_=>"editable-row")" Bordered>
+                    <Table TItem="FieldsView" DataSource="@Fields" RowClassName="@(_=>"editable-row")" Bordered>
                     <Column Title="@LanguageService[$"{CurrencyConstant.EntitysName}.DisplayName"]" TData="string">
                         <Text>@context.DisplayName</Text>
                     </Column>

@@ -101,7 +101,7 @@ namespace Caviar.AntDesignUI.Shared
         /// 模型字段
         /// </summary>
         [Parameter]
-        public List<ViewFields> ViewFields { get; set; } = new List<ViewFields>();
+        public List<FieldsView> ViewFields { get; set; } = new List<FieldsView>();
         /// <summary>
         /// 翻页回调
         /// </summary>
@@ -111,7 +111,7 @@ namespace Caviar.AntDesignUI.Shared
         /// 获取列表组件
         /// </summary>
         [Parameter]
-        public Func<ViewFields, RenderFragment> GetTableItems { get; set; }
+        public Func<FieldsView, RenderFragment> GetTableItems { get; set; }
         /// <summary>
         /// 获取搜索组件
         /// </summary>
@@ -210,7 +210,7 @@ namespace Caviar.AntDesignUI.Shared
         static string HideQuery = Guid.NewGuid().ToString();//该字段是防止在刷新的过程中删除掉对象导致报错
         IEnumerable<string> _selectedValues;
         [Parameter]
-        public ViewQuery Query { get; set; }
+        public QueryView Query { get; set; }
         void OnSelectedItemsChanged(IEnumerable<string> list)
         {
             if (list == null)

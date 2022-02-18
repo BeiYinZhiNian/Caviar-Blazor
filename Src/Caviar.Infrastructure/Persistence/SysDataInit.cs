@@ -159,7 +159,7 @@ namespace Caviar.Infrastructure.Persistence
         {
             var userManager = _serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var user = new ApplicationUser { Email = "1031622947@qq.com", UserName = "admin"};
-            var result = await userManager.CreateAsync(user, "1031622947@qq.COM");
+            var result = await userManager.CreateAsync(user, CommonHelper.SHA256EncryptString("1031622947@qq.COM"));
             if (!result.Succeeded) throw new Exception("创建用户失败，数据初始化停止");
             await userManager.AddToRoleAsync(user, CurrencyConstant.Admin);
         }

@@ -27,7 +27,7 @@ namespace Caviar.AntDesignUI.Core
         /// <summary>
         /// 模型字段
         /// </summary>
-        protected List<ViewFields> ViewFields { get; set; } = new List<ViewFields>();
+        protected List<FieldsView> ViewFields { get; set; } = new List<FieldsView>();
         #endregion
 
         protected override async Task OnInitializedAsync()

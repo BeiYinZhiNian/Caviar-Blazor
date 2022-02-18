@@ -24,7 +24,7 @@ namespace Caviar.Core.Services
         /// 保存角色字段权限
         /// </summary>
         /// <returns></returns>
-        public async Task<List<ViewFields>> SavRoleFields(List<ViewFields> fields, string roleName) 
+        public async Task<List<FieldsView>> SavRoleFields(List<FieldsView> fields, string roleName) 
         {
             var entity = fields.Select(x => x.Entity).ToList();
             await _appDbContext.UpdateEntityAsync(entity);
@@ -49,7 +49,7 @@ namespace Caviar.Core.Services
         }
 
 
-        public async Task<List<ViewFields>> GetRoleFields(List<ViewFields> fields, string fullName, IList<string> roleNames)
+        public async Task<List<FieldsView>> GetRoleFields(List<FieldsView> fields, string fullName, IList<string> roleNames)
         {
             var sysFields = await _appDbContext.GetEntityAsync<SysFields>(u => u.FullName == fullName).ToListAsync();
             foreach (var item in fields)

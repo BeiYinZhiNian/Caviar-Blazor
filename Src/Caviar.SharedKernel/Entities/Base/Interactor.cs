@@ -34,7 +34,7 @@ namespace Caviar.SharedKernel.Entities
         /// 全局缓存
         /// 字段列表
         /// </summary>
-        public List<ViewFields> SysModelFields { get; set; }
+        public List<FieldsView> SysModelFields { get; set; }
         /// <summary>
         /// 全局缓存
         /// 菜单列表

@@ -1,5 +1,5 @@
 ﻿@page "/CodeGeneration/Index"
-@inherits IndexComponentBase<ViewFields>
+@inherits IndexComponentBase<FieldsView>
 <div>
     <Steps Current="current">
         @foreach (var item in steps)
@@ -39,7 +39,7 @@
         @switch (current)
         {
             case 0:
-                <CavTableTemplate TData="ViewFields"
+                <CavTableTemplate TData="FieldsView"
                           DataSource="DataSource"
                           Buttons="Buttons"
                           ViewFields="ViewFields"

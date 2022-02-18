@@ -15,9 +15,9 @@ namespace Caviar.AntDesignUI.Pages.Permission
 {
     public partial class PermissionFields
     {
-        List<ViewFields> Models = new List<ViewFields>();
-        List<ViewFields> Fields { get; set; }
-        ViewFields CurrentModel { get; set; }
+        List<FieldsView> Models = new List<FieldsView>();
+        List<FieldsView> Fields { get; set; }
+        FieldsView CurrentModel { get; set; }
         string FieldName { get; set; } = "";
 
         ApplicationRoleView Role { get; set; }
@@ -38,14 +38,14 @@ namespace Caviar.AntDesignUI.Pages.Permission
 
         public async Task GetModels()
         {
-            var result = await HttpService.GetJson<List<ViewFields>>(Url[CurrencyConstant.GetEntitysKey]);
+            var result = await HttpService.GetJson<List<FieldsView>>(Url[CurrencyConstant.GetEntitysKey]);
             if (result.Status != System.Net.HttpStatusCode.OK) return;
             Models = result.Data;
         }
 
-        public async Task GetFields(ViewFields model)
+        public async Task GetFields(FieldsView model)
         {
-            var result = await HttpService.GetJson<List<ViewFields>>($"{Url[CurrencyConstant.GetFieldsKey, CurrencyConstant.PermissionKey]}?name={model.Entity.FieldName}&fullName={model.Entity.FullName}&roleName={Role.Entity.Name}");
+            var result = await HttpService.GetJson<List<FieldsView>>($"{Url[CurrencyConstant.GetFieldsKey, CurrencyConstant.PermissionKey]}?name={model.Entity.FieldName}&fullName={model.Entity.FullName}&roleName={Role.Entity.Name}");
             if (result.Status != System.Net.HttpStatusCode.OK) return;
             CurrentModel = model;
             FieldName = model.DisplayName + "-" + LanguageService[$"{CurrencyConstant.EntitysName}.DataField"];
@@ -58,7 +58,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
             editId = id;
         }
 
-        void stopEdit(ViewFields model)
+        void stopEdit(FieldsView model)
         {
             if (string.IsNullOrEmpty(model.Entity.TableWidth) || int.TryParse(model.Entity.TableWidth, out int result))
             {

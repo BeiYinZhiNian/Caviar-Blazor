@@ -150,7 +150,7 @@ namespace Caviar.Infrastructure.API.BaseApi
         /// </summary>
         /// <param name="modelName"></param>
         /// <returns></returns>
-        protected virtual async Task<List<ViewFields>> GetFields<T>() where T:IUseEntity
+        protected virtual async Task<List<FieldsView>> GetFields<T>() where T:IUseEntity
         {
             var permissionServices = CreateService<RoleFieldServices>();
             var fieldName = typeof(T).Name;

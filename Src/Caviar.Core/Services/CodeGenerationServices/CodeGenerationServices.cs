@@ -59,7 +59,7 @@ namespace Caviar.Core.Services
         /// <param name="fieldsData">实体字段信息</param>
         /// <param name="codeGenerateOptions">代码生成配置信息</param>
         /// <returns></returns>
-        public List<PreviewCode> CodePreview(ViewFields entityData, List<ViewFields> fieldsData, CodeGenerateOptions codeGenerateOptions,CaviarConfig config,string producer)
+        public List<PreviewCode> CodePreview(FieldsView entityData, List<FieldsView> fieldsData, CodeGenerateOptions codeGenerateOptions,CaviarConfig config,string producer)
         {
             List<PreviewCode> list = new List<PreviewCode>();
             var entitieName = codeGenerateOptions.EntitieName;
@@ -131,7 +131,7 @@ namespace Caviar.Core.Services
         /// <param name="codePreview">预览的代码</param>
         /// <param name="producer">生成者</param>
         /// <returns></returns>
-        protected PreviewCode PreviewCodeReplace(ViewFields entityData,List<ViewFields> fieldsData, PreviewCode codePreview,CodeGenerateOptions codeGenerateOptions , string producer)
+        protected PreviewCode PreviewCodeReplace(FieldsView entityData,List<FieldsView> fieldsData, PreviewCode codePreview,CodeGenerateOptions codeGenerateOptions , string producer)
         {
             StringBuilder txt = new StringBuilder(codePreview.Content);
             var baseEntityNaemspace = entityData.Entity.FullName.Replace($".{entityData.Entity.FieldName}", "");
@@ -151,7 +151,7 @@ namespace Caviar.Core.Services
         /// </summary>
         /// <param name="generate"></param>
         /// <returns></returns>
-        protected virtual string CreateFormItem(List<ViewFields> headers)
+        protected virtual string CreateFormItem(List<FieldsView> headers)
         {
             headers = CreateOrUpFilterField(headers);
             var html = "";
@@ -175,7 +175,7 @@ namespace Caviar.Core.Services
         /// <param name="item"></param>
         /// <param name="txt"></param>
         /// <returns></returns>
-        protected virtual bool CreateCurrencyAssembly(ViewFields item, ref string txt)
+        protected virtual bool CreateCurrencyAssembly(FieldsView item, ref string txt)
         {
             var IsWrite = true;
             IsWrite = CreateSpecialAssembly(item, ref txt);
@@ -205,7 +205,7 @@ namespace Caviar.Core.Services
         /// 创建特殊组件
         /// </summary>
         /// <returns></returns>
-        protected virtual bool CreateSpecialAssembly(ViewFields item, ref string txt)
+        protected virtual bool CreateSpecialAssembly(FieldsView item, ref string txt)
         {
             if (item.IsEnum)
             {
@@ -232,7 +232,7 @@ namespace Caviar.Core.Services
         /// </summary>
         /// <param name="item"></param>
         /// <param name="txt"></param>
-        protected virtual bool CreateEnumAssembly(ViewFields item, ref string txt)
+        protected virtual bool CreateEnumAssembly(FieldsView item, ref string txt)
         {
             if (!item.IsEnum) return false;
             txt += $"<RadioGroup @bind-Value='@context.{item.Entity.FieldName}'>";
@@ -250,11 +250,11 @@ namespace Caviar.Core.Services
         /// </summary>
         /// <param name="header"></param>
         /// <returns></returns>
-        protected virtual List<ViewFields> CreateOrUpFilterField(List<ViewFields> headers)
+        protected virtual List<FieldsView> CreateOrUpFilterField(List<FieldsView> headers)
         {
             if (headers == null) return null;
             string[] violation = new string[] { "id", "Uid", "CreatTime", "UpdateTime", "IsDelete", "OperatorCare", "OperatorUp", "ParentId" };
-            var result = new List<ViewFields>();
+            var result = new List<FieldsView>();
             foreach (var item in headers)
             {
                 if (violation.SingleOrDefault(u => u.ToLower() == item.Entity.FieldName.ToLower()) == null)

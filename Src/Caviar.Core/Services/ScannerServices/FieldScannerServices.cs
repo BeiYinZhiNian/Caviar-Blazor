@@ -18,10 +18,10 @@ namespace Caviar.Core.Services
         /// 获取继承了IBaseEntity类的所有字段字段信息
         /// </summary>
         /// <returns></returns>
-        public static List<ViewFields> GetApplicationFields(ILanguageService languageService)
+        public static List<FieldsView> GetApplicationFields(ILanguageService languageService)
         {
             var entityList = CommonHelper.GetEntityList();
-            var fields = new List<ViewFields>();
+            var fields = new List<FieldsView>();
             foreach (var item in entityList)
             {
                 var _field = GetClassFields(item.Name,item.FullName, languageService);
@@ -34,14 +34,14 @@ namespace Caviar.Core.Services
         /// 获取继承了IBaseEntity实体信息
         /// </summary>
         /// <returns></returns>
-        public static List<ViewFields> GetEntitys(ILanguageService languageService)
+        public static List<FieldsView> GetEntitys(ILanguageService languageService)
         {
             var entityList = CommonHelper.GetEntityList();
-            var fields = new List<ViewFields>();
+            var fields = new List<FieldsView>();
             foreach (var item in entityList)
             {
                 
-                fields.Add(new ViewFields() { 
+                fields.Add(new FieldsView() { 
                     DisplayName = languageService[$"{CurrencyConstant.EntitysName}.{item.Name}"],
                     Entity = new SysFields()
                     {
@@ -56,7 +56,7 @@ namespace Caviar.Core.Services
         /// 获取指定实体类信息
         /// </summary>
         /// <returns></returns>
-        public static ViewFields GetEntity(string name, string fullName, ILanguageService languageService)
+        public static FieldsView GetEntity(string name, string fullName, ILanguageService languageService)
         {
             var listFields = GetEntitys(languageService);
             foreach (var item in listFields)
@@ -74,7 +74,7 @@ namespace Caviar.Core.Services
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static List<ViewFields> GetClassFields(string name,string fullName, ILanguageService languageService)
+        public static List<FieldsView> GetClassFields(string name,string fullName, ILanguageService languageService)
         {
             var assemblyList = CommonHelper.GetAssembly();
             Type type = null;
@@ -94,9 +94,9 @@ namespace Caviar.Core.Services
         /// <param name="type"></param>
         /// <param name="isFieldTurnMeaning">是否开启转义，默认开启</param>
         /// <returns></returns>
-        public static List<ViewFields> GetClassFields(Type type,ILanguageService languageService,bool isFieldTurnMeaning = true)
+        public static List<FieldsView> GetClassFields(Type type,ILanguageService languageService,bool isFieldTurnMeaning = true)
         {
-            List<ViewFields> fields = new List<ViewFields>();
+            List<FieldsView> fields = new List<FieldsView>();
             if (type != null)
             {
                 foreach (var item in type.GetRuntimeProperties())
@@ -113,7 +113,7 @@ namespace Caviar.Core.Services
                     var baseType = typeof(SysUseEntity);
                     var dispLayName = languageService[$"{CurrencyConstant.EntitysName}.{item.Name}"];
                     var fieldLen = item.GetCustomAttributes<StringLengthAttribute>()?.Cast<StringLengthAttribute>().SingleOrDefault()?.MaximumLength;
-                    var field = new ViewFields()
+                    var field = new FieldsView()
                     {
                         Entity = new SysFields()
                         {
@@ -147,7 +147,7 @@ namespace Caviar.Core.Services
         /// </summary>
         /// <param name="headers"></param>
         /// <returns></returns>
-        public static ViewFields FieldTurnMeaning(ViewFields headers)
+        public static FieldsView FieldTurnMeaning(FieldsView headers)
         {
             if (TurnMeaningDic == null) return headers;
             if(!TurnMeaningDic.ContainsKey(headers.Entity.FieldName)) return headers;
