@@ -43,12 +43,12 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 创建操作员的名称
         /// </summary>
-        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(256, ErrorMessage = "LengthErrorMsg")]
         public virtual string OperatorCare { get; set; }
         /// <summary>
         /// 创建操作员的名称
         /// </summary>
-        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(256, ErrorMessage = "LengthErrorMsg")]
         public virtual string OperatorUp { get; set; }
         /// <summary>
         /// 备注

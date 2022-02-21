@@ -1,4 +1,5 @@
 ﻿using AntDesign;
+using Caviar.AntDesignUI.Core;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Components;
@@ -7,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
-namespace Caviar.AntDesignUI.Core
+namespace Caviar.AntDesignUI.Shared
 {
     public class CavFormItem: FormItem
     {

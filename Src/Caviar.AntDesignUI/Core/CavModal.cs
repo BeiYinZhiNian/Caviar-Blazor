@@ -17,7 +17,6 @@ namespace Caviar.AntDesignUI.Core
         ModalService Modal;
         UserConfig UserConfig;
         MessageService MessageService;
-        public string ModalStyle { get; set; } = "overflow-y: auto;height: 400px;";
         public CavModal(UserConfig userConfig,ModalService modalService, MessageService messageService)
         {
             UserConfig = userConfig;

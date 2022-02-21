@@ -18,6 +18,7 @@ namespace Caviar.Infrastructure.API
             _roleManager = roleManager;
         }
 
+        [HttpPost]
         public override async Task<IActionResult> CreateEntity(ApplicationRoleView vm)
         {
             var reuslt = await _roleManager.CreateAsync(vm.Entity);

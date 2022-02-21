@@ -7,6 +7,9 @@ namespace Caviar.SharedKernel.Entities
 {
     public class ApplicationUser: IdentityUser<int>, IUseEntity
     {
+        [Required(ErrorMessage = "RequiredErrorMsg")]
+        [StringLength(256, ErrorMessage = "LengthErrorMsg")]
+        public override string UserName { get; set; }
         /// <summary>
         /// 创建时间
         /// </summary>
@@ -22,12 +25,12 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 创建操作员的名称
         /// </summary>
-        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(256, ErrorMessage = "LengthErrorMsg")]
         public string OperatorCare { get; set; }
         /// <summary>
         /// 创建操作员的名称
         /// </summary>
-        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(256, ErrorMessage = "LengthErrorMsg")]
         public string OperatorUp { get; set; }
         /// <summary>
         /// 备注

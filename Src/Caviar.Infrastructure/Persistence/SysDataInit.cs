@@ -170,7 +170,7 @@ namespace Caviar.Infrastructure.Persistence
             var userManager = _serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var user = new ApplicationUser { Email = "1031622947@qq.com", UserName = "admin",UserGroupId = DataId,DataId = DataId};
             var result = await userManager.CreateAsync(user, CommonHelper.SHA256EncryptString("1031622947@qq.COM"));
-            if (!result.Succeeded) throw new Exception("创建用户失败，数据初始化停止");
+            if (!result.Succeeded) throw new Exception("创建用户数据失败，数据初始化停止");
             await userManager.AddToRoleAsync(user, CurrencyConstant.Admin);
         }
 
@@ -179,7 +179,7 @@ namespace Caviar.Infrastructure.Persistence
             var roleManager = _serviceScope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
             var role = new ApplicationRole { Name = CurrencyConstant.Admin ,DataId = DataId ,DataRange = DataRange.All };
             var result = await roleManager.CreateAsync(role);
-            if (!result.Succeeded) throw new Exception("创建用户失败，数据初始化停止");
+            if (!result.Succeeded) throw new Exception("创建角色数据失败，数据初始化停止");
         }
 
         protected virtual async Task<List<SysMenu>> CreateMenu()
