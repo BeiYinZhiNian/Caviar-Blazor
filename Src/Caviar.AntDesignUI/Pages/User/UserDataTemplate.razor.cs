@@ -18,6 +18,11 @@ namespace Caviar.AntDesignUI.Pages.User
             new FormValidationRule() { Type=FormFieldType.Number,Min=1,Message="请为用户分配部门" },
         };
 
+        private FormValidationRule[] EmailRule = new FormValidationRule[]
+        {
+            new FormValidationRule(){ Type=FormFieldType.Email,Required=true,Message="请输入正确的邮箱"},
+        };
+
         protected override async Task OnInitializedAsync()
         {
             ControllerList.Add(CurrencyConstant.SysUserGroupKey);

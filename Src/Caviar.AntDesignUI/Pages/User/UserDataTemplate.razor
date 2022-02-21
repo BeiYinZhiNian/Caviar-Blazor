@@ -20,7 +20,7 @@ Caviar ©2021 Created by 北音执念
     <CavFormItem  FieldName='UserName' FieldRules='@context.Entity'>
         <Input @bind-Value='@context.Entity.UserName' />
     </CavFormItem>
-    <CavFormItem  FieldName='Email' FieldRules='@context.Entity'>
+    <CavFormItem  FieldName='Email' FieldRules='@context.Entity' Rules='EmailRule'>
         <Input @bind-Value='@context.Entity.Email' />
     </CavFormItem>
     <CavFormItem FieldName="UserGroup" Rules='UserGroupRule'>

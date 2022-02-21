@@ -32,12 +32,17 @@ namespace Caviar.AntDesignUI.Shared
             }
             if (FieldRules != null)
             {
-                Rules = GetFormValidationRules(FieldRules, FieldName);
+                var customRules = GetFormValidationRules(FieldRules, FieldName);
+                if(Rules != null)
+                {
+                    customRules.AddRange(Rules);
+                }
+                Rules = customRules.ToArray();
             }
 
         }
 
-        protected virtual FormValidationRule[] GetFormValidationRules(object model, string fieldName)
+        protected virtual List<FormValidationRule> GetFormValidationRules(object model, string fieldName)
         {
             var type = model.GetType();
             var property = type.GetProperty(fieldName);
@@ -81,7 +86,7 @@ namespace Caviar.AntDesignUI.Shared
                     Message = LanguageService[$"{CurrencyConstant.ErrorMessage}.RequiredErrorMsg"].Replace("{fieldName}", LanguageService[$"{CurrencyConstant.EntitysName}.{fieldName}"]),
                 });
             }
-            return formValidationRules.ToArray();
+            return formValidationRules;
         }
     }
 }
