@@ -51,7 +51,10 @@ namespace Caviar.Infrastructure
             {
                 Status = System.Net.HttpStatusCode.InternalServerError,
                 Title = CurrencyConstant.InternalServerError,
-                Detail = "发生未处理异常，请联系管理员在日志中查看，异常id："
+                Detail = new Dictionary<string, string>()
+                {
+                    { "服务器处理异常","发生未处理异常，请联系管理员在日志中查看，异常id："}
+                }
             };
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = 200;

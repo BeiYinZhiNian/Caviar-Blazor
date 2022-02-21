@@ -121,7 +121,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             base.OnActionExecuted(context);
         }
 
-        protected virtual IActionResult Ok(HttpStatusCode status = HttpStatusCode.OK,string title = "Succeeded",string url = null,string detail = null,object data = null)
+        protected virtual IActionResult Ok(HttpStatusCode status = HttpStatusCode.OK,string title = "Succeeded",string url = null,Dictionary<string,string> detail = null,object data = null)
         {
             var resultMst = new ResultMsg<object>
             {

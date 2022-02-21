@@ -94,8 +94,11 @@ namespace Caviar.AntDesignUI.Core
                 result = new ResultMsg<T>()
                 {
                     Title = "请求失败，发生请求错误",
-                    Detail = e.Message,
-                    Status = HttpStatusCode.InternalServerError,
+                    Status = HttpStatusCode.BadRequest,
+                    Detail = new System.Collections.Generic.Dictionary<string, string>()
+                    {
+                        { "请求错误信息", e.Message}
+                    }
                 };
             }
             Response(result);
@@ -120,9 +123,12 @@ namespace Caviar.AntDesignUI.Core
                 case HttpStatusCode.InternalServerError://发生严重错误
                 default:
                     string msg = "";
-                    if (!string.IsNullOrEmpty(result.Detail))
+                    if (result.Detail!=null && result.Detail.Count>0)
                     {
-                        msg += "错误详细信息：" + result.Detail + "<br>";
+                        foreach (var item in result.Detail)
+                        {
+                            msg += $"{item.Key}：{item.Value}<br>";
+                        }
                     }
                     if (!string.IsNullOrEmpty(result.Url))
                     {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 
 namespace Caviar.SharedKernel.Entities
@@ -24,7 +25,7 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 此问题特定的可读说明。
         /// </summary>
-        public string Detail { get; set; } = "";
+        public Dictionary<string,string> Detail { get; set; }
     }
 
     public class ResultMsg<T> : ResultMsg

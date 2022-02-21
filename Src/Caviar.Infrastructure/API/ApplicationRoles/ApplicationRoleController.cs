@@ -26,7 +26,17 @@ namespace Caviar.Infrastructure.API
             {
                 return Ok();
             }
-            return Ok(status: System.Net.HttpStatusCode.BadRequest,title:"角色创建失败",data: reuslt);
+            ResultMsg msg = new ResultMsg()
+            {
+                Title = "角色创建失败",
+                Status = System.Net.HttpStatusCode.BadRequest,
+                Detail = new Dictionary<string, string>()
+            };
+            foreach (var item in reuslt.Errors)
+            {
+                msg.Detail.Add(item.Code, item.Description);
+            }
+            return Ok(msg);
         }
     }
 }

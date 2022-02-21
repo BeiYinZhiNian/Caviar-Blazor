@@ -89,7 +89,10 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
             {
                 ResultStatus = "error";
                 ReusltTitle = result.Title;
-                ResultSubTitle = result.Detail;
+                foreach (var item in result.Detail)
+                {
+                    ResultSubTitle += $"{item.Key}:{item.Value}";
+                }
             }
             OnNextClick();
         }
