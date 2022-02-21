@@ -92,7 +92,7 @@ namespace Caviar.Core.Services
         /// <param name="controllerList"></param>
         /// <returns></returns>
         /// <exception cref="NotificationException"></exception>
-        public async Task<List<SysMenuView>> GetMenus(string crcontrollerName,string[] controllerList)
+        public async Task<List<SysMenuView>> GetApis(string crcontrollerName,string[] controllerList)
         {
             if (crcontrollerName == null)
             {

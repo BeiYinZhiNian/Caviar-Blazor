@@ -50,7 +50,13 @@ namespace Caviar.SharedKernel.Entities
         /// 当前用户信息
         /// </summary>
         public ClaimsPrincipal User { get; set; }
-
+        /// <summary>
+        /// 当前用户详细信息
+        /// </summary>
         public ApplicationUser UserInfo { get; set; }
+        /// <summary>
+        /// 当前用户所有角色
+        /// </summary>
+        public IList<ApplicationRole> ApplicationRoles { get; set; }
     }
 }

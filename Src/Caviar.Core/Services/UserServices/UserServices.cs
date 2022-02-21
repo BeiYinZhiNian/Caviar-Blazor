@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace Caviar.Core.Services
 {
-    public class UserServices<T>:DbServices where T : class
+    public class UserServices:DbServices
     {
         Interactor _interactor;
-        UserManager<T> _userManager;
-        public UserServices(Interactor interactor,UserManager<T> userManager,IAppDbContext appDbContext):base(appDbContext)
+        UserManager<ApplicationUser> _userManager;
+        public UserServices(Interactor interactor,UserManager<ApplicationUser> userManager,IAppDbContext appDbContext):base(appDbContext)
         {
             _interactor = interactor;
             _userManager = userManager;
@@ -42,7 +42,12 @@ namespace Caviar.Core.Services
             var permissionsSet = AppDbContext.DbContext.Set<SysPermission>();
             return permissionsSet.Where(u => roleName.Contains(u.Entity)).Where(whereLambda).ToListAsync();
         }
-
+        /// <summary>
+        /// 保存菜单权限
+        /// </summary>
+        /// <param name="roleName"></param>
+        /// <param name="urls"></param>
+        /// <returns></returns>
         public async Task<int> SavePermissionMenus(string roleName, List<string> urls)
         {
             var permissionMenus = await GetPermissions(new List<string>() { roleName }, u => u.PermissionType == PermissionType.RoleMenus);
@@ -85,7 +90,7 @@ namespace Caviar.Core.Services
             return sysPermissions.Select(u => u.Permission).ToList();
         }
 
-        public async Task<T> GetUserInfo()
+        public async Task<ApplicationUser> GetUserInfo()
         {
             if (!_interactor.User.Identity.IsAuthenticated) return null;
             var user = await _userManager.FindByNameAsync(_interactor.User.Identity.Name);

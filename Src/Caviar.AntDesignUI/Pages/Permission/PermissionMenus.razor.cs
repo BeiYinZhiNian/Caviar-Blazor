@@ -19,7 +19,6 @@ namespace Caviar.AntDesignUI.Pages.Permission
         List<SysMenuView> Menus { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            ControllerList.Add(CurrencyConstant.PermissionKey);
             await base.OnInitializedAsync();
             await GetSelectMenus();//获取已选择数据
         }

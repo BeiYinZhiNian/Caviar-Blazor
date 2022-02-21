@@ -117,7 +117,7 @@
       "Action": "操作",
       "GetFields": "获取字段",
       "GetEntity": "获取单体",
-      "GetMenus": "获取菜单列表",
+      "GetMenus": "获取API列表",
       "GetMenuBar": "获取菜单栏",
       "Login": "登录",
       "Logout": "退出",
@@ -150,7 +150,11 @@
       "Field": "字段",
       "User": "用户",
       "Role": "角色",
-      "UserGroup": "用户组"
+      "UserGroup": "用户组",
+      "Level": "本级",
+      "Subordinate": "本级和下级",
+      "All": "全部",
+      "Custom": "自定义"
     },
     "ExceptionMessage": {
       "Unauthorized": "未取得访问权限",

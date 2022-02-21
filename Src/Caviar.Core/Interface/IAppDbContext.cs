@@ -83,21 +83,21 @@ namespace Caviar.Core.Interface
         /// <param name="isDataPermissions">是否开启数据权限</param>
         /// <param name="isRecycleBin">是否读取回收站数据</param>
         /// <returns></returns>
-        public Task<List<T>> GetAllAsync<T>(bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IUseEntity, new();
+        public Task<List<T>> GetAllAsync<T>(bool isNoTracking = true) where T : class, IUseEntity, new();
         /// <summary>
         /// 根据条件获取实体
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public IQueryable<T> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IUseEntity, new();
+        public IQueryable<T> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IUseEntity, new();
         /// <summary>
         /// 根据条件获取单个实体
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public Task<T> SingleOrDefaultAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IUseEntity, new();
+        public Task<T> SingleOrDefaultAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IUseEntity, new();
         /// <summary>
         /// 根据条件获取首个实体
         /// </summary>
@@ -105,7 +105,7 @@ namespace Caviar.Core.Interface
         /// <param name="where"></param>
         /// <param name="isNoTracking"></param>
         /// <returns></returns>
-        public Task<T> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IUseEntity, new();
+        public Task<T> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IUseEntity, new();
         /// <summary>
         /// 分页查询异步
         /// </summary>
@@ -115,7 +115,7 @@ namespace Caviar.Core.Interface
         /// <param name="pageSize">每页大小</param>
         /// <param name="isOrder">排序正反</param>
         /// <returns></returns>
-        public Task<PageData<T>> GetPageAsync<T, TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IUseEntity, new();
+        public Task<PageData<T>> GetPageAsync<T, TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true) where T : class, IUseEntity, new();
         /// <summary>
         /// 执行sql，请注意参数的检查防止sql注入
         /// </summary>

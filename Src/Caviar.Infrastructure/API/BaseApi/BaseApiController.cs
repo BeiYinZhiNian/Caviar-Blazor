@@ -25,9 +25,11 @@ namespace Caviar.Infrastructure.API.BaseApi
 
         protected ILanguageService LanguageService { get; set; }
 
-        protected UserServices<ApplicationUser> UserServices { get; set; }
+        protected UserServices UserServices { get; set; }
 
         protected List<string> PermissionUrls { get; private set; }
+
+        protected RoleServices RoleServices { get; set; }
 
         protected List<string> IgnoreUrl => new List<string>() { 
             UrlConfig.CurrentUserInfo,
@@ -45,11 +47,14 @@ namespace Caviar.Infrastructure.API.BaseApi
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             Interactor = CreateService<Interactor>();
-            UserServices = CreateService<UserServices<ApplicationUser>>();
+            UserServices = CreateService<UserServices>();
+            RoleServices = CreateService<RoleServices>();
             Interactor.Stopwatch.Start();
             //用户信息
             Interactor.User = context.HttpContext.User;
             Interactor.UserInfo = await UserServices.GetUserInfo();
+            var roles = await UserServices.GetRoles();
+            Interactor.ApplicationRoles = await RoleServices.GetRoles(roles);
             //获取ip地址
             Interactor.Current_Ipaddress = context.HttpContext.GetUserIp();
             //获取完整Url
@@ -60,6 +65,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             Interactor.HttpContext = HttpContext;
             //请求参数
             Interactor.ActionArguments = context.ActionArguments;
+
             
             //设置语言信息
             var acceptLanguage = context.HttpContext.Request.Cookies.SingleOrDefault(c => c.Key == CurrencyConstant.LanguageHeader).Value;

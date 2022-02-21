@@ -17,15 +17,16 @@ namespace Caviar.Infrastructure.Persistence
     public class ApplicationDbContext : IAppDbContext
     {
         public IDbContext DbContext { get;private set; }
-        protected Interactor Interactor { get; private set; }
+        private Interactor _interactor;
+        private ILanguageService _languageService;
 
-        protected ILanguageService LanguageService { get; set; }
-
-        public ApplicationDbContext(IDbContext identityDbContext, Interactor interactor, ILanguageService languageService)
+        public ApplicationDbContext(IDbContext identityDbContext, 
+            Interactor interactor, 
+            ILanguageService languageService)
         {
             DbContext = identityDbContext;
-            Interactor = interactor;
-            LanguageService = languageService;
+            _interactor = interactor;
+            _languageService = languageService;
         }
 
 
@@ -33,7 +34,7 @@ namespace Caviar.Infrastructure.Persistence
         {
             if (entity == null)
             {
-                var errorMsg = LanguageService[$"{CurrencyConstant.AppNull}.Db"];
+                var errorMsg = _languageService[$"{CurrencyConstant.AppNull}.Db"];
                 var name = typeof(T).Name;
                 errorMsg = errorMsg.Replace("{entityName}", name);
                 throw new DbException(errorMsg);
@@ -196,9 +197,9 @@ namespace Caviar.Infrastructure.Persistence
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public virtual Task<List<T>> GetAllAsync<T>(bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IUseEntity, new()
+        public virtual Task<List<T>> GetAllAsync<T>(bool isNoTracking = true) where T : class, IUseEntity, new()
         {
-            return GetContext<T>(isNoTracking, isDataPermissions, isRecycleBin).ToListAsync();
+            return GetContext<T>(isNoTracking).ToListAsync();
         }
         /// <summary>
         /// 获取指定页数据
@@ -212,9 +213,9 @@ namespace Caviar.Infrastructure.Persistence
         /// <param name="isOrder"></param>
         /// <param name="isNoTracking"></param>
         /// <returns></returns>
-        public virtual async Task<PageData<T>> GetPageAsync<T, TOrder>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TOrder>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IUseEntity, new()
+        public virtual async Task<PageData<T>> GetPageAsync<T, TOrder>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TOrder>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true) where T : class, IUseEntity, new()
         {
-            IQueryable<T> data = GetContext<T>(isNoTracking, isDataPermissions, isRecycleBin);
+            IQueryable<T> data = GetContext<T>(isNoTracking);
             data = isOrder ?
                 data.OrderBy(orderBy).OrderByDescending(u => u.CreatTime) :
                 data.OrderByDescending(orderBy).OrderByDescending(u => u.CreatTime);
@@ -241,9 +242,9 @@ namespace Caviar.Infrastructure.Persistence
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual IQueryable<T> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IUseEntity, new()
+        public virtual IQueryable<T> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IUseEntity, new()
         {
-            return GetContext<T>(isNoTracking, isDataPermissions, isRecycleBin).Where(where);
+            return GetContext<T>(isNoTracking).Where(where);
         }
         /// <summary>
         /// 根据条件获取单个实体
@@ -251,9 +252,9 @@ namespace Caviar.Infrastructure.Persistence
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual Task<T> SingleOrDefaultAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IUseEntity, new()
+        public virtual Task<T> SingleOrDefaultAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IUseEntity, new()
         {
-            return GetContext<T>(isNoTracking, isDataPermissions, isRecycleBin).Where(where).SingleOrDefaultAsync();
+            return GetContext<T>(isNoTracking).Where(where).SingleOrDefaultAsync();
         }
         /// <summary>
         /// 根据条件获取首个单个实体
@@ -261,9 +262,9 @@ namespace Caviar.Infrastructure.Persistence
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual Task<T> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IUseEntity, new()
+        public virtual Task<T> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IUseEntity, new()
         {
-            return GetContext<T>(isNoTracking, isDataPermissions, isRecycleBin).Where(where).FirstOrDefaultAsync();
+            return GetContext<T>(isNoTracking).Where(where).FirstOrDefaultAsync();
         }
 
 
@@ -292,11 +293,11 @@ namespace Caviar.Infrastructure.Persistence
                     case EntityState.Deleted:
                         break;
                     case EntityState.Modified:
-                        baseEntity.OperatorUp = Interactor.UserInfo.UserName;
+                        baseEntity.OperatorUp = _interactor.UserInfo.UserName;
                         baseEntity.UpdateTime = DateTime.Now;
                         var entityType = entity.GetType();
                         var baseType = typeof(SysUseEntity);
-                        var fields = FieldScannerServices.GetClassFields(baseType, LanguageService);
+                        var fields = FieldScannerServices.GetClassFields(baseType, _languageService);
                         foreach (var fieldItem in fields)
                         {
                             switch (fieldItem.Entity.FieldName.ToLower())
@@ -320,8 +321,8 @@ namespace Caviar.Infrastructure.Persistence
                         break;
                     case EntityState.Added:
                         baseEntity.CreatTime = DateTime.Now;
-                        baseEntity.OperatorCare = Interactor.UserInfo.UserName;
-                        baseEntity.DataId = Interactor.UserInfo.UserGroupId;
+                        baseEntity.OperatorCare = _interactor.UserInfo.UserName;
+                        baseEntity.DataId = _interactor.UserInfo.UserGroupId;
                         break;
                     default:
                         break;
@@ -356,22 +357,61 @@ namespace Caviar.Infrastructure.Persistence
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="isNoTracking">是否跟踪上下文</param>
-        /// <param name="isDataPermissions">是否启动数据权限</param>
-        /// <param name="isRecycleBin">是否获取回收站数据</param>
         /// <returns></returns>
-        private IQueryable<T> GetContext<T>(bool isNoTracking = true, bool isDataPermissions = true, bool isRecycleBin = false) where T : class, IUseEntity
+        private IQueryable<T> GetContext<T>(bool isNoTracking = true) where T : class, IUseEntity
         {
             var set = DbContext.Set<T>();
-            IQueryable<T> query;
-            query = set.Where(u => u.IsDelete == isRecycleBin);
+            var roleRange = GetRoleDataRange(_interactor.ApplicationRoles);
+            var dataRange = GetDataRange(roleRange).Result;
+            dataRange.Add(0);//公共访问数据
+            IQueryable<T> query = set.Where(u=> dataRange.Contains(u.DataId));
             if (isNoTracking)
             {
                 query = query.AsNoTracking();
             }
-            if (isDataPermissions)
-            {
-            }
             return query;
+        }
+
+        private Dictionary<DataRange, int[]> GetRoleDataRange(IList<ApplicationRole> roles)
+        {
+            var roleRange = new Dictionary<DataRange, int[]>();
+            foreach (var item in roles)
+            {
+                int[] data = null;
+                if (item.DataRange == DataRange.Custom)
+                {
+                    data = item.DataList.Split(";").Select(u => int.Parse(u)).ToArray();
+                }
+                roleRange.Add(item.DataRange, null);
+            }
+            return roleRange;
+        }
+
+        private async Task<List<int>> GetDataRange(Dictionary<DataRange,int[]> dataRanges)
+        {
+            List<int> ranges = new List<int>();
+            var set = DbContext.Set<SysUserGroup>();
+            var groupId = _interactor.UserInfo.UserGroupId;
+            foreach (var dataRange in dataRanges)
+            {
+                switch (dataRange.Key)
+                {
+                    case DataRange.Level:
+                        ranges.Add(groupId);
+                        break;
+                    case DataRange.Subordinate:
+                        ranges.Add(groupId);
+                        var groups = set.Where(u => u.ParentId == groupId);
+                        ranges.AddRange(ranges);
+                        break;
+                    case DataRange.Custom:
+                        ranges.AddRange(dataRange.Value);
+                        break;
+                    case DataRange.All:
+                        return await set.Select(u=>u.Id).ToListAsync();
+                }
+            }
+            return ranges.ToList();
         }
     }
 }

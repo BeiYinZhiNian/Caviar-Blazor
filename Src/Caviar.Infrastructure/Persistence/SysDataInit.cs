@@ -22,7 +22,7 @@ namespace Caviar.Infrastructure.Persistence
         IDbContext _dbContext;
         IServiceScope _serviceScope;
         ILanguageService _languageService;
-        private int DataId = 1;//数据权限
+        int DataId = 1;//数据权限id
         public SysDataInit(IServiceProvider provider)
         {
             _serviceScope = provider.CreateScope();
@@ -43,7 +43,6 @@ namespace Caviar.Infrastructure.Persistence
                 var menu = await set.SingleOrDefaultAsync(u => u.Url == item.Url);
                 if (menu == null)
                 {
-                    item.DataId = DataId;
                     _dbContext.Add(item);
                 }
             }
@@ -193,7 +192,6 @@ namespace Caviar.Infrastructure.Persistence
                     {
                         Key = CurrencyConstant.SysManagementKey,
                         Icon = "windows",
-                        DataId = DataId ,
                     }
                     
                 },
@@ -206,7 +204,6 @@ namespace Caviar.Infrastructure.Persistence
                         MenuType = MenuType.Menu,
                         Url = UrlConfig.Home,
                         Number = "10",
-                        DataId = DataId ,
                     }
                     
                 },
@@ -219,7 +216,6 @@ namespace Caviar.Infrastructure.Persistence
                         Icon = "code",
                         Url = $"{CurrencyConstant.CodeGenerationKey}/{CurrencyConstant.Index}",
                         ControllerName = CurrencyConstant.CodeGenerationKey,
-                        DataId = DataId ,
                     },
                     Children = new List<SysMenuView>()
                     {
@@ -232,7 +228,6 @@ namespace Caviar.Infrastructure.Persistence
                                 TargetType = TargetType.Callback,
                                 ControllerName = CurrencyConstant.CodeGenerationKey,
                                 ButtonPosition = ButtonPosition.Row,
-                                DataId = DataId ,
                             }
                         }
                     }
@@ -245,7 +240,6 @@ namespace Caviar.Infrastructure.Persistence
                         Key = "API",
                         MenuType = MenuType.API,
                         ControllerName = "API",
-                        DataId = DataId ,
                     }
                 }
             };
@@ -269,7 +263,6 @@ namespace Caviar.Infrastructure.Persistence
                 {
                     item.Icon = value;
                 }
-                item.DataId = DataId;
                 item.ParentId = menus.Single(u => u.Entity.Key == CurrencyConstant.SysManagementKey).Id;
             }
             await _dbContext.SaveChangesAsync();
@@ -292,7 +285,6 @@ namespace Caviar.Infrastructure.Persistence
                 foreach (var menu_item in item)
                 {
                     menu_item.ParentId = id;
-                    menu_item.DataId = DataId;
                     switch (menu_item.Key)
                     {
                         case CurrencyConstant.CreateEntityKey:
@@ -346,7 +338,6 @@ namespace Caviar.Infrastructure.Persistence
                             ParentId = sysMenu.Id,
                             Number = "996",
                             MenuType = MenuType.Button,
-                            DataId = DataId,
                         },
                         new SysMenu()
                         {
@@ -358,7 +349,6 @@ namespace Caviar.Infrastructure.Persistence
                             ParentId = sysMenu.Id,
                             Number = "996",
                             MenuType = MenuType.Button,
-                            DataId = DataId,
                         }
                     };
                     await _dbContext.AddRangeAsync(menus);
@@ -375,7 +365,6 @@ namespace Caviar.Infrastructure.Persistence
             foreach (var item in sysMenuViews)
             {
                 item.Entity.ParentId = parentId;
-                item.Entity.DataId = DataId;
                 _dbContext.Add(item.Entity);
                 if (item.Children != null)
                 {

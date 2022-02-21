@@ -89,13 +89,14 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         Subordinate,
         /// <summary>
+        /// 自定义
+        /// </summary>
+        Custom,
+        /// <summary>
         /// 所有数据权限
         /// </summary>
         All,
-        /// <summary>
-        /// 自定义
-        /// </summary>
-        Custom
+        
     }
 
 

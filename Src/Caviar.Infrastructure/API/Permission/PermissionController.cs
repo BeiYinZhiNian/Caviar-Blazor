@@ -17,16 +17,14 @@ namespace Caviar.Infrastructure.API.Permission
 {
     public partial class PermissionController : BaseApiController
     {
-        private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly RoleFieldServices _roleFieldServices;
         private readonly SysMenuServices _sysMenuServices;
-        private readonly UserServices<ApplicationUser> _userServices;
+        private readonly UserServices _userServices;
         public PermissionController(RoleManager<ApplicationRole> roleManager, 
             RoleFieldServices roleFieldServices,
             SysMenuServices sysMenuServices,
-            UserServices<ApplicationUser> userServices)
+            UserServices userServices)
         {
-            _roleManager = roleManager;
             _roleFieldServices = roleFieldServices;
             _sysMenuServices = sysMenuServices;
             _userServices = userServices;

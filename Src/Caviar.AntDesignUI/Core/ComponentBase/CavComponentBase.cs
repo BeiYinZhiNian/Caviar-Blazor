@@ -91,7 +91,7 @@ namespace Caviar.AntDesignUI.Core
             {
                 splicing += item + "|";
             }
-            var result = await HttpService.GetJson<List<SysMenuView>>($"{UrlConfig.GetApiList}?controllerName={ControllerName}&splicing={splicing}");
+            var result = await HttpService.GetJson<List<SysMenuView>>($"{UrlConfig.GetApis}?controllerName={ControllerName}&splicing={splicing}");
             if (result.Status != HttpStatusCode.OK) return null;
             return result.Data;
         }
@@ -161,7 +161,7 @@ namespace Caviar.AntDesignUI.Core
         {
             get
             {
-                var url = APIList?.SingleOrDefault(u => u.Entity.Key.ToLower() == name.ToLower() && u.Entity.ControllerName.ToLower() == controller.ToLower())?.Entity.Url;
+                var url = APIList?.FirstOrDefault(u => u.Entity.Key.ToLower() == name.ToLower() && u.Entity.ControllerName.ToLower() == controller.ToLower())?.Entity.Url;
                 return url;
             }
         }
