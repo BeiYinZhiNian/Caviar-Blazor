@@ -305,7 +305,10 @@ namespace Caviar.SharedKernel.Entities
                     if (enumFields[i].Name == "value__") continue;
                     var value = (T)enumFields[i].GetValue(null);
                     var enumName = languageService[$"{CurrencyConstant.Enum}.{enumFields[i].Name}"];
-                    dic.Add(value, enumName);
+                    if (!dic.ContainsKey(value))
+                    {
+                        dic.Add(value, enumName);
+                    }
                 }
             }
             return dic;
