@@ -94,7 +94,8 @@
       "IsPermission": "是否授权",
       "Model": "模型",
       "DataField": "数据字段",
-      "DataRange": "数据范围"
+      "DataRange": "数据范围",
+      "UserGroup": "部门"
     },
     "ErrorMessage": {
       "LengthErrorMsg": "{fieldName}输入长度不能超过{length}字符",

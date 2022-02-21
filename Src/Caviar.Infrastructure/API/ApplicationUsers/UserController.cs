@@ -10,36 +10,31 @@ using System.Threading.Tasks;
 
 namespace Caviar.Infrastructure.API
 {
-    public partial class ApplicationRoleController
+    public partial class ApplicationUserController
     {
-        private RoleManager<ApplicationRole> _roleManager;
-        public ApplicationRoleController(RoleManager<ApplicationRole> roleManager)
+
+        [HttpPost]
+        public override async Task<IActionResult> CreateEntity(ApplicationUserView vm)
         {
-            _roleManager = roleManager;
+            var result = await _userManager.CreateAsync(vm.Entity);
+            if (result.Succeeded) return Ok();
+            return Error("创建用户失败", result);
         }
 
         [HttpPost]
-        public override async Task<IActionResult> CreateEntity(ApplicationRoleView vm)
+        public override async Task<IActionResult> UpdateEntity(ApplicationUserView vm)
         {
-            var result = await _roleManager.CreateAsync(vm.Entity);
+            var result = await _userManager.UpdateAsync(vm.Entity);
             if (result.Succeeded) return Ok();
-            return Error("创建角色失败", result);
+            return Error("修改用户失败", result);
         }
 
         [HttpPost]
-        public override async Task<IActionResult> UpdateEntity(ApplicationRoleView vm)
+        public override async Task<IActionResult> DeleteEntity(ApplicationUserView vm)
         {
-            var result = await _roleManager.UpdateAsync(vm.Entity);
+            var result = await _userManager.DeleteAsync(vm.Entity);
             if (result.Succeeded) return Ok();
-            return Error("修改角色失败", result);
-        }
-
-        [HttpPost]
-        public override async Task<IActionResult> DeleteEntity(ApplicationRoleView vm)
-        {
-            var result = await _roleManager.DeleteAsync(vm.Entity);
-            if (result.Succeeded) return Ok();
-            return Error("删除角色失败", result);
+            return Error("删除用户失败", result);
         }
 
 

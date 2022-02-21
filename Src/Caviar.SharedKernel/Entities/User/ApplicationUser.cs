@@ -7,9 +7,12 @@ namespace Caviar.SharedKernel.Entities
 {
     public class ApplicationUser: IdentityUser<int>, IUseEntity
     {
+        
         [Required(ErrorMessage = "RequiredErrorMsg")]
-        [StringLength(256, ErrorMessage = "LengthErrorMsg")]
-        public override string UserName { get; set; }
+        public override string UserName { get => base.UserName; set => base.UserName = value; }
+
+        [Required(ErrorMessage = "RequiredErrorMsg")]
+        public override string Email { get => base.Email; set => base.Email = value; }
         /// <summary>
         /// 创建时间
         /// </summary>
@@ -56,6 +59,7 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 所在用户组
         /// </summary>
+        [Required(ErrorMessage = "RequiredErrorMsg")]
         public int UserGroupId { get; set; }
     }
 }

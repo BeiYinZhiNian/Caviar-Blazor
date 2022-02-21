@@ -99,5 +99,6 @@ namespace Caviar.Infrastructure.API
             };
             return Ok(currentUser);
         }
+
     }
 }

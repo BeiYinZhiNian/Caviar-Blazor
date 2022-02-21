@@ -10,7 +10,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.AntDesignUI.Pages.ApplicationRoles
+namespace Caviar.AntDesignUI.Pages.Roles
 {
     public partial class ApplicationRoleDataTemplate
     {

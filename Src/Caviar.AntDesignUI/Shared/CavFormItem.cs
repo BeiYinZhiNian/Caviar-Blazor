@@ -74,6 +74,7 @@ namespace Caviar.AntDesignUI.Shared
             var requiredAttribute = property.GetCustomAttributes<RequiredAttribute>()?.SingleOrDefault();
             if (requiredAttribute != null)
             {
+                Required = true;
                 formValidationRules.Add(new FormValidationRule()
                 {
                     Required = true,

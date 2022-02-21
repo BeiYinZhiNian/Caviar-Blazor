@@ -1,0 +1,53 @@
+@*
+生成者：
+生成时间：2022-01-13 10:09:07
+代码由代码生成器自动生成，更改的代码可能被进行替换
+界面如需更改，建议直接将内容剪切到自己的文件内，保留此空白文件
+Caviar ©2021 Created by 北音执念
+{EntityDisplayName} Data Template
+*@
+@page "/ApplicationUser/CreateEntity"
+@page "/ApplicationUser/UpdateEntity"
+@inherits DataComponentBase<ApplicationUserView,ApplicationUser>
+
+<Form @ref="_meunForm" 
+    LabelColSpan="6"
+    WrapperColSpan="16"
+    Model="@DataSource" 
+    OnFinish="FormSubmit" 
+    ValidateMode="@FormValidateMode.Rules" 
+    ValidateOnChange="true">
+    <CavFormItem  FieldName='UserName' FieldRules='@context.Entity'>
+        <Input @bind-Value='@context.Entity.UserName' />
+    </CavFormItem>
+    <CavFormItem  FieldName='Email' FieldRules='@context.Entity'>
+        <Input @bind-Value='@context.Entity.Email' />
+    </CavFormItem>
+    <CavFormItem FieldName="UserGroup" Rules='UserGroupRule'>
+        <Input @bind-Value='@context.Entity.UserGroupId' Style="display:none;"/>
+        <Dropdown>
+            <Overlay>
+                <Tree ShowIcon DataSource="UserGroupViews"
+                      TitleExpression="x => x.DataItem.Entity.Name"
+                      ChildrenExpression="x => x.DataItem.Children"
+                      IsLeafExpression="x => x.DataItem.Children?.Count == 0"
+                      KeyExpression="x => x.DataItem.Id.ToString()"
+                      OnClick='e=>EventRecord(e)'
+                      TItem="SysUserGroupView">
+                </Tree>
+            </Overlay>
+            <ChildContent>
+                <Button>@ParentMenuName</Button>
+            </ChildContent>
+        </Dropdown>
+    </CavFormItem>
+    <CavFormItem  FieldName='IsDisable' FieldRules='@context.Entity'>
+        <Switch @bind-Value='@context.Entity.IsDisable'/>
+    </CavFormItem>
+    <CavFormItem  FieldName='Number' FieldRules='@context.Entity'>
+        <Input @bind-Value='@context.Entity.Number' />
+    </CavFormItem>
+    <CavFormItem  FieldName='Remark' FieldRules='@context.Entity'>
+        <Input @bind-Value='@context.Entity.Remark' />
+    </CavFormItem>
+</Form>
