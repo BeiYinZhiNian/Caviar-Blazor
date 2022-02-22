@@ -104,7 +104,9 @@
        PageSize="PageSize"
        TItem="TData"
        Loading="Loading"
+       @bind-SelectedRows="SelectedRows"
        TreeChildren="TreeChildren">
+       <Selection  Width="50"/>
     @{
         foreach (var item in ViewFields)
         {

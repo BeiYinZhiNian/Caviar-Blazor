@@ -31,6 +31,25 @@ namespace Caviar.AntDesignUI.Shared
         public string Fixed { get; set; } = "right";
 
         [Parameter]
+        public EventCallback<IEnumerable<TData>> SelectedRowsChanged { get; set; }
+        [Parameter]
+        public IEnumerable<TData> SelectedRows 
+        { 
+            get { return _selectedRows; } 
+            set 
+            {
+                if (_selectedRows == value) return;
+                _selectedRows = value;
+                if (SelectedRowsChanged.HasDelegate)
+                {
+                    SelectedRowsChanged.InvokeAsync(value);
+                }
+            } 
+        }
+
+        IEnumerable<TData> _selectedRows;
+
+        [Parameter]
         public string ScrollX { get; set; }
         /// <summary>
         /// 包含边界

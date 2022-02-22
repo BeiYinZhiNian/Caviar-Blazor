@@ -8,6 +8,13 @@ namespace Caviar.SharedKernel.Entities
 {
     public static class UrlConfig
     {
+        /// <summary>
+        /// 分配用户角色
+        /// </summary>
+        public const string PermissionUserRoles = "Permission/UserRoles";
+        /// <summary>
+        /// 获取菜单栏
+        /// </summary>
         public const string GetMenuBar = "SysMenu/GetMenuBar";
         /// <summary>
         /// 字段权限url
@@ -70,5 +77,9 @@ namespace Caviar.SharedKernel.Entities
         /// 数据范围
         /// </summary>
         public const string DataRange = "SysUserGroup/DataRange";
+        /// <summary>
+        /// 角色列表首页
+        /// </summary>
+        public const string RoleIndex = "ApplicationRole/Index";
     }
 }

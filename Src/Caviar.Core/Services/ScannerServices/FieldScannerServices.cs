@@ -76,6 +76,8 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public static List<FieldsView> GetClassFields(string name,string fullName, ILanguageService languageService)
         {
+            if (string.IsNullOrEmpty(name)) return null;
+            if (string.IsNullOrEmpty(fullName)) return null;
             var assemblyList = CommonHelper.GetAssembly();
             Type type = null;
             foreach (var item in assemblyList)

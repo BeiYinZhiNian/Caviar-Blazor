@@ -43,6 +43,11 @@ namespace Caviar.Infrastructure.Persistence
                 var menu = await set.SingleOrDefaultAsync(u => u.Url == item.Url);
                 if (menu == null)
                 {
+                    var parent = await set.SingleOrDefaultAsync(u=>u.ControllerName == item.ControllerName && u.Key == item.ControllerName);
+                    if (parent != null)
+                    {
+                        item.ParentId = parent.Id;
+                    }
                     _dbContext.Add(item);
                 }
             }
@@ -351,12 +356,28 @@ namespace Caviar.Infrastructure.Persistence
                             MenuType = MenuType.Button,
                         }
                     };
-                    await _dbContext.AddRangeAsync(menus);
-
+                    break;
+                case CurrencyConstant.ApplicationUserKey:
+                    menus = new List<SysMenu>()
+                    {
+                        new SysMenu()
+                        {
+                            ButtonPosition = ButtonPosition.Row,
+                            TargetType = TargetType.EjectPage,
+                            Url = UrlConfig.PermissionUserRoles,
+                            Key = CurrencyConstant.PermissionUserRolesKey,
+                            ControllerName = CurrencyConstant.ApplicationUserKey,
+                            ParentId = sysMenu.Id,
+                            Number = "996",
+                            MenuType = MenuType.Button,
+                        },
+                    };
+                    
                     break;
                 default:
                     break;
             }
+            await _dbContext.AddRangeAsync(menus);
             await _dbContext.SaveChangesAsync();
             return menus;
         }

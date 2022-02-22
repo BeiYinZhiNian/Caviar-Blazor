@@ -103,10 +103,21 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string FieldPermissionsKey = "FieldPermissions";
         /// <summary>
+        /// 用户角色key
+        /// </summary>
+        public const string PermissionUserRolesKey = "PermissionUserRoles";
+        /// <summary>
         /// 菜单权限
         /// </summary>
         public const string MenuPermissionsKey = "MenuPermissions";
-        
+        /// <summary>
+        /// 分配角色
+        /// </summary>
+        public const string AssignRolesKey = "AssignRoles";
+        /// <summary>
+        /// 获取当前用户角色
+        /// </summary>
+        public const string GetCurrentRolesKey = "GetCurrentRoles";
         /// <summary>
         /// 权限key
         /// </summary>

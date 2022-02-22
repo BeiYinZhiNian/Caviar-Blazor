@@ -16,7 +16,7 @@ namespace Caviar.AntDesignUI.Core
         /// <summary>
         /// 数据源
         /// </summary>
-        protected List<ViewT> DataSource { get; set; } = new List<ViewT>();
+        protected List<ViewT> IndexDataSource { get; set; } = new List<ViewT>();
         /// <summary>
         /// 总计
         /// </summary>
@@ -127,7 +127,7 @@ namespace Caviar.AntDesignUI.Core
         {
             var result = await HttpService.PostJson<QueryView, PageData<ViewT>>(Url["FuzzyQuery"], Query);
             if (result.Status != HttpStatusCode.OK) return;
-            DataSource = result.Data.Rows;
+            IndexDataSource = result.Data.Rows;
             Total = result.Data.Total;
             PageIndex = result.Data.PageIndex;
             PageSize = result.Data.PageSize;
@@ -154,7 +154,7 @@ namespace Caviar.AntDesignUI.Core
             //先请求后获取结果，加快请求速度
             Buttons = await buttonTask;
             ViewFields = await fieldsTask;
-            DataSource = await pagesTask;
+            IndexDataSource = await pagesTask;
             Loading = false;
         }
         #endregion

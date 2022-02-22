@@ -41,6 +41,21 @@ namespace Caviar.Infrastructure.API
             return Error("删除用户失败", result);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AssignRoles(IEnumerable<string> roles)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var result = await _userManager.AddToRolesAsync(user, roles);
+            if (result.Succeeded) return Ok();
+            return Error("角色分配失败", result);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetCurrentRoles()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var roles = await _userManager.GetRolesAsync(user);
+            return Ok(roles);
+        }
 
         private IActionResult Error(string title, IdentityResult result)
         {

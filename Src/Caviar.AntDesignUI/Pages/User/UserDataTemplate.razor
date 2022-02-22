@@ -41,6 +41,9 @@ Caviar ©2021 Created by 北音执念
             </ChildContent>
         </Dropdown>
     </CavFormItem>
+    <CavFormItem  FieldName='PhoneNumber' FieldRules='@context.Entity' Rules='PhoneNumberRule'>
+        <Input @bind-Value='@context.Entity.PhoneNumber' />
+    </CavFormItem>
     <CavFormItem  FieldName='IsDisable' FieldRules='@context.Entity'>
         <Switch @bind-Value='@context.Entity.IsDisable'/>
     </CavFormItem>

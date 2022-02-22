@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.AntDesignUI.Pages.Roles
 {
-    public partial class ApplicationRoleDataTemplate
+    public partial class RoleDataTemplate
     {
         protected override async Task OnInitializedAsync()
         {

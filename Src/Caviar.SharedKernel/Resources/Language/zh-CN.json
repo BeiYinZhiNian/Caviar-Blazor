@@ -128,7 +128,8 @@
       "SignInActual": "token登录",
       "GetPermissionMenus": "获取权限菜单",
       "SavePermissionMenus": "保存权限菜单",
-      "SysUserGroup": "部门管理"
+      "SysUserGroup": "部门管理",
+      "PermissionUserRoles": "分配角色"
     },
     "ResuleMsg": {
       "Login Succeeded": "登录成功，欢迎回来",
