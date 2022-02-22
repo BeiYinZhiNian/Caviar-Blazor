@@ -30,10 +30,15 @@ namespace Caviar.Infrastructure.API.BaseApi
         protected List<string> PermissionUrls { get; private set; }
 
         protected RoleServices RoleServices { get; set; }
-
+        /// <summary>
+        /// 忽略url权限
+        /// </summary>
         protected List<string> IgnoreUrl => new List<string>() { 
             UrlConfig.CurrentUserInfo,
-            UrlConfig.SignInActual
+            UrlConfig.SignInActual,
+            UrlConfig.Logout,
+            UrlConfig.LogoutServer,
+            UrlConfig.Login
         };
 
         void SetLanguage(string acceptLanguage)
@@ -99,7 +104,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             if (User.Identity.IsAuthenticated)
             {
                 var msg = LanguageService[$"{CurrencyConstant.ExceptionMessage}.{CurrencyConstant.Unauthorized}"];
-                context.Result = Ok(HttpStatusCode.Unauthorized, msg);
+                context.Result = Ok(HttpStatusCode.Unauthorized, Interactor.Current_Action + msg);
             }
             else
             {

@@ -42,6 +42,10 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string Logout = "ApplicationUser/Logout";
         /// <summary>
+        /// server模式退出登录
+        /// </summary>
+        public const string LogoutServer = "ApplicationUser/LogoutServer";
+        /// <summary>
         /// 用户详细信息
         /// </summary>
         public const string MyDetails = "ApplicationUser/MyDetails";

@@ -16,8 +16,12 @@ namespace Caviar.Infrastructure.API
         [HttpPost]
         public override async Task<IActionResult> CreateEntity(ApplicationUserView vm)
         {
-            var result = await _userManager.CreateAsync(vm.Entity);
-            if (result.Succeeded) return Ok();
+            if (string.IsNullOrEmpty(vm.Entity.PasswordHash))
+            {
+                vm.Entity.PasswordHash = CommonHelper.SHA256EncryptString(CurrencyConstant.DefaultPassword);
+            }
+            var result = await _userManager.CreateAsync(vm.Entity,vm.Entity.PasswordHash);
+            if (result.Succeeded) return Ok("创建用户成功，初始密码：" + CurrencyConstant.DefaultPassword);
             return Error("创建用户失败", result);
         }
 

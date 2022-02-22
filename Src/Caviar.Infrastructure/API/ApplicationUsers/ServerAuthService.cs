@@ -52,7 +52,7 @@ namespace Caviar.Infrastructure.API
                 {
                     data += $"|{returnUrl}";
                 }
-                return new ResultMsg() {Title = _languageService[$"{CurrencyConstant.ResuleMsg}.Login Succeeded"], Url = "/api/ApplicationUser/SignInActual?t=" + Uri.EscapeDataString(data) };
+                return new ResultMsg() {Title = _languageService[$"{CurrencyConstant.ResuleMsg}.Login Succeeded"], Url = $"/api/{UrlConfig.SignInActual}?t=" + Uri.EscapeDataString(data) };
             }
             else
             {
@@ -63,7 +63,7 @@ namespace Caviar.Infrastructure.API
 
         public Task<string> Logout()
         {
-            return Task.FromResult("/api/ApplicationUser/LogoutServer");
+            return Task.FromResult("/api/" + UrlConfig.LogoutServer);
         }
     }
 }

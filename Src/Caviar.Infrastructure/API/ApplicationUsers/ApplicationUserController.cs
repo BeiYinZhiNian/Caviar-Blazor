@@ -21,22 +21,6 @@ namespace Caviar.Infrastructure.API
             _signInManager = signInManager;
         }
 
-        [HttpPost]
-        public virtual async Task<IActionResult> Register(ApplicationUserView model)
-        {
-            var newUser = model.Entity;
-
-            var result = await _userManager.CreateAsync(newUser);
-
-            if (!result.Succeeded)
-            {
-                var errors = result.Errors.Select(x => x.Description);
-
-                return BadRequest(errors);
-
-            }
-            return Ok(title: "Registration succeeded");
-        }
 
         [HttpPost]
         public virtual async Task<IActionResult> Login(UserLogin login, string returnUrl)

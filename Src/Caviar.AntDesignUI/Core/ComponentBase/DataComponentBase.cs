@@ -20,10 +20,6 @@ namespace Caviar.AntDesignUI.Core
             Entity = new T()
         };
 
-
-        [Parameter]
-        public string SuccMsg { get; set; } = "操作成功";
-
         /// <summary>
         /// 模型字段
         /// </summary>
@@ -63,7 +59,7 @@ namespace Caviar.AntDesignUI.Core
             var result = await HttpService.PostJson(SubmitUrl, DataSource);
             if (result.Status == HttpStatusCode.OK)
             {
-                _ = MessageService.Success(SuccMsg);
+                _ = MessageService.Success(result.Title);
                 return true;
             }
             return false;

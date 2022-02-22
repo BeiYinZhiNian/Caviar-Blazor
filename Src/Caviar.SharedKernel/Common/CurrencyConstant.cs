@@ -9,6 +9,7 @@ namespace Caviar.SharedKernel.Entities
 {
     public static class CurrencyConstant
     {
+        public const string DefaultPassword = "123456";
         /// <summary>
         /// 头像文件夹名称
         /// </summary>
