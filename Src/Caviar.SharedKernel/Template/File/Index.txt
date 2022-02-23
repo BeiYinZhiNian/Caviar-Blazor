@@ -10,7 +10,7 @@ Caviar ©2021 Created by 北音执念
 @inherits IndexComponentBase<{EntityName}View>
 
 <CavTableTemplate TData="{EntityName}View"
-               DataSource="DataSource"
+               DataSource="IndexDataSource"
                PageSize="PageSize"
                PageIndex="PageIndex"
                Total="Total"
