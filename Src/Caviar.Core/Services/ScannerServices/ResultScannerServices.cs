@@ -110,6 +110,10 @@ namespace Caviar.Infrastructure
             if (baseType == null) return;
             foreach (PropertyInfo sp in type.GetProperties())//获得类型的属性字段
             {
+                if (sp.PropertyType.IsEnum)//忽略枚举字段
+                {
+                    continue;
+                }
                 if (IgnoreField.FirstOrDefault(u => u.ToLower() == sp.Name.ToLower()) != null) continue; //忽略字段
                 var permissions = PermissionFieldss?.SingleOrDefault(u => u.Permission == (type.FullName + sp.Name));
                 if (permissions == null)//如果为null则标名没有字段权限

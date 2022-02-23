@@ -115,9 +115,9 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string AssignRolesKey = "AssignRoles";
         /// <summary>
-        /// 获取当前用户角色
+        /// 获取指定用户角色
         /// </summary>
-        public const string GetCurrentRolesKey = "GetCurrentRoles";
+        public const string GetUserRoles = "GetUserRoles";
         /// <summary>
         /// 权限key
         /// </summary>

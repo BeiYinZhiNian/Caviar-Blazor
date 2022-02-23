@@ -42,17 +42,26 @@ namespace Caviar.Infrastructure.API
         }
 
         [HttpPost]
-        public async Task<IActionResult> AssignRoles(IList<string> roles)
+        public async Task<IActionResult> AssignRoles(string userName,IList<string> roles)
         {
-            var result = await UserServices.AssignRoles(roles);
+            if (string.IsNullOrEmpty(userName))
+            {
+                throw new NotificationException("请选择用户");
+            }
+            var result = await UserServices.AssignRoles(userName,roles);
             if (result.Succeeded) return Ok();
             return Error("角色分配失败", result);
         }
+
         [HttpGet]
-        public async Task<IActionResult> GetCurrentRoles()
+        public async Task<IActionResult> GetUserRoles(string userName)
         {
-            var user = await _userManager.GetUserAsync(User);
-            var roles = await _userManager.GetRolesAsync(user);
+            if (string.IsNullOrEmpty(userName))
+            {
+                throw new NotificationException("请选择用户");
+            }
+            var user = await UserServices.GetUserInfor(userName);
+            var roles = await UserServices.GetRoles(user);
             return Ok(roles);
         }
 

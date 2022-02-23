@@ -29,7 +29,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
         /// </summary>
         protected async Task<List<ApplicationRoleView>> RoleSelectedRowdInit(List<ApplicationRoleView> source)
         {
-            var currentRoles = await GetCurrentRoles();
+            var currentRoles = await GetUserRoles(DataSource.Entity.UserName);
             var rows = new List<ApplicationRoleView>();
             foreach (var item in source)
             {
@@ -41,9 +41,9 @@ namespace Caviar.AntDesignUI.Pages.Permission
             return rows;
         }
 
-        protected async Task<List<string>> GetCurrentRoles()
+        protected async Task<List<string>> GetUserRoles(string userName)
         {
-            var result = await HttpService.GetJson<List<string>>(Url[CurrencyConstant.GetCurrentRolesKey]);
+            var result = await HttpService.GetJson<List<string>>(Url[CurrencyConstant.GetUserRoles] + $"?userName={userName}");
             if(result.Status == HttpStatusCode.OK)
             {
                 return result.Data;
@@ -67,17 +67,17 @@ namespace Caviar.AntDesignUI.Pages.Permission
 
         public async Task<bool> Validate()
         {
-            return await FormSubmit();
+            return await FormSubmit(DataSource.Entity.UserName);
         }
 
         /// <summary>
         /// 开始表单提交
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<bool> FormSubmit()
+        public virtual async Task<bool> FormSubmit(string userName)
         {
             var data = RoleSelectedRows.Select(u => u.Entity.Name);
-            var result = await HttpService.PostJson(Url[CurrencyConstant.AssignRolesKey], data);
+            var result = await HttpService.PostJson(Url[CurrencyConstant.AssignRolesKey] + $"?userName={userName}", data);
             if (result.Status == HttpStatusCode.OK)
             {
                 _ = MessageService.Success(result.Title);

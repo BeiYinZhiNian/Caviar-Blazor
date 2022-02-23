@@ -218,11 +218,8 @@ namespace Caviar.AntDesignUI.Shared
             base.OnParametersSet();
             if (string.IsNullOrEmpty(ScrollX) && ViewFields?.Count != 0)
             {
-                var count = ViewFields?.Count(u => u.Entity.IsPanel);
-                if(count > 5)
-                {
-                    ScrollX = (count.Value * 200).ToString();
-                }
+                var count = ViewFields?.Count(u => u.Entity.IsPanel && u.IsPermission);
+                ScrollX = (count.Value * 200).ToString();
             }
         }
 

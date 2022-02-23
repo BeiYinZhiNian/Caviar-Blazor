@@ -21,9 +21,9 @@ namespace Caviar.Core.Services
             _userManager = userManager;
         }
 
-        public async Task<IdentityResult> AssignRoles(IList<string> roles)
+        public async Task<IdentityResult> AssignRoles(string userName,IList<string> roles)
         {
-            var user = await GetUserInfo();
+            var user = await GetUserInfor(userName);
             var currentRoles = await GetRoles(user);
             var addRoles = roles.Where(u => !currentRoles.Contains(u));
             var removeRoles = currentRoles.Where(u => !roles.Contains(u));
@@ -46,7 +46,7 @@ namespace Caviar.Core.Services
         }
 
         /// <summary>
-        /// 获取当前用户所有角色
+        /// 获取指定用户所有角色
         /// </summary>
         /// <returns></returns>
         public async Task<IList<string>> GetRoles(ApplicationUser user)
@@ -88,7 +88,7 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public async Task<List<SysPermission>> GetPermissions(Expression<Func<SysPermission, bool>> whereLambda)
         {
-            var user = await GetUserInfo();
+            var user = await GetCurrentUserInfo();
             var roles = await GetRoles(user);
             var permissionsSet = AppDbContext.DbContext.Set<SysPermission>();
             return permissionsSet.Where(u => roles.Contains(u.Entity)).Where(whereLambda).ToList();
@@ -100,7 +100,7 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public async Task<List<SysPermission>> GetPermissions()
         {
-            var user = await GetUserInfo();
+            var user = await GetCurrentUserInfo();
             var roles = await GetRoles(user);
             var permissionsSet = AppDbContext.DbContext.Set<SysPermission>();
             return permissionsSet.Where(u => roles.Contains(u.Entity)).ToList();
@@ -115,11 +115,17 @@ namespace Caviar.Core.Services
             return sysPermissions.Select(u => u.Permission).ToList();
         }
 
-        public async Task<ApplicationUser> GetUserInfo()
+        public async Task<ApplicationUser> GetCurrentUserInfo()
         {
-            if (!_interactor.User.Identity.IsAuthenticated) return null;
             var user = await _userManager.GetUserAsync(_interactor.User);
             return user;
         }
+
+        public async Task<ApplicationUser> GetUserInfor(string userName)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            return user;
+        }
+
     }
 }
