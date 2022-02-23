@@ -1,4 +1,5 @@
-﻿using Caviar.SharedKernel.Entities;
+﻿using Caviar.AntDesignUI.Shared;
+using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -12,33 +13,32 @@ namespace Caviar.AntDesignUI.Pages.Permission
 {
     public partial class PermissionUserRoles : ITableTemplate
     {
-        List<string> CurrentRoles { get; set; }
-        IEnumerable<ApplicationRoleView> RoleSelectedRows;
+        IEnumerable<ApplicationRoleView> RoleSelectedRows {get;set;}
         protected override async Task OnInitializedAsync()
         {
             ControllerName = CurrencyConstant.ApplicationRoleKey;
             ControllerList.Add(CurrencyConstant.ApplicationUserKey);
-            CurrentRoles = await GetCurrentRoles();
-            var taskInit = base.OnInitializedAsync();
-            //CurrentRoles = await taskRoles;
-            await taskInit;
-            RoleSelectedRowdInit();
+            await base.OnInitializedAsync();
+            StateHasChanged();
         }
+
+        
 
         /// <summary>
         /// 初始角色选择
         /// </summary>
-        protected void RoleSelectedRowdInit()
+        protected async Task<List<ApplicationRoleView>> RoleSelectedRowdInit(List<ApplicationRoleView> source)
         {
+            var currentRoles = await GetCurrentRoles();
             var rows = new List<ApplicationRoleView>();
-            foreach (var item in IndexDataSource)
+            foreach (var item in source)
             {
-                if (CurrentRoles.Contains(item.Entity.Name))
+                if (currentRoles.Contains(item.Entity.Name))
                 {
                     rows.Add(item);
                 }
             }
-            RoleSelectedRows = rows;
+            return rows;
         }
 
         protected async Task<List<string>> GetCurrentRoles()
@@ -52,10 +52,12 @@ namespace Caviar.AntDesignUI.Pages.Permission
         }
 
 
-        protected override Task<List<ApplicationRoleView>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
+        protected override async Task<List<ApplicationRoleView>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
             SubmitUrl = UrlConfig.RoleIndex;
-            return base.GetPages(pageIndex, pageSize, isOrder);
+            var pages = await base.GetPages(pageIndex, pageSize, isOrder);
+            RoleSelectedRows = await RoleSelectedRowdInit(pages);
+            return pages;
         }
 
 
@@ -63,9 +65,9 @@ namespace Caviar.AntDesignUI.Pages.Permission
         [Parameter]
         public ApplicationUserView DataSource { get; set; }
 
-        public Task<bool> Validate()
+        public async Task<bool> Validate()
         {
-            return FormSubmit();
+            return await FormSubmit();
         }
 
         /// <summary>

@@ -10,16 +10,15 @@ namespace Caviar.SharedKernel.Entities
 {
     public partial interface IBaseEntity : IDIinjectAtteribute
     {
-
-    }
-
-    public partial interface IUseEntity: IBaseEntity
-    {
         /// <summary>
         /// id
         /// </summary>
         [Key]
         public int Id { get; set; }
+    }
+
+    public partial interface IUseEntity: IBaseEntity
+    {
         /// <summary>
         /// 创建时间
         /// </summary>

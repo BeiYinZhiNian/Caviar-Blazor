@@ -42,10 +42,9 @@ namespace Caviar.Infrastructure.API
         }
 
         [HttpPost]
-        public async Task<IActionResult> AssignRoles(IEnumerable<string> roles)
+        public async Task<IActionResult> AssignRoles(IList<string> roles)
         {
-            var user = await _userManager.GetUserAsync(User);
-            var result = await _userManager.AddToRolesAsync(user, roles);
+            var result = await UserServices.AssignRoles(roles);
             if (result.Succeeded) return Ok();
             return Error("角色分配失败", result);
         }

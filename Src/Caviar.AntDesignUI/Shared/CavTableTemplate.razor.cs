@@ -32,6 +32,7 @@ namespace Caviar.AntDesignUI.Shared
 
         [Parameter]
         public EventCallback<IEnumerable<TData>> SelectedRowsChanged { get; set; }
+
         [Parameter]
         public IEnumerable<TData> SelectedRows 
         { 

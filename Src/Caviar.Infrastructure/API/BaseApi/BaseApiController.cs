@@ -58,7 +58,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             //用户信息
             Interactor.User = context.HttpContext.User;
             Interactor.UserInfo = await UserServices.GetUserInfo();
-            var roles = await UserServices.GetRoles();
+            var roles = await UserServices.GetRoles(Interactor.UserInfo);
             Interactor.ApplicationRoles = await RoleServices.GetRoles(roles);
             //获取ip地址
             Interactor.Current_Ipaddress = context.HttpContext.GetUserIp();
@@ -168,7 +168,8 @@ namespace Caviar.Infrastructure.API.BaseApi
             var fieldName = typeof(T).Name;
             var fullName = typeof(T).FullName;
             var fields = FieldScannerServices.GetClassFields(fieldName, fullName, LanguageService);
-            var roles = await UserServices.GetRoles();
+            var user = await UserServices.GetUserInfo();
+            var roles = await UserServices.GetRoles(user);
             fields = await permissionServices.GetRoleFields(fields, fullName, roles);
             fields = fields.OrderBy(u => u.Entity.Number).ToList();
             return fields;

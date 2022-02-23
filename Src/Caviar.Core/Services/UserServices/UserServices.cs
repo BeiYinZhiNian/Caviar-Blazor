@@ -21,13 +21,36 @@ namespace Caviar.Core.Services
             _userManager = userManager;
         }
 
+        public async Task<IdentityResult> AssignRoles(IList<string> roles)
+        {
+            var user = await GetUserInfo();
+            var currentRoles = await GetRoles(user);
+            var addRoles = roles.Where(u => !currentRoles.Contains(u));
+            var removeRoles = currentRoles.Where(u => !roles.Contains(u));
+            var result = await _userManager.AddToRolesAsync(user, addRoles);
+            if (!result.Succeeded)
+            {
+                return result;
+            }
+            result = await _userManager.RemoveFromRolesAsync(user, removeRoles);
+            if (!result.Succeeded)
+            {
+                var dic = new Dictionary<string, string>();
+                foreach (var item in result.Errors)
+                {
+                    dic.Add(item.Code, item.Description);
+                }
+                throw new NotificationException(new ResultMsg() { Title="移除角色时发生错误",Status = System.Net.HttpStatusCode.BadRequest ,Detail = dic });
+            }
+            return result;
+        }
+
         /// <summary>
         /// 获取当前用户所有角色
         /// </summary>
         /// <returns></returns>
-        public async Task<IList<string>> GetRoles()
+        public async Task<IList<string>> GetRoles(ApplicationUser user)
         {
-            var user = await GetUserInfo();
             if (user == null) return new List<string>();
             var roles = await _userManager.GetRolesAsync(user);
             return roles;
@@ -65,7 +88,8 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public async Task<List<SysPermission>> GetPermissions(Expression<Func<SysPermission, bool>> whereLambda)
         {
-            var roles = await GetRoles();
+            var user = await GetUserInfo();
+            var roles = await GetRoles(user);
             var permissionsSet = AppDbContext.DbContext.Set<SysPermission>();
             return permissionsSet.Where(u => roles.Contains(u.Entity)).Where(whereLambda).ToList();
         }
@@ -76,7 +100,8 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public async Task<List<SysPermission>> GetPermissions()
         {
-            var roles = await GetRoles();
+            var user = await GetUserInfo();
+            var roles = await GetRoles(user);
             var permissionsSet = AppDbContext.DbContext.Set<SysPermission>();
             return permissionsSet.Where(u => roles.Contains(u.Entity)).ToList();
         }
@@ -93,7 +118,7 @@ namespace Caviar.Core.Services
         public async Task<ApplicationUser> GetUserInfo()
         {
             if (!_interactor.User.Identity.IsAuthenticated) return null;
-            var user = await _userManager.FindByNameAsync(_interactor.User.Identity.Name);
+            var user = await _userManager.GetUserAsync(_interactor.User);
             return user;
         }
     }
