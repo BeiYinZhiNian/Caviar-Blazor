@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using AntDesign;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace Caviar.AntDesignUI.Core
         /// <summary>
         /// 传输的数据
         /// </summary>
-        public object Data { get; set; }
+        public ServerToWasmExchange ExchangeData { get; set; }
 
 
         public delegate void JSScheduling(IframeMessage message);
@@ -54,5 +55,12 @@ namespace Caviar.AntDesignUI.Core
     {
         Wasm,
         ForceLoad
+    }
+
+    public class ServerToWasmExchange
+    {
+        public string[] SelectedKeys { get; set; }
+        public string[] OpenKeysNav { get; set; }
+        public string[] BreadcrumbItemArr { get; set; }
     }
 }

@@ -3,7 +3,7 @@
     @if (IsDrawer)
     {
         <Drawer Closable="true" Visible="!Collapsed" Placement="left" Title='GetLogo()' OnClose="_=>DrawerClose()">
-            <CavMenu Theme="MenuTheme.Light" InlineCollapsed="false" @bind-BreadcrumbItemCav="BreadcrumbItemCav"></CavMenu>
+            <CavMenu Theme="MenuTheme.Light" InlineCollapsed="false" @bind-BreadcrumbItemCav="BreadcrumbItemArr"></CavMenu>
         </Drawer>
     }
     else
@@ -14,7 +14,7 @@
             <div class="logo" align="center">
                 <img src="@LogoImgSrc" height="32" />
             </div>
-            <CavMenu InlineCollapsed="@Collapsed" @bind-BreadcrumbItemCav="BreadcrumbItemCav"></CavMenu>
+            <CavMenu InlineCollapsed="@Collapsed" @bind-BreadcrumbItemArr="BreadcrumbItemArr"></CavMenu>
         </Sider>
     }
 
@@ -34,7 +34,7 @@
             </div>
         </Header>
         <div style="margin: 12px 16px;">
-            <CavBreadcrumb BreadcrumbItemCav="@BreadcrumbItemCav"></CavBreadcrumb>
+            <CavBreadcrumb BreadcrumbItemArr="@BreadcrumbItemArr"></CavBreadcrumb>
         </div>
         <Content Style="@UserConfig.ContentStyle">
             @Body

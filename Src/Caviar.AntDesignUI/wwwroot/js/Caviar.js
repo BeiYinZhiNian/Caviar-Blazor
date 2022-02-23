@@ -45,7 +45,7 @@ function createjscssfile(filename, filetype) {
 
 
 
-
+//移除iframe，显示wasm
 function switch_wasm() {
 	wasm_app = document.getElementById("wasm_app");
 	iframe_div = document.getElementById("iframe_div");

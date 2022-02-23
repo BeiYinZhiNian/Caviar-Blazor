@@ -1,4 +1,5 @@
 @using System.Web
+@using Newtonsoft.Json
 <CascadingAuthenticationState>
     <Router @ref="UserConfig.Router" AppAssembly="@typeof(Caviar.AntDesignUI.Config).Assembly"
             AdditionalAssemblies="Config.AdditionalAssemblies"
@@ -76,7 +77,11 @@
 
     private void SwitchWasm_RefChanged(IframeMessage message)
     {
-        NavigationManager.NavigateTo(message.Url);
+        var data = message.ExchangeData;
+        var json = JsonConvert.SerializeObject(data);
+        var parameter = HttpUtility.UrlEncode(json);
+        var url = $"{message.Url}?{CurrencyConstant.JsIframeMessage}={parameter}";
+        NavigationManager.NavigateTo(url);
         JSRuntime.InvokeVoidAsync("switch_wasm");
     }
 
