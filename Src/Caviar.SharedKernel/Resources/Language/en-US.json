@@ -85,6 +85,9 @@
       "CreateEntity": "Create",
       "DeleteEntity": "Delete",
       "UpdateEntity": "Update"
+    },
+    "page": {
+      "SelectIcon": "Please Select Icon"
+    }
     }
   }
-}

@@ -165,6 +165,9 @@
       "null": "该数据为空",
       "Not Found": "未找到该资源",
       "Login expiration": "您的登录已过期，请重新登录"
+    },
+    "Page": {
+      "SelectIcon": "请选择图标"
     }
   }
 }
