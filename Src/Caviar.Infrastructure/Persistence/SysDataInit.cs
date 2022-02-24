@@ -401,7 +401,8 @@ namespace Caviar.Infrastructure.Persistence
             {CurrencyConstant.SysMenuKey,"profile"} ,
             {CurrencyConstant.ApplicationUserKey,"user" },
             {CurrencyConstant.ApplicationRoleKey,"user-switch"},
-            {CurrencyConstant.SysUserGroupKey,"usergroup-add" }
+            {CurrencyConstant.SysUserGroupKey,"usergroup-add" },
+            {CurrencyConstant.SysLogKey,"bug" },
         };
     }
 }

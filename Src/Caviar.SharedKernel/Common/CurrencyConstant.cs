@@ -102,6 +102,10 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string SysUserGroupKey = "SysUserGroup";
         /// <summary>
+        /// 系统日志key
+        /// </summary>
+        public const string SysLogKey = "SysLog";
+        /// <summary>
         /// 字段权限key
         /// </summary>
         public const string FieldPermissionsKey = "FieldPermissions";

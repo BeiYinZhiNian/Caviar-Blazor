@@ -1,14 +1,43 @@
-﻿using Caviar.Infrastructure.API.BaseApi;
+﻿using Caviar.Core.Services;
+using Caviar.Infrastructure.API.BaseApi;
+using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.Infrastructure.API.SysLog
+namespace Caviar.Infrastructure.API
 {
     public class SysLogController : BaseApiController
     {
+
+        LogServices _logServices;
+        public SysLogController(LogServices services)
+        {
+            _logServices = services;
+        }
+
+        /// <summary>
+        /// 只能获取自身字段
+        /// </summary>
+        /// <param name="modelName"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public virtual async Task<IActionResult> GetFields()
+        {
+            var fields = await GetFields<SysLog>();
+            return Ok(fields);
+        }
+
+        [HttpGet]
+        public virtual async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10, bool isOrder = true, bool isNoTracking = true)
+        {
+            var pages = await _logServices.GetPageAsync(null, pageIndex, pageSize, isOrder, isNoTracking);
+            return Ok(pages);
+        }
 
     }
 }

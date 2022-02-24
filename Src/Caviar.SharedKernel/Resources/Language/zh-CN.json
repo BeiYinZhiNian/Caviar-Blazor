@@ -106,6 +106,7 @@
       "SysManagement": "系统管理",
       "ApplicationUser": "用户管理",
       "SysMenu": "菜单管理",
+      "SysLog": "日志管理",
       "CodeGeneration": "代码生成",
       "CreateEntity": "创建",
       "DeleteEntity": "删除",
