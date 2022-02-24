@@ -1,20 +1,23 @@
 ﻿<Menu>
     <MenuItem @key="0" OnClick="UserCenter">
         <a>
-            个人中心
+            @UserConfig.LanguageService[$"{CurrencyConstant.Page}.PersonalCenter"]
         </a>
     </MenuItem>
     <MenuItem @key="1" OnClick="ChangePassword">
         <a>
-            修改密码
+            @UserConfig.LanguageService[$"{CurrencyConstant.Page}.ChangePassword"]
         </a>
     </MenuItem>
     <MenuDivider />
     <MenuItem @key="3" OnClick="BeginSignOut">
-        退出登录
+        @UserConfig.LanguageService[$"{CurrencyConstant.Page}.Logout"]
     </MenuItem>
 </Menu>
 @code {
+    [Inject]
+    UserConfig UserConfig{ get; set; }
+
     [Inject]
     IJSRuntime JSRuntime { get; set; }
     [Inject]
@@ -35,7 +38,7 @@
 
     public async void ChangePassword()
     {
-        await CavModal.Create(UrlConfig.UpdatePwd, "修改密码");
+        await CavModal.Create(UrlConfig.UpdatePwd, UserConfig.LanguageService[$"{CurrencyConstant.Page}.ChangePassword"]);
     }
 
     private async Task BeginSignOut()

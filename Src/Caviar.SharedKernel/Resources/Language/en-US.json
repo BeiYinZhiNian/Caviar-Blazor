@@ -86,8 +86,19 @@
       "DeleteEntity": "Delete",
       "UpdateEntity": "Update"
     },
-    "page": {
-      "SelectIcon": "Please Select Icon"
-    }
+    "Page": {
+      "SelectIcon": "Please Select Icon",
+      "PersonalCenter": "Personal Center",
+      "ChangePassword": "Change Password",
+      "Logout": "Exit",
+      "SelectQueryFields": "Select the fields to query",
+      "Query": "Query",
+      "Yes": "Yes",
+      "No": "No",
+      "Operation": "Operation",
+      "More": "More",
+      "Confirm": "Yes",
+      "Cancel": "Cancel"
     }
   }
+}

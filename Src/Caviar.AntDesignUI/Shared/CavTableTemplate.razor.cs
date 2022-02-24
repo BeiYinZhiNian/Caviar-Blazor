@@ -15,6 +15,9 @@ namespace Caviar.AntDesignUI.Shared
 {
     public partial class CavTableTemplate<TData>
     {
+        [Inject]
+        UserConfig UserConfig { get; set; }
+
         /// <summary>
         /// http帮助类
         /// </summary>

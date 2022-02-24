@@ -167,7 +167,18 @@
       "Login expiration": "您的登录已过期，请重新登录"
     },
     "Page": {
-      "SelectIcon": "请选择图标"
+      "SelectIcon": "请选择图标",
+      "PersonalCenter": "个人中心",
+      "ChangePassword": "修改密码",
+      "Logout": "退出登录",
+      "SelectQueryFields": "选择查询的字段",
+      "Query": "查询",
+      "Yes": "是",
+      "No": "否",
+      "Operation": "操作",
+      "More": "更多",
+      "Confirm": "确认",
+      "Cancel": "取消"
     }
   }
 }
