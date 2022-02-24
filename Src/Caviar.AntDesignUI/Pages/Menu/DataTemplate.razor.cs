@@ -13,11 +13,14 @@ namespace Caviar.AntDesignUI.Pages.Menu
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-            SysMenus = await GetMenus();
+            _sysMenus = await GetMenus();
+            _listMenus = TreeToList(_sysMenus);
             CheckMenuType();
         }
 
-        private List<SysMenuView> SysMenus = new List<SysMenuView>();
+        private List<SysMenuView> _sysMenus = new List<SysMenuView>();
+
+        private List<SysMenuView> _listMenus;
         
 
         async Task<List<SysMenuView>> GetMenus()
@@ -25,26 +28,35 @@ namespace Caviar.AntDesignUI.Pages.Menu
 
             var result = await HttpService.GetJson<PageData<SysMenuView>>($"{Url[CurrencyConstant.SysMenuKey]}?pageSize=100");
             if (result.Status != HttpStatusCode.OK) return null;
-            if (DataSource.ParentId > 0)
-            {
-                List<SysMenuView> listData = new List<SysMenuView>();
-                result.Data.Rows.TreeToList(listData);
-                var parent = listData.SingleOrDefault(u => u.Id == DataSource.ParentId);
-                if (parent != null)
-                {
-                    ParentMenuName = parent.Entity.Key;
-                }
-            }
+            
             return result.Data.Rows;
         }
 
+        List<SysMenuView> TreeToList(List<SysMenuView> menus)
+        {
+            List<SysMenuView> listData = new List<SysMenuView>();
+            menus.TreeToList(listData);
+            if (DataSource.ParentId > 0)
+            {
+                var parent = listData.SingleOrDefault(u => u.Id == DataSource.ParentId);
+                if (parent != null)
+                {
+                    ParentMenuName = parent.DisplayName;
+                }
+            }
+            return listData;
+        }
 
         string ParentMenuName { get; set; } = "无上层目录";
         void EventRecord(TreeEventArgs<SysMenuView> args)
         {
             ParentMenuName = args.Node.Title;
             DataSource.Entity.ParentId = int.Parse(args.Node.Key);
-            DataSource.Entity.ControllerName = args.Node.Key;
+            var parent = _listMenus.SingleOrDefault(u => u.Id == DataSource.Entity.ParentId);
+            if (parent != null)
+            {
+                DataSource.Entity.ControllerName = parent.Entity.ControllerName;
+            }
         }
 
         void RemoveRecord()
