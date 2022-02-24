@@ -19,6 +19,10 @@ namespace Caviar.AntDesignUI
         /// 是否为server模式
         /// </summary>
         public static bool IsServer { get; set; } = true;
+        /// <summary>
+        /// 是否处理过iframeMessage
+        /// </summary>
+        public static bool IsHandleIframeMessage { get; set; }
 
         public static List<Assembly> AdditionalAssemblies;
 

@@ -15,5 +15,9 @@ namespace Caviar.AntDesignUI.Shared
     {
         [Parameter]
         public string[] BreadcrumbItemArr { get; set; }
+
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+
     }
 }

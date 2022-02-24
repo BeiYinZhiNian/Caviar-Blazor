@@ -119,25 +119,26 @@ namespace Caviar.AntDesignUI.Shared
         {
             UserConfig.RefreshMenuAction = Refresh;
             base.OnParametersSet();
+            if (!Config.IsServer && !Config.IsHandleIframeMessage)
+            {
+                var uri = new Uri(NavigationManager.Uri);
+                var query = HttpUtility.ParseQueryString(uri.Query);
+                if (!string.IsNullOrEmpty(query[CurrencyConstant.JsIframeMessage]))
+                {
+                    Config.IsHandleIframeMessage = true;
+                    var iframeMessage = JsonConvert.DeserializeObject<ServerToWasmExchange>(query[CurrencyConstant.JsIframeMessage]);
+                    OpenKeysNav = iframeMessage.OpenKeysNav;//打开nav
+                    SelectedKeys = iframeMessage.SelectedKeys;//选择key
+                    if (BreadcrumbItemArrChanged.HasDelegate)
+                    {
+                        _ = BreadcrumbItemArrChanged.InvokeAsync(iframeMessage.BreadcrumbItemArr);
+                    }
+                }
+            }
         }
 
         protected override async Task OnInitializedAsync()
         {
-            //if (!Config.IsServer)
-            //{
-            //    var uri = new Uri(NavigationManager.Uri);
-            //    var query = HttpUtility.ParseQueryString(uri.Query);
-            //    if (!string.IsNullOrEmpty(query[CurrencyConstant.JsIframeMessage]))
-            //    {
-            //        var iframeMessage = JsonConvert.DeserializeObject<ServerToWasmExchange>(query[CurrencyConstant.JsIframeMessage]);
-            //        OpenKeysNav = iframeMessage.OpenKeysNav;//打开nav
-            //        SelectedKeys = iframeMessage.SelectedKeys;//选择key
-            //        if (BreadcrumbItemArrChanged.HasDelegate)
-            //        {
-            //            _ = BreadcrumbItemArrChanged.InvokeAsync(iframeMessage.BreadcrumbItemArr);
-            //        }
-            //    }
-            //}
             SysMenus = await GetMenus();
         }
 
