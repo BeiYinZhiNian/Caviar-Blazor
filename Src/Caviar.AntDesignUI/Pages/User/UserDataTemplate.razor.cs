@@ -20,7 +20,7 @@ namespace Caviar.AntDesignUI.Pages.User
 
         private FormValidationRule[] PhoneNumberRule = new FormValidationRule[]
         {
-            new FormValidationRule() { Type=FormFieldType.Number,Len=11,Message="请输入正确的手机号"},
+            new FormValidationRule() { Pattern =  @"^1[3456789]\d{9}$", Message="请输入正确的手机号"},
         };
 
         private FormValidationRule[] EmailRule = new FormValidationRule[]
