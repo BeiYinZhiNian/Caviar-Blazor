@@ -7,7 +7,7 @@
             <Space Size=@(("8", "8")) Wrap>
                 <SpaceItem>
                     <Select Mode="multiple"
-                        Placeholder=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.SelectQueryFields"]
+                        Placeholder=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SelectQueryFields}"]
                         @bind-Values="@_selectedValues"
                         TItemValue="string"
                         TItem="string"
@@ -61,7 +61,7 @@
                             }
                             else
                             {
-                                <Input Placeholder="@($"{field.DisplayName}搜索")" @bind-Value="@Query.QueryData[key]" />
+                                <Input Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.FieldSearch}"].Replace("{field.DisplayName}",UserConfig.LanguageService[$"{CurrencyConstant.Menu}.{field.DisplayName}"])" @bind-Value="@Query.QueryData[key]" />
                             }
 
                         </SpaceItem>
@@ -71,7 +71,7 @@
                     <RangePicker TValue="DateTime?[]" ShowTime='@("HH:mm")' OnChange="OnRangeChange" />
                 </SpaceItem>
                 <SpaceItem>
-                    <Button Type="@ButtonType.Primary" OnClick="FuzzyQuery">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.Query"]</Button>
+                    <Button Type="@ButtonType.Primary" OnClick="FuzzyQuery">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Query}"]</Button>
                 </SpaceItem>
             </Space>
         </SpaceItem>
@@ -178,11 +178,11 @@
                                 var value = (bool)obj;
                                 if (value)
                                 {
-                                    <Tag Color="green">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.Yes"]</Tag>
+                                    <Tag Color="green">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Yes}"]</Tag>
                                 }
                                 else
                                 {
-                                    <Tag Color="pink">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.No"]</Tag>
+                                    <Tag Color="pink">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.No}"]</Tag>
                                 }
                             }
                         }
@@ -244,7 +244,7 @@
             List<SysMenuView> but = Buttons.Where(u => u.Entity.ButtonPosition == ButtonPosition.Row && u.Entity.MenuType == MenuType.Button).ToList();
             if (but.Count > 0)
             {
-                <ActionColumn Title=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.Operation"] Width="@(but.Count==2?ActionColumnMaxWidth:ActionColumnMinWidth)" Fixed="@Fixed">
+                <ActionColumn Title=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Operation}"] Width="@(but.Count==2?ActionColumnMaxWidth:ActionColumnMinWidth)" Fixed="@Fixed">
                     @if (but.Count >= 3)
                     {
                         <Dropdown>
@@ -261,7 +261,7 @@
                             </Overlay>
                             <ChildContent>
                                 <a class="ant-dropdown-link" @onclick:preventDefault>
-                                    @UserConfig.LanguageService[$"{CurrencyConstant.Page}.More"] <Icon Type="down" />
+                                    @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.More}"] <Icon Type="down" />
                                 </a>
                             </ChildContent>
                         </Dropdown>
@@ -302,10 +302,10 @@
         RenderFragment render = null;
         if (menu.Entity.IsDoubleTrue)
         {
-            string title = $"确认{menu.DisplayName}该数据吗";
+            string title = UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.DeleteTitle}"].Replace("{menu.DisplayName}",UserConfig.LanguageService[$"{CurrencyConstant.Menu}.{menu.DisplayName}"]);
             render =@<Popconfirm Title='@title'
-                                 OkText=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.Confirm"]
-                                 CancelText=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.Cancel"]
+                                 OkText=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Confirm}"]
+                                 CancelText=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Cancel}"]
                                  OnConfirm="()=>ButtonClick(menu,context)">
         @CreateButton(menu, context)
     </Popconfirm>;

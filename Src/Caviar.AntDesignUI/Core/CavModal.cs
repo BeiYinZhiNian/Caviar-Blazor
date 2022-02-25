@@ -60,8 +60,8 @@ namespace Caviar.AntDesignUI.Core
                     Content = Render(url, title, paramenter),
                     Title = title,
                     Visible = true,
-                    OkText = "确定",
-                    CancelText = "取消",
+                    OkText = @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Confirm}"],
+                    CancelText = @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Cancel}"],
                     DestroyOnClose = true
                 };
                 if (!string.IsNullOrEmpty(title))
@@ -97,7 +97,7 @@ namespace Caviar.AntDesignUI.Core
                         return;
                     }
                 }
-                MessageService.Error($"未找到{title}组件，请检查url地址：{url}");
+                MessageService.Error(UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ComponentErrorMsg}"].Replace("{title}", title).Replace("{url}", url));
             };
 
             ITableTemplate menuAdd;

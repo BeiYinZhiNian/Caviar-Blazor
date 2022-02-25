@@ -76,7 +76,7 @@
       "LengthErrorMsg": "{fieldName} Input length cannot exceed {length} character",
       "RequiredErrorMsg": "{fieldName} Is required"
     },
-    "MenuBar": {
+    "Menu": {
       "Home": "Home",
       "SysManagement": "SysManagement",
       "ApplicationUser": "User",
@@ -98,7 +98,10 @@
       "Operation": "Operation",
       "More": "More",
       "Confirm": "Yes",
-      "Cancel": "Cancel"
+      "Cancel": "Cancel",
+      "DeleteTitle": "Are you sure to {menu.DisplayName} this data",
+      "FieldSearch": "{field.DisplayName} search",
+      "ComponentErrorMsg": "{title} component not found£¬please check URL address£º{url}"
     }
   }
 }
