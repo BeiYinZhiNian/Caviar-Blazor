@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Caviar.SharedKernel.Entities.User;
 using Caviar.SharedKernel.Entities;
+using Caviar.Core.Services;
 
 namespace Caviar.Infrastructure.API
 {
@@ -13,12 +14,14 @@ namespace Caviar.Infrastructure.API
     {
         protected readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-
+        protected readonly LogServices<ApplicationRoleController> _logServices;
         public ApplicationUserController(UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            LogServices<ApplicationRoleController> logServices)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _logServices = logServices;
         }
 
 

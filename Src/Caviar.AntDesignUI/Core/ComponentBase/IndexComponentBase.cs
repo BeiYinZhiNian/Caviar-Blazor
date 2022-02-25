@@ -139,7 +139,7 @@ namespace Caviar.AntDesignUI.Core
         /// <param name="args"></param>
         protected virtual async Task PageIndexChanged(PaginationEventArgs args)
         {
-            await GetPages(args.Page, args.PageSize);
+            IndexDataSource = await GetPages(args.Page, args.PageSize);
         }
         #endregion
 

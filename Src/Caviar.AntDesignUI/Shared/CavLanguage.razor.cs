@@ -31,7 +31,7 @@ namespace Caviar.AntDesignUI.Shared
 
         public void SelectLanguage(MenuItem menuItem)
         {
-            NavigationManager.NavigateTo(JSRuntime, $"api/{UrlConfig.SetCookieLanguage}?acceptLanguage={menuItem.Key}&returnUrl={NavigationManager.Uri}");
+            NavigationManager.NavigateTo(JSRuntime, $"api/{UrlConfig.SetCookieLanguage}?acceptLanguage={menuItem.Key}&returnUrl=/");
         }
     }
 }

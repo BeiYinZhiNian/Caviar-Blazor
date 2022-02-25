@@ -75,7 +75,10 @@ function iframeMessage(message) {
 //iframe外监听
 window.addEventListener('message', function (e) { 
 	console.log(e.data);
-	DotNet.invokeMethod("Caviar.AntDesignUI", "JsNavigation", e.data)
+	DotNet.invokeMethodAsync("Caviar.AntDesignUI", "JsNavigation", e.data)
+		.then(data => {
+			console.log(data);
+		});
 })
 
 

@@ -14,6 +14,8 @@ using Caviar.SharedKernel.Entities;
 using System.Net;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace Caviar.Infrastructure.API.BaseApi
 {
@@ -30,6 +32,7 @@ namespace Caviar.Infrastructure.API.BaseApi
         protected List<string> PermissionUrls { get; private set; }
 
         protected RoleServices RoleServices { get; set; }
+        private LogServices<BaseApiController> LogServices { get; set; }
         /// <summary>
         /// 忽略url权限
         /// </summary>
@@ -54,24 +57,22 @@ namespace Caviar.Infrastructure.API.BaseApi
             Interactor = CreateService<Interactor>();
             UserServices = CreateService<UserServices>();
             RoleServices = CreateService<RoleServices>();
+            LogServices = CreateService<LogServices<BaseApiController>>();
             Interactor.Stopwatch.Start();
-            //用户信息
-            Interactor.User = context.HttpContext.User;
+
             Interactor.UserInfo = await UserServices.GetCurrentUserInfo();
             var roles = await UserServices.GetRoles(Interactor.UserInfo);
             Interactor.ApplicationRoles = await RoleServices.GetRoles(roles);
-            //获取ip地址
-            Interactor.Current_Ipaddress = context.HttpContext.GetUserIp();
-            //获取完整Url
-            Interactor.Current_AbsoluteUri = context.HttpContext.Request.GetAbsoluteUri();
-            //获取请求路径
-            Interactor.Current_Action = context.HttpContext.Request.Path.Value;
-            //请求上下文
-            Interactor.HttpContext = HttpContext;
             //请求参数
             Interactor.ActionArguments = context.ActionArguments;
-
-            
+            LogServices.Infro("请求开始");
+            if(Interactor.Method == "POST")
+            {
+                var actionArguments = context.ActionArguments;
+                var postData = JsonConvert.SerializeObject(actionArguments);
+                var log = LogServices.CreateLog("post请求数据",LogLevel.Information, postData);
+                LogServices.Log(log);
+            }
             //设置语言信息
             var acceptLanguage = context.HttpContext.Request.Cookies.SingleOrDefault(c => c.Key == CurrencyConstant.LanguageHeader).Value;
             SetLanguage(acceptLanguage);
@@ -105,11 +106,13 @@ namespace Caviar.Infrastructure.API.BaseApi
             {
                 var msg = LanguageService[$"{CurrencyConstant.ExceptionMessage}.{CurrencyConstant.Unauthorized}"];
                 context.Result = Ok(HttpStatusCode.Unauthorized, Interactor.Current_Action + msg);
+                LogServices.Infro("url访问未授权");
             }
             else
             {
                 var msg = LanguageService[$"{CurrencyConstant.ExceptionMessage}.{CurrencyConstant.LoginExpiration}"];
                 context.Result = Ok(HttpStatusCode.RedirectMethod, msg,UrlConfig.Login);
+                LogServices.Infro("用户登录过期");
             }
         }
 
@@ -124,12 +127,28 @@ namespace Caviar.Infrastructure.API.BaseApi
             var resultMsg = resultScanner.ResultHandle(result);
             if (resultMsg != null)
             {
+                resultMsg.TraceId = Interactor.TraceId.ToString();
                 resultMsg.Title = LanguageService[$"{CurrencyConstant.ResuleMsg}.{resultMsg.Title}"];
                 ModificationTips(resultMsg);
                 context.Result = base.Ok(resultMsg);
             }
-            Interactor.Stopwatch.Stop();
             base.OnActionExecuted(context);
+            Interactor.Stopwatch.Stop();
+            var timeSpan = Interactor.Stopwatch.Elapsed;
+            if (resultMsg != null)
+            {
+                var log = LogServices.CreateLog(resultMsg.Title, LogLevel.Information, elapsed: timeSpan.TotalMilliseconds, status: resultMsg.Status);
+                LogServices.Log(log);
+            }
+            else
+            {
+                //自定义返回
+                var StatusCode = result.GetObjValue("StatusCode");
+                var code = StatusCode == null ? HttpStatusCode.OK : (HttpStatusCode)StatusCode;
+                var log = LogServices.CreateLog("自定义返回", LogLevel.Information, elapsed: timeSpan.TotalMilliseconds,status: code);
+                LogServices.Log(log);
+            }
+            LogServices.Infro("请求结束");
         }
 
         protected virtual IActionResult Ok(HttpStatusCode status = HttpStatusCode.OK,string title = "Succeeded",string url = null,Dictionary<string,string> detail = null,object data = null)

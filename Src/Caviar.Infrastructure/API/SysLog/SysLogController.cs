@@ -14,10 +14,10 @@ namespace Caviar.Infrastructure.API
     public class SysLogController : BaseApiController
     {
 
-        LogServices _logServices;
-        public SysLogController(LogServices services)
+        LogDataServices _logDataServices;
+        public SysLogController(LogDataServices services)
         {
-            _logServices = services;
+            _logDataServices = services;
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Caviar.Infrastructure.API
         [HttpGet]
         public virtual async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10, bool isOrder = true, bool isNoTracking = true)
         {
-            var pages = await _logServices.GetPageAsync(null, pageIndex, pageSize, isOrder, isNoTracking);
+            var pages = await _logDataServices.GetPageAsync(null, pageIndex, pageSize, isOrder, isNoTracking);
             return Ok(pages);
         }
 

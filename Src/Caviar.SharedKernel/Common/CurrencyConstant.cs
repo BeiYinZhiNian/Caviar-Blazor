@@ -9,6 +9,8 @@ namespace Caviar.SharedKernel.Entities
 {
     public static class CurrencyConstant
     {
+        public const string DefaultUserAgent = "Caviar-Server";
+        public const string UserAgent = "User-Agent";
         /// <summary>
         /// 默认密码
         /// </summary>

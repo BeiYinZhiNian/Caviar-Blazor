@@ -1,13 +1,70 @@
 ﻿using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Security.Claims;
+using System.Text;
 
 namespace Caviar.SharedKernel.Entities
 {
     public partial class Interactor
     {
+        public Interactor(IHttpContextAccessor context)
+        {
+            //用户信息
+            User = context.HttpContext.User;
+            //用户名
+            UserName = context.HttpContext.User.Identity.Name;
+            //获取ip地址
+            Current_Ipaddress = GetUserIp(context.HttpContext);
+            //获取完整Url
+            Current_AbsoluteUri = GetAbsoluteUri(context.HttpContext.Request);
+            //获取请求路径
+            Current_Action = context.HttpContext.Request.Path.Value;
+            //请求上下文
+            HttpContext = context.HttpContext;
+            //浏览器信息
+            Browser = context.HttpContext.Request.Headers[CurrencyConstant.UserAgent];
+            //请求方式
+            Method = context.HttpContext.Request.Method;
+        }
+
+        /// <summary>
+        /// 获取用户的ip地址
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        protected string GetUserIp(HttpContext context)
+        {
+            var ip = context.Request.Headers["X-Forwarded-For"].FirstOrDefault();
+            if (string.IsNullOrEmpty(ip))
+            {
+                ip = context.Connection.RemoteIpAddress.ToString();
+            }
+            return ip;
+        }
+        /// <summary>
+        /// 获取请求的完整地址
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        protected string GetAbsoluteUri(HttpRequest request)
+        {
+            return new StringBuilder()
+                .Append(request.Scheme)
+                .Append("://")
+                .Append(request.Host)
+                .Append(request.PathBase)
+                .Append(request.Path)
+                .Append(request.QueryString)
+                .ToString();
+        }
+        /// <summary>
+        /// 周期事件id
+        /// </summary>
+        public Guid TraceId { get; set; } = Guid.NewGuid();
         /// <summary>
         /// 计时器
         /// </summary>
@@ -45,7 +102,20 @@ namespace Caviar.SharedKernel.Entities
         /// 请求参数
         /// </summary>
         public IDictionary<string, object> ActionArguments { get; set; }
-
+        /// <summary>
+        /// 浏览器信息
+        /// </summary>
+        public string Browser { get; set; }
+        /// <summary>
+        /// 请求方式
+        /// </summary>
+        public string Method { get; set; }
+        /// <summary>
+        /// 用户名称
+        /// 当前用户信息不为null时，取自User
+        /// 当未登录用户进行操作时，需要自定义用户名称,可以自主指定
+        /// </summary>
+        public string UserName { get; set; } = "未登录用户";
         /// <summary>
         /// 当前用户信息
         /// </summary>

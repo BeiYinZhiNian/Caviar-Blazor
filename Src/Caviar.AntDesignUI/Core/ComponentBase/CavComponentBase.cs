@@ -110,7 +110,8 @@ namespace Caviar.AntDesignUI.Core
             }
             if (string.IsNullOrEmpty(SubmitUrl))
             {
-                SubmitUrl = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
+                var uri = new Uri(NavigationManager.Uri);
+                SubmitUrl = uri.LocalPath.Substring(1);
             }
             APIList = await GetApiList();
             Url = new UrlAccessor(APIList);
