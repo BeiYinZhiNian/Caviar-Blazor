@@ -161,6 +161,7 @@ namespace Caviar.SharedKernel.Entities
         public const string Enum = "SharedKernel.Enum";
         public const string ErrorMessage = "SharedKernel.ErrorMessage";
         public const string ExceptionMessage = "SharedKernel.ExceptionMessage";
+        public const string Page = "SharedKernel.Page";
         public const string AppNull = "app.null";
         public const string Admin = "admin";
         /// <summary>

@@ -1,7 +1,7 @@
 ﻿<Modal Visible="@Visible"
        OnOk="HandleOk"
        OnCancel="HandleCancel"
-       Title="请选择图标"
+       Title=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.SelectIcon"]
        Draggable="true"
        DragInViewport="true">
     <CavIconPanel @bind-RadioValue="IconValue"></CavIconPanel>
@@ -9,6 +9,8 @@
 
 
 @code{
+    [Inject]
+    UserConfig UserConfig{ get; set; }
     [Parameter]
     public bool Visible { get; set; }
     [Parameter]
