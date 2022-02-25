@@ -190,5 +190,66 @@ namespace Caviar.SharedKernel.Entities
         /// 为找到资源
         /// </summary>
         public const string NotFound = "Not Found";
+
+        /// <summary>
+        /// 请选择图标
+        /// </summary>
+        public const string SelectIcon = "SelectIcon";
+        /// <summary>
+        /// 个人中心
+        /// </summary>
+        public const string PersonalCenter = "PersonalCenter";
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        public const string ChangePassword = "ChangePassword";
+        /// <summary>
+        /// 退出登录
+        /// </summary>
+        public const string Logout = "Logout";
+        /// <summary>
+        /// 选择查询的字段
+        /// </summary>
+        public const string SelectQueryFields = "SelectQueryFields";
+        /// <summary>
+        /// 查询
+        /// </summary>
+        public const string Query = "Query";
+        /// <summary>
+        /// 是
+        /// </summary>
+        public const string Yes = "Yes";
+        /// <summary>
+        /// 否
+        /// </summary>
+        public const string No = "No";
+        /// <summary>
+        /// 操作
+        /// </summary>
+        public const string Operation = "Operation";
+        /// <summary>
+        /// 更多
+        /// </summary>
+        public const string More = "More";
+        /// <summary>
+        /// 确认
+        /// </summary>
+        public const string Confirm = "Confirm";
+        /// <summary>
+        /// 取消
+        /// </summary>
+        public const string Cancel = "Cancel";
+        /// <summary>
+        /// 确认{menu.DisplayName}该数据吗
+        /// </summary>
+        public const string DeleteTitle = "DeleteTitle";
+        /// <summary>
+        /// {field.DisplayName}搜索
+        /// </summary>
+        public const string FieldSearch = "FieldSearch";
+        /// <summary>
+        /// 未找到{title}组件，请检查url地址：{url}
+        /// </summary>
+        public const string ComponentErrorMsg = "ComponentErrorMsg";
     }
 }
