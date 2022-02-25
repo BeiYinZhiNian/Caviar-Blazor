@@ -35,7 +35,7 @@ namespace Caviar.AntDesignUI.Core
         public static event JSScheduling ForceLoad;
 
         [JSInvokable]
-        public static void JsNavigation(IframeMessage message)
+        public static Task<string> JsNavigation(IframeMessage message)
         {
             switch (message.Pattern)
             {
@@ -48,6 +48,7 @@ namespace Caviar.AntDesignUI.Core
                 default:
                     break;
             }
+            return Task.FromResult("ok");
         }
     }
 
