@@ -21,7 +21,7 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public string Url { get; set; }
 
-        public string TraceId { get; set; } = Guid.NewGuid().ToString();
+        public string TraceId { get; set; }
         /// <summary>
         /// 此问题特定的可读说明。
         /// </summary>

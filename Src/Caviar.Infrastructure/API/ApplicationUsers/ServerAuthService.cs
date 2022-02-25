@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Caviar.SharedKernel.Entities;
+using Caviar.Core.Services;
 
 namespace Caviar.Infrastructure.API
 {
@@ -17,13 +18,19 @@ namespace Caviar.Infrastructure.API
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILanguageService _languageService;
+        private readonly LogServices<ServerAuthService> _logServices;
+        private readonly Interactor _interactor;
 
         public ServerAuthService(IHttpContextAccessor httpContextAccessor,
-            UserManager<ApplicationUser> userManager,ILanguageService languageService)
+            UserManager<ApplicationUser> userManager,ILanguageService languageService,
+            LogServices<ServerAuthService> logServices,
+            Interactor interactor)
         {
             _httpContextAccessor = httpContextAccessor;
             _userManager = userManager;
             _languageService = languageService;
+            _logServices = logServices;
+            _interactor = interactor;
         }
 
         public Task<CurrentUser> CurrentUserInfo()
@@ -52,10 +59,15 @@ namespace Caviar.Infrastructure.API
                 {
                     data += $"|{returnUrl}";
                 }
+                _interactor.UserInfo = user;
+                _interactor.UserName = loginRequest.UserName;
+                _logServices.Infro($"登录成功");
                 return new ResultMsg() {Title = _languageService[$"{CurrencyConstant.ResuleMsg}.Login Succeeded"], Url = $"/api/{UrlConfig.SignInActual}?t=" + Uri.EscapeDataString(data) };
             }
             else
             {
+                _interactor.UserName = loginRequest.UserName;
+                _logServices.Infro($"登录失败");
                 return new ResultMsg() { Title = _languageService[$"{CurrencyConstant.ResuleMsg}.Username and password are invalid"], Status = System.Net.HttpStatusCode.Unauthorized };
             }
         }
@@ -63,6 +75,7 @@ namespace Caviar.Infrastructure.API
 
         public Task<string> Logout()
         {
+            _logServices.Infro($"退出登录");
             return Task.FromResult("/api/" + UrlConfig.LogoutServer);
         }
     }
