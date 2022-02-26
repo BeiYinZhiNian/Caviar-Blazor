@@ -11,6 +11,9 @@ namespace Caviar.AntDesignUI.Pages.User
 {
     public partial class Login
     {
+        [Inject]
+        UserConfig UserConfig { get; set; }
+
         public UserLogin ApplicationUser { get; set; } = new UserLogin() { UserName = "admin",Password= CurrencyConstant.DefaultPassword, RememberMe=true };
 
         [CascadingParameter]

@@ -251,5 +251,114 @@ namespace Caviar.SharedKernel.Entities
         /// 未找到{title}组件，请检查url地址：{url}
         /// </summary>
         public const string ComponentErrorMsg = "ComponentErrorMsg";
+        /// <summary>
+        /// 请选择{DataSource.Entity.Name}可访问的菜单
+        /// </summary>
+        public const string SelectAccessibleMenu = "SelectAccessibleMenu";
+        /// <summary>
+        /// 用户登录
+        /// </summary>
+        public const string UserLogin = "UserLogin";
+        /// <summary>
+        /// 请输入用户名/手机号/邮箱
+        /// </summary>
+        public const string UserName = "UserName";
+        /// <summary>
+        /// 请输入密码
+        /// </summary>
+        public const string Password = "Password";
+        /// <summary>
+        /// 注册账户
+        /// </summary>
+        public const string RegisteredAccount = "RegisteredAccount";
+        /// <summary>
+        /// 忘记密码
+        /// </summary>
+        public const string ForgetPassword = "ForgetPassword";
+        /// <summary>
+        /// 请为用户分配部门
+        /// </summary>
+        public const string UserGroupRuleErrorMsg = "UserGroupRuleErrorMsg";
+        /// <summary>
+        /// 请输入正确的手机号
+        /// </summary>
+        public const string PhoneNumberRuleErrorMsg = "PhoneNumberRuleErrorMsg";
+        /// <summary>
+        /// 请输入正确的邮箱
+        /// </summary>
+        public const string EmailRuleErrorMsg = "EmailRuleErrorMsg";
+        /// <summary>
+        /// 请分配部门
+        /// </summary>
+        public const string ParentMenuName = "ParentMenuName";
+        /// <summary>
+        /// 上一步
+        /// </summary>
+        public const string Back = "Back";
+        /// <summary>
+        /// 下一步
+        /// </summary>
+        public const string Next = "Next";
+        /// <summary>
+        /// 生成
+        /// </summary>
+        public const string Generate = "Generate";
+        /// <summary>
+        /// 生成内容
+        /// </summary>
+        public const string GenerateContent = "GenerateContent";
+        /// <summary>
+        /// 控制器
+        /// </summary>
+        public const string Controller = "Controller";
+        /// <summary>
+        /// 列表页面
+        /// </summary>
+        public const string ListPage = "ListPage";
+        /// <summary>
+        /// 数据模板页面
+        /// </summary>
+        public const string DataTemplatePage = "DataTemplatePage";
+        /// <summary>
+        /// 页面模型
+        /// </summary>
+        public const string PageModel = "PageModel";
+        /// <summary>
+        /// 返回首页
+        /// </summary>
+        public const string ReturnHome = "ReturnHome";
+        /// <summary>
+        /// 继续生成
+        /// </summary>
+        public const string ContinueGeneration = "ContinueGeneration";
+        /// <summary>
+        /// 选择生成模块
+        /// </summary>
+        public const string SelectGenerationModule = "SelectGenerationModule";
+        /// <summary>
+        /// 功能配置
+        /// </summary>
+        public const string FunctionConfiguration = "FunctionConfiguration";
+        /// <summary>
+        /// 查看代码
+        /// </summary>
+        public const string ViewCode = "ViewCode";
+        /// <summary>
+        /// 生成结果
+        /// </summary>
+        public const string GenerateResults = "GenerateResults";
+        /// <summary>
+        /// 代码生成完毕,代码生效需要关闭程序重新编译运行
+        /// </summary>
+        public const string ResultSubTitle = "ResultSubTitle";
+        /// <summary>
+        /// 共
+        /// </summary>
+        public const string Total = "Total";
+        /// <summary>
+        /// 条
+        /// </summary>
+        public const string Record = "Record";
+
     }
 }

@@ -12,10 +12,10 @@ namespace Caviar.AntDesignUI.Pages.User
 {
     public partial class UserDataTemplate
     {
-
+        
         private FormValidationRule[] UserGroupRule = new FormValidationRule[]
         {
-            new FormValidationRule() { Type=FormFieldType.Number,Min=1,Message="请为用户分配部门" },
+            new FormValidationRule() { Type=FormFieldType.Number,Min=1,Message= "请输入正确的手机号" },
         };
 
         private FormValidationRule[] PhoneNumberRule = new FormValidationRule[]

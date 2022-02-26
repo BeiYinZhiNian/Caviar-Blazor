@@ -83,7 +83,7 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
             {
                 ResultStatus = "success";
                 ReusltTitle = result.Title;
-                ResultSubTitle = "代码生成完毕,代码生效需要关闭程序重新编译运行";
+                ResultSubTitle = UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ResultSubTitle}"];
             }
             else
             {
