@@ -128,7 +128,9 @@
       "GenerateResults": "Generate results",
       "ResultSubTitle": "After the code is generated and takes effect, the program needs to be closed and recompiled",
       "Total": "Total",
-      "Record": "Record"
+      "Record": "Record",
+      "NoUpperLevel": "No upper level directory",
+      "DebugErrorMsg": "Code generation can only be carried out in debug mode!"
     }
   }
 }

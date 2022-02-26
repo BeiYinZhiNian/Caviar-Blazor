@@ -12,6 +12,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
     {
         protected override async Task OnInitializedAsync()
         {
+            ParentMenuName = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.NoUpperLevel}"];
             await base.OnInitializedAsync();
             _sysMenus = await GetMenus();
             _listMenus = TreeToList(_sysMenus);
@@ -47,7 +48,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
             return listData;
         }
 
-        string ParentMenuName { get; set; } = "无上层目录";
+        string ParentMenuName { get; set; }
         void EventRecord(TreeEventArgs<SysMenuView> args)
         {
             ParentMenuName = args.Node.Title;
@@ -61,7 +62,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
 
         void RemoveRecord()
         {
-            ParentMenuName = "无上层目录";
+            ParentMenuName = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.NoUpperLevel}"];
             DataSource.Entity.ParentId = 0;
         }
     }

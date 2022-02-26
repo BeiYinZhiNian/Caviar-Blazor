@@ -346,7 +346,5 @@
         if (menu.Entity.IsDoubleTrue) return;
         ButtonClick(menu, context);
     }
-    //string Total = UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Total}"];
-    //string Record = UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Record}"];
-    Func<PaginationTotalContext, string> showTotal = ctx => $"{ctx.Range.Item1}-{ctx.Range.Item2} 共 {ctx.Total} 条";
+    
 }

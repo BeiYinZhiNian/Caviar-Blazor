@@ -206,8 +206,10 @@ namespace Caviar.AntDesignUI.Shared
             RoleAction(CurrRow);
         }
 
+        Func<PaginationTotalContext, string> showTotal;
         protected override Task OnInitializedAsync()
         {
+            showTotal = ctx => $"{ctx.Range.Item1}-{ctx.Range.Item2} {UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Total}"]} {ctx.Total} {UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Record}"]}";
             if (PageIndex == 0)
             {
                 PageIndex = 1;

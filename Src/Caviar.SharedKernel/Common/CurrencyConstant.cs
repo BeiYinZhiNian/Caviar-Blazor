@@ -359,6 +359,14 @@ namespace Caviar.SharedKernel.Entities
         /// 条
         /// </summary>
         public const string Record = "Record";
+        /// <summary>
+        /// 无上层目录
+        /// </summary>
+        public const string NoUpperLevel = "NoUpperLevel";
+        /// <summary>
+        /// 代码生成只能在debug模式下进行！
+        /// </summary>
+        public const string DebugErrorMsg = "DebugErrorMsg";
 
     }
 }

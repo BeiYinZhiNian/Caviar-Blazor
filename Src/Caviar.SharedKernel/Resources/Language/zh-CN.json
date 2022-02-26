@@ -209,8 +209,9 @@
       "GenerateResults": "生成结果",
       "ResultSubTitle": "代码生成完毕,代码生效需要关闭程序重新编译运行",
       "Total": "共",
-      "Record": "条"
-
+      "Record": "条",
+      "NoUpperLevel": "无上层目录",
+      "DebugErrorMsg": "代码生成只能在debug模式下进行！"
     }
   }
 }
