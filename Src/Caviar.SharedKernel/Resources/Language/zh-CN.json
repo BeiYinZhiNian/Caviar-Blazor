@@ -95,7 +95,8 @@
       "Model": "模型",
       "DataField": "数据字段",
       "DataRange": "数据范围",
-      "UserGroup": "部门"
+      "UserGroup": "部门",
+      "IsCover": "是否覆盖"
     },
     "ErrorMessage": {
       "LengthErrorMsg": "{fieldName}输入长度不能超过{length}字符",
@@ -181,7 +182,36 @@
       "Cancel": "取消",
       "DeleteTitle": "确认{menu.DisplayName}该数据吗",
       "FieldSearch": "{field.DisplayName}搜索",
-      "ComponentErrorMsg": "未找到{title}组件，请检查url地址：{url}"
+      "ComponentErrorMsg": "未找到{title}组件，请检查url地址：{url}",
+      "SelectAccessibleMenu": "请选择{DataSource.Entity.Name}可访问的菜单",
+      "UserLogin": "用户登录",
+      "UserName": "请输入用户名/手机号/邮箱",
+      "Password": "请输入密码",
+      "RegisteredAccount": "注册账户",
+      "ForgetPassword": "忘记密码",
+      "UserGroupRuleErrorMsg": "请为用户分配部门",
+      "PhoneNumberRuleErrorMsg": "请输入正确的手机号",
+      "EmailRuleErrorMsg": "请输入正确的邮箱",
+      "ParentMenuName": "请分配部门",
+      "Back": "上一步",
+      "Next": "下一步",
+      "Generate": "生成",
+      "GenerateContent": "生成内容",
+      "Controller": "控制器",
+      "ListPage": "列表页面",
+      "DataTemplatePage": "数据模板页面",
+      "PageModel": "页面模型",
+      "ReturnHome": "返回首页",
+      "ContinueGeneration": "继续生成",
+      "SelectGenerationModule": "选择生成模块",
+      "FunctionConfiguration": "功能配置",
+      "ViewCode": "查看代码",
+      "GenerateResults": "生成结果",
+      "ResultSubTitle": "代码生成完毕,代码生效需要关闭程序重新编译运行",
+      "Total": "共",
+      "Record": "条",
+      "NoUpperLevel": "无上层目录",
+      "DebugErrorMsg": "代码生成只能在debug模式下进行！"
     }
   }
 }

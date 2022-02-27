@@ -14,13 +14,21 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
     public partial class CodeFileGenerate
     {
 
+        public StepItem[] steps;
         protected override async Task OnInitializedAsync()
         {
+            steps = new StepItem[]
+            {
+                new StepItem { Title = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.SelectGenerationModule}"], Content = "" },
+                new StepItem { Title = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.FunctionConfiguration}"], Content = "" },
+                new StepItem { Title = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.ViewCode}"], Content = "" },
+                new StepItem { Title = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.GenerateResults}"], Content = "" }
+            };
             #if DEBUG
             ControllerList.Add("Permission");
             await base.OnInitializedAsync();
             #else
-            await MessageService.Error("代码生成只能在debug模式下进行！");
+            await MessageService.Error(UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.DebugErrorMsg}"]);
             #endif
         }
 
@@ -83,7 +91,7 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
             {
                 ResultStatus = "success";
                 ReusltTitle = result.Title;
-                ResultSubTitle = "代码生成完毕,代码生效需要关闭程序重新编译运行";
+                ResultSubTitle = UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ResultSubTitle}"];
             }
             else
             {

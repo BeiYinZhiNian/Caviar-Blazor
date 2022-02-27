@@ -12,20 +12,20 @@
             <SpaceItem>
                 @if (current > 0 && current < steps.Length - 1)
                 {
-                    <Button Type="@ButtonType.Primary" OnClick="OnPreClick">上一步</Button>
+                    <Button Type="@ButtonType.Primary" OnClick="OnPreClick">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Back}"]</Button>
                 }
             </SpaceItem>
             <SpaceItem>
                 @if (current < steps.Length - 2 && current > 0)
                 {
-                    <Button Type="@ButtonType.Primary" OnClick="OnNextClick">下一步</Button>
+                    <Button Type="@ButtonType.Primary" OnClick="OnNextClick">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Next}"]</Button>
                 }
             </SpaceItem>
             <SpaceItem>
                 @if (current == steps.Length - 2)
                 {
                     <Button Type="@ButtonType.Primary" Danger OnClick=@(() => { OnGenerateClick(); })>
-                        生成
+                        @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Generate}"]
                     </Button>
                 }
 
@@ -58,11 +58,11 @@
                                     @context.EntitieName
                                 </Text>
                             </FormItem>
-                            <FormItem Label="生成内容">
-                                <Checkbox @bind-Value="@context.IsGenerateController">控制器</Checkbox>
-                                <Checkbox @bind-Value="@context.IsGenerateIndex">列表页面</Checkbox>
-                                <Checkbox @bind-Value="@context.IsGenerateDataTemplate">数据模板页面</Checkbox>
-                                <Checkbox @bind-Value="@context.IsGenerateViewModel">页面模型</Checkbox>
+                            <FormItem Label="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.GenerateContent}"]">
+                                <Checkbox @bind-Value="@context.IsGenerateController">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Controller}"]</Checkbox>
+                                <Checkbox @bind-Value="@context.IsGenerateIndex">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ListPage}"]</Checkbox>
+                                <Checkbox @bind-Value="@context.IsGenerateDataTemplate">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.DataTemplatePage}"]</Checkbox>
+                                <Checkbox @bind-Value="@context.IsGenerateViewModel">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.PageModel}"]</Checkbox>
                             </FormItem>
                             <FormItem>
                                 <Switch @bind-Value="@context.IsCover" />
@@ -89,8 +89,8 @@
                         Title="@ReusltTitle"
                         SubTitle="@ResultSubTitle">
                     <Extra>
-                        <Button Type="@ButtonType.Primary" OnClick='()=> { NavigationManager.NavigateTo("/"); }'>返回首页</Button>
-                        <Button OnClick='()=> { current = 0; }'>继续生成</Button>
+                        <Button Type="@ButtonType.Primary" OnClick='()=> { NavigationManager.NavigateTo("/"); }'>@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ReturnHome}"]</Button>
+                        <Button OnClick='()=> { current = 0; }'>@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ContinueGeneration}"]</Button>
                     </Extra>
 
                 </Result>
@@ -125,13 +125,4 @@
     }
 
     public int current { get; set; } = 0;
-
-    public StepItem[] steps =
-    {
-        new StepItem {Title = "选择生成模块", Content = ""},
-        new StepItem {Title = "功能配置", Content = ""},
-        new StepItem {Title = "查看代码", Content = ""},
-        new StepItem {Title = "生成结果", Content = ""}
-    };
-
 }

@@ -4,16 +4,16 @@
     <Content Style="padding: 24px;min-height: 280px;">
         <div class="login-NavLogin">
             <div style="padding:30px">
-                <Card Bordered="true" Title=@("用户登录") Style="width:400px" Hoverable="true">
+                <Card Bordered="true" Title="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.UserLogin}"]" Style="width:400px" Hoverable="true">
                     <Body>
                         <Form Model="@ApplicationUser">
                             <FormItem Label="">
-                                <AntDesign.Input Placeholder="请输入用户名/手机号/邮箱" Size="large" @bind-Value="@context.UserName">
+                                <AntDesign.Input Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.UserName}"]" Size="large" @bind-Value="@context.UserName">
                                     <Prefix><Icon Type="user" /></Prefix>
                                 </AntDesign.Input>
                             </FormItem>
                             <FormItem Label="">
-                                <AntDesign.Input Placeholder="请输入密码" Size="large" @bind-Value="@context.Password" Type="password">
+                                <AntDesign.Input Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Password}"]" Size="large" @bind-Value="@context.Password" Type="password">
                                     <Prefix><Icon Type="lock" /></Prefix>
                                 </AntDesign.Input>
                             </FormItem>
@@ -25,9 +25,9 @@
                                 </SpaceItem>
                                 <SpaceItem>
                                     <div class="other">
-                                        <a class="register">注册账户</a>
+                                        <a class="register">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.RegisteredAccount}"]</a>
                                         <a style="float: right;">
-                                            忘记密码
+                                            @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ForgetPassword}"]
                                         </a>
                                     </div>
                                 </SpaceItem>

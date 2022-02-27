@@ -15,6 +15,7 @@ namespace Caviar.AntDesignUI.Pages.UserGroup
 
         protected override async Task OnInitializedAsync()
         {
+            ParentMenuName = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.NoUpperLevel}"];
             await base.OnInitializedAsync();
             UserGroups = await GetMenus();
         }
@@ -40,7 +41,7 @@ namespace Caviar.AntDesignUI.Pages.UserGroup
             return result.Data.Rows;
         }
 
-        string ParentMenuName { get; set; } = "无上层目录";
+        string ParentMenuName { get; set; }
         void EventRecord(TreeEventArgs<SysUserGroupView> args)
         {
             ParentMenuName = args.Node.Title;
@@ -49,7 +50,7 @@ namespace Caviar.AntDesignUI.Pages.UserGroup
 
         void RemoveRecord()
         {
-            ParentMenuName = "无上层目录";
+            ParentMenuName = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.NoUpperLevel}"];
             DataSource.Entity.ParentId = 0;
         }
     }

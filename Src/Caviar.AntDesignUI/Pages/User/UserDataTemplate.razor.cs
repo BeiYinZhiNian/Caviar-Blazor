@@ -12,24 +12,26 @@ namespace Caviar.AntDesignUI.Pages.User
 {
     public partial class UserDataTemplate
     {
-
-        private FormValidationRule[] UserGroupRule = new FormValidationRule[]
-        {
-            new FormValidationRule() { Type=FormFieldType.Number,Min=1,Message="请为用户分配部门" },
-        };
-
-        private FormValidationRule[] PhoneNumberRule = new FormValidationRule[]
-        {
-            new FormValidationRule() { Pattern =  @"^1[3456789]\d{9}$", Message="请输入正确的手机号"},
-        };
-
-        private FormValidationRule[] EmailRule = new FormValidationRule[]
-        {
-            new FormValidationRule(){ Type=FormFieldType.Email,Required=true,Message="请输入正确的邮箱"},
-        };
+        private FormValidationRule[] UserGroupRule;
+        private FormValidationRule[] PhoneNumberRule;
+        private FormValidationRule[] EmailRule;
 
         protected override async Task OnInitializedAsync()
         {
+            UserGroupRule = new FormValidationRule[]
+            {
+                new FormValidationRule() { Type = FormFieldType.Number, Min = 1, Message = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.UserGroupRuleErrorMsg}"]},
+            };
+            PhoneNumberRule = new FormValidationRule[]
+            {
+                new FormValidationRule() { Pattern = @"^1[3456789]\d{9}$", Message = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.PhoneNumberRuleErrorMsg}"] },
+             };
+            EmailRule = new FormValidationRule[]
+            {
+                new FormValidationRule() { Type = FormFieldType.Email, Required = true, Message = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.EmailRuleErrorMsg}"] },
+             };
+            ParentMenuName = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.ParentMenuName}"];
+
             ControllerList.Add(CurrencyConstant.SysUserGroupKey);
             await base.OnInitializedAsync();
             UserGroupViews = await GetUserGroups();
@@ -56,7 +58,7 @@ namespace Caviar.AntDesignUI.Pages.User
             return result.Data.Rows;
         }
 
-        string ParentMenuName { get; set; } = "请分配部门";
+        string ParentMenuName { get; set; }
         void EventRecord(TreeEventArgs<SysUserGroupView> args)
         {
             ParentMenuName = args.Node.Title;
