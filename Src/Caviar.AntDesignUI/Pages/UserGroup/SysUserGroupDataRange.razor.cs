@@ -20,6 +20,15 @@ namespace Caviar.AntDesignUI.Pages.UserGroup
         {
             await base.OnInitializedAsync();
             UserGroups = await GetMenus();
+            if(DataSource.Entity.DataList != null && DataSource.Entity.DataList.Count() > 0)
+            {
+                var ids = DataSource.Entity.DataList.Split(CurrencyConstant.CustomDataSeparator);
+                foreach (var item in UserGroups)
+                {
+                    item.IsPermission = ids.Contains(item.Id.ToString());
+                }
+            }
+            
         }
 
         private List<SysUserGroupView> UserGroups = new List<SysUserGroupView>();
@@ -27,7 +36,6 @@ namespace Caviar.AntDesignUI.Pages.UserGroup
 
         async Task<List<SysUserGroupView>> GetMenus()
         {
-
             var result = await HttpService.GetJson<PageData<SysUserGroupView>>($"{Url[CurrencyConstant.SysUserGroupKey]}?pageSize=100");
             if (result.Status != HttpStatusCode.OK) return null;
             return result.Data.Rows;
@@ -36,7 +44,14 @@ namespace Caviar.AntDesignUI.Pages.UserGroup
 
         public Task<bool> Validate()
         {
-            throw new NotImplementedException();
+            var ids = UserGroups.Where(u => u.IsPermission).Select(u => u.Id).ToList();
+            StringBuilder dataList = new StringBuilder();
+            foreach (var item in ids)
+            {
+                dataList.Append($"{item.ToString()}{CurrencyConstant.CustomDataSeparator}");
+            }
+            DataSource.Entity.DataList = dataList.ToString();
+            return Task.FromResult(true);
         }
     }
 }

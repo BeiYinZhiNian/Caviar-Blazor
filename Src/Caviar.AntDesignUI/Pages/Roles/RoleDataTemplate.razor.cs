@@ -22,9 +22,9 @@ namespace Caviar.AntDesignUI.Pages.Roles
         [Inject]
         CavModal CavModal { get; set; }
 
-        public async void CheckMenuType()
+        public async void CheckMenuType(DataRange dataRange)
         {
-            if(DataSource.Entity.DataRange == DataRange.Custom)
+            if(dataRange == DataRange.Custom)
             {
                 Dictionary<string, object> paramenter = new Dictionary<string, object>();
                 paramenter.Add("DataSource", DataSource);

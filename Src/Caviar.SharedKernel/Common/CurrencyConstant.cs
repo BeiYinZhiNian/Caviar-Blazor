@@ -9,7 +9,17 @@ namespace Caviar.SharedKernel.Entities
 {
     public static class CurrencyConstant
     {
+        /// <summary>
+        /// 角色自定义数据分隔符
+        /// </summary>
+        public const string CustomDataSeparator = ";";
+        /// <summary>
+        /// 默认server模式的userAgent
+        /// </summary>
         public const string DefaultUserAgent = "Caviar-Server";
+        /// <summary>
+        /// userAgent协议头
+        /// </summary>
         public const string UserAgent = "User-Agent";
         /// <summary>
         /// 默认密码
