@@ -377,6 +377,23 @@ namespace Caviar.SharedKernel.Entities
         /// 代码生成只能在debug模式下进行！
         /// </summary>
         public const string DebugErrorMsg = "DebugErrorMsg";
+        /// <summary>
+        /// 是否覆盖
+        /// </summary>
+        public const string IsCover = "IsCover";
+        /// <summary>
+        /// 代码生成文件未找到，请确认路径是否正确：
+        /// </summary>
+        public const string RouteErrorMsg = "RouteErrorMsg";
+        /// <summary>
+        /// 文件夹为空则不进行任何替换
+        /// </summary>
+        public const string FolderErrorMsg = "FolderErrorMsg";
+        /// <summary>
+        /// 共{count}个文件，写出文件{writeCount}个，跳过文件{skipCount}个，覆盖文件{coverCount}个
+        /// </summary>
+        public const string ResultMsg = "ResultMsg";
+
 
     }
 }

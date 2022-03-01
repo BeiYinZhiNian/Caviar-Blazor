@@ -17,6 +17,11 @@ namespace Caviar.Core.Services
     /// </summary>
     public class CodeGenerationServices : BaseServices
     {
+        private ILanguageService _languageService;
+        public CodeGenerationServices( ILanguageService languageService) : base()
+        {
+            _languageService = languageService;
+        }
 
         public string WriteCodeFile(List<PreviewCode> previewCodes,CodeGenerateOptions codeGenerateOptions)
         {
@@ -36,7 +41,7 @@ namespace Caviar.Core.Services
                 if (!File.Exists(outName) || codeGenerateOptions.IsCover)
                 {
                     if (File.Exists(outName)) coverCount++;
-                    string fileData = "文件夹为空则不进行任何替换";
+                    string fileData = _languageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.FolderErrorMsg}"];
                     if (File.Exists(outName)) fileData = File.ReadAllText(outName);
                     if (!string.IsNullOrEmpty(fileData))
                     {
@@ -49,7 +54,7 @@ namespace Caviar.Core.Services
                     skipCount++;
                 }
             }
-            return $"共{count}个文件，写出文件{writeCount}个，跳过文件{skipCount}个，覆盖文件{coverCount}个";
+            return _languageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.ResultMsg}"].Replace("{count}", count.ToString()).Replace("{writeCount}", writeCount.ToString()).Replace("{skipCount}", skipCount.ToString()).Replace("{coverCount}", coverCount.ToString());
         }
 
         /// <summary>
@@ -108,8 +113,8 @@ namespace Caviar.Core.Services
         {
             string path = $"{AppDomain.CurrentDomain.BaseDirectory}{UrlConfig.CodeGenerateFilePath}/{suffixName}.txt";
             if (!File.Exists(path))
-            {
-                throw new FileNotFoundException("代码生成文件未找到，请确认路径是否正确：" + path);
+            { 
+                throw new FileNotFoundException(_languageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.RouteErrorMsg}"] + path);
             }
             string txt = File.ReadAllText(path);
             string name = entityName + suffixName + extendName;
