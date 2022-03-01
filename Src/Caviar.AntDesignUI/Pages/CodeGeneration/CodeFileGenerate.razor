@@ -64,7 +64,7 @@
                                 <Checkbox @bind-Value="@context.IsGenerateDataTemplate">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.DataTemplatePage}"]</Checkbox>
                                 <Checkbox @bind-Value="@context.IsGenerateViewModel">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.PageModel}"]</Checkbox>
                             </FormItem>
-                            <FormItem>
+                            <FormItem Label="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.IsCover}"]">
                                 <Switch @bind-Value="@context.IsCover" />
                             </FormItem>
                         </Space>

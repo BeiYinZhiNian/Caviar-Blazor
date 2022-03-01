@@ -130,7 +130,11 @@
       "Total": "Total",
       "Record": "Record",
       "NoUpperLevel": "No upper level directory",
-      "DebugErrorMsg": "Code generation can only be carried out in debug mode!"
+      "DebugErrorMsg": "Code generation can only be carried out in debug mode!",
+      "IsCover": "Overwrite the file?",
+      "RouteErrorMsg": "Code generation file not found, please make sure the path is correct:",
+      "FolderErrorMsg": "If the folder is empty, no replacement will be made",
+      "ResultMsg": "There is {count} file in total, {writeCount} file written out, {skipCount} file skipped and {coverCount} file overwritten"
     }
   }
 }
