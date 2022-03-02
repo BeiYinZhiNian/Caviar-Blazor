@@ -139,6 +139,11 @@ namespace Caviar.AntDesignUI.Shared
         [Parameter]
         public Func<FieldsView, RenderFragment> GetTableItems { get; set; }
         /// <summary>
+        /// 创建按钮回调
+        /// </summary>
+        [Parameter]
+        public Func<SysMenuView,TData,RenderFragment> CreateButtons { get; set; }
+        /// <summary>
         /// 获取搜索组件
         /// </summary>
         [Parameter]

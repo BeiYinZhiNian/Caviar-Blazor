@@ -299,11 +299,14 @@
 @code {
     RenderFragment CreatePackButton(SysMenuView menu, TData context)
     {
+        var button = CreateButtons?.Invoke(menu,context);
+        if (button != null) return button;
         RenderFragment render = null;
         if (menu.Entity.IsDoubleTrue)
         {
             string title = UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.DeleteTitle}"].Replace("{menu.DisplayName}",UserConfig.LanguageService[$"{CurrencyConstant.Menu}.{menu.DisplayName}"]);
-            render =@<Popconfirm Title='@title'
+            render =
+    @<Popconfirm Title='@title'
                                  OkText=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Confirm}"]
                                  CancelText=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Cancel}"]
                                  OnConfirm="()=>ButtonClick(menu,context)">

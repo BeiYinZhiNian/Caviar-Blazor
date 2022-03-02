@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 
 namespace Caviar.Infrastructure.API.BaseApi
 {
-    [Route("api/[controller]/[action]")]
+    [Route($"{CurrencyConstant.Api}[controller]/[action]")]
     [ApiController]
     public class BaseApiController: Controller
     {
@@ -95,7 +95,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             //设置url权限
             var menuPermission = UserServices.GetPermissions(u => u.PermissionType == PermissionType.RoleMenus).Result;
             PermissionUrls = UserServices.GetPermissions(menuPermission);
-            var url = Interactor.Current_Action.Remove(0,"/api/".Length);
+            var url = Interactor.Current_Action.Remove(0, CurrencyConstant.Api.Length + 1);
             if (IgnoreUrl.Contains(url)) return true;
             return PermissionUrls.Contains(url);
         }

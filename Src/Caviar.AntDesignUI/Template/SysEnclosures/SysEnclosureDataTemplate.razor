@@ -1,0 +1,38 @@
+@*
+生成者：
+生成时间：2022-03-02 10:09:49
+代码由代码生成器自动生成，更改的代码可能被进行替换
+界面如需更改，建议直接将内容剪切到自己的文件内，保留此空白文件
+Caviar ©2021 Created by 北音执念
+{EntityDisplayName} Data Template
+*@
+@page "/SysEnclosure/CreateEntity"
+@page "/SysEnclosure/UpdateEntity"
+@inherits DataComponentBase<SysEnclosureView,SysEnclosure>
+
+<Form @ref="_meunForm" 
+    LabelColSpan="6"
+    WrapperColSpan="16"
+    Model="@DataSource" 
+    OnFinish="FormSubmit" 
+    ValidateMode="@FormValidateMode.Rules" 
+    ValidateOnChange="true">
+    <CavFormItem  FieldName='FileName' FieldRules='@context.Entity'>
+        <Input @bind-Value='@context.Entity.FileName' />
+    </CavFormItem>
+    <CavFormItem  FieldName='FileExtend' FieldRules='@context.Entity'>
+        <Input @bind-Value='@context.Entity.FileExtend' />
+    </CavFormItem>
+    <CavFormItem  FieldName='FilePath' FieldRules='@context.Entity'>
+        <Input @bind-Value='@context.Entity.FilePath' />
+    </CavFormItem>
+    <CavFormItem  FieldName='Remark' FieldRules='@context.Entity'>
+        <Input @bind-Value='@context.Entity.Remark' />
+    </CavFormItem>
+    <CavFormItem  FieldName='IsDisable' FieldRules='@context.Entity'>
+        <Switch @bind-Value='@context.Entity.IsDisable'/>
+    </CavFormItem>
+    <CavFormItem  FieldName='Number' FieldRules='@context.Entity'>
+        <Input @bind-Value='@context.Entity.Number' />
+    </CavFormItem>
+</Form>

@@ -250,12 +250,16 @@ namespace Caviar.Infrastructure.Persistence
             };
             permissionMenu.AddRange(menus.Select(u => u.Entity));
             await AddMenus(menus);
-            var buttons = await AddButton(menus);
+            var buttons = await UpdateApi(menus);
             permissionMenu.AddRange(buttons);
             return permissionMenu;
         }
-
-        private async Task<List<SysMenu>> AddButton(List<SysMenuView> menus)
+        /// <summary>
+        /// 修改api类型
+        /// </summary>
+        /// <param name="menus"></param>
+        /// <returns></returns>
+        private async Task<List<SysMenu>> UpdateApi(List<SysMenuView> menus)
         {
             List<SysMenu> addButtons = new List<SysMenu>();//新增的按钮
             var set = _dbContext.Set<SysMenu>();
@@ -312,6 +316,12 @@ namespace Caviar.Infrastructure.Persistence
                             menu_item.Icon = "delete";
                             menu_item.TargetType = TargetType.Callback;
                             menu_item.Number = "999";
+                            break;
+                        case CurrencyConstant.UploadKey:
+                            menu_item.MenuType = MenuType.Button;
+                            menu_item.Icon = "cloud-upload";
+                            menu_item.TargetType = TargetType.Callback;
+                            menu_item.Number = "997";
                             break;
                         default:
                             break;
@@ -403,6 +413,7 @@ namespace Caviar.Infrastructure.Persistence
             {CurrencyConstant.ApplicationRoleKey,"user-switch"},
             {CurrencyConstant.SysUserGroupKey,"usergroup-add" },
             {CurrencyConstant.SysLogKey,"bug" },
+            {CurrencyConstant.SysEnclosureKey ,"deployment-unit" },
         };
     }
 }

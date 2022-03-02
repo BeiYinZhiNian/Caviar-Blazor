@@ -81,5 +81,9 @@ namespace Caviar.SharedKernel.Entities
         /// 角色列表首页
         /// </summary>
         public const string RoleIndex = "ApplicationRole/Index";
+        /// <summary>
+        /// 上传文件
+        /// </summary>
+        public const string Upload = "SysEnclosure/Upload";
     }
 }

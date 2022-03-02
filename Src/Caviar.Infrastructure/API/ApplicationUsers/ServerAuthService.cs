@@ -62,7 +62,7 @@ namespace Caviar.Infrastructure.API
                 _interactor.UserInfo = user;
                 _interactor.UserName = loginRequest.UserName;
                 _logServices.Infro($"登录成功");
-                return new ResultMsg() {Title = _languageService[$"{CurrencyConstant.ResuleMsg}.Login Succeeded"], Url = $"/api/{UrlConfig.SignInActual}?t=" + Uri.EscapeDataString(data) };
+                return new ResultMsg() {Title = _languageService[$"{CurrencyConstant.ResuleMsg}.Login Succeeded"], Url = $"/{CurrencyConstant.Api}{UrlConfig.SignInActual}?t=" + Uri.EscapeDataString(data) };
             }
             else
             {
@@ -76,7 +76,7 @@ namespace Caviar.Infrastructure.API
         public Task<string> Logout()
         {
             _logServices.Infro($"退出登录");
-            return Task.FromResult("/api/" + UrlConfig.LogoutServer);
+            return Task.FromResult("/" + CurrencyConstant.Api + UrlConfig.LogoutServer);
         }
     }
 }

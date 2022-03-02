@@ -10,6 +10,10 @@ namespace Caviar.SharedKernel.Entities
     public static class CurrencyConstant
     {
         /// <summary>
+        /// 路由前缀
+        /// </summary>
+        public const string Api = "api/";
+        /// <summary>
         /// 角色自定义数据分隔符
         /// </summary>
         public const string CustomDataSeparator = ";";
@@ -70,6 +74,10 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string DeleteEntityKey = "DeleteEntity";
         /// <summary>
+        /// 上传key
+        /// </summary>
+        public const string UploadKey = "Upload";
+        /// <summary>
         /// 获取实体
         /// </summary>
         public const string GetEntityKey = "GetEntity";
@@ -117,6 +125,10 @@ namespace Caviar.SharedKernel.Entities
         /// 系统日志key
         /// </summary>
         public const string SysLogKey = "SysLog";
+        /// <summary>
+        /// 附件key
+        /// </summary>
+        public const string SysEnclosureKey = "SysEnclosure";
         /// <summary>
         /// 字段权限key
         /// </summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +32,13 @@ namespace Caviar.SharedKernel.Entities.Base
         };
 
         public JWTOptions JWTOptions { get; set; } = new JWTOptions();
+
+        public EnclosureConfig EnclosureConfig { get; set; } = new EnclosureConfig()
+        {
+            LimitSize = 3, //限制3M大小文件
+            Path = "wwwroot/Enclosure", //文件储存路径
+            CurrentDirectory = Directory.GetCurrentDirectory(),
+        };
     }
 
     public class CodeGeneration
@@ -54,5 +62,14 @@ namespace Caviar.SharedKernel.Entities.Base
         public string JwtIssuer { get; set; } = "https://localhost";
 
         public string JwtAudience { get; set; } = "https://localhost";
+    }
+
+    public class EnclosureConfig
+    {
+        public double LimitSize { get; set; }
+
+        public string Path { get; set; }
+
+        public string CurrentDirectory { get; set; }
     }
 }

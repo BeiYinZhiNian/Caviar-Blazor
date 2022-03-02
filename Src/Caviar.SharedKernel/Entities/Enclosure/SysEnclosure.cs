@@ -16,12 +16,10 @@ namespace Caviar.SharedKernel.Entities
         [StringLength(50, ErrorMessage = "LengthErrorMsg")]
         public string FileExtend { get; set; }
         /// <summary>
-        /// M为点位
+        /// M为单位
         /// </summary>
         public double FileSize { get; set; }
         [StringLength(1024, ErrorMessage = "LengthErrorMsg")]
         public string FilePath { get; set; }
-        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
-        public string FileUse { get; set; }
     }
 }

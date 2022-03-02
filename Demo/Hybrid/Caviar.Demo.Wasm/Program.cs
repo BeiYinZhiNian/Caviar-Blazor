@@ -1,4 +1,5 @@
 using Caviar.AntDesignUI;
+using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 namespace Caviar.Demo.Wasm
@@ -9,7 +10,7 @@ namespace Caviar.Demo.Wasm
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            var baseAddress = new Uri(builder.HostEnvironment.BaseAddress + "api/");
+            var baseAddress = new Uri(builder.HostEnvironment.BaseAddress + CurrencyConstant.Api);
             builder.Services.AddScoped(sp =>
             {
                 return new HttpClient() { BaseAddress = baseAddress };

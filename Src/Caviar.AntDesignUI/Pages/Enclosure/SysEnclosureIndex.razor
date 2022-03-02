@@ -1,0 +1,49 @@
+﻿@*
+生成者：
+生成时间：2022-03-02 10:09:49
+代码由代码生成器自动生成，更改的代码可能被进行替换
+界面如需更改，建议直接将内容剪切到自己的文件内，保留此空白文件
+Caviar ©2021 Created by 北音执念
+SysEnclosureList
+*@
+@page "/SysEnclosure/Index"
+@inherits IndexComponentBase<SysEnclosureView>
+
+<CavTableTemplate TData="SysEnclosureView"
+               DataSource="IndexDataSource"
+               PageSize="PageSize"
+               PageIndex="PageIndex"
+               Total="Total"
+               Buttons="Buttons"
+               Query="Query"
+               ViewFields="ViewFields"
+               PageIndexChanged="PageIndexChanged"
+               RowCallback="RowCallback"
+               Loading="Loading"
+               CreateButtons="CreateButtons"
+               FuzzyQueryCallback="FuzzyQueryCallback">
+</CavTableTemplate>
+
+@code{
+
+    RenderFragment CreateButtons(SysMenuView menu, SysEnclosureView enclosure)
+    {
+        RenderFragment button = null;
+        switch (menu.Entity.Key)
+        {
+            case CurrencyConstant.UploadKey:
+                var url = CurrencyConstant.Api + UrlConfig.Upload;
+                button =
+    @<Upload Action="@url"
+        Name="files">
+    <Button Icon="@menu.Entity.Icon" Type="primary">
+        <span>@menu.DisplayName</span>
+    </Button>
+    </Upload>;
+                break;
+            default:
+                break;
+        }
+        return button;
+    }
+}

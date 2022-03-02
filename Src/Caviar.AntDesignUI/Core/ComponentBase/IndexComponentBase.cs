@@ -100,8 +100,6 @@ namespace Caviar.AntDesignUI.Core
         #endregion
 
         #region 回调
-        [Inject]
-        CavModal CavModal { get; set; }
         protected virtual async Task RowCallback(RowCallbackData<ViewT> row)
         {
             switch (row.Menu.Entity.Key)
