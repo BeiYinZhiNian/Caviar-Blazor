@@ -40,9 +40,11 @@ namespace Caviar.Infrastructure.API
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        public override Task<IActionResult> DeleteEntity(SysEnclosureView vm)
+        [HttpPost]
+        public override async Task<IActionResult> DeleteEntity(SysEnclosureView vm)
         {
-            return base.DeleteEntity(vm);
+            var result = await _sysEnclosureServices.Delete(vm);
+            return Ok(result);
         }
 
         public override Task<IActionResult> CreateEntity(SysEnclosureView vm)

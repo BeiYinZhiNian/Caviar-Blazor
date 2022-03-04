@@ -34,22 +34,32 @@ namespace Caviar.Core.Services
             SysEnclosure enclosure = new SysEnclosure
             {
                 FileExtend = extend,//拓展名
-                FileName = Guid.NewGuid().ToString() + extend,//文件名
-                FilePath = formFile.Name,
+                FileName = formFile.FileName,//文件名
                 FileSize = Math.Round(length, 3),
             };
             var filePath = enclosureConfig.Path + "/" + enclosure.FilePath;//储存路径
-            var path = enclosureConfig.CurrentDirectory + "/" + filePath + "/";//物理路径
-            if (!Directory.Exists(path))
+            var dir = enclosureConfig.CurrentDirectory + "/" + filePath + "/";//物理路径
+            if (!Directory.Exists(dir))
             {
-                Directory.CreateDirectory(path);
+                Directory.CreateDirectory(dir);
             }
-            using (var stream = File.Create(path + enclosure.FileName))
+            var path = dir + Guid.NewGuid().ToString() + extend;
+            enclosure.FilePath = path;
+            using (var stream = File.Create(path))
             {
                 await formFile.CopyToAsync(stream);
             }
             await AppDbContext.AddEntityAsync(enclosure);
             return enclosure;
+        }
+
+        public Task<bool> Delete(SysEnclosureView enclosure)
+        {
+            if (enclosure == null) throw new ArgumentNullException($"{nameof(enclosure)}参数为空");
+            if(enclosure.Entity==null) throw new ArgumentNullException($"{nameof(enclosure.Entity)}参数为空");
+            if (!File.Exists(enclosure.Entity.FilePath)) throw new ArgumentException($"{enclosure.Entity.FileName}文件不存在");
+            File.Delete(enclosure.Entity.FilePath);
+            return AppDbContext.DeleteEntityAsync(enclosure.Entity);
         }
     }
 }
