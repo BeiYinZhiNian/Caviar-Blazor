@@ -24,25 +24,12 @@ namespace Caviar.Infrastructure
             {
                 await _next(httpContext);
             }
-            catch (NotificationException ex)
-            {
-                await HandleExceptionAsync(httpContext, ex);
-            }
             catch (Exception ex)
             {
                 await HandleExceptionAsync(httpContext, ex);
             }
         }
 
-        private Task HandleExceptionAsync(HttpContext context, NotificationException ex)
-        {
-            //todo
-            ResultMsg resultMsg = ex.ResultMsg;
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = 200;
-            var json = JsonSerializer.Serialize(resultMsg);
-            return context.Response.WriteAsync(json);
-        }
 
         private Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
@@ -53,7 +40,8 @@ namespace Caviar.Infrastructure
                 Title = CurrencyConstant.InternalServerError,
                 Detail = new Dictionary<string, string>()
                 {
-                    { "服务器处理异常","发生未处理异常，请联系管理员在日志中查看，异常id："}
+                    { "异常信息",ex.Message },
+                    { "异常已记录","异常id："},
                 }
             };
             context.Response.ContentType = "application/json";

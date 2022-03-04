@@ -22,7 +22,7 @@ namespace Caviar.Infrastructure.API
 
         public override Task<IActionResult> UpdateEntity(SysEnclosureView vm)
         {
-            throw new NotificationException("接口暂未开放");
+            throw new System.DllNotFoundException("接口暂未开放");
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Caviar.Infrastructure.API
 
         public override Task<IActionResult> CreateEntity(SysEnclosureView vm)
         {
-            throw new NotificationException("接口暂未开放");
+            throw new System.DllNotFoundException("接口暂未开放");
         }
 
         /// <summary>

@@ -26,10 +26,10 @@ namespace Caviar.Core.Services
         /// <exception cref="NotificationException"></exception>
         public async Task<SysEnclosure> Upload(IFormFile formFile,EnclosureConfig enclosureConfig)
         {
-            if (formFile.Length == 0) throw new NotificationException("未找到实体文件");
+            if (formFile.Length == 0) throw new FileNotFoundException("未找到实体文件");
             double length = (double)formFile.Length / 1024 / 1024;
             length = Math.Round(length, 2);
-            if (length > enclosureConfig.LimitSize) throw new NotificationException($"上传文件{length}M,超过{enclosureConfig.LimitSize}M限制");
+            if (length > enclosureConfig.LimitSize) throw new FileLoadException($"上传文件{length}M,超过{enclosureConfig.LimitSize}M限制");
             var extend = Path.GetExtension(formFile.FileName);
             SysEnclosure enclosure = new SysEnclosure
             {
@@ -57,7 +57,7 @@ namespace Caviar.Core.Services
         {
             if (enclosure == null) throw new ArgumentNullException($"{nameof(enclosure)}参数为空");
             if(enclosure.Entity==null) throw new ArgumentNullException($"{nameof(enclosure.Entity)}参数为空");
-            if (!File.Exists(enclosure.Entity.FilePath)) throw new ArgumentException($"{enclosure.Entity.FileName}文件不存在");
+            if (!File.Exists(enclosure.Entity.FilePath)) throw new FileNotFoundException($"{enclosure.Entity.FileName}文件不存在");
             File.Delete(enclosure.Entity.FilePath);
             return AppDbContext.DeleteEntityAsync(enclosure.Entity);
         }
