@@ -28,7 +28,8 @@ namespace Caviar.Core.Services
         {
             if (formFile.Length == 0) throw new NotificationException("未找到实体文件");
             double length = (double)formFile.Length / 1024 / 1024;
-            if (length > enclosureConfig.LimitSize) throw new NotificationException("上传文件大小超过限制");
+            length = Math.Round(length, 2);
+            if (length > enclosureConfig.LimitSize) throw new NotificationException($"上传文件{length}M,超过{enclosureConfig.LimitSize}M限制");
             var extend = Path.GetExtension(formFile.FileName);
             SysEnclosure enclosure = new SysEnclosure
             {

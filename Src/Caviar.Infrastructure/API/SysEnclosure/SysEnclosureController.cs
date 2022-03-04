@@ -25,9 +25,24 @@ namespace Caviar.Infrastructure.API
             throw new NotificationException("接口暂未开放");
         }
 
+        /// <summary>
+        /// 下载
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         public Task<IActionResult> Download(SysEnclosureView vm)
         {
             return Task.FromResult(Ok());
+        }
+
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
+        public override Task<IActionResult> DeleteEntity(SysEnclosureView vm)
+        {
+            return base.DeleteEntity(vm);
         }
 
         public override Task<IActionResult> CreateEntity(SysEnclosureView vm)

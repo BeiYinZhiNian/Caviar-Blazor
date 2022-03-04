@@ -35,7 +35,7 @@ SysEnclosureList
                 var url = CurrencyConstant.Api + UrlConfig.Upload;
                 button =
     @<Upload Action="@url"
-        Name="files">
+        Name="files" OnSingleCompleted="OnSingleCompleted">
     <Button Icon="@menu.Entity.Icon" Type="primary">
         <span>@menu.DisplayName</span>
     </Button>
