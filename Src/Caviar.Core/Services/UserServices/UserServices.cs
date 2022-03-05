@@ -40,7 +40,7 @@ namespace Caviar.Core.Services
                 {
                     dic.Add(item.Code, item.Description);
                 }
-                throw new NotificationException(new ResultMsg() { Title="移除角色时发生错误",Status = System.Net.HttpStatusCode.BadRequest ,Detail = dic });
+                throw new ResultException(new ResultMsg() { Title="移除角色时发生错误",Status = System.Net.HttpStatusCode.BadRequest ,Detail = dic });
             }
             return result;
         }

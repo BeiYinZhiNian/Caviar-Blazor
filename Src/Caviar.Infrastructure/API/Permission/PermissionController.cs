@@ -51,8 +51,8 @@ namespace Caviar.Infrastructure.API.Permission
         [HttpGet]
         public async Task<IActionResult> GetFields(string name,string fullName,string roleName)
         {
-            if (string.IsNullOrEmpty(name)) throw new NotificationException("类名不能为空");
-            if (string.IsNullOrEmpty(fullName)) throw new NotificationException("命名空间不能为空");
+            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("类名不能为空");
+            if (string.IsNullOrEmpty(fullName)) throw new ArgumentNullException("命名空间不能为空");
             var fields = FieldScannerServices.GetClassFields(name, fullName, LanguageService);
             fields = await _roleFieldServices.GetRoleFields(fields, fullName, new List<string> { roleName });
             return Ok(fields);

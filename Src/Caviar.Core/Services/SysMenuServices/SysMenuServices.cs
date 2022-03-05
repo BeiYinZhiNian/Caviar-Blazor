@@ -46,7 +46,7 @@ namespace Caviar.Core.Services
             var unauthorized = _languageService[$"{CurrencyConstant.ExceptionMessage}.{CurrencyConstant.Unauthorized}"];
             var neme = _languageService[$"{CurrencyConstant.Menu}.{entity.Key}"];
             var message = neme + unauthorized;
-            throw new NotificationException(message);
+            throw new Exception(message);
         }
 
         protected List<SysMenu> ToEntity(SysMenuView vm)
@@ -97,7 +97,7 @@ namespace Caviar.Core.Services
             if (crcontrollerName == null)
             {
                 var unauthorized = _languageService[$"{CurrencyConstant.ExceptionMessage}.{CurrencyConstant.Null}"];
-                throw new NotificationException($"{crcontrollerName}:{unauthorized}");
+                throw new ArgumentNullException($"{crcontrollerName}:{unauthorized}");
             }
             var apiList = await GetEntityAsync(u => u.ControllerName.ToLower() == crcontrollerName.ToLower()).ToListAsync();
             if (controllerList != null)

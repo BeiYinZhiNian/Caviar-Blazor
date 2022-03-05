@@ -24,10 +24,22 @@ namespace Caviar.Infrastructure
             {
                 await _next(httpContext);
             }
+            catch (ResultException ex)
+            {
+                await HandleExceptionAsync(httpContext, ex);
+            }
             catch (Exception ex)
             {
                 await HandleExceptionAsync(httpContext, ex);
             }
+        }
+
+        private Task HandleExceptionAsync(HttpContext context, ResultException ex)
+        {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = 200;
+            var json = JsonSerializer.Serialize(ex.ResultMsg);
+            return context.Response.WriteAsync(json);
         }
 
 

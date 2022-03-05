@@ -46,7 +46,7 @@ namespace Caviar.Infrastructure.API
         {
             if (string.IsNullOrEmpty(userName))
             {
-                throw new NotificationException("请选择用户");
+                throw new ArgumentNullException("请选择用户");
             }
             var result = await UserServices.AssignRoles(userName,roles);
             if (result.Succeeded) return Ok();
@@ -58,7 +58,7 @@ namespace Caviar.Infrastructure.API
         {
             if (string.IsNullOrEmpty(userName))
             {
-                throw new NotificationException("请选择用户");
+                throw new ArgumentNullException("请选择用户");
             }
             var user = await UserServices.GetUserInfor(userName);
             var roles = await UserServices.GetRoles(user);
