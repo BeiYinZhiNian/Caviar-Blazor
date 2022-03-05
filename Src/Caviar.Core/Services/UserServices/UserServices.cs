@@ -1,5 +1,6 @@
 ﻿using Caviar.Core.Interface;
 using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -54,6 +55,22 @@ namespace Caviar.Core.Services
             if (user == null) return new List<string>();
             var roles = await _userManager.GetRolesAsync(user);
             return roles;
+        }
+
+        public async Task<UserDetails> GetUserDetails(string userName)
+        {
+            var user = await GetUserInfor(userName);
+            var useerGroup = await AppDbContext.SingleOrDefaultAsync<SysUserGroup>(u => u.Id == user.Id);
+            UserDetails useerDetails = new UserDetails() 
+            { 
+                UserName = userName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Remark = user.Remark,
+                Roles = await GetRoles(user),
+                UserGroupName = useerGroup.Name,
+            };
+            return useerDetails;
         }
 
         /// <summary>

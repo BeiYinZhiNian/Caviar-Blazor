@@ -55,7 +55,7 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 用户详细信息
         /// </summary>
-        public const string MyDetails = "ApplicationUser/MyDetails";
+        public const string MyDetails = "ApplicationUser/MyUserDetails";
         /// <summary>
         /// 修改密码
         /// </summary>

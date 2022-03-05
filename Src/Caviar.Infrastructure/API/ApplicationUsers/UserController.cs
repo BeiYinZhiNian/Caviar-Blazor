@@ -64,6 +64,16 @@ namespace Caviar.Infrastructure.API
             var roles = await UserServices.GetRoles(user);
             return Ok(roles);
         }
+        /// <summary>
+        /// 获取自己的用户详情
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> MyUserDetails()
+        {
+            var user = await UserServices.GetUserDetails(User.Identity.Name);
+            return Ok(user);
+        }
 
         private IActionResult Error(string title, IdentityResult result)
         {

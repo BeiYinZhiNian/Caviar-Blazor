@@ -1,0 +1,49 @@
+﻿@page "/ApplicationUser/MyUserDetails"
+
+
+@if (_user != null)
+{
+    <Space Size=@(("8", "8")) Wrap Align="start" >
+        <SpaceItem>
+            <GridCol>
+                <Card Style="width:300px;" Title=@("个人信息") Bordered Hoverable>
+                    <ChildContent>
+                        <CardMeta AvatarTemplate="@GetHeadPortrait()" TitleTemplate="@GetTitleRender()" Description="@_user.Remark" />
+                        <body>
+                            <p style="margin-top:10px">
+                                <Text>部门：</Text><Text>@_user.UserGroupName</Text>
+                            </p>
+                            <p>
+                                <Text>手机号：</Text><Text>@_user.PhoneNumber</Text>
+                            </p>
+                            <p>
+                                <Text>电子邮箱：</Text><Text>@_user.Email</Text>
+                            </p>
+                            <p>
+                                <Text>角色：</Text><Text>@Roles</Text>
+                            </p>
+                        </body>
+                    </ChildContent>
+                </Card>
+            </GridCol>
+        </SpaceItem>
+    </Space>
+
+}
+@code{
+
+    
+
+        public RenderFragment GetHeadPortrait()
+            {
+                RenderFragment avatarTemplate =@<Avatar Style="background-color: #87d068" Icon="user" />;
+        return avatarTemplate;
+    }
+    public RenderFragment GetTitleRender()
+    {
+        RenderFragment titleRender =@<Title Level="4">@_user.UserName</Title>;
+        return titleRender;
+    }
+
+
+}
