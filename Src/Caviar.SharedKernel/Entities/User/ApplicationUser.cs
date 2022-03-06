@@ -53,7 +53,9 @@ namespace Caviar.SharedKernel.Entities
         /// 数据权限
         /// </summary>
         public int DataId { get; set; }
-        [DisplayName("HeadPortrait")]
+        /// <summary>
+        /// 头像
+        /// </summary>
         [StringLength(300, ErrorMessage = "LengthErrorMsg")]
         public string HeadPortrait { get; set; }
         /// <summary>

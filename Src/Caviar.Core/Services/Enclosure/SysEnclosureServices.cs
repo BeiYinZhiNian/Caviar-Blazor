@@ -39,12 +39,13 @@ namespace Caviar.Core.Services
             };
             var filePath = enclosureConfig.Path + "/" + enclosure.FilePath;//储存路径
             var dir = enclosureConfig.CurrentDirectory + "/" + filePath + "/";//物理路径
+            var guidName = Guid.NewGuid().ToString() + extend;
             if (!Directory.Exists(dir))
             {
                 Directory.CreateDirectory(dir);
             }
-            var path = dir + Guid.NewGuid().ToString() + extend;
-            enclosure.FilePath = path;
+            var path = dir + guidName;
+            enclosure.FilePath = filePath + guidName;
             using (var stream = File.Create(path))
             {
                 await formFile.CopyToAsync(stream);

@@ -1,0 +1,51 @@
+﻿
+<Card Title=@("基本资料") Bordered Hoverable>
+    <ChildContent>
+        <Form Model="@UserDetails"
+              LabelColSpan="8"
+              WrapperColSpan="16">
+            <CavFormItem FieldName="HeadPortrait" FieldRules="@context">
+                <Input @bind-Value="context.HeadPortrait" />
+                <Upload Action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                        Name="avatar">
+                    @if (!string.IsNullOrWhiteSpace(context.HeadPortrait))
+                    {
+                        <img src="@context.HeadPortrait" alt="avatar" style="width: 100%" />
+                    }
+                    else
+                    {
+                        <div>
+                            <div class="ant-upload">Upload</div>
+                        </div>
+                    }
+                </Upload>
+            </CavFormItem>
+            <CavFormItem FieldName="UserName" FieldRules="@context">
+                <Input @bind-Value="@context.UserName" />
+            </CavFormItem>
+            <CavFormItem FieldName="Email" FieldRules="@context">
+                <Input @bind-Value="@context.Email" />
+            </CavFormItem>
+            <CavFormItem FieldName="PhoneNumber" FieldRules="@context">
+                <Input @bind-Value="context.PhoneNumber" />
+            </CavFormItem>
+            <CavFormItem FieldName="Remark" FieldRules="@context">
+                <Input @bind-Value="context.Remark" />
+            </CavFormItem>
+        </Form>
+
+
+    </ChildContent>
+</Card>
+<style>
+    .avatar-uploader > .ant-upload {
+        width: 128px;
+        height: 128px;
+    }
+</style>
+@code {
+
+    [Parameter]
+    public UserDetails UserDetails { get; set; }
+
+}
