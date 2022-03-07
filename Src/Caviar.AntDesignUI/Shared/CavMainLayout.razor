@@ -3,7 +3,7 @@
     @if (IsDrawer)
     {
         <Drawer Closable="true" Visible="!Collapsed" Placement="left" Title='GetLogo()' OnClose="_=>DrawerClose()">
-            <CavMenu Theme="MenuTheme.Light" InlineCollapsed="false" @bind-BreadcrumbItemCav="BreadcrumbItemArr"></CavMenu>
+            <CavMenu Theme="MenuTheme.Light" InlineCollapsed="false" @bind-BreadcrumbItemArr="BreadcrumbItemArr"></CavMenu>
         </Drawer>
     }
     else

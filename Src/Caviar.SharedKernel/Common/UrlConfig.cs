@@ -85,5 +85,9 @@ namespace Caviar.SharedKernel.Entities
         /// 上传文件
         /// </summary>
         public const string Upload = "SysEnclosure/Upload";
+        /// <summary>
+        /// 头像上传
+        /// </summary>
+        public const string UploadHeadPortrait = "SysEnclosure/UploadHeadPortrait";
     }
 }

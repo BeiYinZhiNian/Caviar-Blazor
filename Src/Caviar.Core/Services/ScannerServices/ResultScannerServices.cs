@@ -140,18 +140,14 @@ namespace Caviar.Infrastructure
                 {
                     return (ResultMsg<object>)value;
                 }
-                else if(value is string)
-                {
-                    resultMsg.Title = (string)value;
-                }
                 else
                 {
                     resultMsg.Data = value;
-                    if(statusCode != HttpStatusCode.OK)
-                    {
-                        resultMsg.Title = "处理数据失败";
-                    }
                 }
+            }
+            if (statusCode != HttpStatusCode.OK)
+            {
+                resultMsg.Title = statusCode.ToString();
             }
             resultMsg.Status = statusCode;
             return resultMsg;

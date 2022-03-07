@@ -40,7 +40,7 @@ namespace Caviar.AntDesignUI.Shared
         /// <summary>
         /// 面包屑数据同步
         /// </summary>
-        public string[] BreadcrumbItemArr;
+        public string[] BreadcrumbItemArr = new string[] { };
 
         protected override async Task OnInitializedAsync()
         {

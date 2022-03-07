@@ -26,16 +26,6 @@ namespace Caviar.Infrastructure.API
         }
 
         /// <summary>
-        /// 下载
-        /// </summary>
-        /// <param name="vm"></param>
-        /// <returns></returns>
-        public Task<IActionResult> Download(SysEnclosureView vm)
-        {
-            return Task.FromResult(Ok());
-        }
-
-        /// <summary>
         /// 删除
         /// </summary>
         /// <param name="vm"></param>
@@ -43,13 +33,25 @@ namespace Caviar.Infrastructure.API
         [HttpPost]
         public override async Task<IActionResult> DeleteEntity(SysEnclosureView vm)
         {
-            var result = await _sysEnclosureServices.Delete(vm);
+            var result = await _sysEnclosureServices.Delete(vm, Configure.CaviarConfig.EnclosureConfig);
             return Ok(result);
         }
 
         public override Task<IActionResult> CreateEntity(SysEnclosureView vm)
         {
             throw new System.DllNotFoundException("接口暂未开放");
+        }
+
+        /// <summary>
+        /// 头像上传
+        /// </summary>
+        /// <param name="files"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> UploadHeadPortrait([FromForm(Name = "HeadPortrait")] IFormFile files)
+        {
+            var result = await _sysEnclosureServices.Upload(files, Configure.CaviarConfig.EnclosureConfig);
+            return Ok(result);
         }
 
         /// <summary>
@@ -61,6 +63,18 @@ namespace Caviar.Infrastructure.API
         public async Task<IActionResult> Upload([FromForm] IFormFile files)
         {
             var result = await _sysEnclosureServices.Upload(files,Configure.CaviarConfig.EnclosureConfig);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// 下载
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> Download(SysEnclosureView vm)
+        {
+            var result = await _sysEnclosureServices.Download(vm);
             return Ok(result);
         }
     }

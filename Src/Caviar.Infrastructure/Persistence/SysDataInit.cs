@@ -323,6 +323,13 @@ namespace Caviar.Infrastructure.Persistence
                             menu_item.TargetType = TargetType.Callback;
                             menu_item.Number = "997";
                             break;
+                        case CurrencyConstant.DownloadKey:
+                            menu_item.MenuType = MenuType.Button;
+                            menu_item.Icon = "cloud-download";
+                            menu_item.TargetType = TargetType.Callback;
+                            menu_item.Number = "997";
+                            menu_item.ButtonPosition = ButtonPosition.Row;
+                            break;
                         default:
                             break;
                     }

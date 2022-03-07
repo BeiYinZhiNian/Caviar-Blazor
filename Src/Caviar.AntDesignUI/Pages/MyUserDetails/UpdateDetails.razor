@@ -5,9 +5,14 @@
               LabelColSpan="8"
               WrapperColSpan="16">
             <CavFormItem FieldName="HeadPortrait" FieldRules="@context">
-                <Input @bind-Value="context.HeadPortrait" />
-                <Upload Action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                        Name="avatar">
+                <Input @bind-Value="context.HeadPortrait" Style="display:none;" />
+                <Upload Action="@(CurrencyConstant.Api + UrlConfig.UploadHeadPortrait)"
+                        Name="HeadPortrait"
+                        ListType="picture-card"
+                        ShowUploadList="false"
+                        BeforeUpload="BeforeUpload"
+                        OnSingleCompleted="OnSingleCompleted"
+                        Class="avatar-uploader">
                     @if (!string.IsNullOrWhiteSpace(context.HeadPortrait))
                     {
                         <img src="@context.HeadPortrait" alt="avatar" style="width: 100%" />
@@ -15,7 +20,8 @@
                     else
                     {
                         <div>
-                            <div class="ant-upload">Upload</div>
+                            <Icon Spin="loading" Type="@(loading?"Loading":"plus")"></Icon>
+                            <div className="ant-upload-text">Upload</div>
                         </div>
                     }
                 </Upload>
@@ -24,28 +30,47 @@
                 <Input @bind-Value="@context.UserName" />
             </CavFormItem>
             <CavFormItem FieldName="Email" FieldRules="@context">
-                <Input @bind-Value="@context.Email" />
+                <Space>
+                    <SpaceItem>
+                        <Input @bind-Value="@context.Email" />
+                    </SpaceItem>
+                    <SpaceItem>
+                        <Button>发送验证码</Button>
+                    </SpaceItem>
+                </Space>
             </CavFormItem>
             <CavFormItem FieldName="PhoneNumber" FieldRules="@context">
-                <Input @bind-Value="context.PhoneNumber" />
+                <Space>
+                    <SpaceItem>
+                        <Input @bind-Value="context.PhoneNumber" />
+                    </SpaceItem>
+                    <SpaceItem>
+                        <Button>发送验证码</Button>
+                    </SpaceItem>
+                </Space>
             </CavFormItem>
             <CavFormItem FieldName="Remark" FieldRules="@context">
                 <Input @bind-Value="context.Remark" />
             </CavFormItem>
+            <FormItem WrapperColOffset="8" WrapperColSpan="16">
+                <Button Type="@ButtonType.Primary" HtmlType="submit">
+                    保存
+                </Button>
+            </FormItem>
         </Form>
 
 
     </ChildContent>
 </Card>
+
 <style>
     .avatar-uploader > .ant-upload {
         width: 128px;
         height: 128px;
     }
+
+    .ant-upload-select-picture-card .ant-upload-text {
+        margin-top: 8px;
+        color: #666;
+    }
 </style>
-@code {
-
-    [Parameter]
-    public UserDetails UserDetails { get; set; }
-
-}

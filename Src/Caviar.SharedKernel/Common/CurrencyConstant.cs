@@ -78,6 +78,10 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string UploadKey = "Upload";
         /// <summary>
+        /// 下载key
+        /// </summary>
+        public const string DownloadKey = "Download";
+        /// <summary>
         /// 获取实体
         /// </summary>
         public const string GetEntityKey = "GetEntity";

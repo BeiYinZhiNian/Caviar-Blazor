@@ -12,15 +12,20 @@ namespace Caviar.AntDesignUI.Pages.Enclosure
 {
     public partial class SysEnclosureIndex
     {
-        protected override Task RowCallback(RowCallbackData<SysEnclosureView> row)
+        protected override async Task RowCallback(RowCallbackData<SysEnclosureView> row)
         {
             switch (row.Menu.Entity.Key)
             {
                 //case "Menu Key"
-                case CurrencyConstant.UploadKey:
+                case CurrencyConstant.DownloadKey:
+                    var result = await HttpService.PostJson<SysEnclosureView, string>(Url[CurrencyConstant.DownloadKey],row.Data);
+                    if(result.Status == System.Net.HttpStatusCode.OK)
+                    {
+                        NavigationManager.NavigateTo(result.Data, true);
+                    }
                     break;
             }
-            return base.RowCallback(row);
+            await base.RowCallback(row);
         }
 
         void OnSingleCompleted(UploadInfo fileinfo)
