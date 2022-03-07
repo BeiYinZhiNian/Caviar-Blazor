@@ -9,6 +9,14 @@ namespace Caviar.SharedKernel.Entities.View
     public class QueryView
     {
         /// <summary>
+        /// 高级搜索
+        /// </summary>
+        public bool AdvancedSearch { get; set; }
+        /// <summary>
+        /// 查询字符串
+        /// </summary>
+        public string SearchValue { get; set; }
+        /// <summary>
         /// 状态
         /// </summary>
         public bool State { get; set; }

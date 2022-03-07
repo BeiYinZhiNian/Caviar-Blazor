@@ -66,5 +66,12 @@ namespace Caviar.Core.Services
         /// <param name="where"></param>
         /// <returns></returns>
         public Task<T> SingleOrDefaultAsync(Expression<Func<T, bool>> where);
+        /// <summary>
+        /// 模糊查询
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public Task<PageData<Vm>> FuzzyQuery(QueryView query);
     }
 }

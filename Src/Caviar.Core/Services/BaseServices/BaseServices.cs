@@ -126,6 +126,11 @@ namespace Caviar.Core.Services
             return AppDbContext.SingleOrDefaultAsync(where);
         }
 
+        public virtual Task<PageData<Vm>> FuzzyQuery(QueryView query)
+        {
+            return null;
+        }
+
         protected virtual Vm ToView(T entity)
         {
             var vm = new Vm() { Entity = entity };

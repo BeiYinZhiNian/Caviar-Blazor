@@ -249,6 +249,12 @@ namespace Caviar.Infrastructure.API.BaseApi
             return Ok();
         }
 
+        public virtual async Task<IActionResult> FuzzyQuery(QueryView query)
+        {
+            var page = await Service.FuzzyQuery(query);
+            return Ok(page);
+        }
+
 
         [HttpGet]
         public virtual async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10, bool isOrder = true, bool isNoTracking = true)
