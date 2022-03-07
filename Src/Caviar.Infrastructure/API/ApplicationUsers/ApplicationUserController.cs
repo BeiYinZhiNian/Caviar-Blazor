@@ -7,6 +7,8 @@ using System.Linq;
 using Caviar.SharedKernel.Entities.User;
 using Caviar.SharedKernel.Entities;
 using Caviar.Core.Services;
+using System.Security.Claims;
+using System.Collections.Generic;
 
 namespace Caviar.Infrastructure.API
 {
@@ -76,14 +78,9 @@ namespace Caviar.Infrastructure.API
         }
 
         [HttpGet]
-        public IActionResult CurrentUserInfo()
+        public async Task<IActionResult> CurrentUserInfo()
         {
-            var currentUser = new CurrentUser
-            {
-                IsAuthenticated = User.Identity.IsAuthenticated,
-                UserName = User.Identity.Name,
-                Claims = User.Claims.Select(u=>(new CaviarClaim(u)))
-            };
+            var currentUser = await UserServices.GetCurrentUserInfo(User);
             return Ok(currentUser);
         }
 

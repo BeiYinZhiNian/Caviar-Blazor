@@ -9,9 +9,12 @@
     <SpaceItem>
         <Popover ContentTemplate="@_popoverMenu" Placement="@Placement.BottomRight">
             <Button Type="@ButtonType.Text">
-                <Avatar Style="background-color: #87d068" Src="" Icon="user" />
                 <AuthorizeView Context="authCountext">
                     <Authorized>
+                        @{
+                            var Claim = authCountext.User.Claims.SingleOrDefault(u => u.Type == CurrencyConstant.HeadPortrait);
+                        }
+                        <Avatar Style="background-color: #87d068" Src="@Claim.Value" Icon="user" />
                         @authCountext.User.Identity.Name
                     </Authorized>
                 </AuthorizeView>

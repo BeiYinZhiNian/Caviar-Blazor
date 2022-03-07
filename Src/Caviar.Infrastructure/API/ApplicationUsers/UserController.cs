@@ -60,7 +60,7 @@ namespace Caviar.Infrastructure.API
             {
                 throw new ArgumentNullException("请选择用户");
             }
-            var user = await UserServices.GetUserInfor(userName);
+            var user = await UserServices.GetUserInfo(userName);
             var roles = await UserServices.GetRoles(user);
             return Ok(roles);
         }
@@ -74,7 +74,18 @@ namespace Caviar.Infrastructure.API
             var user = await UserServices.GetUserDetails(User.Identity.Name);
             return Ok(user);
         }
-
+        /// <summary>
+        /// 修改基本信息
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> UpdateDetails(UserDetails userDetails)
+        {
+            var result = await UserServices.UpdateUserDetails(User.Identity.Name,userDetails);
+            if (result.Succeeded) return Ok();
+            return Error("修改基础信息失败", result);
+        }
         private IActionResult Error(string title, IdentityResult result)
         {
             ResultMsg resultMsg = new ResultMsg()

@@ -34,7 +34,7 @@ namespace Caviar.AntDesignUI.Core
                 if (userInfo.IsAuthenticated)
                 {
                     var claims = new[] { new Claim(ClaimTypes.Name, _currentUser.UserName) }
-                        .Concat(_currentUser.Claims.Select(u=>new Claim(u.Value,u.Type)));
+                        .Concat(_currentUser.Claims.Select(u => new Claim(u.Type, u.Value)));
 
                     identity = new ClaimsIdentity(claims, nameof(HostAuthenticationStateProvider));
                 }

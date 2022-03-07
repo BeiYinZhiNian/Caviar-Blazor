@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Caviar.SharedKernel.Entities;
 using Caviar.Core.Services;
+using System.Security.Claims;
 
 namespace Caviar.Infrastructure.API
 {
@@ -20,29 +21,25 @@ namespace Caviar.Infrastructure.API
         private readonly ILanguageService _languageService;
         private readonly LogServices<ServerAuthService> _logServices;
         private readonly Interactor _interactor;
+        private readonly UserServices _userServices;
 
         public ServerAuthService(IHttpContextAccessor httpContextAccessor,
             UserManager<ApplicationUser> userManager,ILanguageService languageService,
             LogServices<ServerAuthService> logServices,
-            Interactor interactor)
+            Interactor interactor,UserServices userServices)
         {
             _httpContextAccessor = httpContextAccessor;
             _userManager = userManager;
             _languageService = languageService;
             _logServices = logServices;
             _interactor = interactor;
+            _userServices = userServices;
         }
 
-        public Task<CurrentUser> CurrentUserInfo()
+        public async Task<CurrentUser> CurrentUserInfo()
         {
-            var user = _httpContextAccessor.HttpContext.User;
-            var currentUser = new CurrentUser
-            {
-                IsAuthenticated = user.Identity.IsAuthenticated,
-                UserName = user.Identity.Name,
-                Claims = user.Claims.Select(u => new CaviarClaim(u))
-            };
-            return Task.FromResult(currentUser);
+            var currentUser = await _userServices.GetCurrentUserInfo(_httpContextAccessor.HttpContext.User);
+            return await Task.FromResult(currentUser);
         }
 
         public async Task<ResultMsg> Login(UserLogin loginRequest, string returnUrl)

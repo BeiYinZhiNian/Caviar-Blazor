@@ -1,6 +1,8 @@
 ﻿using AntDesign;
+using Caviar.AntDesignUI.Core;
 using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +13,34 @@ namespace Caviar.AntDesignUI.Pages.MyUserDetails
 {
     public partial class UpdateDetails
     {
-
+        private FormValidationRule[] PhoneNumberRule;
+        private FormValidationRule[] EmailRule;
         bool loading = false;
         [Parameter]
         public UserDetails UserDetails { get; set; }
         [Inject]
         MessageService _message { get; set; }
+        [Inject]
+        HttpService HttpService { get; set; }
+        [Inject]
+        NavigationManager NavigationManager { get; set; }
+        [Inject]
+        IJSRuntime JSRuntime { get; set; }
+        [Inject]
+        UserConfig UserConfig { get; set; }
+
+        protected override Task OnInitializedAsync()
+        {
+            PhoneNumberRule = new FormValidationRule[]
+            {
+                new FormValidationRule() { Pattern = @"^1[3456789]\d{9}$", Message = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.PhoneNumberRuleErrorMsg}"] },
+             };
+            EmailRule = new FormValidationRule[]
+            {
+                new FormValidationRule() { Type = FormFieldType.Email, Required = true, Message = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.EmailRuleErrorMsg}"] },
+             };
+            return base.OnInitializedAsync();
+        }
         bool BeforeUpload(UploadFileItem file)
         {
             var isJpgOrPng = file.Type == "image/jpeg" || file.Type == "image/png";
@@ -45,6 +69,16 @@ namespace Caviar.AntDesignUI.Pages.MyUserDetails
                 {
                     _message.Error(result.Title);
                 }
+            }
+        }
+
+        async Task FormSubmit()
+        {
+            var result = await HttpService.PostJson(UrlConfig.UpdateDetails, UserDetails);
+            if(result.Status == System.Net.HttpStatusCode.OK)
+            {
+                _ = _message.Success(result.Title);
+                NavigationManager.NavigateTo(JSRuntime, UrlConfig.Home,true);
             }
         }
     }

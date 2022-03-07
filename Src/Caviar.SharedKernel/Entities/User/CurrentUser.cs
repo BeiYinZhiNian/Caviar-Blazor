@@ -14,6 +14,9 @@ namespace Caviar.SharedKernel.Entities.User
         public IEnumerable<CaviarClaim> Claims { get; set; }
     }
 
+    /// <summary>
+    /// 防止递归循环
+    /// </summary>
     public class CaviarClaim
     {
         public CaviarClaim(Claim claim)
@@ -21,10 +24,18 @@ namespace Caviar.SharedKernel.Entities.User
             Type = claim.Type;
             Value = claim.Value;
         }
+
+        public CaviarClaim(string type,string value)
+        {
+            Type = type;
+            Value = value;
+        }
+
         public CaviarClaim()
         {
 
         }
+
         public string Type { get; set; }
 
         public string Value { get; set; }

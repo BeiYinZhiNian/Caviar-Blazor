@@ -1,5 +1,6 @@
 ﻿using Caviar.Core.Interface;
 using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.User;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,7 +26,7 @@ namespace Caviar.Core.Services
 
         public async Task<IdentityResult> AssignRoles(string userName,IList<string> roles)
         {
-            var user = await GetUserInfor(userName);
+            var user = await GetUserInfo(userName);
             var currentRoles = await GetRoles(user);
             var addRoles = roles.Where(u => !currentRoles.Contains(u));
             var removeRoles = currentRoles.Where(u => !roles.Contains(u));
@@ -59,7 +61,7 @@ namespace Caviar.Core.Services
 
         public async Task<UserDetails> GetUserDetails(string userName)
         {
-            var user = await GetUserInfor(userName);
+            var user = await GetUserInfo(userName);
             var useerGroup = await AppDbContext.SingleOrDefaultAsync<SysUserGroup>(u => u.Id == user.Id);
             UserDetails useerDetails = new UserDetails() 
             { 
@@ -69,8 +71,18 @@ namespace Caviar.Core.Services
                 Remark = user.Remark,
                 Roles = await GetRoles(user),
                 UserGroupName = useerGroup.Name,
+                HeadPortrait = user.HeadPortrait,
             };
             return useerDetails;
+        }
+        public async Task<IdentityResult> UpdateUserDetails(string userName,UserDetails userDetails)
+        {
+            var user = await GetUserInfo(userName);
+            user.Email = userDetails.Email;
+            user.PhoneNumber = userDetails.PhoneNumber;
+            user.Remark = userDetails.Remark;
+            user.HeadPortrait = userDetails.HeadPortrait;
+            return await _userManager.UpdateAsync(user);
         }
 
         /// <summary>
@@ -97,6 +109,24 @@ namespace Caviar.Core.Services
             var addMenus = urls.Where(u=> !menuUrls.Contains(u)).Select(u => new SysPermission() { Permission = u, PermissionType = PermissionType.RoleMenus, Entity = roleName }).ToList();
             AppDbContext.DbContext.AddRange(addMenus);
             return await AppDbContext.DbContext.SaveChangesAsync();
+        }
+
+        public async Task<CurrentUser> GetCurrentUserInfo(ClaimsPrincipal User)
+        {
+            List<CaviarClaim> claims = null;
+            if (User.Identity.IsAuthenticated)
+            {
+                var applicationUser = await _userManager.FindByNameAsync(User.Identity.Name);
+                claims = new List<CaviarClaim>() { new CaviarClaim(CurrencyConstant.HeadPortrait, applicationUser.HeadPortrait ?? "") };
+                claims.AddRange(User.Claims.Select(u => new CaviarClaim(u)));
+            }
+            var currentUser = new CurrentUser
+            {
+                IsAuthenticated = User.Identity.IsAuthenticated,
+                UserName = User.Identity.Name,
+                Claims = claims
+            };
+            return await Task.FromResult(currentUser);
         }
 
         /// <summary>
@@ -138,7 +168,7 @@ namespace Caviar.Core.Services
             return user;
         }
 
-        public async Task<ApplicationUser> GetUserInfor(string userName)
+        public async Task<ApplicationUser> GetUserInfo(string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
             return user;

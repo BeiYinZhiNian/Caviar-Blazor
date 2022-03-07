@@ -3,7 +3,10 @@
     <ChildContent>
         <Form Model="@UserDetails"
               LabelColSpan="8"
-              WrapperColSpan="16">
+              WrapperColSpan="16"
+              OnFinish="FormSubmit"
+                ValidateMode="@FormValidateMode.Rules" 
+                ValidateOnChange="true">
             <CavFormItem FieldName="HeadPortrait" FieldRules="@context">
                 <Input @bind-Value="context.HeadPortrait" Style="display:none;" />
                 <Upload Action="@(CurrencyConstant.Api + UrlConfig.UploadHeadPortrait)"
@@ -26,26 +29,23 @@
                     }
                 </Upload>
             </CavFormItem>
-            <CavFormItem FieldName="UserName" FieldRules="@context">
-                <Input @bind-Value="@context.UserName" />
-            </CavFormItem>
-            <CavFormItem FieldName="Email" FieldRules="@context">
+            <CavFormItem FieldName="Email" FieldRules="@context" Rules="EmailRule">
                 <Space>
                     <SpaceItem>
                         <Input @bind-Value="@context.Email" />
                     </SpaceItem>
                     <SpaceItem>
-                        <Button>发送验证码</Button>
+                        <Button Disabled>发送验证码</Button>
                     </SpaceItem>
                 </Space>
             </CavFormItem>
-            <CavFormItem FieldName="PhoneNumber" FieldRules="@context">
+            <CavFormItem FieldName="PhoneNumber" FieldRules="@context" Rules="PhoneNumberRule">
                 <Space>
                     <SpaceItem>
                         <Input @bind-Value="context.PhoneNumber" />
                     </SpaceItem>
                     <SpaceItem>
-                        <Button>发送验证码</Button>
+                        <Button Disabled>发送验证码</Button>
                     </SpaceItem>
                 </Space>
             </CavFormItem>

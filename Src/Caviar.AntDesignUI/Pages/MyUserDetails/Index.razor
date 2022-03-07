@@ -22,6 +22,9 @@
                             <p>
                                 <Text>角色：</Text><Text>@Roles</Text>
                             </p>
+                            <p>
+                                <Text>个性签名：</Text><Text>@_user.Remark</Text>
+                            </p>
                         </body>
                     </ChildContent>
                 </Card>
@@ -41,7 +44,7 @@
 
         public RenderFragment GetHeadPortrait()
             {
-                RenderFragment avatarTemplate =@<Avatar Style="background-color: #87d068" Icon="user" />;
+                RenderFragment avatarTemplate =@<Avatar Style="background-color: #87d068" Src="@_user.HeadPortrait" Icon="user" />;
         return avatarTemplate;
     }
     public RenderFragment GetTitleRender()

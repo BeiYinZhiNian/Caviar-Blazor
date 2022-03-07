@@ -74,7 +74,7 @@ namespace Caviar.AntDesignUI.Core
                 {
                     throw new Exception("暂不支持的请求方法");
                 }
-                if (responseMessage.StatusCode == System.Net.HttpStatusCode.OK)
+                if (responseMessage.StatusCode == HttpStatusCode.OK)
                 {
                     //当这里解析失败，又找不到具体原因，试试使用Newtonsoft.json进行解析
                     var resultMsg = await responseMessage.Content.ReadAsStringAsync();
@@ -134,6 +134,7 @@ namespace Caviar.AntDesignUI.Core
                     {
                         msg += $"<a target='_Blank' href='{result.Url}'>点击查看解决办法</a><br>";
                     }
+                    Console.WriteLine(msg);
                     _ = _notificationService.Open(new NotificationConfig()
                     {
                         Message = result.Title,
