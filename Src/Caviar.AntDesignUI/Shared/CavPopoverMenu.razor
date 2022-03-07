@@ -1,16 +1,21 @@
 ﻿<Menu>
-    <MenuItem @key="0" OnClick="UserCenter">
+    <MenuItem OnClick="UserCenter">
         <a>
             @UserConfig.LanguageService[$"{CurrencyConstant.Page}.PersonalCenter"]
         </a>
     </MenuItem>
-    <MenuItem @key="1" OnClick="ChangePassword">
+    <MenuItem OnClick="()=>NavigationManager.NavigateTo(UrlConfig.WebConfig)">
+        <a>
+            @UserConfig.LanguageService[$"{CurrencyConstant.Page}.WebConfig"]
+        </a>
+    </MenuItem>
+    <MenuItem OnClick="ChangePassword">
         <a>
             @UserConfig.LanguageService[$"{CurrencyConstant.Page}.ChangePassword"]
         </a>
     </MenuItem>
     <MenuDivider />
-    <MenuItem @key="3" OnClick="BeginSignOut">
+    <MenuItem OnClick="BeginSignOut">
         @UserConfig.LanguageService[$"{CurrencyConstant.Page}.Logout"]
     </MenuItem>
 </Menu>

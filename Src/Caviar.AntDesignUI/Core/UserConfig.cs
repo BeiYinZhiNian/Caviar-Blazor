@@ -84,8 +84,10 @@ namespace Caviar.AntDesignUI.Core
         /// 是否table页
         /// </summary>
         public bool IsTable { get; set; }
-        
-
+        /// <summary>
+        /// 更新布局
+        /// </summary>
+        public Action LayoutPage { get; set; }
 
         private string _theme = "ant-design-blazor.css";
 
@@ -104,6 +106,7 @@ namespace Caviar.AntDesignUI.Core
             Background = $"background:{White};";
             ContentStyle = $"margin: 6px 16px;padding: 24px;min-height: 280px;{Background}";
             HeaderStyle = $"padding:0;{Background}";
+            LayoutPage?.Invoke();
         }
     }
 }
