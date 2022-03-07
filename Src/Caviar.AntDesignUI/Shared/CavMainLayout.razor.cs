@@ -44,6 +44,7 @@ namespace Caviar.AntDesignUI.Shared
 
         protected override async Task OnInitializedAsync()
         {
+            UserConfig.LayoutPage = Refresh;
             LogoImg = "_content/Caviar.AntDesignUI/Images/logo.png";
             LogoImgIco = "_content/Caviar.AntDesignUI/Images/logo-Ico.png";
             LogoImgSrc = LogoImg;
@@ -119,6 +120,13 @@ namespace Caviar.AntDesignUI.Shared
                     HeaderStyle = "margin-left: 200px";
                 LogoImgSrc = LogoImg;
             }
+            StateHasChanged();
+        }
+        /// <summary>
+        /// 刷新布局
+        /// </summary>
+        void Refresh()
+        {
             StateHasChanged();
         }
     }

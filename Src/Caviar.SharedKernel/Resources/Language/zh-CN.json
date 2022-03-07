@@ -172,6 +172,7 @@
     "Page": {
       "SelectIcon": "请选择图标",
       "PersonalCenter": "个人中心",
+      "WebConfig": "网站配置",
       "ChangePassword": "修改密码",
       "Logout": "退出登录",
       "SelectQueryFields": "选择查询的字段",
