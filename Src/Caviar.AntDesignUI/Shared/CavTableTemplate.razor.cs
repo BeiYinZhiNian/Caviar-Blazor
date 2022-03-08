@@ -226,10 +226,10 @@ namespace Caviar.AntDesignUI.Shared
 
         #region 搜索
         [Parameter]
-        public QueryView Query { get; set; }
+        public bool IsOpenQuery { get; set; }
 
         [Parameter]
-        public EventCallback FuzzyQueryCallback { get; set; }
+        public EventCallback<QueryView> FuzzyQueryCallback { get; set; }
         #endregion
     }
 }

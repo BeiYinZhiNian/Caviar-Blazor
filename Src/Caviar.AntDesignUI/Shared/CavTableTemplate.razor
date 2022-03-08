@@ -1,15 +1,15 @@
 ﻿@typeparam TData
 
 <Space Direction="@DirectionVHType.Vertical" Size="@("small")">
-    @if(Query != null)
+    @if(IsOpenQuery)
     {
         <SpaceItem>
             <Space>
                 <SpaceItem>
-                    <CavSearch></CavSearch>
+                    <CavSearch Fields="ViewFields" FuzzyQueryCallback="FuzzyQueryCallback"></CavSearch>
                 </SpaceItem>
                 <SpaceItem>
-                    <Button>高级查询</Button>
+                    <Button>高级搜索</Button>
                 </SpaceItem>
             </Space>
         </SpaceItem>

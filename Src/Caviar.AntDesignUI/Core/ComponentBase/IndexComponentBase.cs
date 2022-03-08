@@ -35,7 +35,7 @@ namespace Caviar.AntDesignUI.Core
         /// 模型字段
         /// </summary>
         protected List<FieldsView> ViewFields { get; set; } = new List<FieldsView>();
-        public QueryView Query { get; set; }
+        public bool IsOpenQuery { get; set; }
         protected string BaseController { get; set; }
         
         #endregion
@@ -70,7 +70,7 @@ namespace Caviar.AntDesignUI.Core
             var queryButton = Url[CurrencyConstant.FuzzyQuery];
             if (queryButton != null)
             {
-                Query = new QueryView();
+                IsOpenQuery = true;
             }
             var buttons = APIList.Where(u => u.Entity.ControllerName == ControllerName).ToList();
             return Task.FromResult(buttons);
@@ -121,9 +121,9 @@ namespace Caviar.AntDesignUI.Core
         /// 模糊查询
         /// </summary>
         /// <param name="Query"></param>
-        protected virtual async void FuzzyQueryCallback()
+        protected virtual async void FuzzyQueryCallback(QueryView query)
         {
-            var result = await HttpService.PostJson<QueryView, PageData<ViewT>>(Url[CurrencyConstant.FuzzyQuery], Query);
+            var result = await HttpService.PostJson<QueryView, PageData<ViewT>>(Url[CurrencyConstant.FuzzyQuery], query);
             if (result.Status != HttpStatusCode.OK) return;
             IndexDataSource = result.Data.Rows;
             Total = result.Data.Total;

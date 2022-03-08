@@ -128,7 +128,7 @@ namespace Caviar.Core.Services
 
         public virtual Task<PageData<Vm>> FuzzyQuery(QueryView query)
         {
-            return null;
+            return Task.FromResult(new PageData<Vm>());
         }
 
         protected virtual Vm ToView(T entity)
