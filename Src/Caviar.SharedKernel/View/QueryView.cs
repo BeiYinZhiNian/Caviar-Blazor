@@ -9,10 +9,6 @@ namespace Caviar.SharedKernel.Entities.View
     public class QueryView
     {
         /// <summary>
-        /// 高级搜索
-        /// </summary>
-        public bool AdvancedSearch { get; set; }
-        /// <summary>
         /// 查询字符串
         /// </summary>
         public string SearchValue { get; set; }
@@ -37,6 +33,55 @@ namespace Caviar.SharedKernel.Entities.View
         /// key 字段名称
         /// value 查询字符串
         /// </summary>
-        public Dictionary<string, string> QueryData { get; set; } = new Dictionary<string, string>();
+        public List<QueryModel> QueryData { get; set; }
+    }
+
+    public class QueryModel
+    {
+        /// <summary>
+        /// 查询类型
+        /// </summary>
+        public QuerType QuerType { get; set; }
+        /// <summary>
+        /// 向上拼接
+        /// </summary>
+        public QuerySplicing QuerySplicing { get; set; }
+        /// <summary>
+        /// 查询字段
+        /// </summary>
+        public string Key { get; set; }
+        /// <summary>
+        /// 查询数据
+        /// </summary>
+        public string Value { get; set; }
+    }
+
+    public enum QuerySplicing
+    {
+        And,
+        Or,
+    }
+    public enum QuerType
+    {
+        /// <summary>
+        /// 等于
+        /// </summary>
+        Equal,
+        /// <summary>
+        /// 小于
+        /// </summary>
+        LessThan,
+        /// <summary>
+        /// 大于
+        /// </summary>
+        GreaterThan,
+        /// <summary>
+        /// 不等于
+        /// </summary>
+        NotEqualTo,
+        /// <summary>
+        /// 包含
+        /// </summary>
+        Contain,
     }
 }

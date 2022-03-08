@@ -40,10 +40,26 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         [StringLength(300, ErrorMessage = "LengthErrorMsg")]
         public string Remark { get; set; }
+
         /// <summary>
         /// 是否禁用
         /// </summary>
-        public bool IsDisable { get; set; }
+        public bool IsDisable 
+        { 
+            get => LockoutEnabled;
+            set 
+            {
+                LockoutEnabled = value;
+                if (value)
+                {
+                    LockoutEnd = DateTime.Now.AddYears(99);
+                }
+                else
+                {
+                    LockoutEnd = null;
+                }
+            }
+        }
         /// <summary>
         /// 编号
         /// </summary>

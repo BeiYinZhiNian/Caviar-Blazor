@@ -248,7 +248,8 @@ namespace Caviar.Infrastructure.API.BaseApi
             await Service.DeleteEntityAsync(vm.Entity);
             return Ok();
         }
-
+        
+        [HttpPost]
         public virtual async Task<IActionResult> FuzzyQuery(QueryView query)
         {
             var page = await Service.FuzzyQuery(query);

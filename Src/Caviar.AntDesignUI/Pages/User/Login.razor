@@ -6,17 +6,19 @@
             <div style="padding:30px">
                 <Card Bordered="true" Title="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.UserLogin}"]" Style="width:400px" Hoverable="true">
                     <Body>
-                        <Form Model="@ApplicationUser">
-                            <FormItem Label="">
+                        <Form Model="@ApplicationUser" @ref="Form"
+                                ValidateMode="@FormValidateMode.Rules" 
+                                ValidateOnChange="true">
+                            <CavFormItem Label="" FieldName="UserName" FieldRules="@context">
                                 <AntDesign.Input Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.UserName}"]" Size="large" @bind-Value="@context.UserName">
                                     <Prefix><Icon Type="user" /></Prefix>
                                 </AntDesign.Input>
-                            </FormItem>
-                            <FormItem Label="">
+                            </CavFormItem>
+                            <CavFormItem Label="" FieldName="Password" FieldRules="@context">
                                 <AntDesign.Input Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Password}"]" Size="large" @bind-Value="@context.Password" Type="password">
                                     <Prefix><Icon Type="lock" /></Prefix>
                                 </AntDesign.Input>
-                            </FormItem>
+                            </CavFormItem>
                             <Space Direction="DirectionVHType.Vertical" Style="width:100%">
                                 <SpaceItem>
                                     <Spin Spinning="Loading">

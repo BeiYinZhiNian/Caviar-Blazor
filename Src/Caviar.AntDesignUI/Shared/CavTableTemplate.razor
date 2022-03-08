@@ -5,7 +5,12 @@
     {
         <SpaceItem>
             <Space>
-                <Search Placeholder="请输入搜索内容" EnterButton="true" @bind-Value="Query.SearchValue" OnSearch="FuzzyQueryCallback" />
+                <SpaceItem>
+                    <CavSearch></CavSearch>
+                </SpaceItem>
+                <SpaceItem>
+                    <Button>高级查询</Button>
+                </SpaceItem>
             </Space>
         </SpaceItem>
     }
@@ -96,7 +101,6 @@
                                 }
                             }
                     </Column>
-
                     break;
                 case "int32":
                     <Column Title="@item.DisplayName" DataIndex="@fieldName" TData="int?" />
@@ -125,6 +129,9 @@
                     break;
                 case "datetime":
                     <Column Title="@item.DisplayName" DataIndex="@fieldName" TData="DateTime?" />
+                    break;
+                case "datetimeoffset":
+                    <Column Title="@item.DisplayName" DataIndex="@fieldName" TData="DateTimeOffset?" />
                     break;
                 case "double":
                     <Column Title="@item.DisplayName" DataIndex="@fieldName" TData="double?">
@@ -166,6 +173,7 @@
                     </Column>
                     break;
                 default:
+                    Console.WriteLine($"未找到对应类型:{item.EntityType}");
                     break;
             }
 

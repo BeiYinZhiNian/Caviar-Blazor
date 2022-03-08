@@ -33,8 +33,11 @@ namespace Caviar.AntDesignUI.Pages.User
 
         bool Loading { get; set; } = true;
 
+        Form<UserLogin> Form;
+
         public async void SubmitLogin()
         {
+            if (!Form.Validate()) return;
             Loading = true;
             var returnUrl = HttpUtility.ParseQueryString(new Uri(NavigationManager.Uri).Query)["returnUrl"];
             if (returnUrl == null) returnUrl = "/";

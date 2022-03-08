@@ -21,14 +21,25 @@ namespace Caviar.Infrastructure.API
                 vm.Entity.PasswordHash = CommonHelper.SHA256EncryptString(CurrencyConstant.DefaultPassword);
             }
             var result = await _userManager.CreateAsync(vm.Entity,vm.Entity.PasswordHash);
-            if (result.Succeeded) return Ok("创建用户成功，初始密码：" + CurrencyConstant.DefaultPassword);
+            if (result.Succeeded) return Ok(title: "创建用户成功，初始密码：" + CurrencyConstant.DefaultPassword);
             return Error("创建用户失败", result);
         }
 
         [HttpPost]
         public override async Task<IActionResult> UpdateEntity(ApplicationUserView vm)
         {
-            var result = await _userManager.UpdateAsync(vm.Entity);
+            var user = await _userManager.FindByNameAsync(vm.Entity.UserName);
+            if (user == null) throw new ArgumentNullException($"{vm.Entity.UserName}不存在");
+            user.UserName = vm.Entity.UserName;
+            user.PhoneNumber = vm.Entity.PhoneNumber;
+            user.Email = vm.Entity.Email;
+            user.UserGroupId = vm.Entity.UserGroupId;
+            user.IsDisable = vm.Entity.IsDisable;
+            user.Number = vm.Entity.Number;
+            user.Remark = vm.Entity.Remark;
+            user.UpdateTime = DateTime.Now;
+            user.OperatorUp = User.Identity.Name;
+            var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded) return Ok();
             return Error("修改用户失败", result);
         }

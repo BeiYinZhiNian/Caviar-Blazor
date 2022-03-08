@@ -31,9 +31,9 @@ namespace Caviar.Infrastructure.API
         public virtual async Task<IActionResult> Login(UserLogin login, string returnUrl)
         {
             var user = await _userManager.FindByNameAsync(login.UserName);
-            if (user == null) return BadRequest("Username and password are invalid");
-            var singInResult = await _signInManager.CheckPasswordSignInAsync(user, login.Password, false);
-            if (!singInResult.Succeeded) return BadRequest("Username and password are invalid");
+            if (user == null) return Ok(System.Net.HttpStatusCode.BadRequest,"Failed");
+            var singInResult = await _signInManager.CheckPasswordSignInAsync(user, login.Password, true);
+            if (!singInResult.Succeeded) return Ok(System.Net.HttpStatusCode.BadRequest, "Failed");
             await _signInManager.SignInAsync(user, login.RememberMe);
             return Ok(title: "Login Succeeded",url:returnUrl);
         }
