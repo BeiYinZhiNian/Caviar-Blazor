@@ -46,7 +46,7 @@ namespace Caviar.AntDesignUI.Core
             return new AuthenticationState(new ClaimsPrincipal(identity));
         }
 
-        private async Task<CurrentUser> GetCurrentUser()
+        public async Task<CurrentUser> GetCurrentUser()
         {
             if (_currentUser != null && _currentUser.IsAuthenticated) return _currentUser;
             _currentUser = await api.CurrentUserInfo();
