@@ -25,11 +25,11 @@ namespace Caviar.SharedKernel.Entities.View
         /// <summary>
         /// 查询类型
         /// </summary>
-        public QuerType QuerType { get; set; }
+        public QuerType QuerTypes { get; set; }
         /// <summary>
         /// 向上拼接
         /// </summary>
-        public QuerySplicing QuerySplicing { get; set; }
+        public QuerySplicing QuerySplicings { get; set; }
         /// <summary>
         /// 查询字段
         /// </summary>
@@ -38,34 +38,43 @@ namespace Caviar.SharedKernel.Entities.View
         /// 查询数据
         /// </summary>
         public string Value { get; set; }
+        public enum QuerySplicing
+        {
+            And,
+            Or,
+        }
+        public enum QuerType
+        {
+            /// <summary>
+            /// 等于
+            /// </summary>
+            Equal,
+            /// <summary>
+            /// 小于
+            /// </summary>
+            LessThan,
+            /// <summary>
+            /// 小于等于
+            /// </summary>
+            LessThanOrEqual,
+            /// <summary>
+            /// 大于
+            /// </summary>
+            GreaterThan,
+            /// <summary>
+            /// 大于等于
+            /// </summary>
+            GreaterThanOrEqual,
+            /// <summary>
+            /// 不等于
+            /// </summary>
+            NotEqual,
+            /// <summary>
+            /// 包含
+            /// </summary>
+            Contains,
+        }
     }
 
-    public enum QuerySplicing
-    {
-        And,
-        Or,
-    }
-    public enum QuerType
-    {
-        /// <summary>
-        /// 等于
-        /// </summary>
-        Equal,
-        /// <summary>
-        /// 小于
-        /// </summary>
-        LessThan,
-        /// <summary>
-        /// 大于
-        /// </summary>
-        GreaterThan,
-        /// <summary>
-        /// 不等于
-        /// </summary>
-        NotEqualTo,
-        /// <summary>
-        /// 包含
-        /// </summary>
-        Contain,
-    }
+
 }

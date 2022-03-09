@@ -20,9 +20,9 @@ namespace Caviar.AntDesignUI.Shared
         public List<FieldsView> Fields { get; set; }
 
         [Parameter]
-        public EventCallback<QueryView> FuzzyQueryCallback { get; set; }
+        public EventCallback<QueryView> QueryCallback { get; set; }
 
-        protected QueryModel QueryModel { get; set; } = new QueryModel() { QuerType = QuerType.Contain };
+        protected QueryModel QueryModel { get; set; } = new QueryModel() { QuerTypes = QueryModel.QuerType.Contains };
 
         async void OnSearch()
         {
@@ -34,9 +34,9 @@ namespace Caviar.AntDesignUI.Shared
                     QueryModel
                 }
             };
-            if (FuzzyQueryCallback.HasDelegate)
+            if (QueryCallback.HasDelegate)
             {
-                await FuzzyQueryCallback.InvokeAsync(query);
+                await QueryCallback.InvokeAsync(query);
             }
             Loading = false;
         }

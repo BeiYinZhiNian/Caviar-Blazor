@@ -250,9 +250,9 @@ namespace Caviar.Infrastructure.API.BaseApi
         }
         
         [HttpPost]
-        public virtual async Task<IActionResult> FuzzyQuery(QueryView query)
+        public virtual async Task<IActionResult> Query(QueryView query)
         {
-            var page = await Service.FuzzyQuery(query);
+            var page = await Service.QueryAsync(query);
             return Ok(page);
         }
 

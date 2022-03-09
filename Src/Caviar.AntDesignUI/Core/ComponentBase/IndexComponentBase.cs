@@ -67,7 +67,7 @@ namespace Caviar.AntDesignUI.Core
         /// <returns></returns>
         protected virtual Task<List<SysMenuView>> LoadButton()
         {
-            var queryButton = Url[CurrencyConstant.FuzzyQuery];
+            var queryButton = Url[CurrencyConstant.Query];
             if (queryButton != null)
             {
                 IsOpenQuery = true;
@@ -121,9 +121,9 @@ namespace Caviar.AntDesignUI.Core
         /// 模糊查询
         /// </summary>
         /// <param name="Query"></param>
-        protected virtual async void FuzzyQueryCallback(QueryView query)
+        protected virtual async void QueryCallback(QueryView query)
         {
-            var result = await HttpService.PostJson<QueryView, PageData<ViewT>>(Url[CurrencyConstant.FuzzyQuery], query);
+            var result = await HttpService.PostJson<QueryView, PageData<ViewT>>(Url[CurrencyConstant.Query], query);
             if (result.Status != HttpStatusCode.OK) return;
             IndexDataSource = result.Data.Rows;
             Total = result.Data.Total;

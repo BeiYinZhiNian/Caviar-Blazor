@@ -229,7 +229,7 @@ namespace Caviar.AntDesignUI.Shared
         public bool IsOpenQuery { get; set; }
 
         [Parameter]
-        public EventCallback<QueryView> FuzzyQueryCallback { get; set; }
+        public EventCallback<QueryView> QueryCallback { get; set; }
         #endregion
     }
 }

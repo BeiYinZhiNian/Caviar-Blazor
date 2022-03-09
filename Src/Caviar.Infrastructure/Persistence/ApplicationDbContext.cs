@@ -2,6 +2,7 @@
 using Caviar.Core.Interface;
 using Caviar.Core.Services;
 using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
@@ -226,6 +227,28 @@ namespace Caviar.Infrastructure.Persistence
             {
                 pageData.Total = await data.CountAsync();
                 pageData.Rows = await data.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+            }
+            return pageData;
+        }
+
+        public virtual async Task<PageData<T>> QueryAsync<T>(QueryView query) where T : class, IUseEntity, new()
+        {
+            QueryCollection queries = new QueryCollection();
+            foreach (var item in query.QueryModels)
+            {
+                queries.Add(item);
+            }
+            IQueryable<T> data = GetContext<T>(false);
+            data = data.Where(queries.AsExpression<T>());
+            PageData<T> pageData = new PageData<T>
+            {
+                PageIndex = 1,
+                PageSize = query.Number
+            };
+            if (data.Count() > 0)
+            {
+                pageData.Total = await data.CountAsync();
+                pageData.Rows = await data.Take(query.Number).ToListAsync();
             }
             return pageData;
         }

@@ -72,6 +72,6 @@ namespace Caviar.Core.Services
         /// <typeparam name="T"></typeparam>
         /// <param name="query"></param>
         /// <returns></returns>
-        public Task<PageData<Vm>> FuzzyQuery(QueryView query);
+        public Task<PageData<Vm>> QueryAsync(QueryView query);
     }
 }
