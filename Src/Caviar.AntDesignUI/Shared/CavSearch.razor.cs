@@ -19,19 +19,12 @@ namespace Caviar.AntDesignUI.Shared
         /// </summary>
         [Parameter]
         public List<FieldsView> Fields { get; set; }
-
-        private FieldsView SelectField { get;set; }
         [Inject]
         MessageService MessageService { get; set; }
         [Parameter]
         public EventCallback<QueryView> QueryCallback { get; set; }
 
         protected QueryModel QueryModel { get; set; } = new QueryModel() { QuerTypes = QueryModel.QuerType.Contains };
-
-        void OnSelectedItemChanged(string value)
-        {
-            SelectField = Fields.SingleOrDefault(u=>u.Entity.FieldName == value);
-        }
 
         async void OnSearch()
         {
