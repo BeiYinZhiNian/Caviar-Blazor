@@ -18,7 +18,8 @@ namespace Caviar.Infrastructure
             {
                 var property = typeInfo.GetProperty(item.Key);
                 Type realType = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
-                Expression<Func<object>> valueLamba = () => item.Value;
+                var value = Convert.ChangeType(item.Value, property.PropertyType);
+                Expression<Func<object>> valueLamba = () => value;
                 switch (item.QuerTypes)
                 {
                     case QueryModel.QuerType.Equal:
