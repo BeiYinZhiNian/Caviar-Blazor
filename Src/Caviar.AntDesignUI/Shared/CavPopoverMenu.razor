@@ -43,7 +43,7 @@
 
     public async void ChangePassword()
     {
-        await CavModal.Create(UrlConfig.UpdatePwd, UserConfig.LanguageService[$"{CurrencyConstant.Page}.ChangePassword"]);
+        await CavModal.Create(UrlConfig.ChangePassword, UserConfig.LanguageService[$"{CurrencyConstant.Page}.ChangePassword"]);
     }
 
     private async Task BeginSignOut()
