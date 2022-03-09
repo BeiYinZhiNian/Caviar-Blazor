@@ -97,6 +97,15 @@ namespace Caviar.Infrastructure.API
             if (result.Succeeded) return Ok();
             return Error("修改基础信息失败", result);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel changePassword)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var result = await _userManager.ChangePasswordAsync(user, changePassword.OldPassword, changePassword.NewPassword);
+            if (result.Succeeded) return Ok();
+            return Error("修改密码失败", result);
+        }
         private IActionResult Error(string title, IdentityResult result)
         {
             ResultMsg resultMsg = new ResultMsg()

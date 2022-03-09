@@ -1,0 +1,12 @@
+﻿<Breadcrumb>
+    @if (BreadcrumbItemArr != null)
+    {
+        @foreach (var item in BreadcrumbItemArr)
+        {
+            <BreadcrumbItem>
+                @item
+            </BreadcrumbItem>
+        }
+    }
+
+</Breadcrumb>

@@ -63,8 +63,7 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 修改密码
         /// </summary>
-        public const string UpdatePwd = "ApplicationUser/UpdatePwd";
-
+        public const string ChangePassword = "ApplicationUser/ChangePassword";
         /// <summary>
         /// 当前用户信息
         /// </summary>
