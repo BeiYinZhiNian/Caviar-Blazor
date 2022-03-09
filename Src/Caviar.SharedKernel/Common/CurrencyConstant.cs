@@ -10,6 +10,10 @@ namespace Caviar.SharedKernel.Entities
     public static class CurrencyConstant
     {
         /// <summary>
+        /// 高级搜索
+        /// </summary>
+        public const string AdvancedSearch = "AdvancedSearch";
+        /// <summary>
         /// 路由前缀
         /// </summary>
         public const string Api = "api/";

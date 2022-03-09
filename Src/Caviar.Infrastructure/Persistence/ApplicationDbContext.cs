@@ -2,6 +2,7 @@
 using Caviar.Core.Interface;
 using Caviar.Core.Services;
 using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
@@ -90,8 +91,8 @@ namespace Caviar.Infrastructure.Persistence
         public virtual async Task<T> UpdateEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IUseEntity,new()
         {
             IsEntityNull(entity);
-            var dbEntity = await SingleOrDefaultAsync<T>(u => u.Id == entity.Id);
-            if (dbEntity == null) throw new ArgumentException("非法操作，修改未授权数据");
+            //var dbEntity = await SingleOrDefaultAsync<T>(u => u.Id == entity.Id,false);
+            //if (dbEntity == null) throw new ArgumentException("非法操作，修改未授权数据");
             DbContext.Entry(entity).State = EntityState.Modified;
             if (isSaveChange)
             {
@@ -110,8 +111,8 @@ namespace Caviar.Infrastructure.Persistence
         public virtual async Task<T> UpdateEntityAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class, IUseEntity,new()
         {
             IsEntityNull(entity);
-            var dbEntity = await SingleOrDefaultAsync<T>(u => u.Id == entity.Id);
-            if (dbEntity == null) throw new ArgumentException("非法操作，修改未授权数据");
+            //var dbEntity = await SingleOrDefaultAsync<T>(u => u.Id == entity.Id,false);
+            //if (dbEntity == null) throw new ArgumentException("非法操作，修改未授权数据");
             DbContext.Entry(entity).Property(fieldExp).IsModified = true;
             if (isSaveChange)
             {
@@ -131,8 +132,8 @@ namespace Caviar.Infrastructure.Persistence
         public virtual async Task<int> UpdateEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true) where T : class, IUseEntity,new()
         {
             IsEntityNull(entity);
-            var dbEntity = GetEntityAsync<T>(u => entity.Contains(u));
-            if (dbEntity.Count() != entity.Count()) throw new ArgumentException("非法操作，修改未授权数据");
+            //var dbEntity = GetEntityAsync<T>(u => entity.Contains(u),false);
+            //if (dbEntity.Count() != entity.Count()) throw new ArgumentException("非法操作，修改未授权数据");
             DbContext.UpdateRange(entity);
             if (isSaveChange)
             {
@@ -153,9 +154,9 @@ namespace Caviar.Infrastructure.Persistence
         public virtual async Task<bool> DeleteEntityAsync<T>(T entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IUseEntity, new()
         {
             IsEntityNull(entity);
-            var dbEntity = await SingleOrDefaultAsync<T>(u=>u.Id == entity.Id);
-            if (dbEntity == null) throw new ArgumentException("非法操作，删除未授权数据");
-            DbContext.Entry(dbEntity).State = EntityState.Deleted;
+            //var dbEntity = await SingleOrDefaultAsync<T>(u=>u.Id == entity.Id,false);
+            //if (dbEntity == null) throw new ArgumentException("非法操作，删除未授权数据");
+            DbContext.Entry(entity).State = EntityState.Deleted;
             if (isSaveChange)
             {
                 await SaveChangesAsync();
@@ -173,8 +174,8 @@ namespace Caviar.Infrastructure.Persistence
         public virtual async Task<int> DeleteEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IUseEntity, new()
         {
             IsEntityNull(entity);
-            var dbEntity = GetEntityAsync<T>(u => entity.Contains(u));
-            if (dbEntity.Count() != entity.Count()) throw new ArgumentException("非法操作，删除未授权数据");
+            //var dbEntity = GetEntityAsync<T>(u => entity.Contains(u),false);
+            //if (dbEntity.Count() != entity.Count()) throw new ArgumentException("非法操作，删除未授权数据");
             var removeList = entity.Where(u => u.IsDelete).ToList();//取出物理删除数据
             DbContext.RemoveRange(removeList);
             removeList = entity.Where(u => u.IsDelete == false).ToList();//取出逻辑删除数据
@@ -226,6 +227,28 @@ namespace Caviar.Infrastructure.Persistence
             {
                 pageData.Total = await data.CountAsync();
                 pageData.Rows = await data.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+            }
+            return pageData;
+        }
+
+        public virtual async Task<PageData<T>> QueryAsync<T>(QueryView query) where T : class, IUseEntity, new()
+        {
+            QueryCollection queries = new QueryCollection();
+            foreach (var item in query.QueryModels)
+            {
+                queries.Add(item);
+            }
+            IQueryable<T> data = GetContext<T>(false);
+            data = data.Where(queries.AsExpression<T>());
+            PageData<T> pageData = new PageData<T>
+            {
+                PageIndex = 1,
+                PageSize = query.Number
+            };
+            if (data.Count() > 0)
+            {
+                pageData.Total = await data.CountAsync();
+                pageData.Rows = await data.Take(query.Number).ToListAsync();
             }
             return pageData;
         }
@@ -301,13 +324,13 @@ namespace Caviar.Infrastructure.Persistence
                                 case "uid":
                                     item.Property(fieldItem.Entity.FieldName).IsModified = false;
                                     continue;
-                                //系统更新字段
-                                //case "creattime":
-                                //case "updatetime":
-                                //case "operatorup":
-                                //case "isdelete":
-                                //    item.Property(fieldItem.Entity.FieldName).IsModified = true;
-                                //    continue;
+                                    //系统更新字段
+                                case "creattime":
+                                case "updatetime":
+                                case "operatorup":
+                                case "isdelete":
+                                    item.Property(fieldItem.Entity.FieldName).IsModified = true;
+                                    continue;
                                 default:
                                     break;
                             }

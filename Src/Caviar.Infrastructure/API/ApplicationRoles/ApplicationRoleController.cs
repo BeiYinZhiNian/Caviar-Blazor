@@ -29,7 +29,17 @@ namespace Caviar.Infrastructure.API
         [HttpPost]
         public override async Task<IActionResult> UpdateEntity(ApplicationRoleView vm)
         {
-            var result = await _roleManager.UpdateAsync(vm.Entity);
+            var role = await _roleManager.FindByNameAsync(vm.Entity.Name);
+            if (role == null) throw new ArgumentNullException($"{vm.Entity.Name}不存在");
+            role.Name = vm.Entity.Name;
+            role.Number = vm.Entity.Number;
+            role.Remark = vm.Entity.Remark;
+            role.DataList = vm.Entity.DataList;
+            role.IsDisable = vm.Entity.IsDisable;
+            role.DataRange = vm.Entity.DataRange;
+            role.UpdateTime = DateTime.Now;
+            role.OperatorUp = User.Identity.Name;
+            var result = await _roleManager.UpdateAsync(role);
             if (result.Succeeded) return Ok();
             return Error("修改角色失败", result);
         }

@@ -20,5 +20,5 @@ Caviar ©2021 Created by 北音执念
                PageIndexChanged="PageIndexChanged"
                RowCallback="RowCallback"
                Loading="Loading"
-               FuzzyQueryCallback="FuzzyQueryCallback">
+               QueryCallback="QueryCallback">
 </CavTableTemplate>

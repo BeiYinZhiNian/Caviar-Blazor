@@ -1,83 +1,20 @@
 ﻿@typeparam TData
 
 <Space Direction="@DirectionVHType.Vertical" Size="@("small")">
-    @if (Query != null)
+    @if(IsOpenQuery)
     {
         <SpaceItem>
-            <Space Size=@(("8", "8")) Wrap>
+            <Space>
                 <SpaceItem>
-                    <Select Mode="multiple"
-                        Placeholder=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SelectQueryFields}"]
-                        @bind-Values="@_selectedValues"
-                        TItemValue="string"
-                        TItem="string"
-                        Style="width: 200px;"
-                        EnableSearch
-                        OnSelectedItemsChanged="OnSelectedItemsChanged"
-                        AllowClear>
-                        <SelectOptions>
-                            @if (ViewFields != null)
-                            {
-                                @foreach (var item in ViewFields)
-                                {
-                                    if (string.IsNullOrEmpty(item.DisplayName)) continue;
-                                    if (!item.Entity.IsPanel) continue;
-                                    <SelectOption TItemValue="string" TItem="string" Value=@item.Entity.FieldName Label=@item.DisplayName />
-                                }
-                            }
-                        </SelectOptions>
-                    </Select>
-                </SpaceItem>
-                @if (Query.QueryData.Count > 0)
-                {
-                    @foreach (var item in Query.QueryData)
-                    {
-                        if (item.Value == HideQuery) continue;
-                        var key = item.Key;
-                        var field = ViewFields.SingleOrDefault(u => u.Entity.FieldName == key);
-                        var tableItem = GetQueryItems?.Invoke(key);
-                        if (tableItem != null)
-                        {
-                            <SpaceItem>
-                                @tableItem
-                            </SpaceItem>
-                            continue;
-                        }
-                        <SpaceItem>
-                            @if (field.IsEnum)
-                            {
-                                <Select TItem="string"
-                        TItemValue="string"
-                        @bind-Value="@Query.QueryData[key]"
-                        Placeholder="@($"{field.DisplayName}")"
-                        Style="width:200px">
-                                    <SelectOptions>
-                                        @foreach (var item in field.EnumValueName)
-                                        {
-                                            <SelectOption TItemValue="string" TItem="string" Value="item.Key.ToString()" Label="@item.Value" />
-                                        }
-                                    </SelectOptions>
-                                </Select>
-                            }
-                            else
-                            {
-                                <Input Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.FieldSearch}"].Replace("{field.DisplayName}",UserConfig.LanguageService[$"{CurrencyConstant.Menu}.{field.DisplayName}"])" @bind-Value="@Query.QueryData[key]" />
-                            }
-
-                        </SpaceItem>
-                    }
-                }
-                <SpaceItem>
-                    <RangePicker TValue="DateTime?[]" ShowTime='@("HH:mm")' OnChange="OnRangeChange" />
+                    <CavSearch Fields="ViewFields" QueryCallback="QueryCallback"></CavSearch>
                 </SpaceItem>
                 <SpaceItem>
-                    <Button Type="@ButtonType.Primary" OnClick="FuzzyQuery">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Query}"]</Button>
+                    <Button>高级搜索</Button>
                 </SpaceItem>
             </Space>
         </SpaceItem>
     }
     <SpaceItem>
-
         <Space>
             @if (Buttons != null)
             {
@@ -164,7 +101,6 @@
                                 }
                             }
                     </Column>
-
                     break;
                 case "int32":
                     <Column Title="@item.DisplayName" DataIndex="@fieldName" TData="int?" />
@@ -193,6 +129,9 @@
                     break;
                 case "datetime":
                     <Column Title="@item.DisplayName" DataIndex="@fieldName" TData="DateTime?" />
+                    break;
+                case "datetimeoffset":
+                    <Column Title="@item.DisplayName" DataIndex="@fieldName" TData="DateTimeOffset?" />
                     break;
                 case "double":
                     <Column Title="@item.DisplayName" DataIndex="@fieldName" TData="double?">
@@ -234,6 +173,7 @@
                     </Column>
                     break;
                 default:
+                    Console.WriteLine($"未找到对应类型:{item.EntityType}");
                     break;
             }
 

@@ -26,7 +26,7 @@ namespace Caviar.AntDesignUI.Shared
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            if (string.IsNullOrEmpty(Label) && !string.IsNullOrEmpty(FieldName))
+            if (Label == null && !string.IsNullOrEmpty(FieldName))
             {
                 Label = LanguageService[$"{CurrencyConstant.EntitysName}.{FieldName}"];
             }

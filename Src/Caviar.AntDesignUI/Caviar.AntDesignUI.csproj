@@ -55,9 +55,6 @@
     <Content Update="Shared\CavMainLayout.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Shared\CavBreadcrumb.razor">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </Content>
     <Content Update="Shared\CavFooter.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>

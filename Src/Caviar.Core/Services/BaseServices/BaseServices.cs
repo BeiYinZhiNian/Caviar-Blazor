@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Caviar.Core.Services
@@ -124,6 +125,12 @@ namespace Caviar.Core.Services
         public virtual Task<T> SingleOrDefaultAsync(Expression<Func<T, bool>> where)
         {
             return AppDbContext.SingleOrDefaultAsync(where);
+        }
+
+        public virtual async Task<PageData<Vm>> QueryAsync(QueryView query)
+        {
+            var page = await AppDbContext.QueryAsync<T>(query);
+            return ToView(page);
         }
 
         protected virtual Vm ToView(T entity)

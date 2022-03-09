@@ -22,11 +22,12 @@ namespace Caviar.Infrastructure.API
         private readonly LogServices<ServerAuthService> _logServices;
         private readonly Interactor _interactor;
         private readonly UserServices _userServices;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public ServerAuthService(IHttpContextAccessor httpContextAccessor,
             UserManager<ApplicationUser> userManager,ILanguageService languageService,
             LogServices<ServerAuthService> logServices,
-            Interactor interactor,UserServices userServices)
+            Interactor interactor,UserServices userServices, SignInManager<ApplicationUser> signInManager)
         {
             _httpContextAccessor = httpContextAccessor;
             _userManager = userManager;
@@ -34,6 +35,7 @@ namespace Caviar.Infrastructure.API
             _logServices = logServices;
             _interactor = interactor;
             _userServices = userServices;
+            _signInManager = signInManager;
         }
 
         public async Task<CurrentUser> CurrentUserInfo()
@@ -45,8 +47,9 @@ namespace Caviar.Infrastructure.API
         public async Task<ResultMsg> Login(UserLogin loginRequest, string returnUrl)
         {
             var user = await _userManager.FindByNameAsync(loginRequest.UserName);
-
-            if (user != null && await _userManager.CheckPasswordAsync(user, loginRequest.Password))
+            if (user == null) return new ResultMsg() { Title = _languageService[$"{CurrencyConstant.ResuleMsg}.Failed"], Status = System.Net.HttpStatusCode.Unauthorized };
+            var singInResult = await _signInManager.CheckPasswordSignInAsync(user, loginRequest.Password, true);
+            if (singInResult.Succeeded)
             {
                 var token = await _userManager.GenerateUserTokenAsync(user, TokenOptions.DefaultProvider, "SignIn");
 
@@ -58,14 +61,14 @@ namespace Caviar.Infrastructure.API
                 }
                 _interactor.UserInfo = user;
                 _interactor.UserName = loginRequest.UserName;
-                _logServices.Infro($"登录成功");
+                _logServices.Infro($"登录成功：{singInResult}");
                 return new ResultMsg() {Title = _languageService[$"{CurrencyConstant.ResuleMsg}.Login Succeeded"], Url = $"/{CurrencyConstant.Api}{UrlConfig.SignInActual}?t=" + Uri.EscapeDataString(data) };
             }
             else
             {
                 _interactor.UserName = loginRequest.UserName;
-                _logServices.Infro($"登录失败");
-                return new ResultMsg() { Title = _languageService[$"{CurrencyConstant.ResuleMsg}.Username and password are invalid"], Status = System.Net.HttpStatusCode.Unauthorized };
+                _logServices.Infro($"登录失败:{singInResult}");
+                return new ResultMsg() { Title = _languageService[$"{CurrencyConstant.ResuleMsg}.{singInResult}"], Status = System.Net.HttpStatusCode.Unauthorized };
             }
         }
 

@@ -25,7 +25,7 @@ namespace Caviar.Demo.Hybrid
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
 
-                options.Lockout.AllowedForNewUsers = true;
+                options.Lockout.AllowedForNewUsers = false;
                 options.Lockout.MaxFailedAccessAttempts = 10;
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
 

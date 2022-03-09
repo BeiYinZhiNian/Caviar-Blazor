@@ -117,6 +117,19 @@ namespace Caviar.Core.Interface
         /// <returns></returns>
         public Task<PageData<T>> GetPageAsync<T, TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true) where T : class, IUseEntity, new();
         /// <summary>
+        /// 模糊查询
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TOrder"></typeparam>
+        /// <param name="query"></param>
+        /// <param name="orderBy"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="isOrder"></param>
+        /// <param name="isNoTracking"></param>
+        /// <returns></returns>
+        public Task<PageData<T>> QueryAsync<T>(QueryView query) where T : class, IUseEntity, new();
+        /// <summary>
         /// 执行sql，请注意参数的检查防止sql注入
         /// </summary>
         /// <param name="sql"></param>
