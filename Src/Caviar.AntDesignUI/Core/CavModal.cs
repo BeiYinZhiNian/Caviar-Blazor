@@ -30,6 +30,12 @@ namespace Caviar.AntDesignUI.Core
             return await modelHandle.Create(modalOptions);
         }
 
+        public RenderFragment Render(string url, string title, IEnumerable<KeyValuePair<string, object>> paramenter)
+        {
+            var modelHandle = new ModalHandle(UserConfig, Modal, MessageService);
+            return modelHandle.Render(url, title, paramenter);
+        }
+
         protected class ModalHandle
         {
             ModalService Modal;
@@ -72,7 +78,7 @@ namespace Caviar.AntDesignUI.Core
                 return modalRef;
             }
 
-            RenderFragment Render(string url, string title, IEnumerable<KeyValuePair<string, object>> paramenter) => builder =>
+            public RenderFragment Render(string url, string title, IEnumerable<KeyValuePair<string, object>> paramenter) => builder =>
             {
                 if (url[0] == '/') url = url[1..];
                 var routes = UserConfig.Routes();
