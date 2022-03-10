@@ -40,7 +40,7 @@
                         </SimpleSelect>
                     </SpaceItem>
                     <SpaceItem>
-                        <EnumSelect Style="width:120px" TEnum="QueryModel.QuerType" @bind-Value="QueryModel.QuerTypes" />
+                        <CavEnumSelect Style="width:120px" TEnum="QueryModel.QuerType" @bind-Value="QueryModel.QuerTypes" />
                     </SpaceItem>
                     @{
                         var entityType = component.Field?.EntityType.ToLower();
@@ -58,7 +58,7 @@
                                     </SelectOptions>
                                 </SimpleSelect>
                             </SpaceItem>
-                            
+
                         }
                         else
                         {
@@ -68,6 +68,10 @@
                                     var intValue = 0;
                                     try
                                     {
+                                        if (string.IsNullOrEmpty(QueryModel.Value))
+                                        {
+                                            QueryModel.Value = "0";
+                                        }
                                         intValue = int.Parse(QueryModel.Value);
                                     }
                                     catch { }
@@ -100,7 +104,6 @@
                                     </SpaceItem>
                                     break;
                                 case "datetime":
-                                case "datetimeoffset":
                                     DateTime? dateTimeValue = null;
                                     if (!string.IsNullOrEmpty(QueryModel.Value))
                                     {

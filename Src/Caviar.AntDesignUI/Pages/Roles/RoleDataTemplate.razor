@@ -21,7 +21,7 @@ Caviar ©2021 Created by 北音执念
         <Input @bind-Value='@context.Entity.Name' />
     </CavFormItem>
     <CavFormItem FieldName='DataRange' FieldRules='@context.Entity'>
-        <EnumSelect TEnum="DataRange"  OnSelectedItemChanged="CheckMenuType" @bind-Value="context.Entity.DataRange" />
+        <CavEnumSelect TEnum="DataRange"  OnSelectedItemChanged="CheckMenuType" @bind-Value="context.Entity.DataRange" />
     </CavFormItem>
     <CavFormItem  FieldName='IsDisable' FieldRules='@context.Entity'>
         <Switch @bind-Value='@context.Entity.IsDisable'/>
