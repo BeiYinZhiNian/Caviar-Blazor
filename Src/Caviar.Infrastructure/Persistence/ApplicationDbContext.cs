@@ -236,7 +236,7 @@ namespace Caviar.Infrastructure.Persistence
             QueryCollection queries = new QueryCollection();
             foreach (var item in query.QueryModels)
             {
-                queries.Add(item);
+                queries.Add(item.Value);
             }
             IQueryable<T> data = GetContext<T>(false);
             data = data.Where(queries.AsExpression<T>());

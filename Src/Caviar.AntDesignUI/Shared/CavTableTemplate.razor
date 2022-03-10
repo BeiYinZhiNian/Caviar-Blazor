@@ -290,10 +290,14 @@
         ButtonClick(menu, context);
     }
 
-    async void ClickAdvancedQuery()
+    [Inject]
+    MessageService MessageService { get; set; }
+
+    QueryView QueryView { get; set; } = new QueryView();
+    async Task ClickAdvancedQuery()
     {
         RenderFragment render =
-    @<AdvancedQuery Fields="ViewFields" QueryCallback="QueryCallback"></AdvancedQuery>
+    @<AdvancedQuery Fields="ViewFields" QueryView="QueryView" QueryCallback="QueryCallback"></AdvancedQuery>
     ;
         var options = new CavModalOptions()
             {
@@ -302,5 +306,4 @@
             };
         await CavModal.Create(options);
     }
-
 }

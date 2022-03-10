@@ -41,6 +41,10 @@ namespace Caviar.AntDesignUI.Core
             ModalService Modal;
             UserConfig UserConfig;
             MessageService MessageService;
+            ModalRef modalRef;
+            Action OnOK;
+            ITableTemplate TableTemplate;
+
             public ModalHandle(UserConfig userConfig, ModalService modalService, MessageService messageService)
             {
                 UserConfig = userConfig;
@@ -48,8 +52,7 @@ namespace Caviar.AntDesignUI.Core
                 MessageService = messageService;
             }
 
-            ModalRef modalRef;
-            Action OnOK;
+            
             public async Task<ModalRef> Create(CavModalOptions modalOptions)
             {
                 if(modalOptions.Content == null)
@@ -73,7 +76,7 @@ namespace Caviar.AntDesignUI.Core
                 {
                     options.Draggable = true;
                 }
-                this.OnOK = modalOptions.ActionOK;
+                OnOK = modalOptions.ActionOK;
                 modalRef = await Modal.CreateModalAsync(options);
                 return modalRef;
             }
@@ -104,20 +107,19 @@ namespace Caviar.AntDesignUI.Core
                 MessageService.Error(UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ComponentErrorMsg}"].Replace("{title}", title).Replace("{url}", url));
             };
 
-            ITableTemplate menuAdd;
-
+            
             void SetComponent(object e)
             {
-                menuAdd = (ITableTemplate)e;
+                TableTemplate = (ITableTemplate)e;
             }
 
             private async Task HandleOk(MouseEventArgs e)
             {
                 modalRef.Config.ConfirmLoading = true;
                 var res = true;
-                if (menuAdd != null)
+                if (TableTemplate != null)
                 {
-                    res = await menuAdd.Validate();
+                    res = await TableTemplate.Validate();
                 }
                 modalRef.Config.ConfirmLoading = false;
                 modalRef.Config.Visible = !res;
@@ -152,7 +154,7 @@ namespace Caviar.AntDesignUI.Core
         /// </summary>
         public RenderFragment Content { get; set; }
         /// <summary>
-        /// 点击回调
+        /// 成功执行后回调
         /// </summary>
         public Action ActionOK { get; set; }
         /// <summary>
