@@ -36,6 +36,7 @@ namespace Caviar.AntDesignUI.Core
             return modelHandle.Render(url, title, paramenter);
         }
 
+
         protected class ModalHandle
         {
             ModalService Modal;
@@ -43,6 +44,7 @@ namespace Caviar.AntDesignUI.Core
             MessageService MessageService;
             ModalRef modalRef;
             Action OnOK;
+            Func<Task<bool>> FuncValidate;
             ITableTemplate TableTemplate;
 
             public ModalHandle(UserConfig userConfig, ModalService modalService, MessageService messageService)
@@ -59,12 +61,17 @@ namespace Caviar.AntDesignUI.Core
             /// <returns></returns>
             public async Task<ModalRef> Create(CavModalOptions modalOptions)
             {
+                RenderFragment render = modalOptions.Render;
+                if(render == null)
+                {
+                    render = Render(modalOptions.Url, modalOptions.Title, modalOptions.Paramenter);
+                }
                 ModalOptions options = new ModalOptions()
                 {
                     OnOk = HandleOk,
                     OnCancel = HandleCancel,
                     MaskClosable = false,
-                    Content = Render(modalOptions.Url, modalOptions.Title, modalOptions.Paramenter),
+                    Content = render,
                     Title = modalOptions.Title,
                     BodyStyle = modalOptions.BodyStyle,
                     Visible = true,
@@ -77,6 +84,7 @@ namespace Caviar.AntDesignUI.Core
                     options.Draggable = true;
                 }
                 OnOK = modalOptions.ActionOK;
+                FuncValidate = modalOptions.FuncValidate;
                 modalRef = await Modal.CreateModalAsync(options);
                 return modalRef;
             }
@@ -121,6 +129,10 @@ namespace Caviar.AntDesignUI.Core
                 {
                     res = await TableTemplate.Validate();
                 }
+                if(FuncValidate != null)
+                {
+                    res = await FuncValidate.Invoke();
+                }
                 modalRef.Config.ConfirmLoading = false;
                 modalRef.Config.Visible = !res;
                 if (res)
@@ -153,6 +165,8 @@ namespace Caviar.AntDesignUI.Core
         /// 成功执行后回调
         /// </summary>
         public Action ActionOK { get; set; }
+
+        public Func<Task<bool>> FuncValidate { get; set; }
         /// <summary>
         /// 标题
         /// </summary>
@@ -161,5 +175,6 @@ namespace Caviar.AntDesignUI.Core
         /// 容器样式
         /// </summary>
         public string BodyStyle { get; set; } = "overflow-y: auto;height: 400px;";
+        public RenderFragment Render { get; set; }
     }
 }

@@ -23,7 +23,8 @@
                 <Space>
                     <SpaceItem>
                         <SimpleSelect Placeholder="请选择查询的字段" @bind-Value="QueryModel.Key"
-                              OnSelectedItemChanged="u=>OnSelectItem(item.Key,u)">
+                              OnSelectedItemChanged="u=>OnSelectItem(item.Key,u)"
+                              Style="width:120px">
                             <SelectOptions>
                                 @if (Fields != null)
                                 {
@@ -39,67 +40,86 @@
                         </SimpleSelect>
                     </SpaceItem>
                     <SpaceItem>
-                        <EnumSelect TEnum="QueryModel.QuerType" @bind-Value="QueryModel.QuerTypes" />
+                        <EnumSelect Style="width:120px" TEnum="QueryModel.QuerType" @bind-Value="QueryModel.QuerTypes" />
                     </SpaceItem>
                     @{
                         var entityType = component.Field?.EntityType.ToLower();
-                        switch (entityType)
+                        if (component.Field != null && component.Field.IsEnum)
                         {
-                            case "int32":
-                                var intValue = 0;
-                                try
-                                {
-                                    intValue = int.Parse(QueryModel.Value);
-                                }
-                                catch { }
-                                <SpaceItem>
-                                    <Input TValue="int" Value="intValue" OnChange="u=>OnValueChange(QueryModel,u)" Placeholder="请输入想要搜索的内容" />
-                                </SpaceItem>
-                                break;
-                            case "boolean":
-                                if (string.IsNullOrEmpty(QueryModel.Value))
-                                {
-                                    QueryModel.Value = "False";
-                                }
-                                else
-                                {
+                            <SpaceItem>
+                                <SimpleSelect 
+                                Placeholder="请选择类型"
+                                Style="width:120px">
+                                    <SelectOptions>
+                                        @foreach (var enumItem in component.Field.EnumValueName)
+                                        {
+                                            <SimpleSelectOption Value="@enumItem.Key.ToString()" Label="@enumItem.Value"></SimpleSelectOption>
+                                        }
+                                    </SelectOptions>
+                                </SimpleSelect>
+                            </SpaceItem>
+                            
+                        }
+                        else
+                        {
+                            switch (entityType)
+                            {
+                                case "int32":
+                                    var intValue = 0;
                                     try
                                     {
-                                        component.IsCompleted = bool.Parse(QueryModel.Value);
+                                        intValue = int.Parse(QueryModel.Value);
                                     }
-                                    catch{}
-                                }
+                                    catch { }
+                                    <SpaceItem>
+                                        <Input TValue="int" Value="intValue" OnChange="u=>OnValueChange(QueryModel,u)" Placeholder="请输入想要搜索的内容" />
+                                    </SpaceItem>
+                                    break;
+                                case "boolean":
+                                    if (string.IsNullOrEmpty(QueryModel.Value))
+                                    {
+                                        QueryModel.Value = "False";
+                                    }
+                                    else
+                                    {
+                                        try
+                                        {
+                                            component.IsCompleted = bool.Parse(QueryModel.Value);
+                                        }
+                                        catch { }
+                                    }
 
-                                <SpaceItem>
-                                    <Switch @bind-Value="component.IsCompleted" Style="width:50px" OnChange="u=>{
+                                    <SpaceItem>
+                                        <Switch @bind-Value="component.IsCompleted" Style="width:50px" OnChange="u=>{
                                         OnValueChange(QueryModel,u);}" CheckedChildren="是" UnCheckedChildren="否" />
-                                </SpaceItem>
-                                break;
-                            case "guid":
-                                <SpaceItem>
-                                    <Input TValue="Guid" OnChange="u=>OnValueChange(QueryModel,u)" Placeholder="请输入想要搜索的内容" />
-                                </SpaceItem>
-                                break;
-                            case "datetime":
-                            case "datetimeoffset":
-                                DateTime? dateTimeValue = null;
-                                if (!string.IsNullOrEmpty(QueryModel.Value))
-                                {
-                                    try
+                                    </SpaceItem>
+                                    break;
+                                case "guid":
+                                    <SpaceItem>
+                                        <Input TValue="Guid" OnChange="u=>OnValueChange(QueryModel,u)" Placeholder="请输入想要搜索的内容" />
+                                    </SpaceItem>
+                                    break;
+                                case "datetime":
+                                case "datetimeoffset":
+                                    DateTime? dateTimeValue = null;
+                                    if (!string.IsNullOrEmpty(QueryModel.Value))
                                     {
-                                        dateTimeValue = DateTime.Parse(QueryModel.Value);
+                                        try
+                                        {
+                                            dateTimeValue = DateTime.Parse(QueryModel.Value);
+                                        }
+                                        catch { }
                                     }
-                                    catch{}
-                                }
-                                <SpaceItem>
-                                    <DatePicker TValue="DateTime?" Value="dateTimeValue" OnChange="u=>OnDateTimeChange(QueryModel,u)" Picker="@DatePickerType.Date" />
-                                </SpaceItem>
-                                break;
-                            default:
-                                <SpaceItem>
-                                    <Input TValue="string" @bind-Value="QueryModel.Value" Placeholder="请输入想要搜索的内容" />
-                                </SpaceItem>
-                                break;
+                                    <SpaceItem>
+                                        <DatePicker TValue="DateTime?" Value="dateTimeValue" OnChange="u=>OnDateTimeChange(QueryModel,u)" Picker="@DatePickerType.Date" />
+                                    </SpaceItem>
+                                    break;
+                                default:
+                                    <SpaceItem>
+                                        <Input TValue="string" @bind-Value="QueryModel.Value" Placeholder="请输入想要搜索的内容" />
+                                    </SpaceItem>
+                                    break;
+                            }
                         }
                         if (i > 0)
                         {

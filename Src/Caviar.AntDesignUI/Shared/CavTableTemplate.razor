@@ -298,19 +298,24 @@
     MessageService MessageService { get; set; }
 
     QueryView QueryView { get; set; } = new QueryView();
+    AdvancedQuery advancedQuery;
     async Task ClickAdvancedQuery()
     {
         var options = new CavModalOptions()
             {
-                Paramenter = new Dictionary<string, object>()
-                {
-                    {"QueryCallback",QueryCallback},
-                    { "Fields",ViewFields},
-                    { "QueryView",QueryView}
-                },
                 Url = UrlConfig.AuvancedQuery,
                 Title = "高级查询",
+                FuncValidate = Validate,
             };
+        RenderFragment render =
+    @<AdvancedQuery @ref="advancedQuery" QueryView="QueryView" Fields="ViewFields" QueryCallback="QueryCallback"></AdvancedQuery>
+    ;
+        options.Render = render;
         await CavModal.Create(options);
+    }
+
+    Task<bool> Validate()
+    {
+        return advancedQuery.Validate();   
     }
 }
