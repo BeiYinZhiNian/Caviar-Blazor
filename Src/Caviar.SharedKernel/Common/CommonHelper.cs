@@ -14,6 +14,33 @@ namespace Caviar.SharedKernel.Entities
 {
     public static class CommonHelper
     {
+        public static TimeSlot GetTimeSlot()
+        {
+            DateTime time1 = Convert.ToDateTime("0:00:00");
+            DateTime time2 = Convert.ToDateTime(DateTime.Now.ToString());
+            TimeSpan TS = new TimeSpan(time2.Ticks - time1.Ticks);
+            int Time = (int)TS.TotalHours;
+            if (Time < 5) // 0 - 5
+            {
+                return TimeSlot.Midnight;
+            }
+            else if (Time >= 5 && Time < 11)// 5 - 11
+            {
+                return TimeSlot.Morning;
+            }
+            else if (Time >= 11 && Time < 14)// 11 - 14
+            {
+                return TimeSlot.Noon;
+            }
+            else if (Time >= 14 && Time < 18)// 14 - 18
+            {
+                return TimeSlot.Afternoon;
+            }
+            else// 18 - 24
+            {
+                return TimeSlot.Night;
+            }
+        }
         /// <summary>
         /// SHA256加密
         /// </summary>

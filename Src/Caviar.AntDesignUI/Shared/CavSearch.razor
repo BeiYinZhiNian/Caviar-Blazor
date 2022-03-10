@@ -1,7 +1,7 @@
 ﻿
 
 <InputGroup Compact>
-    <SimpleSelect Placeholder="请选择查询的字段" Style="width: 50%;" @bind-Value="QueryModel.Key" OnSelectedItemChanged="OnSelectedItemChanged">
+    <SimpleSelect Placeholder="请选择查询的字段" Style="width: 50%;" @bind-Value="QueryModel.Key">
         <SelectOptions>
             @if (Fields != null)
             {
@@ -15,20 +15,6 @@
             }
         </SelectOptions>
     </SimpleSelect>
-@*    @{
-        var entityType = SelectField?.EntityType.ToLower();
-        switch (entityType)
-        {
-            case "string":
-                QueryModel.QuerTypes = QueryModel.QuerType.Contains;
-                <Input TValue="string" @bind-Value="QueryModel.Value" Placeholder="请输入想要搜索的内容"/>
-                break;
-            default:
-                QueryModel.QuerTypes = QueryModel.QuerType.Equal;
-                <Input TValue="string" @bind-Value="QueryModel.Value" Placeholder="请输入想要搜索的内容"/>
-                break;
-        }
-    }*@
     <Input TValue="string" @bind-Value="QueryModel.Value" Placeholder="请输入想要搜索的内容"/>
-    <Button OnClick="OnSearch" Type="@ButtonType.Primary">搜索</Button>
+    <Button OnClick="OnSearch" Type="@ButtonType.Primary" Loading="Loading">搜索</Button>
 </InputGroup>

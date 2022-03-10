@@ -1,0 +1,45 @@
+﻿@page "/Query/AdvancedQuery"
+
+<Button Type="@ButtonType.Primary">添加条件</Button>
+
+<Space>
+    @{
+        foreach (var QueryModel in QueryView.QueryModels)
+        {
+
+            <SpaceItem>
+                    <SimpleSelect Placeholder="请选择查询的字段" Style="width: 50%;" @bind-Value="QueryModel.Key"
+                          OnSelectedItemChanged="u=>OnSelectItem(QueryModel.TrackId,u)">
+                        <SelectOptions>
+                            @if (Fields != null)
+                            {
+                                foreach (var item in Fields)
+                                {
+                                    if (item.IsPermission && item.Entity.IsPanel)
+                                    {
+                                        <SimpleSelectOption Value="@item.Entity.FieldName" Label="@item.DisplayName"></SimpleSelectOption>
+                                    }
+                                }
+                            }
+                        </SelectOptions>
+                    </SimpleSelect>
+                    @{
+                        if (SelectItems.ContainsKey(QueryModel.TrackId))
+                        {
+                            var SelectField = SelectItems[QueryModel.TrackId];
+                            var entityType = SelectField.EntityType.ToLower();
+                            switch (entityType)
+                            {
+                                case "string":
+                                    QueryModel.QuerTypes = QueryModel.QuerType.Contains;
+                                    <Input TValue="string" @bind-Value="QueryModel.Value" Placeholder="请输入想要搜索的内容" />
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+            </SpaceItem>
+        }
+    }
+</Space>

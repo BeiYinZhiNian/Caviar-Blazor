@@ -15,6 +15,7 @@ using AntDesign.JsInterop;
 using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Components.Authorization;
 using Caviar.AntDesignUI.Core;
+using Caviar.SharedKernel.Entities;
 
 namespace Caviar.AntDesignUI.Shared
 {
@@ -30,18 +31,19 @@ namespace Caviar.AntDesignUI.Shared
 
         string HeaderStyle { get; set; } = "margin-left: 200px";
         [Inject]
-        public UserConfig UserConfig { get; set; }
+        UserConfig UserConfig { get; set; }
         [Inject]
-        public IJSRuntime JSRuntime { get; set; }
-
-        [Inject] 
-        public NavigationManager NavigationManager { get; set; }
+        IJSRuntime JSRuntime { get; set; }
 
         /// <summary>
         /// 面包屑数据同步
         /// </summary>
-        public string[] BreadcrumbItemArr = new string[] { };
+        string[] BreadcrumbItemArr = new string[] { };
 
+        [Inject]
+        NotificationService NotificationService { get; set; }
+        [Inject]
+        HostAuthenticationStateProvider HostAuthenticationStateProvider { get; set; }
         protected override async Task OnInitializedAsync()
         {
             UserConfig.LayoutPage = Refresh;
@@ -49,6 +51,49 @@ namespace Caviar.AntDesignUI.Shared
             LogoImgIco = "_content/Caviar.AntDesignUI/Images/logo-Ico.png";
             LogoImgSrc = LogoImg;
             await base.OnInitializedAsync();
+        }
+        
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                var slot = "";
+                var description = "";
+                var timeSlot = CommonHelper.GetTimeSlot();
+                switch (timeSlot)
+                {
+                    case TimeSlot.Morning:
+                        slot = "上午好";
+                        description = "又是元气满满的一天";
+                        break;
+                    case TimeSlot.Noon:
+                        slot = "中午好";
+                        description = "午安，该休息了";
+                        break;
+                    case TimeSlot.Afternoon:
+                        slot = "下午好";
+                        description = "在累也要注意休息";
+                        break;
+                    case TimeSlot.Night:
+                        slot = "晚上好";
+                        description = "去外面走一走吧，不要忽略了风景";
+                        break;
+                    case TimeSlot.Midnight:
+                        slot = "夜深了";
+                        description = "这么晚了，一定有很多心事吧";
+                        break;
+                    default:
+                        break;
+                }
+                var userInfo = await HostAuthenticationStateProvider.GetCurrentUser();
+                _ = NotificationService.Open(new NotificationConfig()
+                {
+                    Message = $"{slot} {userInfo.UserName}",
+                    Description = description,
+                    NotificationType = NotificationType.Success
+                });
+            }
+            await base.OnAfterRenderAsync(firstRender);
         }
 
 

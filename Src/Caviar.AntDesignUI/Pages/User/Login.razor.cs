@@ -60,10 +60,18 @@ namespace Caviar.AntDesignUI.Pages.User
         {
             string backgroundImage = "_content/Caviar.AntDesignUI/Images/grov.jpg";
             Style = $"min-height:100vh;background-image: url({backgroundImage});";
-            Loading = false;
             base.OnInitialized();
         }
 
+        protected override void OnAfterRender(bool firstRender)
+        {
+            if (firstRender)
+            {
+                Loading = false;
+                StateHasChanged();
+            }
+            base.OnAfterRender(firstRender);
+        }
 
     }
 }
