@@ -28,12 +28,12 @@ namespace Caviar.AntDesignUI.Shared
 
         async void OnSearch()
         {
-            Loading = true;
             if (string.IsNullOrEmpty(QueryModel.Key))
             {
                 _ = MessageService.Error("请选择要查询的字段");
                 return;
             }
+            Loading = true;
             QueryView query = new QueryView()
             {
                 QueryModels = new Dictionary<Guid, QueryModel>() 
@@ -47,6 +47,7 @@ namespace Caviar.AntDesignUI.Shared
                 await QueryCallback.InvokeAsync(query);
             }
             Loading = false;
+            StateHasChanged();
         }
     }
 }

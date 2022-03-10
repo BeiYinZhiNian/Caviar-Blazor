@@ -1,7 +1,7 @@
 ﻿@typeparam TData
 
 <Space Direction="@DirectionVHType.Vertical" Size="@("small")">
-    @if(IsOpenQuery)
+    @if (IsOpenQuery)
     {
         <SpaceItem>
             <Space>
@@ -33,7 +33,7 @@
     </SpaceItem>
 </Space>
 
-    <Table DataSource="DataSource"
+<Table DataSource="DataSource"
        @ref="Table"
        ScrollX="@ScrollX"
        Bordered="Bordered"
@@ -43,13 +43,13 @@
        Loading="Loading"
        @bind-SelectedRows="SelectedRows"
        TreeChildren="TreeChildren">
-       
 
-       
+
+
     @{
         if (IsSelectedRows)
         {
-            <Selection  Width="50"/>
+            <Selection Width="50" />
         }
         foreach (var item in ViewFields)
         {
@@ -83,23 +83,24 @@
             {
                 case "string":
                     <Column Title="@item.DisplayName" DataIndex="@fieldName" TData="string" Width="@item.Entity.TableWidth">
-                            @{
-                                var obj = context.GetObjValue("Entity").GetObjValue(item.Entity.FieldName);
-                                if (obj != null)
+                        @{
+                            var obj = context.GetObjValue("Entity").GetObjValue(item.Entity.FieldName);
+                            if (obj != null)
+                            {
+                                var value = (string)obj;
+                                if (value.Count() >= EllipsisLen)
                                 {
-                                    var value = (string)obj;
-                                    if (value.Count() >= EllipsisLen)
-                                    {
-                                        var txt = value.Substring(0, DisplayCount) + "...";
-                                        <Tooltip Title="@value">
-                                            <span>@txt</span>
-                                        </Tooltip>
-                                    }
-                                    else{
-                                        <span>@value</span>
-                                    }
+                                    var txt = value.Substring(0, DisplayCount) + "...";
+                                    <Tooltip Title="@value">
+                                        <span>@txt</span>
+                                    </Tooltip>
+                                }
+                                else
+                                {
+                                    <span>@value</span>
                                 }
                             }
+                        }
                     </Column>
                     break;
                 case "int32":
@@ -239,17 +240,17 @@
 @code {
     RenderFragment CreatePackButton(SysMenuView menu, TData context)
     {
-        var button = CreateButtons?.Invoke(menu,context);
+        var button = CreateButtons?.Invoke(menu, context);
         if (button != null) return button;
         RenderFragment render = null;
         if (menu.Entity.IsDoubleTrue)
         {
-            string title = UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.DeleteTitle}"].Replace("{menu.DisplayName}",UserConfig.LanguageService[$"{CurrencyConstant.Menu}.{menu.DisplayName}"]);
+            string title = UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.DeleteTitle}"].Replace("{menu.DisplayName}", UserConfig.LanguageService[$"{CurrencyConstant.Menu}.{menu.DisplayName}"]);
             render =
     @<Popconfirm Title='@title'
-                                 OkText=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Confirm}"]
-                                 CancelText=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Cancel}"]
-                                 OnConfirm="()=>ButtonClick(menu,context)">
+                 OkText=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Confirm}"]
+                 CancelText=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Cancel}"]
+                 OnConfirm="()=>ButtonClick(menu,context)">
         @CreateButton(menu, context)
     </Popconfirm>;
         }
@@ -266,19 +267,22 @@
         RenderFragment render = null;
         string type = menu.Entity.ButtonPosition == ButtonPosition.Default ? "primary" : "link";
         bool danger = menu.Entity.IsDoubleTrue == true ? true : false;
-        
+
         @if (menu.Entity.TargetType == TargetType.NewLabel)
         {
             render =
-            @<a href="@menu.Entity.Url" target="_blank"><Button Icon="@menu.Entity.Icon" Type="@type" Danger="danger" OnClick="() => doubleTrueClick(menu, context)">
-        @menu.DisplayName
-        </Button></a>
-            ;
+    @<a href="@menu.Entity.Url" target="_blank">
+        <Button Icon="@menu.Entity.Icon" Type="@type" Danger="danger" OnClick="() => doubleTrueClick(menu, context)">
+            @menu.DisplayName
+        </Button>
+    </a>
+        ;
         }
-        else{
+        else
+        {
             render =@<Button Icon="@menu.Entity.Icon" Type="@type" Danger="danger" OnClick="() => doubleTrueClick(menu, context)">
         @menu.DisplayName
-        </Button>;
+    </Button>;
         }
 
         return render;
@@ -296,12 +300,15 @@
     QueryView QueryView { get; set; } = new QueryView();
     async Task ClickAdvancedQuery()
     {
-        RenderFragment render =
-    @<AdvancedQuery Fields="ViewFields" QueryView="QueryView" QueryCallback="QueryCallback"></AdvancedQuery>
-    ;
         var options = new CavModalOptions()
             {
-                Content = render,
+                Paramenter = new Dictionary<string, object>()
+                {
+                    {"QueryCallback",QueryCallback},
+                    { "Fields",ViewFields},
+                    { "QueryView",QueryView}
+                },
+                Url = UrlConfig.AuvancedQuery,
                 Title = "高级查询",
             };
         await CavModal.Create(options);

@@ -52,19 +52,19 @@ namespace Caviar.AntDesignUI.Core
                 MessageService = messageService;
             }
 
-            
+            /// <summary>
+            /// 根据page url动态创建Modal
+            /// </summary>
+            /// <param name="modalOptions"></param>
+            /// <returns></returns>
             public async Task<ModalRef> Create(CavModalOptions modalOptions)
             {
-                if(modalOptions.Content == null)
-                {
-                    modalOptions.Content = Render(modalOptions.Url, modalOptions.Title, modalOptions.Paramenter);
-                }
                 ModalOptions options = new ModalOptions()
                 {
                     OnOk = HandleOk,
                     OnCancel = HandleCancel,
                     MaskClosable = false,
-                    Content = modalOptions.Content,
+                    Content = Render(modalOptions.Url, modalOptions.Title, modalOptions.Paramenter),
                     Title = modalOptions.Title,
                     BodyStyle = modalOptions.BodyStyle,
                     Visible = true,
@@ -149,10 +149,6 @@ namespace Caviar.AntDesignUI.Core
         /// url地址
         /// </summary>
         public string Url { get; set; }
-        /// <summary>
-        /// 传入组件，提供组件则不解析url和传入的参数
-        /// </summary>
-        public RenderFragment Content { get; set; }
         /// <summary>
         /// 成功执行后回调
         /// </summary>

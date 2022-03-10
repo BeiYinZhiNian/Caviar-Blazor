@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel.Entities.View
@@ -30,6 +31,7 @@ namespace Caviar.SharedKernel.Entities.View
         /// <summary>
         /// 用于描述组件状态
         /// </summary>
+        [JsonIgnore]
         public ComponentStatus ComponentStatus { get; set; }
         /// <summary>
         /// 查询类型
