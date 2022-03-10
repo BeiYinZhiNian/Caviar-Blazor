@@ -32,7 +32,6 @@ namespace Caviar.AntDesignUI.Core
 
         protected class ModalHandle
         {
-            public string ModalStyle { get; set; } = "overflow-y: auto;height: 400px;";
             ModalService Modal;
             UserConfig UserConfig;
             MessageService MessageService;
@@ -154,7 +153,9 @@ namespace Caviar.AntDesignUI.Core
         /// 标题
         /// </summary>
         public string Title { get; set; }
-
+        /// <summary>
+        /// 容器样式
+        /// </summary>
         public string BodyStyle { get; set; } = "overflow-y: auto;height: 400px;";
     }
 }
