@@ -180,8 +180,16 @@ namespace Caviar.AntDesignUI.Shared
                         CurrRow.Data.AToB(out TData dataSource);
                         paramenter.Add("DataSource", dataSource);
                     }
-                    paramenter.Add(CurrencyConstant.ControllerName, menu.Entity.Url);
-                    await CavModal.Create(menu.Entity.Url, menu.DisplayName, HandleOk, paramenter);
+                    paramenter.Add(CurrencyConstant.CavModelSubmitUrl, menu.Entity.Url);//不提供url时候默认url一致
+                    paramenter.Add(CurrencyConstant.ControllerName, menu.Entity.Url);//会自动处理为controllerName
+                    var options = new CavModalOptions() 
+                    { 
+                        Url = menu.Entity.Url,
+                        Paramenter = paramenter,
+                        ActionOK = HandleOk,
+                        Title = menu.DisplayName
+                    };
+                    await CavModal.Create(options);
                     break;
                 case TargetType.NewLabel:
                     //await JSRuntime.InvokeVoidAsync("open", menu.Url, "_blank");

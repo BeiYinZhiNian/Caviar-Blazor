@@ -24,10 +24,10 @@ namespace Caviar.AntDesignUI.Core
             MessageService = messageService;
         }
 
-        public async Task<ModalRef> Create(string url, string title, Action OnOK = null, Dictionary<string, object> paramenter = null)
+        public async Task<ModalRef> Create(CavModalOptions modalOptions)
         {
             var modelHandle = new ModalHandle(UserConfig, Modal, MessageService);
-            return await modelHandle.Create(url, title, OnOK, paramenter);
+            return await modelHandle.Create(modalOptions);
         }
 
         protected class ModalHandle
@@ -45,30 +45,29 @@ namespace Caviar.AntDesignUI.Core
 
             ModalRef modalRef;
             Action OnOK;
-            public async Task<ModalRef> Create(string url, string title, Action OnOK = null, Dictionary<string, object> paramenter = null)
+            public async Task<ModalRef> Create(CavModalOptions modalOptions)
             {
-                if (paramenter == null) paramenter = new Dictionary<string, object>();
-                if (!paramenter.ContainsKey(CurrencyConstant.CavModelSubmitUrl))
+                if(modalOptions.Content == null)
                 {
-                    paramenter.Add(CurrencyConstant.CavModelSubmitUrl, url);//不提供url时候默认url一致
+                    modalOptions.Content = Render(modalOptions.Url, modalOptions.Title, modalOptions.Paramenter);
                 }
                 ModalOptions options = new ModalOptions()
                 {
                     OnOk = HandleOk,
                     OnCancel = HandleCancel,
                     MaskClosable = false,
-                    Content = Render(url, title, paramenter),
-                    Title = title,
+                    Content = modalOptions.Content,
+                    Title = modalOptions.Title,
                     Visible = true,
                     OkText = @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Confirm}"],
                     CancelText = @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Cancel}"],
-                    DestroyOnClose = true
+                    DestroyOnClose = true,
                 };
-                if (!string.IsNullOrEmpty(title))
+                if (!string.IsNullOrEmpty(modalOptions.Title))
                 {
                     options.Draggable = true;
                 }
-                this.OnOK = OnOK;
+                this.OnOK = modalOptions.ActionOK;
                 modalRef = await Modal.CreateModalAsync(options);
                 return modalRef;
             }
@@ -129,7 +128,31 @@ namespace Caviar.AntDesignUI.Core
                 return Task.CompletedTask;
             }
         }
+
+        
     }
 
-    
+    public class CavModalOptions
+    {
+        /// <summary>
+        /// 需要传入的参数
+        /// </summary>
+        public Dictionary<string, object> Paramenter { get; set; }
+        /// <summary>
+        /// url地址
+        /// </summary>
+        public string Url { get; set; }
+        /// <summary>
+        /// 传入组件，提供组件则不解析url和传入的参数
+        /// </summary>
+        public RenderFragment Content { get; set; }
+        /// <summary>
+        /// 点击回调
+        /// </summary>
+        public Action ActionOK { get; set; }
+        /// <summary>
+        /// 标题
+        /// </summary>
+        public string Title { get; set; }
+    }
 }

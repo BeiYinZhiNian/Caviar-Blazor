@@ -43,7 +43,12 @@
 
     public async void ChangePassword()
     {
-        await CavModal.Create(UrlConfig.ChangePassword, UserConfig.LanguageService[$"{CurrencyConstant.Page}.ChangePassword"]);
+        CavModalOptions options = new CavModalOptions()
+        {
+            Url = UrlConfig.ChangePassword,
+            Title = UserConfig.LanguageService[$"{CurrencyConstant.Page}.ChangePassword"]
+        };
+        await CavModal.Create(options);
     }
 
     private async Task BeginSignOut()

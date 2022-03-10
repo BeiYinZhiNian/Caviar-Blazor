@@ -29,7 +29,13 @@ namespace Caviar.AntDesignUI.Pages.Roles
                 Dictionary<string, object> paramenter = new Dictionary<string, object>();
                 paramenter.Add("DataSource", DataSource);
                 paramenter.Add(CurrencyConstant.ControllerName, UrlConfig.DataRange);
-                await CavModal.Create(UrlConfig.DataRange, "自定义数据范围", null, paramenter);
+                CavModalOptions options = new CavModalOptions()
+                {
+                    Url = UrlConfig.DataRange,
+                    Title = "自定义数据范围",
+                    Paramenter = paramenter
+                };
+                await CavModal.Create(options);
             }
         }
     }

@@ -9,7 +9,7 @@
                     <CavSearch Fields="ViewFields" QueryCallback="QueryCallback"></CavSearch>
                 </SpaceItem>
                 <SpaceItem>
-                    <Button>高级搜索</Button>
+                    <Button OnClick="ClickAdvancedQuery">高级搜索</Button>
                 </SpaceItem>
             </Space>
         </SpaceItem>
@@ -289,5 +289,18 @@
         if (menu.Entity.IsDoubleTrue) return;
         ButtonClick(menu, context);
     }
-    
+
+    async void ClickAdvancedQuery()
+    {
+        RenderFragment render =
+    @<AdvancedQuery Fields="ViewFields" QueryCallback="QueryCallback"></AdvancedQuery>
+    ;
+        var options = new CavModalOptions()
+            {
+                Content = render,
+                Title = "高级查询",
+            };
+        await CavModal.Create(options);
+    }
+
 }
