@@ -1,27 +1,44 @@
 ﻿
-<Button Type="@ButtonType.Primary">添加条件</Button>
 
-<Space>
+
+<Space Direction="DirectionVHType.Vertical">
+    <SpaceItem>
+        <Button Type="@ButtonType.Primary" OnClick="AddCondition">添加条件</Button>
+    </SpaceItem>
     @{
+        var count = 0;
         foreach (var QueryModel in QueryView.QueryModels)
         {
-
+            var i = count;
+            count++;
+            @if(i > 0)
+            {
+                <SpaceItem>
+                    <Switch Checked="true" Style="width:50px" CheckedChildren="且" UnCheckedChildren="或" />
+                </SpaceItem>
+            }
             <SpaceItem>
-                    <SimpleSelect Placeholder="请选择查询的字段" Style="width: 50%;" @bind-Value="QueryModel.Key"
-                          OnSelectedItemChanged="u=>OnSelectItem(QueryModel.TrackId,u)">
-                        <SelectOptions>
-                            @if (Fields != null)
-                            {
-                                foreach (var item in Fields)
+                <Space>
+                    <SpaceItem>
+                        <SimpleSelect Placeholder="请选择查询的字段" @bind-Value="QueryModel.Key"
+                              OnSelectedItemChanged="u=>OnSelectItem(QueryModel.TrackId,u)">
+                            <SelectOptions>
+                                @if (Fields != null)
                                 {
-                                    if (item.IsPermission && item.Entity.IsPanel)
+                                    foreach (var item in Fields)
                                     {
-                                        <SimpleSelectOption Value="@item.Entity.FieldName" Label="@item.DisplayName"></SimpleSelectOption>
+                                        if (item.IsPermission && item.Entity.IsPanel)
+                                        {
+                                            <SimpleSelectOption Value="@item.Entity.FieldName" Label="@item.DisplayName"></SimpleSelectOption>
+                                        }
                                     }
                                 }
-                            }
-                        </SelectOptions>
-                    </SimpleSelect>
+                            </SelectOptions>
+                        </SimpleSelect>
+                    </SpaceItem>
+                    <SpaceItem>
+                           <EnumSelect TEnum="QueryModel.QuerType" @bind-Value="QueryModel.QuerTypes" />
+                    </SpaceItem>
                     @{
                         if (SelectItems.ContainsKey(QueryModel.TrackId))
                         {
@@ -29,15 +46,35 @@
                             var entityType = SelectField.EntityType.ToLower();
                             switch (entityType)
                             {
-                                case "string":
-                                    QueryModel.QuerTypes = QueryModel.QuerType.Contains;
-                                    <Input TValue="string" @bind-Value="QueryModel.Value" Placeholder="请输入想要搜索的内容" />
+                                case "int32":
+                                    QueryModel.QuerTypes = QueryModel.QuerType.Equal;
+                                    <SpaceItem>
+                                        <Input TValue="int" OnChange="u=>OnChange(QueryModel,u)" Placeholder="请输入想要搜索的内容" />
+                                    </SpaceItem>
+                                    break;
+                                case "boolean":
+                                    QueryModel.QuerTypes = QueryModel.QuerType.Equal;
+                                    <SpaceItem>
+                                        <Switch Checked="true" Style="width:50px"  CheckedChildren="是" UnCheckedChildren="否" />
+                                    </SpaceItem>
                                     break;
                                 default:
+                                    QueryModel.QuerTypes = QueryModel.QuerType.Contains;
+                                    <SpaceItem>
+                                        <Input TValue="string" @bind-Value="QueryModel.Value" Placeholder="请输入想要搜索的内容" />
+                                    </SpaceItem>                                    
                                     break;
                             }
                         }
+                        if (i > 0)
+                        {
+                            <SpaceItem>
+                                <Button Type="@ButtonType.Dashed" OnClick="()=>RemoveCondition(QueryModel.TrackId)">移除</Button>
+                            </SpaceItem>
+                        }
                     }
+
+                </Space>
             </SpaceItem>
         }
     }

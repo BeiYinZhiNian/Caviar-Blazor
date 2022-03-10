@@ -22,7 +22,7 @@ namespace Caviar.SharedKernel.Entities.View
 
     public class QueryModel
     {
-        public Guid TrackId => Guid.NewGuid();
+        public Guid TrackId { get; set; } = Guid.NewGuid();
         /// <summary>
         /// 查询类型
         /// </summary>

@@ -1,6 +1,7 @@
 ﻿using AntDesign;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,6 @@ namespace Caviar.AntDesignUI.Shared
 {
     public partial class AdvancedQuery
     {
-        private bool Loading { get; set; }
         /// <summary>
         /// 模型字段
         /// </summary>
@@ -33,6 +33,24 @@ namespace Caviar.AntDesignUI.Shared
             }
         }
 
+        void AddCondition()
+        {
+            QueryView.QueryModels.Add(new QueryModel());
+        }
+
+        void RemoveCondition(Guid trackId)
+        {
+            var model = QueryView.QueryModels.Single(u => u.TrackId == trackId);
+            QueryView.QueryModels.Remove(model);
+            SelectItems.Remove(trackId);
+        }
+
+        void OnChange<T>(QueryModel queryModel, T value)
+        {
+            queryModel.Value = value.ToString();
+            Console.WriteLine(queryModel.Value);
+        }
+
         QueryView QueryView { get; set; } = new QueryView()
         {
             QueryModels = new List<QueryModel>()
@@ -43,12 +61,10 @@ namespace Caviar.AntDesignUI.Shared
 
         async void OnSearch()
         {
-            Loading = true;
             if (QueryCallback.HasDelegate)
             {
                 await QueryCallback.InvokeAsync(QueryView);
             }
-            Loading = false;
         }
     }
 }

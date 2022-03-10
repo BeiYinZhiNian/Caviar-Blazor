@@ -58,6 +58,7 @@ namespace Caviar.AntDesignUI.Core
                     MaskClosable = false,
                     Content = modalOptions.Content,
                     Title = modalOptions.Title,
+                    BodyStyle = ModalStyle,
                     Visible = true,
                     OkText = @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Confirm}"],
                     CancelText = @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Cancel}"],
@@ -84,7 +85,6 @@ namespace Caviar.AntDesignUI.Core
                         var ComponentType = (Type)item.GetObjValue("Handler");
                         var index = 0;
                         builder.OpenElement(index++, "div");
-                        builder.AddAttribute(index++, "style", ModalStyle);
                         builder.OpenComponent(index++, ComponentType);
                         if (paramenter != null && paramenter.Any())
                         {
