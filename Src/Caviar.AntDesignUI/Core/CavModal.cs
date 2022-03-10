@@ -58,7 +58,7 @@ namespace Caviar.AntDesignUI.Core
                     MaskClosable = false,
                     Content = modalOptions.Content,
                     Title = modalOptions.Title,
-                    BodyStyle = ModalStyle,
+                    BodyStyle = modalOptions.BodyStyle,
                     Visible = true,
                     OkText = @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Confirm}"],
                     CancelText = @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Cancel}"],
@@ -154,5 +154,7 @@ namespace Caviar.AntDesignUI.Core
         /// 标题
         /// </summary>
         public string Title { get; set; }
+
+        public string BodyStyle { get; set; } = "overflow-y: auto;height: 400px;";
     }
 }
