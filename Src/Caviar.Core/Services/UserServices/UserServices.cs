@@ -59,6 +59,14 @@ namespace Caviar.Core.Services
             return roles;
         }
 
+        public async Task<IList<int>> GetRoleIds(ApplicationUser user)
+        {
+            if (user == null) return new List<int>();
+            var roleSet = AppDbContext.DbContext.Set<IdentityUserRole<int>>();
+            var roleIds = await roleSet.Where(u => u.UserId == user.Id).Select(u=>u.RoleId).ToListAsync();
+            return roleIds;
+        }
+
         public async Task<UserDetails> GetUserDetails(string userName)
         {
             var user = await GetUserInfo(userName);
@@ -89,10 +97,10 @@ namespace Caviar.Core.Services
         /// 获取指定角色所有权限
         /// </summary>
         /// <returns></returns>
-        public Task<List<SysPermission>> GetPermissions(List<string> roleName,Expression<Func<SysPermission, bool>> whereLambda)
+        public Task<List<SysPermission>> GetPermissions(List<int> roleIds,Expression<Func<SysPermission, bool>> whereLambda)
         {
             var permissionsSet = AppDbContext.DbContext.Set<SysPermission>();
-            return permissionsSet.Where(u => roleName.Contains(u.Entity)).Where(whereLambda).ToListAsync();
+            return permissionsSet.Where(u => roleIds.Contains(u.Entity)).Where(whereLambda).ToListAsync();
         }
         /// <summary>
         /// 保存菜单权限
@@ -100,13 +108,13 @@ namespace Caviar.Core.Services
         /// <param name="roleName"></param>
         /// <param name="urls"></param>
         /// <returns></returns>
-        public async Task<int> SavePermissionMenus(string roleName, List<string> urls)
+        public async Task<int> SavePermissionMenus(int roleId, List<string> urls)
         {
-            var permissionMenus = await GetPermissions(new List<string>() { roleName }, u => u.PermissionType == PermissionType.RoleMenus);
+            var permissionMenus = await GetPermissions(new List<int>() { roleId }, u => u.PermissionType == PermissionType.RoleMenus);
             var menuUrls = GetPermissions(permissionMenus);
             var reomveMenus = permissionMenus.Where(u => !urls.Contains(u.Permission)).ToList();
             AppDbContext.DbContext.RemoveRange(reomveMenus);
-            var addMenus = urls.Where(u=> !menuUrls.Contains(u)).Select(u => new SysPermission() { Permission = u, PermissionType = PermissionType.RoleMenus, Entity = roleName }).ToList();
+            var addMenus = urls.Where(u=> !menuUrls.Contains(u)).Select(u => new SysPermission() { Permission = u, PermissionType = PermissionType.RoleMenus, Entity = roleId }).ToList();
             AppDbContext.DbContext.AddRange(addMenus);
             return await AppDbContext.DbContext.SaveChangesAsync();
         }
@@ -136,7 +144,7 @@ namespace Caviar.Core.Services
         public async Task<List<SysPermission>> GetPermissions(Expression<Func<SysPermission, bool>> whereLambda)
         {
             var user = await GetCurrentUserInfo();
-            var roles = await GetRoles(user);
+            var roles = await GetRoleIds(user);
             var permissionsSet = AppDbContext.DbContext.Set<SysPermission>();
             return permissionsSet.Where(u => roles.Contains(u.Entity)).Where(whereLambda).ToList();
         }
@@ -148,7 +156,7 @@ namespace Caviar.Core.Services
         public async Task<List<SysPermission>> GetPermissions()
         {
             var user = await GetCurrentUserInfo();
-            var roles = await GetRoles(user);
+            var roles = await GetRoleIds(user);
             var permissionsSet = AppDbContext.DbContext.Set<SysPermission>();
             return permissionsSet.Where(u => roles.Contains(u.Entity)).ToList();
         }

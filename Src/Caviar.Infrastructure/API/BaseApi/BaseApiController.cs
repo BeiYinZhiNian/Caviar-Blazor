@@ -188,7 +188,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             var fullName = typeof(T).FullName;
             var fields = FieldScannerServices.GetClassFields(fieldName, fullName, LanguageService);
             var user = await UserServices.GetCurrentUserInfo();
-            var roles = await UserServices.GetRoles(user);
+            var roles = await UserServices.GetRoleIds(user);
             fields = await permissionServices.GetRoleFields(fields, fullName, roles);
             fields = fields.OrderBy(u => u.Entity.Number).ToList();
             return fields;

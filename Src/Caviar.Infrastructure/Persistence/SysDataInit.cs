@@ -22,6 +22,7 @@ namespace Caviar.Infrastructure.Persistence
         IDbContext _dbContext;
         IServiceScope _serviceScope;
         ILanguageService _languageService;
+        ApplicationRole AdminRole;
         int DataId = 1;//数据权限id
         public SysDataInit(IServiceProvider provider)
         {
@@ -110,7 +111,7 @@ namespace Caviar.Infrastructure.Persistence
             {
                 _dbContext.Add(new SysPermission()
                 {
-                    Entity = CurrencyConstant.Admin,
+                    Entity = AdminRole.Id,
                     Permission = (item.FullName + item.FieldName),
                     PermissionType = PermissionType.RoleFields
                 });
@@ -158,10 +159,15 @@ namespace Caviar.Infrastructure.Persistence
                 if (string.IsNullOrEmpty(item.Url)) continue;
                 var menu = await set.SingleOrDefaultAsync(u => u.Permission == item.Url && u.PermissionType == PermissionType.RoleMenus);
                 if (menu != null) continue;
-                set.Add(new SysPermission() { Permission = item.Url,Entity = CurrencyConstant.Admin ,PermissionType = PermissionType.RoleMenus});
+                set.Add(new SysPermission() { Permission = item.Url,Entity = AdminRole.Id, PermissionType = PermissionType.RoleMenus});
             }
             await _dbContext.SaveChangesAsync();
         }
+
+        //protected virtual async Task CreateTemplateRolePermission()
+        //{
+
+        //}
 
         protected virtual async Task CreateInitUserGroup()
         {
@@ -181,9 +187,13 @@ namespace Caviar.Infrastructure.Persistence
         protected virtual async Task CreateInitRole()
         {
             var roleManager = _serviceScope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
-            var role = new ApplicationRole { Name = CurrencyConstant.Admin ,DataId = DataId ,DataRange = DataRange.All };
+            var role = new ApplicationRole { Name = CurrencyConstant.Admin ,DataId = DataId ,DataRange = DataRange.All,Remark="超级管理员" };
             var result = await roleManager.CreateAsync(role);
+            AdminRole = role;
             if (!result.Succeeded) throw new Exception("创建角色数据失败，数据初始化停止");
+            role = new ApplicationRole { Name = CurrencyConstant.TemplateRole, DataId = DataId, DataRange = DataRange.Level, Remark = "模板角色，用于生成角色之后，自动拷贝该角色权限，请勿删除" };
+            result = await roleManager.CreateAsync(role);
+            if (!result.Succeeded) throw new Exception("创建模板角色数据失败，数据初始化停止");
         }
 
         protected virtual async Task<List<SysMenu>> CreateMenu()

@@ -4,7 +4,7 @@
     @if (IsOpenQuery)
     {
         <SpaceItem>
-            <Space>
+            <Space Size=@(("8", "8" )) Wrap Align="start">
                 <SpaceItem>
                     <CavSearch Fields="ViewFields" QueryCallback="QueryCallback"></CavSearch>
                 </SpaceItem>
@@ -15,7 +15,7 @@
         </SpaceItem>
     }
     <SpaceItem>
-        <Space>
+        <Space Size=@(("8", "8" )) Wrap Align="start">
             @if (Buttons != null)
             {
                 foreach (var item in Buttons)
