@@ -1,4 +1,5 @@
-﻿using Caviar.SharedKernel.Entities;
+﻿using Caviar.Core.Services;
+using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,9 +14,11 @@ namespace Caviar.Infrastructure.API
     public partial class ApplicationRoleController
     {
         private RoleManager<ApplicationRole> _roleManager;
-        public ApplicationRoleController(RoleManager<ApplicationRole> roleManager)
+        private RoleServices _roleServices;
+        public ApplicationRoleController(RoleManager<ApplicationRole> roleManager, RoleServices roleServices)
         {
             _roleManager = roleManager;
+            _roleServices = roleServices;
         }
 
         [HttpPost]
@@ -29,17 +32,8 @@ namespace Caviar.Infrastructure.API
         [HttpPost]
         public override async Task<IActionResult> UpdateEntity(ApplicationRoleView vm)
         {
-            var role = await _roleManager.FindByNameAsync(vm.Entity.Name);
-            if (role == null) throw new ArgumentNullException($"{vm.Entity.Name}不存在");
-            role.Name = vm.Entity.Name;
-            role.Number = vm.Entity.Number;
-            role.Remark = vm.Entity.Remark;
-            role.DataList = vm.Entity.DataList;
-            role.IsDisable = vm.Entity.IsDisable;
-            role.DataRange = vm.Entity.DataRange;
-            role.UpdateTime = DateTime.Now;
-            role.OperatorUp = User.Identity.Name;
-            var result = await _roleManager.UpdateAsync(role);
+            vm.Entity.OperatorUp = User.Identity.Name;
+            var result = await _roleServices.UpdateRole(vm);
             if (result.Succeeded) return Ok();
             return Error("修改角色失败", result);
         }

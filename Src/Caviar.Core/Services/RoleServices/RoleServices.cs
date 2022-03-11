@@ -29,6 +29,22 @@ namespace Caviar.Core.Services
             return rolesList;
         }
 
+        public async Task<IdentityResult> UpdateRole(ApplicationRoleView vm)
+        {
+            var role = await _roleManager.FindByNameAsync(vm.Entity.Name);
+            if (role == null) throw new ArgumentNullException($"{vm.Entity.Name}不存在");
+            role.Name = vm.Entity.Name;
+            role.Number = vm.Entity.Number;
+            role.Remark = vm.Entity.Remark;
+            role.DataList = vm.Entity.DataList;
+            role.IsDisable = vm.Entity.IsDisable;
+            role.DataRange = vm.Entity.DataRange;
+            role.UpdateTime = DateTime.Now;
+            role.OperatorUp = vm.Entity.OperatorUp;
+            var result = await _roleManager.UpdateAsync(role);
+            return result;
+        }
+
         
     }
 }

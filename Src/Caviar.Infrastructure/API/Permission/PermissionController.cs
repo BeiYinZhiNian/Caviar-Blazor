@@ -20,6 +20,7 @@ namespace Caviar.Infrastructure.API.Permission
         private readonly RoleFieldServices _roleFieldServices;
         private readonly SysMenuServices _sysMenuServices;
         private readonly UserServices _userServices;
+        private readonly RoleManager<ApplicationRole> _roleManager;
         public PermissionController(RoleManager<ApplicationRole> roleManager, 
             RoleFieldServices roleFieldServices,
             SysMenuServices sysMenuServices,
@@ -28,6 +29,7 @@ namespace Caviar.Infrastructure.API.Permission
             _roleFieldServices = roleFieldServices;
             _sysMenuServices = sysMenuServices;
             _userServices = userServices;
+            _roleManager = roleManager;
         }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
@@ -54,7 +56,8 @@ namespace Caviar.Infrastructure.API.Permission
             if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("类名不能为空");
             if (string.IsNullOrEmpty(fullName)) throw new ArgumentNullException("命名空间不能为空");
             var fields = FieldScannerServices.GetClassFields(name, fullName, LanguageService);
-            fields = await _roleFieldServices.GetRoleFields(fields, fullName, new List<string> { roleName });
+            var role = await _roleManager.FindByNameAsync(roleName);
+            fields = await _roleFieldServices.GetRoleFields(fields, fullName, new List<int> { role.Id });
             return Ok(fields);
         }
 
@@ -91,7 +94,8 @@ namespace Caviar.Infrastructure.API.Permission
         [HttpGet]
         public async Task<IActionResult> GetPermissionMenus(string roleName)
         {
-            var permissions = await _userServices.GetPermissions(new List<string>() { roleName }, u => u.PermissionType == PermissionType.RoleMenus);
+            var role = await _roleManager.FindByNameAsync(roleName);
+            var permissions = await _userServices.GetPermissions(new List<int>() { role.Id }, u => u.PermissionType == PermissionType.RoleMenus);
             var permissionUrls = _userServices.GetPermissions(permissions);
             var menus = await _sysMenuServices.GetPermissionMenus(permissionUrls);
             return Ok(menus);
@@ -100,7 +104,8 @@ namespace Caviar.Infrastructure.API.Permission
         [HttpPost]
         public async Task<IActionResult> SavePermissionMenus(string roleName,List<string> urls)
         {
-            var count = await _userServices.SavePermissionMenus(roleName, urls);
+            var role = await _roleManager.FindByNameAsync(roleName);
+            var count = await _userServices.SavePermissionMenus(role.Id, urls);
             return Ok(title:$"成功修改{count}条权限");
         }
     }
