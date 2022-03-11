@@ -99,7 +99,8 @@
       "IsCover": "是否覆盖",
       "OldPassword": "旧密码",
       "NewPassword": "新密码",
-      "ConfirmPassword": "确认密码"
+      "ConfirmPassword": "确认密码",
+      "LockoutEnd": "锁定到期时间"
     },
     "ErrorMessage": {
       "LengthErrorMsg": "{fieldName}输入长度不能超过{length}字符",

@@ -65,7 +65,7 @@ namespace Caviar.Infrastructure.API.Permission
             var idCookieOptions = new CookieOptions
             {
                 Path = "/",
-                Secure = true,
+                Secure = false,
                 IsEssential = true,
                 SameSite = SameSiteMode.Strict,
                 Expires = DateTime.Now.AddYears(100),
