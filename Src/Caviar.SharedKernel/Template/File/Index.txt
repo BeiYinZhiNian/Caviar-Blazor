@@ -15,7 +15,7 @@ Caviar ©2021 Created by 北音执念
                PageIndex="PageIndex"
                Total="Total"
                Buttons="Buttons"
-               Query="Query"
+               IsOpenQuery="IsOpenQuery"
                ViewFields="ViewFields"
                PageIndexChanged="PageIndexChanged"
                RowCallback="RowCallback"
