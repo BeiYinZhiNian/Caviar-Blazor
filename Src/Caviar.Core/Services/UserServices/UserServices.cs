@@ -70,7 +70,7 @@ namespace Caviar.Core.Services
         public async Task<UserDetails> GetUserDetails(string userName)
         {
             var user = await GetUserInfo(userName);
-            var useerGroup = await AppDbContext.SingleOrDefaultAsync<SysUserGroup>(u => u.Id == user.Id);
+            var useerGroup = await AppDbContext.SingleOrDefaultAsync<SysUserGroup>(u => u.Id == user.UserGroupId);
             UserDetails useerDetails = new UserDetails() 
             { 
                 UserName = userName,
