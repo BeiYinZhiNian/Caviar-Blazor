@@ -15,9 +15,6 @@ namespace Caviar.AntDesignUI.Pages.User
     {
         Form<ChangePasswordModel> _Form;
         public ChangePasswordModel ChangePasswordModel { get; set; } = new ChangePasswordModel();
-
-        [Parameter]
-        public string SubmitUrl {get;set;}
         [Inject]
         public HttpService HttpService { get; set; }
         [Inject]
@@ -43,7 +40,7 @@ namespace Caviar.AntDesignUI.Pages.User
             ChangePasswordModel.NewPassword = CommonHelper.SHA256EncryptString(ChangePasswordModel.NewPassword);
             ChangePasswordModel.ConfirmPassword = CommonHelper.SHA256EncryptString(ChangePasswordModel.ConfirmPassword);
             ChangePasswordModel.OldPassword = CommonHelper.SHA256EncryptString(ChangePasswordModel.OldPassword);
-            var result = await HttpService.PostJson(SubmitUrl, ChangePasswordModel);
+            var result = await HttpService.PostJson(UrlConfig.ChangePassword, ChangePasswordModel);
             if(result.Status == System.Net.HttpStatusCode.OK)
             {
                 _ = MessageService.Success(result.Title);

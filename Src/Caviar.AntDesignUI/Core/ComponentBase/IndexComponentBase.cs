@@ -118,10 +118,10 @@ namespace Caviar.AntDesignUI.Core
             Refresh();
         }
         /// <summary>
-        /// 模糊查询
+        /// 查询
         /// </summary>
         /// <param name="Query"></param>
-        protected virtual async void QueryCallback(QueryView query)
+        protected virtual async Task QueryCallback(QueryView query)
         {
             var result = await HttpService.PostJson<QueryView, PageData<ViewT>>(Url[CurrencyConstant.Query], query);
             if (result.Status != HttpStatusCode.OK) return;

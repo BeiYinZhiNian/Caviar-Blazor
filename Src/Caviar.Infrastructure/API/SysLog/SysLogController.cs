@@ -39,5 +39,13 @@ namespace Caviar.Infrastructure.API
             return Ok(pages);
         }
 
+        [HttpPost]
+        public virtual async Task<IActionResult> Query(QueryView query)
+        {
+            var page = await _logDataServices.QueryAsync(query);
+            return Ok(page);
+        }
+
+
     }
 }

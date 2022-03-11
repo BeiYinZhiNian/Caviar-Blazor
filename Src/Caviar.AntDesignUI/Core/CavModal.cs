@@ -24,18 +24,29 @@ namespace Caviar.AntDesignUI.Core
             MessageService = messageService;
         }
 
-        public async Task<ModalRef> Create(string url, string title, Action OnOK = null, Dictionary<string, object> paramenter = null)
+        public async Task<ModalRef> Create(CavModalOptions modalOptions)
         {
             var modelHandle = new ModalHandle(UserConfig, Modal, MessageService);
-            return await modelHandle.Create(url, title, OnOK, paramenter);
+            return await modelHandle.Create(modalOptions);
         }
+
+        public RenderFragment Render(string url, string title, IEnumerable<KeyValuePair<string, object>> paramenter)
+        {
+            var modelHandle = new ModalHandle(UserConfig, Modal, MessageService);
+            return modelHandle.Render(url, title, paramenter);
+        }
+
 
         protected class ModalHandle
         {
-            public string ModalStyle { get; set; } = "overflow-y: auto;height: 400px;";
             ModalService Modal;
             UserConfig UserConfig;
             MessageService MessageService;
+            ModalRef modalRef;
+            Action OnOK;
+            Func<Task<bool>> FuncValidate;
+            ITableTemplate TableTemplate;
+
             public ModalHandle(UserConfig userConfig, ModalService modalService, MessageService messageService)
             {
                 UserConfig = userConfig;
@@ -43,37 +54,42 @@ namespace Caviar.AntDesignUI.Core
                 MessageService = messageService;
             }
 
-            ModalRef modalRef;
-            Action OnOK;
-            public async Task<ModalRef> Create(string url, string title, Action OnOK = null, Dictionary<string, object> paramenter = null)
+            /// <summary>
+            /// 根据page url动态创建Modal
+            /// </summary>
+            /// <param name="modalOptions"></param>
+            /// <returns></returns>
+            public async Task<ModalRef> Create(CavModalOptions modalOptions)
             {
-                if (paramenter == null) paramenter = new Dictionary<string, object>();
-                if (!paramenter.ContainsKey(CurrencyConstant.CavModelSubmitUrl))
+                RenderFragment render = modalOptions.Render;
+                if(render == null)
                 {
-                    paramenter.Add(CurrencyConstant.CavModelSubmitUrl, url);//不提供url时候默认url一致
+                    render = Render(modalOptions.Url, modalOptions.Title, modalOptions.Paramenter);
                 }
                 ModalOptions options = new ModalOptions()
                 {
                     OnOk = HandleOk,
                     OnCancel = HandleCancel,
                     MaskClosable = false,
-                    Content = Render(url, title, paramenter),
-                    Title = title,
+                    Content = render,
+                    Title = modalOptions.Title,
+                    BodyStyle = modalOptions.BodyStyle,
                     Visible = true,
                     OkText = @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Confirm}"],
                     CancelText = @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Cancel}"],
-                    DestroyOnClose = true
+                    DestroyOnClose = true,
                 };
-                if (!string.IsNullOrEmpty(title))
+                if (!string.IsNullOrEmpty(modalOptions.Title))
                 {
                     options.Draggable = true;
                 }
-                this.OnOK = OnOK;
+                OnOK = modalOptions.ActionOK;
+                FuncValidate = modalOptions.FuncValidate;
                 modalRef = await Modal.CreateModalAsync(options);
                 return modalRef;
             }
 
-            RenderFragment Render(string url, string title, IEnumerable<KeyValuePair<string, object>> paramenter) => builder =>
+            public RenderFragment Render(string url, string title, IEnumerable<KeyValuePair<string, object>> paramenter) => builder =>
             {
                 if (url[0] == '/') url = url[1..];
                 var routes = UserConfig.Routes();
@@ -85,7 +101,6 @@ namespace Caviar.AntDesignUI.Core
                         var ComponentType = (Type)item.GetObjValue("Handler");
                         var index = 0;
                         builder.OpenElement(index++, "div");
-                        builder.AddAttribute(index++, "style", ModalStyle);
                         builder.OpenComponent(index++, ComponentType);
                         if (paramenter != null && paramenter.Any())
                         {
@@ -100,20 +115,23 @@ namespace Caviar.AntDesignUI.Core
                 MessageService.Error(UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ComponentErrorMsg}"].Replace("{title}", title).Replace("{url}", url));
             };
 
-            ITableTemplate menuAdd;
-
+            
             void SetComponent(object e)
             {
-                menuAdd = (ITableTemplate)e;
+                TableTemplate = (ITableTemplate)e;
             }
 
             private async Task HandleOk(MouseEventArgs e)
             {
                 modalRef.Config.ConfirmLoading = true;
                 var res = true;
-                if (menuAdd != null)
+                if (TableTemplate != null)
                 {
-                    res = await menuAdd.Validate();
+                    res = await TableTemplate.Validate();
+                }
+                if(FuncValidate != null)
+                {
+                    res = await FuncValidate.Invoke();
                 }
                 modalRef.Config.ConfirmLoading = false;
                 modalRef.Config.Visible = !res;
@@ -129,7 +147,34 @@ namespace Caviar.AntDesignUI.Core
                 return Task.CompletedTask;
             }
         }
+
+        
     }
 
-    
+    public class CavModalOptions
+    {
+        /// <summary>
+        /// 需要传入的参数
+        /// </summary>
+        public Dictionary<string, object> Paramenter { get; set; }
+        /// <summary>
+        /// url地址
+        /// </summary>
+        public string Url { get; set; }
+        /// <summary>
+        /// 成功执行后回调
+        /// </summary>
+        public Action ActionOK { get; set; }
+
+        public Func<Task<bool>> FuncValidate { get; set; }
+        /// <summary>
+        /// 标题
+        /// </summary>
+        public string Title { get; set; }
+        /// <summary>
+        /// 容器样式
+        /// </summary>
+        public string BodyStyle { get; set; } = "overflow-y: auto;height: 400px;";
+        public RenderFragment Render { get; set; }
+    }
 }

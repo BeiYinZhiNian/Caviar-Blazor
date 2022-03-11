@@ -1,6 +1,8 @@
 ﻿using AntDesign;
+using Caviar.AntDesignUI.Core;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +11,8 @@ using System.Threading.Tasks;
 
 namespace Caviar.AntDesignUI.Shared
 {
-    public partial class AdvancedQuery
+    public partial class AdvancedQuery: ITableTemplate
     {
-        private bool Loading { get; set; }
         /// <summary>
         /// 模型字段
         /// </summary>
@@ -21,34 +22,96 @@ namespace Caviar.AntDesignUI.Shared
         MessageService MessageService { get; set; }
         [Parameter]
         public EventCallback<QueryView> QueryCallback { get; set; }
+        [Parameter]
+        public QueryView QueryView { get; set; }
 
-        Dictionary<Guid, FieldsView> SelectItems = new Dictionary<Guid, FieldsView>();
 
         void OnSelectItem(Guid trackId,string item)
         {
             var field = Fields.Single(u => u.Entity.FieldName == item);
-            if (!SelectItems.TryAdd(trackId, field))
-            {
-                SelectItems[trackId] = field;
-            }
+            var model = QueryView.QueryModels[trackId];
+            model.ComponentStatus.Field = field;
         }
 
-        QueryView QueryView { get; set; } = new QueryView()
+        void AddCondition()
         {
-            QueryModels = new List<QueryModel>()
-            {
-                new QueryModel() { QuerTypes = QueryModel.QuerType.Contains },
-            }
-        };
+            var model = new QueryModel() { ComponentStatus = new ComponentStatus()};
+            QueryView.QueryModels.Add(Guid.NewGuid(),model);
+            
+        }
 
-        async void OnSearch()
+        void RemoveCondition(Guid trackId)
         {
-            Loading = true;
+            QueryView.QueryModels.Remove(trackId);
+        }
+
+        void OnValueChange<T>(QueryModel queryModel,T value)
+        {
+            queryModel.Value = value.ToString();
+            Console.WriteLine(queryModel.Value);
+        }
+
+        void OnDateTimeChange(QueryModel queryModel, DateTimeChangedEventArgs dateTimeChanged)
+        {
+            OnValueChange(queryModel, dateTimeChanged.DateString);
+        }
+
+        void AndOr(QueryModel queryModel, bool value)
+        {
+            if (value)
+            {
+                queryModel.QuerySplicings = QueryModel.QuerySplicing.And;
+            }
+            else
+            {
+                queryModel.QuerySplicings = QueryModel.QuerySplicing.Or;
+            }
+        }
+        
+
+        /// <summary>
+        /// 开始搜索
+        /// </summary>
+        /// <returns></returns>
+        async Task OnSearch()
+        {
             if (QueryCallback.HasDelegate)
             {
                 await QueryCallback.InvokeAsync(QueryView);
             }
-            Loading = false;
+        }
+
+        protected override void OnInitialized()
+        {
+            if(QueryView == null)
+            {
+                QueryView = new QueryView();
+            }
+            if(QueryView.QueryModels == null)
+            {
+                QueryView.QueryModels = new Dictionary<Guid, QueryModel>();
+            }
+            if(QueryView.QueryModels.Count == 0)
+            {
+                AddCondition();
+            }
+            base.OnInitialized();
+        }
+
+        public async Task<bool> Validate()
+        {
+            foreach (var item in QueryView.QueryModels)
+            {
+                if (string.IsNullOrEmpty(item.Value.Key))
+                {
+                    _ = MessageService.Error("请选择要查询的字段");
+                    return false;
+                }
+            }
+            await OnSearch();
+            return true;
         }
     }
+
+    
 }

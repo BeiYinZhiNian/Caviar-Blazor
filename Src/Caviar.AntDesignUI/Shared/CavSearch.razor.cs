@@ -23,34 +23,31 @@ namespace Caviar.AntDesignUI.Shared
         MessageService MessageService { get; set; }
         [Parameter]
         public EventCallback<QueryView> QueryCallback { get; set; }
-
-        protected QueryModel QueryModel { get; set; } = new QueryModel() { QuerTypes = QueryModel.QuerType.Contains };
+        [Parameter]
+        public QueryModel QueryModel { get; set; } = new QueryModel() { QuerTypes = QueryModel.QuerType.Contains };
 
         async void OnSearch()
         {
-            Loading = true;
             if (string.IsNullOrEmpty(QueryModel.Key))
             {
                 _ = MessageService.Error("请选择要查询的字段");
                 return;
             }
-            if(QueryModel.Value == null)
-            {
-                _ = MessageService.Error("请输入要查询的内容");
-                return;
-            }
+            Loading = true;
             QueryView query = new QueryView()
             {
-                QueryModels = new List<QueryModel>() 
+                QueryModels = new Dictionary<Guid, QueryModel>() 
                 {
-                    QueryModel
+                    {Guid.NewGuid(),QueryModel }
                 }
+
             };
             if (QueryCallback.HasDelegate)
             {
                 await QueryCallback.InvokeAsync(query);
             }
             Loading = false;
+            StateHasChanged();
         }
     }
 }

@@ -55,7 +55,7 @@ namespace Caviar.AntDesignUI.Shared
         
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            if (firstRender)
+            if (firstRender && Config.IsServer)
             {
                 var slot = "";
                 var description = "";

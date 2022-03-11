@@ -9,8 +9,6 @@ namespace Caviar.AntDesignUI.Core
 {
     public interface ITableTemplate
     {
-        [Parameter]
-        public string SubmitUrl { get; set; }
         public Task<bool> Validate();
     }
 }

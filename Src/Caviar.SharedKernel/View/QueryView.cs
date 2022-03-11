@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel.Entities.View
@@ -11,18 +12,27 @@ namespace Caviar.SharedKernel.Entities.View
         /// <summary>
         /// 查询条数
         /// </summary>
-        public int Number { get; set; } = 100;
+        public uint Number { get; set; } = 20;
         /// <summary>
         /// 查询的数据
-        /// key 字段名称
-        /// value 查询字符串
         /// </summary>
-        public List<QueryModel> QueryModels { get; set; }
+        public Dictionary<Guid,QueryModel> QueryModels { get; set; }
+    }
+
+    public class ComponentStatus
+    {
+        public bool AndOr { get; set; } = true;
+        public FieldsView Field { get; set; }
+        public bool IsCompleted { get; set; }
     }
 
     public class QueryModel
     {
-        public Guid TrackId => Guid.NewGuid();
+        /// <summary>
+        /// 用于描述组件状态
+        /// </summary>
+        [JsonIgnore]
+        public ComponentStatus ComponentStatus { get; set; }
         /// <summary>
         /// 查询类型
         /// </summary>

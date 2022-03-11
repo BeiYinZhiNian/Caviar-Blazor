@@ -96,7 +96,10 @@
       "DataField": "数据字段",
       "DataRange": "数据范围",
       "UserGroup": "部门",
-      "IsCover": "是否覆盖"
+      "IsCover": "是否覆盖",
+      "OldPassword": "旧密码",
+      "NewPassword": "新密码",
+      "ConfirmPassword": "确认密码"
     },
     "ErrorMessage": {
       "LengthErrorMsg": "{fieldName}输入长度不能超过{length}字符",
@@ -162,7 +165,14 @@
       "Level": "本级",
       "Subordinate": "本级和下级",
       "All": "全部",
-      "Custom": "自定义"
+      "Custom": "自定义",
+      "Equal": "相等",
+      "LessThan": "小于",
+      "LessThanOrEqual": "小于等于",
+      "GreaterThan": "大于",
+      "GreaterThanOrEqual": "大于等于",
+      "NotEqual": "不等于",
+      "Contains": "包含"
     },
     "ExceptionMessage": {
       "Unauthorized": "未取得访问权限",

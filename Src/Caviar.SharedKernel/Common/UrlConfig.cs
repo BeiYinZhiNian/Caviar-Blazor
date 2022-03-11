@@ -9,6 +9,10 @@ namespace Caviar.SharedKernel.Entities
     public static class UrlConfig
     {
         /// <summary>
+        /// 高级查询
+        /// </summary>
+        public const string AuvancedQuery = "Data/AdvancedQuery";
+        /// <summary>
         /// 分配用户角色
         /// </summary>
         public const string PermissionUserRoles = "Permission/UserRoles";
