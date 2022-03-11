@@ -25,7 +25,6 @@ namespace Caviar.SharedKernel.Entities.View
         /// <summary>
         /// 用于menuName的显示，读取与语言配置文件
         /// </summary>
-        [Required(ErrorMessage = "RequiredErrorMsg")]
         public string DisplayName { get; set; }
     }
 }

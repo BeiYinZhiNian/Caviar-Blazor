@@ -23,7 +23,37 @@ namespace Caviar.Infrastructure.Persistence
         IServiceScope _serviceScope;
         ILanguageService _languageService;
         ApplicationRole AdminRole;
+        ApplicationRole TemplateRole;
         int DataId = 1;//数据权限id
+
+        string[] InitUrls = new string[]
+        {
+                UrlConfig.Home,
+                UrlConfig.GetMenuBar,
+                UrlConfig.Login,
+                UrlConfig.Logout,
+                UrlConfig.SignInActual,
+                UrlConfig.LogoutServer,
+                UrlConfig.GetApis,
+                UrlConfig.CurrentUserInfo,
+                UrlConfig.SetCookieLanguage,
+                UrlConfig.UploadHeadPortrait,
+                UrlConfig.ChangePassword,
+                UrlConfig.AuvancedQuery,
+                UrlConfig.MyDetails,
+                UrlConfig.UpdateDetails,
+        };
+
+        string[] InitFildes = new string[]
+        {
+            "Caviar.SharedKernel.Entities.SysMenuUrl",
+            "Caviar.SharedKernel.Entities.SysMenuIcon",
+            "Caviar.SharedKernel.Entities.SysMenuParentId",
+            "Caviar.SharedKernel.Entities.SysMenuNumber",
+            "Caviar.SharedKernel.Entities.SysMenuKey",
+            "Caviar.SharedKernel.Entities.SysMenuMenuType",
+            "Caviar.SharedKernel.Entities.SysMenuTargetType",
+        };
         public SysDataInit(IServiceProvider provider)
         {
             _serviceScope = provider.CreateScope();
@@ -109,12 +139,22 @@ namespace Caviar.Infrastructure.Persistence
             if (!isDatabaseInit) return;
             foreach (var item in fields)
             {
+                var permission = (item.FullName + item.FieldName);
                 _dbContext.Add(new SysPermission()
                 {
                     Entity = AdminRole.Id,
-                    Permission = (item.FullName + item.FieldName),
+                    Permission = permission,
                     PermissionType = PermissionType.RoleFields
                 });
+                if (InitFildes.Contains(permission))
+                {
+                    _dbContext.Add(new SysPermission()
+                    {
+                        Entity = TemplateRole.Id,
+                        Permission = permission,
+                        PermissionType = PermissionType.RoleFields
+                    });
+                }
             }
             await _dbContext.SaveChangesAsync();
         }
@@ -157,17 +197,16 @@ namespace Caviar.Infrastructure.Persistence
             foreach (var item in menus)
             {
                 if (string.IsNullOrEmpty(item.Url)) continue;
-                var menu = await set.SingleOrDefaultAsync(u => u.Permission == item.Url && u.PermissionType == PermissionType.RoleMenus);
-                if (menu != null) continue;
                 set.Add(new SysPermission() { Permission = item.Url,Entity = AdminRole.Id, PermissionType = PermissionType.RoleMenus});
+                if (InitUrls.Contains(item.Url))
+                {
+                    set.Add(new SysPermission() { Permission = item.Url, Entity = TemplateRole.Id, PermissionType = PermissionType.RoleMenus });
+                }
             }
             await _dbContext.SaveChangesAsync();
         }
 
-        //protected virtual async Task CreateTemplateRolePermission()
-        //{
-
-        //}
+       
 
         protected virtual async Task CreateInitUserGroup()
         {
@@ -193,6 +232,7 @@ namespace Caviar.Infrastructure.Persistence
             if (!result.Succeeded) throw new Exception("创建角色数据失败，数据初始化停止");
             role = new ApplicationRole { Name = CurrencyConstant.TemplateRole, DataId = DataId, DataRange = DataRange.Level, Remark = "模板角色，用于生成角色之后，自动拷贝该角色权限，请勿删除" };
             result = await roleManager.CreateAsync(role);
+            TemplateRole = role;
             if (!result.Succeeded) throw new Exception("创建模板角色数据失败，数据初始化停止");
         }
 
