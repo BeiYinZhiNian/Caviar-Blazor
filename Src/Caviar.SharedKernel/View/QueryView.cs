@@ -12,7 +12,7 @@ namespace Caviar.SharedKernel.Entities.View
         /// <summary>
         /// 查询条数
         /// </summary>
-        public int Number { get; set; } = 100;
+        public uint Number { get; set; } = 20;
         /// <summary>
         /// 查询的数据
         /// </summary>

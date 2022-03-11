@@ -96,7 +96,10 @@
       "DataField": "数据字段",
       "DataRange": "数据范围",
       "UserGroup": "部门",
-      "IsCover": "是否覆盖"
+      "IsCover": "是否覆盖",
+      "OldPassword": "旧密码",
+      "NewPassword": "新密码",
+      "ConfirmPassword": "确认密码"
     },
     "ErrorMessage": {
       "LengthErrorMsg": "{fieldName}输入长度不能超过{length}字符",

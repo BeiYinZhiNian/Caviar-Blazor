@@ -3,7 +3,18 @@
 
 <Space Direction="DirectionVHType.Vertical">
     <SpaceItem>
-        <Button Type="@ButtonType.Primary" OnClick="AddCondition">添加条件</Button>
+        <Space>
+            <SpaceItem>
+                <AntDesign.Input TValue="uint" @bind-Value="QueryView.Number" Style="width:100px">
+                    <AddOnBefore>查询条数</AddOnBefore>
+                </AntDesign.Input>
+            </SpaceItem>
+            <SpaceItem>
+                <Button Type="@ButtonType.Primary" OnClick="AddCondition">添加条件</Button>
+            </SpaceItem>
+        </Space>
+
+
     </SpaceItem>
     @{
         var count = 0;
@@ -47,9 +58,8 @@
                         if (component.Field != null && component.Field.IsEnum)
                         {
                             <SpaceItem>
-                                <SimpleSelect 
-                                Placeholder="请选择类型"
-                                Style="width:120px">
+                                <SimpleSelect Placeholder="请选择类型"
+                              Style="width:120px">
                                     <SelectOptions>
                                         @foreach (var enumItem in component.Field.EnumValueName)
                                         {

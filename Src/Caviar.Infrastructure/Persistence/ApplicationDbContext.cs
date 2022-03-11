@@ -243,12 +243,12 @@ namespace Caviar.Infrastructure.Persistence
             PageData<T> pageData = new PageData<T>
             {
                 PageIndex = 1,
-                PageSize = query.Number
+                PageSize = Convert.ToInt32(query.Number)
             };
             if (data.Count() > 0)
             {
                 pageData.Total = await data.CountAsync();
-                pageData.Rows = await data.Take(query.Number).ToListAsync();
+                pageData.Rows = await data.Take(pageData.PageSize).ToListAsync();
             }
             return pageData;
         }
