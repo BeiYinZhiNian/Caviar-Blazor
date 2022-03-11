@@ -1,6 +1,6 @@
 ﻿<div class="panel-body" style="height: 400px; overflow-y:scroll">
     <div style="border: 1px  #000000; width: 90%; margin: 0 auto;">
-        <RadioGroup @bind-Value="RadioValue" Size="large" OnChange="RadioValueChanged">
+        <RadioGroup @bind-Value="RadioValue" Size="large" OnChange="OnChange">
             @foreach (var item in IconList)
             {
                 <Radio RadioButton Value="@(item)">
@@ -25,5 +25,7 @@
     public string RadioValue { get; set; }
     [Parameter]
     public EventCallback<string> RadioValueChanged { get; set; }
+    [Parameter]
+    public EventCallback<string> OnChange{ get; set; }
 
 }

@@ -51,6 +51,6 @@ Caviar ©2021 Created by 北音执念
         <Input @bind-Value='@context.Entity.Number' />
     </CavFormItem>
     <CavFormItem  FieldName='Remark' FieldRules='@context.Entity'>
-        <Input @bind-Value='@context.Entity.Remark' />
+        <TextArea Placeholder="请输入备注"  AllowClear="true" @bind-Value="@context.Entity.Remark" />
     </CavFormItem>
 </Form>
