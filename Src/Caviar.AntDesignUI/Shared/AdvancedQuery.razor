@@ -124,7 +124,7 @@
                                         catch { }
                                     }
                                     <SpaceItem>
-                                        <DatePicker TValue="DateTime?" Value="dateTimeValue" OnChange="u=>OnDateTimeChange(QueryModel,u)" Picker="@DatePickerType.Date" />
+                                        <DatePicker TValue="DateTime?" Value="dateTimeValue" Format="yyyy-MM-dd HH:mm:ss" ShowTime="@true" OnChange="u=>OnDateTimeChange(QueryModel,u)" Picker="@DatePickerType.Date" />
                                     </SpaceItem>
                                     break;
                                 default:
