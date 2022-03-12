@@ -34,7 +34,7 @@ namespace Caviar.Core.Services
         /// 获取分页数据
         /// </summary>
         /// <returns></returns>
-        public Task<PageData<Vm>> GetPageAsync(Expression<Func<T, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true);
+        public Task<PageData<Vm>> GetPageAsync(Expression<Func<T, bool>> where, int pageIndex, int pageSize, bool isOrder = true);
 
         /// <summary>
         /// 批量删除

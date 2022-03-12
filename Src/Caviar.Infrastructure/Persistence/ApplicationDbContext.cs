@@ -192,7 +192,7 @@ namespace Caviar.Infrastructure.Persistence
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public virtual Task<List<T>> GetAllAsync<T>(bool isNoTracking = true) where T : class, IUseEntity, new()
+        public virtual Task<List<T>> GetAllAsync<T>(bool isNoTracking = false) where T : class, IUseEntity, new()
         {
             return GetContext<T>(isNoTracking).ToListAsync();
         }
@@ -208,9 +208,9 @@ namespace Caviar.Infrastructure.Persistence
         /// <param name="isOrder"></param>
         /// <param name="isNoTracking"></param>
         /// <returns></returns>
-        public virtual async Task<PageData<T>> GetPageAsync<T, TOrder>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TOrder>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true) where T : class, IUseEntity, new()
+        public virtual async Task<PageData<T>> GetPageAsync<T, TOrder>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TOrder>> orderBy, int pageIndex, int pageSize, bool isOrder = true) where T : class, IUseEntity, new()
         {
-            IQueryable<T> data = GetContext<T>(isNoTracking);
+            IQueryable<T> data = GetContext<T>();
             data = isOrder ?
                 data.OrderBy(orderBy).OrderByDescending(u => u.CreatTime) :
                 data.OrderByDescending(orderBy).OrderByDescending(u => u.CreatTime);
@@ -259,7 +259,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual IQueryable<T> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IUseEntity, new()
+        public virtual IQueryable<T> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = false) where T : class, IUseEntity, new()
         {
             return GetContext<T>(isNoTracking).Where(where);
         }
@@ -269,7 +269,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual Task<T> SingleOrDefaultAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IUseEntity, new()
+        public virtual Task<T> SingleOrDefaultAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = false) where T : class, IUseEntity, new()
         {
             return GetContext<T>(isNoTracking).Where(where).SingleOrDefaultAsync();
         }
@@ -279,7 +279,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual Task<T> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IUseEntity, new()
+        public virtual Task<T> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = false) where T : class, IUseEntity, new()
         {
             return GetContext<T>(isNoTracking).Where(where).FirstOrDefaultAsync();
         }
@@ -375,7 +375,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <typeparam name="T"></typeparam>
         /// <param name="isNoTracking">是否跟踪上下文</param>
         /// <returns></returns>
-        private IQueryable<T> GetContext<T>(bool isNoTracking = true) where T : class, IUseEntity
+        private IQueryable<T> GetContext<T>(bool isNoTracking = false) where T : class, IUseEntity
         {
             var set = DbContext.Set<T>();
             var roleRange = GetRoleDataRange(_interactor.ApplicationRoles);

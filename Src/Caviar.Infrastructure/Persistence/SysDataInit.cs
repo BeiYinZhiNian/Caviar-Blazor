@@ -53,6 +53,7 @@ namespace Caviar.Infrastructure.Persistence
             "Caviar.SharedKernel.Entities.SysMenuKey",
             "Caviar.SharedKernel.Entities.SysMenuMenuType",
             "Caviar.SharedKernel.Entities.SysMenuTargetType",
+            "Caviar.SharedKernel.Entities.SysEnclosureFilePath"
         };
         public SysDataInit(IServiceProvider provider)
         {

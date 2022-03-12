@@ -67,9 +67,9 @@ namespace Caviar.Core.Services
             return vm;
         }
 
-        public override async Task<PageData<SysMenuView>> GetPageAsync(Expression<Func<SysMenu, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true)
+        public override async Task<PageData<SysMenuView>> GetPageAsync(Expression<Func<SysMenu, bool>> where, int pageIndex, int pageSize, bool isOrder = true)
         {
-            var pages = await AppDbContext.GetPageAsync(_menuWhere.And(where), u => u.Number, pageIndex, pageSize, isOrder, isNoTracking);
+            var pages = await AppDbContext.GetPageAsync(_menuWhere.And(where), u => u.Number, pageIndex, pageSize, isOrder);
             var pageViews = ToView(pages);
             pageViews.Rows = pageViews.Rows.ListToTree();
             return pageViews;

@@ -16,9 +16,9 @@ namespace Caviar.Core.Services
         {
         }
 
-        public override async Task<PageData<SysUserGroupView>> GetPageAsync(Expression<Func<SysUserGroup, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true)
+        public override async Task<PageData<SysUserGroupView>> GetPageAsync(Expression<Func<SysUserGroup, bool>> where, int pageIndex, int pageSize, bool isOrder = true)
         {
-            var pages = await AppDbContext.GetPageAsync(where,u=>u.Number, pageIndex, pageSize, isOrder, isNoTracking);
+            var pages = await AppDbContext.GetPageAsync(where,u=>u.Number, pageIndex, pageSize, isOrder);
             var pageViews = ToView(pages);
             pageViews.Rows = pageViews.Rows.ListToTree();
             return pageViews;

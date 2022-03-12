@@ -80,9 +80,9 @@ namespace Caviar.Core.Services
         /// 获取分页数据
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<PageData<Vm>> GetPageAsync(Expression<Func<T, bool>> where, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true)
+        public virtual async Task<PageData<Vm>> GetPageAsync(Expression<Func<T, bool>> where, int pageIndex, int pageSize, bool isOrder = true)
         {
-            var pages = await AppDbContext.GetPageAsync(where, u => u.Number, pageIndex, pageSize, isOrder, isNoTracking);
+            var pages = await AppDbContext.GetPageAsync(where, u => u.Number, pageIndex, pageSize, isOrder);
             return ToView(pages);
         }
 
