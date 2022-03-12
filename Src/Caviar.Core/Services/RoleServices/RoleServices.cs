@@ -2,6 +2,7 @@
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,42 @@ namespace Caviar.Core.Services
             return rolesList;
         }
 
-        public async Task<IdentityResult> UpdateRole(ApplicationRoleView vm)
+        public async Task<IdentityResult> CreateAsync(ApplicationRoleView vm)
+        {
+            var result = await _roleManager.CreateAsync(vm.Entity);
+            if (result.Succeeded)
+            {
+                var templateRole = await _roleManager.FindByNameAsync(CurrencyConstant.TemplateRole);
+                if(templateRole != null)
+                {
+                    var set = AppDbContext.DbContext.Set<SysPermission>();
+                    var tempPermission = await set.Where(u => u.Entity == templateRole.Id).ToListAsync();
+                    tempPermission = tempPermission.Select(u => new SysPermission() { Permission = u.Permission,PermissionType = u.PermissionType,Entity = vm.Entity.Id }).ToList();
+                    set.AddRange(tempPermission);
+                    await AppDbContext.DbContext.SaveChangesAsync();
+                }
+            }
+            return result;
+        }
+
+        public async Task<IdentityResult> DeleteAsync(ApplicationRoleView vm)
+        {
+            if(vm.Entity.Name == CurrencyConstant.TemplateRole || vm.Entity.Name == CurrencyConstant.Admin)
+            {
+                throw new Exception("特殊角色，禁止删除");
+            }
+            var result = await _roleManager.DeleteAsync(vm.Entity);
+            if (result.Succeeded)
+            {
+                var set = AppDbContext.DbContext.Set<SysPermission>();
+                var permission = await set.Where(u => u.Entity == vm.Entity.Id).ToListAsync();
+                set.RemoveRange(permission);
+                AppDbContext.DbContext.SaveChanges();
+            }
+            return result;
+        }
+
+        public async Task<IdentityResult> UpdateAsync(ApplicationRoleView vm)
         {
             var role = await _roleManager.FindByNameAsync(vm.Entity.Name);
             if (role == null) throw new ArgumentNullException($"{vm.Entity.Name}不存在");
