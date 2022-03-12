@@ -28,18 +28,7 @@ namespace Caviar.Infrastructure.API
         [HttpPost]
         public override async Task<IActionResult> UpdateEntity(ApplicationUserView vm)
         {
-            var user = await _userManager.FindByNameAsync(vm.Entity.UserName);
-            if (user == null) throw new ArgumentNullException($"{vm.Entity.UserName}不存在");
-            user.UserName = vm.Entity.UserName;
-            user.PhoneNumber = vm.Entity.PhoneNumber;
-            user.Email = vm.Entity.Email;
-            user.UserGroupId = vm.Entity.UserGroupId;
-            user.IsDisable = vm.Entity.IsDisable;
-            user.Number = vm.Entity.Number;
-            user.Remark = vm.Entity.Remark;
-            user.UpdateTime = DateTime.Now;
-            user.OperatorUp = User.Identity.Name;
-            var result = await _userManager.UpdateAsync(user);
+            var result = await UserServices.UpdateUser(User.Identity.Name, vm);
             if (result.Succeeded) return Ok();
             return Error("修改用户失败", result);
         }

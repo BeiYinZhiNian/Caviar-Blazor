@@ -15,7 +15,7 @@
                             var Claim = authCountext.User.Claims.SingleOrDefault(u => u.Type == CurrencyConstant.HeadPortrait);
                         }
                         <Avatar Style="background-color: #87d068" Src="@Claim.Value" Icon="user" />
-                        @authCountext.User.Identity.Name
+                        @authCountext.User.Claims.SingleOrDefault(u=>u.Type == CurrencyConstant.AccountName)?.Value
                     </Authorized>
                 </AuthorizeView>
             </Button>

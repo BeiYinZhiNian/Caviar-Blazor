@@ -38,6 +38,10 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string HeadPortrait = "headPortrait";
         /// <summary>
+        /// 账号名称
+        /// </summary>
+        public const string AccountName = "AccountName";
+        /// <summary>
         /// 提交地址
         /// </summary>
         public const string CavModelSubmitUrl = "SubmitUrl";

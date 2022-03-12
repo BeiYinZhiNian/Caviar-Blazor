@@ -30,7 +30,7 @@ namespace Caviar.Core.Services
             return rolesList;
         }
 
-        public async Task<IdentityResult> CreateAsync(ApplicationRoleView vm)
+        public async Task<IdentityResult> CreateUserAsync(ApplicationRoleView vm)
         {
             var result = await _roleManager.CreateAsync(vm.Entity);
             if (result.Succeeded)
@@ -48,7 +48,7 @@ namespace Caviar.Core.Services
             return result;
         }
 
-        public async Task<IdentityResult> DeleteAsync(ApplicationRoleView vm)
+        public async Task<IdentityResult> DeleteUserAsync(ApplicationRoleView vm)
         {
             if(vm.Entity.Name == CurrencyConstant.TemplateRole || vm.Entity.Name == CurrencyConstant.Admin)
             {
@@ -65,7 +65,7 @@ namespace Caviar.Core.Services
             return result;
         }
 
-        public async Task<IdentityResult> UpdateAsync(ApplicationRoleView vm)
+        public async Task<IdentityResult> UpdateUserAsync(ApplicationRoleView vm)
         {
             var role = await _roleManager.FindByNameAsync(vm.Entity.Name);
             if (role == null) throw new ArgumentNullException($"{vm.Entity.Name}不存在");

@@ -12,6 +12,9 @@ namespace Caviar.SharedKernel.Entities
         public override string UserName { get => base.UserName; set => base.UserName = value; }
 
         [Required(ErrorMessage = "RequiredErrorMsg")]
+        public string AccountName { get; set; }
+
+        [Required(ErrorMessage = "RequiredErrorMsg")]
         public override string Email { get => base.Email; set => base.Email = value; }
         /// <summary>
         /// 创建时间
