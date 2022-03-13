@@ -31,6 +31,11 @@ namespace Caviar.SharedKernel.Entities
             Method = context.HttpContext.Request.Method;
         }
 
+        public Interactor()
+        {
+
+        }
+
         /// <summary>
         /// 获取用户的ip地址
         /// </summary>

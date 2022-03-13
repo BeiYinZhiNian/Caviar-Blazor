@@ -192,9 +192,9 @@ namespace Caviar.Infrastructure.Persistence
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public virtual Task<List<T>> GetAllAsync<T>(bool isNoTracking = false) where T : class, IUseEntity, new()
+        public virtual IQueryable<T> GetAllAsync<T>(bool isNoTracking = false) where T : class, IUseEntity, new()
         {
-            return GetContext<T>(isNoTracking).ToListAsync();
+            return GetContext<T>(isNoTracking);
         }
         /// <summary>
         /// 获取指定页数据

@@ -83,7 +83,7 @@ namespace Caviar.Core.Interface
         /// <param name="isDataPermissions">是否开启数据权限</param>
         /// <param name="isRecycleBin">是否读取回收站数据</param>
         /// <returns></returns>
-        public Task<List<T>> GetAllAsync<T>(bool isNoTracking = false) where T : class, IUseEntity, new();
+        public IQueryable<T> GetAllAsync<T>(bool isNoTracking = false) where T : class, IUseEntity, new();
         /// <summary>
         /// 根据条件获取实体
         /// </summary>

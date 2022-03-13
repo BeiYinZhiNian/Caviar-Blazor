@@ -117,7 +117,7 @@ namespace Caviar.Core.Services
         }
         
 
-        public virtual Task<List<T>> GetAllAsync()
+        public virtual IQueryable<T> GetAllAsync()
         {
             return AppDbContext.GetAllAsync<T>();
         }

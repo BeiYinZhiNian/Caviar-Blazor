@@ -29,9 +29,9 @@ namespace Caviar.Core.Services
             return base.GetEntityAsync(where).Where(_menuWhere);
         }
 
-        public override Task<List<SysMenu>> GetAllAsync()
+        public override IQueryable<SysMenu> GetAllAsync()
         {
-            return base.GetEntityAsync(_menuWhere).ToListAsync();
+            return base.GetEntityAsync(_menuWhere);
         }
 
 
@@ -82,7 +82,7 @@ namespace Caviar.Core.Services
         public async Task<List<SysMenuView>> GetMenuBar(List<string> permissionUrls)
         {
             if (PermissionUrls == null) return new List<SysMenuView>();
-            var menus = await GetAllAsync();
+            var menus = await GetAllAsync().ToListAsync();
             return ToView(menus).ListToTree();
         }
         /// <summary>
@@ -117,7 +117,7 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public async Task<List<SysMenuView>> GetPermissionMenus(List<string> permissionUrls)
         {
-            var menus = await base.GetAllAsync();
+            var menus = await base.GetAllAsync().ToListAsync();
             var menuViews = ToView(menus);
             foreach (var item in menuViews)
             {
