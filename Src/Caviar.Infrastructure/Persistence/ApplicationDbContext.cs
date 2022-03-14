@@ -397,9 +397,9 @@ namespace Caviar.Infrastructure.Persistence
                 int[] data = null;
                 if (item.DataRange == DataRange.Custom)
                 {
-                    data = item.DataList.Split(";").Select(u => int.Parse(u)).ToArray();
+                    data = item.DataList.Split(CurrencyConstant.CustomDataSeparator).Where(u=> !string.IsNullOrEmpty(u)).Select(u => int.Parse(u)).ToArray();
                 }
-                roleRange.Add(item.DataRange, null);
+                roleRange.Add(item.DataRange, data);
             }
             return roleRange;
         }
@@ -419,7 +419,8 @@ namespace Caviar.Infrastructure.Persistence
                     case DataRange.Subordinate:
                         ranges.Add(groupId);
                         var groups = set.Where(u => u.ParentId == groupId);
-                        ranges.AddRange(ranges);
+                        var groupIds = groups.Select(u => u.Id).ToList();
+                        ranges.AddRange(groupIds);
                         break;
                     case DataRange.Custom:
                         ranges.AddRange(dataRange.Value);
