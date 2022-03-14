@@ -10,15 +10,8 @@ SysLogList
 @inherits IndexComponentBase<SysLogView>
 
 <CavTableTemplate TData="SysLogView"
-               DataSource="IndexDataSource"
-               PageSize="PageSize"
-               PageIndex="PageIndex"
-               Total="Total"
-               Buttons="Buttons"
-               IsOpenQuery="IsOpenQuery"
-               ViewFields="ViewFields"
+               TableOptions="TableOptions"
                PageIndexChanged="PageIndexChanged"
                RowCallback="RowCallback"
-               Loading="Loading"
                QueryCallback="QueryCallback">
 </CavTableTemplate>

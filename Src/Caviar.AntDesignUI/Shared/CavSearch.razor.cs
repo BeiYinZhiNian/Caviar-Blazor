@@ -52,7 +52,7 @@ namespace Caviar.AntDesignUI.Shared
             {
                 if (IsQueryStateChanged.HasDelegate)
                 {
-                    IsQueryStateChanged.InvokeAsync(IsQueryState);
+                    await IsQueryStateChanged.InvokeAsync(IsQueryState);
                 }
                 await QueryCallback.InvokeAsync(query);
             }

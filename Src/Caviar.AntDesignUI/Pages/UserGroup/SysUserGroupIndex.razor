@@ -10,16 +10,8 @@ SysUserGroupList
 @inherits IndexComponentBase<SysUserGroupView>
 
 <CavTableTemplate TData="SysUserGroupView"
-               DataSource="IndexDataSource"
-               PageSize="PageSize"
-               PageIndex="PageIndex"
-               Total="Total"
-               Buttons="Buttons"
-               IsOpenQuery="IsOpenQuery"
-               ViewFields="ViewFields"
-               TreeChildren="u => u.Children"
+               TableOptions="TableOptions"
                PageIndexChanged="PageIndexChanged"
                RowCallback="RowCallback"
-               Loading="Loading"
                QueryCallback="QueryCallback">
 </CavTableTemplate>

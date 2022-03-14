@@ -15,25 +15,17 @@ namespace Caviar.AntDesignUI.Shared
 {
     public partial class CavTableTemplate<TData>
     {
+        [Parameter]
+        public CatTableOptions<TData> TableOptions { get; set; }
         [Inject]
         UserConfig UserConfig { get; set; }
         [Inject]
         public HttpService HttpService { get; set; }
-        /// <summary>
-        /// 表格
-        /// </summary>
-        [Parameter]
-        public Table<TData> Table { get; set; }
-        /// 固定右侧操作列，设为空则不固定
-        /// </summary>
-        [Parameter]
-        public string Fixed { get; set; } = "right";
 
         [Parameter]
         public EventCallback<IEnumerable<TData>> SelectedRowsChanged { get; set; }
 
-        [Parameter]
-        public bool IsSelectedRows { get; set; }
+        
 
         [Parameter]
         public IEnumerable<TData> SelectedRows 
@@ -51,114 +43,15 @@ namespace Caviar.AntDesignUI.Shared
         }
 
         IEnumerable<TData> _selectedRows;
-
-        [Parameter]
-        public string ScrollX { get; set; }
-        /// <summary>
-        /// 包含边界
-        /// </summary>
-        [Parameter]
-        public bool Bordered { get; set; } = false;
-
-        /// <summary>
-        /// 当字符超过n个自动忽略显示，并且使用Tooltip文字提示
-        /// 默认20个字符
-        /// </summary>
-        [Parameter]
-        public int EllipsisLen { get; set; } = 20;
-        /// <summary>
-        /// 当发生忽略时显示的长度
-        /// </summary>
-        [Parameter]
-        public int DisplayCount { get; set; } = 7;
-        /// <summary>
-        /// 操作按钮列所占最大宽度
-        /// </summary>
-        [Parameter]
-        public string ActionColumnMaxWidth { get; set; } = "220";
-        /// <summary>
-        /// 操作按钮列所占最小宽度
-        /// </summary>
-        [Parameter]
-        public string ActionColumnMinWidth { get; set; } = "100";
-        private List<TData> _dataSource;
-        /// <summary>
-        /// 数据源
-        /// </summary>
-        [Parameter]
-        public List<TData> DataSource 
-        {
-            get
-            {
-                return _dataSource;
-            }
-            set
-            {
-                _dataSource = value;
-                if (!IsQueryState)
-                {
-                    _dataSourceCopy = value;
-                    _totalCopy = Total;
-                    _pageIndexCopy = PageIndex;
-                    _pageSizeCopy = PageSize;
-                }
-            }
-        }
-        /// <summary>
-        /// 总计
-        /// </summary>
-        [Parameter]
-        public int Total { get; set; }
-        /// <summary>
-        /// 当前页数
-        /// </summary>
-        [Parameter]
-        public int PageIndex { get; set; }
-        /// <summary>
-        /// 页面大小
-        /// </summary>
-        [Parameter]
-        public int PageSize { get; set; }
-        /// <summary>
-        /// 按钮
-        /// </summary>
-        [Parameter]
-        public List<SysMenuView> Buttons { get; set; }
-        /// <summary>
-        /// 树形组件
-        /// </summary>
-        [Parameter]
-        public Func<TData, IEnumerable<TData>> TreeChildren { get; set; } = _ => Enumerable.Empty<TData>();
-        /// <summary>
-        /// 模型字段
-        /// </summary>
-        [Parameter]
-        public List<FieldsView> ViewFields { get; set; } = new List<FieldsView>();
         /// <summary>
         /// 翻页回调
         /// </summary>
         [Parameter]
         public EventCallback<PaginationEventArgs> PageIndexChanged { get; set; }
-        /// <summary>
-        /// 获取列表组件
-        /// </summary>
-        [Parameter]
-        public Func<FieldsView, RenderFragment> GetTableItems { get; set; }
-        /// <summary>
-        /// 创建按钮回调
-        /// </summary>
-        [Parameter]
-        public Func<SysMenuView,TData,RenderFragment> CreateButtons { get; set; }
-        /// <summary>
-        /// 获取搜索组件
-        /// </summary>
-        [Parameter]
-        public Func<string, RenderFragment> GetQueryItems { get; set; }
+        
 
         [Parameter]
         public EventCallback<RowCallbackData<TData>> RowCallback { get; set; }
-        [Parameter]
-        public bool Loading { get; set; }
         /// <summary>
         /// 是否为搜索状态
         /// </summary>
@@ -236,49 +129,144 @@ namespace Caviar.AntDesignUI.Shared
         protected override Task OnInitializedAsync()
         {
             showTotal = ctx => $"{ctx.Range.Item1}-{ctx.Range.Item2} {UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Total}"]} {ctx.Total} {UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Record}"]}";
-            if (PageIndex == 0)
-            {
-                PageIndex = 1;
-            }
-            if (PageSize == 0)
-            {
-                PageSize = 10;
-            }
             return base.OnInitializedAsync();
         }
 
         protected override void OnParametersSet()
         {
             base.OnParametersSet();
-            if (string.IsNullOrEmpty(ScrollX) && ViewFields?.Count != 0)
+            if (string.IsNullOrEmpty(TableOptions.ScrollX) && TableOptions.ViewFields?.Count != 0)
             {
-                var count = ViewFields?.Count(u => u.Entity.IsPanel && u.IsPermission);
-                ScrollX = (count.Value * 200).ToString();
+                var count = TableOptions.ViewFields?.Count(u => u.Entity.IsPanel && u.IsPermission);
+                TableOptions.ScrollX = (count.Value * 200).ToString();
             }
         }
 
         #region 搜索
         // 数据拷贝，等关闭搜索时，用于恢复数据
-        private List<TData> _dataSourceCopy;
-        private int _totalCopy;
-        private int _pageIndexCopy;
-        private int _pageSizeCopy;
-
-        [Parameter]
-        public bool IsOpenQuery { get; set; }
-
+        private List<TData> _dataSourceCopy = null;
+        private int _totalCopy = 0;
+        private int _pageIndexCopy = 0;
+        private int _pageSizeCopy = 0;
         [Parameter]
         public EventCallback<QueryView> QueryCallback { get; set; }
 
+        public async Task QueryStart(QueryView query)
+        {
+            if (QueryCallback.HasDelegate)
+            {
+                //开始数据备份
+                _dataSourceCopy = TableOptions.DataSource;
+                _totalCopy = TableOptions.Total;
+                _pageIndexCopy = TableOptions.PageIndex;
+                _pageSizeCopy = TableOptions.PageSize;
+                await QueryCallback.InvokeAsync(query);
+            }
+        }
+
         private void CloseQuery()
         {
-            DataSource = _dataSourceCopy;
-            Total = _totalCopy;
-            PageIndex = _pageIndexCopy;
-            PageSize = _pageSizeCopy;
+            //恢复数据
+            TableOptions.DataSource = _dataSourceCopy;
+            TableOptions.Total = _totalCopy;
+            TableOptions.PageIndex = _pageIndexCopy;
+            TableOptions.PageSize = _pageSizeCopy;
             IsQueryState = false;
             StateHasChanged();
         }
         #endregion
+    }
+
+    public class CatTableOptions<TData>
+    {
+        /// <summary>
+        /// 表格
+        /// </summary>
+        public Table<TData> Table { get; set; }
+        /// 固定右侧操作列，设为空则不固定
+        /// </summary>
+        public string Fixed { get; set; } = "right";
+        /// <summary>
+        /// 是否开启筛选
+        /// </summary>
+        public bool IsSelectedRows { get; set; }
+        /// <summary>
+        /// 总宽度
+        /// </summary>
+        public string ScrollX { get; set; }
+        /// <summary>
+        /// 包含边界
+        /// </summary>
+        public bool Bordered { get; set; } = false;
+
+        /// <summary>
+        /// 当字符超过n个自动忽略显示，并且使用Tooltip文字提示
+        /// 默认20个字符
+        /// </summary>
+        public int EllipsisLen { get; set; } = 20;
+        /// <summary>
+        /// 当发生忽略时显示的长度
+        /// </summary>
+        public int DisplayCount { get; set; } = 7;
+        /// <summary>
+        /// 操作按钮列所占最大宽度
+        /// </summary>
+        public string ActionColumnMaxWidth { get; set; } = "220";
+        /// <summary>
+        /// 操作按钮列所占最小宽度
+        /// </summary>
+        public string ActionColumnMinWidth { get; set; } = "100";
+        /// <summary>
+        /// 数据源
+        /// </summary>
+        public List<TData> DataSource { get; set; }
+        /// <summary>
+        /// 总计
+        /// </summary>
+        public int Total { get; set; }
+        /// <summary>
+        /// 当前页数
+        /// </summary>
+        public int PageIndex { get; set; } = 1;
+        /// <summary>
+        /// 页面大小
+        /// </summary>
+        public int PageSize { get; set; } = 10;
+        /// <summary>
+        /// 加载指示
+        /// </summary>
+        public bool Loading { get; set; }
+        /// <summary>
+        /// 是否开启查询
+        /// </summary>
+        public bool IsOpenQuery { get; set; }
+        /// <summary>
+        /// 开启高级查询
+        /// </summary>
+        public bool IsAdvancedQuery { get; set; }
+        /// <summary>
+        /// 按钮
+        /// </summary>
+        public List<SysMenuView> Buttons { get; set; }
+        /// <summary>
+        /// 树形组件
+        /// </summary>
+        public Func<TData, IEnumerable<TData>> TreeChildren { get; set; } = _ => Enumerable.Empty<TData>();
+        /// <summary>
+        /// 模型字段
+        /// </summary>
+        public List<FieldsView> ViewFields { get; set; } = new List<FieldsView>();
+        /// <summary>
+        /// 获取列表组件
+        /// </summary>
+        public Func<FieldsView, RenderFragment> GetTableItems { get; set; }
+        /// <summary>
+        /// 创建按钮回调
+        /// </summary>
+        public Func<SysMenuView, TData, RenderFragment> CreateButtons { get; set; }
+        /// <summary>
+        /// 获取搜索组件
+        /// </summary>
+        public Func<RenderFragment> GetQueryItems { get; set; }
     }
 }

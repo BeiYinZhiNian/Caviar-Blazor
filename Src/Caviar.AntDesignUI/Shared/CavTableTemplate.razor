@@ -1,16 +1,29 @@
 ﻿@typeparam TData
 
 <Space Direction="@DirectionVHType.Vertical" Size="@("small")">
-    @if (IsOpenQuery)
+    @if (TableOptions.IsOpenQuery)
     {
+        var queryItem = TableOptions.GetQueryItems?.Invoke();
         <SpaceItem>
             <Space Size=@(("8", "8" )) Wrap Align="start">
-                <SpaceItem>
-                    <CavSearch Fields="ViewFields" @bind-IsQueryState="IsQueryState" QueryCallback="QueryCallback"></CavSearch>
-                </SpaceItem>
-                <SpaceItem>
-                    <Button OnClick="ClickAdvancedQuery">高级搜索</Button>
-                </SpaceItem>
+                @if (queryItem != null)
+                {
+                    <SpaceItem>
+                        @queryItem
+                    </SpaceItem>
+                }
+                else
+                {
+                    <SpaceItem>
+                        <CavSearch Fields="TableOptions.ViewFields" @bind-IsQueryState="IsQueryState" QueryCallback="QueryStart"></CavSearch>
+                    </SpaceItem>
+                }
+                @if (TableOptions.IsAdvancedQuery)
+                {
+                    <SpaceItem>
+                        <Button OnClick="ClickAdvancedQuery">高级搜索</Button>
+                    </SpaceItem>
+                }
                 @if (IsQueryState)
                 {
                     <SpaceItem>
@@ -22,9 +35,9 @@
     }
     <SpaceItem>
         <Space Size=@(("8", "8" )) Wrap Align="start">
-            @if (Buttons != null)
+            @if (TableOptions.Buttons != null)
             {
-                foreach (var item in Buttons)
+                foreach (var item in TableOptions.Buttons)
                 {
                     if (item.Entity.ButtonPosition == ButtonPosition.Default && item.Entity.MenuType == MenuType.Button)
                     {
@@ -39,29 +52,29 @@
     </SpaceItem>
 </Space>
 
-<Table DataSource="DataSource"
-       @ref="Table"
-       ScrollX="@ScrollX"
-       Bordered="Bordered"
+<Table DataSource="TableOptions.DataSource"
+       @ref="TableOptions.Table"
+       ScrollX="@TableOptions.ScrollX"
+       Bordered="TableOptions.Bordered"
        HidePagination
-       PageSize="PageSize"
+       PageSize="TableOptions.PageSize"
        TItem="TData"
-       Loading="Loading"
+       Loading="TableOptions.Loading"
        @bind-SelectedRows="SelectedRows"
-       TreeChildren="TreeChildren">
+       TreeChildren="TableOptions.TreeChildren">
 
 
 
     @{
-        if (IsSelectedRows)
+        if (TableOptions.IsSelectedRows)
         {
             <Selection Width="50" />
         }
-        foreach (var item in ViewFields)
+        foreach (var item in TableOptions.ViewFields)
         {
             if (!item.Entity.IsPanel || !item.IsPermission) continue;
             item.Value = context;
-            var tableItem = GetTableItems?.Invoke(item);
+            var tableItem = TableOptions.GetTableItems?.Invoke(item);
             var fieldName = "entity." + item.Entity.FieldName;
             var isEnum = item.IsEnum;
             if (tableItem != null)
@@ -94,9 +107,9 @@
                             if (obj != null)
                             {
                                 var value = (string)obj;
-                                if (value.Count() >= EllipsisLen)
+                                if (value.Count() >= TableOptions.EllipsisLen)
                                 {
-                                    var txt = value.Substring(0, DisplayCount) + "...";
+                                    var txt = value.Substring(0, TableOptions.DisplayCount) + "...";
                                     <Tooltip Title="@value">
                                         <span>@txt</span>
                                     </Tooltip>
@@ -186,12 +199,12 @@
 
         }
 
-        if (Buttons != null && Buttons.Count > 0)
+        if (TableOptions.Buttons != null && TableOptions.Buttons.Count > 0)
         {
-            List<SysMenuView> but = Buttons.Where(u => u.Entity.ButtonPosition == ButtonPosition.Row && u.Entity.MenuType == MenuType.Button).ToList();
+            List<SysMenuView> but = TableOptions.Buttons.Where(u => u.Entity.ButtonPosition == ButtonPosition.Row && u.Entity.MenuType == MenuType.Button).ToList();
             if (but.Count > 0)
             {
-                <ActionColumn Title=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Operation}"] Width="@(but.Count==2?ActionColumnMaxWidth:ActionColumnMinWidth)" Fixed="@Fixed">
+                <ActionColumn Title=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Operation}"] Width="@(but.Count==2?TableOptions.ActionColumnMaxWidth:TableOptions.ActionColumnMinWidth)" Fixed="@TableOptions.Fixed">
                     @if (but.Count >= 3)
                     {
                         <Dropdown>
@@ -234,10 +247,10 @@
 
 
 <div style="float:right;margin-top:20px">
-    <Pagination Total="Total"
+    <Pagination Total="TableOptions.Total"
                 ShowTotal=showTotal
-                PageSize="PageSize"
-                Current="PageIndex"
+                PageSize="TableOptions.PageSize"
+                Current="TableOptions.PageIndex"
                 OnChange="PageIndexChanged"
                 OnShowSizeChange="PageIndexChanged" />
 </div>
@@ -246,7 +259,7 @@
 @code {
     RenderFragment CreatePackButton(SysMenuView menu, TData context)
     {
-        var button = CreateButtons?.Invoke(menu, context);
+        var button = TableOptions.CreateButtons?.Invoke(menu, context);
         if (button != null) return button;
         RenderFragment render = null;
         if (menu.Entity.IsDoubleTrue)
@@ -282,7 +295,7 @@
             @menu.DisplayName
         </Button>
     </a>
-        ;
+    ;
         }
         else
         {
@@ -314,7 +327,7 @@
                 FuncValidate = Validate,
             };
         RenderFragment render =
-    @<AdvancedQuery @ref="advancedQuery" @bind-IsQueryState="IsQueryState" QueryView="QueryView" Fields="ViewFields" QueryCallback="QueryCallback"></AdvancedQuery>
+    @<AdvancedQuery @ref="advancedQuery" @bind-IsQueryState="IsQueryState" QueryView="QueryView" Fields="TableOptions.ViewFields" QueryCallback="QueryStart"></AdvancedQuery>
     ;
         options.Render = render;
         await CavModal.Create(options);
@@ -322,6 +335,6 @@
 
     Task<bool> Validate()
     {
-        return advancedQuery.Validate();   
+        return advancedQuery.Validate();
     }
 }

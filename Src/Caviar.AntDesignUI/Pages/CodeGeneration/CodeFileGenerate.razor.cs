@@ -37,8 +37,8 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
         {
             var result = await HttpService.GetJson<List<FieldsView>>(Url[CurrencyConstant.GetEntitysKey]);
             if (result.Status != HttpStatusCode.OK) return null;
-            Total = result.Data.Count;
-            PageSize = result.Data.Count;
+            TableOptions.Total = result.Data.Count;
+            TableOptions.PageSize = result.Data.Count;
             return result.Data;
         }
 
