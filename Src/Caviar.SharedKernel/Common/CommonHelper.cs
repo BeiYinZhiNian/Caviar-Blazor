@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Web;
+using Microsoft.AspNetCore.Http;
 
 namespace Caviar.SharedKernel.Entities
 {
@@ -40,6 +41,21 @@ namespace Caviar.SharedKernel.Entities
             {
                 return TimeSlot.Night;
             }
+        }
+
+        /// <summary>
+        /// 获取用户的ip地址
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static string GetUserIp(HttpContext context)
+        {
+            var ip = context.Request.Headers[CurrencyConstant.XForwardedFor].FirstOrDefault();
+            if (string.IsNullOrEmpty(ip))
+            {
+                ip = context.Connection.RemoteIpAddress.ToString();
+            }
+            return ip;
         }
         /// <summary>
         /// SHA256加密

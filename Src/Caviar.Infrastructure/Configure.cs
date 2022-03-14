@@ -54,7 +54,11 @@ namespace Caviar.Infrastructure
             {
                 var handler = sp.GetService<HttpClientHandler>();
                 HttpClient client = new HttpClient(handler);
+                var httpContextAccessor = sp.GetService<IHttpContextAccessor>();
+                var httpContext = httpContextAccessor?.HttpContext;
+                var ip = CommonHelper.GetUserIp(httpContext);
                 client.DefaultRequestHeaders.Add(CurrencyConstant.UserAgent, CurrencyConstant.DefaultUserAgent);
+                client.DefaultRequestHeaders.Add(CurrencyConstant.XForwardedFor, ip);
                 var uri = GetServerUri();
                 if (uri != null)
                 {

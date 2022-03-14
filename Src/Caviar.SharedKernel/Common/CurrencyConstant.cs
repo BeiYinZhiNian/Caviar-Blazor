@@ -10,6 +10,10 @@ namespace Caviar.SharedKernel.Entities
     public static class CurrencyConstant
     {
         /// <summary>
+        /// 缓存代理Ip
+        /// </summary>
+        public const string XForwardedFor = "X-Forwarded-For";
+        /// <summary>
         /// 高级搜索
         /// </summary>
         public const string AdvancedSearch = "AdvancedSearch";
