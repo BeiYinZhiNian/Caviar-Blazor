@@ -25,7 +25,13 @@ namespace Caviar.AntDesignUI.Shared
         public EventCallback<QueryView> QueryCallback { get; set; }
         [Parameter]
         public QueryModel QueryModel { get; set; } = new QueryModel() { QuerTypes = QueryModel.QuerType.Contains };
-
+        /// <summary>
+        /// 是否为搜索状态
+        /// </summary>
+        [Parameter]
+        public bool IsQueryState { get; set; }
+        [Parameter]
+        public EventCallback<bool> IsQueryStateChanged { get; set; }
         async void OnSearch()
         {
             if (string.IsNullOrEmpty(QueryModel.Key))
@@ -44,6 +50,10 @@ namespace Caviar.AntDesignUI.Shared
             };
             if (QueryCallback.HasDelegate)
             {
+                if (IsQueryStateChanged.HasDelegate)
+                {
+                    IsQueryStateChanged.InvokeAsync(IsQueryState);
+                }
                 await QueryCallback.InvokeAsync(query);
             }
             Loading = false;

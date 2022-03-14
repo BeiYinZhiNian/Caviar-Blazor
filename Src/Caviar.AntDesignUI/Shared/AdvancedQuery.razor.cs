@@ -25,6 +25,14 @@ namespace Caviar.AntDesignUI.Shared
         [Parameter]
         public QueryView QueryView { get; set; }
 
+        /// <summary>
+        /// 是否为搜索状态
+        /// </summary>
+        [Parameter]
+        public bool IsQueryState { get; set; }
+        [Parameter]
+        public EventCallback<bool> IsQueryStateChanged { get; set; }
+
 
         void OnSelectItem(Guid trackId,string item)
         {
@@ -77,6 +85,11 @@ namespace Caviar.AntDesignUI.Shared
         {
             if (QueryCallback.HasDelegate)
             {
+                IsQueryState = true;
+                if (IsQueryStateChanged.HasDelegate)
+                {
+                    IsQueryStateChanged.InvokeAsync(IsQueryState);
+                }
                 await QueryCallback.InvokeAsync(QueryView);
             }
         }

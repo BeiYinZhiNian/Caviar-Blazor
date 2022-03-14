@@ -247,7 +247,7 @@ namespace Caviar.Infrastructure.Persistence
             };
             if (data.Count() > 0)
             {
-                pageData.Total = await data.CountAsync();
+                pageData.Total = pageData.PageSize;
                 pageData.Rows = await data.Take(pageData.PageSize).ToListAsync();
             }
             return pageData;

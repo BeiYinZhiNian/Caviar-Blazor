@@ -6,11 +6,17 @@
         <SpaceItem>
             <Space Size=@(("8", "8" )) Wrap Align="start">
                 <SpaceItem>
-                    <CavSearch Fields="ViewFields" QueryCallback="QueryCallback"></CavSearch>
+                    <CavSearch Fields="ViewFields" @bind-IsQueryState="IsQueryState" QueryCallback="QueryCallback"></CavSearch>
                 </SpaceItem>
                 <SpaceItem>
                     <Button OnClick="ClickAdvancedQuery">高级搜索</Button>
                 </SpaceItem>
+                @if (IsQueryState)
+                {
+                    <SpaceItem>
+                        <Button Type="@ButtonType.Dashed" OnClick="CloseQuery" Danger>关闭搜索</Button>
+                    </SpaceItem>
+                }
             </Space>
         </SpaceItem>
     }
@@ -308,7 +314,7 @@
                 FuncValidate = Validate,
             };
         RenderFragment render =
-    @<AdvancedQuery @ref="advancedQuery" QueryView="QueryView" Fields="ViewFields" QueryCallback="QueryCallback"></AdvancedQuery>
+    @<AdvancedQuery @ref="advancedQuery" @bind-IsQueryState="IsQueryState" QueryView="QueryView" Fields="ViewFields" QueryCallback="QueryCallback"></AdvancedQuery>
     ;
         options.Render = render;
         await CavModal.Create(options);

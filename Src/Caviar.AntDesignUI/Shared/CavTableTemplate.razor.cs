@@ -81,11 +81,29 @@ namespace Caviar.AntDesignUI.Shared
         /// </summary>
         [Parameter]
         public string ActionColumnMinWidth { get; set; } = "100";
+        private List<TData> _dataSource;
         /// <summary>
         /// 数据源
         /// </summary>
         [Parameter]
-        public List<TData> DataSource { get; set; }
+        public List<TData> DataSource 
+        {
+            get
+            {
+                return _dataSource;
+            }
+            set
+            {
+                _dataSource = value;
+                if (!IsQueryState)
+                {
+                    _dataSourceCopy = value;
+                    _totalCopy = Total;
+                    _pageIndexCopy = PageIndex;
+                    _pageSizeCopy = PageSize;
+                }
+            }
+        }
         /// <summary>
         /// 总计
         /// </summary>
@@ -141,6 +159,13 @@ namespace Caviar.AntDesignUI.Shared
         public EventCallback<RowCallbackData<TData>> RowCallback { get; set; }
         [Parameter]
         public bool Loading { get; set; }
+        /// <summary>
+        /// 是否为搜索状态
+        /// </summary>
+        [Parameter]
+        public bool IsQueryState { get; set; }
+        [Parameter]
+        public EventCallback<bool> IsQueryStateChanged { get; set; }
         async void RoleAction(RowCallbackData<TData> data)
         {
             if (RowCallback.HasDelegate)
@@ -233,11 +258,27 @@ namespace Caviar.AntDesignUI.Shared
         }
 
         #region 搜索
+        // 数据拷贝，等关闭搜索时，用于恢复数据
+        private List<TData> _dataSourceCopy;
+        private int _totalCopy;
+        private int _pageIndexCopy;
+        private int _pageSizeCopy;
+
         [Parameter]
         public bool IsOpenQuery { get; set; }
 
         [Parameter]
         public EventCallback<QueryView> QueryCallback { get; set; }
+
+        private void CloseQuery()
+        {
+            DataSource = _dataSourceCopy;
+            Total = _totalCopy;
+            PageIndex = _pageIndexCopy;
+            PageSize = _pageSizeCopy;
+            IsQueryState = false;
+            StateHasChanged();
+        }
         #endregion
     }
 }
