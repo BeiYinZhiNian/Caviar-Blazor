@@ -19,6 +19,8 @@ namespace Caviar.AntDesignUI.Pages.User
         public HttpService HttpService { get; set; }
         [Inject]
         public MessageService MessageService { get; set; }
+        [Inject]
+        public UserConfig UserConfig { get; set; }
         public Task<bool> Validate()
         {
             if (_Form.Validate())

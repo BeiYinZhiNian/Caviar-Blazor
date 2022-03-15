@@ -458,7 +458,17 @@ namespace Caviar.SharedKernel.Entities
         /// 共{count}个文件，写出文件{writeCount}个，跳过文件{skipCount}个，覆盖文件{coverCount}个
         /// </summary>
         public const string ResultMsg = "ResultMsg";
-
-
+        /// <summary>
+        /// 当前密码
+        /// </summary>
+        public const string CurrentPassword = "CurrentPassword";
+        /// <summary>
+        /// 新密码
+        /// </summary>
+        public const string NewPassword = "NewPassword";
+        /// <summary>
+        /// 确认密码
+        /// </summary>
+        public const string ConfirmPassword = "ConfirmPassword";
     }
 }

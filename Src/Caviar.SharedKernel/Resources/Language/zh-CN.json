@@ -241,7 +241,10 @@
       "And": "且",
       "Or": "或",
       "SelectType": "请选择类型",
-      "Remove": "移除"
+      "Remove": "移除",
+      "CurrentPassword": "请输入当前密码",
+      "NewPassword": "请输入新的密码",
+      "ConfirmPassword": "请输入确认密码"
     }
   }
 }
