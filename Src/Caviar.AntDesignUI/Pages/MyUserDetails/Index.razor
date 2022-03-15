@@ -11,22 +11,22 @@
                         <CardMeta AvatarTemplate="@GetHeadPortrait()" TitleTemplate="@GetTitleRender()" Description="@_user.Remark" />
                         <body>
                             <p style="margin-top:10px">
-                                <Text>账号：</Text><Text>@_user.UserName</Text>
+                                <Text>@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.UserName}"]：</Text><Text>@_user.UserName</Text>
                             </p>
                             <p>
-                                <Text>电子邮箱：</Text><Text>@_user.Email</Text>
+                                <Text>@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Password}"]：</Text><Text>@_user.Email</Text>
                             </p>
                             <p>
-                                <Text>手机号：</Text><Text>@_user.PhoneNumber</Text>
+                                <Text>@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.PhoneNumber}"]：</Text><Text>@_user.PhoneNumber</Text>
                             </p>
                             <p>
-                                <Text>角色：</Text><Text>@Roles</Text>
+                                <Text>@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ApplicationRoleKey}"]：</Text><Text>@Roles</Text>
                             </p>
                             <p>
-                                <Text>部门：</Text><Text>@_user.UserGroupName</Text>
+                                <Text>@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.UserGroupName}"]：</Text><Text>@_user.UserGroupName</Text>
                             </p>
                             <p>
-                                <Text>个性签名：</Text><Text>@_user.Remark</Text>
+                                <Text>@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.PersonalSignature}"]：</Text><Text>@_user.Remark</Text>
                             </p>
                         </body>
                     </ChildContent>

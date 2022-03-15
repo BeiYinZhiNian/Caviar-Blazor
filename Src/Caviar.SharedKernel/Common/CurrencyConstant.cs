@@ -335,17 +335,37 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string UserLogin = "UserLogin";
         /// <summary>
-        /// 请输入用户名/手机号/邮箱
+        /// 请输入用户名
         /// </summary>
-        public const string UserName = "UserName";
+        public const string InputUserName = "InputUserName";
         /// <summary>
         /// 请输入密码
         /// </summary>
+        public const string InputPassword = "InputPassword";
+        /// <summary>
+        /// 账号
+        /// </summary>
+        public const string UserName = "UserName";
+        /// <summary>
+        /// 密码
+        /// </summary>
         public const string Password = "Password";
+        /// <summary>
+        /// 部门名称
+        /// </summary>
+        public const string UserGroupName = "UserGroupName";
+        /// <summary>
+        /// 手机号
+        /// </summary>
+        public const string PhoneNumber = "PhoneNumber";
         /// <summary>
         /// 注册账户
         /// </summary>
         public const string RegisteredAccount = "RegisteredAccount";
+        /// <summary>
+        /// 个性签名
+        /// </summary>
+        public const string PersonalSignature = "PersonalSignature";
         /// <summary>
         /// 忘记密码
         /// </summary>
