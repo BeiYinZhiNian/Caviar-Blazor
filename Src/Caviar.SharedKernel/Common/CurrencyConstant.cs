@@ -216,7 +216,7 @@ namespace Caviar.SharedKernel.Entities
         public const string Page = "SharedKernel.Page";
         public const string AppNull = "app.null";
         public const string Admin = "admin";
-        public const string TemplateRole = "Template";
+        public const string TemplateRole = "TemplateRole";
         /// <summary>
         /// 未授权
         /// </summary>
