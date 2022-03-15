@@ -38,7 +38,7 @@ namespace Caviar.AntDesignUI.Shared
         {
             if (string.IsNullOrEmpty(QueryModel.Key))
             {
-                _ = MessageService.Error("请选择要查询的字段");
+                _ = MessageService.Error(UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SelectQueryFields}"]);
                 return;
             }
             Loading = true;

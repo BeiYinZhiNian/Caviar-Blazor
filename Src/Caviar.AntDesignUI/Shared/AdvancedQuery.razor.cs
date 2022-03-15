@@ -1,5 +1,6 @@
 ﻿using AntDesign;
 using Caviar.AntDesignUI.Core;
+using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -119,7 +120,7 @@ namespace Caviar.AntDesignUI.Shared
             {
                 if (string.IsNullOrEmpty(item.Value.Key))
                 {
-                    _ = MessageService.Error("请选择要查询的字段");
+                    _ = MessageService.Error(UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SelectQueryFields}"]);
                     return false;
                 }
             }
