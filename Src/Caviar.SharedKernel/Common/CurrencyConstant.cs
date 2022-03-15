@@ -470,5 +470,9 @@ namespace Caviar.SharedKernel.Entities
         /// 确认密码
         /// </summary>
         public const string ConfirmPassword = "ConfirmPassword";
+        /// <summary>
+        /// 请输入备注
+        /// </summary>
+        public const string InputRemark = "InputRemark";
     }
 }

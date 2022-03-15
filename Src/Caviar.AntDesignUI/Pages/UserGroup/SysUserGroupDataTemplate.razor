@@ -47,6 +47,6 @@ Caviar ©2021 Created by 北音执念
         <AntDesign.InputNumber @bind-Value='@context.Entity.DataId' Style='width:50%'/>
     </CavFormItem>
     <CavFormItem  FieldName='Remark' FieldRules='@context.Entity'>
-        <TextArea Placeholder="请输入备注"  AllowClear="true" @bind-Value="@context.Entity.Remark" />
+        <TextArea Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.InputRemark}"]"  AllowClear="true" @bind-Value="@context.Entity.Remark" />
     </CavFormItem>
 </Form>

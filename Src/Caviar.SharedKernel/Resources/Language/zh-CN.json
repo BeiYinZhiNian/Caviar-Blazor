@@ -244,7 +244,8 @@
       "Remove": "移除",
       "CurrentPassword": "请输入当前密码",
       "NewPassword": "请输入新的密码",
-      "ConfirmPassword": "请输入确认密码"
+      "ConfirmPassword": "请输入确认密码",
+      "InputRemark": "请输入备注"
     }
   }
 }

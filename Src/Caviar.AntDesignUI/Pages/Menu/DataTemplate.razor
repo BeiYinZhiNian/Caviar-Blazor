@@ -73,7 +73,7 @@
         <Input @bind-Value="@context.Entity.Number" Style="width: 20%;">
     </CavFormItem>
     <CavFormItem FieldName="Remark" FieldRules="@context.Entity">
-        <TextArea Placeholder="请输入备注"  AllowClear="true" @bind-Value="@context.Entity.Remark" />
+        <TextArea Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.InputRemark}"]"  AllowClear="true" @bind-Value="@context.Entity.Remark" />
     </CavFormItem>
 </Form>
 
