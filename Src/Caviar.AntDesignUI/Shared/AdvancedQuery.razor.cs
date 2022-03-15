@@ -20,6 +20,8 @@ namespace Caviar.AntDesignUI.Shared
         public List<FieldsView> Fields { get; set; }
         [Inject]
         MessageService MessageService { get; set; }
+        [Inject]
+        UserConfig UserConfig { get; set; }
         [Parameter]
         public EventCallback<QueryView> QueryCallback { get; set; }
         [Parameter]

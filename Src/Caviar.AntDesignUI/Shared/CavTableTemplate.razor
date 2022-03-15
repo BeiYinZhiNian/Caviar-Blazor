@@ -21,13 +21,13 @@
                 @if (TableOptions.IsAdvancedQuery)
                 {
                     <SpaceItem>
-                        <Button OnClick="ClickAdvancedQuery">高级搜索</Button>
+                        <Button OnClick="ClickAdvancedQuery">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.AdvancedSearch}"]</Button>
                     </SpaceItem>
                 }
                 @if (IsQueryState)
                 {
                     <SpaceItem>
-                        <Button Type="@ButtonType.Dashed" OnClick="CloseQuery" Danger>关闭搜索</Button>
+                        <Button Type="@ButtonType.Dashed" OnClick="CloseQuery" Danger>@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.CancelSearch}"]</Button>
                     </SpaceItem>
                 }
             </Space>
@@ -323,7 +323,7 @@
         var options = new CavModalOptions()
             {
                 Url = UrlConfig.AuvancedQuery,
-                Title = "高级查询",
+                Title = UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.AdvancedSearch}"],
                 FuncValidate = Validate,
             };
         RenderFragment render =

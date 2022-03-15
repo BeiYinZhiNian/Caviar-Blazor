@@ -189,6 +189,7 @@
       "ChangePassword": "修改密码",
       "Logout": "退出登录",
       "SelectQueryFields": "选择查询的字段",
+      "SearchData": "请输入搜索内容",
       "Query": "查询",
       "Yes": "是",
       "No": "否",
@@ -231,7 +232,16 @@
       "IsCover": "是否覆盖",
       "RouteErrorMsg": "代码生成文件未找到，请确认路径是否正确：",
       "FolderErrorMsg": "文件夹为空则不进行任何替换",
-      "ResultMsg": "共{count}个文件，写出文件{writeCount}个，跳过文件{skipCount}个，覆盖文件{coverCount}个"
+      "ResultMsg": "共{count}个文件，写出文件{writeCount}个，跳过文件{skipCount}个，覆盖文件{coverCount}个",
+      "AdvancedSearch": "高级搜索",
+      "Search": "搜索",
+      "CancelSearch": "关闭搜索",
+      "SearchNumber": "查询条数",
+      "AddCondition": "添加条件",
+      "And": "且",
+      "Or": "或",
+      "SelectType": "请选择类型",
+      "Remove": "移除"
     }
   }
 }

@@ -14,9 +14,17 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string XForwardedFor = "X-Forwarded-For";
         /// <summary>
+        /// 搜索
+        /// </summary>
+        public const string Search = "Search";
+        /// <summary>
         /// 高级搜索
         /// </summary>
         public const string AdvancedSearch = "AdvancedSearch";
+        /// <summary>
+        /// 关闭搜索
+        /// </summary>
+        public const string CancelSearch = "CancelSearch";
         /// <summary>
         /// 路由前缀
         /// </summary>
@@ -138,6 +146,10 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string SysUserGroupKey = "SysUserGroup";
         /// <summary>
+        /// 移除
+        /// </summary>
+        public const string Remove = "Remove";
+        /// <summary>
         /// 系统日志key
         /// </summary>
         public const string SysLogKey = "SysLog";
@@ -250,6 +262,30 @@ namespace Caviar.SharedKernel.Entities
         /// 选择查询的字段
         /// </summary>
         public const string SelectQueryFields = "SelectQueryFields";
+        /// <summary>
+        /// 选择类型
+        /// </summary>
+        public const string SelectType = "SelectType";
+        /// <summary>
+        /// 且
+        /// </summary>
+        public const string And = "And";
+        /// <summary>
+        /// 或
+        /// </summary>
+        public const string Or = "Or";
+        /// <summary>
+        /// 输入搜索内容
+        /// </summary>
+        public const string SearchData = "SearchData";
+        /// <summary>
+        /// 搜索条数
+        /// </summary>
+        public const string SearchNumber = "SearchNumber";
+        /// <summary>
+        /// 添加条件
+        /// </summary>
+        public const string AddCondition = "AddCondition";
         /// <summary>
         /// 查询
         /// </summary>
