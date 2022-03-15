@@ -31,11 +31,11 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 创建时间
         /// </summary>
-        public virtual DateTime CreatTime { get; set; } = DateTime.Now;
+        public virtual DateTime CreatTime { get; set; } = CommonHelper.GetSysDateTimeNow();
         /// <summary>
         /// 修改时间
         /// </summary>
-        public virtual DateTime UpdateTime { get; set; } = DateTime.Now;
+        public virtual DateTime UpdateTime { get; set; } = CommonHelper.GetSysDateTimeNow();
         /// <summary>
         /// 根据配置确定删除后是否保留条目
         /// </summary>

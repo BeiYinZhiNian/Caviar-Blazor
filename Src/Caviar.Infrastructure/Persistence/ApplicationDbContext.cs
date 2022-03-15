@@ -311,7 +311,7 @@ namespace Caviar.Infrastructure.Persistence
                         break;
                     case EntityState.Modified:
                         baseEntity.OperatorUp = _interactor.UserInfo.UserName;
-                        baseEntity.UpdateTime = DateTime.Now;
+                        baseEntity.UpdateTime = CommonHelper.GetSysDateTimeNow();
                         var entityType = entity.GetType();
                         var baseType = typeof(SysUseEntity);
                         var fields = FieldScannerServices.GetClassFields(baseType, _languageService);
@@ -337,7 +337,7 @@ namespace Caviar.Infrastructure.Persistence
                         }
                         break;
                     case EntityState.Added:
-                        baseEntity.CreatTime = DateTime.Now;
+                        baseEntity.CreatTime = CommonHelper.GetSysDateTimeNow();
                         baseEntity.OperatorCare = _interactor.UserInfo.UserName;
                         baseEntity.DataId = _interactor.UserInfo.UserGroupId;
                         break;

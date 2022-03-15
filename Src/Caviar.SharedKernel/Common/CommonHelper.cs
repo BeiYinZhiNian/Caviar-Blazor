@@ -10,15 +10,26 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Web;
 using Microsoft.AspNetCore.Http;
+using NodaTime;
 
 namespace Caviar.SharedKernel.Entities
 {
     public static class CommonHelper
     {
+        /// <summary>
+        /// 获取系统当前时间
+        /// </summary>
+        /// <returns>系统当前时间</returns>
+        public static DateTime GetSysDateTimeNow()
+        {
+            Instant now = SystemClock.Instance.GetCurrentInstant();
+            var shanghaiZone = DateTimeZoneProviders.Tzdb[CurrencyConstant.TimeZone];
+            return now.InZone(shanghaiZone).ToDateTimeUnspecified();
+        }
         public static TimeSlot GetTimeSlot()
         {
             DateTime time1 = Convert.ToDateTime("0:00:00");
-            DateTime time2 = Convert.ToDateTime(DateTime.Now.ToString());
+            DateTime time2 = Convert.ToDateTime(GetSysDateTimeNow().ToString());
             TimeSpan TS = new TimeSpan(time2.Ticks - time1.Ticks);
             int Time = (int)TS.TotalHours;
             if (Time < 5) // 0 - 5

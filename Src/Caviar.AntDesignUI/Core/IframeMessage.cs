@@ -42,9 +42,6 @@ namespace Caviar.AntDesignUI.Core
                 case Pattern.Wasm:
                     SwitchWasm?.Invoke(message);
                     break;
-                case Pattern.ForceLoad:
-                    ForceLoad?.Invoke(message);
-                    break;
                 default:
                     break;
             }

@@ -105,7 +105,7 @@ namespace Caviar.Core.Services
             user.IsDisable = vm.Entity.IsDisable;
             user.Number = vm.Entity.Number;
             user.Remark = vm.Entity.Remark;
-            user.UpdateTime = DateTime.Now;
+            user.UpdateTime = CommonHelper.GetSysDateTimeNow();
             user.OperatorUp = operatorUp;
             var result = await _userManager.UpdateAsync(user);
             return result;

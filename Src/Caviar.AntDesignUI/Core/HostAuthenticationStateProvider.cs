@@ -57,7 +57,6 @@ namespace Caviar.AntDesignUI.Core
         {
             var result = await api.Logout();
             _currentUser = null;
-            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
             return result;
         }
 

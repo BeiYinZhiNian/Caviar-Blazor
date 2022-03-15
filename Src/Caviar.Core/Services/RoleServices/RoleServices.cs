@@ -75,7 +75,7 @@ namespace Caviar.Core.Services
             role.DataList = vm.Entity.DataList;
             role.IsDisable = vm.Entity.IsDisable;
             role.DataRange = vm.Entity.DataRange;
-            role.UpdateTime = DateTime.Now;
+            role.UpdateTime = CommonHelper.GetSysDateTimeNow();
             role.OperatorUp = vm.Entity.OperatorUp;
             var result = await _roleManager.UpdateAsync(role);
             return result;

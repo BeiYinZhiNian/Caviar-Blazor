@@ -10,6 +10,10 @@ namespace Caviar.SharedKernel.Entities
     public static class CurrencyConstant
     {
         /// <summary>
+        /// 时区
+        /// </summary>
+        public const string TimeZone = "Asia/Shanghai";
+        /// <summary>
         /// 缓存代理Ip
         /// </summary>
         public const string XForwardedFor = "X-Forwarded-For";

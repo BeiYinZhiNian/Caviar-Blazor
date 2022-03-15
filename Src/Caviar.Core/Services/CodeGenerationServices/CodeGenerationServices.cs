@@ -140,7 +140,7 @@ namespace Caviar.Core.Services
         {
             StringBuilder txt = new StringBuilder(codePreview.Content);
             var baseEntityNaemspace = entityData.Entity.FullName.Replace($".{entityData.Entity.FieldName}", "");
-            txt = txt.Replace("{GenerationTime}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            txt = txt.Replace("{GenerationTime}", CommonHelper.GetSysDateTimeNow().ToString("yyyy-MM-dd HH:mm:ss"));
             txt = txt.Replace("{Producer}", producer);
             txt = txt.Replace("{EntityNamespace}", codePreview.Options.NameSpace);
             txt = txt.Replace("{BaseEntityNamespace}", baseEntityNaemspace);
