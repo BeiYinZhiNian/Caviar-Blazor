@@ -15,3 +15,11 @@ SysUserGroupList
                RowCallback="RowCallback"
                QueryCallback="QueryCallback">
 </CavTableTemplate>
+
+@code{
+    protected override void OnInitialized()
+    {
+        TableOptions.TreeChildren = u => u.Children;
+        base.OnInitialized();
+    }
+}
