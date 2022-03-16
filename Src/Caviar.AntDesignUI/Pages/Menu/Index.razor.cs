@@ -16,7 +16,9 @@ namespace Caviar.AntDesignUI.Pages.Menu
         }
         protected override Task<List<SysMenuView>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
-            pageSize = 100;
+            // 当使用树形组件时，需要获取全部数据
+            // 也可改成GetAll
+            pageSize = 9999;
             return base.GetPages(pageIndex, pageSize, isOrder);
         }
 
