@@ -96,7 +96,7 @@ namespace Caviar.Core.Services
 
         public async Task<IdentityResult> UpdateUser(string operatorUp,ApplicationUserView vm)
         {
-            var user = await _userManager.FindByNameAsync(vm.Entity.UserName);
+            var user = await _userManager.FindByIdAsync(vm.Entity.Id.ToString());
             if (user == null) throw new ArgumentNullException($"{vm.Entity.UserName}不存在");
             user.UserName = vm.Entity.UserName;
             user.AccountName = vm.Entity.AccountName;
