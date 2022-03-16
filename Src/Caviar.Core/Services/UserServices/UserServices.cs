@@ -99,6 +99,7 @@ namespace Caviar.Core.Services
             var user = await _userManager.FindByNameAsync(vm.Entity.UserName);
             if (user == null) throw new ArgumentNullException($"{vm.Entity.UserName}不存在");
             user.UserName = vm.Entity.UserName;
+            user.AccountName = vm.Entity.AccountName;
             user.PhoneNumber = vm.Entity.PhoneNumber;
             user.Email = vm.Entity.Email;
             user.UserGroupId = vm.Entity.UserGroupId;
