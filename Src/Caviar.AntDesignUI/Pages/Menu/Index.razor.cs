@@ -18,7 +18,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
         {
             // 当使用树形组件时，需要获取全部数据
             // 也可改成GetAll
-            pageSize = 9999;
+            pageSize = MaxPageSize;
             return base.GetPages(pageIndex, pageSize, isOrder);
         }
 

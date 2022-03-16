@@ -48,6 +48,10 @@ namespace Caviar.AntDesignUI.Core
         /// </summary>
         public bool Loading { get; set; }
         /// <summary>
+        /// 页面最大数量
+        /// </summary>
+        public int MaxPageSize { get; set; } = 9999;
+        /// <summary>
         /// 当前控制器
         /// </summary>
         [Parameter]

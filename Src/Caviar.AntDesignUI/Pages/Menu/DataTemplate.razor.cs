@@ -26,8 +26,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
 
         async Task<List<SysMenuView>> GetMenus()
         {
-
-            var result = await HttpService.GetJson<PageData<SysMenuView>>($"{Url[CurrencyConstant.SysMenuKey]}?pageSize=100");
+            var result = await HttpService.GetJson<PageData<SysMenuView>>($"{Url[CurrencyConstant.SysMenuKey]}?pageSize={MaxPageSize}");
             if (result.Status != HttpStatusCode.OK) return null;
             
             return result.Data.Rows;
