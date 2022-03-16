@@ -12,11 +12,7 @@ namespace Caviar.SharedKernel.Entities
 
     public partial class SysBaseEntity : IBaseEntity
     {
-        /// <summary>
-        /// id
-        /// </summary>
-        [Key]
-        public virtual int Id { get; set; }
+
     }
     /// <summary>
     /// 数据基础类

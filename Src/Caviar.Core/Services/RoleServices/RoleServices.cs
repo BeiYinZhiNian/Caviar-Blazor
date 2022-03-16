@@ -67,7 +67,7 @@ namespace Caviar.Core.Services
 
         public async Task<IdentityResult> UpdateUserAsync(ApplicationRoleView vm)
         {
-            var role = await _roleManager.FindByNameAsync(vm.Entity.Name);
+            var role = await _roleManager.FindByIdAsync(vm.Entity.Id.ToString());
             if (role == null) throw new ArgumentNullException($"{vm.Entity.Name}不存在");
             role.Name = vm.Entity.Name;
             role.Number = vm.Entity.Number;

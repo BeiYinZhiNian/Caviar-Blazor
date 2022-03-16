@@ -144,6 +144,10 @@ namespace Caviar.Core.Services
             if (User.Identity.IsAuthenticated)
             {
                 var applicationUser = await _userManager.FindByNameAsync(User.Identity.Name);
+                if(applicationUser == null)
+                {
+                    return new CurrentUser() { IsAuthenticated = false };
+                }
                 claims = new List<CaviarClaim>() 
                 { 
                     new CaviarClaim(CurrencyConstant.HeadPortrait, applicationUser.HeadPortrait ?? ""),
