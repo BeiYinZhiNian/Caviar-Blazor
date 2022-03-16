@@ -11,7 +11,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>caviar;Ant-Design;antdesign;blazor;</PackageTags>
     <PackageReleaseNotes>预览版</PackageReleaseNotes>
-    <AssemblyVersion>1.0.0.0-dev</AssemblyVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0-dev</FileVersion>
   </PropertyGroup>
 
