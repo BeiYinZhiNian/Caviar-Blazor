@@ -78,15 +78,9 @@ namespace Caviar.Core.Services
         {
             if (string.IsNullOrEmpty(name)) return null;
             if (string.IsNullOrEmpty(fullName)) return null;
-            var assemblyList = CommonHelper.GetAssembly();
-            Type type = null;
-            foreach (var item in assemblyList)
-            {
-                type = item.GetTypes().SingleOrDefault(u => 
+            var type = CommonHelper.GetAllTypes().SingleOrDefault(u =>
                 u.Name.ToLower() == name.ToLower() &&
                 u.FullName.ToLower() == fullName.ToLower());
-                if (type != null) break;
-            }
             if (type == null) throw new Exception("未找到该类：" + name);
             return GetClassFields(type, languageService);
         }
