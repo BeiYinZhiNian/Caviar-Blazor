@@ -17,6 +17,9 @@ namespace Caviar.Demo.Wasm
             });
             builder.AddCavWasm();
             builder.Services.AddAdminCaviar(new Type[] { typeof(Program) });
+#if DEBUG
+            Config.IsDebug = true;
+#endif
             var host = builder.Build();
             await host.RunAsync();
         }

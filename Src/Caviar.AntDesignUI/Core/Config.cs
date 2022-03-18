@@ -19,7 +19,7 @@ namespace Caviar.AntDesignUI
         /// 是否为server模式
         /// </summary>
         public static bool IsServer { get; set; } = true;
-        public static bool IsDebug { get; set; } = true;
+        public static bool IsDebug { get; set; } = false;
         /// <summary>
         /// 是否处理过iframeMessage
         /// </summary>
