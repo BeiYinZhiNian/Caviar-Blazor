@@ -24,7 +24,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="NodaTime" Version="3.0.9" />
+    <PackageReference Include="NodaTime" Version="3.0.10" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Template\File\Index.txt">
