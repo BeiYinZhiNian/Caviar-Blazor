@@ -24,12 +24,15 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
                 new StepItem { Title = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.ViewCode}"], Content = "" },
                 new StepItem { Title = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.GenerateResults}"], Content = "" }
             };
-            #if DEBUG
-            ControllerList.Add("Permission");
-            await base.OnInitializedAsync();
-            #else
-            await MessageService.Error(UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.DebugErrorMsg}"]);
-            #endif
+            if (Config.IsDebug)
+            {
+                ControllerList.Add("Permission");
+                await base.OnInitializedAsync();
+            }
+            else
+            {
+                await MessageService.Error(UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.DebugErrorMsg}"]);
+            }
         }
 
 
