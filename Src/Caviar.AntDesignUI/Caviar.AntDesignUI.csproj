@@ -8,7 +8,7 @@
     <PackageProjectUrl>https://gitee.com/Cherryblossoms/caviar.git</PackageProjectUrl>
     <RepositoryUrl>https://gitee.com/Cherryblossoms/caviar.git</RepositoryUrl>
     <PackageTags>caviar;Ant-Design;blazor;</PackageTags>
-    <Version>0.1.0.7</Version>
+    <Version>0.1.0.10</Version>
     <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
@@ -28,7 +28,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>

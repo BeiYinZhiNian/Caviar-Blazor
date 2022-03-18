@@ -2,10 +2,25 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <Version>0.1.0.10</Version>
+    <Authors>北音执念</Authors>
+    <Copyright>Apache-2.0</Copyright>
+    <PackageProjectUrl>https://gitee.com/Cherryblossoms/caviar.git</PackageProjectUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <RepositoryUrl>https://gitee.com/Cherryblossoms/caviar.git</RepositoryUrl>
+    <Description>Caviar-Blazor是采用Blazor + Ant Design的后台管理框架，框架包含了后台管理的常用功能，简单大方的界面，拥有数据权限、字段权限、API权限等，可精细化控制任意元素，而且更好的兼容手机端，让开发者更专注于业务上的开发。</Description>
+    <PackageTags>caviar;Ant-Design;blazor;</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Caviar.SharedKernel\Caviar.SharedKernel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="icon.png">
+      <PackagePath>\</PackagePath>
+      <Pack>True</Pack>
+    </None>
   </ItemGroup>
 
 </Project>
