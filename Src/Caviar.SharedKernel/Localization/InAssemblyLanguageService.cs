@@ -101,9 +101,18 @@ namespace Caviar.SharedKernel.Entities
             var (_, resourceName) = availableResources.FirstOrDefault(x => x.CultureName.Equals(name, StringComparison.OrdinalIgnoreCase));
             try
             {
-                using var fileStream = _resourcesAssembly.GetManifestResourceStream(resourceName);
-                using var streamReader = new StreamReader(fileStream);
-                var content = streamReader.ReadToEnd();
+                string path = $"{AppDomain.CurrentDomain.BaseDirectory}{UrlConfig.LanguageFilePaht}/{name}.json";
+                var content = "";
+                if (File.Exists(path))
+                {
+                    content = File.ReadAllText(path);
+                }
+                else
+                {
+                    using var fileStream = _resourcesAssembly.GetManifestResourceStream(resourceName);
+                    using var streamReader = new StreamReader(fileStream);
+                    content = streamReader.ReadToEnd();
+                }
                 return JObject.Parse(content);
             }
             catch
