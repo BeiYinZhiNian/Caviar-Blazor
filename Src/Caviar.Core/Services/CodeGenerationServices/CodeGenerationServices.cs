@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Caviar.SharedKernel.Entities;
 using Microsoft.EntityFrameworkCore;
 using Caviar.Core.Interface;
+using System.Reflection;
 
 namespace Caviar.Core.Services
 {
@@ -112,11 +113,18 @@ namespace Caviar.Core.Services
         protected PreviewCode GetPreviewCode(string entityName,string suffixName,string extendName, CodeGeneration options)
         {
             string path = $"{AppDomain.CurrentDomain.BaseDirectory}{UrlConfig.CodeGenerateFilePath}/{suffixName}.txt";
+            var txt = "";
             if (!File.Exists(path))
             { 
-                throw new FileNotFoundException(_languageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.RouteErrorMsg}"] + path);
+                var resourcesAssembly = Assembly.GetExecutingAssembly();
+                using var fileStream = resourcesAssembly.GetManifestResourceStream($"Caviar.Core.TemplateFile.{suffixName}.txt");
+                using var streamReader = new StreamReader(fileStream);
+                txt = streamReader.ReadToEnd();
             }
-            string txt = File.ReadAllText(path);
+            else
+            {
+                txt = File.ReadAllText(path);
+            }
             string name = entityName + suffixName + extendName;
             PreviewCode codePreviewTab = new PreviewCode()
             {

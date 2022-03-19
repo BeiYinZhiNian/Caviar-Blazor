@@ -13,6 +13,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="TemplateFile\Controller.txt" />
+    <None Remove="TemplateFile\DataTemplate.txt" />
+    <None Remove="TemplateFile\Index.txt" />
+    <None Remove="TemplateFile\View.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="TemplateFile\Controller.txt">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TemplateFile\DataTemplate.txt">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TemplateFile\Index.txt">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TemplateFile\View.txt">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Caviar.SharedKernel\Caviar.SharedKernel.csproj" />
   </ItemGroup>
 
