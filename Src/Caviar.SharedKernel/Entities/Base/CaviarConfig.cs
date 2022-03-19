@@ -28,7 +28,7 @@ namespace Caviar.SharedKernel.Entities.Base
         public CodeGeneration ViewModelOptions { get; set; } = new CodeGeneration()
         {
             StorePath = "../Caviar.Demo.Hybrid/Template/View/",
-            NameSpace = "Caviar.SharedKernel.View"
+            NameSpace = "Caviar.SharedKernel.Entities.View"
         };
 
         public JWTOptions JWTOptions { get; set; } = new JWTOptions();

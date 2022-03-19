@@ -1,7 +1,7 @@
 ﻿using Caviar.Infrastructure.API.BaseApi;
 using System.ComponentModel;
-using {BaseEntityNamespace};
-using {BaseEntityNamespace}.View;
+using Caviar.SharedKernel.Entities.View
+{usingEntityViewNamespace}
 /// <summary>
 /// 生成者：{Producer}
 /// 生成时间：{GenerationTime}
@@ -9,11 +9,8 @@ using {BaseEntityNamespace}.View;
 /// 可在上层目录使用partial关键字进行扩展
 /// Caviar ©2021 Created by 北音执念
 /// </summary>
-namespace {EntityNamespace}
+namespace {ControllerNamespace}
 {
-    /// <summary>
-    /// {Lable}Controller
-    /// </summary>
     public partial class {EntityName}Controller : EasyBaseApiController<{EntityName}View,{EntityName}>
     {
         

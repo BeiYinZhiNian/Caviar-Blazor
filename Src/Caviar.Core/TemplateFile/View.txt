@@ -8,11 +8,8 @@ using Caviar.SharedKernel.Entities.View;
 /// 可在上层目录使用partial关键字进行扩展
 /// Caviar ©2021 Created by 北音执念
 /// </summary>
-namespace {BaseEntityNamespace}.View
+namespace {EntityViewNamespace}
 {
-    /// <summary>
-    /// {Lable}View
-    /// </summary>
     public partial class {EntityName}View : BaseView<{EntityName}>
     {
     }
