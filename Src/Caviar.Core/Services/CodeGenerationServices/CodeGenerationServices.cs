@@ -150,14 +150,16 @@ namespace Caviar.Core.Services
             txt = txt.Replace("{GenerationTime}", CommonHelper.GetSysDateTimeNow().ToString("yyyy-MM-dd HH:mm:ss"));
             txt = txt.Replace("{Producer}", producer);
             txt = txt.Replace("{EntityNamespace}", codePreview.Options.NameSpace);
-            if(caviarConfig.ViewModelOptions.NameSpace == "Caviar.SharedKernel.Entities.View")
+            if (caviarConfig.ViewModelOptions.NameSpace == "Caviar.SharedKernel.Entities.View")
             {
                 txt = txt.Replace("{usingEntityViewNamespace}", "");
             }
             else
             {
-                txt = txt.Replace("{usingEntityViewNamespace}", $"using {caviarConfig.ViewModelOptions.NameSpace}");
+                txt = txt.Replace("{usingEntityViewNamespace}", $"using {caviarConfig.ViewModelOptions.NameSpace};");
             }
+            var entityNameSpace = entityData.Entity.FullName.Replace($".{entityData.Entity.FieldName}", "");
+            txt = txt.Replace("{usingEntityNamespace}", $"using {entityNameSpace};");
             txt = txt.Replace("{EntityViewNamespace}", caviarConfig.ViewModelOptions.NameSpace);
             txt = txt.Replace("{ControllerNamespace}", caviarConfig.ControllerOptions.NameSpace);
             txt = txt.Replace("{EntityName}", entityData.Entity.FieldName);

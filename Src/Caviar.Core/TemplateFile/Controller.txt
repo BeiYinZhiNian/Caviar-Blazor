@@ -1,7 +1,8 @@
 ﻿using Caviar.Infrastructure.API.BaseApi;
 using System.ComponentModel;
-using Caviar.SharedKernel.Entities.View
+using Caviar.SharedKernel.Entities.View;
 {usingEntityViewNamespace}
+{usingEntityNamespace}
 /// <summary>
 /// 生成者：{Producer}
 /// 生成时间：{GenerationTime}
