@@ -55,19 +55,19 @@ Caviar(鱼子酱)框架采用了：Blazor + Ant Design + .NET6 本框架使用�
 
 ## 🏁 项目截图
 
-![登录界面](Docs/Images/login.png)
+![登录界面](docs/images/login.png)
 
-![首页](Docs/Images/home.png)
+![首页](docs/images/home.png)
 
-![多主题](Docs/Images/theme.png)
+![多主题](docs/images/theme.png)
 
-![高级搜索](Docs/Images/AdvancedQuery.png)
+![高级搜索](docs/images/AdvancedQuery.png)
 
-![代码生成](Docs/Images/CodeGeneration.png)
+![代码生成](docs/images/CodeGeneration.png)
 
-![多语言](Docs/Images/language.png)
+![多语言](docs/images/language.png)
 
-![手机适配](Docs/Images/phone.png)
+![手机适配](docs/images/phone.png)
 
 
 ## 🍻 社区互助
