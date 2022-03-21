@@ -38,6 +38,20 @@ namespace Caviar.Infrastructure
 
         private Task HandleExceptionAsync(HttpContext context, ResultException ex)
         {
+            SysLog sysLog;
+            using (var provider = Configure.ServiceProvider.CreateScope())
+            {
+                var logServices = provider.ServiceProvider.GetRequiredService<LogServices<GlobalExceptionHandling>>();
+                if (ex.InnerException != null)
+                {
+                    sysLog = logServices.Error(ex.InnerException.Message);
+                }
+                else
+                {
+                    sysLog = logServices.Error(ex.Message);
+                }
+
+            }
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = 200;
             var json = JsonSerializer.Serialize(ex.ResultMsg);
@@ -51,7 +65,15 @@ namespace Caviar.Infrastructure
             using (var provider = Configure.ServiceProvider.CreateScope())
             {
                 var logServices = provider.ServiceProvider.GetRequiredService<LogServices<GlobalExceptionHandling>>();
-                sysLog = logServices.Error(ex.InnerException.Message);
+                if (ex.InnerException != null)
+                {
+                    sysLog = logServices.Error(ex.InnerException.Message);
+                }
+                else
+                {
+                    sysLog = logServices.Error(ex.Message);
+                }
+                
             }
             
             //todo
