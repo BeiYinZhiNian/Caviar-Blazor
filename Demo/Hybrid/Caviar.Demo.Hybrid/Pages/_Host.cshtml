@@ -27,7 +27,6 @@
     {
         <app>
             <component type="typeof(Caviar.AntDesignUI.App)" render-mode="ServerPrerendered" />
-            <persist-component-state />
         </app>
         <script src="_framework/blazor.server.js"></script>
     }
@@ -39,7 +38,7 @@
         <app id="wasm_app" style="display: none;">
             <component type="typeof(Caviar.AntDesignUI.App)" render-mode="WebAssemblyPrerendered">
         </app>
-        <script src="_framework/blazor.webassembly.js"></script>
+        <script src="_framework/blazor.webassembly.js" defer="defer"></script>
     }
 
     <link href="_content/AntDesign/css/ant-design-blazor.css" rel="stylesheet" id="uiCss" media="screen">
