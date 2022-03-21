@@ -26,18 +26,19 @@ namespace Caviar.Core.Services
         /// 当日志量过大，建议采用消息队列的方式控制
         /// </summary>
         /// <param name="log"></param>
-        public void LogSave(SysLog log)
+        public SysLog LogSave(SysLog log)
         {
             //日志不执行权限操作，所以使用set
             var set = AppDbContext.DbContext.Set<SysLog>();
             set.Add(log);
             AppDbContext.DbContext.SaveChanges();
+            return log;
         }
 
-        public void Log(SysLog log)
+        public SysLog Log(SysLog log)
         {
             Logger.Log(log.LogLevel, log.Msg);
-            LogSave(log);
+            return LogSave(log);
         }
 
         public SysLog CreateLog(string message, LogLevel logLevel,string postData = null, double elapsed = 0, HttpStatusCode status = HttpStatusCode.OK)
@@ -70,32 +71,32 @@ namespace Caviar.Core.Services
             Logger.LogTrace(message);
         }
 
-        public void Infro(string message)
+        public SysLog Infro(string message)
         {
             Logger.LogInformation(message);
             var log = CreateLog(message,LogLevel.Information);
-            LogSave(log);
+            return LogSave(log);
         }
 
-        public void Warning(string message)
+        public SysLog Warning(string message)
         {
             Logger.LogWarning(message);
             var log = CreateLog(message, LogLevel.Warning);
-            LogSave(log);
+            return LogSave(log);
         }
 
-        public void Error(string message)
+        public SysLog Error(string message)
         {
             Logger.LogError(message);
             var log = CreateLog(message, LogLevel.Error);
-            LogSave(log);
+            return LogSave(log);
         }
 
-        public void Critical(string message)
+        public SysLog Critical(string message)
         {
             Logger.LogCritical(message);
             var log = CreateLog(message, LogLevel.Critical);
-            LogSave(log);
+            return LogSave(log);
         }
     }
 }

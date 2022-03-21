@@ -26,6 +26,8 @@ namespace Caviar.Infrastructure
 
         public static CaviarConfig CaviarConfig { get; set; }
 
+        public static bool IsDebug { get; set; }
+
         public static IServiceProvider ServiceProvider { get; set; }
 
         private static IServerAddressesFeature ServerAddressesFeature { get; set; }
