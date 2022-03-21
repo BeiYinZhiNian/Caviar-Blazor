@@ -10,15 +10,8 @@
 @page "/SysMenu/Index"
 
 <CavTableTemplate TData="SysMenuView"
-                  DataSource="IndexDataSource"
-                  PageSize="PageSize"
-                  IsOpenQuery="IsOpenQuery"
-                  PageIndex="PageIndex"
-                  Total="Total"
-                  TreeChildren="u => u.Children"
-                  Buttons="Buttons"
-                  ViewFields="ViewFields"
-                  RowCallback="RowCallback"
-                  Loading="Loading"
-                  QueryCallback="QueryCallback">
+                  TableOptions="TableOptions"
+               PageIndexChanged="PageIndexChanged"
+               RowCallback="RowCallback"
+               QueryCallback="QueryCallback">
 </CavTableTemplate>

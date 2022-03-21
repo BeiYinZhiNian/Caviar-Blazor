@@ -15,6 +15,8 @@ namespace Caviar.AntDesignUI.Pages.MyUserDetails
         HttpService HttpService { get; set; }
         [Inject]
         CavModal CavModal { get; set; }
+        [Inject]
+        UserConfig UserConfig { get; set; }
 
         string Roles { get; set; }
 

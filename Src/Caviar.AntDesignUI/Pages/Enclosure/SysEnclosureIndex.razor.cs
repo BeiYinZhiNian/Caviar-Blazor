@@ -12,6 +12,11 @@ namespace Caviar.AntDesignUI.Pages.Enclosure
 {
     public partial class SysEnclosureIndex
     {
+        protected override Task OnInitializedAsync()
+        {
+            TableOptions.CreateButtons = CreateButtons;
+            return base.OnInitializedAsync();
+        }
         protected override async Task RowCallback(RowCallbackData<SysEnclosureView> row)
         {
             switch (row.Menu.Entity.Key)

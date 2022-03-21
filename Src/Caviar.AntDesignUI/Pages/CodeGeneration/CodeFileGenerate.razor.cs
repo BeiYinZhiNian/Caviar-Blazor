@@ -24,12 +24,15 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
                 new StepItem { Title = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.ViewCode}"], Content = "" },
                 new StepItem { Title = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.GenerateResults}"], Content = "" }
             };
-            #if DEBUG
-            ControllerList.Add("Permission");
-            await base.OnInitializedAsync();
-            #else
-            await MessageService.Error(UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.DebugErrorMsg}"]);
-            #endif
+            if (Config.IsDebug)
+            {
+                ControllerList.Add("Permission");
+                await base.OnInitializedAsync();
+            }
+            else
+            {
+                await MessageService.Error(UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.DebugErrorMsg}"]);
+            }
         }
 
 
@@ -37,8 +40,8 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
         {
             var result = await HttpService.GetJson<List<FieldsView>>(Url[CurrencyConstant.GetEntitysKey]);
             if (result.Status != HttpStatusCode.OK) return null;
-            Total = result.Data.Count;
-            PageSize = result.Data.Count;
+            TableOptions.Total = result.Data.Count;
+            TableOptions.PageSize = result.Data.Count;
             return result.Data;
         }
 

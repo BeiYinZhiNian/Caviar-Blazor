@@ -10,12 +10,12 @@
                                 ValidateMode="@FormValidateMode.Rules" 
                                 ValidateOnChange="true">
                             <CavFormItem Label="" FieldName="UserName" FieldRules="@context">
-                                <AntDesign.Input Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.UserName}"]" Size="large" @bind-Value="@context.UserName">
+                                <AntDesign.Input Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.InputUserName}"]" Size="large" @bind-Value="@context.UserName">
                                     <Prefix><Icon Type="user" /></Prefix>
                                 </AntDesign.Input>
                             </CavFormItem>
                             <CavFormItem Label="" FieldName="Password" FieldRules="@context">
-                                <AntDesign.Input Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Password}"]" Size="large" @bind-Value="@context.Password" Type="password">
+                                <AntDesign.Input Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.InputUserName}"]" Size="large" @bind-Value="@context.Password" Type="password">
                                     <Prefix><Icon Type="lock" /></Prefix>
                                 </AntDesign.Input>
                             </CavFormItem>

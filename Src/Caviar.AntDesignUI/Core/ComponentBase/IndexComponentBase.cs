@@ -1,4 +1,5 @@
 ﻿using AntDesign;
+using Caviar.AntDesignUI.Shared;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Components;
@@ -13,31 +14,12 @@ namespace Caviar.AntDesignUI.Core
     {
 
         #region 属性
-        /// <summary>
-        /// 数据源
-        /// </summary>
-        protected List<ViewT> IndexDataSource { get; set; } = new List<ViewT>();
-        /// <summary>
-        /// 总计
-        /// </summary>
-        protected int Total { get; set; }
-        /// <summary>
-        /// 页数
-        /// </summary>
-        protected int PageIndex { get; set; }
-        /// <summary>
-        /// 页面大小
-        /// </summary>
-        protected int PageSize { get; set; }
-        
-        protected List<SysMenuView> Buttons { get; set; } = new List<SysMenuView>();
-        /// <summary>
-        /// 模型字段
-        /// </summary>
-        protected List<FieldsView> ViewFields { get; set; } = new List<FieldsView>();
-        public bool IsOpenQuery { get; set; }
-        protected string BaseController { get; set; }
-        
+        protected CatTableOptions<ViewT> TableOptions { get; set; } = new CatTableOptions<ViewT>() 
+        { 
+            DataSource = new List<ViewT>(),
+            Buttons = new List<SysMenuView>(),
+            ViewFields = new List<FieldsView>(),
+        };
         #endregion
 
         #region 方法
@@ -54,9 +36,9 @@ namespace Caviar.AntDesignUI.Core
             if (result.Status != HttpStatusCode.OK) return null;
             if (result.Data != null)
             {
-                Total = result.Data.Total;
-                PageIndex = result.Data.PageIndex;
-                PageSize = result.Data.PageSize;
+                TableOptions.Total = result.Data.Total;
+                TableOptions.PageIndex = result.Data.PageIndex;
+                TableOptions.PageSize = result.Data.PageSize;
                 return result.Data.Rows;
             }
             return null;
@@ -70,7 +52,8 @@ namespace Caviar.AntDesignUI.Core
             var queryButton = Url[CurrencyConstant.Query];
             if (queryButton != null)
             {
-                IsOpenQuery = true;
+                TableOptions.IsOpenQuery = true;
+                TableOptions.IsAdvancedQuery = true;
             }
             var buttons = APIList.Where(u => u.Entity.ControllerName == ControllerName).ToList();
             return Task.FromResult(buttons);
@@ -94,7 +77,7 @@ namespace Caviar.AntDesignUI.Core
             //删除单条
             var result = await HttpService.PostJson(url, data);
             if (result.Status != HttpStatusCode.OK) return false;
-            _ = MessageService.Success("删除成功");
+            _ = MessageService.Success(result.Title);
             return true;
         }
         #endregion
@@ -125,10 +108,10 @@ namespace Caviar.AntDesignUI.Core
         {
             var result = await HttpService.PostJson<QueryView, PageData<ViewT>>(Url[CurrencyConstant.Query], query);
             if (result.Status != HttpStatusCode.OK) return;
-            IndexDataSource = result.Data.Rows;
-            Total = result.Data.Total;
-            PageIndex = result.Data.PageIndex;
-            PageSize = result.Data.PageSize;
+            TableOptions.DataSource = result.Data.Rows;
+            TableOptions.Total = result.Data.Total;
+            TableOptions.PageIndex = result.Data.PageIndex;
+            TableOptions.PageSize = result.Data.PageSize;
             StateHasChanged();
         }
         /// <summary>
@@ -137,23 +120,23 @@ namespace Caviar.AntDesignUI.Core
         /// <param name="args"></param>
         protected virtual async Task PageIndexChanged(PaginationEventArgs args)
         {
-            IndexDataSource = await GetPages(args.Page, args.PageSize);
+            TableOptions.DataSource = await GetPages(args.Page, args.PageSize);
         }
         #endregion
 
         #region 重写
         protected override async Task OnInitializedAsync()
         {
-            Loading = true;
+            TableOptions.Loading = true;
             await base.OnInitializedAsync();
             var buttonTask = LoadButton();//加载按钮
             var fieldsTask = GetModelFields();//获取模型字段
             var pagesTask = GetPages();//获取数据源
             //先请求后获取结果，加快请求速度
-            Buttons = await buttonTask;
-            ViewFields = await fieldsTask;
-            IndexDataSource = await pagesTask;
-            Loading = false;
+            TableOptions.Buttons = await buttonTask;
+            TableOptions.ViewFields = await fieldsTask;
+            TableOptions.DataSource = await pagesTask;
+            TableOptions.Loading = false;
         }
         #endregion
     }

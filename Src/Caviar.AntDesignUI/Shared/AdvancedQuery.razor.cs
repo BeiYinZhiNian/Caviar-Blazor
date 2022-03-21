@@ -1,5 +1,6 @@
 ﻿using AntDesign;
 using Caviar.AntDesignUI.Core;
+using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -20,10 +21,20 @@ namespace Caviar.AntDesignUI.Shared
         public List<FieldsView> Fields { get; set; }
         [Inject]
         MessageService MessageService { get; set; }
+        [Inject]
+        UserConfig UserConfig { get; set; }
         [Parameter]
         public EventCallback<QueryView> QueryCallback { get; set; }
         [Parameter]
         public QueryView QueryView { get; set; }
+
+        /// <summary>
+        /// 是否为搜索状态
+        /// </summary>
+        [Parameter]
+        public bool IsQueryState { get; set; }
+        [Parameter]
+        public EventCallback<bool> IsQueryStateChanged { get; set; }
 
 
         void OnSelectItem(Guid trackId,string item)
@@ -77,6 +88,11 @@ namespace Caviar.AntDesignUI.Shared
         {
             if (QueryCallback.HasDelegate)
             {
+                IsQueryState = true;
+                if (IsQueryStateChanged.HasDelegate)
+                {
+                    await IsQueryStateChanged.InvokeAsync(IsQueryState);
+                }
                 await QueryCallback.InvokeAsync(QueryView);
             }
         }
@@ -104,7 +120,7 @@ namespace Caviar.AntDesignUI.Shared
             {
                 if (string.IsNullOrEmpty(item.Value.Key))
                 {
-                    _ = MessageService.Error("请选择要查询的字段");
+                    _ = MessageService.Error(UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SelectQueryFields}"]);
                     return false;
                 }
             }

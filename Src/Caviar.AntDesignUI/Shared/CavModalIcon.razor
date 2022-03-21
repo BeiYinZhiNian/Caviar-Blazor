@@ -4,7 +4,7 @@
        Title=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SelectIcon}"]
        Draggable="true"
        DragInViewport="true">
-    <CavIconPanel @bind-RadioValue="IconValue"></CavIconPanel>
+    <CavIconPanel @bind-RadioValue="IconValue" OnChange="IconValueChanged"></CavIconPanel>
 </Modal>
 
 
@@ -20,6 +20,8 @@
     public string IconValue { get; set; }
     [Parameter]
     public EventCallback<string> IconValueChanged { get; set; }
+
+   
 
     private async void HandleOk(MouseEventArgs e)
     {

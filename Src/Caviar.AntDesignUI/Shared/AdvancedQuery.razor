@@ -6,11 +6,11 @@
         <Space>
             <SpaceItem>
                 <AntDesign.Input TValue="uint" @bind-Value="QueryView.Number" Style="width:100px">
-                    <AddOnBefore>查询条数</AddOnBefore>
+                    <AddOnBefore>@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SearchNumber}"]</AddOnBefore>
                 </AntDesign.Input>
             </SpaceItem>
             <SpaceItem>
-                <Button Type="@ButtonType.Primary" OnClick="AddCondition">添加条件</Button>
+                <Button Type="@ButtonType.Primary" OnClick="AddCondition">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.AddCondition}"]</Button>
             </SpaceItem>
         </Space>
 
@@ -27,13 +27,13 @@
             @if (i > 0)
             {
                 <SpaceItem>
-                    <Switch @bind-Value="component.AndOr" OnChange="u=>AndOr(QueryModel,u)" Style="width:50px" CheckedChildren="且" UnCheckedChildren="或" />
+                    <Switch @bind-Value="component.AndOr" OnChange="u=>AndOr(QueryModel,u)" Style="width:50px" CheckedChildren="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.And}"]" UnCheckedChildren="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Or}"]" />
                 </SpaceItem>
             }
             <SpaceItem>
                 <Space>
                     <SpaceItem>
-                        <SimpleSelect Placeholder="请选择查询的字段" @bind-Value="QueryModel.Key"
+                        <SimpleSelect Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SelectQueryFields}"]" @bind-Value="QueryModel.Key"
                               OnSelectedItemChanged="u=>OnSelectItem(item.Key,u)"
                               Style="width:120px">
                             <SelectOptions>
@@ -58,7 +58,7 @@
                         if (component.Field != null && component.Field.IsEnum)
                         {
                             <SpaceItem>
-                                <SimpleSelect Placeholder="请选择类型"
+                                <SimpleSelect Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SelectType}"]"
                               Style="width:120px">
                                     <SelectOptions>
                                         @foreach (var enumItem in component.Field.EnumValueName)
@@ -86,7 +86,7 @@
                                     }
                                     catch { }
                                     <SpaceItem>
-                                        <Input TValue="int" Value="intValue" OnChange="u=>OnValueChange(QueryModel,u)" Placeholder="请输入想要搜索的内容" />
+                                        <Input TValue="int" Value="intValue" OnChange="u=>OnValueChange(QueryModel,u)" Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SearchData}"]" />
                                     </SpaceItem>
                                     break;
                                 case "boolean":
@@ -105,12 +105,12 @@
 
                                     <SpaceItem>
                                         <Switch @bind-Value="component.IsCompleted" Style="width:50px" OnChange="u=>{
-                                        OnValueChange(QueryModel,u);}" CheckedChildren="是" UnCheckedChildren="否" />
+                                        OnValueChange(QueryModel,u);}" CheckedChildren="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Yes}"]" UnCheckedChildren="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.No}"]" />
                                     </SpaceItem>
                                     break;
                                 case "guid":
                                     <SpaceItem>
-                                        <Input TValue="Guid" OnChange="u=>OnValueChange(QueryModel,u)" Placeholder="请输入想要搜索的内容" />
+                                        <Input TValue="Guid" OnChange="u=>OnValueChange(QueryModel,u)" Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SearchData}"]" />
                                     </SpaceItem>
                                     break;
                                 case "datetime":
@@ -124,12 +124,12 @@
                                         catch { }
                                     }
                                     <SpaceItem>
-                                        <DatePicker TValue="DateTime?" Value="dateTimeValue" OnChange="u=>OnDateTimeChange(QueryModel,u)" Picker="@DatePickerType.Date" />
+                                        <DatePicker TValue="DateTime?" Value="dateTimeValue" Format="yyyy-MM-dd HH:mm:ss" ShowTime="@true" OnChange="u=>OnDateTimeChange(QueryModel,u)" Picker="@DatePickerType.Date" />
                                     </SpaceItem>
                                     break;
                                 default:
                                     <SpaceItem>
-                                        <Input TValue="string" @bind-Value="QueryModel.Value" Placeholder="请输入想要搜索的内容" />
+                                        <Input TValue="string" @bind-Value="QueryModel.Value" Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SearchData}"]" />
                                     </SpaceItem>
                                     break;
                             }
@@ -137,7 +137,7 @@
                         if (i > 0)
                         {
                             <SpaceItem>
-                                <Button Type="@ButtonType.Dashed" OnClick="()=>RemoveCondition(item.Key)">移除</Button>
+                                <Button Type="@ButtonType.Dashed" OnClick="()=>RemoveCondition(item.Key)">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Remove}"]</Button>
                             </SpaceItem>
                         }
                     }

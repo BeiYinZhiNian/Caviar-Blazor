@@ -47,23 +47,20 @@ namespace Caviar.Core.Services
         {
             
             List<Type> controllerList = new List<Type>();
-            CommonHelper.GetAssembly().ForEach(u =>
+            var type = CommonHelper.GetAllTypes().Where(u => u.ContainBaseClass(baseController) != null).ToList();
+            foreach (var type_item in type)
             {
-                var type = u.GetTypes().Where(u => u.ContainBaseClass(baseController)!=null).ToList();
-                foreach (var type_item in type)
-                {
-                    bool isExclude = false;
-                    excludeController.ForEach(u => {
-                        if (type_item == u)
-                        {
-                            isExclude = true;
-                        }
-                        }
-                    );
-                    if (isExclude) continue;
-                    controllerList.Add(type_item);
+                bool isExclude = false;
+                excludeController.ForEach(u => {
+                    if (type_item == u)
+                    {
+                        isExclude = true;
+                    }
                 }
-            });
+                );
+                if (isExclude) continue;
+                controllerList.Add(type_item);
+            }
             return controllerList;
         }
         /// <summary>

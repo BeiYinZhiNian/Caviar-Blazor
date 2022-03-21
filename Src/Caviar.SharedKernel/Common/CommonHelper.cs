@@ -9,15 +9,27 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Web;
+using Microsoft.AspNetCore.Http;
+using NodaTime;
 
 namespace Caviar.SharedKernel.Entities
 {
     public static class CommonHelper
     {
+        /// <summary>
+        /// 获取系统当前时间
+        /// </summary>
+        /// <returns>系统当前时间</returns>
+        public static DateTime GetSysDateTimeNow()
+        {
+            Instant now = SystemClock.Instance.GetCurrentInstant();
+            var shanghaiZone = DateTimeZoneProviders.Tzdb[CurrencyConstant.TimeZone];
+            return now.InZone(shanghaiZone).ToDateTimeUnspecified();
+        }
         public static TimeSlot GetTimeSlot()
         {
             DateTime time1 = Convert.ToDateTime("0:00:00");
-            DateTime time2 = Convert.ToDateTime(DateTime.Now.ToString());
+            DateTime time2 = Convert.ToDateTime(GetSysDateTimeNow().ToString());
             TimeSpan TS = new TimeSpan(time2.Ticks - time1.Ticks);
             int Time = (int)TS.TotalHours;
             if (Time < 5) // 0 - 5
@@ -40,6 +52,21 @@ namespace Caviar.SharedKernel.Entities
             {
                 return TimeSlot.Night;
             }
+        }
+
+        /// <summary>
+        /// 获取用户的ip地址
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static string GetUserIp(HttpContext context)
+        {
+            var ip = context.Request.Headers[CurrencyConstant.XForwardedFor].FirstOrDefault();
+            if (string.IsNullOrEmpty(ip))
+            {
+                ip = context.Connection.RemoteIpAddress.ToString();
+            }
+            return ip;
         }
         /// <summary>
         /// SHA256加密
@@ -187,25 +214,28 @@ namespace Caviar.SharedKernel.Entities
             return null;
         }
 
-        private static List<Assembly> _assemblies;
-
-        /// <summary>
-        /// 使用加载器技术
-        /// </summary>
-        /// <returns></returns>
-        public static List<Assembly> GetAssembly()
+        static Type[] _types;
+        public static Type[] GetAllTypes()
         {
-            if (_assemblies == null)
-            {
-                _assemblies = AppDomain.CurrentDomain.GetAssemblies()
+            if(_types != null) return _types;
+            List<Type> types = new List<Type>();
+            var assmblies = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(u => !u.FullName.Contains("Microsoft"))//排除微软类库
                 .Where(u => !u.FullName.Contains("System"))//排除系统类库
                 .Where(u => !u.FullName.Contains("Newtonsoft"))//排除Newtonsoft.json
                 .Where(u => !u.FullName.Contains("Swagger"))//排除Swagger
                 .Where(u => !u.FullName.Contains("EntityFrameworkCore"))//排除EntityFrameworkCore
                 .ToList();
+            foreach (var assembly in assmblies)
+            {
+                try
+                {
+                    types.AddRange(assembly.GetTypes());
+                }
+                catch { }
             }
-            return _assemblies;
+            _types = types.ToArray();
+            return _types;
         }
         /// <summary>
         /// 反射获取所有继承IBaseEntity的类
@@ -215,27 +245,21 @@ namespace Caviar.SharedKernel.Entities
         public static List<Type> GetEntityList()
         {
             List<Type> types = new List<Type>();
-            GetAssembly()
-                    //遍历查找
-                    .ForEach((t =>
-                    {
-                        //获取所有对象
-                        var assemblyTypes = t.GetTypes()
+            var ibaseEntityList = GetAllTypes()
                             //查找是否包含IBaseModel接口的类
                             .Where(u => u.GetInterfaces().Contains(typeof(IBaseEntity)))
                             //判断是否是类
                             .Where(u => u.IsClass);
-                        //转换成list
-                        assemblyTypes.ToList()
-                            //循环,并添注入
-                            .ForEach(t =>
-                            {
-                                if(t != typeof(SysBaseEntity) && t != typeof(SysUseEntity))
-                                {
-                                    types.Add(t);
-                                }
-                            });
-                    }));
+            //转换成list
+            ibaseEntityList.ToList()
+                //循环,并添注入
+                .ForEach(t =>
+                {
+                    if (t != typeof(SysBaseEntity) && t != typeof(SysUseEntity))
+                    {
+                        types.Add(t);
+                    }
+                });
             return types;
         }
 

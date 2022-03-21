@@ -74,6 +74,7 @@ namespace Caviar.Core.Services
             UserDetails useerDetails = new UserDetails() 
             { 
                 UserName = userName,
+                AccountName = user.AccountName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 Remark = user.Remark,
@@ -91,6 +92,24 @@ namespace Caviar.Core.Services
             user.Remark = userDetails.Remark;
             user.HeadPortrait = userDetails.HeadPortrait;
             return await _userManager.UpdateAsync(user);
+        }
+
+        public async Task<IdentityResult> UpdateUser(string operatorUp,ApplicationUserView vm)
+        {
+            var user = await _userManager.FindByIdAsync(vm.Entity.Id.ToString());
+            if (user == null) throw new ArgumentNullException($"{vm.Entity.UserName}不存在");
+            user.UserName = vm.Entity.UserName;
+            user.AccountName = vm.Entity.AccountName;
+            user.PhoneNumber = vm.Entity.PhoneNumber;
+            user.Email = vm.Entity.Email;
+            user.UserGroupId = vm.Entity.UserGroupId;
+            user.IsDisable = vm.Entity.IsDisable;
+            user.Number = vm.Entity.Number;
+            user.Remark = vm.Entity.Remark;
+            user.UpdateTime = CommonHelper.GetSysDateTimeNow();
+            user.OperatorUp = operatorUp;
+            var result = await _userManager.UpdateAsync(user);
+            return result;
         }
 
         /// <summary>
@@ -125,7 +144,15 @@ namespace Caviar.Core.Services
             if (User.Identity.IsAuthenticated)
             {
                 var applicationUser = await _userManager.FindByNameAsync(User.Identity.Name);
-                claims = new List<CaviarClaim>() { new CaviarClaim(CurrencyConstant.HeadPortrait, applicationUser.HeadPortrait ?? "") };
+                if(applicationUser == null)
+                {
+                    return new CurrentUser() { IsAuthenticated = false };
+                }
+                claims = new List<CaviarClaim>() 
+                { 
+                    new CaviarClaim(CurrencyConstant.HeadPortrait, applicationUser.HeadPortrait ?? ""),
+                    new CaviarClaim(CurrencyConstant.AccountName,applicationUser.AccountName),
+                };
                 claims.AddRange(User.Claims.Select(u => new CaviarClaim(u)));
             }
             var currentUser = new CurrentUser

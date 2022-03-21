@@ -17,6 +17,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
         IEnumerable<ApplicationRoleView> RoleSelectedRows {get;set;}
         protected override async Task OnInitializedAsync()
         {
+            TableOptions.IsSelectedRows = true;
             ControllerName = CurrencyConstant.ApplicationRoleKey;
             ControllerList.Add(CurrencyConstant.ApplicationUserKey);
             await base.OnInitializedAsync();

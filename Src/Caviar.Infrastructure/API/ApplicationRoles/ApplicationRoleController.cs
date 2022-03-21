@@ -13,18 +13,16 @@ namespace Caviar.Infrastructure.API
 {
     public partial class ApplicationRoleController
     {
-        private RoleManager<ApplicationRole> _roleManager;
-        private RoleServices _roleServices;
+        private readonly RoleServices _roleServices;
         public ApplicationRoleController(RoleManager<ApplicationRole> roleManager, RoleServices roleServices)
         {
-            _roleManager = roleManager;
             _roleServices = roleServices;
         }
 
         [HttpPost]
         public override async Task<IActionResult> CreateEntity(ApplicationRoleView vm)
         {
-            var result = await _roleManager.CreateAsync(vm.Entity);
+            var result = await _roleServices.CreateUserAsync(vm);
             if (result.Succeeded) return Ok();
             return Error("创建角色失败", result);
         }
@@ -33,7 +31,7 @@ namespace Caviar.Infrastructure.API
         public override async Task<IActionResult> UpdateEntity(ApplicationRoleView vm)
         {
             vm.Entity.OperatorUp = User.Identity.Name;
-            var result = await _roleServices.UpdateRole(vm);
+            var result = await _roleServices.UpdateUserAsync(vm);
             if (result.Succeeded) return Ok();
             return Error("修改角色失败", result);
         }
@@ -41,7 +39,7 @@ namespace Caviar.Infrastructure.API
         [HttpPost]
         public override async Task<IActionResult> DeleteEntity(ApplicationRoleView vm)
         {
-            var result = await _roleManager.DeleteAsync(vm.Entity);
+            var result = await _roleServices.DeleteUserAsync(vm);
             if (result.Succeeded) return Ok();
             return Error("删除角色失败", result);
         }

@@ -11,13 +11,12 @@ namespace Caviar.SharedKernel.Entities
     {
         [StringLength(200, ErrorMessage = "LengthErrorMsg")]
         public string Permission { get; set; }
-
         /// <summary>
         /// 实体id
         /// </summary>
         [StringLength(200, ErrorMessage = "LengthErrorMsg")]
         public int Entity { get; set; }
-
+        [Key]
         public PermissionType PermissionType { get; set; }
     }
 }

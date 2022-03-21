@@ -54,7 +54,11 @@ namespace Caviar.Infrastructure
             {
                 var handler = sp.GetService<HttpClientHandler>();
                 HttpClient client = new HttpClient(handler);
+                var httpContextAccessor = sp.GetService<IHttpContextAccessor>();
+                var httpContext = httpContextAccessor?.HttpContext;
+                var ip = CommonHelper.GetUserIp(httpContext);
                 client.DefaultRequestHeaders.Add(CurrencyConstant.UserAgent, CurrencyConstant.DefaultUserAgent);
+                client.DefaultRequestHeaders.Add(CurrencyConstant.XForwardedFor, ip);
                 var uri = GetServerUri();
                 if (uri != null)
                 {
@@ -161,24 +165,19 @@ namespace Caviar.Infrastructure
         /// </summary>
         public void AddIBaseModel(IServiceCollection services)
         {
-            CommonHelper.GetAssembly()
-                //遍历查找
-                .ForEach((t =>
-                {
-                        //获取所有对象
-                        t.GetTypes()
-                        //查找是否包含IDIinjectAtteribute接口的类
-                        .Where(u => u.GetInterfaces().Contains(typeof(IDIinjectAtteribute)))
-                        //判断是否是类
-                        .Where(u => u.IsClass)
-                        //转换成list
-                        .ToList()
-                        //循环,并添注入
-                        .ForEach(t =>
-                        {
-                            services.AddTransient(t);
-                        });
-                }));
+            //获取所有对象
+            CommonHelper.GetAllTypes()
+            //查找是否包含IDIinjectAtteribute接口的类
+            .Where(u => u.GetInterfaces().Contains(typeof(IDIinjectAtteribute)))
+            //判断是否是类
+            .Where(u => u.IsClass)
+            //转换成list
+            .ToList()
+            //循环,并添注入
+            .ForEach(t =>
+            {
+                services.AddTransient(t);
+            });
 
         }
         /// <summary>
@@ -187,36 +186,31 @@ namespace Caviar.Infrastructure
         /// <param name="services"></param>
         public void AddInject(IServiceCollection services)
         {
-            CommonHelper.GetAssembly()
-               //遍历查找
-               .ForEach((t =>
-               {
-                       //获取所有对象
-                       t.GetTypes()
-                       //查找是否包含DI特性并且查看是否是抽象类
-                       .Where(a => a.GetCustomAttributes(true).Select(t => t.GetType()).Contains(typeof(DIInjectAttribute)) && !a.IsAbstract)
-                       //判断是否是类
-                       .Where(u => u.IsClass)
-                       //转换成list
-                       .ToList()
-                       //循环,并添注入
-                       .ForEach(t =>
-                       {
-                           var inject = (DIInjectAttribute)t.GetCustomAttributes(true).FirstOrDefault(d => d.GetType() == typeof(DIInjectAttribute));
-                           switch (inject.InjectType)
-                           {
-                               case InjectType.SINGLETON:
-                                   services.AddSingleton(t);
-                                   break;
-                               case InjectType.SCOPED:
-                                   services.AddScoped(t);
-                                   break;
-                               case InjectType.TRANSIENT:
-                                   services.AddTransient(t);
-                                   break;
-                           }
-                       });
-               }));
+            //获取所有对象
+            CommonHelper.GetAllTypes()
+            //查找是否包含DI特性并且查看是否是抽象类
+            .Where(a => a.GetCustomAttributes(true).Select(t => t.GetType()).Contains(typeof(DIInjectAttribute)) && !a.IsAbstract)
+            //判断是否是类
+            .Where(u => u.IsClass)
+            //转换成list
+            .ToList()
+            //循环,并添注入
+            .ForEach(t =>
+            {
+                var inject = (DIInjectAttribute)t.GetCustomAttributes(true).FirstOrDefault(d => d.GetType() == typeof(DIInjectAttribute));
+                switch (inject.InjectType)
+                {
+                    case InjectType.SINGLETON:
+                        services.AddSingleton(t);
+                        break;
+                    case InjectType.SCOPED:
+                        services.AddScoped(t);
+                        break;
+                    case InjectType.TRANSIENT:
+                        services.AddTransient(t);
+                        break;
+                }
+            });
         }
     }
 }

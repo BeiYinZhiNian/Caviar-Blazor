@@ -31,7 +31,11 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 视图类代码文件路径
         /// </summary>
-        public const string CodeGenerateFilePath = "Template/File";
+        public const string CodeGenerateFilePath = "Resources/TemplateFile";
+        /// <summary>
+        /// 语言文件路径
+        /// </summary>
+        public const string LanguageFilePaht = "Resources/Language";
         /// <summary>
         /// 登录地址
         /// </summary>

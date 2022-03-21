@@ -192,9 +192,9 @@ namespace Caviar.Infrastructure.Persistence
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public virtual Task<List<T>> GetAllAsync<T>(bool isNoTracking = true) where T : class, IUseEntity, new()
+        public virtual IQueryable<T> GetAllAsync<T>(bool isNoTracking = false) where T : class, IUseEntity, new()
         {
-            return GetContext<T>(isNoTracking).ToListAsync();
+            return GetContext<T>(isNoTracking);
         }
         /// <summary>
         /// 获取指定页数据
@@ -208,9 +208,9 @@ namespace Caviar.Infrastructure.Persistence
         /// <param name="isOrder"></param>
         /// <param name="isNoTracking"></param>
         /// <returns></returns>
-        public virtual async Task<PageData<T>> GetPageAsync<T, TOrder>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TOrder>> orderBy, int pageIndex, int pageSize, bool isOrder = true, bool isNoTracking = true) where T : class, IUseEntity, new()
+        public virtual async Task<PageData<T>> GetPageAsync<T, TOrder>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TOrder>> orderBy, int pageIndex, int pageSize, bool isOrder = true) where T : class, IUseEntity, new()
         {
-            IQueryable<T> data = GetContext<T>(isNoTracking);
+            IQueryable<T> data = GetContext<T>();
             data = isOrder ?
                 data.OrderBy(orderBy).OrderByDescending(u => u.CreatTime) :
                 data.OrderByDescending(orderBy).OrderByDescending(u => u.CreatTime);
@@ -247,7 +247,7 @@ namespace Caviar.Infrastructure.Persistence
             };
             if (data.Count() > 0)
             {
-                pageData.Total = await data.CountAsync();
+                pageData.Total = pageData.PageSize;
                 pageData.Rows = await data.Take(pageData.PageSize).ToListAsync();
             }
             return pageData;
@@ -259,7 +259,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual IQueryable<T> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IUseEntity, new()
+        public virtual IQueryable<T> GetEntityAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = false) where T : class, IUseEntity, new()
         {
             return GetContext<T>(isNoTracking).Where(where);
         }
@@ -269,7 +269,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual Task<T> SingleOrDefaultAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IUseEntity, new()
+        public virtual Task<T> SingleOrDefaultAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = false) where T : class, IUseEntity, new()
         {
             return GetContext<T>(isNoTracking).Where(where).SingleOrDefaultAsync();
         }
@@ -279,7 +279,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual Task<T> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = true) where T : class, IUseEntity, new()
+        public virtual Task<T> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> where, bool isNoTracking = false) where T : class, IUseEntity, new()
         {
             return GetContext<T>(isNoTracking).Where(where).FirstOrDefaultAsync();
         }
@@ -311,7 +311,7 @@ namespace Caviar.Infrastructure.Persistence
                         break;
                     case EntityState.Modified:
                         baseEntity.OperatorUp = _interactor.UserInfo.UserName;
-                        baseEntity.UpdateTime = DateTime.Now;
+                        baseEntity.UpdateTime = CommonHelper.GetSysDateTimeNow();
                         var entityType = entity.GetType();
                         var baseType = typeof(SysUseEntity);
                         var fields = FieldScannerServices.GetClassFields(baseType, _languageService);
@@ -337,7 +337,7 @@ namespace Caviar.Infrastructure.Persistence
                         }
                         break;
                     case EntityState.Added:
-                        baseEntity.CreatTime = DateTime.Now;
+                        baseEntity.CreatTime = CommonHelper.GetSysDateTimeNow();
                         baseEntity.OperatorCare = _interactor.UserInfo.UserName;
                         baseEntity.DataId = _interactor.UserInfo.UserGroupId;
                         break;
@@ -375,7 +375,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <typeparam name="T"></typeparam>
         /// <param name="isNoTracking">是否跟踪上下文</param>
         /// <returns></returns>
-        private IQueryable<T> GetContext<T>(bool isNoTracking = true) where T : class, IUseEntity
+        private IQueryable<T> GetContext<T>(bool isNoTracking = false) where T : class, IUseEntity
         {
             var set = DbContext.Set<T>();
             var roleRange = GetRoleDataRange(_interactor.ApplicationRoles);
@@ -397,9 +397,9 @@ namespace Caviar.Infrastructure.Persistence
                 int[] data = null;
                 if (item.DataRange == DataRange.Custom)
                 {
-                    data = item.DataList.Split(";").Select(u => int.Parse(u)).ToArray();
+                    data = item.DataList.Split(CurrencyConstant.CustomDataSeparator).Where(u=> !string.IsNullOrEmpty(u)).Select(u => int.Parse(u)).ToArray();
                 }
-                roleRange.Add(item.DataRange, null);
+                roleRange.Add(item.DataRange, data);
             }
             return roleRange;
         }
@@ -419,7 +419,8 @@ namespace Caviar.Infrastructure.Persistence
                     case DataRange.Subordinate:
                         ranges.Add(groupId);
                         var groups = set.Where(u => u.ParentId == groupId);
-                        ranges.AddRange(ranges);
+                        var groupIds = groups.Select(u => u.Id).ToList();
+                        ranges.AddRange(groupIds);
                         break;
                     case DataRange.Custom:
                         ranges.AddRange(dataRange.Value);

@@ -43,6 +43,7 @@ namespace Caviar.Infrastructure.Persistence
 
             modelBuilder.Entity<IdentityUserToken<TKey>>(e => e.Property(p => p.LoginProvider).HasMaxLength(128));
             modelBuilder.Entity<IdentityUserToken<TKey>>(e => e.Property(p => p.Name).HasMaxLength(128));
+            modelBuilder.Entity<SysPermission>(e => e.HasKey(e => new { e.Entity, e.Permission, e.PermissionType }));
 
             modelBuilder.Entity<ApplicationUser>().ToTable("SysUser");//不能创建SysUsers
             modelBuilder.Entity<ApplicationRole>().ToTable("SysRoles");

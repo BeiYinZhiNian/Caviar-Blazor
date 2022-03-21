@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Caviar.SharedKernel.Entities;
 using Microsoft.EntityFrameworkCore;
 using Caviar.Core.Interface;
+using System.Reflection;
 
 namespace Caviar.Core.Services
 {
@@ -73,7 +74,7 @@ namespace Caviar.Core.Services
                 var suffixName = "Controller";
                 var extendName = ".cs";
                 var codePreview = GetPreviewCode(entitieName, suffixName, extendName, config.ControllerOptions);
-                codePreview = PreviewCodeReplace(entityData, fieldsData, codePreview, codeGenerateOptions, producer);
+                codePreview = PreviewCodeReplace(entityData, fieldsData, config, codePreview, producer);
                 list.Add(codePreview);
             }
             if (codeGenerateOptions.IsGenerateDataTemplate)
@@ -81,7 +82,7 @@ namespace Caviar.Core.Services
                 var suffixName = "DataTemplate";
                 var extendName = ".razor";
                 var codePreview = GetPreviewCode(entitieName, suffixName, extendName, config.DataTemplateOptions);
-                codePreview = PreviewCodeReplace(entityData, fieldsData, codePreview, codeGenerateOptions, producer);
+                codePreview = PreviewCodeReplace(entityData, fieldsData, config, codePreview, producer);
                 list.Add(codePreview);
             }
             if (codeGenerateOptions.IsGenerateIndex)
@@ -89,7 +90,7 @@ namespace Caviar.Core.Services
                 var suffixName = "Index";
                 var extendName = ".razor";
                 var codePreview = GetPreviewCode(entitieName, suffixName, extendName, config.IndexOptions);
-                codePreview = PreviewCodeReplace(entityData, fieldsData, codePreview, codeGenerateOptions, producer);
+                codePreview = PreviewCodeReplace(entityData, fieldsData, config, codePreview, producer);
                 list.Add(codePreview);
             }
             if (codeGenerateOptions.IsGenerateViewModel)
@@ -97,7 +98,7 @@ namespace Caviar.Core.Services
                 var suffixName = "View";
                 var extendName = ".cs";
                 var codePreview = GetPreviewCode(entitieName, suffixName, extendName, config.ViewModelOptions);
-                codePreview = PreviewCodeReplace(entityData, fieldsData, codePreview, codeGenerateOptions, producer);
+                codePreview = PreviewCodeReplace(entityData, fieldsData, config, codePreview, producer);
                 list.Add(codePreview);
             }
             return list;
@@ -112,11 +113,18 @@ namespace Caviar.Core.Services
         protected PreviewCode GetPreviewCode(string entityName,string suffixName,string extendName, CodeGeneration options)
         {
             string path = $"{AppDomain.CurrentDomain.BaseDirectory}{UrlConfig.CodeGenerateFilePath}/{suffixName}.txt";
+            var txt = "";
             if (!File.Exists(path))
             { 
-                throw new FileNotFoundException(_languageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.RouteErrorMsg}"] + path);
+                var resourcesAssembly = Assembly.GetExecutingAssembly();
+                using var fileStream = resourcesAssembly.GetManifestResourceStream($"Caviar.Core.TemplateFile.{suffixName}.txt");
+                using var streamReader = new StreamReader(fileStream);
+                txt = streamReader.ReadToEnd();
             }
-            string txt = File.ReadAllText(path);
+            else
+            {
+                txt = File.ReadAllText(path);
+            }
             string name = entityName + suffixName + extendName;
             PreviewCode codePreviewTab = new PreviewCode()
             {
@@ -136,17 +144,26 @@ namespace Caviar.Core.Services
         /// <param name="codePreview">预览的代码</param>
         /// <param name="producer">生成者</param>
         /// <returns></returns>
-        protected PreviewCode PreviewCodeReplace(FieldsView entityData,List<FieldsView> fieldsData, PreviewCode codePreview,CodeGenerateOptions codeGenerateOptions , string producer)
+        protected PreviewCode PreviewCodeReplace(FieldsView entityData,List<FieldsView> fieldsData,CaviarConfig caviarConfig, PreviewCode codePreview, string producer)
         {
             StringBuilder txt = new StringBuilder(codePreview.Content);
-            var baseEntityNaemspace = entityData.Entity.FullName.Replace($".{entityData.Entity.FieldName}", "");
-            txt = txt.Replace("{GenerationTime}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            txt = txt.Replace("{GenerationTime}", CommonHelper.GetSysDateTimeNow().ToString("yyyy-MM-dd HH:mm:ss"));
             txt = txt.Replace("{Producer}", producer);
             txt = txt.Replace("{EntityNamespace}", codePreview.Options.NameSpace);
-            txt = txt.Replace("{BaseEntityNamespace}", baseEntityNaemspace);
+            if (caviarConfig.ViewModelOptions.NameSpace == "Caviar.SharedKernel.Entities.View")
+            {
+                txt = txt.Replace("{usingEntityViewNamespace}", "");
+            }
+            else
+            {
+                txt = txt.Replace("{usingEntityViewNamespace}", $"using {caviarConfig.ViewModelOptions.NameSpace};");
+            }
+            var entityNameSpace = entityData.Entity.FullName.Replace($".{entityData.Entity.FieldName}", "");
+            txt = txt.Replace("{usingEntityNamespace}", $"using {entityNameSpace};");
+            txt = txt.Replace("{EntityViewNamespace}", caviarConfig.ViewModelOptions.NameSpace);
+            txt = txt.Replace("{ControllerNamespace}", caviarConfig.ControllerOptions.NameSpace);
             txt = txt.Replace("{EntityName}", entityData.Entity.FieldName);
             txt = txt.Replace("{FormItem}", CreateFormItem(fieldsData));
-            txt = txt.Replace("{Lable}", codeGenerateOptions.EntitieName);
             codePreview.Content = txt.ToString();
             return codePreview;
         }

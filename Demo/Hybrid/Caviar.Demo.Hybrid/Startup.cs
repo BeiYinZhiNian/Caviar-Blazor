@@ -73,7 +73,9 @@ namespace Caviar.Demo.Hybrid
             });
             //控制器
             services.AddControllers();
-            
+            #if DEBUG
+            Config.IsDebug = true;
+            #endif
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

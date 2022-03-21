@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <Authors>北音执念</Authors>
+    <Description>Caviar-Blazor是采用Blazor + Ant Design的后台管理框架，框架包含了后台管理的常用功能，简单大方的界面，拥有数据权限、字段权限、API权限等，可精细化控制任意元素，而且更好的兼容手机端，让开发者更专注于业务上的开发。</Description>
+    <Copyright>Apache-2.0</Copyright>
+    <PackageProjectUrl>https://gitee.com/Cherryblossoms/caviar.git</PackageProjectUrl>
+    <RepositoryUrl>https://gitee.com/Cherryblossoms/caviar.git</RepositoryUrl>
+    <PackageTags>caviar;Ant-Design;blazor;</PackageTags>
+    <Version>0.1.0.11</Version>
+    <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,13 +22,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AntDesign" Version="0.10.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.2" />
+    <PackageReference Include="AntDesign" Version="0.10.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -76,6 +83,13 @@
     <Content Update="_Imports.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -54,22 +54,36 @@
     <CavFormItem Style="@buttonStrle" FieldName="IsDoubleTrue" FieldRules="@context.Entity">
         <Checkbox @bind-Value="@context.Entity.IsDoubleTrue">@LanguageService[$"{CurrencyConstant.EntitysName}.IsDoubleTrue"]</Checkbox>
     </CavFormItem>
+    <CavFormItem FieldName="ControllerName" FieldRules="@context.Entity">
+        <Space>
+            <SpaceItem>
+                <Input @bind-Value="@context.Entity.ControllerName">
+            </SpaceItem>
+            <SpaceItem>
+                <Tooltip Title="@("主要用于一组url的标识")"><Icon Type="question" Theme="outline"/></Tooltip>
+            </SpaceItem>
+        </Space>
+    </CavFormItem>
     <CavFormItem FieldName="Icon" FieldRules="@context.Entity">
         <Space>
             <SpaceItem>
                 <Button OnClick="()=> { _visible = true; }">@LanguageService[$"{CurrencyConstant.EntitysName}.Icon Library"]</Button>
-                <CavModalIcon @bind-IconValue="DataSource.Entity.Icon" @bind-Visible="_visible"></CavModalIcon>
+                <CavModalIcon @bind-IconValue="@context.Entity.Icon" @bind-Visible="_visible"></CavModalIcon>
             </SpaceItem>
             <SpaceItem>
-                @if (!string.IsNullOrEmpty(DataSource.Entity.Icon))
+                @if (!string.IsNullOrEmpty(context.Entity.Icon))
                 {
-                    <Icon Type="@DataSource.Entity.Icon" Theme="outline"></Icon>
+                    <Icon Type="@context.Entity.Icon" Style="font-size:30px" Theme="outline"></Icon>
+                    <Text>@context.Entity.Icon</text>
                 }
             </SpaceItem>
         </Space>
     </CavFormItem>
     <CavFormItem FieldName="Number" FieldRules="@context.Entity">
         <Input @bind-Value="@context.Entity.Number" Style="width: 20%;">
+    </CavFormItem>
+    <CavFormItem FieldName="Remark" FieldRules="@context.Entity">
+        <TextArea Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.InputRemark}"]"  AllowClear="true" @bind-Value="@context.Entity.Remark" />
     </CavFormItem>
 </Form>
 

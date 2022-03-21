@@ -26,8 +26,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
 
         async Task<List<SysMenuView>> GetMenus()
         {
-
-            var result = await HttpService.GetJson<PageData<SysMenuView>>($"{Url[CurrencyConstant.SysMenuKey]}?pageSize=100");
+            var result = await HttpService.GetJson<PageData<SysMenuView>>($"{Url[CurrencyConstant.SysMenuKey]}?pageSize={MaxPageSize}");
             if (result.Status != HttpStatusCode.OK) return null;
             
             return result.Data.Rows;
@@ -54,7 +53,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
             ParentMenuName = args.Node.Title;
             DataSource.Entity.ParentId = int.Parse(args.Node.Key);
             var parent = _listMenus.SingleOrDefault(u => u.Id == DataSource.Entity.ParentId);
-            if (parent != null)
+            if (parent != null && !string.IsNullOrEmpty(parent.Entity.ControllerName))
             {
                 DataSource.Entity.ControllerName = parent.Entity.ControllerName;
             }

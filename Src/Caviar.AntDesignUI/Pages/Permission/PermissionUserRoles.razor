@@ -3,16 +3,9 @@
 @inherits IndexComponentBase<ApplicationRoleView>
 
 <CavTableTemplate TData="ApplicationRoleView"
-               DataSource="IndexDataSource"
-               PageSize="PageSize"
-               PageIndex="PageIndex"
-               Total="Total"
-               IsOpenQuery="IsOpenQuery"
-               ViewFields="ViewFields"
+               TableOptions="TableOptions"
                PageIndexChanged="PageIndexChanged"
                RowCallback="RowCallback"
-               Loading="Loading"
-               IsSelectedRows="true"
                @bind-SelectedRows="RoleSelectedRows"
                QueryCallback="QueryCallback">
 </CavTableTemplate>

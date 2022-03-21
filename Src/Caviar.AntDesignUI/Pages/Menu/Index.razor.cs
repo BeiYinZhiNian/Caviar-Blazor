@@ -9,9 +9,16 @@ namespace Caviar.AntDesignUI.Pages.Menu
 {
     public partial class Index
     {
+        protected override void OnInitialized()
+        {
+            TableOptions.TreeChildren = u => u.Children;
+            base.OnInitialized();
+        }
         protected override Task<List<SysMenuView>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
-            pageSize = 100;
+            // 当使用树形组件时，需要获取全部数据
+            // 也可改成GetAll
+            pageSize = MaxPageSize;
             return base.GetPages(pageIndex, pageSize, isOrder);
         }
 

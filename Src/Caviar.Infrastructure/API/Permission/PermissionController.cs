@@ -71,7 +71,7 @@ namespace Caviar.Infrastructure.API.Permission
                 Secure = false,
                 IsEssential = true,
                 SameSite = SameSiteMode.Strict,
-                Expires = DateTime.Now.AddYears(100),
+                Expires = CommonHelper.GetSysDateTimeNow().AddYears(100),
             };
             HttpContext.Response.Cookies.Append(
                 key: idCookiaName,

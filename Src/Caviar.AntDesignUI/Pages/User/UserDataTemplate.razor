@@ -20,6 +20,9 @@ Caviar ©2021 Created by 北音执念
     <CavFormItem  FieldName='UserName' FieldRules='@context.Entity'>
         <Input @bind-Value='@context.Entity.UserName' />
     </CavFormItem>
+    <CavFormItem  FieldName='AccountName' FieldRules='@context.Entity'>
+        <Input @bind-Value='@context.Entity.AccountName' />
+    </CavFormItem>
     <CavFormItem  FieldName='Email' FieldRules='@context.Entity' Rules='EmailRule'>
         <Input @bind-Value='@context.Entity.Email' />
     </CavFormItem>
@@ -51,6 +54,6 @@ Caviar ©2021 Created by 北音执念
         <Input @bind-Value='@context.Entity.Number' />
     </CavFormItem>
     <CavFormItem  FieldName='Remark' FieldRules='@context.Entity'>
-        <Input @bind-Value='@context.Entity.Remark' />
+        <TextArea Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.InputRemark}"]"  AllowClear="true" @bind-Value="@context.Entity.Remark" />
     </CavFormItem>
 </Form>

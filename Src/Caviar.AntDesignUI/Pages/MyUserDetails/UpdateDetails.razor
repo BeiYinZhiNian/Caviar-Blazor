@@ -29,6 +29,13 @@
                     }
                 </Upload>
             </CavFormItem>
+            <CavFormItem FieldName="AccountName" FieldRules="@context">
+                <Space>
+                    <SpaceItem>
+                        <Input @bind-Value="@context.AccountName" />
+                    </SpaceItem>
+                </Space>
+            </CavFormItem>
             <CavFormItem FieldName="Email" FieldRules="@context" Rules="EmailRule">
                 <Space>
                     <SpaceItem>

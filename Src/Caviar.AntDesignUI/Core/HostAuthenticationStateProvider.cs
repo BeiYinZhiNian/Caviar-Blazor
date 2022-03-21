@@ -57,14 +57,12 @@ namespace Caviar.AntDesignUI.Core
         {
             var result = await api.Logout();
             _currentUser = null;
-            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
             return result;
         }
 
         public async Task<ResultMsg> Login(UserLogin loginParameters, string returnUrl)
         {
             var result = await api.Login(loginParameters, returnUrl);
-            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
             if(result.Status != HttpStatusCode.OK)
             {
                 _ = _message.Error(result.Title);

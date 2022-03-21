@@ -53,6 +53,7 @@ namespace Caviar.Infrastructure.Persistence
             "Caviar.SharedKernel.Entities.SysMenuKey",
             "Caviar.SharedKernel.Entities.SysMenuMenuType",
             "Caviar.SharedKernel.Entities.SysMenuTargetType",
+            "Caviar.SharedKernel.Entities.SysEnclosureFilePath"
         };
         public SysDataInit(IServiceProvider provider)
         {
@@ -217,7 +218,7 @@ namespace Caviar.Infrastructure.Persistence
         protected virtual async Task CreateInitUser()
         {
             var userManager = _serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            var user = new ApplicationUser { Email = "1031622947@qq.com", UserName = "admin", Remark = "生活的意义就是折腾！",UserGroupId = DataId,DataId = DataId};
+            var user = new ApplicationUser { Email = "1031622947@qq.com", AccountName = "北音执念", UserName = "admin", Remark = "生活的意义就是折腾！",UserGroupId = DataId,DataId = DataId};
             var result = await userManager.CreateAsync(user, CommonHelper.SHA256EncryptString(CurrencyConstant.DefaultPassword));
             if (!result.Succeeded) throw new Exception("创建用户数据失败，数据初始化停止");
             await userManager.AddToRoleAsync(user, CurrencyConstant.Admin);

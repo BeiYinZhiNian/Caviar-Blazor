@@ -12,15 +12,18 @@ namespace Caviar.SharedKernel.Entities
         public override string UserName { get => base.UserName; set => base.UserName = value; }
 
         [Required(ErrorMessage = "RequiredErrorMsg")]
+        public string AccountName { get; set; }
+
+        [Required(ErrorMessage = "RequiredErrorMsg")]
         public override string Email { get => base.Email; set => base.Email = value; }
         /// <summary>
         /// 创建时间
         /// </summary>
-        public DateTime CreatTime { get; set; } = DateTime.Now;
+        public DateTime CreatTime { get; set; } = CommonHelper.GetSysDateTimeNow();
         /// <summary>
         /// 修改时间
         /// </summary>
-        public DateTime UpdateTime { get; set; } = DateTime.Now;
+        public DateTime UpdateTime { get; set; } = CommonHelper.GetSysDateTimeNow();
         /// <summary>
         /// 根据配置确定删除后是否保留条目
         /// </summary>
@@ -52,7 +55,7 @@ namespace Caviar.SharedKernel.Entities
                 LockoutEnabled = value;
                 if (value)
                 {
-                    LockoutEnd = DateTime.Now.AddYears(99);
+                    LockoutEnd = CommonHelper.GetSysDateTimeNow().AddYears(99);
                 }
                 else
                 {

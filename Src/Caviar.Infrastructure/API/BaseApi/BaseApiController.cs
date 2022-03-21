@@ -258,9 +258,9 @@ namespace Caviar.Infrastructure.API.BaseApi
 
 
         [HttpGet]
-        public virtual async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10, bool isOrder = true, bool isNoTracking = true)
+        public virtual async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
-            var pages = await Service.GetPageAsync(null, pageIndex, pageSize, isOrder, isNoTracking);
+            var pages = await Service.GetPageAsync(null, pageIndex, pageSize, isOrder);
             return Ok(pages);
         }
     }

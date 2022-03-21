@@ -10,9 +10,25 @@ namespace Caviar.SharedKernel.Entities
     public static class CurrencyConstant
     {
         /// <summary>
+        /// 时区
+        /// </summary>
+        public const string TimeZone = "Asia/Shanghai";
+        /// <summary>
+        /// 缓存代理Ip
+        /// </summary>
+        public const string XForwardedFor = "X-Forwarded-For";
+        /// <summary>
+        /// 搜索
+        /// </summary>
+        public const string Search = "Search";
+        /// <summary>
         /// 高级搜索
         /// </summary>
         public const string AdvancedSearch = "AdvancedSearch";
+        /// <summary>
+        /// 关闭搜索
+        /// </summary>
+        public const string CancelSearch = "CancelSearch";
         /// <summary>
         /// 路由前缀
         /// </summary>
@@ -37,6 +53,10 @@ namespace Caviar.SharedKernel.Entities
         /// 头像文件夹名称
         /// </summary>
         public const string HeadPortrait = "headPortrait";
+        /// <summary>
+        /// 账号名称
+        /// </summary>
+        public const string AccountName = "AccountName";
         /// <summary>
         /// 提交地址
         /// </summary>
@@ -130,6 +150,10 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string SysUserGroupKey = "SysUserGroup";
         /// <summary>
+        /// 移除
+        /// </summary>
+        public const string Remove = "Remove";
+        /// <summary>
         /// 系统日志key
         /// </summary>
         public const string SysLogKey = "SysLog";
@@ -196,7 +220,7 @@ namespace Caviar.SharedKernel.Entities
         public const string Page = "SharedKernel.Page";
         public const string AppNull = "app.null";
         public const string Admin = "admin";
-        public const string TemplateRole = "Template";
+        public const string TemplateRole = "TemplateRole";
         /// <summary>
         /// 未授权
         /// </summary>
@@ -242,6 +266,30 @@ namespace Caviar.SharedKernel.Entities
         /// 选择查询的字段
         /// </summary>
         public const string SelectQueryFields = "SelectQueryFields";
+        /// <summary>
+        /// 选择类型
+        /// </summary>
+        public const string SelectType = "SelectType";
+        /// <summary>
+        /// 且
+        /// </summary>
+        public const string And = "And";
+        /// <summary>
+        /// 或
+        /// </summary>
+        public const string Or = "Or";
+        /// <summary>
+        /// 输入搜索内容
+        /// </summary>
+        public const string SearchData = "SearchData";
+        /// <summary>
+        /// 搜索条数
+        /// </summary>
+        public const string SearchNumber = "SearchNumber";
+        /// <summary>
+        /// 添加条件
+        /// </summary>
+        public const string AddCondition = "AddCondition";
         /// <summary>
         /// 查询
         /// </summary>
@@ -291,17 +339,37 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string UserLogin = "UserLogin";
         /// <summary>
-        /// 请输入用户名/手机号/邮箱
+        /// 请输入用户名
         /// </summary>
-        public const string UserName = "UserName";
+        public const string InputUserName = "InputUserName";
         /// <summary>
         /// 请输入密码
         /// </summary>
+        public const string InputPassword = "InputPassword";
+        /// <summary>
+        /// 账号
+        /// </summary>
+        public const string UserName = "UserName";
+        /// <summary>
+        /// 密码
+        /// </summary>
         public const string Password = "Password";
+        /// <summary>
+        /// 部门名称
+        /// </summary>
+        public const string UserGroupName = "UserGroupName";
+        /// <summary>
+        /// 手机号
+        /// </summary>
+        public const string PhoneNumber = "PhoneNumber";
         /// <summary>
         /// 注册账户
         /// </summary>
         public const string RegisteredAccount = "RegisteredAccount";
+        /// <summary>
+        /// 个性签名
+        /// </summary>
+        public const string PersonalSignature = "PersonalSignature";
         /// <summary>
         /// 忘记密码
         /// </summary>
@@ -414,7 +482,21 @@ namespace Caviar.SharedKernel.Entities
         /// 共{count}个文件，写出文件{writeCount}个，跳过文件{skipCount}个，覆盖文件{coverCount}个
         /// </summary>
         public const string ResultMsg = "ResultMsg";
-
-
+        /// <summary>
+        /// 当前密码
+        /// </summary>
+        public const string CurrentPassword = "CurrentPassword";
+        /// <summary>
+        /// 新密码
+        /// </summary>
+        public const string NewPassword = "NewPassword";
+        /// <summary>
+        /// 确认密码
+        /// </summary>
+        public const string ConfirmPassword = "ConfirmPassword";
+        /// <summary>
+        /// 请输入备注
+        /// </summary>
+        public const string InputRemark = "InputRemark";
     }
 }

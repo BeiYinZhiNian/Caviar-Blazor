@@ -18,7 +18,7 @@ namespace Caviar.SharedKernel.Entities
             //用户名
             UserName = context.HttpContext.User.Identity.Name;
             //获取ip地址
-            Current_Ipaddress = GetUserIp(context.HttpContext);
+            Current_Ipaddress = CommonHelper.GetUserIp(context.HttpContext);
             //获取完整Url
             Current_AbsoluteUri = GetAbsoluteUri(context.HttpContext.Request);
             //获取请求路径
@@ -31,20 +31,11 @@ namespace Caviar.SharedKernel.Entities
             Method = context.HttpContext.Request.Method;
         }
 
-        /// <summary>
-        /// 获取用户的ip地址
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        protected string GetUserIp(HttpContext context)
+        public Interactor()
         {
-            var ip = context.Request.Headers["X-Forwarded-For"].FirstOrDefault();
-            if (string.IsNullOrEmpty(ip))
-            {
-                ip = context.Connection.RemoteIpAddress.ToString();
-            }
-            return ip;
+
         }
+
         /// <summary>
         /// 获取请求的完整地址
         /// </summary>

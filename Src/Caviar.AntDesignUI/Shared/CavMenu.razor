@@ -29,11 +29,13 @@
                 <Icon Style="font-size:15px" Type="@item.Icon" Theme="outline"></Icon>
             }
             <span>@viewMenu.DisplayName</span>
-            </span>;
+        </span>
+    ;
             switch (item.MenuType)
             {
                 case MenuType.Catalog:
-                     ViewSubMenu +=
+                    if (viewMenu.Children == null || viewMenu.Children.Count == 0) continue;
+                    ViewSubMenu +=
                      @<SubMenu Key="@viewMenu.Entity.Key" TitleTemplate="subTitle">
                      @GetSubMenu(viewMenu.Children)
                      </SubMenu>;

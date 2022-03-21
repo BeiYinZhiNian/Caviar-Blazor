@@ -38,7 +38,6 @@
             //在wasm中注册事件
             //wasm模式初始化完成，接收事件
             IframeMessage.SwitchWasm += SwitchWasm_RefChanged;
-            IframeMessage.ForceLoad += ForceLoad_RefChanged;
         }  
         else
         {
@@ -70,10 +69,6 @@
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    private void ForceLoad_RefChanged(IframeMessage message)
-    {
-        NavigationManager.NavigateTo(message.Url,true);
-    }
 
     private void SwitchWasm_RefChanged(IframeMessage message)
     {
