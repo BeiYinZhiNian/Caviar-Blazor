@@ -79,10 +79,15 @@ window.addEventListener('message', function (e) {
 		window.location.href = e.data.url;
 	}
 	else {
-		DotNet.invokeMethodAsync("Caviar.AntDesignUI", "JsNavigation", e.data)
-			.then(data => {
-				console.log(data);
-			});
+		try {
+			DotNet.invokeMethodAsync("Caviar.AntDesignUI", "JsNavigation", e.data)
+				.then(data => {
+					console.log(data);
+				});
+		}
+		catch {
+			//wasm尚未加载完毕
+        }
     }
 	
 })
