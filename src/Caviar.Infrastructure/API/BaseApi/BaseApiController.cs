@@ -76,7 +76,6 @@ namespace Caviar.Infrastructure.API.BaseApi
             //设置语言信息
             var acceptLanguage = context.HttpContext.Request.Cookies.SingleOrDefault(c => c.Key == CurrencyConstant.LanguageHeader).Value;
             SetLanguage(acceptLanguage);
-
             if (!UrlCheck())
             {
                 UrlUnauthorized(context);
