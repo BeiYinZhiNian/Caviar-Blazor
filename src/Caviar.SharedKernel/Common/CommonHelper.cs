@@ -14,7 +14,7 @@ using NodaTime;
 
 namespace Caviar.SharedKernel.Entities
 {
-    public static class CommonHelper
+    public static partial class CommonHelper
     {
         /// <summary>
         /// 获取系统当前时间

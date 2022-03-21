@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel.Entities
 {
-    public static class UrlConfig
+    public static partial class UrlConfig
     {
         /// <summary>
         /// 高级查询

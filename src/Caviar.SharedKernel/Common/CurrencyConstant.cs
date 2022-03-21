@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel.Entities
 {
-    public static class CurrencyConstant
+    public static partial class CurrencyConstant
     {
         /// <summary>
         /// 时区
