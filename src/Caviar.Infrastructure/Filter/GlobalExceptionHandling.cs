@@ -2,6 +2,7 @@
 using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,9 @@ namespace Caviar.Infrastructure
     public class GlobalExceptionHandling
     {
         private readonly RequestDelegate _next;
-        private readonly LogServices<GlobalExceptionHandling> _logServices;
-        public GlobalExceptionHandling(RequestDelegate next,LogServices<GlobalExceptionHandling> logServices)
+        public GlobalExceptionHandling(RequestDelegate next)
         {
             _next = next;
-            _logServices = logServices;
         }
 
         public async Task Invoke(HttpContext httpContext)
@@ -48,7 +47,13 @@ namespace Caviar.Infrastructure
 
         private Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
-            var syslog = _logServices.Error(ex.InnerException.Message);
+            SysLog sysLog;
+            using (var provider = Configure.ServiceProvider.CreateScope())
+            {
+                var logServices = provider.ServiceProvider.GetRequiredService<LogServices<GlobalExceptionHandling>>();
+                sysLog = logServices.Error(ex.InnerException.Message);
+            }
+            
             //todo
             ResultMsg resultMsg = new ResultMsg()
             {
@@ -57,7 +62,7 @@ namespace Caviar.Infrastructure
                 Detail = new Dictionary<string, string>()
                 {
                     { "异常信息",ex.Message },
-                    { "异常已记录","异常id：" + syslog.Id},
+                    { "异常已记录","异常id：" + sysLog?.Id},
                 }
             };
             context.Response.ContentType = "application/json";
