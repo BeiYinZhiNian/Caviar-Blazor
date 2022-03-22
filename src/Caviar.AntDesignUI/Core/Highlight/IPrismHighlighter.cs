@@ -5,7 +5,7 @@ namespace Caviar.AntDesignUI.Core
 {
     public interface IPrismHighlighter
     {
-        ValueTask<MarkupString> HighlightAsync(string code, string language);
+        Task<string> HighlightAsync(string code, string language);
 
         Task HighlightAllAsync();
     }

@@ -13,11 +13,11 @@ namespace Caviar.AntDesignUI.Core
             this.jsRuntime = jsRuntime;
         }
 
-        public async ValueTask<MarkupString> HighlightAsync(string code, string language)
+        public async Task<string> HighlightAsync(string code, string language)
         {
             string highlighted = await jsRuntime.InvokeAsync<string>("AntDesign.Prism.highlight", code, language);
 
-            return new MarkupString(highlighted);
+            return highlighted;
         }
 
         public async Task HighlightAllAsync()

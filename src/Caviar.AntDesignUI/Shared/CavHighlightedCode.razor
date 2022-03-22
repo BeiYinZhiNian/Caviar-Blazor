@@ -1,7 +1,7 @@
 ﻿
 <pre class="language-@Language;">
 <code>
-@sourceCode
+@(new MarkupString(sourceCode))
         </code>
     </pre>
 
@@ -16,7 +16,7 @@
     [Parameter]
     public bool CanLoad { get; set; }
 
-    MarkupString sourceCode { get; set; }
+    string sourceCode { get; set; }
 
     bool hasLoaded = false;
 
