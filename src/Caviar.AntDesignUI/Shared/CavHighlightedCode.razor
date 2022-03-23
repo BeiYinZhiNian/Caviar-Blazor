@@ -1,30 +1,26 @@
 ﻿
-<pre class="language-@Language;">
+<pre class="language-@Language line-numbers">
 <code>
-@(new MarkupString(sourceCode))
+@Code
         </code>
     </pre>
 
 @inject IPrismHighlighter Highlighter
 
-@code { [Parameter]
+@code {
+    [Parameter]
     public string Code { get; set; }
 
     [Parameter]
     public string Language { get; set; }
 
-    [Parameter]
-    public bool CanLoad { get; set; }
 
-    string sourceCode { get; set; }
-
-    bool hasLoaded = false;
-
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (CanLoad && !hasLoaded)
-        {
-            sourceCode = await Highlighter.HighlightAsync(Code, Language);
-            hasLoaded = true;
-        }
-    } }
+        await Highlighter.HighlightAllAsync();
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+}
+
+    
