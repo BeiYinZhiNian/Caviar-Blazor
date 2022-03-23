@@ -51,7 +51,15 @@ namespace Caviar.Infrastructure
             using (var provider = Configure.ServiceProvider.CreateScope())
             {
                 var logServices = provider.ServiceProvider.GetRequiredService<LogServices<GlobalExceptionHandling>>();
-                sysLog = logServices.Error(ex.InnerException.Message);
+                if (ex.InnerException != null)
+                {
+                    sysLog = logServices.Error(ex.InnerException.Message);
+                }
+                else
+                {
+                    sysLog = logServices.Error(ex.Message);
+                }
+                
             }
             
             //todo
