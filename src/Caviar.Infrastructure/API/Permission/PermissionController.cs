@@ -95,8 +95,8 @@ namespace Caviar.Infrastructure.API.Permission
         public async Task<IActionResult> GetPermissionMenus(string roleName)
         {
             var role = await _roleManager.FindByNameAsync(roleName);
-            var permissions = await _userServices.GetPermissions(new List<int>() { role.Id }, u => u.PermissionType == PermissionType.RoleMenus);
-            var permissionUrls = _userServices.GetPermissions(permissions);
+            var permissions = await _userServices.GetPermissionsAsync(new List<int>() { role.Id }, u => u.PermissionType == PermissionType.RoleMenus);
+            var permissionUrls = _userServices.GetPermissionsAsync(permissions);
             var menus = await _sysMenuServices.GetPermissionMenus(permissionUrls);
             return Ok(menus);
         }
@@ -105,7 +105,7 @@ namespace Caviar.Infrastructure.API.Permission
         public async Task<IActionResult> SavePermissionMenus(string roleName,List<string> urls)
         {
             var role = await _roleManager.FindByNameAsync(roleName);
-            var count = await _userServices.SavePermissionMenus(role.Id, urls);
+            var count = await _userServices.SavePermissionMenusAsync(role.Id, urls);
             return Ok(title:$"成功修改{count}条权限");
         }
     }

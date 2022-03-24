@@ -224,7 +224,18 @@ namespace Caviar.SharedKernel.Entities
         public const string Page = "SharedKernel.Page";
         public const string AppNull = "app.null";
         public const string Admin = "admin";
+        /// <summary>
+        /// 模板角色
+        /// </summary>
         public const string TemplateRole = "TemplateRole";
+        /// <summary>
+        /// 游客用户
+        /// </summary>
+        public const string TouristUser = "tourist";
+        /// <summary>
+        /// 游客角色
+        /// </summary>
+        public const string TouristRole = "Tourist";
         /// <summary>
         /// 未授权
         /// </summary>

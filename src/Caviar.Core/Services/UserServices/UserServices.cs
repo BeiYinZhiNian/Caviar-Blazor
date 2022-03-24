@@ -16,6 +16,10 @@ namespace Caviar.Core.Services
 {
     public class UserServices:DbServices
     {
+        private string[] SpecialUsers = new string[]
+        {
+            CurrencyConstant.TouristUser,
+        };
         Interactor _interactor;
         UserManager<ApplicationUser> _userManager;
         public UserServices(Interactor interactor,UserManager<ApplicationUser> userManager,IAppDbContext appDbContext):base(appDbContext)
@@ -24,10 +28,10 @@ namespace Caviar.Core.Services
             _userManager = userManager;
         }
 
-        public async Task<IdentityResult> AssignRoles(string userName,IList<string> roles)
+        public async Task<IdentityResult> AssignRolesAsync(string userName,IList<string> roles)
         {
-            var user = await GetUserInfo(userName);
-            var currentRoles = await GetRoles(user);
+            var user = await GetUserInfoAsync(userName);
+            var currentRoles = await GetRolesAsync(user);
             var addRoles = roles.Where(u => !currentRoles.Contains(u));
             var removeRoles = currentRoles.Where(u => !roles.Contains(u));
             var result = await _userManager.AddToRolesAsync(user, addRoles);
@@ -52,14 +56,14 @@ namespace Caviar.Core.Services
         /// 获取指定用户所有角色
         /// </summary>
         /// <returns></returns>
-        public async Task<IList<string>> GetRoles(ApplicationUser user)
+        public async Task<IList<string>> GetRolesAsync(ApplicationUser user)
         {
             if (user == null) return new List<string>();
             var roles = await _userManager.GetRolesAsync(user);
             return roles;
         }
 
-        public async Task<IList<int>> GetRoleIds(ApplicationUser user)
+        public async Task<IList<int>> GetRoleIdsAsync(ApplicationUser user)
         {
             if (user == null) return new List<int>();
             var roleSet = AppDbContext.DbContext.Set<IdentityUserRole<int>>();
@@ -67,9 +71,9 @@ namespace Caviar.Core.Services
             return roleIds;
         }
 
-        public async Task<UserDetails> GetUserDetails(string userName)
+        public async Task<UserDetails> GetUserDetailsAsync(string userName)
         {
-            var user = await GetUserInfo(userName);
+            var user = await GetUserInfoAsync(userName);
             var useerGroup = await AppDbContext.SingleOrDefaultAsync<SysUserGroup>(u => u.Id == user.UserGroupId);
             UserDetails useerDetails = new UserDetails() 
             { 
@@ -78,15 +82,15 @@ namespace Caviar.Core.Services
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 Remark = user.Remark,
-                Roles = await GetRoles(user),
+                Roles = await GetRolesAsync(user),
                 UserGroupName = useerGroup.Name,
                 HeadPortrait = user.HeadPortrait,
             };
             return useerDetails;
         }
-        public async Task<IdentityResult> UpdateUserDetails(string userName,UserDetails userDetails)
+        public async Task<IdentityResult> UpdateUserDetailsAsync(string userName,UserDetails userDetails)
         {
-            var user = await GetUserInfo(userName);
+            var user = await GetUserInfoAsync(userName);
             user.Email = userDetails.Email;
             user.PhoneNumber = userDetails.PhoneNumber;
             user.Remark = userDetails.Remark;
@@ -94,8 +98,12 @@ namespace Caviar.Core.Services
             return await _userManager.UpdateAsync(user);
         }
 
-        public async Task<IdentityResult> UpdateUser(string operatorUp,ApplicationUserView vm)
+        public async Task<IdentityResult> UpdateUserAsync(string operatorUp,ApplicationUserView vm)
         {
+            if (SpecialUsers.Contains(vm.Entity.UserName))
+            {
+                throw new Exception("特殊用户，禁止修改");
+            }
             var user = await _userManager.FindByIdAsync(vm.Entity.Id.ToString());
             if (user == null) throw new ArgumentNullException($"{vm.Entity.UserName}不存在");
             user.UserName = vm.Entity.UserName;
@@ -112,11 +120,25 @@ namespace Caviar.Core.Services
             return result;
         }
 
+        public Task<IdentityResult> DeleteUserAsync(ApplicationUserView vm)
+        {
+            if (SpecialUsers.Contains(vm.Entity.UserName))
+            {
+                throw new Exception("特殊用户，禁止删除");
+            }
+            if (vm.Entity.Id == 1)
+            {
+                throw new Exception("非法操作，无法删除管理员账号");
+            }
+            var result = _userManager.DeleteAsync(vm.Entity);
+            return result;
+        }
+
         /// <summary>
         /// 获取指定角色所有权限
         /// </summary>
         /// <returns></returns>
-        public Task<List<SysPermission>> GetPermissions(List<int> roleIds,Expression<Func<SysPermission, bool>> whereLambda)
+        public Task<List<SysPermission>> GetPermissionsAsync(List<int> roleIds,Expression<Func<SysPermission, bool>> whereLambda)
         {
             var permissionsSet = AppDbContext.DbContext.Set<SysPermission>();
             return permissionsSet.Where(u => roleIds.Contains(u.Entity)).Where(whereLambda).ToListAsync();
@@ -127,10 +149,10 @@ namespace Caviar.Core.Services
         /// <param name="roleName"></param>
         /// <param name="urls"></param>
         /// <returns></returns>
-        public async Task<int> SavePermissionMenus(int roleId, List<string> urls)
+        public async Task<int> SavePermissionMenusAsync(int roleId, List<string> urls)
         {
-            var permissionMenus = await GetPermissions(new List<int>() { roleId }, u => u.PermissionType == PermissionType.RoleMenus);
-            var menuUrls = GetPermissions(permissionMenus);
+            var permissionMenus = await GetPermissionsAsync(new List<int>() { roleId }, u => u.PermissionType == PermissionType.RoleMenus);
+            var menuUrls = GetPermissionsAsync(permissionMenus);
             var reomveMenus = permissionMenus.Where(u => !urls.Contains(u.Permission)).ToList();
             AppDbContext.DbContext.RemoveRange(reomveMenus);
             var addMenus = urls.Where(u=> !menuUrls.Contains(u)).Select(u => new SysPermission() { Permission = u, PermissionType = PermissionType.RoleMenus, Entity = roleId }).ToList();
@@ -138,7 +160,7 @@ namespace Caviar.Core.Services
             return await AppDbContext.DbContext.SaveChangesAsync();
         }
 
-        public async Task<CurrentUser> GetCurrentUserInfo(ClaimsPrincipal User)
+        public async Task<CurrentUser> GetCurrentUserInfoAsync(ClaimsPrincipal User)
         {
             List<CaviarClaim> claims = null;
             if (User.Identity.IsAuthenticated)
@@ -168,10 +190,10 @@ namespace Caviar.Core.Services
         /// 获取当前用户所有权限或者指定权限
         /// </summary>
         /// <returns></returns>
-        public async Task<List<SysPermission>> GetPermissions(Expression<Func<SysPermission, bool>> whereLambda)
+        public async Task<List<SysPermission>> GetPermissionsAsync(Expression<Func<SysPermission, bool>> whereLambda)
         {
-            var user = await GetCurrentUserInfo();
-            var roles = await GetRoleIds(user);
+            var user = await GetCurrentUserInfoAsync();
+            var roles = await GetRoleIdsAsync(user);
             var permissionsSet = AppDbContext.DbContext.Set<SysPermission>();
             return permissionsSet.Where(u => roles.Contains(u.Entity)).Where(whereLambda).ToList();
         }
@@ -180,10 +202,10 @@ namespace Caviar.Core.Services
         /// 获取当前用户所有权限或者指定权限
         /// </summary>
         /// <returns></returns>
-        public async Task<List<SysPermission>> GetPermissions()
+        public async Task<List<SysPermission>> GetPermissionsAsync()
         {
-            var user = await GetCurrentUserInfo();
-            var roles = await GetRoleIds(user);
+            var user = await GetCurrentUserInfoAsync();
+            var roles = await GetRoleIdsAsync(user);
             var permissionsSet = AppDbContext.DbContext.Set<SysPermission>();
             return permissionsSet.Where(u => roles.Contains(u.Entity)).ToList();
         }
@@ -192,18 +214,18 @@ namespace Caviar.Core.Services
         /// </summary>
         /// <param name="sysPermissions"></param>
         /// <returns></returns>
-        public List<string> GetPermissions(List<SysPermission> sysPermissions)
+        public List<string> GetPermissionsAsync(List<SysPermission> sysPermissions)
         {
             return sysPermissions.Select(u => u.Permission).ToList();
         }
 
-        public async Task<ApplicationUser> GetCurrentUserInfo()
+        public async Task<ApplicationUser> GetCurrentUserInfoAsync()
         {
             var user = await _userManager.GetUserAsync(_interactor.User);
             return user;
         }
 
-        public async Task<ApplicationUser> GetUserInfo(string userName)
+        public async Task<ApplicationUser> GetUserInfoAsync(string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
             return user;

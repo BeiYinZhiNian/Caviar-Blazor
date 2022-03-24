@@ -32,8 +32,6 @@ namespace Caviar.AntDesignUI.Core
 
         public static event JSScheduling SwitchWasm;
 
-        public static event JSScheduling ForceLoad;
-
         [JSInvokable]
         public static Task<string> JsNavigation(IframeMessage message)
         {

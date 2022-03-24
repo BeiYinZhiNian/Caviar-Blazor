@@ -13,6 +13,12 @@ namespace Caviar.Core.Services
 {
     public class RoleServices:DbServices
     {
+        private string[] SpecialRoles = new string[]
+        {
+            CurrencyConstant.TemplateRole,
+            CurrencyConstant.TouristRole,
+        };
+
         private RoleManager<ApplicationRole> _roleManager;
         public RoleServices(RoleManager<ApplicationRole> roleManager,IAppDbContext appDbContext) : base(appDbContext)
         {
@@ -50,9 +56,13 @@ namespace Caviar.Core.Services
 
         public async Task<IdentityResult> DeleteUserAsync(ApplicationRoleView vm)
         {
-            if(vm.Entity.Name == CurrencyConstant.TemplateRole || vm.Entity.Name == CurrencyConstant.Admin)
+            if(SpecialRoles.Contains(vm.Entity.Name))
             {
                 throw new Exception("特殊角色，禁止删除");
+            }
+            if(vm.Entity.Id == 1)
+            {
+                throw new Exception("非法操作，无法删除超级管理员角色");
             }
             var result = await _roleManager.DeleteAsync(vm.Entity);
             if (result.Succeeded)
@@ -67,6 +77,10 @@ namespace Caviar.Core.Services
 
         public async Task<IdentityResult> UpdateUserAsync(ApplicationRoleView vm)
         {
+            if (SpecialRoles.Contains(vm.Entity.Name))
+            {
+                throw new Exception("特殊角色，禁止修改信息");
+            }
             var role = await _roleManager.FindByIdAsync(vm.Entity.Id.ToString());
             if (role == null) throw new ArgumentNullException($"{vm.Entity.Name}不存在");
             role.Name = vm.Entity.Name;

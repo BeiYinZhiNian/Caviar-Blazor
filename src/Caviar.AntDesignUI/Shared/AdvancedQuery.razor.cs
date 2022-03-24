@@ -44,6 +44,8 @@ namespace Caviar.AntDesignUI.Shared
             model.ComponentStatus.Field = field;
         }
 
+
+
         void AddCondition()
         {
             var model = new QueryModel() { ComponentStatus = new ComponentStatus()};
@@ -61,6 +63,7 @@ namespace Caviar.AntDesignUI.Shared
             queryModel.Value = value.ToString();
             Console.WriteLine(queryModel.Value);
         }
+
 
         void OnDateTimeChange(QueryModel queryModel, DateTimeChangedEventArgs dateTimeChanged)
         {

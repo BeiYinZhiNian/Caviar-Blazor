@@ -60,8 +60,8 @@ namespace Caviar.Infrastructure.API.BaseApi
             LogServices = CreateService<LogServices<BaseApiController>>();
             Interactor.Stopwatch.Start();
 
-            Interactor.UserInfo = await UserServices.GetCurrentUserInfo();
-            var roles = await UserServices.GetRoles(Interactor.UserInfo);
+            Interactor.UserInfo = await UserServices.GetCurrentUserInfoAsync();
+            var roles = await UserServices.GetRolesAsync(Interactor.UserInfo);
             Interactor.ApplicationRoles = await RoleServices.GetRoles(roles);
             //请求参数
             Interactor.ActionArguments = context.ActionArguments;
@@ -93,8 +93,8 @@ namespace Caviar.Infrastructure.API.BaseApi
         protected virtual bool UrlCheck()
         {
             //设置url权限
-            var menuPermission = UserServices.GetPermissions(u => u.PermissionType == PermissionType.RoleMenus).Result;
-            PermissionUrls = UserServices.GetPermissions(menuPermission);
+            var menuPermission = UserServices.GetPermissionsAsync(u => u.PermissionType == PermissionType.RoleMenus).Result;
+            PermissionUrls = UserServices.GetPermissionsAsync(menuPermission);
             var url = Interactor.Current_Action.Remove(0, CurrencyConstant.Api.Length + 1);
             if (IgnoreUrl.Contains(url)) return true;
             return PermissionUrls.Contains(url);
@@ -123,7 +123,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             var result = context.Result;
             var resultScanner = CreateService<ResultScannerServices>();
             //赋值字段权限
-            resultScanner.PermissionFieldss = UserServices.GetPermissions(u => u.PermissionType == PermissionType.RoleFields).Result;
+            resultScanner.PermissionFieldss = UserServices.GetPermissionsAsync(u => u.PermissionType == PermissionType.RoleFields).Result;
             var resultMsg = resultScanner.ResultHandle(result);
             if (resultMsg != null)
             {
@@ -187,8 +187,8 @@ namespace Caviar.Infrastructure.API.BaseApi
             var fieldName = typeof(T).Name;
             var fullName = typeof(T).FullName;
             var fields = FieldScannerServices.GetClassFields(fieldName, fullName, LanguageService);
-            var user = await UserServices.GetCurrentUserInfo();
-            var roles = await UserServices.GetRoleIds(user);
+            var user = await UserServices.GetCurrentUserInfoAsync();
+            var roles = await UserServices.GetRoleIdsAsync(user);
             fields = await permissionServices.GetRoleFields(fields, fullName, roles);
             fields = fields.OrderBy(u => u.Entity.Number).ToList();
             return fields;

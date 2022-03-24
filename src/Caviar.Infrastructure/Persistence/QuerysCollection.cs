@@ -17,8 +17,9 @@ namespace Caviar.Infrastructure
             foreach (var item in this)
             {
                 var property = typeInfo.GetProperty(item.Key);
-                Type realType = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
-                var value = Convert.ChangeType(item.Value, property.PropertyType);
+                Type propertyType = property.PropertyType;
+                if(item.IsEnum) propertyType = typeof(int);
+                var value = Convert.ChangeType(item.Value, propertyType);
                 Expression<Func<object>> valueLamba = () => value;
                 switch (item.QuerTypes)
                 {

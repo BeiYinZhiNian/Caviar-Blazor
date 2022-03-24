@@ -25,6 +25,11 @@ namespace Caviar.Infrastructure
         public static bool HasDataInit { get; set; }
 
         public static CaviarConfig CaviarConfig { get; set; }
+        /// <summary>
+        /// 允许游客浏览
+        /// 未登录用户自动继承游客权限
+        /// </summary>
+        public static bool AllowTourists { get; set; }
 
         public static bool IsDebug { get; set; }
 

@@ -40,7 +40,7 @@ namespace Caviar.Infrastructure.API
 
         public async Task<CurrentUser> CurrentUserInfo()
         {
-            var currentUser = await _userServices.GetCurrentUserInfo(_httpContextAccessor.HttpContext.User);
+            var currentUser = await _userServices.GetCurrentUserInfoAsync(_httpContextAccessor.HttpContext.User);
             return await Task.FromResult(currentUser);
         }
 

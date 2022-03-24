@@ -49,6 +49,10 @@ namespace Caviar.SharedKernel.Entities.View
         /// 查询数据
         /// </summary>
         public string Value { get; set; }
+        /// <summary>
+        /// 是否未枚举
+        /// </summary>
+        public bool IsEnum { get; set; }
         public enum QuerySplicing
         {
             And,

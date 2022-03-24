@@ -39,11 +39,11 @@
                             <SelectOptions>
                                 @if (Fields != null)
                                 {
-                                    foreach (var item in Fields)
+                                    foreach (var field_item in Fields)
                                     {
-                                        if (item.IsPermission && item.Entity.IsPanel)
+                                        if (field_item.IsPermission && field_item.Entity.IsPanel)
                                         {
-                                            <SimpleSelectOption Value="@item.Entity.FieldName" Label="@item.DisplayName"></SimpleSelectOption>
+                                            <SimpleSelectOption Value="@field_item.Entity.FieldName" Label="@field_item.DisplayName"></SimpleSelectOption>
                                         }
                                     }
                                 }
@@ -54,12 +54,15 @@
                         <CavEnumSelect Style="width:120px" TEnum="QueryModel.QuerType" @bind-Value="QueryModel.QuerTypes" />
                     </SpaceItem>
                     @{
+                        QueryModel.IsEnum = true;
                         var entityType = component.Field?.EntityType.ToLower();
                         if (component.Field != null && component.Field.IsEnum)
                         {
                             <SpaceItem>
                                 <SimpleSelect Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SelectType}"]"
-                              Style="width:120px">
+                                OnSelectedItemChanged="u=>OnValueChange(QueryModel,u)"
+                                @bind-Value="QueryModel.Value"
+                                Style="width:120px">
                                     <SelectOptions>
                                         @foreach (var enumItem in component.Field.EnumValueName)
                                         {
@@ -72,6 +75,7 @@
                         }
                         else
                         {
+                            QueryModel.IsEnum = false;
                             switch (entityType)
                             {
                                 case "int32":

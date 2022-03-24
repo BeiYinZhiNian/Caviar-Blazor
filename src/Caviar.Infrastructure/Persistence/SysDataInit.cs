@@ -24,6 +24,7 @@ namespace Caviar.Infrastructure.Persistence
         ILanguageService _languageService;
         ApplicationRole AdminRole;
         ApplicationRole TemplateRole;
+        ApplicationRole TouristRole;
         int DataId = 1;//数据权限id
 
         string[] InitUrls = new string[]
@@ -218,10 +219,14 @@ namespace Caviar.Infrastructure.Persistence
         protected virtual async Task CreateInitUser()
         {
             var userManager = _serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            var user = new ApplicationUser { Email = "1031622947@qq.com", AccountName = "北音执念", UserName = "admin", Remark = "生活的意义就是折腾！",UserGroupId = DataId,DataId = DataId};
+            var user = new ApplicationUser { Email = "1031622947@qq.com", AccountName = "北音执念", UserName = CurrencyConstant.Admin, Remark = "生活的意义就是折腾！",UserGroupId = DataId,DataId = DataId};
             var result = await userManager.CreateAsync(user, CommonHelper.SHA256EncryptString(CurrencyConstant.DefaultPassword));
-            if (!result.Succeeded) throw new Exception("创建用户数据失败，数据初始化停止");
+            if (!result.Succeeded) throw new Exception("创建管理员账号失败，数据初始化停止");
             await userManager.AddToRoleAsync(user, CurrencyConstant.Admin);
+            user = new ApplicationUser { Email = "123@qq.com", AccountName = "游客", UserName = CurrencyConstant.TouristUser, Remark = "生活的意义就是折腾！", UserGroupId = DataId, DataId = DataId };
+            result = await userManager.CreateAsync(user, CommonHelper.SHA256EncryptString(CurrencyConstant.DefaultPassword));
+            if (!result.Succeeded) throw new Exception("创建游客账号失败，数据初始化停止");
+            await userManager.AddToRoleAsync(user, CurrencyConstant.TouristRole);
         }
 
         protected virtual async Task CreateInitRole()
@@ -235,6 +240,10 @@ namespace Caviar.Infrastructure.Persistence
             result = await roleManager.CreateAsync(role);
             TemplateRole = role;
             if (!result.Succeeded) throw new Exception("创建模板角色数据失败，数据初始化停止");
+            role = new ApplicationRole { Name = CurrencyConstant.TouristRole, DataId = DataId, DataRange = DataRange.Level, Remark = "游客角色，用于设置游客访问权限，请勿删除" };
+            result = await roleManager.CreateAsync(role);
+            TouristRole = role;
+            if (!result.Succeeded) throw new Exception("创建游客角色数据失败，数据初始化停止");
         }
 
         protected virtual async Task<List<SysMenu>> CreateMenu()
