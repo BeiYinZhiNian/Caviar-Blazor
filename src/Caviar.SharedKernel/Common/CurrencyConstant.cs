@@ -10,6 +10,10 @@ namespace Caviar.SharedKernel.Entities
     public static partial class CurrencyConstant
     {
         /// <summary>
+        /// 数据源
+        /// </summary>
+        public const string DataSource = "DataSource";
+        /// <summary>
         /// 时区
         /// </summary>
         public const string TimeZone = "Asia/Shanghai";

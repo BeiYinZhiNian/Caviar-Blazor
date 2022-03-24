@@ -79,7 +79,7 @@ namespace Caviar.AntDesignUI.Shared
                 Menu = menu,
                 Data = data,
             };
-            var DataSourceName = "DataSource";
+            var DataSourceName = CurrencyConstant.DataSource;
             switch (menu.Entity.TargetType)
             {
                 case TargetType.CurrentPage:
