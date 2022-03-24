@@ -80,7 +80,7 @@ namespace Caviar.Infrastructure.API
         [HttpGet]
         public async Task<IActionResult> CurrentUserInfo()
         {
-            var currentUser = await UserServices.GetCurrentUserInfoAsync(User);
+            var currentUser = await UserServices.GetCurrentUserInfoAsync(User, Configure.TouristVisit);
             return Ok(currentUser);
         }
 

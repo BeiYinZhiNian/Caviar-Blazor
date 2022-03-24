@@ -12,6 +12,10 @@ namespace Caviar.SharedKernel.Entities.User
         public string UserName { get; set; }
         public bool IsAuthenticated { get; set; }
         public IEnumerable<CaviarClaim> Claims { get; set; }
+        /// <summary>
+        /// 是否为游客
+        /// </summary>
+        public bool TouristVisit { get; set; }
     }
 
     /// <summary>

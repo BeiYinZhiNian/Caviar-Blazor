@@ -29,7 +29,7 @@ namespace Caviar.Infrastructure
         /// 允许游客浏览
         /// 未登录用户自动继承游客权限
         /// </summary>
-        public static bool AllowTourists { get; set; }
+        public static bool TouristVisit { get; set; }
 
         public static bool IsDebug { get; set; }
 

@@ -59,8 +59,17 @@ namespace Caviar.Infrastructure.API.BaseApi
             RoleServices = CreateService<RoleServices>();
             LogServices = CreateService<LogServices<BaseApiController>>();
             Interactor.Stopwatch.Start();
-
-            Interactor.UserInfo = await UserServices.GetCurrentUserInfoAsync();
+            if (!User.Identity.IsAuthenticated && Configure.TouristVisit)
+            {
+                Interactor.UserInfo = await UserServices.GetUserInfoAsync(CurrencyConstant.TouristUser);
+            }
+            else
+            {
+                if(User.Identity.IsAuthenticated)
+                {
+                    Interactor.UserInfo = await UserServices.GetUserInfoAsync(User.Identity.Name);
+                }
+            }
             var roles = await UserServices.GetRolesAsync(Interactor.UserInfo);
             Interactor.ApplicationRoles = await RoleServices.GetRoles(roles);
             //请求参数

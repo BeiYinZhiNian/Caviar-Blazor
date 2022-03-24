@@ -13,10 +13,6 @@ namespace Caviar.SharedKernel.Entities
     {
         public Interactor(IHttpContextAccessor context)
         {
-            //用户信息
-            User = context.HttpContext.User;
-            //用户名
-            UserName = context.HttpContext.User.Identity.Name;
             //获取ip地址
             Current_Ipaddress = CommonHelper.GetUserIp(context.HttpContext);
             //获取完整Url
@@ -106,11 +102,7 @@ namespace Caviar.SharedKernel.Entities
         /// 当前用户信息不为null时，取自User
         /// 当未登录用户进行操作时，需要自定义用户名称,可以自主指定
         /// </summary>
-        public string UserName { get; set; } = "未登录用户";
-        /// <summary>
-        /// 当前用户信息
-        /// </summary>
-        public ClaimsPrincipal User { get; set; }
+        public string UserName => UserInfo?.UserName;
         /// <summary>
         /// 当前用户详细信息
         /// </summary>

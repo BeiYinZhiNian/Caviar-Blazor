@@ -40,7 +40,7 @@ namespace Caviar.Infrastructure.API
 
         public async Task<CurrentUser> CurrentUserInfo()
         {
-            var currentUser = await _userServices.GetCurrentUserInfoAsync(_httpContextAccessor.HttpContext.User);
+            var currentUser = await _userServices.GetCurrentUserInfoAsync(_httpContextAccessor.HttpContext.User, Configure.TouristVisit);
             return await Task.FromResult(currentUser);
         }
 
@@ -60,13 +60,11 @@ namespace Caviar.Infrastructure.API
                     data += $"|{returnUrl}";
                 }
                 _interactor.UserInfo = user;
-                _interactor.UserName = loginRequest.UserName;
                 _logServices.Infro($"登录成功：{singInResult}");
                 return new ResultMsg() {Title = _languageService[$"{CurrencyConstant.ResuleMsg}.Login Succeeded"], Url = $"/{CurrencyConstant.Api}{UrlConfig.SignInActual}?t=" + Uri.EscapeDataString(data) };
             }
             else
             {
-                _interactor.UserName = loginRequest.UserName;
                 _logServices.Infro($"登录失败:{singInResult}");
                 return new ResultMsg() { Title = _languageService[$"{CurrencyConstant.ResuleMsg}.{singInResult}"], Status = System.Net.HttpStatusCode.Unauthorized };
             }

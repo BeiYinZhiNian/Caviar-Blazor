@@ -160,7 +160,7 @@ namespace Caviar.Core.Services
             return await AppDbContext.DbContext.SaveChangesAsync();
         }
 
-        public async Task<CurrentUser> GetCurrentUserInfoAsync(ClaimsPrincipal User)
+        public async Task<CurrentUser> GetCurrentUserInfoAsync(ClaimsPrincipal User,bool TouristVisit)
         {
             List<CaviarClaim> claims = null;
             if (User.Identity.IsAuthenticated)
@@ -176,14 +176,47 @@ namespace Caviar.Core.Services
                     new CaviarClaim(CurrencyConstant.AccountName,applicationUser.AccountName),
                 };
                 claims.AddRange(User.Claims.Select(u => new CaviarClaim(u)));
+                var currentUser = new CurrentUser
+                {
+                    IsAuthenticated = User.Identity.IsAuthenticated,
+                    UserName = User.Identity.Name,
+                    Claims = claims
+                };
+                return await Task.FromResult(currentUser);
             }
-            var currentUser = new CurrentUser
+            else if (TouristVisit)
             {
-                IsAuthenticated = User.Identity.IsAuthenticated,
-                UserName = User.Identity.Name,
-                Claims = claims
-            };
-            return await Task.FromResult(currentUser);
+                var applicationUser = await _userManager.FindByNameAsync(CurrencyConstant.TouristUser);
+                if (applicationUser == null)
+                {
+                    return new CurrentUser() { IsAuthenticated = false };
+                }
+                claims = new List<CaviarClaim>()
+                {
+                    new CaviarClaim(CurrencyConstant.HeadPortrait, applicationUser.HeadPortrait ?? ""),
+                    new CaviarClaim(CurrencyConstant.AccountName,applicationUser.AccountName),
+                };
+                claims.AddRange(User.Claims.Select(u => new CaviarClaim(u)));
+                var currentUser = new CurrentUser
+                {
+                    IsAuthenticated = true,
+                    UserName = applicationUser.AccountName,
+                    Claims = claims,
+                    TouristVisit = true
+                };
+                return await Task.FromResult(currentUser);
+            }
+            else
+            {
+                var currentUser = new CurrentUser
+                {
+                    IsAuthenticated = User.Identity.IsAuthenticated,
+                    UserName = User.Identity.Name,
+                    Claims = claims
+                };
+                return await Task.FromResult(currentUser);
+            }
+            
         }
 
         /// <summary>
@@ -219,10 +252,9 @@ namespace Caviar.Core.Services
             return sysPermissions.Select(u => u.Permission).ToList();
         }
 
-        public async Task<ApplicationUser> GetCurrentUserInfoAsync()
+        public Task<ApplicationUser> GetCurrentUserInfoAsync()
         {
-            var user = await _userManager.GetUserAsync(_interactor.User);
-            return user;
+            return Task.FromResult(_interactor.UserInfo);
         }
 
         public async Task<ApplicationUser> GetUserInfoAsync(string userName)
