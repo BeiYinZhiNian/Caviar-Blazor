@@ -42,6 +42,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
             var result = await HttpService.PostJson($"{Url[CurrencyConstant.SavePermissionMenu, CurrencyConstant.PermissionKey]}?roleName={DataSource.Entity.Name}", urls);
             if (result.Status != HttpStatusCode.OK) return false;
             _ = MessageService.Success(result.Title);
+            UserConfig.RefreshMenuAction.Invoke();//更新菜单
             return true;
         }
     }
