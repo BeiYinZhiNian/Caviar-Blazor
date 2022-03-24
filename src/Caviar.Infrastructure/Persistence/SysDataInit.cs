@@ -27,7 +27,7 @@ namespace Caviar.Infrastructure.Persistence
         ApplicationRole TouristRole;
         int DataId = 1;//数据权限id
 
-        string[] InitUrls = new string[]
+        string[] TemplateRoleUrls = new string[]
         {
                 UrlConfig.Home,
                 UrlConfig.GetMenuBar,
@@ -45,7 +45,7 @@ namespace Caviar.Infrastructure.Persistence
                 UrlConfig.UpdateDetails,
         };
 
-        string[] InitFildes = new string[]
+        string[] TemplateRoleFildes = new string[]
         {
             "Caviar.SharedKernel.Entities.SysMenuUrl",
             "Caviar.SharedKernel.Entities.SysMenuIcon",
@@ -55,6 +55,25 @@ namespace Caviar.Infrastructure.Persistence
             "Caviar.SharedKernel.Entities.SysMenuMenuType",
             "Caviar.SharedKernel.Entities.SysMenuTargetType",
             "Caviar.SharedKernel.Entities.SysEnclosureFilePath"
+        };
+
+        string[] TouristRoleUrls = new string[]
+        {
+                UrlConfig.Home,
+                UrlConfig.GetMenuBar,
+                UrlConfig.Login,
+                UrlConfig.SignInActual,
+        };
+
+        string[] TouristRoleFildes = new string[]
+        {
+            "Caviar.SharedKernel.Entities.SysMenuUrl",
+            "Caviar.SharedKernel.Entities.SysMenuIcon",
+            "Caviar.SharedKernel.Entities.SysMenuParentId",
+            "Caviar.SharedKernel.Entities.SysMenuNumber",
+            "Caviar.SharedKernel.Entities.SysMenuKey",
+            "Caviar.SharedKernel.Entities.SysMenuMenuType",
+            "Caviar.SharedKernel.Entities.SysMenuTargetType",
         };
         public SysDataInit(IServiceProvider provider)
         {
@@ -148,11 +167,20 @@ namespace Caviar.Infrastructure.Persistence
                     Permission = permission,
                     PermissionType = PermissionType.RoleFields
                 });
-                if (InitFildes.Contains(permission))
+                if (TemplateRoleFildes.Contains(permission))
                 {
                     _dbContext.Add(new SysPermission()
                     {
                         Entity = TemplateRole.Id,
+                        Permission = permission,
+                        PermissionType = PermissionType.RoleFields
+                    });
+                }
+                if (TemplateRoleFildes.Contains(permission))
+                {
+                    _dbContext.Add(new SysPermission()
+                    {
+                        Entity = TouristRole.Id,
                         Permission = permission,
                         PermissionType = PermissionType.RoleFields
                     });
@@ -200,9 +228,13 @@ namespace Caviar.Infrastructure.Persistence
             {
                 if (string.IsNullOrEmpty(item.Url)) continue;
                 set.Add(new SysPermission() { Permission = item.Url,Entity = AdminRole.Id, PermissionType = PermissionType.RoleMenus});
-                if (InitUrls.Contains(item.Url))
+                if (TemplateRoleUrls.Contains(item.Url))
                 {
                     set.Add(new SysPermission() { Permission = item.Url, Entity = TemplateRole.Id, PermissionType = PermissionType.RoleMenus });
+                }
+                if (TouristRoleUrls.Contains(item.Url))
+                {
+                    set.Add(new SysPermission() { Permission = item.Url, Entity = TouristRole.Id, PermissionType = PermissionType.RoleMenus });
                 }
             }
             await _dbContext.SaveChangesAsync();

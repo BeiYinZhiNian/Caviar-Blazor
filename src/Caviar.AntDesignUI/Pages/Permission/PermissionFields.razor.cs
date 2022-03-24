@@ -26,7 +26,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
         protected override async Task OnInitializedAsync()
         {
             var query = new Uri(NavigationManager.Uri).Query;
-            if (QueryHelpers.ParseQuery(query).TryGetValue("Parameter", out var Parameter))
+            if (QueryHelpers.ParseQuery(query).TryGetValue(CurrencyConstant.DataSource, out var Parameter))
             {
                 Role = JsonConvert.DeserializeObject<ApplicationRoleView>(Parameter);
             }
