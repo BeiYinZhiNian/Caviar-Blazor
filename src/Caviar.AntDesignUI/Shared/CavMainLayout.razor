@@ -33,12 +33,21 @@
                 <CavPopover></CavPopover>
             </div>
         </Header>
-        <div style="margin: 12px 16px;">
+        @if(UserConfig.IsTable)
+        {
+            <Content Style="@UserConfig.ContentStyle">
+                <ReuseTabs Class="top-row px-4" TabPaneClass="content px-4" />
+            </Content>
+        }
+        else{
+            <div style="margin: 12px 16px;">
             <CavBreadcrumb BreadcrumbItemArr="@BreadcrumbItemArr"></CavBreadcrumb>
         </div>
         <Content Style="@UserConfig.ContentStyle">
             @Body
         </Content>
+        }
+        
         <CavFooter></CavFooter>
     </Layout>
 </Layout>

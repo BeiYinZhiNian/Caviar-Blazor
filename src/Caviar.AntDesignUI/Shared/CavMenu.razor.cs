@@ -140,6 +140,7 @@ namespace Caviar.AntDesignUI.Shared
         protected override async Task OnInitializedAsync()
         {
             SysMenus = await GetMenus();
+            SysMenus.TreeToList(UserConfig.Menus);
         }
 
         protected override void OnAfterRender(bool firstRender)

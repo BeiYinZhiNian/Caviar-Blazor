@@ -7,8 +7,8 @@
         <Found Context="routeData">
             <AuthorizeView>
                 <Authorized>
-                    <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(CavMainLayout)" />
-                    @*<ReuseTabsRouteView RouteData="@routeData" DefaultLayout="@typeof(CavMainLayout)" />*@
+@*                    <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(CavMainLayout)" />*@
+                    <ReuseTabsRouteView RouteData="@routeData" DefaultLayout="@typeof(CavMainLayout)" />
                 </Authorized>
                 <NotAuthorized>
                     <Caviar.AntDesignUI.Pages.User.Login></Caviar.AntDesignUI.Pages.User.Login>

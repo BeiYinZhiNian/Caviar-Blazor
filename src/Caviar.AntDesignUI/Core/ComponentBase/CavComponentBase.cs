@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.AntDesignUI.Core
 {
-    public partial class CavComponentBase : ComponentBase
+    public partial class CavComponentBase : ComponentBase,IReuseTabsPage
     {
         #region 属性注入
         /// <summary>
@@ -34,7 +34,7 @@ namespace Caviar.AntDesignUI.Core
         /// API组
         /// </summary>
         [Parameter]
-        public List<SysMenuView> APIList { get; set; } = new List<SysMenuView>();
+        public List<SysMenuView> APIList { get; set; }
         /// <summary>
         /// url读取器
         /// </summary>
@@ -63,10 +63,17 @@ namespace Caviar.AntDesignUI.Core
             }
             set 
             {
-                var split = value.Split('/');
-                if (split.Length > 0)
+                if (value.Contains('/')) // 带有url进行分类
                 {
-                    _controllerName = split[0];
+                    var split = value.Split('/');
+                    if (split.Length > 0)
+                    {
+                        _controllerName = split[0];
+                    }
+                }
+                else
+                {
+                    _controllerName = value;
                 }
             }
         }
@@ -74,6 +81,18 @@ namespace Caviar.AntDesignUI.Core
         [Parameter]
         public string SubmitUrl { get; set; }
 
+        string _currentUrl;
+
+        string CurrentUrl { 
+            get 
+            { 
+                if(_currentUrl == null)
+                {
+                    _currentUrl = NavigationManager.Uri;
+                }
+                return _currentUrl;
+            } 
+        }
 
         string _controllerName;
 
@@ -95,9 +114,13 @@ namespace Caviar.AntDesignUI.Core
             {
                 splicing += item + "|";
             }
-            var result = await HttpService.GetJson<List<SysMenuView>>($"{UrlConfig.GetApis}?controllerName={ControllerName}&splicing={splicing}");
-            if (result.Status != HttpStatusCode.OK) return null;
-            return result.Data;
+            if (!string.IsNullOrEmpty(ControllerName)) // 不需要注入url
+            {
+                var result = await HttpService.GetJson<List<SysMenuView>>($"{UrlConfig.GetApis}?controllerName={ControllerName}&splicing={splicing}");
+                if (result.Status != HttpStatusCode.OK) return null;
+                return result.Data;
+            }
+            return new List<SysMenuView>();
         }
 
         protected override void OnParametersSet()
@@ -142,6 +165,39 @@ namespace Caviar.AntDesignUI.Core
             }
             return radioOptions.ToArray();
         }
+
+        public virtual RenderFragment GetPageTitle() => builder =>
+        {
+            var uri = new Uri(CurrentUrl);
+            var absolutePath = uri.AbsolutePath;
+            if (absolutePath[0] == '/') absolutePath = absolutePath[1..];
+            var menu = UserConfig.Menus.FirstOrDefault(u => u.Entity.Url == absolutePath);
+            if(menu != null)
+            {
+                var index = 0;
+                builder.OpenElement(index++, "div");
+                if (!string.IsNullOrEmpty(menu.Entity.Icon))
+                {
+                    IEnumerable<KeyValuePair<string, object>> paramenter = new List<KeyValuePair<string, object>>()
+                    {
+                        new KeyValuePair<string, object>("Type",menu.Entity.Icon)
+                    };
+
+                    builder.OpenComponent(index++, typeof(Icon));
+                    builder.AddMultipleAttributes(index++, paramenter);
+                    builder.CloseComponent();
+                }
+                builder.AddMarkupContent(index++, LanguageService[$"{CurrencyConstant.Menu}.{menu.Entity.Key}"]);
+                builder.CloseElement();
+            }
+            else
+            {
+                var index = 0;
+                builder.OpenElement(index++, "div");
+                builder.AddMarkupContent(index++, absolutePath);
+                builder.CloseElement();
+            }
+        };
     }
 
     public class UrlAccessor

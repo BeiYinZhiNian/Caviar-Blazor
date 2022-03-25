@@ -83,13 +83,15 @@ namespace Caviar.AntDesignUI.Core
         /// <summary>
         /// 是否table页
         /// </summary>
-        public bool IsTable { get; set; }
+        public bool IsTable { get; set; } = true;
         /// <summary>
         /// 更新布局
         /// </summary>
         public Action LayoutPage { get; set; }
 
         private string _theme = "ant-design-blazor.css";
+
+        public List<SysMenuView> Menus { get; set; } = new List<SysMenuView>();
 
         public async void SetTheme(string oldThemeName,string newThemeName)
         {
