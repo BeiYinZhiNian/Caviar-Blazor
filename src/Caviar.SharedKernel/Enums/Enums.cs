@@ -25,6 +25,10 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         Button,
         /// <summary>
+        /// 设置
+        /// </summary>
+        Setting,
+        /// <summary>
         /// API
         /// </summary>
         API,

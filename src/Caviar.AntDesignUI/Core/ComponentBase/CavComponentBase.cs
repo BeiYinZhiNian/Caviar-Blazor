@@ -131,9 +131,9 @@ namespace Caviar.AntDesignUI.Core
 
         protected override async Task OnInitializedAsync()
         {
-            if (string.IsNullOrEmpty(ControllerName))
+            if (ControllerName == null)
             {
-                ControllerName = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
+                ControllerName = CurrentUrl.Replace(NavigationManager.BaseUri, "");
             }
             if (string.IsNullOrEmpty(SubmitUrl))
             {

@@ -28,7 +28,9 @@ namespace Caviar.Infrastructure.API.BaseApi
         protected ILanguageService LanguageService { get; set; }
 
         protected UserServices UserServices { get; set; }
-
+        /// <summary>
+        /// 当前用户所有可用url集合
+        /// </summary>
         protected List<string> PermissionUrls { get; private set; }
 
         protected RoleServices RoleServices { get; set; }
