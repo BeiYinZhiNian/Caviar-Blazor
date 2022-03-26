@@ -14,7 +14,7 @@ namespace Caviar.AntDesignUI.Pages.User
         [Inject]
         UserConfig UserConfig { get; set; }
 
-        public UserLogin ApplicationUser { get; set; } = new UserLogin() { UserName = "admin",Password= CurrencyConstant.DefaultPassword, RememberMe=true };
+        public UserLogin ApplicationUser { get; set; } = new UserLogin();
 
         [CascadingParameter]
         public EventCallback LayoutStyleCallBack { get; set; }
@@ -60,6 +60,12 @@ namespace Caviar.AntDesignUI.Pages.User
         {
             string backgroundImage = "_content/Caviar.AntDesignUI/Images/grov.jpg";
             Style = $"min-height:100vh;background-image: url({backgroundImage});";
+            if (Config.IsDebug)
+            {
+                ApplicationUser.RememberMe = true;
+                ApplicationUser.UserName = "admin";
+                ApplicationUser.Password = "123456";
+            }
             base.OnInitialized();
         }
 
