@@ -91,6 +91,7 @@ namespace Caviar.Core.Services
         public async Task<IdentityResult> UpdateUserDetailsAsync(string userName,UserDetails userDetails)
         {
             var user = await GetUserInfoAsync(userName);
+            user.AccountName = userDetails.AccountName;
             user.Email = userDetails.Email;
             user.PhoneNumber = userDetails.PhoneNumber;
             user.Remark = userDetails.Remark;
