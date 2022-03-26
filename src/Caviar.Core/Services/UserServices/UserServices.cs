@@ -71,13 +71,13 @@ namespace Caviar.Core.Services
             return roleIds;
         }
 
-        public async Task<UserDetails> GetUserDetailsAsync(string userName)
+        public async Task<UserDetails> GetUserDetailsAsync()
         {
-            var user = await GetUserInfoAsync(userName);
+            var user = await GetCurrentUserInfoAsync();
             var useerGroup = await AppDbContext.SingleOrDefaultAsync<SysUserGroup>(u => u.Id == user.UserGroupId);
             UserDetails useerDetails = new UserDetails() 
             { 
-                UserName = userName,
+                UserName = user.UserName,
                 AccountName = user.AccountName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
@@ -88,9 +88,9 @@ namespace Caviar.Core.Services
             };
             return useerDetails;
         }
-        public async Task<IdentityResult> UpdateUserDetailsAsync(string userName,UserDetails userDetails)
+        public async Task<IdentityResult> UpdateUserDetailsAsync(UserDetails userDetails)
         {
-            var user = await GetUserInfoAsync(userName);
+            var user = await GetCurrentUserInfoAsync();
             user.AccountName = userDetails.AccountName;
             user.Email = userDetails.Email;
             user.PhoneNumber = userDetails.PhoneNumber;

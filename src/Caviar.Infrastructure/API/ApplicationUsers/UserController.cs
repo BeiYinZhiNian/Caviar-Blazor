@@ -71,7 +71,7 @@ namespace Caviar.Infrastructure.API
         [HttpGet]
         public async Task<IActionResult> MyUserDetails()
         {
-            var user = await UserServices.GetUserDetailsAsync(User.Identity.Name);
+            var user = await UserServices.GetUserDetailsAsync();
             return Ok(user);
         }
         /// <summary>
@@ -82,7 +82,7 @@ namespace Caviar.Infrastructure.API
         [HttpPost]
         public async Task<IActionResult> UpdateDetails(UserDetails userDetails)
         {
-            var result = await UserServices.UpdateUserDetailsAsync(User.Identity.Name,userDetails);
+            var result = await UserServices.UpdateUserDetailsAsync(userDetails);
             if (result.Succeeded) return Ok();
             return Error("修改基础信息失败", result);
         }
