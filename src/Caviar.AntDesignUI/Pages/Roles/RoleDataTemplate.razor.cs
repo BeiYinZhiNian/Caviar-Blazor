@@ -21,14 +21,22 @@ namespace Caviar.AntDesignUI.Pages.Roles
 
         [Inject]
         CavModal CavModal { get; set; }
+        /// <summary>
+        /// 标识CheckMenuType是否为首次触发
+        /// </summary>
+        bool IsCheckMenuOne;
 
         public async void CheckMenuType(DataRange dataRange)
         {
-            if(dataRange == DataRange.Custom)
+            if (!IsCheckMenuOne)
+            {
+                IsCheckMenuOne = true;
+                return;
+            }
+            if (dataRange == DataRange.Custom)
             {
                 Dictionary<string, object> paramenter = new Dictionary<string, object>();
-                paramenter.Add("DataSource", DataSource);
-                paramenter.Add(CurrencyConstant.ControllerName, UrlConfig.DataRange);
+                paramenter.Add(CurrencyConstant.DataSource, DataSource);
                 CavModalOptions options = new CavModalOptions()
                 {
                     Url = UrlConfig.DataRange,

@@ -30,7 +30,9 @@ namespace Caviar.AntDesignUI.Pages.UserGroup
             if(DataSource.Entity.DataList != null && DataSource.Entity.DataList.Count() > 0)
             {
                 var ids = DataSource.Entity.DataList.Split(CurrencyConstant.CustomDataSeparator);
-                foreach (var item in UserGroups)
+                List<SysUserGroupView> userGroups = new List<SysUserGroupView>();
+                UserGroups.TreeToList(userGroups);
+                foreach (var item in userGroups)
                 {
                     item.IsPermission = ids.Contains(item.Id.ToString());
                 }
@@ -51,7 +53,9 @@ namespace Caviar.AntDesignUI.Pages.UserGroup
 
         public Task<bool> Validate()
         {
-            var ids = UserGroups.Where(u => u.IsPermission).Select(u => u.Id).ToList();
+            List<SysUserGroupView> userGroups = new List<SysUserGroupView>();
+            UserGroups.TreeToList(userGroups);
+            var ids = userGroups.Where(u => u.IsPermission).Select(u => u.Id).ToList();
             StringBuilder dataList = new StringBuilder();
             foreach (var item in ids)
             {
