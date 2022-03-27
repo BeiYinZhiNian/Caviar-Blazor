@@ -333,7 +333,7 @@ namespace Caviar.Infrastructure.Persistence
                 {
                     Entity = new SysMenu()
                     {
-                        Key = "API",
+                        Key =  CurrencyConstant.PermissionKey,
                         MenuType = MenuType.API,
                     }
                 }
@@ -371,11 +371,7 @@ namespace Caviar.Infrastructure.Persistence
             {
                 var catalogue = set.SingleOrDefault(u => u.Key == item.Key);
                 var id = 0;
-                if (catalogue == null)
-                {
-                    id = menus.Single(u => u.Entity.Key == "API").Id;
-                }
-                else
+                if (catalogue != null)
                 {
                     id = catalogue.Id;
                 }

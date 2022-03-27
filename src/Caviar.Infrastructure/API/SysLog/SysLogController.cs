@@ -45,7 +45,5 @@ namespace Caviar.Infrastructure.API
             var page = await _logDataServices.QueryAsync(query);
             return Ok(page);
         }
-
-
     }
 }
