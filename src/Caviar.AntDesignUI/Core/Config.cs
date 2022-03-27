@@ -20,6 +20,7 @@ namespace Caviar.AntDesignUI
         /// </summary>
         public static bool IsServer { get; set; } = true;
         public static bool IsDebug { get; set; } = false;
+        public static int MaxPageSize { get; set; } = 9999;
         /// <summary>
         /// 是否处理过iframeMessage
         /// </summary>

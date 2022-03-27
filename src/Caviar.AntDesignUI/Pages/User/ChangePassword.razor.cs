@@ -13,6 +13,8 @@ namespace Caviar.AntDesignUI.Pages.User
 {
     public partial class ChangePassword: ITableTemplate
     {
+        [Parameter]
+        public string CurrentUrl { get; set; }
         Form<ChangePasswordModel> _Form;
         public ChangePasswordModel ChangePasswordModel { get; set; } = new ChangePasswordModel();
         [Inject]

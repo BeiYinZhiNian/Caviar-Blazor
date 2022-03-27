@@ -3,6 +3,7 @@ using Caviar.AntDesignUI.Shared;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.AntDesignUI.Core
 {
-    public partial class IndexComponentBase<ViewT> : CavComponentBase where ViewT:class, new()
+    public partial class IndexComponentBase<ViewT> : ComponentBase, IReuseTabsPage where ViewT:class, new()
     {
 
         #region 属性
@@ -20,9 +21,39 @@ namespace Caviar.AntDesignUI.Core
             Buttons = new List<SysMenuView>(),
             ViewFields = new List<FieldsView>(),
         };
+        [Inject]
+        private UserConfig UserConfig { get; set; }
+        [Inject]
+        private HttpService HttpService { get; set; }
+        [Inject]
+        private MessageService MessageService { get; set; }
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+        public ILanguageService LanguageService => UserConfig.LanguageService;
+        /// <summary>
+        /// 当前Api列表
+        /// </summary>
+        public List<SysMenuView> APIList { get; set; }
+
+        [Parameter]
+        public string IndexUrl { get; set; }
         #endregion
 
         #region 方法
+
+        protected string GetPageUrl(string key)
+        {
+            try
+            {
+                var controllerName = IndexUrl.Split('/')[0];
+                return $"{controllerName}/{key}";
+            }
+            catch
+            {
+                MessageService.Error("Index Url解析错误");
+                return null;
+            }
+        }
         /// <summary>
         /// 获取分页数据
         /// </summary>
@@ -32,7 +63,7 @@ namespace Caviar.AntDesignUI.Core
         /// <returns></returns>
         protected virtual async Task<List<ViewT>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
-            var result = await HttpService.GetJson<PageData<ViewT>>($"{SubmitUrl}?pageIndex={pageIndex}&pageSize={pageSize}&isOrder={isOrder}");
+            var result = await HttpService.GetJson<PageData<ViewT>>($"{IndexUrl}?pageIndex={pageIndex}&pageSize={pageSize}&isOrder={isOrder}");
             if (result.Status != HttpStatusCode.OK) return null;
             if (result.Data != null)
             {
@@ -49,13 +80,13 @@ namespace Caviar.AntDesignUI.Core
         /// <returns></returns>
         protected virtual Task<List<SysMenuView>> LoadButton()
         {
-            var queryButton = Url[CurrencyConstant.Query];
+            var queryButton = APIList.SingleOrDefault(u => !string.IsNullOrEmpty(u.Entity.Url) && u.Entity.Url.Contains(CurrencyConstant.Query));
             if (queryButton != null)
             {
                 TableOptions.IsOpenQuery = true;
                 TableOptions.IsAdvancedQuery = true;
             }
-            var buttons = APIList.Where(u => u.Entity.ControllerName == ControllerName).ToList();
+            var buttons = APIList.Where(u => u.Entity.MenuType == MenuType.Button).ToList();
             return Task.FromResult(buttons);
         }
         /// <summary>
@@ -64,7 +95,7 @@ namespace Caviar.AntDesignUI.Core
         /// <returns></returns>
         protected virtual async Task<List<FieldsView>> GetModelFields()
         {
-            var result = await HttpService.GetJson<List<FieldsView>>(Url[CurrencyConstant.GetFieldsKey]);
+            var result = await HttpService.GetJson<List<FieldsView>>(GetPageUrl(CurrencyConstant.GetFieldsKey));
             if (result.Status != HttpStatusCode.OK) return null;
             return result.Data;
         }
@@ -80,16 +111,70 @@ namespace Caviar.AntDesignUI.Core
             _ = MessageService.Success(result.Title);
             return true;
         }
+
+        public virtual RenderFragment GetPageTitle() => builder =>
+        {
+            var menu = UserConfig.Menus.FirstOrDefault(u => u.Entity.Url == IndexUrl);
+            if (menu != null)
+            {
+                var index = 0;
+                builder.OpenElement(index++, "div");
+                if (!string.IsNullOrEmpty(menu.Entity.Icon))
+                {
+                    IEnumerable<KeyValuePair<string, object>> paramenter = new List<KeyValuePair<string, object>>()
+                    {
+                        new KeyValuePair<string, object>("Type",menu.Entity.Icon)
+                    };
+
+                    builder.OpenComponent(index++, typeof(Icon));
+                    builder.AddMultipleAttributes(index++, paramenter);
+                    builder.CloseComponent();
+                }
+                builder.AddMarkupContent(index++, LanguageService[$"{CurrencyConstant.Menu}.{menu.Entity.Key}"]);
+                builder.CloseElement();
+            }
+            else
+            {
+                var index = 0;
+                builder.OpenElement(index++, "div");
+                builder.AddMarkupContent(index++, IndexUrl);
+                builder.CloseElement();
+            }
+        };
+
+        /// <summary>
+        /// 刷新
+        /// </summary>
+        /// <returns></returns>
+        public virtual async void Refresh()
+        {
+            await OnInitializedAsync();
+            StateHasChanged();
+        }
         #endregion
 
         #region 回调
+        /// <summary>
+        /// 获取API
+        /// 获取该页面下的API
+        /// </summary>
+        /// <returns></returns>
+        protected virtual async Task<List<SysMenuView>> GetApiList()
+        {
+            var menus = await HttpService.GetJson<List<SysMenuView>>($"{UrlConfig.GetApis}?indexUrl={IndexUrl}");
+            if (menus.Status == HttpStatusCode.OK)
+            {
+                return menus.Data;
+            }
+            return new List<SysMenuView>();
+        }
         protected virtual async Task RowCallback(RowCallbackData<ViewT> row)
         {
             switch (row.Menu.Entity.Key)
             {
                 //case "Menu Key"
                 case CurrencyConstant.DeleteEntityKey:
-                    await Delete(Url[row.Menu.Entity.Key], row.Data);
+                    await Delete(GetPageUrl(row.Menu.Entity.Key), row.Data);
                     break;
                 case CurrencyConstant.UpdateEntityKey:
                     break;
@@ -106,7 +191,7 @@ namespace Caviar.AntDesignUI.Core
         /// <param name="Query"></param>
         protected virtual async Task QueryCallback(QueryView query)
         {
-            var result = await HttpService.PostJson<QueryView, PageData<ViewT>>(Url[CurrencyConstant.Query], query);
+            var result = await HttpService.PostJson<QueryView, PageData<ViewT>>(GetPageUrl(CurrencyConstant.Query), query);
             if (result.Status != HttpStatusCode.OK) return;
             TableOptions.DataSource = result.Data.Rows;
             TableOptions.Total = result.Data.Total;
@@ -127,11 +212,19 @@ namespace Caviar.AntDesignUI.Core
         #region 重写
         protected override async Task OnInitializedAsync()
         {
+            UserConfig.RefreshCurrentPage = Refresh;
+            if (string.IsNullOrEmpty(IndexUrl))
+            {
+                IndexUrl = NavigationManager.Uri;
+                var uri = new Uri(IndexUrl);
+                IndexUrl = uri.LocalPath[1..];
+            }
             TableOptions.Loading = true;
             await base.OnInitializedAsync();
+            var pagesTask = GetPages();//获取数据源
+            APIList = await GetApiList();
             var buttonTask = LoadButton();//加载按钮
             var fieldsTask = GetModelFields();//获取模型字段
-            var pagesTask = GetPages();//获取数据源
             //先请求后获取结果，加快请求速度
             TableOptions.Buttons = await buttonTask;
             TableOptions.ViewFields = await fieldsTask;

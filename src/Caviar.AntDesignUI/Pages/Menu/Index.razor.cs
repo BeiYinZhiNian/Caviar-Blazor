@@ -4,11 +4,19 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net;
 using Caviar.SharedKernel.Entities.View;
+using Caviar.AntDesignUI.Core;
 
 namespace Caviar.AntDesignUI.Pages.Menu
 {
     public partial class Index
     {
+        [Inject]
+        UserConfig UserConfig { get; set; }
+        [Inject]
+        HttpService HttpService { get; set; }
+        [Inject]
+        MessageService MessageService { get; set; }
+
         protected override void OnInitialized()
         {
             TableOptions.TreeChildren = u => u.Children;
@@ -16,10 +24,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
         }
         protected override Task<List<SysMenuView>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
-            // 当使用树形组件时，需要获取全部数据
-            // 也可改成GetAll
-            pageSize = MaxPageSize;
-            return base.GetPages(pageIndex, pageSize, isOrder);
+            return base.GetPages(pageIndex, Config.MaxPageSize, isOrder);
         }
 
         protected override async Task RowCallback(RowCallbackData<SysMenuView> row)

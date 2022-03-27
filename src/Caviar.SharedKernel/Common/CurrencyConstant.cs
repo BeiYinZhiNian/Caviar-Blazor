@@ -62,9 +62,9 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string AccountName = "AccountName";
         /// <summary>
-        /// 提交地址
+        /// 当前页面url
         /// </summary>
-        public const string CavModelSubmitUrl = "SubmitUrl";
+        public const string CurrentUrl = "CurrentUrl";
         /// <summary>
         /// controllerName名称
         /// </summary>

@@ -1,4 +1,5 @@
-﻿using Caviar.AntDesignUI.Core;
+﻿using AntDesign;
+using Caviar.AntDesignUI.Core;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Components;
@@ -13,10 +14,17 @@ namespace Caviar.AntDesignUI.Pages.Permission
 {
     public partial class PermissionMenus: ITableTemplate
     {
-
+        [Parameter]
+        public string CurrentUrl { get; set; }
 
         [Parameter]
         public ApplicationRoleView DataSource { get; set; }
+        [Inject]
+        UserConfig UserConfig { get; set; }
+        [Inject]
+        HttpService HttpService { get; set; }
+        [Inject]
+        MessageService MessageService { get; set; }
         List<SysMenuView> Menus { get; set; }
         protected override async Task OnInitializedAsync()
         {
@@ -26,7 +34,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
 
         async Task GetSelectMenus()
         {
-            var result = await HttpService.GetJson<List<SysMenuView>>($"{Url[CurrencyConstant.GetPermissionMenus,CurrencyConstant.PermissionKey]}?roleName={DataSource.Entity.Name}");
+            var result = await HttpService.GetJson<List<SysMenuView>>($"{UrlConfig.GetPermissionMenus}?roleName={DataSource.Entity.Name}");
             if (result.Status != HttpStatusCode.OK) return;
             if (result.Data != null)
             {
@@ -39,7 +47,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
             List<SysMenuView> menus = new List<SysMenuView>();
             Menus.TreeToList(menus);
             var urls = menus.Where(u => u.IsPermission && !string.IsNullOrEmpty(u.Entity.Url)).Select(u => u.Entity.Url);
-            var result = await HttpService.PostJson($"{Url[CurrencyConstant.SavePermissionMenu, CurrencyConstant.PermissionKey]}?roleName={DataSource.Entity.Name}", urls);
+            var result = await HttpService.PostJson($"{UrlConfig.SavePermissionMenus}?roleName={DataSource.Entity.Name}", urls);
             if (result.Status != HttpStatusCode.OK) return false;
             _ = MessageService.Success(result.Title);
             UserConfig.RefreshMenuAction.Invoke();//更新菜单

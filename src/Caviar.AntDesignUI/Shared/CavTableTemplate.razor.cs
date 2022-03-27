@@ -99,8 +99,7 @@ namespace Caviar.AntDesignUI.Shared
                         CurrRow.Data.AToB(out TData dataSource);
                         paramenter.Add(DataSourceName, dataSource);
                     }
-                    paramenter.Add(CurrencyConstant.CavModelSubmitUrl, menu.Entity.Url);//不提供url时候默认url一致
-                    paramenter.Add(CurrencyConstant.ControllerName, menu.Entity.Url);//会自动处理为controllerName
+                    paramenter.Add(CurrencyConstant.CurrentUrl, menu.Entity.Url);//不提供url时候默认url一致
                     var options = new CavModalOptions() 
                     { 
                         Url = menu.Entity.Url,

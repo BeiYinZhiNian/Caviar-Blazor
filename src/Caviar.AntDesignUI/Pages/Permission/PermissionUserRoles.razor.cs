@@ -1,4 +1,5 @@
-﻿using Caviar.AntDesignUI.Core;
+﻿using AntDesign;
+using Caviar.AntDesignUI.Core;
 using Caviar.AntDesignUI.Shared;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
@@ -14,12 +15,17 @@ namespace Caviar.AntDesignUI.Pages.Permission
 {
     public partial class PermissionUserRoles : ITableTemplate
     {
+        [Parameter]
+        public string CurrentUrl { get; set; }
+        [Inject]
+        HttpService HttpService { get; set; }
+        [Inject]
+        MessageService MessageService { get; set; }
         IEnumerable<ApplicationRoleView> RoleSelectedRows {get;set;}
         protected override async Task OnInitializedAsync()
         {
+            IndexUrl = UrlConfig.RoleIndex;
             TableOptions.IsSelectedRows = true;
-            ControllerName = CurrencyConstant.ApplicationRoleKey;
-            ControllerList.Add(CurrencyConstant.ApplicationUserKey);
             await base.OnInitializedAsync();
             StateHasChanged();
         }
@@ -45,7 +51,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
 
         protected async Task<List<string>> GetUserRoles(string userName)
         {
-            var result = await HttpService.GetJson<List<string>>(Url[CurrencyConstant.GetUserRoles] + $"?userName={userName}");
+            var result = await HttpService.GetJson<List<string>>($"{UrlConfig.GetUserRoles}?userName={userName}");
             if(result.Status == HttpStatusCode.OK)
             {
                 return result.Data;
@@ -56,7 +62,6 @@ namespace Caviar.AntDesignUI.Pages.Permission
 
         protected override async Task<List<ApplicationRoleView>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
-            SubmitUrl = UrlConfig.RoleIndex;
             var pages = await base.GetPages(pageIndex, pageSize, isOrder);
             RoleSelectedRows = await RoleSelectedRowdInit(pages);
             return pages;
@@ -79,7 +84,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
         public virtual async Task<bool> FormSubmit(string userName)
         {
             var data = RoleSelectedRows.Select(u => u.Entity.Name);
-            var result = await HttpService.PostJson(Url[CurrencyConstant.AssignRolesKey] + $"?userName={userName}", data);
+            var result = await HttpService.PostJson($"{UrlConfig.AssignRoles}?userName={userName}", data);
             if (result.Status == HttpStatusCode.OK)
             {
                 _ = MessageService.Success(result.Title);

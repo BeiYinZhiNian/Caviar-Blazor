@@ -8,12 +8,18 @@ using System.Text.Json;
 using System.Net;
 using Caviar.SharedKernel.Entities.View;
 using Caviar.SharedKernel.Entities;
+using Caviar.AntDesignUI.Core;
 
 namespace Caviar.AntDesignUI.Pages.CodeGeneration
 {
     public partial class CodeFileGenerate
     {
-
+        [Inject]
+        UserConfig UserConfig { get; set; }
+        [Inject]
+        MessageService MessageService { get; set; }
+        [Inject]
+        HttpService HttpService { get; set; }
         public StepItem[] steps;
         protected override async Task OnInitializedAsync()
         {
@@ -26,7 +32,6 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
             };
             if (Config.IsDebug)
             {
-                ControllerList.Add("Permission");
                 await base.OnInitializedAsync();
             }
             else
@@ -38,7 +43,7 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
 
         protected override async Task<List<FieldsView>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
         {
-            var result = await HttpService.GetJson<List<FieldsView>>(Url[CurrencyConstant.GetEntitysKey]);
+            var result = await HttpService.GetJson<List<FieldsView>>(UrlConfig.GetEntitys);
             if (result.Status != HttpStatusCode.OK) return null;
             TableOptions.Total = result.Data.Count;
             TableOptions.PageSize = result.Data.Count;
@@ -74,7 +79,7 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
                 {
                     return;
                 }
-                var result = await HttpService.PostJson<CodeGenerateOptions,List<PreviewCode>>($"{Url["CodeFileGenerate"]}?isPerview=true", GenerateData);
+                var result = await HttpService.PostJson<CodeGenerateOptions,List<PreviewCode>>($"{UrlConfig.CodeFileGenerate}?isPerview=true", GenerateData);
                 if (result.Status == HttpStatusCode.OK)
                 {
                     lstTabs = result.Data;
@@ -89,7 +94,7 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
         string ResultSubTitle = "";
         async void OnGenerateClick()
         {
-            var result = await HttpService.PostJson<CodeGenerateOptions, string>($"{Url["CodeFileGenerate"]}?isPerview=false", GenerateData);
+            var result = await HttpService.PostJson<CodeGenerateOptions, string>($"{UrlConfig.CodeFileGenerate}?isPerview=false", GenerateData);
             if (result.Status == HttpStatusCode.OK)
             {
                 ResultStatus = "success";

@@ -28,7 +28,10 @@ namespace Caviar.Core.Services
         {
             return base.GetEntityAsync(where).Where(_menuWhere);
         }
-
+        /// <summary>
+        /// 获取所有权限url
+        /// </summary>
+        /// <returns></returns>
         public override IQueryable<SysMenu> GetAllAsync()
         {
             return base.GetEntityAsync(_menuWhere);
@@ -79,10 +82,10 @@ namespace Caviar.Core.Services
         /// 获取左侧菜单栏
         /// </summary>
         /// <returns></returns>
-        public async Task<List<SysMenuView>> GetMenuBar(List<string> permissionUrls)
+        public async Task<List<SysMenuView>> GetMenuBar()
         {
             if (PermissionUrls == null) return new List<SysMenuView>();
-            var menus = await GetAllAsync().ToListAsync();
+            var menus = await GetAllAsync().Where(u=>u.MenuType == MenuType.Menu || u.MenuType == MenuType.Catalog || u.MenuType == MenuType.Setting).ToListAsync();
             return ToView(menus).ListToTree();
         }
         /// <summary>
@@ -92,23 +95,12 @@ namespace Caviar.Core.Services
         /// <param name="controllerList"></param>
         /// <returns></returns>
         /// <exception cref="NotificationException"></exception>
-        public async Task<List<SysMenuView>> GetApis(string crcontrollerName,string[] controllerList)
+        public async Task<List<SysMenuView>> GetApis(string indexUrl)
         {
-            if (crcontrollerName == null)
-            {
-                var unauthorized = _languageService[$"{CurrencyConstant.ExceptionMessage}.{CurrencyConstant.Null}"];
-                throw new ArgumentNullException($"{crcontrollerName}:{unauthorized}");
-            }
-            var apiList = await GetEntityAsync(u => u.ControllerName.ToLower() == crcontrollerName.ToLower()).ToListAsync();
-            if (controllerList != null)
-            {
-                foreach (var item in controllerList)
-                {
-                    if (item == "") continue;
-                    var otherApi = await GetEntityAsync(u => u.ControllerName == item).ToListAsync();
-                    apiList.AddRange(otherApi);
-                }
-            }
+            var menu = await SingleOrDefaultAsync(u=>u.Url == indexUrl);
+            if (menu == null) throw new ArgumentException("未获得该页面权限");
+            var apiList = await GetEntityAsync(u => u.ParentId == menu.Id).ToListAsync();
+            apiList.Add(menu);
             return ToView(apiList);
         }
         /// <summary>

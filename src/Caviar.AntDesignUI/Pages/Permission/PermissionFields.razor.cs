@@ -15,6 +15,21 @@ namespace Caviar.AntDesignUI.Pages.Permission
 {
     public partial class PermissionFields
     {
+        [Inject]
+        NavigationManager NavigationManager { get; set; }
+
+        [Inject]
+        UserConfig UserConfig { get; set; }
+
+        [Inject]
+        MessageService MessageService { get; set; }
+        [Inject]
+        HttpService HttpService { get; set; }
+
+        ILanguageService LanguageService => UserConfig.LanguageService;
+
+
+
         List<FieldsView> Models = new List<FieldsView>();
         List<FieldsView> Fields { get; set; }
         FieldsView CurrentModel { get; set; }
@@ -30,7 +45,6 @@ namespace Caviar.AntDesignUI.Pages.Permission
             {
                 Role = JsonConvert.DeserializeObject<ApplicationRoleView>(Parameter);
             }
-            ControllerList.Add(CurrencyConstant.PermissionKey);
             await base.OnInitializedAsync();
             await GetModels();
         }
@@ -38,14 +52,14 @@ namespace Caviar.AntDesignUI.Pages.Permission
 
         public async Task GetModels()
         {
-            var result = await HttpService.GetJson<List<FieldsView>>(Url[CurrencyConstant.GetEntitysKey]);
+            var result = await HttpService.GetJson<List<FieldsView>>(UrlConfig.GetEntitys);
             if (result.Status != System.Net.HttpStatusCode.OK) return;
             Models = result.Data;
         }
 
         public async Task GetFields(FieldsView model)
         {
-            var result = await HttpService.GetJson<List<FieldsView>>($"{Url[CurrencyConstant.GetFieldsKey, CurrencyConstant.PermissionKey]}?name={model.Entity.FieldName}&fullName={model.Entity.FullName}&roleName={Role.Entity.Name}");
+            var result = await HttpService.GetJson<List<FieldsView>>($"{UrlConfig.GetFields}?name={model.Entity.FieldName}&fullName={model.Entity.FullName}&roleName={Role.Entity.Name}");
             if (result.Status != System.Net.HttpStatusCode.OK) return;
             CurrentModel = model;
             FieldName = model.DisplayName + "-" + LanguageService[$"{CurrencyConstant.EntitysName}.DataField"];
@@ -78,7 +92,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
                 _ = MessageService.Error("请先选择所要保存的模型");
                 return;
             }
-            var result = await HttpService.PostJson($"{Url[CurrencyConstant.SaveRoleFields, CurrencyConstant.PermissionKey]}?roleName={Role.Entity.Name}", Fields);
+            var result = await HttpService.PostJson($"{UrlConfig.SaveRoleFields}?roleName={Role.Entity.Name}", Fields);
             if (result.Status != System.Net.HttpStatusCode.OK) return;
             _ = MessageService.Success(result.Title);
         }

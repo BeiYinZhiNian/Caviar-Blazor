@@ -1,6 +1,8 @@
 ﻿using AntDesign;
+using Caviar.AntDesignUI.Core;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,9 @@ namespace Caviar.AntDesignUI.Pages.User
 {
     public partial class UserDataTemplate
     {
+        [Inject]
+        HttpService HttpService { get; set; }
+
         private FormValidationRule[] UserGroupRule;
         private FormValidationRule[] PhoneNumberRule;
         private FormValidationRule[] EmailRule;
@@ -31,8 +36,6 @@ namespace Caviar.AntDesignUI.Pages.User
                 new FormValidationRule() { Type = FormFieldType.Email, Required = true, Message = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.EmailRuleErrorMsg}"] },
              };
             ParentMenuName = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.ParentMenuName}"];
-
-            ControllerList.Add(CurrencyConstant.SysUserGroupKey);
             await base.OnInitializedAsync();
             UserGroupViews = await GetUserGroups();
         }
@@ -43,7 +46,7 @@ namespace Caviar.AntDesignUI.Pages.User
         async Task<List<SysUserGroupView>> GetUserGroups()
         {
 
-            var result = await HttpService.GetJson<PageData<SysUserGroupView>>($"{Url[CurrencyConstant.SysUserGroupKey]}?pageSize=100");
+            var result = await HttpService.GetJson<PageData<SysUserGroupView>>($"{UrlConfig.UserGroupIndex}?pageSize={Config.MaxPageSize}");
             if (result.Status != HttpStatusCode.OK) return null;
             if (DataSource.Entity.UserGroupId > 0)
             {

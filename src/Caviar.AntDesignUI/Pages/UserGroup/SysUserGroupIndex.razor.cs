@@ -19,8 +19,7 @@ namespace Caviar.AntDesignUI.Pages.UserGroup
         {
             // 当使用树形组件时，需要获取全部数据
             // 也可改成GetAll
-            pageSize = MaxPageSize;
-            return base.GetPages(pageIndex, pageSize, isOrder);
+            return base.GetPages(pageIndex, Config.MaxPageSize, isOrder);
         }
     }
 }

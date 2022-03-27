@@ -1,4 +1,5 @@
 ﻿using AntDesign;
+using Caviar.AntDesignUI.Core;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Components;
@@ -12,6 +13,10 @@ namespace Caviar.AntDesignUI.Pages.Enclosure
 {
     public partial class SysEnclosureIndex
     {
+        [Inject]
+        HttpService HttpService { get; set; }
+        [Inject]
+        MessageService MessageService { get; set; }
         protected override Task OnInitializedAsync()
         {
             TableOptions.CreateButtons = CreateButtons;
@@ -23,7 +28,7 @@ namespace Caviar.AntDesignUI.Pages.Enclosure
             {
                 //case "Menu Key"
                 case CurrencyConstant.DownloadKey:
-                    var result = await HttpService.PostJson<SysEnclosureView, string>(Url[CurrencyConstant.DownloadKey],row.Data);
+                    var result = await HttpService.PostJson<SysEnclosureView, string>(UrlConfig.Download, row.Data);
                     if(result.Status == System.Net.HttpStatusCode.OK)
                     {
                         NavigationManager.NavigateTo(result.Data, true);

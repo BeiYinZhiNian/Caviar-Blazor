@@ -1,6 +1,8 @@
 ﻿using AntDesign;
+using Caviar.AntDesignUI.Core;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +14,8 @@ namespace Caviar.AntDesignUI.Pages.UserGroup
 {
     public partial class SysUserGroupDataTemplate
     {
-
+        [Inject]
+        HttpService HttpService { get; set; }
         protected override async Task OnInitializedAsync()
         {
             ParentMenuName = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.NoUpperLevel}"];
@@ -26,7 +29,7 @@ namespace Caviar.AntDesignUI.Pages.UserGroup
         async Task<List<SysUserGroupView>> GetMenus()
         {
 
-            var result = await HttpService.GetJson<PageData<SysUserGroupView>>($"{Url[CurrencyConstant.SysUserGroupKey]}?pageSize=100");
+            var result = await HttpService.GetJson<PageData<SysUserGroupView>>($"{UrlConfig.UserGroupIndex}?pageSize={Config.MaxPageSize}");
             if (result.Status != HttpStatusCode.OK) return null;
             if (DataSource.ParentId > 0)
             {

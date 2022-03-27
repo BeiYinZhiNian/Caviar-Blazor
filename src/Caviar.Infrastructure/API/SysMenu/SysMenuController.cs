@@ -27,7 +27,7 @@ namespace Caviar.Infrastructure.API.SysMenuController
         [HttpGet]
         public async Task<IActionResult> GetMenuBar()
         {
-            var menus = await _sysMenuServices.GetMenuBar(PermissionUrls);
+            var menus = await _sysMenuServices.GetMenuBar();
             return Ok(menus);
         }
 
@@ -52,11 +52,15 @@ namespace Caviar.Infrastructure.API.SysMenuController
             return Ok();
         }
 
+        /// <summary>
+        /// 获取指定页面的其他
+        /// </summary>
+        /// <param name="IndexUrl"></param>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetApis(string controllerName, string splicing)
+        public async Task<IActionResult> GetApis(string indexUrl)
         {
-            var controllerList = splicing?.Split("|");
-            var apiList = await _sysMenuServices.GetApis(controllerName, controllerList);
+            var apiList = await _sysMenuServices.GetApis(indexUrl);
             return Ok(apiList);
         }
 

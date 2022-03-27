@@ -5,11 +5,15 @@ using System.Threading.Tasks;
 using Caviar.SharedKernel.Entities.View;
 using System.Net;
 using Caviar.SharedKernel.Entities;
+using Microsoft.AspNetCore.Components;
+using Caviar.AntDesignUI.Core;
 
 namespace Caviar.AntDesignUI.Pages.Menu
 {
     public partial class DataTemplate
     {
+        [Inject]
+        HttpService HttpService { get; set; }
         protected override async Task OnInitializedAsync()
         {
             ParentMenuName = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.NoUpperLevel}"];
@@ -26,7 +30,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
 
         async Task<List<SysMenuView>> GetMenus()
         {
-            var result = await HttpService.GetJson<PageData<SysMenuView>>($"{Url[CurrencyConstant.SysMenuKey]}?pageSize={MaxPageSize}");
+            var result = await HttpService.GetJson<PageData<SysMenuView>>($"{UrlConfig.MenuIndex}?pageSize={Config.MaxPageSize}");
             if (result.Status != HttpStatusCode.OK) return null;
             
             return result.Data.Rows;

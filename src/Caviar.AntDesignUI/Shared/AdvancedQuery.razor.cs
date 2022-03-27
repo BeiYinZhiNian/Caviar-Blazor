@@ -14,6 +14,8 @@ namespace Caviar.AntDesignUI.Shared
 {
     public partial class AdvancedQuery: ITableTemplate
     {
+        [Parameter]
+        public string CurrentUrl { get; set; }
         /// <summary>
         /// 模型字段
         /// </summary>

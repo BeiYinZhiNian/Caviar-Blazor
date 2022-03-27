@@ -21,6 +21,10 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string GetMenuBar = "SysMenu/GetMenuBar";
         /// <summary>
+        /// 获取菜单列表
+        /// </summary>
+        public const string MenuIndex = "SysMenu/Index";
+        /// <summary>
         /// 字段权限url
         /// </summary>
         public const string FieldPermissionsUrl = "Permission/RoleFields";
@@ -89,6 +93,10 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string DataRange = "SysUserGroup/DataRange";
         /// <summary>
+        /// 获取用户组
+        /// </summary>
+        public const string UserGroupIndex = "SysUserGroup/Index";
+        /// <summary>
         /// 角色列表首页
         /// </summary>
         public const string RoleIndex = "ApplicationRole/Index";
@@ -104,5 +112,41 @@ namespace Caviar.SharedKernel.Entities
         /// 网站设置
         /// </summary>
         public const string WebConfig = "Setting/WebConfig";
+        /// <summary>
+        /// 保存角色字段
+        /// </summary>
+        public const string SaveRoleFields = "Permission/SaveRoleFields";
+        /// <summary>
+        /// 获取所有实体
+        /// </summary>
+        public const string GetEntitys = "Permission/GetEntitys";
+        /// <summary>
+        /// 获取字段权限
+        /// </summary>
+        public const string GetFields = "Permission/GetFields";
+        /// <summary>
+        /// 获取权限菜单
+        /// </summary>
+        public const string GetPermissionMenus = "Permission/GetPermissionMenus";
+        /// <summary>
+        /// 保存权限菜单
+        /// </summary>
+        public const string SavePermissionMenus = "Permission/SavePermissionMenus";
+        /// <summary>
+        /// 获取指定用户角色
+        /// </summary>
+        public const string GetUserRoles = "ApplicationUser/GetUserRoles";
+        /// <summary>
+        /// 分配用户角色
+        /// </summary>
+        public const string AssignRoles = "ApplicationUser/AssignRoles";
+        /// <summary>
+        /// 代码生成
+        /// </summary>
+        public const string CodeFileGenerate = "CodeGeneration/CodeFileGenerate";
+        /// <summary>
+        /// 附件下载
+        /// </summary>
+        public const string Download = "SysEnclosure/Download";
     }
 }

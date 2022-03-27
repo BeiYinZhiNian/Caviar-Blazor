@@ -13,9 +13,15 @@ namespace Caviar.AntDesignUI.Pages.UserGroup
 {
     public partial class SysUserGroupDataRange : ITableTemplate
     {
+
         [Parameter]
         public ApplicationRoleView DataSource { get; set; }
-
+        [Inject]
+        UserConfig UserConfig { get; set; }
+        [Inject]
+        HttpService HttpService { get; set; }
+        [Parameter]
+        public string CurrentUrl {get;set;}
 
         protected override async Task OnInitializedAsync()
         {
@@ -37,7 +43,7 @@ namespace Caviar.AntDesignUI.Pages.UserGroup
 
         async Task<List<SysUserGroupView>> GetMenus()
         {
-            var result = await HttpService.GetJson<PageData<SysUserGroupView>>($"{Url[CurrencyConstant.SysUserGroupKey]}?pageSize=100");
+            var result = await HttpService.GetJson<PageData<SysUserGroupView>>($"{UrlConfig.UserGroupIndex}?pageSize={Config.MaxPageSize}");
             if (result.Status != HttpStatusCode.OK) return null;
             return result.Data.Rows;
         }
