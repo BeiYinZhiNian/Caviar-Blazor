@@ -175,7 +175,8 @@ namespace Caviar.AntDesignUI.Core
                 //case "Menu Key"
                 case CurrencyConstant.DeleteEntityKey:
                     await Delete(GetPageUrl(row.Menu.Entity.Key), row.Data);
-                    break;
+                    TableOptions.DataSource.Remove(row.Data);
+                    return;
                 case CurrencyConstant.UpdateEntityKey:
                     break;
                 case CurrencyConstant.CreateEntityKey:
