@@ -28,7 +28,7 @@ namespace Caviar.Core.Services
                 }
             }
             await dbContext.SaveChangesAsync();
-            var subMenu = menus.Single(u => u.Key == u.ControllerName);//查找父id
+            var subMenu = menus.Single(u => u.Key + "/Index" == u.Url);//查找父id
             buttons = UpdateInitButtons(buttons, subMenu.Id);
             var sysManagement = set.Single(u => u.Key == CurrencyConstant.SysManagementKey);
             subMenu.ParentId = sysManagement.Id; //父id
@@ -104,7 +104,6 @@ namespace Caviar.Core.Services
                 HttpMethods = httpMethod_item,
                 Url = $"{fieldName}/{actionName}",
                 Key = key == null?actionName:key,
-                ControllerName = fieldName,
                 TargetType = TargetType.Callback
             };
             return menu;

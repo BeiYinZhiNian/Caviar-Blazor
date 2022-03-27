@@ -95,7 +95,8 @@ namespace Caviar.Infrastructure.Persistence
                 var menu = await set.SingleOrDefaultAsync(u => u.Url == item.Url);
                 if (menu == null)
                 {
-                    var parent = await set.SingleOrDefaultAsync(u=>u.ControllerName == item.ControllerName && u.Key == item.ControllerName);
+                    var array = item.Url.Split('/');
+                    var parent = await set.SingleOrDefaultAsync(u=>u.Key == array[0]);
                     if (parent != null)
                     {
                         item.ParentId = parent.Id;
@@ -312,7 +313,6 @@ namespace Caviar.Infrastructure.Persistence
                         MenuType = MenuType.Menu,
                         Icon = "code",
                         Url = $"{CurrencyConstant.CodeGenerationKey}/{CurrencyConstant.Index}",
-                        ControllerName = CurrencyConstant.CodeGenerationKey,
                     },
                     Children = new List<SysMenuView>()
                     {
@@ -323,7 +323,6 @@ namespace Caviar.Infrastructure.Persistence
                                 Key = "Select",
                                 MenuType = MenuType.Button,
                                 TargetType = TargetType.Callback,
-                                ControllerName = CurrencyConstant.CodeGenerationKey,
                                 ButtonPosition = ButtonPosition.Row,
                             }
                         }
@@ -336,7 +335,6 @@ namespace Caviar.Infrastructure.Persistence
                     {
                         Key = "API",
                         MenuType = MenuType.API,
-                        ControllerName = "API",
                     }
                 }
             };
@@ -358,8 +356,8 @@ namespace Caviar.Infrastructure.Persistence
             var menuBars = set.Where(u => u.Key == CurrencyConstant.Index);
             foreach (var item in menuBars)
             {
+                item.Key = item.Url.Split('/')[0];
                 item.MenuType = MenuType.Menu;
-                item.Key = item.ControllerName;
                 if (MenuIconDic.TryGetValue(item.Key, out string value))
                 {
                     item.Icon = value;
@@ -367,11 +365,11 @@ namespace Caviar.Infrastructure.Persistence
                 item.ParentId = menus.Single(u => u.Entity.Key == CurrencyConstant.SysManagementKey).Id;
             }
             await _dbContext.SaveChangesAsync();
-            var subMenu = set.AsEnumerable().Where(u => u.ControllerName != null && u.ControllerName != u.Key).GroupBy(u => u.ControllerName);
+            var subMenu = set.AsEnumerable().Where(u => u.Url != null && u.Url != "/" && u.Url != $"{u.Key}/Index").GroupBy(u => u.Url.Split('/')[0]);
             List<SysMenu> catalogueList = new List<SysMenu>();
             foreach (var item in subMenu)
             {
-                var catalogue = set.SingleOrDefault(u => u.ControllerName == item.Key && u.Key == item.Key);
+                var catalogue = set.SingleOrDefault(u => u.Key == item.Key);
                 var id = 0;
                 if (catalogue == null)
                 {
@@ -448,7 +446,6 @@ namespace Caviar.Infrastructure.Persistence
                             TargetType = TargetType.CurrentPage,
                             Url = UrlConfig.FieldPermissionsUrl,
                             Key = CurrencyConstant.FieldPermissionsKey,
-                            ControllerName = CurrencyConstant.ApplicationRoleKey,
                             ParentId = sysMenu.Id,
                             Number = "996",
                             MenuType = MenuType.Button,
@@ -459,7 +456,6 @@ namespace Caviar.Infrastructure.Persistence
                             TargetType = TargetType.EjectPage,
                             Url = UrlConfig.MenuPermissionsUrl,
                             Key = CurrencyConstant.MenuPermissionsKey,
-                            ControllerName = CurrencyConstant.ApplicationRoleKey,
                             ParentId = sysMenu.Id,
                             Number = "996",
                             MenuType = MenuType.Button,
@@ -475,7 +471,6 @@ namespace Caviar.Infrastructure.Persistence
                             TargetType = TargetType.EjectPage,
                             Url = UrlConfig.PermissionUserRoles,
                             Key = CurrencyConstant.PermissionUserRolesKey,
-                            ControllerName = CurrencyConstant.ApplicationUserKey,
                             ParentId = sysMenu.Id,
                             Number = "996",
                             MenuType = MenuType.Button,

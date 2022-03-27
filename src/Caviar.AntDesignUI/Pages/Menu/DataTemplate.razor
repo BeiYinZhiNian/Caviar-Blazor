@@ -54,16 +54,6 @@
     <CavFormItem Style="@buttonStrle" FieldName="IsDoubleTrue" FieldRules="@context.Entity">
         <Checkbox @bind-Value="@context.Entity.IsDoubleTrue">@LanguageService[$"{CurrencyConstant.EntitysName}.IsDoubleTrue"]</Checkbox>
     </CavFormItem>
-    <CavFormItem FieldName="ControllerName" FieldRules="@context.Entity">
-        <Space>
-            <SpaceItem>
-                <Input @bind-Value="@context.Entity.ControllerName">
-            </SpaceItem>
-            <SpaceItem>
-                <Tooltip Title="@("主要用于一组url的标识")"><Icon Type="question" Theme="outline"/></Tooltip>
-            </SpaceItem>
-        </Space>
-    </CavFormItem>
     <CavFormItem FieldName="Icon" FieldRules="@context.Entity">
         <Space>
             <SpaceItem>

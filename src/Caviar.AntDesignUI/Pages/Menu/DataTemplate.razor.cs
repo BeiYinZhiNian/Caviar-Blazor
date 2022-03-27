@@ -57,10 +57,6 @@ namespace Caviar.AntDesignUI.Pages.Menu
             ParentMenuName = args.Node.Title;
             DataSource.Entity.ParentId = int.Parse(args.Node.Key);
             var parent = _listMenus.SingleOrDefault(u => u.Id == DataSource.Entity.ParentId);
-            if (parent != null && !string.IsNullOrEmpty(parent.Entity.ControllerName))
-            {
-                DataSource.Entity.ControllerName = parent.Entity.ControllerName;
-            }
         }
 
         void RemoveRecord()

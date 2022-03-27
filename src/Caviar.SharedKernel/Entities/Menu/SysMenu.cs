@@ -27,9 +27,6 @@ namespace Caviar.SharedKernel.Entities
 
         [StringLength(50, ErrorMessage = "LengthErrorMsg")]
         public string HttpMethods { get; set; }
-
-        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
-        public string ControllerName { get; set; }
     }
 
 

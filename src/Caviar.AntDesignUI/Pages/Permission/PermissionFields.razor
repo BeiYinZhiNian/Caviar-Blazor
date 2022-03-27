@@ -1,4 +1,5 @@
 ﻿@page "/Permission/RoleFields"
+@implements IReuseTabsPage
 
 <Row Gutter="@gutter">
     <AntDesign.Col Flex="2">
@@ -115,4 +116,8 @@
         ["xl"] = 48,
         ["xxl"] = 64
     };
+       public RenderFragment GetPageTitle() =>
+       @<div>
+           @LanguageService[$"{CurrencyConstant.Menu}.{CurrencyConstant.FieldPermissionsKey}"]
+       </div>;
 }
