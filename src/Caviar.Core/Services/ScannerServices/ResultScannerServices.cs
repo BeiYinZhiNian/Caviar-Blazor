@@ -115,7 +115,7 @@ namespace Caviar.Infrastructure
                 bool assignment = true;
                 if (!(sp.PropertyType.IsEnum || IgnoreField.FirstOrDefault(u => u.ToLower() == sp.Name.ToLower()) != null))//忽略枚举字段,和指定字段
                 {
-                    var permissions = PermissionFieldss?.SingleOrDefault(u => u.Permission == (type.FullName + sp.Name));
+                    var permissions = PermissionFieldss?.FirstOrDefault(u => u.Permission == (type.FullName + sp.Name));
                     assignment = permissions != null;
                 }
                 if (assignment)//如果为null则标名没有字段权限

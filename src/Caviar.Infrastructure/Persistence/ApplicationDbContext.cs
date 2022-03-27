@@ -394,12 +394,27 @@ namespace Caviar.Infrastructure.Persistence
             var roleRange = new Dictionary<DataRange, int[]>();
             foreach (var item in roles)
             {
-                int[] data = null;
                 if (item.DataRange == DataRange.Custom)
                 {
-                    data = item.DataList.Split(CurrencyConstant.CustomDataSeparator).Where(u=> !string.IsNullOrEmpty(u)).Select(u => int.Parse(u)).ToArray();
+                    int[] data = null;
+                    data = item.DataList.Split(CurrencyConstant.CustomDataSeparator).Where(u => !string.IsNullOrEmpty(u)).Select(u => int.Parse(u)).ToArray();
+                    roleRange.TryAdd(item.DataRange, null);
+                    if(roleRange[item.DataRange] == null)
+                    {
+                        roleRange[item.DataRange] = data;
+                    }
+                    else
+                    {
+                        List<int> dataRange = new List<int>();
+                        dataRange.AddRange(data);
+                        dataRange.AddRange(roleRange[item.DataRange]);
+                        roleRange[item.DataRange] = dataRange.ToArray();
+                    }
                 }
-                roleRange.Add(item.DataRange, data);
+                else
+                {
+                    roleRange.TryAdd(item.DataRange, null);
+                }
             }
             return roleRange;
         }

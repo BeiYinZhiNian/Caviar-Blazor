@@ -59,7 +59,7 @@ namespace Caviar.Core.Services
             {
                 item.Entity = sysFields.SingleOrDefault(u => u.FieldName == item.Entity.FieldName);
                 var set = _appDbContext.DbContext.Set<SysPermission>();
-                var permission = set.SingleOrDefault(u => u.Permission == (item.Entity.FullName + item.Entity.FieldName) && roleIds.Contains(u.Entity) && u.PermissionType == PermissionType.RoleFields);
+                var permission = set.FirstOrDefault(u => u.Permission == (item.Entity.FullName + item.Entity.FieldName) && roleIds.Contains(u.Entity) && u.PermissionType == PermissionType.RoleFields);
                 item.IsPermission = permission != null;
             }
             fields = fields.OrderBy(u => u.Entity.Number).ToList();

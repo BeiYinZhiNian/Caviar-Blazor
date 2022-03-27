@@ -250,7 +250,7 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public List<string> GetPermissionsAsync(List<SysPermission> sysPermissions)
         {
-            return sysPermissions.Select(u => u.Permission).ToList();
+            return sysPermissions.Select(u => u.Permission).ToHashSet().ToList();
         }
 
         public Task<ApplicationUser> GetCurrentUserInfoAsync()
