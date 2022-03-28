@@ -109,9 +109,9 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string UploadHeadPortrait = "SysEnclosure/UploadHeadPortrait";
         /// <summary>
-        /// 网站设置
+        /// 获取布局设置
         /// </summary>
-        public const string WebConfig = "Setting/WebConfig";
+        public const string LayoutSettings = "WebConfig/LayoutSettings";
         /// <summary>
         /// 保存角色字段
         /// </summary>

@@ -1,22 +1,22 @@
 ﻿<Menu>
     <MenuItem OnClick="UserCenter">
         <a>
-            @UserConfig.LanguageService[$"{CurrencyConstant.Page}.PersonalCenter"]
+            @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.PersonalCenter}"]
         </a>
     </MenuItem>
-    <MenuItem OnClick="()=>NavigationManager.NavigateTo(UrlConfig.WebConfig)">
+    <MenuItem OnClick="()=>NavigationManager.NavigateTo(UrlConfig.LayoutSettings)">
         <a>
-            @UserConfig.LanguageService[$"{CurrencyConstant.Page}.WebConfig"]
+            @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.LayoutSettings}"]
         </a>
     </MenuItem>
     <MenuItem OnClick="ChangePassword">
         <a>
-            @UserConfig.LanguageService[$"{CurrencyConstant.Page}.ChangePassword"]
+            @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ChangePassword}"]
         </a>
     </MenuItem>
     <MenuDivider />
     <MenuItem OnClick="BeginSignOut">
-        @UserConfig.LanguageService[$"{CurrencyConstant.Page}.Logout"]
+        @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Logout}"]
     </MenuItem>
 </Menu>
 @code {

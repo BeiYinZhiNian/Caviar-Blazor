@@ -152,7 +152,10 @@
       "Download": "下载",
       "UploadHeadPortrait": "头像上传",
       "GetApis": "获取页面API列表",
-      "CodeFileGenerate": "代码生成文件"
+      "CodeFileGenerate": "代码生成文件",
+      "WebConfig": "网站配置",
+      "LayoutSettings": "布局设置",
+      "SaveLayoutSettings": "保存布局"
     },
     "ResuleMsg": {
       "Login Succeeded": "登录成功，欢迎回来",
@@ -199,7 +202,7 @@
     "Page": {
       "SelectIcon": "请选择图标",
       "PersonalCenter": "个人中心",
-      "WebConfig": "网站配置",
+      "LayoutSettings": "布局设置",
       "ChangePassword": "修改密码",
       "Logout": "退出登录",
       "SelectQueryFields": "请选择要查询的字段",

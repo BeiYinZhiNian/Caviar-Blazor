@@ -1,7 +1,7 @@
-﻿@page "/Setting/WebConfig"
+﻿@page "/WebConfig/LayoutSettings"
 @implements IReuseTabsPage
 
-﻿<Card Title=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.WebConfig"] Bordered Hoverable>
+﻿<Card Title=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.LayoutSettings}"] Bordered Hoverable>
     <ChildContent>
         <Row>
             <Space>
@@ -22,36 +22,6 @@
                 </SpaceItem>
                 <SpaceItem>
                     <Switch @bind-Checked="UserConfig.IsTable"/>
-                </SpaceItem>
-            </Space>
-        </Row>
-        <Row Style="margin-top:20px">
-            <Space>
-                <SpaceItem>
-                    <Text>登录图片：</Text>
-                </SpaceItem>
-                <SpaceItem>
-                    <Text>敬请期待</Text>
-                </SpaceItem>
-            </Space>
-        </Row>
-        <Row Style="margin-top:20px">
-            <Space>
-                <SpaceItem>
-                    <Text>邮箱配置：</Text>
-                </SpaceItem>
-                <SpaceItem>
-                    <Text>敬请期待</Text>
-                </SpaceItem>
-            </Space>
-        </Row>
-        <Row Style="margin-top:20px">
-            <Space>
-                <SpaceItem>
-                    <Text>运行模式：</Text>
-                </SpaceItem>
-                <SpaceItem>
-                    <Text>敬请期待</Text>
                 </SpaceItem>
             </Space>
         </Row>
@@ -81,6 +51,6 @@
 
     public RenderFragment GetPageTitle()=>
        @<div>
-           @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.WebConfig}"]
+           @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.LayoutSettings}"]
        </div>;
 }

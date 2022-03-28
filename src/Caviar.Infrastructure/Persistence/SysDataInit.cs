@@ -92,11 +92,11 @@ namespace Caviar.Infrastructure.Persistence
             var set = _dbContext.Set<SysMenu>();
             foreach (var item in menus)
             {
-                var menu = await set.SingleOrDefaultAsync(u => u.Url == item.Url);
+                var menu = await set.FirstOrDefaultAsync(u => u.Url == item.Url);
                 if (menu == null)
                 {
                     var array = item.Url.Split('/');
-                    var parent = await set.SingleOrDefaultAsync(u=>u.Key == array[0]);
+                    var parent = await set.FirstOrDefaultAsync(u=>u.Key == array[0]);
                     if (parent != null)
                     {
                         item.ParentId = parent.Id;
@@ -177,7 +177,7 @@ namespace Caviar.Infrastructure.Persistence
                         PermissionType = PermissionType.RoleFields
                     });
                 }
-                if (TemplateRoleFildes.Contains(permission))
+                if (TouristRoleFildes.Contains(permission))
                 {
                     _dbContext.Add(new SysPermission()
                     {
@@ -336,6 +336,46 @@ namespace Caviar.Infrastructure.Persistence
                         Key =  CurrencyConstant.PermissionKey,
                         MenuType = MenuType.API,
                     }
+                },
+                new SysMenuView()
+                { 
+                    Entity = new SysMenu()
+                    {
+                        Key = CurrencyConstant.WebConfig,
+                        MenuType = MenuType.Settings,
+                        Icon = "tool",
+                    },
+                    Children= new List<SysMenuView>()
+                    {
+                        new SysMenuView()
+                        {
+                            Entity = new SysMenu()
+                            {
+                                Key = CurrencyConstant.MyUserDetails,
+                                MenuType = MenuType.Settings,
+                                Url = UrlConfig.MyDetails,
+                                TargetType = TargetType.CurrentPage,
+                            }
+                        },
+                        new SysMenuView()
+                        {
+                            Entity = new SysMenu()
+                            {
+                                Key = CurrencyConstant.ChangePassword,
+                                MenuType = MenuType.Settings,
+                                TargetType = TargetType.Callback,
+                            }
+                        },
+                        new SysMenuView()
+                        {
+                            Entity = new SysMenu()
+                            {
+                                Key = CurrencyConstant.Logout,
+                                MenuType = MenuType.Settings,
+                                TargetType = TargetType.Callback,
+                            }
+                        }
+                    }
                 }
             };
             permissionMenu.AddRange(menus.Select(u => u.Entity));
@@ -379,7 +419,10 @@ namespace Caviar.Infrastructure.Persistence
                 addButtons.AddRange(buttons);
                 foreach (var menu_item in item)
                 {
-                    menu_item.ParentId = id;
+                    if(menu_item.ParentId == 0)
+                    {
+                        menu_item.ParentId = id;
+                    }
                     switch (menu_item.Key)
                     {
                         case CurrencyConstant.CreateEntityKey:
@@ -415,6 +458,9 @@ namespace Caviar.Infrastructure.Persistence
                             menu_item.TargetType = TargetType.Callback;
                             menu_item.Number = "997";
                             menu_item.ButtonPosition = ButtonPosition.Row;
+                            break;
+                        case CurrencyConstant.LayoutSettings:
+                            menu_item.MenuType = MenuType.Settings;
                             break;
                         default:
                             break;

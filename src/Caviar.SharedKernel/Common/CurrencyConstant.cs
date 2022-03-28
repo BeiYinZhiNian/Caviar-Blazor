@@ -190,6 +190,10 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string PermissionKey = "Permission";
         /// <summary>
+        /// 网站配置
+        /// </summary>
+        public const string WebConfig = "WebConfig";
+        /// <summary>
         /// JWT验证
         /// </summary>
         public const string JWT = "JWT ";
@@ -518,8 +522,12 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string MyUserDetails = "MyUserDetails";
         /// <summary>
-        /// 网站配置
+        /// 布局设置
         /// </summary>
-        public const string WebConfig = "WebConfig";
+        public const string LayoutSettings = "LayoutSettings";
+        /// <summary>
+        /// 运行模式
+        /// </summary>
+        public const string OperationMode = "OperationMode";
     }
 }
