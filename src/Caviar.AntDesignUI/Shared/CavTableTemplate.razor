@@ -15,7 +15,7 @@
                 else
                 {
                     <SpaceItem>
-                        <CavSearch Fields="TableOptions.ViewFields" @bind-IsQueryState="IsQueryState" QueryCallback="QueryStart"></CavSearch>
+                        <CavSearch Fields="TableOptions.ViewFields" QueryCallback="QueryStart"></CavSearch>
                     </SpaceItem>
                 }
                 @if (TableOptions.IsAdvancedQuery)
@@ -331,7 +331,7 @@
                 FuncValidate = Validate,
             };
         RenderFragment render =
-    @<AdvancedQuery @ref="advancedQuery" @bind-IsQueryState="IsQueryState" QueryView="QueryView" Fields="TableOptions.ViewFields" QueryCallback="QueryStart"></AdvancedQuery>
+    @<AdvancedQuery @ref="advancedQuery" QueryView="QueryView" Fields="TableOptions.ViewFields" QueryCallback="QueryStart"></AdvancedQuery>
     ;
         options.Render = render;
         await CavModal.Create(options);

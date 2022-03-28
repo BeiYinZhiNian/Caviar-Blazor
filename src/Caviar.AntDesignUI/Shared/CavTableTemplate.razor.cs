@@ -160,6 +160,7 @@ namespace Caviar.AntDesignUI.Shared
                 _totalCopy = TableOptions.Total;
                 _pageIndexCopy = TableOptions.PageIndex;
                 _pageSizeCopy = TableOptions.PageSize;
+                IsQueryState = true;
                 await QueryCallback.InvokeAsync(query);
             }
         }
