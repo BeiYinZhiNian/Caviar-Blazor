@@ -135,11 +135,24 @@
       "LogoutServer": "server模式退出",
       "CurrentUserInfo": "当前用户信息",
       "SignInActual": "token登录",
+      "Permission": "权限",
       "GetPermissionMenus": "获取权限菜单",
       "SavePermissionMenus": "保存权限菜单",
       "SysUserGroup": "部门管理",
       "PermissionUserRoles": "分配角色",
-      "GetUserRoles": "获取指定用户角色"
+      "GetUserRoles": "获取指定用户角色",
+      "GetEntitys": "获取所有实体",
+      "SetCookieLanguage": "设置语言",
+      "SaveRoleFields": "保存字段权限",
+      "Query": "查询",
+      "AssignRoles": "分配角色",
+      "MyUserDetails": "个人中心",
+      "UpdateDetails": "修改个人中心",
+      "ChangePassword": "修改密码",
+      "Download": "下载",
+      "UploadHeadPortrait": "头像上传",
+      "GetApis": "获取页面API列表",
+      "CodeFileGenerate": "代码生成文件"
     },
     "ResuleMsg": {
       "Login Succeeded": "登录成功，欢迎回来",
@@ -251,7 +264,8 @@
       "NewPassword": "请输入新的密码",
       "ConfirmPassword": "请输入确认密码",
       "InputRemark": "请输入备注",
-      "PersonalSignature": "个性签名"
+      "PersonalSignature": "个性签名",
+      "MyUserDetails": "个人中心"
     }
   }
 }

@@ -513,5 +513,13 @@ namespace Caviar.SharedKernel.Entities
         /// 请输入备注
         /// </summary>
         public const string InputRemark = "InputRemark";
+        /// <summary>
+        /// 个人中心
+        /// </summary>
+        public const string MyUserDetails = "MyUserDetails";
+        /// <summary>
+        /// 网站配置
+        /// </summary>
+        public const string WebConfig = "WebConfig";
     }
 }

@@ -1,4 +1,6 @@
 ﻿@page "/Setting/WebConfig"
+@implements IReuseTabsPage
+
 ﻿<Card Title=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.WebConfig"] Bordered Hoverable>
     <ChildContent>
         <Row>
@@ -75,5 +77,10 @@
 
 @code{
     [Inject]
-    public UserConfig UserConfig { get; set; }
+    UserConfig UserConfig { get; set; }
+
+    public RenderFragment GetPageTitle()=>
+       @<div>
+           @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.WebConfig}"]
+       </div>;
 }

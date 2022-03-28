@@ -1,5 +1,5 @@
 ﻿@page "/ApplicationUser/MyUserDetails"
-
+@implements IReuseTabsPage
 
 @if (_user != null)
 {
@@ -52,9 +52,13 @@
     }
     public RenderFragment GetTitleRender()
     {
-        RenderFragment titleRender =@<Title Level="4">@_user.AccountName</Title>;
+        RenderFragment titleRender =@<Title Level="4">@_user.AccountName</Title>
+    ;
         return titleRender;
     }
 
-
+    public RenderFragment GetPageTitle()=>
+       @<div>
+           @UserConfig.LanguageService[$"{CurrencyConstant.Menu}.{CurrencyConstant.MyUserDetails}"]
+       </div>;
 }
