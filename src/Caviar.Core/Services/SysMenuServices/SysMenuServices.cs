@@ -85,7 +85,7 @@ namespace Caviar.Core.Services
         public async Task<List<SysMenuView>> GetMenuBar()
         {
             if (PermissionUrls == null) return new List<SysMenuView>();
-            var menus = await GetAllAsync().Where(u=>u.MenuType == MenuType.Menu || u.MenuType == MenuType.Catalog || u.MenuType == MenuType.Setting).ToListAsync();
+            var menus = await GetAllAsync().Where(u=>u.MenuType == MenuType.Menu || u.MenuType == MenuType.Catalog || u.MenuType == MenuType.Settings).ToListAsync();
             return ToView(menus).ListToTree();
         }
         /// <summary>

@@ -74,7 +74,7 @@
         {
             if (!item.Entity.IsPanel || !item.IsPermission) continue;
             item.Value = context;
-            var tableItem = TableOptions.GetTableItems?.Invoke(item);
+            var tableItem = TableOptions.GetTableItems?.Invoke(item,context);
             var fieldName = "entity." + item.Entity.FieldName;
             var isEnum = item.IsEnum;
             if (tableItem != null)
@@ -110,6 +110,10 @@
                                 if (value.Count() >= TableOptions.EllipsisLen)
                                 {
                                     var txt = value.Substring(0, TableOptions.DisplayCount) + "...";
+                                    if (txt.Length >= 35)
+                                    {
+                                        txt = txt.Substring(0, 35) + "...";
+                                    }
                                     <Tooltip Title="@value">
                                         <span>@txt</span>
                                     </Tooltip>

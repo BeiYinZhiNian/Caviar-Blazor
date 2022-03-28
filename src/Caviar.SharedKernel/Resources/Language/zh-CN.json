@@ -187,7 +187,8 @@
       "GreaterThan": "大于",
       "GreaterThanOrEqual": "大于等于",
       "NotEqual": "不等于",
-      "Contains": "包含"
+      "Contains": "包含",
+      "Settings": "设置"
     },
     "ExceptionMessage": {
       "Unauthorized": "未取得访问权限",

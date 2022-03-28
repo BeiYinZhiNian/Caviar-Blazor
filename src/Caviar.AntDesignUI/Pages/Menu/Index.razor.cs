@@ -20,6 +20,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
         protected override void OnInitialized()
         {
             TableOptions.TreeChildren = u => u.Children;
+            TableOptions.GetTableItems = CreateColumn;
             base.OnInitialized();
         }
         protected override Task<List<SysMenuView>> GetPages(int pageIndex = 1, int pageSize = 10, bool isOrder = true)
