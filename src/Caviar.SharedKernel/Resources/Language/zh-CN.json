@@ -130,7 +130,7 @@
       "GetMenus": "获取API列表",
       "GetMenuBar": "获取菜单栏",
       "Login": "登录",
-      "Logout": "退出",
+      "Logout": "退出登录",
       "Register": "注册",
       "LogoutServer": "server模式退出",
       "CurrentUserInfo": "当前用户信息",
