@@ -1,23 +1,9 @@
 ﻿<Menu>
-    <MenuItem OnClick="UserCenter">
-        <a>
-            @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.PersonalCenter}"]
-        </a>
-    </MenuItem>
-    <MenuItem OnClick="()=>NavigationManager.NavigateTo(UrlConfig.LayoutSettings)">
-        <a>
-            @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.LayoutSettings}"]
-        </a>
-    </MenuItem>
-    <MenuItem OnClick="ChangePassword">
-        <a>
-            @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ChangePassword}"]
-        </a>
-    </MenuItem>
-    <MenuDivider />
-    <MenuItem OnClick="BeginSignOut">
-        @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Logout}"]
-    </MenuItem>
+    @{
+        var settings = UserConfig.Menus.Where(u => u.Entity.MenuType == MenuType.Settings).ToList();
+        settings = settings.ListToTree();
+        @CreateMenu(settings)
+    }
 </Menu>
 @code {
     [Inject]
@@ -25,35 +11,92 @@
 
     [Inject]
     IJSRuntime JSRuntime { get; set; }
-    [Inject]
-    HttpService Http { get; set; }
-    [Inject]
-    MessageService messageService { get; set; }
+
     [Inject]
     CavModal CavModal { get; set; }
 
     [Inject] 
     NavigationManager NavigationManager { get; set; }
 
-    [Inject] HostAuthenticationStateProvider AuthStateProvider { get; set; }
-    public void UserCenter()
+    [Inject] 
+    HostAuthenticationStateProvider AuthStateProvider { get; set; }
+   
+
+
+    RenderFragment CreateMenu(List<SysMenuView> menus)
     {
-        NavigationManager.NavigateTo(UrlConfig.MyDetails);
+        RenderFragment render = null;
+        foreach(var menu in menus)
+        {
+            if(menu.Children != null && menu.Children.Count > 0)
+            {
+                render +=
+                @<SubMenu Title="@menu.DisplayName">
+                    @CreateMenu(menu.Children)
+                </SubMenu>;
+                return render;
+            }
+            switch (menu.Entity.TargetType)
+            {
+                case TargetType.CurrentPage:
+                    render +=
+                    @<MenuItem OnClick="() => NavigationManager.NavigateTo(menu.Entity.Url)">
+                        <a>
+                           @menu.DisplayName
+                        </a>
+                    </MenuItem>;
+                    break;
+                case TargetType.NewLabel:
+                render +=
+                @<MenuItem>">
+                    <a href="@menu.Entity.Url" target="_blank">
+                        @menu.DisplayName
+                    </a>
+                </MenuItem>;
+                    break;
+                case TargetType.Callback:
+                 render +=
+                    @<MenuItem OnClick="()=>Callback(menu)">
+                        <a>
+                           @menu.DisplayName
+                        </a>
+                    </MenuItem>;
+                    break;
+                case TargetType.EjectPage:
+                render +=
+                    @<MenuItem OnClick="()=>CreateModal(menu)">
+                        <a>
+                           @menu.DisplayName
+                        </a>
+                     </MenuItem>;
+                    break;
+                default:
+                    return render;
+            }
+        }
+        return render;
     }
 
-    public async void ChangePassword()
+    public async void Callback(SysMenuView menu)
+    {
+        switch (menu.Entity.MenuName)
+        {
+            case CurrencyConstant.Logout:
+                var result = await AuthStateProvider.Logout();
+                NavigationManager.NavigateTo(JSRuntime, result);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public async void CreateModal(SysMenuView menu)
     {
         CavModalOptions options = new CavModalOptions()
         {
-            Url = UrlConfig.ChangePassword,
-            Title = UserConfig.LanguageService[$"{CurrencyConstant.Page}.ChangePassword"]
+            Url = menu.Entity.Url,
+            Title = menu.DisplayName
         };
         await CavModal.Create(options);
-    }
-
-    private async Task BeginSignOut()
-    {
-        var result = await AuthStateProvider.Logout();
-        NavigationManager.NavigateTo(JSRuntime, result);
     }
 }
