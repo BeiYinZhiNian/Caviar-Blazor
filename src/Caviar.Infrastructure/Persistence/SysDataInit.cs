@@ -363,20 +363,20 @@ namespace Caviar.Infrastructure.Persistence
                         {
                             Entity = new SysMenu()
                             {
-                                MenuName = CurrencyConstant.ChangePassword,
+                                MenuName = CurrencyConstant.LayoutSettings,
                                 MenuType = MenuType.Settings,
-                                TargetType = TargetType.EjectPage,
-                                Url = UrlConfig.ChangePassword,
+                                TargetType = TargetType.CurrentPage,
+                                Url = UrlConfig.LayoutSettings
                             }
                         },
                         new SysMenuView()
                         {
                             Entity = new SysMenu()
                             {
-                                MenuName = CurrencyConstant.LayoutSettings,
+                                MenuName = CurrencyConstant.ChangePassword,
                                 MenuType = MenuType.Settings,
-                                TargetType = TargetType.CurrentPage,
-                                Url = UrlConfig.LayoutSettings
+                                TargetType = TargetType.EjectPage,
+                                Url = UrlConfig.ChangePassword,
                             }
                         },
                         new SysMenuView()
