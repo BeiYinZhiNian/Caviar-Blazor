@@ -28,9 +28,9 @@ namespace Caviar.Core.Services
                 }
             }
             await dbContext.SaveChangesAsync();
-            var subMenu = menus.Single(u => u.Key + "/Index" == u.Url);//查找父id
+            var subMenu = menus.Single(u => u.MenuName + "/Index" == u.Url);//查找父id
             buttons = UpdateInitButtons(buttons, subMenu.Id);
-            var sysManagement = set.Single(u => u.Key == CurrencyConstant.SysManagementKey);
+            var sysManagement = set.Single(u => u.MenuName == CurrencyConstant.SysManagementKey);
             subMenu.ParentId = sysManagement.Id; //父id
             subMenu.MenuType = MenuType.Menu; // 改为菜单
             set.UpdateRange(buttons);
@@ -103,7 +103,7 @@ namespace Caviar.Core.Services
                 MenuType = MenuType.API,
                 HttpMethods = httpMethod_item,
                 Url = $"{fieldName}/{actionName}",
-                Key = key == null?actionName:key,
+                MenuName = key == null?actionName:key,
                 TargetType = TargetType.Callback
             };
             return menu;
@@ -126,7 +126,7 @@ namespace Caviar.Core.Services
             foreach (var menu_item in menuList)
             {
                 menu_item.ParentId = ParentId;
-                switch (menu_item.Key)
+                switch (menu_item.MenuName)
                 {
                     case CurrencyConstant.CreateEntityKey:
                         menu_item.MenuType = MenuType.Button;

@@ -22,7 +22,7 @@
         RenderFragment render = null;
         switch(fields.Entity.FieldName)
         {
-            case "Key":
+            case "MenuName":
                 render =@<Column Title="@fields.DisplayName" TData="string" Width="@fields.Entity.TableWidth">
                     @{
                         var obj = context.GetObjValue("Entity").GetObjValue(fields.Entity.FieldName);

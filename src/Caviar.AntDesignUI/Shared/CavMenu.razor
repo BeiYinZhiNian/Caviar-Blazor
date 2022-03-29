@@ -36,12 +36,12 @@
                 case MenuType.Catalog:
                     if (viewMenu.Children == null || viewMenu.Children.Count == 0) continue;
                     ViewSubMenu +=
-                     @<SubMenu Key="@viewMenu.Entity.Key" TitleTemplate="subTitle">
+                     @<SubMenu Key="@viewMenu.Entity.MenuName" TitleTemplate="subTitle">
                      @GetSubMenu(viewMenu.Children)
                      </SubMenu>;
                      break;
                 case MenuType.Menu:
-                ViewSubMenu += @<MenuItem Key="@viewMenu.Entity.Key" ChildContent="@subTitle" RouterLink="@item.Url"></MenuItem>;
+                ViewSubMenu += @<MenuItem Key="@viewMenu.Entity.MenuName" ChildContent="@subTitle" RouterLink="@item.Url"></MenuItem>;
                     break;
                 default:
                     break;

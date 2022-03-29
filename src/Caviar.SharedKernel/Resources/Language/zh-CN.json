@@ -231,7 +231,7 @@
       "UserGroupRuleErrorMsg": "请为用户分配部门",
       "PhoneNumberRuleErrorMsg": "请输入正确的手机号",
       "EmailRuleErrorMsg": "请输入正确的邮箱",
-      "ParentMenuName": "请分配部门",
+      "AllocationDepartment": "请分配部门",
       "Back": "上一步",
       "Next": "下一步",
       "Generate": "生成",

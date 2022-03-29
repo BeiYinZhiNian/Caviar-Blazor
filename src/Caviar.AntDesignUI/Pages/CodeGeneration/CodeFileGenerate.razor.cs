@@ -52,7 +52,7 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
 
         protected override Task RowCallback(RowCallbackData<FieldsView> row)
         {
-            switch (row.Menu.Entity.Key)
+            switch (row.Menu.Entity.MenuName)
             {
                 //case "Menu Key"
                 case "Select":

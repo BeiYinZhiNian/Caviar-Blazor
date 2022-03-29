@@ -130,7 +130,7 @@ namespace Caviar.AntDesignUI.Core
                     builder.AddMultipleAttributes(index++, paramenter);
                     builder.CloseComponent();
                 }
-                builder.AddMarkupContent(index++, LanguageService[$"{CurrencyConstant.Menu}.{menu.Entity.Key}"]);
+                builder.AddMarkupContent(index++, LanguageService[$"{CurrencyConstant.Menu}.{menu.Entity.MenuName}"]);
                 builder.CloseElement();
             }
             else
@@ -170,11 +170,11 @@ namespace Caviar.AntDesignUI.Core
         }
         protected virtual async Task RowCallback(RowCallbackData<ViewT> row)
         {
-            switch (row.Menu.Entity.Key)
+            switch (row.Menu.Entity.MenuName)
             {
                 //case "Menu Key"
                 case CurrencyConstant.DeleteEntityKey:
-                    await Delete(GetPageUrl(row.Menu.Entity.Key), row.Data);
+                    await Delete(GetPageUrl(row.Menu.Entity.MenuName), row.Data);
                     TableOptions.DataSource.Remove(row.Data);
                     return;
                 case CurrencyConstant.UpdateEntityKey:

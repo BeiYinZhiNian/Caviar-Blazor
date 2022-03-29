@@ -30,7 +30,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
 
         protected override async Task RowCallback(RowCallbackData<SysMenuView> row)
         {
-            switch (row.Menu.Entity.Key)
+            switch (row.Menu.Entity.MenuName)
             {
                 case "DeleteEntity":
                     await ConfirmDelete(row.Menu.Entity.Url, row.Data);
@@ -47,7 +47,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
         {
             if (data.Children!=null && data.Children.Count > 0)
             {
-                var confirm = await ShowConfirm(data.Entity.Key, data.Children.Count);
+                var confirm = await ShowConfirm(data.Entity.MenuName, data.Children.Count);
                 if (confirm == ConfirmResult.Abort)//全部删除
                 {
                     data.IsDeleteAll = true;

@@ -43,7 +43,7 @@ namespace Caviar.IntegrationTests
             {
                 menuList.Add(new SysMenu()
                 {
-                    Key = "test",
+                    MenuName = "test",
                     DataId = _random.Next(_randomRange),
                 });
             }

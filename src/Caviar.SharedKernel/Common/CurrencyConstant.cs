@@ -408,7 +408,7 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 请分配部门
         /// </summary>
-        public const string ParentMenuName = "ParentMenuName";
+        public const string AllocationDepartment = "AllocationDepartment";
         /// <summary>
         /// 上一步
         /// </summary>

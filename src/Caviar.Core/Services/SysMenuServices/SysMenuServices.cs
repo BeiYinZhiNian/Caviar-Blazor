@@ -47,7 +47,7 @@ namespace Caviar.Core.Services
             var func = _menuWhere.Compile();
             if (func(entity)) return entity;
             var unauthorized = _languageService[$"{CurrencyConstant.ExceptionMessage}.{CurrencyConstant.Unauthorized}"];
-            var neme = _languageService[$"{CurrencyConstant.Menu}.{entity.Key}"];
+            var neme = _languageService[$"{CurrencyConstant.Menu}.{entity.MenuName}"];
             var message = neme + unauthorized;
             throw new Exception(message);
         }
@@ -64,7 +64,7 @@ namespace Caviar.Core.Services
             var vm = base.ToView(entity);
             foreach (var item in vm)
             {
-                string key = $"{CurrencyConstant.Menu}.{item.Entity.Key}";
+                string key = $"{CurrencyConstant.Menu}.{item.Entity.MenuName}";
                 item.DisplayName = _languageService[key];//翻译显示名称
             }
             return vm;

@@ -35,7 +35,7 @@ namespace Caviar.AntDesignUI.Pages.User
             {
                 new FormValidationRule() { Type = FormFieldType.Email, Required = true, Message = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.EmailRuleErrorMsg}"] },
              };
-            ParentMenuName = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.ParentMenuName}"];
+            ParentMenuName = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.AllocationDepartment}"];
             await base.OnInitializedAsync();
             UserGroupViews = await GetUserGroups();
         }

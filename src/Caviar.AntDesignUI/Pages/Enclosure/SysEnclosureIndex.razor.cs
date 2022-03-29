@@ -24,7 +24,7 @@ namespace Caviar.AntDesignUI.Pages.Enclosure
         }
         protected override async Task RowCallback(RowCallbackData<SysEnclosureView> row)
         {
-            switch (row.Menu.Entity.Key)
+            switch (row.Menu.Entity.MenuName)
             {
                 //case "Menu Key"
                 case CurrencyConstant.DownloadKey:

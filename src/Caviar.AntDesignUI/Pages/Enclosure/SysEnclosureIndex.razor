@@ -22,7 +22,7 @@ SysEnclosureList
     RenderFragment CreateButtons(SysMenuView menu, SysEnclosureView enclosure)
     {
         RenderFragment button = null;
-        switch (menu.Entity.Key)
+        switch (menu.Entity.MenuName)
         {
             case CurrencyConstant.UploadKey:
                 var url = CurrencyConstant.Api + UrlConfig.Upload;

@@ -7,7 +7,7 @@ namespace Caviar.SharedKernel.Entities
 
         [Required(ErrorMessage = "RequiredErrorMsg")]
         [StringLength(50, ErrorMessage = "LengthErrorMsg")]
-        public string Key { get; set; }
+        public string MenuName { get; set; }
 
         public MenuType MenuType { get; set; }
 

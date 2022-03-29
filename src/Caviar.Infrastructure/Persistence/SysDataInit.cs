@@ -96,7 +96,7 @@ namespace Caviar.Infrastructure.Persistence
                 if (menu == null)
                 {
                     var array = item.Url.Split('/');
-                    var parent = await set.FirstOrDefaultAsync(u=>u.Key == array[0]);
+                    var parent = await set.FirstOrDefaultAsync(u=>u.MenuName == array[0]);
                     if (parent != null)
                     {
                         item.ParentId = parent.Id;
@@ -228,7 +228,9 @@ namespace Caviar.Infrastructure.Persistence
             foreach (var item in menus)
             {
                 if (string.IsNullOrEmpty(item.Url)) continue;
-                set.Add(new SysPermission() { Permission = item.Url,Entity = AdminRole.Id, PermissionType = PermissionType.RoleMenus});
+                var adminPermission = await set.FirstOrDefaultAsync(u=>u.Permission == item.Url && u.Entity == AdminRole.Id && u.PermissionType == PermissionType.RoleMenus);
+                if (adminPermission != null) continue;
+                set.Add(new SysPermission() { Permission = item.Url, Entity = AdminRole.Id, PermissionType = PermissionType.RoleMenus });
                 if (TemplateRoleUrls.Contains(item.Url))
                 {
                     set.Add(new SysPermission() { Permission = item.Url, Entity = TemplateRole.Id, PermissionType = PermissionType.RoleMenus });
@@ -288,7 +290,7 @@ namespace Caviar.Infrastructure.Persistence
                 {
                     Entity = new SysMenu()
                     {
-                        Key = CurrencyConstant.SysManagementKey,
+                        MenuName = CurrencyConstant.SysManagementKey,
                         Icon = "windows",
                     }
                     
@@ -297,7 +299,7 @@ namespace Caviar.Infrastructure.Persistence
                 {
                     Entity = new SysMenu()
                     {
-                        Key = CurrencyConstant.HomeKey,
+                        MenuName = CurrencyConstant.HomeKey,
                         Icon = "home",
                         MenuType = MenuType.Menu,
                         Url = UrlConfig.Home,
@@ -309,7 +311,7 @@ namespace Caviar.Infrastructure.Persistence
                 {
                     Entity = new SysMenu()
                     {
-                        Key =  CurrencyConstant.Index,
+                        MenuName =  CurrencyConstant.Index,
                         MenuType = MenuType.Menu,
                         Icon = "code",
                         Url = $"{CurrencyConstant.CodeGenerationKey}/{CurrencyConstant.Index}",
@@ -320,7 +322,7 @@ namespace Caviar.Infrastructure.Persistence
                         {
                             Entity = new SysMenu()
                             {
-                                Key = "Select",
+                                MenuName = "Select",
                                 MenuType = MenuType.Button,
                                 TargetType = TargetType.Callback,
                                 ButtonPosition = ButtonPosition.Row,
@@ -333,7 +335,7 @@ namespace Caviar.Infrastructure.Persistence
                 {
                     Entity = new SysMenu()
                     {
-                        Key =  CurrencyConstant.PermissionKey,
+                        MenuName =  CurrencyConstant.PermissionKey,
                         MenuType = MenuType.API,
                     }
                 },
@@ -341,7 +343,7 @@ namespace Caviar.Infrastructure.Persistence
                 { 
                     Entity = new SysMenu()
                     {
-                        Key = CurrencyConstant.WebConfig,
+                        MenuName = CurrencyConstant.WebConfig,
                         MenuType = MenuType.Settings,
                         Icon = "tool",
                     },
@@ -351,36 +353,47 @@ namespace Caviar.Infrastructure.Persistence
                         {
                             Entity = new SysMenu()
                             {
-                                Key = CurrencyConstant.MyUserDetails,
+                                MenuName = CurrencyConstant.Logout,
+                                MenuType = MenuType.Settings,
+                                TargetType = TargetType.Callback,
+                            }
+                        },
+                        new SysMenuView()
+                        {
+                            Entity = new SysMenu()
+                            {
+                                MenuName = CurrencyConstant.ChangePassword,
+                                MenuType = MenuType.Settings,
+                                TargetType = TargetType.Callback,
+                            }
+                        },
+                        new SysMenuView()
+                        {
+                            Entity = new SysMenu()
+                            {
+                                MenuName = CurrencyConstant.LayoutSettings,
+                                MenuType = MenuType.Settings,
+                                TargetType = TargetType.CurrentPage,
+                                Url = UrlConfig.LayoutSettings
+                            }
+                        },
+                        new SysMenuView()
+                        {
+                            Entity = new SysMenu()
+                            {
+                                MenuName = CurrencyConstant.MyUserDetails,
                                 MenuType = MenuType.Settings,
                                 Url = UrlConfig.MyDetails,
                                 TargetType = TargetType.CurrentPage,
                             }
                         },
-                        new SysMenuView()
-                        {
-                            Entity = new SysMenu()
-                            {
-                                Key = CurrencyConstant.ChangePassword,
-                                MenuType = MenuType.Settings,
-                                TargetType = TargetType.Callback,
-                            }
-                        },
-                        new SysMenuView()
-                        {
-                            Entity = new SysMenu()
-                            {
-                                Key = CurrencyConstant.Logout,
-                                MenuType = MenuType.Settings,
-                                TargetType = TargetType.Callback,
-                            }
-                        }
                     }
                 }
             };
-            permissionMenu.AddRange(menus.Select(u => u.Entity));
-            await AddMenus(menus);
-            var buttons = await UpdateApi(menus);
+            List<SysMenuView> allMenu = new List<SysMenuView>();
+            await AddMenus(menus, allMenu);
+            permissionMenu.AddRange(allMenu.Select(u=>u.Entity));
+            var buttons = await UpdateApi(allMenu);
             permissionMenu.AddRange(buttons);
             return permissionMenu;
         }
@@ -393,23 +406,23 @@ namespace Caviar.Infrastructure.Persistence
         {
             List<SysMenu> addButtons = new List<SysMenu>();//新增的按钮
             var set = _dbContext.Set<SysMenu>();
-            var menuBars = set.Where(u => u.Key == CurrencyConstant.Index);
+            var menuBars = set.Where(u => u.MenuName == CurrencyConstant.Index);
             foreach (var item in menuBars)
             {
-                item.Key = item.Url.Split('/')[0];
+                item.MenuName = item.Url.Split('/')[0];
                 item.MenuType = MenuType.Menu;
-                if (MenuIconDic.TryGetValue(item.Key, out string value))
+                if (MenuIconDic.TryGetValue(item.MenuName, out string value))
                 {
                     item.Icon = value;
                 }
-                item.ParentId = menus.Single(u => u.Entity.Key == CurrencyConstant.SysManagementKey).Id;
+                item.ParentId = menus.Single(u => u.Entity.MenuName == CurrencyConstant.SysManagementKey).Id;
             }
             await _dbContext.SaveChangesAsync();
-            var subMenu = set.AsEnumerable().Where(u => u.Url != null && u.Url != "/" && u.Url != $"{u.Key}/Index").GroupBy(u => u.Url.Split('/')[0]);
+            var subMenu = set.AsEnumerable().Where(u => u.Url != null && u.Url != "/" && u.Url != $"{u.MenuName}/Index").GroupBy(u => u.Url.Split('/')[0]);
             List<SysMenu> catalogueList = new List<SysMenu>();
             foreach (var item in subMenu)
             {
-                var catalogue = set.SingleOrDefault(u => u.Key == item.Key);
+                var catalogue = set.SingleOrDefault(u => u.MenuName == item.Key);
                 var id = 0;
                 if (catalogue != null)
                 {
@@ -423,7 +436,7 @@ namespace Caviar.Infrastructure.Persistence
                     {
                         menu_item.ParentId = id;
                     }
-                    switch (menu_item.Key)
+                    switch (menu_item.MenuName)
                     {
                         case CurrencyConstant.CreateEntityKey:
                             menu_item.MenuType = MenuType.Button;
@@ -477,7 +490,7 @@ namespace Caviar.Infrastructure.Persistence
         {
             List<SysMenu> menus = new List<SysMenu>();
             if (sysMenu == null) return menus;
-            switch (sysMenu.Key)
+            switch (sysMenu.MenuName)
             {
                 case CurrencyConstant.ApplicationRoleKey:
                     menus = new List<SysMenu>()
@@ -487,7 +500,7 @@ namespace Caviar.Infrastructure.Persistence
                             ButtonPosition = ButtonPosition.Row,
                             TargetType = TargetType.CurrentPage,
                             Url = UrlConfig.FieldPermissionsUrl,
-                            Key = CurrencyConstant.FieldPermissionsKey,
+                            MenuName = CurrencyConstant.FieldPermissionsKey,
                             ParentId = sysMenu.Id,
                             Number = "996",
                             MenuType = MenuType.Button,
@@ -497,7 +510,7 @@ namespace Caviar.Infrastructure.Persistence
                             ButtonPosition = ButtonPosition.Row,
                             TargetType = TargetType.EjectPage,
                             Url = UrlConfig.MenuPermissionsUrl,
-                            Key = CurrencyConstant.MenuPermissionsKey,
+                            MenuName = CurrencyConstant.MenuPermissionsKey,
                             ParentId = sysMenu.Id,
                             Number = "996",
                             MenuType = MenuType.Button,
@@ -512,7 +525,7 @@ namespace Caviar.Infrastructure.Persistence
                             ButtonPosition = ButtonPosition.Row,
                             TargetType = TargetType.EjectPage,
                             Url = UrlConfig.PermissionUserRoles,
-                            Key = CurrencyConstant.PermissionUserRolesKey,
+                            MenuName = CurrencyConstant.PermissionUserRolesKey,
                             ParentId = sysMenu.Id,
                             Number = "996",
                             MenuType = MenuType.Button,
@@ -527,16 +540,23 @@ namespace Caviar.Infrastructure.Persistence
             await _dbContext.SaveChangesAsync();
             return menus;
         }
-        private async Task AddMenus(List<SysMenuView> sysMenuViews,int parentId = 0)
+        /// <summary>
+        /// 递归添加菜单所有数据
+        /// </summary>
+        /// <param name="sysMenuViews"></param>
+        /// <param name="parentId"></param>
+        /// <returns></returns>
+        private async Task AddMenus(List<SysMenuView> sysMenuViews,List<SysMenuView> allMenu,int parentId = 0)
         {
             foreach (var item in sysMenuViews)
             {
                 item.Entity.ParentId = parentId;
                 _dbContext.Add(item.Entity);
+                allMenu.Add(item);
                 if (item.Children != null)
                 {
                     await _dbContext.SaveChangesAsync();
-                    await AddMenus(item.Children, item.Id);
+                    await AddMenus(item.Children, allMenu, item.Id);
                 }
             }
             await _dbContext.SaveChangesAsync();

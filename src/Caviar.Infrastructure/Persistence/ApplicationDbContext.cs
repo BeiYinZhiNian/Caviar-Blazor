@@ -176,11 +176,7 @@ namespace Caviar.Infrastructure.Persistence
             IsEntityNull(entity);
             //var dbEntity = GetEntityAsync<T>(u => entity.Contains(u),false);
             //if (dbEntity.Count() != entity.Count()) throw new ArgumentException("非法操作，删除未授权数据");
-            var removeList = entity.Where(u => u.IsDelete).ToList();//取出物理删除数据
-            DbContext.RemoveRange(removeList);
-            removeList = entity.Where(u => u.IsDelete == false).ToList();//取出逻辑删除数据
-            removeList.ForEach(w => w.IsDelete = true);
-            DbContext.UpdateRange(removeList);
+            DbContext.RemoveRange(entity);
             if (isSaveChange)
             {
                 return await SaveChangesAsync();

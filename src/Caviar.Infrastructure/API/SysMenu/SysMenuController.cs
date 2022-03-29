@@ -48,7 +48,10 @@ namespace Caviar.Infrastructure.API.SysMenuController
             {
                 await _sysMenuServices.DeleteEntityAll(vm);
             }
-            await _sysMenuServices.DeleteEntityAsync(vm.Entity);
+            else
+            {
+                await _sysMenuServices.DeleteEntityAsync(vm.Entity);
+            }
             return Ok();
         }
 
