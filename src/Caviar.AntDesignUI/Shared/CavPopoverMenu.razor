@@ -1,6 +1,6 @@
 ﻿<Menu>
     @{
-        var settings = UserConfig.Menus.Where(u => u.Entity.MenuType == MenuType.Settings).ToList();
+        var settings = UserConfig.Menus.Where(u => u.Entity.MenuType == MenuType.Settings && u.Entity.ParentId != 0).ToList();
         settings = settings.ListToTree();
         @CreateMenu(settings)
     }
@@ -95,7 +95,7 @@
         CavModalOptions options = new CavModalOptions()
         {
             Url = menu.Entity.Url,
-            Title = menu.DisplayName
+            Title = menu.DisplayName,
         };
         await CavModal.Create(options);
     }

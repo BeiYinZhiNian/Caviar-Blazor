@@ -353,9 +353,10 @@ namespace Caviar.Infrastructure.Persistence
                         {
                             Entity = new SysMenu()
                             {
-                                MenuName = CurrencyConstant.Logout,
+                                MenuName = CurrencyConstant.MyUserDetails,
                                 MenuType = MenuType.Settings,
-                                TargetType = TargetType.Callback,
+                                Url = UrlConfig.MyDetails,
+                                TargetType = TargetType.CurrentPage,
                             }
                         },
                         new SysMenuView()
@@ -364,7 +365,8 @@ namespace Caviar.Infrastructure.Persistence
                             {
                                 MenuName = CurrencyConstant.ChangePassword,
                                 MenuType = MenuType.Settings,
-                                TargetType = TargetType.Callback,
+                                TargetType = TargetType.EjectPage,
+                                Url = UrlConfig.ChangePassword,
                             }
                         },
                         new SysMenuView()
@@ -381,10 +383,9 @@ namespace Caviar.Infrastructure.Persistence
                         {
                             Entity = new SysMenu()
                             {
-                                MenuName = CurrencyConstant.MyUserDetails,
+                                MenuName = CurrencyConstant.Logout,
                                 MenuType = MenuType.Settings,
-                                Url = UrlConfig.MyDetails,
-                                TargetType = TargetType.CurrentPage,
+                                TargetType = TargetType.Callback,
                             }
                         },
                     }
