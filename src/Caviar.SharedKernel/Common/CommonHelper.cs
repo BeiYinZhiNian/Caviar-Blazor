@@ -11,11 +11,18 @@ using System.Text.Json;
 using System.Web;
 using Microsoft.AspNetCore.Http;
 using NodaTime;
+using Caviar.SharedKernel.Entities.View;
 
 namespace Caviar.SharedKernel.Entities
 {
     public static partial class CommonHelper
     {
+        public static bool IsMenuPermissions(SysMenuView menu, List<string> permissionUrls)
+        {
+            return permissionUrls.Contains(menu.Entity.Url) || (permissionUrls.Contains(menu.Entity.Id.ToString()) && string.IsNullOrEmpty(menu.Entity.Url));
+        }
+
+
         /// <summary>
         /// 获取系统当前时间
         /// </summary>
@@ -269,7 +276,7 @@ namespace Caviar.SharedKernel.Entities
         /// <typeparam name="T"></typeparam>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static List<T> ListToTree<T>(this IList<T> data) where T: class,ITree<T>
+        public static List<T> ListToTree<T>(this IEnumerable<T> data) where T: class,ITree<T>
         {
             List<T> Tree = new List<T>();
             if (data == null) return Tree;

@@ -38,9 +38,6 @@ namespace Caviar.Infrastructure.API.SysMenuController
             return Ok(pages);
         }
 
-
-
-
         [HttpPost]
         public override async Task<IActionResult> DeleteEntity(SysMenuView vm)
         {

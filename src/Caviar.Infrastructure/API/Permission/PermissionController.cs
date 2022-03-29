@@ -18,7 +18,6 @@ namespace Caviar.Infrastructure.API.Permission
     public partial class PermissionController : BaseApiController
     {
         private readonly RoleFieldServices _roleFieldServices;
-        private readonly SysMenuServices _sysMenuServices;
         private readonly UserServices _userServices;
         private readonly RoleManager<ApplicationRole> _roleManager;
         public PermissionController(RoleManager<ApplicationRole> roleManager, 
@@ -27,13 +26,11 @@ namespace Caviar.Infrastructure.API.Permission
             UserServices userServices)
         {
             _roleFieldServices = roleFieldServices;
-            _sysMenuServices = sysMenuServices;
             _userServices = userServices;
             _roleManager = roleManager;
         }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            _sysMenuServices.PermissionUrls = PermissionUrls;
             base.OnActionExecuting(context);
         }
 
@@ -97,7 +94,7 @@ namespace Caviar.Infrastructure.API.Permission
             var role = await _roleManager.FindByNameAsync(roleName);
             var permissions = await _userServices.GetPermissionsAsync(new List<int>() { role.Id }, u => u.PermissionType == PermissionType.RoleMenus);
             var permissionUrls = _userServices.GetPermissionsAsync(permissions);
-            var menus = await _sysMenuServices.GetPermissionMenus(permissionUrls);
+            var menus = await _userServices.GetPermissionMenus(permissionUrls);
             return Ok(menus);
         }
 

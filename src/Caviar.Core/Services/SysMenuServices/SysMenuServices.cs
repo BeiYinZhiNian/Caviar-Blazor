@@ -20,7 +20,7 @@ namespace Caviar.Core.Services
         private ILanguageService _languageService;
         public SysMenuServices(IAppDbContext appDbContext,ILanguageService languageService):base(appDbContext)
         {
-            _menuWhere = u => PermissionUrls.Contains(u.Url) || string.IsNullOrEmpty(u.Url);
+            _menuWhere = u => CommonHelper.IsMenuPermissions(new SysMenuView() { Entity = u}, PermissionUrls);
             _languageService = languageService;
         }
 
@@ -102,28 +102,6 @@ namespace Caviar.Core.Services
             var apiList = await GetEntityAsync(u => u.ParentId == menu.Id).ToListAsync();
             apiList.Add(menu);
             return ToView(apiList);
-        }
-        /// <summary>
-        /// 获取权限菜单
-        /// </summary>
-        /// <returns></returns>
-        public async Task<List<SysMenuView>> GetPermissionMenus(List<string> permissionUrls)
-        {
-            var menus = await base.GetAllAsync().ToListAsync();
-            var menuViews = ToView(menus);
-            foreach (var item in menuViews)
-            {
-                if (string.IsNullOrEmpty(item.Entity.Url))
-                {
-                    item.IsPermission = true;
-                }
-                else
-                {
-                    item.IsPermission = permissionUrls.Contains(item.Entity.Url);
-                }
-            }
-            menuViews = menuViews.ListToTree();
-            return menuViews;
         }
         /// <summary>
         /// 删除所有菜单数

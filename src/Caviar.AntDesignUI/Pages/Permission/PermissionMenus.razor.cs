@@ -46,7 +46,9 @@ namespace Caviar.AntDesignUI.Pages.Permission
         {
             List<SysMenuView> menus = new List<SysMenuView>();
             Menus.TreeToList(menus);
-            var urls = menus.Where(u => u.IsPermission && !string.IsNullOrEmpty(u.Entity.Url)).Select(u => u.Entity.Url);
+            var urls = menus.Where(u => u.IsPermission && !string.IsNullOrEmpty(u.Entity.Url)).Select(u => u.Entity.Url).ToList();
+            // 当权限菜单没有url时，以id为权限
+            urls.AddRange(menus.Where(u => u.IsPermission && string.IsNullOrEmpty(u.Entity.Url)).Select(u => u.Entity.Id.ToString()));
             var result = await HttpService.PostJson($"{UrlConfig.SavePermissionMenus}?roleName={DataSource.Entity.Name}", urls);
             if (result.Status != HttpStatusCode.OK) return false;
             _ = MessageService.Success(result.Title);

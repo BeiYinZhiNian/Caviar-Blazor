@@ -144,6 +144,23 @@ namespace Caviar.Core.Services
             var permissionsSet = AppDbContext.DbContext.Set<SysPermission>();
             return permissionsSet.Where(u => roleIds.Contains(u.Entity)).Where(whereLambda).ToListAsync();
         }
+
+        /// <summary>
+        /// 获取权限菜单
+        /// 此处菜单权限取自角色
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<SysMenuView>> GetPermissionMenus(List<string> permissionUrls)
+        {
+            var menus = await AppDbContext.GetAllAsync<SysMenu>().ToListAsync();
+            var menuViews = menus.Select(u => new SysMenuView() { Entity = u });
+            foreach (var item in menuViews)
+            {
+                // 由于目录没有url，所以此处没有url的判断id
+                item.IsPermission = CommonHelper.IsMenuPermissions(item,permissionUrls);
+            }
+            return menuViews.ListToTree();
+        }
         /// <summary>
         /// 保存菜单权限
         /// </summary>
