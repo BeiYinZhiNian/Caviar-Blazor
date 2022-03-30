@@ -3,7 +3,9 @@ using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
+using OneOf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,6 +63,9 @@ namespace Caviar.AntDesignUI.Core
             /// <returns></returns>
             public async Task<ModalRef> Create(CavModalOptions modalOptions)
             {
+                if (modalOptions.BodyStyle == null) modalOptions.BodyStyle = "";
+                modalOptions.BodyStyle += $"height:{modalOptions.Height}px;";
+                if (modalOptions.IsOverflow) modalOptions.BodyStyle += "overflow-y: auto;";
                 RenderFragment render = modalOptions.Render;
                 if(render == null)
                 {
@@ -71,13 +76,16 @@ namespace Caviar.AntDesignUI.Core
                     OnOk = HandleOk,
                     OnCancel = HandleCancel,
                     MaskClosable = false,
+                    Width = modalOptions.Width,
                     Content = render,
+                    Style = modalOptions.Style,
                     Title = modalOptions.Title,
                     BodyStyle = modalOptions.BodyStyle,
                     Visible = true,
                     OkText = @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Confirm}"],
                     CancelText = @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Cancel}"],
                     DestroyOnClose = true,
+                    Footer = modalOptions.Footer
                 };
                 if (!string.IsNullOrEmpty(modalOptions.Title))
                 {
@@ -118,7 +126,10 @@ namespace Caviar.AntDesignUI.Core
             
             void SetComponent(object e)
             {
-                TableTemplate = (ITableTemplate)e;
+                if(e is ITableTemplate)
+                {
+                    TableTemplate = (ITableTemplate)e;
+                }
             }
 
             private async Task HandleOk(MouseEventArgs e)
@@ -174,7 +185,21 @@ namespace Caviar.AntDesignUI.Core
         /// <summary>
         /// 容器样式
         /// </summary>
-        public string BodyStyle { get; set; } = "overflow-y: auto;height: 400px;";
+        public string BodyStyle { get; set; }
+        /// <summary>
+        /// model样式
+        /// </summary>
+        public string Style { get; set; }
+        public bool IsOverflow { get; set; } = true;
+
+        public OneOf<string, double> Width { get; set; } = "500px";
+        public double Height { get; set; } = 400;
         public RenderFragment Render { get; set; }
+        internal static readonly RenderFragment DefaultFooter = delegate (RenderTreeBuilder builder)
+        {
+            builder.OpenComponent<ModalFooter>(0);
+            builder.CloseComponent();
+        };
+        public OneOf<string, RenderFragment>? Footer { get; set; } = DefaultFooter;
     }
 }

@@ -1,0 +1,35 @@
+﻿
+
+<Card Bordered="true" Title="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.UserLogin}"]" Style="width:400px" Hoverable="true">
+    <Body>
+        <Form Model="@ApplicationUser" @ref="Form"
+              ValidateMode="@FormValidateMode.Rules"
+              ValidateOnChange="true">
+            <CavFormItem Label="" FieldName="UserName" FieldRules="@context">
+                <AntDesign.Input Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.InputUserName}"]" Size="large" @bind-Value="@context.UserName">
+                    <Prefix><Icon Type="user" /></Prefix>
+                </AntDesign.Input>
+            </CavFormItem>
+            <CavFormItem Label="" FieldName="Password" FieldRules="@context">
+                <AntDesign.Input Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.InputUserName}"]" Size="large" @bind-Value="@context.Password" Type="password">
+                    <Prefix><Icon Type="lock" /></Prefix>
+                </AntDesign.Input>
+            </CavFormItem>
+            <Space Direction="DirectionVHType.Vertical" Style="width:100%">
+                <SpaceItem>
+                    <Spin Spinning="Loading">
+                        <Button Type="@ButtonType.Primary" OnClick="SubmitLogin" Class="submit" Size="large" Block>登&nbsp;录</Button>
+                    </Spin>
+                </SpaceItem>
+                <SpaceItem>
+                    <div class="other">
+                        <a class="register">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.RegisteredAccount}"]</a>
+                        <a style="float: right;">
+                            @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ForgetPassword}"]
+                        </a>
+                    </div>
+                </SpaceItem>
+            </Space>
+        </Form>
+    </Body>
+</Card>

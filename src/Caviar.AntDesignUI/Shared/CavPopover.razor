@@ -2,7 +2,9 @@
     @if (UserConfig.IsTourist)
     {
         <SpaceItem>
-            <Button Type="@ButtonType.Text" OnClick="()=>NavigationManager.NavigateTo(UrlConfig.Login)">登录</Button>
+            <Button Type="@ButtonType.Text" OnClick="ModelUserLogin">
+                @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.UserLogin}"]
+            </Button>
         </SpaceItem>
     }
     else if(IsSmallScreen)
@@ -55,6 +57,7 @@
     }
 </Space>
 
+@using Caviar.AntDesignUI.Pages.User;
 @code{
     [Inject]
     NavigationManager NavigationManager { get; set; }
@@ -70,22 +73,18 @@
     @<CavRuntime></CavRuntime>
     ;
 
-    private string HybridType { get; set; }
-    [Inject] 
-    IJSRuntime JSRuntime { get; set; }
-    [Inject]
-    UserConfig UserConfig{ get; set; }
-
-    private string Runtime => System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier;
-    bool IsSmallScreen = true;
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    private async void ModelUserLogin()
     {
-        var clientWidth = await JSRuntime.InvokeAsync<int>("getClientWidth");
-        if(clientWidth < 576 != IsSmallScreen)
-        {
-            IsSmallScreen = clientWidth < 576;
-            StateHasChanged();
-        }
-        await base.OnAfterRenderAsync(firstRender);
+        CavModalOptions options = new CavModalOptions()
+            {
+                Render =@<LoginCore></LoginCore>,
+                Footer = null,
+                IsOverflow = false,
+                Height = 314,
+                Width = 400,
+                BodyStyle = "padding:0px;",
+            };
+        await CavModal.Create(options);
     }
+    
 }
