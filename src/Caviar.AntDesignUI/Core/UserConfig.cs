@@ -17,7 +17,7 @@ namespace Caviar.AntDesignUI.Core
         public string White = "#F8F8FF";
 
 
-        public UserConfig(IJSRuntime jSRuntime, ILanguageService languageService,NavigationManager navigationManager)
+        public UserConfig(IJSRuntime jSRuntime, ILanguageService languageService)
         {
             JSRuntime = jSRuntime;
             Background = $"background:{White};";
@@ -84,6 +84,10 @@ namespace Caviar.AntDesignUI.Core
         /// 是否table页
         /// </summary>
         public bool IsTable { get; set; } = true;
+        /// <summary>
+        /// 是否为游客
+        /// </summary>
+        public bool IsTourist { get; set; }
         /// <summary>
         /// 更新布局
         /// </summary>

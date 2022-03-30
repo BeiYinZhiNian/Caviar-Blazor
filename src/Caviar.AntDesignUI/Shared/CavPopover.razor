@@ -1,37 +1,63 @@
 ﻿<Space Wrap>
-    <SpaceItem>
-        <Popover ContentTemplate="@_runtime" Placement="@Placement.BottomRight">
-            <Button Type="@ButtonType.Text">
-                <b>@Runtime</b>
-            </Button>
-        </Popover>
-    </SpaceItem>
-    <SpaceItem>
-        <Popover ContentTemplate="@_popoverMenu" Placement="@Placement.BottomRight">
-            <Button Type="@ButtonType.Text">
-                <AuthorizeView Context="authCountext">
-                    <Authorized>
-                        @{
-                            var Claim = authCountext.User.Claims.SingleOrDefault(u => u.Type == CurrencyConstant.HeadPortrait);
-                        }
-                        <Avatar Style="background-color: #87d068" Src="@Claim.Value" Icon="user" />
-                        @authCountext.User.Claims.SingleOrDefault(u=>u.Type == CurrencyConstant.AccountName)?.Value
-                    </Authorized>
-                </AuthorizeView>
-            </Button>
-        </Popover>
-    </SpaceItem>
-    <SpaceItem>
-        <Popover ContentTemplate="@_language" Placement="@Placement.BottomRight">
-            <Button Icon="global" Type="@ButtonType.Text"></Button>
-        </Popover>
-    </SpaceItem>
+    @if (UserConfig.IsTourist)
+    {
+        <SpaceItem>
+            <Button Type="@ButtonType.Text" OnClick="()=>NavigationManager.NavigateTo(UrlConfig.Login)">登录</Button>
+        </SpaceItem>
+    }
+    else if(IsSmallScreen)
+    {
+        <SpaceItem>
+            <Popover ContentTemplate="@_popoverMenu" Placement="@Placement.BottomRight">
+                <Button Type="@ButtonType.Text">
+                    <AuthorizeView Context="authCountext">
+                        <Authorized>
+                            @{
+                                var Claim = authCountext.User.Claims.SingleOrDefault(u => u.Type == CurrencyConstant.HeadPortrait);
+                            }
+                            <Avatar Style="background-color: #87d068" Src="@Claim.Value" Icon="user" />
+                            @authCountext.User.Claims.SingleOrDefault(u=>u.Type == CurrencyConstant.AccountName)?.Value
+                        </Authorized>
+                    </AuthorizeView>
+                </Button>
+            </Popover>
+        </SpaceItem>
+    }
+    else
+    {
+        <SpaceItem>
+            <Popover ContentTemplate="@_runtime" Placement="@Placement.BottomRight">
+                <Button Type="@ButtonType.Text">
+                    <b>@Runtime</b>
+                </Button>
+            </Popover>
+        </SpaceItem>
+        <SpaceItem>
+            <Popover ContentTemplate="@_popoverMenu" Placement="@Placement.BottomRight">
+                <Button Type="@ButtonType.Text">
+                    <AuthorizeView Context="authCountext">
+                        <Authorized>
+                            @{
+                                var Claim = authCountext.User.Claims.SingleOrDefault(u => u.Type == CurrencyConstant.HeadPortrait);
+                            }
+                            <Avatar Style="background-color: #87d068" Src="@Claim.Value" Icon="user" />
+                            @authCountext.User.Claims.SingleOrDefault(u=>u.Type == CurrencyConstant.AccountName)?.Value
+                        </Authorized>
+                    </AuthorizeView>
+                </Button>
+            </Popover>
+        </SpaceItem>
+        <SpaceItem>
+            <Popover ContentTemplate="@_language" Placement="@Placement.BottomRight">
+                <Button Icon="global" Type="@ButtonType.Text"></Button>
+            </Popover>
+        </SpaceItem>
+    }
 </Space>
 
 @code{
     [Inject]
-    private AuthenticationStateProvider authenticationStateTask { get; set; }
-
+    NavigationManager NavigationManager { get; set; }
     RenderFragment _popoverMenu =
     @<CavPopoverMenu></CavPopoverMenu>
     ;
@@ -45,9 +71,21 @@
     ;
 
     private string HybridType { get; set; }
-    [Inject] IJSRuntime JSRuntime { get; set; }
+    [Inject] 
+    IJSRuntime JSRuntime { get; set; }
+    [Inject]
+    UserConfig UserConfig{ get; set; }
 
     private string Runtime => System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier;
-
-
+    bool IsSmallScreen = true;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var clientWidth = await JSRuntime.InvokeAsync<int>("getClientWidth");
+        if(clientWidth < 576 != IsSmallScreen)
+        {
+            IsSmallScreen = clientWidth < 576;
+            StateHasChanged();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
 }

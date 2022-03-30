@@ -62,6 +62,10 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string AccountName = "AccountName";
         /// <summary>
+        /// 游客登录
+        /// </summary>
+        public const string TouristVisit = "TouristVisit";
+        /// <summary>
         /// 当前页面url
         /// </summary>
         public const string CurrentUrl = "CurrentUrl";

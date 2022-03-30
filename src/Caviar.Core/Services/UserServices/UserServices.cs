@@ -171,14 +171,14 @@ namespace Caviar.Core.Services
                 {
                     new CaviarClaim(CurrencyConstant.HeadPortrait, applicationUser.HeadPortrait ?? ""),
                     new CaviarClaim(CurrencyConstant.AccountName,applicationUser.AccountName),
+                    new CaviarClaim(CurrencyConstant.TouristVisit,true.ToString())
                 };
                 claims.AddRange(User.Claims.Select(u => new CaviarClaim(u)));
                 var currentUser = new CurrentUser
                 {
                     IsAuthenticated = true,
                     UserName = applicationUser.AccountName,
-                    Claims = claims,
-                    TouristVisit = true
+                    Claims = claims
                 };
                 return await Task.FromResult(currentUser);
             }

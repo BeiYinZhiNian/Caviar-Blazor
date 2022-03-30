@@ -5,9 +5,15 @@
             AdditionalAssemblies="Config.AdditionalAssemblies"
             PreferExactMatches="@true">
         <Found Context="routeData">
-            <AuthorizeView>
+            <AuthorizeView Context="authCountext">
                 <Authorized>
-@*                    <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(CavMainLayout)" />*@
+                    @{
+                        var touristVisit = authCountext.User.Claims.SingleOrDefault(u => u.Type == CurrencyConstant.TouristVisit);
+                        if(touristVisit != null)
+                        {
+                            UserConfig.IsTourist = bool.Parse(touristVisit.Value);
+                        }
+                    }
                     <ReuseTabsRouteView RouteData="@routeData" DefaultLayout="@typeof(CavMainLayout)" />
                 </Authorized>
                 <NotAuthorized>
@@ -27,6 +33,8 @@
 
     [Inject]
     NavigationManager NavigationManager { get; set; }
+    [Inject]
+    HostAuthenticationStateProvider HostAuthenticationStateProvider{ get; set; }
 
     [Inject]
     IJSRuntime JSRuntime{ get; set; }
