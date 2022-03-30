@@ -227,17 +227,18 @@ namespace Caviar.Infrastructure.Persistence
             var set = _dbContext.Set<SysPermission>();
             foreach (var item in menus)
             {
-                if (string.IsNullOrEmpty(item.Url)) continue;
-                var adminPermission = await set.FirstOrDefaultAsync(u=>u.Permission == item.Url && u.Entity == AdminRole.Id && u.PermissionType == PermissionType.RoleMenus);
+                // 当没有url时，使用id进行授权
+                var permission = string.IsNullOrEmpty(item.Url) ? item.Id.ToString() : item.Url;
+                var adminPermission = await set.FirstOrDefaultAsync(u=>u.Permission == permission && u.Entity == AdminRole.Id && u.PermissionType == PermissionType.RoleMenus);
                 if (adminPermission != null) continue;
-                set.Add(new SysPermission() { Permission = item.Url, Entity = AdminRole.Id, PermissionType = PermissionType.RoleMenus });
+                set.Add(new SysPermission() { Permission = permission, Entity = AdminRole.Id, PermissionType = PermissionType.RoleMenus });
                 if (TemplateRoleUrls.Contains(item.Url))
                 {
-                    set.Add(new SysPermission() { Permission = item.Url, Entity = TemplateRole.Id, PermissionType = PermissionType.RoleMenus });
+                    set.Add(new SysPermission() { Permission = permission, Entity = TemplateRole.Id, PermissionType = PermissionType.RoleMenus });
                 }
                 if (TouristRoleUrls.Contains(item.Url))
                 {
-                    set.Add(new SysPermission() { Permission = item.Url, Entity = TouristRole.Id, PermissionType = PermissionType.RoleMenus });
+                    set.Add(new SysPermission() { Permission = permission, Entity = TouristRole.Id, PermissionType = PermissionType.RoleMenus });
                 }
             }
             await _dbContext.SaveChangesAsync();
