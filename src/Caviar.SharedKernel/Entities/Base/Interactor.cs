@@ -111,5 +111,9 @@ namespace Caviar.SharedKernel.Entities
         /// 当前用户所有角色
         /// </summary>
         public IList<ApplicationRole> ApplicationRoles { get; set; }
+        /// <summary>
+        /// 当前用户所有可用url集合
+        /// </summary>
+        public List<string> PermissionUrls { get; set; }
     }
 }

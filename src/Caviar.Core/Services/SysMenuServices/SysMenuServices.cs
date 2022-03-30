@@ -13,15 +13,15 @@ namespace Caviar.Core.Services
 {
     public partial class SysMenuServices: EasyBaseServices<SysMenu,SysMenuView>
     {
-        public List<string> PermissionUrls { get; set; }
 
-        private Expression<Func<SysMenu, bool>> _menuWhere;
-
-        private ILanguageService _languageService;
-        public SysMenuServices(IAppDbContext appDbContext,ILanguageService languageService):base(appDbContext)
+        private readonly Expression<Func<SysMenu, bool>> _menuWhere;
+        private readonly ILanguageService _languageService;
+        private readonly Interactor _interactor;
+        public SysMenuServices(IAppDbContext appDbContext,ILanguageService languageService,Interactor interactor):base(appDbContext)
         {
-            _menuWhere = u => PermissionUrls.Contains(u.Url) || (PermissionUrls.Contains(u.Id.ToString()) && string.IsNullOrEmpty(u.Url));
             _languageService = languageService;
+            _interactor = interactor;
+            _menuWhere = u => _interactor.PermissionUrls.Contains(u.Url) || (_interactor.PermissionUrls.Contains(u.Id.ToString()) && string.IsNullOrEmpty(u.Url));
         }
 
         public override IQueryable<SysMenu> GetEntityAsync(Expression<Func<SysMenu, bool>> where)
@@ -43,7 +43,7 @@ namespace Caviar.Core.Services
         {
             var entity = await base.SingleOrDefaultAsync(where);
             if (entity == null) return null;
-            if (PermissionUrls == null) return null;
+            if (_interactor.PermissionUrls == null) return null;
             var func = _menuWhere.Compile();
             if (func(entity)) return entity;
             var unauthorized = _languageService[$"{CurrencyConstant.ExceptionMessage}.{CurrencyConstant.Unauthorized}"];
@@ -84,7 +84,7 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public async Task<List<SysMenuView>> GetMenuBar()
         {
-            if (PermissionUrls == null) return new List<SysMenuView>();
+            if (_interactor.PermissionUrls == null) return new List<SysMenuView>();
             var menus = await GetAllAsync().Where(u=>u.MenuType == MenuType.Menu || u.MenuType == MenuType.Catalog || u.MenuType == MenuType.Settings).ToListAsync();
             return ToView(menus).ListToTree();
         }

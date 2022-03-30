@@ -34,11 +34,6 @@ namespace Caviar.Infrastructure.API.BaseApi
         /// 权限服务
         /// </summary>
         private PermissionServices PermissionServices { get; set; }
-        /// <summary>
-        /// 当前用户所有可用url集合
-        /// </summary>
-        protected List<string> PermissionUrls { get; private set; }
-
         protected RoleServices RoleServices { get; set; }
         private LogServices<BaseApiController> LogServices { get; set; }
         /// <summary>
@@ -113,10 +108,10 @@ namespace Caviar.Infrastructure.API.BaseApi
             //设置url权限
             var roleIds = UserServices.GetRoleIdsAsync(Interactor.UserInfo).Result;
             var menuPermission = PermissionServices.GetPermissionsAsync(roleIds, u => u.PermissionType == PermissionType.RoleMenus).Result;
-            PermissionUrls = PermissionServices.GetPermissionsAsync(menuPermission);
+            Interactor.PermissionUrls = PermissionServices.GetPermissionsAsync(menuPermission);
             var url = Interactor.Current_Action.Remove(0, CurrencyConstant.Api.Length + 1);
             if (IgnoreUrl.Contains(url)) return true;
-            return PermissionUrls.Contains(url);
+            return Interactor.PermissionUrls.Contains(url);
         }
 
         protected virtual void UrlUnauthorized(ActionExecutingContext context)

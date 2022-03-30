@@ -17,13 +17,6 @@ namespace Caviar.Infrastructure.API.SysMenuController
             _sysMenuServices = sysMenuServices;
         }
 
-
-        public override void OnActionExecuting(ActionExecutingContext context)
-        {
-            _sysMenuServices.PermissionUrls = PermissionUrls;
-            base.OnActionExecuting(context);
-        }
-
         [HttpGet]
         public async Task<IActionResult> GetMenuBar()
         {

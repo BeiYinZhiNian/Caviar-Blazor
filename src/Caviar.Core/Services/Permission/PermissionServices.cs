@@ -44,13 +44,10 @@ namespace Caviar.Core.Services
             {
                 // 由于目录没有url，所以此处没有url的判断id
                 item.IsPermission = permissionUrls.Contains(item.Entity.Url) || (permissionUrls.Contains(item.Entity.Id.ToString()) && string.IsNullOrEmpty(item.Entity.Url));
-            }
-            menuViews = menuViews.ListToTree();
-            foreach (var item in menuViews)
-            {
                 string key = $"{CurrencyConstant.Menu}.{item.Entity.MenuName}";
                 item.DisplayName = _languageService[key];//翻译显示名称
             }
+            menuViews = menuViews.ListToTree();
             return menuViews;
         }
 
