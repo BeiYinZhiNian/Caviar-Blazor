@@ -13,7 +13,7 @@ Caviar(鱼子酱)框架采用了：Blazor + Ant Design + .NET6 本框架使用�
 - 📦 开箱即用的高质量框架，封装了多个Ant Design组件简化使用过程
 - 📱 兼容PC、手机、Ipad，一处运行，到处使用
 - 💕 支持 WebAssembly、Server、混合模式
-- ⚙️ 支持多种数据库：EFCore支持的数据库都支持
+- ⚙️ 支持多种数据库：SqlServer、MySql、Oracle、<a href="https://docs.microsoft.com/en-us/ef/core/providers/?tabs=dotnet-core-cli" target="_blank">支持列表</a>
 - 🎁 内置日志管理、菜单管理、附件管理、部门管理、用户管理、角色管理、代码生成等
 - 💿 多种主题任意切换
 - ⭕️ 高级搜索，支持任意模型，生成即用
