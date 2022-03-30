@@ -14,23 +14,65 @@
         </Text><br>
     </Body>
 </Card>
-<Space Size=@(("8", "8" )) Wrap Align="start">
+<br>
+
+<Divider><Title Level="3">功能特性</Title></Divider>
+
+<Space Size=@(("10", "10" )) Wrap Align="start" Style="background:#EEEEEE;padding:10px">
     <SpaceItem>
-        <Card Bordered="true" Title=@("特色功能") Hoverable="true">
+        <Card Bordered="true" Title=@("🍬多种模式") Hoverable="true" Style="height:260px;width:300px">
             <Body>
-                <Text>√基础：用户、部门、角色、菜单、日志、附件</Text><br>
-                <Text>√字段权限、菜单权限、按钮权限、api访问控制</Text><br>
-                <Text>√代码一键生成</Text><br>
-                <Text>√Wasm、Serve、混合模式</Text><br>
-                <Text>√EFCore支持的所有数据库</Text><br>
-                <Text>√高级搜索</Text><br>
-                <Text>√主题任意切换</Text><br>
-                <Text>√多语言支持</Text><br>
+                <Text>1、支持使用wasm和server模式</Text><br>
+                <Text>2、只需要写一次，即可使用两种模式，无需其他任何配置</Text><br>
+                <Text>3、支持wasm和server任意切换，在任何情况下都可以随意切换</Text><br>
+                <Text>4、使用server模式进行加载，提升加载速度，无感切换到wasm模式，节省资源</Text><br>
             </Body>
         </Card>
     </SpaceItem>
     <SpaceItem>
-        <Card Bordered="true" Title=@("资源") Hoverable="true" Style="height:260px">
+        <Card Bordered="true" Title=@("🏁权限控制") Hoverable="true" Style="height:260px;width:300px">
+            <Body>
+                <Text>1、拥有字段、菜单、资源、按钮等多种权限</Text><br>
+                <Text>2、权限细化至可控制任意元素</Text><br>
+                <Text>3、可配置不同角色的不同权限，相同的地址展示不同元素</Text><br>
+                <Text>4、控制角色可访问的数据权限</Text><br>
+            </Body>
+        </Card>
+    </SpaceItem>
+    <SpaceItem>
+        <Card Bordered="true" Title=@("🌈代码生成") Hoverable="true" Style="height:260px;width:300px">
+            <Body>
+                <Text>1、一键生成前后端代码，做到100%代码隔离</Text><br>
+                <Text>2、经过精心设计，生成任何代码可以进行重写，再也不怕重新生成代码</Text><br>
+                <Text>3、减少代码生成带来的僵硬状态，以更加灵活的技巧减少烦恼</Text><br>
+            </Body>
+        </Card>
+    </SpaceItem>
+    <SpaceItem>
+        <Card Bordered="true" Title=@("🎁内置功能") Hoverable="true" Style="height:260px;width:300px">
+            <Body>
+                <Text>1、日志管理、菜单管理、附件管理、部门管理、用户管理、角色管理、代码生成等</Text><br>
+                <Text>2、支持table页和单页面</Text><br>
+                <Text>3、后续还会开放更多功能如：邮箱、登录页面、网站设置等</Text><br>
+            </Body>
+        </Card>
+    </SpaceItem>
+    <SpaceItem>
+        <Card Bordered="true" Title=@("📱多样性") Hoverable="true" Style="height:260px;width:300px">
+            <Body>
+                <Text>1、兼容PC、手机、Ipad，一处运行，到处使用</Text><br>
+                <Text>
+                    2、支持各种数据库，SqlServer、MySql、Oracle等等
+                    <a href="https://docs.microsoft.com/en-us/ef/core/providers/?tabs=dotnet-core-cli" target="_blank">支持列表</a>
+                </Text><br>
+                <Text>3、多语言支持</Text><br>
+                <Text>4、多主题任意切换</Text><br>
+                <Text>5、高级搜索，支持任意模型，生成即用</Text><br>
+            </Body>
+        </Card>
+    </SpaceItem>
+    <SpaceItem>
+        <Card Bordered="true" Title=@("🔗资源") Hoverable="true" Style="height:260px;width:300px">
             <Body>
                 <Text>前端框架：</Text><a target="_blank" href="https://ant-design-blazor.gitee.io/zh-CN/components/overview">Ant Design Blazor</a><br>
                 <Text>开源地址：</Text><a href="https://gitee.com/Cherryblossoms/caviar" target="_blank">Gitee</a><br>

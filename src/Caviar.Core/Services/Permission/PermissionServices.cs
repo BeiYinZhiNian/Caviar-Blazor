@@ -63,7 +63,8 @@ namespace Caviar.Core.Services
             var menuUrls = GetPermissionsAsync(permissionMenus);
             var reomveMenus = permissionMenus.Where(u => !urls.Contains(u.Permission)).ToList();
             AppDbContext.DbContext.RemoveRange(reomveMenus);
-            var addMenus = urls.Where(u => !menuUrls.Contains(u)).Select(u => new SysPermission() { Permission = u, PermissionType = PermissionType.RoleMenus, Entity = roleId }).ToList();
+            var addUrls = urls.Where(u => !menuUrls.Contains(u)).Select(u => u).ToHashSet();
+            var addMenus = addUrls.Select(u => new SysPermission() { Permission = u, PermissionType = PermissionType.RoleMenus, Entity = roleId }).ToList();
             AppDbContext.DbContext.AddRange(addMenus);
             return await AppDbContext.DbContext.SaveChangesAsync();
         }
