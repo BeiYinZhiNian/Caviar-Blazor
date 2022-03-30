@@ -38,7 +38,7 @@ Caviar(鱼子酱)框架采用了：Blazor + Ant Design + .NET6 本框架使用�
   2、如果以前有运行过代码，请先打开SqlServer资源管理器，连接到本地数据库【(localdb)\MSSQLLocalDB】，找到Caviar_db数据库后删除就可以了。  
   3、把Caviar.Demo.Hybrid设定为启动项即可。  
   4、F5启动后会自动打开，第一次启动loading会比较长，请耐性等待。  
-  5、如果无法启动可以加入QQ群进行联系。  
+  5、如果无法启动可以<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=iLSuVhcAT_JHhRjj1UvB6i6-__PDMrT1&jump_from=webapi">加入QQ群</a>进行联系。  
 
 ## 🍡 使用环境
 
