@@ -20,7 +20,7 @@ namespace Caviar.Core.Services
         private ILanguageService _languageService;
         public SysMenuServices(IAppDbContext appDbContext,ILanguageService languageService):base(appDbContext)
         {
-            _menuWhere = u => CommonHelper.IsMenuPermissions(new SysMenuView() { Entity = u}, PermissionUrls);
+            _menuWhere = u => PermissionUrls.Contains(u.Url) || (PermissionUrls.Contains(u.Id.ToString()) && string.IsNullOrEmpty(u.Url));
             _languageService = languageService;
         }
 

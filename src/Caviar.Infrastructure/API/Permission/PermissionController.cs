@@ -20,14 +20,16 @@ namespace Caviar.Infrastructure.API.Permission
         private readonly RoleFieldServices _roleFieldServices;
         private readonly UserServices _userServices;
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly PermissionServices _permissionServices;
         public PermissionController(RoleManager<ApplicationRole> roleManager, 
             RoleFieldServices roleFieldServices,
-            SysMenuServices sysMenuServices,
+            PermissionServices permissionServices,
             UserServices userServices)
         {
             _roleFieldServices = roleFieldServices;
             _userServices = userServices;
             _roleManager = roleManager;
+            _permissionServices = permissionServices;
         }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
@@ -92,9 +94,9 @@ namespace Caviar.Infrastructure.API.Permission
         public async Task<IActionResult> GetPermissionMenus(string roleName)
         {
             var role = await _roleManager.FindByNameAsync(roleName);
-            var permissions = await _userServices.GetPermissionsAsync(new List<int>() { role.Id }, u => u.PermissionType == PermissionType.RoleMenus);
-            var permissionUrls = _userServices.GetPermissionsAsync(permissions);
-            var menus = await _userServices.GetPermissionMenus(permissionUrls);
+            var permissions = await _permissionServices.GetPermissionsAsync(new List<int>() { role.Id }, u => u.PermissionType == PermissionType.RoleMenus);
+            var permissionUrls = _permissionServices.GetPermissionsAsync(permissions);
+            var menus = await _permissionServices.GetPermissionMenus(permissionUrls);
             return Ok(menus);
         }
 
@@ -102,7 +104,7 @@ namespace Caviar.Infrastructure.API.Permission
         public async Task<IActionResult> SavePermissionMenus(string roleName,List<string> urls)
         {
             var role = await _roleManager.FindByNameAsync(roleName);
-            var count = await _userServices.SavePermissionMenusAsync(role.Id, urls);
+            var count = await _permissionServices.SavePermissionMenusAsync(role.Id, urls);
             return Ok(title:$"成功修改{count}条权限");
         }
     }

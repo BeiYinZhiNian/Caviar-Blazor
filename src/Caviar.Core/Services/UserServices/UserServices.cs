@@ -134,49 +134,7 @@ namespace Caviar.Core.Services
             var result = _userManager.DeleteAsync(vm.Entity);
             return result;
         }
-
-        /// <summary>
-        /// 获取指定角色所有权限
-        /// </summary>
-        /// <returns></returns>
-        public Task<List<SysPermission>> GetPermissionsAsync(List<int> roleIds,Expression<Func<SysPermission, bool>> whereLambda)
-        {
-            var permissionsSet = AppDbContext.DbContext.Set<SysPermission>();
-            return permissionsSet.Where(u => roleIds.Contains(u.Entity)).Where(whereLambda).ToListAsync();
-        }
-
-        /// <summary>
-        /// 获取权限菜单
-        /// 此处菜单权限取自角色
-        /// </summary>
-        /// <returns></returns>
-        public async Task<List<SysMenuView>> GetPermissionMenus(List<string> permissionUrls)
-        {
-            var menus = await AppDbContext.GetAllAsync<SysMenu>().ToListAsync();
-            var menuViews = menus.Select(u => new SysMenuView() { Entity = u });
-            foreach (var item in menuViews)
-            {
-                // 由于目录没有url，所以此处没有url的判断id
-                item.IsPermission = CommonHelper.IsMenuPermissions(item,permissionUrls);
-            }
-            return menuViews.ListToTree();
-        }
-        /// <summary>
-        /// 保存菜单权限
-        /// </summary>
-        /// <param name="roleName"></param>
-        /// <param name="urls"></param>
-        /// <returns></returns>
-        public async Task<int> SavePermissionMenusAsync(int roleId, List<string> urls)
-        {
-            var permissionMenus = await GetPermissionsAsync(new List<int>() { roleId }, u => u.PermissionType == PermissionType.RoleMenus);
-            var menuUrls = GetPermissionsAsync(permissionMenus);
-            var reomveMenus = permissionMenus.Where(u => !urls.Contains(u.Permission)).ToList();
-            AppDbContext.DbContext.RemoveRange(reomveMenus);
-            var addMenus = urls.Where(u=> !menuUrls.Contains(u)).Select(u => new SysPermission() { Permission = u, PermissionType = PermissionType.RoleMenus, Entity = roleId }).ToList();
-            AppDbContext.DbContext.AddRange(addMenus);
-            return await AppDbContext.DbContext.SaveChangesAsync();
-        }
+        
 
         public async Task<CurrentUser> GetCurrentUserInfoAsync(ClaimsPrincipal User,bool TouristVisit)
         {
@@ -235,39 +193,6 @@ namespace Caviar.Core.Services
                 return await Task.FromResult(currentUser);
             }
             
-        }
-
-        /// <summary>
-        /// 获取当前用户所有权限或者指定权限
-        /// </summary>
-        /// <returns></returns>
-        public async Task<List<SysPermission>> GetPermissionsAsync(Expression<Func<SysPermission, bool>> whereLambda)
-        {
-            var user = await GetCurrentUserInfoAsync();
-            var roles = await GetRoleIdsAsync(user);
-            var permissionsSet = AppDbContext.DbContext.Set<SysPermission>();
-            return permissionsSet.Where(u => roles.Contains(u.Entity)).Where(whereLambda).ToList();
-        }
-
-        /// <summary>
-        /// 获取当前用户所有权限或者指定权限
-        /// </summary>
-        /// <returns></returns>
-        public async Task<List<SysPermission>> GetPermissionsAsync()
-        {
-            var user = await GetCurrentUserInfoAsync();
-            var roles = await GetRoleIdsAsync(user);
-            var permissionsSet = AppDbContext.DbContext.Set<SysPermission>();
-            return permissionsSet.Where(u => roles.Contains(u.Entity)).ToList();
-        }
-        /// <summary>
-        /// 获取权限实体
-        /// </summary>
-        /// <param name="sysPermissions"></param>
-        /// <returns></returns>
-        public List<string> GetPermissionsAsync(List<SysPermission> sysPermissions)
-        {
-            return sysPermissions.Select(u => u.Permission).ToHashSet().ToList();
         }
 
         public Task<ApplicationUser> GetCurrentUserInfoAsync()

@@ -26,8 +26,14 @@ namespace Caviar.Infrastructure.API.BaseApi
         protected Interactor Interactor;
 
         protected ILanguageService LanguageService { get; set; }
-
+        /// <summary>
+        /// 用户服务
+        /// </summary>
         protected UserServices UserServices { get; set; }
+        /// <summary>
+        /// 权限服务
+        /// </summary>
+        private PermissionServices PermissionServices { get; set; }
         /// <summary>
         /// 当前用户所有可用url集合
         /// </summary>
@@ -60,6 +66,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             UserServices = CreateService<UserServices>();
             RoleServices = CreateService<RoleServices>();
             LogServices = CreateService<LogServices<BaseApiController>>();
+            PermissionServices = CreateService<PermissionServices>();
             Interactor.Stopwatch.Start();
             if (!User.Identity.IsAuthenticated && Configure.TouristVisit)
             {
@@ -104,8 +111,9 @@ namespace Caviar.Infrastructure.API.BaseApi
         protected virtual bool UrlCheck()
         {
             //设置url权限
-            var menuPermission = UserServices.GetPermissionsAsync(u => u.PermissionType == PermissionType.RoleMenus).Result;
-            PermissionUrls = UserServices.GetPermissionsAsync(menuPermission);
+            var roleIds = UserServices.GetRoleIdsAsync(Interactor.UserInfo).Result;
+            var menuPermission = PermissionServices.GetPermissionsAsync(roleIds, u => u.PermissionType == PermissionType.RoleMenus).Result;
+            PermissionUrls = PermissionServices.GetPermissionsAsync(menuPermission);
             var url = Interactor.Current_Action.Remove(0, CurrencyConstant.Api.Length + 1);
             if (IgnoreUrl.Contains(url)) return true;
             return PermissionUrls.Contains(url);
@@ -133,8 +141,9 @@ namespace Caviar.Infrastructure.API.BaseApi
         {
             var result = context.Result;
             var resultScanner = CreateService<ResultScannerServices>();
+            var roleIds = UserServices.GetRoleIdsAsync(Interactor.UserInfo).Result;
             //赋值字段权限
-            resultScanner.PermissionFieldss = UserServices.GetPermissionsAsync(u => u.PermissionType == PermissionType.RoleFields).Result;
+            resultScanner.PermissionFieldss = PermissionServices.GetPermissionsAsync(roleIds,u => u.PermissionType == PermissionType.RoleFields).Result;
             var resultMsg = resultScanner.ResultHandle(result);
             if (resultMsg != null)
             {
