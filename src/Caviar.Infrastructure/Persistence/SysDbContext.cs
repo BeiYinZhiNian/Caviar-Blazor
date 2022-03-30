@@ -33,7 +33,7 @@ namespace Caviar.Infrastructure.Persistence
             {
                 throw new ResultException(new ResultMsg()
                 {
-                    Title = "当前处于演示模式，无法修改数据，更多精彩功能，请下载源代码后体验",
+                    Title = "当前处于演示模式，该功能无法使用，更多精彩功能，请下载源代码后体验",
                     Url = "https://gitee.com/Cherryblossoms/caviar",
                     Status = System.Net.HttpStatusCode.BadRequest
                 });
