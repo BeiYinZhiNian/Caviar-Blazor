@@ -1,6 +1,7 @@
 ﻿using Caviar.Core.Interface;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,31 +13,31 @@ using System.Threading.Tasks;
 
 namespace Caviar.Core.Services
 {
-    public class LogServices<T>: DbServices
+    public class LogServices<T>: BaseServices
     {
         public ILogger<T> Logger { get; set; }
         private readonly Interactor _interactor;
         private CaviarConfig _caviarConfig;
-        public LogServices(IAppDbContext dbContext,ILogger<T> logger,Interactor interactor, CaviarConfig config) : base(dbContext)
+        private IAppDbContext _appDbContext;
+        public LogServices(ILogger<T> logger,Interactor interactor, CaviarConfig config, IServiceProvider serviceProvider)
         {
             Logger = logger;
             _interactor = interactor;
             _caviarConfig = config;
+            _appDbContext = serviceProvider.CreateScope().ServiceProvider.GetRequiredService<IAppDbContext>();
         }
         /// <summary>
         /// 最总保存日志处理，可以写到数据库也可以写到文件
         /// 当日志量过大，建议采用消息队列的方式控制
+        /// 采用单独的dbContext不会使其不影响其他数据的处理
         /// </summary>
         /// <param name="log"></param>
         public SysLog LogSave(SysLog log)
         {
-            if (!_caviarConfig.DemonstrationMode) // 演示模式不进行日志记录
-            {
-                //日志不执行权限操作，所以使用set
-                var set = AppDbContext.DbContext.Set<SysLog>();
-                set.Add(log);
-                AppDbContext.DbContext.SaveChanges();
-            }
+            //日志不执行权限操作，所以使用set
+            var set = _appDbContext.DbContext.Set<SysLog>();
+            set.Add(log);
+            _appDbContext.DbContext.SaveChanges();
             return log;
         }
 
