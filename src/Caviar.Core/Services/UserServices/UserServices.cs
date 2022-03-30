@@ -20,12 +20,18 @@ namespace Caviar.Core.Services
         {
             CurrencyConstant.TouristUser,
         };
-        Interactor _interactor;
-        UserManager<ApplicationUser> _userManager;
-        public UserServices(Interactor interactor,UserManager<ApplicationUser> userManager,IAppDbContext appDbContext):base(appDbContext)
+        private readonly Interactor _interactor;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly CaviarConfig _caviarConfig;
+        public UserServices(
+            Interactor interactor,
+            UserManager<ApplicationUser> userManager,
+            IAppDbContext appDbContext,
+            CaviarConfig caviarConfig) :base(appDbContext)
         {
             _interactor = interactor;
             _userManager = userManager;
+            _caviarConfig = caviarConfig;
         }
 
         public async Task<IdentityResult> AssignRolesAsync(string userName,IList<string> roles)
@@ -136,7 +142,7 @@ namespace Caviar.Core.Services
         }
         
 
-        public async Task<CurrentUser> GetCurrentUserInfoAsync(ClaimsPrincipal User,bool TouristVisit)
+        public async Task<CurrentUser> GetCurrentUserInfoAsync(ClaimsPrincipal User)
         {
             List<CaviarClaim> claims = null;
             if (User.Identity.IsAuthenticated)
@@ -160,7 +166,7 @@ namespace Caviar.Core.Services
                 };
                 return await Task.FromResult(currentUser);
             }
-            else if (TouristVisit)
+            else if (_caviarConfig.TouristVisit)
             {
                 var applicationUser = await _userManager.FindByNameAsync(CurrencyConstant.TouristUser);
                 if (applicationUser == null)

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caviar.SharedKernel.Entities.Base
+namespace Caviar.SharedKernel.Entities
 {
     public class CaviarConfig
     {
@@ -39,6 +39,19 @@ namespace Caviar.SharedKernel.Entities.Base
             Path = "Enclosure/", //文件储存路径
             CurrentDirectory = Directory.GetCurrentDirectory() + "/wwwroot/",
         };
+        /// <summary>
+        /// 是否允许游客浏览
+        /// 游客自动继承游客角色权限
+        /// </summary>
+        public bool TouristVisit { get; set; }
+        /// <summary>
+        /// api是否为调试状态
+        /// </summary>
+        public bool IsDebug { get; set; }
+        /// <summary>
+        /// 是否处于演示模式
+        /// </summary>
+        public bool DemonstrationMode { get; set; }
     }
 
     public class CodeGeneration

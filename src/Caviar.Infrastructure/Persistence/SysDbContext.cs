@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Caviar.Infrastructure.Persistence
 {
@@ -14,14 +16,29 @@ namespace Caviar.Infrastructure.Persistence
         where TRole : IdentityRole<TKey>
         where TKey : IEquatable<TKey>
     {
-        public SysDbContext(DbContextOptions options) : base(options)
+        private readonly CaviarConfig _caviarConfig;
+        public SysDbContext(DbContextOptions options,CaviarConfig caviarConfig) : base(options)
         {
-
+            _caviarConfig = caviarConfig;
         }
 
         public SysDbContext() : base()
         {
 
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            if (_caviarConfig.DemonstrationMode)
+            {
+                throw new ResultException(new ResultMsg()
+                {
+                    Title = "当前处于演示模式，无法修改数据，更多精彩功能，请下载源代码后体验",
+                    Url = "https://gitee.com/Cherryblossoms/caviar",
+                    Status = System.Net.HttpStatusCode.BadRequest
+                });
+            }
+            return base.SaveChangesAsync(cancellationToken);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

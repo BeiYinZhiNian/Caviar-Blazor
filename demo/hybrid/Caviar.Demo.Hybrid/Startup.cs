@@ -17,6 +17,10 @@ namespace Caviar.Demo.Hybrid
 
         public void ConfigureServices(IServiceCollection services)
         {
+#if DEBUG
+            // 此处为开启server模式的调试状态
+            Config.IsDebug = true;
+#endif
             //身份验证配置
             services.Configure<IdentityOptions>(options =>
             {
@@ -73,18 +77,6 @@ namespace Caviar.Demo.Hybrid
             });
             //控制器
             services.AddControllers();
-#if DEBUG
-            OpenDebugging();
-#endif
-        }
-
-        /// <summary>
-        /// 开启调试模式
-        /// </summary>
-        private void OpenDebugging()
-        {
-            Config.IsDebug = true;
-            Infrastructure.Configure.IsDebug = true;
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

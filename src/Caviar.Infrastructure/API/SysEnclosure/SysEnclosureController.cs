@@ -33,7 +33,7 @@ namespace Caviar.Infrastructure.API
         [HttpPost]
         public override async Task<IActionResult> DeleteEntity(SysEnclosureView vm)
         {
-            var result = await _sysEnclosureServices.Delete(vm, Configure.CaviarConfig.EnclosureConfig);
+            var result = await _sysEnclosureServices.Delete(vm);
             return Ok(result);
         }
 
@@ -50,7 +50,7 @@ namespace Caviar.Infrastructure.API
         [HttpPost]
         public async Task<IActionResult> UploadHeadPortrait([FromForm(Name = "HeadPortrait")] IFormFile files)
         {
-            var result = await _sysEnclosureServices.Upload(files, Configure.CaviarConfig.EnclosureConfig);
+            var result = await _sysEnclosureServices.Upload(files);
             return Ok(result);
         }
 
@@ -62,7 +62,7 @@ namespace Caviar.Infrastructure.API
         [HttpPost]
         public async Task<IActionResult> Upload([FromForm] IFormFile files)
         {
-            var result = await _sysEnclosureServices.Upload(files,Configure.CaviarConfig.EnclosureConfig);
+            var result = await _sysEnclosureServices.Upload(files);
             return Ok(result);
         }
 

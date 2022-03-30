@@ -36,6 +36,7 @@ namespace Caviar.Infrastructure.API.BaseApi
         private PermissionServices PermissionServices { get; set; }
         protected RoleServices RoleServices { get; set; }
         private LogServices<BaseApiController> LogServices { get; set; }
+        private CaviarConfig _caviarConfig;
         /// <summary>
         /// 忽略url权限
         /// </summary>
@@ -62,8 +63,9 @@ namespace Caviar.Infrastructure.API.BaseApi
             RoleServices = CreateService<RoleServices>();
             LogServices = CreateService<LogServices<BaseApiController>>();
             PermissionServices = CreateService<PermissionServices>();
+            _caviarConfig = CreateService<CaviarConfig>();
             Interactor.Stopwatch.Start();
-            if (!User.Identity.IsAuthenticated && Configure.TouristVisit)
+            if (!User.Identity.IsAuthenticated && _caviarConfig.TouristVisit)
             {
                 Interactor.UserInfo = await UserServices.GetUserInfoAsync(CurrencyConstant.TouristUser);
             }

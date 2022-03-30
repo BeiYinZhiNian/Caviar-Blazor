@@ -29,9 +29,4 @@
     <ProjectReference Include="..\Caviar.Demo.Wasm\Caviar.Demo.Wasm.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
-    <Folder Include="wwwroot\Enclosure\" />
-  </ItemGroup>
-
 </Project>

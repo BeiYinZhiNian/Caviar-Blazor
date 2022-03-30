@@ -9,7 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
-using Caviar.SharedKernel.Entities.Base;
 using Microsoft.AspNetCore.Builder;
 using Caviar.Core.Services;
 using Microsoft.AspNetCore.Hosting.Server.Features;
@@ -23,20 +22,8 @@ namespace Caviar.Infrastructure
     public static class Configure
     {
         public static bool HasDataInit { get; set; }
-
-        public static CaviarConfig CaviarConfig { get; set; }
-        /// <summary>
-        /// 允许游客浏览
-        /// 未登录用户自动继承游客权限
-        /// </summary>
-        public static bool TouristVisit { get; set; }
-
-        public static bool IsDebug { get; set; }
-
         public static IServiceProvider ServiceProvider { get; set; }
-
         private static IServerAddressesFeature ServerAddressesFeature { get; set; }
-
         public static IServiceCollection AddCaviarServer(this IServiceCollection services)
         {
             services.AddHttpContextAccessor();
@@ -95,6 +82,7 @@ namespace Caviar.Infrastructure
 
         public static IServiceCollection AddCaviar(this IServiceCollection services)
         {
+            services.AddSingleton<CaviarConfig>(); // 配置文件
             services.AddScoped<IAuthService, ServerAuthService>();
             services.AddScoped<ILanguageService, InAssemblyLanguageService>();
             services.AddScoped<Interactor>();
@@ -103,7 +91,6 @@ namespace Caviar.Infrastructure
             AutomaticInjection injection = new AutomaticInjection();
             injection.AddIBaseModel(services);
             injection.AddInject(services);
-            ReadConfig("appsettings.json");
             return services;
         }
 
@@ -111,21 +98,23 @@ namespace Caviar.Infrastructure
         {
             ServerAddressesFeature = app.ServerFeatures.Get<IServerAddressesFeature>();
             ServiceProvider = app.ApplicationServices;
-            new SysDataInit(app.ApplicationServices).StartInit().Wait();
+            var caviarConfig = ServiceProvider.GetService<CaviarConfig>();
+            new SysDataInit(app.ApplicationServices).StartInit().Wait(); // 先进行数据初始化，然后获取配置文件
+            ReadConfig("appsettings.json", caviarConfig);
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseGlobalExceptionHandling();
             return app;
         }
 
-        public static void ReadConfig(string appsettingPath)
+        public static void ReadConfig<T>(string appsettingPath,T anonymousTypeObject)
         {
             string appsettings = "{}";
             if (File.Exists(appsettingPath))
             {
                 appsettings = File.ReadAllText(appsettingPath);
             }
-            CaviarConfig = JsonConvert.DeserializeObject<CaviarConfig>(appsettings);
+            JsonConvert.PopulateObject(appsettings, anonymousTypeObject);
         }
 
         /// <summary>

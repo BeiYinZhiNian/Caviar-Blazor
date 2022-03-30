@@ -18,6 +18,7 @@ namespace Caviar.Demo.Wasm
             builder.AddCavWasm();
             builder.Services.AddAdminCaviar(new Type[] { typeof(Program) });
 #if DEBUG
+            // 此处为开启wasm模式的调试状态
             Config.IsDebug = true;
 #endif
             var host = builder.Build();

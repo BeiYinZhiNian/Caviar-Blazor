@@ -1,5 +1,4 @@
 ﻿using Caviar.SharedKernel.Entities.View;
-using Caviar.SharedKernel.Entities.Base;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,10 +17,12 @@ namespace Caviar.Core.Services
     /// </summary>
     public class CodeGenerationServices : BaseServices
     {
-        private ILanguageService _languageService;
-        public CodeGenerationServices( ILanguageService languageService) : base()
+        private readonly ILanguageService _languageService;
+        private readonly CaviarConfig _caviarConfig;
+        public CodeGenerationServices( ILanguageService languageService, CaviarConfig caviarConfig) : base()
         {
             _languageService = languageService;
+            _caviarConfig = caviarConfig;
         }
 
         public string WriteCodeFile(List<PreviewCode> previewCodes,CodeGenerateOptions codeGenerateOptions)
@@ -65,7 +66,7 @@ namespace Caviar.Core.Services
         /// <param name="fieldsData">实体字段信息</param>
         /// <param name="codeGenerateOptions">代码生成配置信息</param>
         /// <returns></returns>
-        public List<PreviewCode> CodePreview(FieldsView entityData, List<FieldsView> fieldsData, CodeGenerateOptions codeGenerateOptions,CaviarConfig config,string producer)
+        public List<PreviewCode> CodePreview(FieldsView entityData, List<FieldsView> fieldsData, CodeGenerateOptions codeGenerateOptions,string producer)
         {
             List<PreviewCode> list = new List<PreviewCode>();
             var entitieName = codeGenerateOptions.EntitieName;
@@ -73,32 +74,32 @@ namespace Caviar.Core.Services
             {
                 var suffixName = "Controller";
                 var extendName = ".cs";
-                var codePreview = GetPreviewCode(entitieName, suffixName, extendName, config.ControllerOptions);
-                codePreview = PreviewCodeReplace(entityData, fieldsData, config, codePreview, producer);
+                var codePreview = GetPreviewCode(entitieName, suffixName, extendName, _caviarConfig.ControllerOptions);
+                codePreview = PreviewCodeReplace(entityData, fieldsData, codePreview, producer);
                 list.Add(codePreview);
             }
             if (codeGenerateOptions.IsGenerateDataTemplate)
             {
                 var suffixName = "DataTemplate";
                 var extendName = ".razor";
-                var codePreview = GetPreviewCode(entitieName, suffixName, extendName, config.DataTemplateOptions);
-                codePreview = PreviewCodeReplace(entityData, fieldsData, config, codePreview, producer);
+                var codePreview = GetPreviewCode(entitieName, suffixName, extendName, _caviarConfig.DataTemplateOptions);
+                codePreview = PreviewCodeReplace(entityData, fieldsData, codePreview, producer);
                 list.Add(codePreview);
             }
             if (codeGenerateOptions.IsGenerateIndex)
             {
                 var suffixName = "Index";
                 var extendName = ".razor";
-                var codePreview = GetPreviewCode(entitieName, suffixName, extendName, config.IndexOptions);
-                codePreview = PreviewCodeReplace(entityData, fieldsData, config, codePreview, producer);
+                var codePreview = GetPreviewCode(entitieName, suffixName, extendName, _caviarConfig.IndexOptions);
+                codePreview = PreviewCodeReplace(entityData, fieldsData, codePreview, producer);
                 list.Add(codePreview);
             }
             if (codeGenerateOptions.IsGenerateViewModel)
             {
                 var suffixName = "View";
                 var extendName = ".cs";
-                var codePreview = GetPreviewCode(entitieName, suffixName, extendName, config.ViewModelOptions);
-                codePreview = PreviewCodeReplace(entityData, fieldsData, config, codePreview, producer);
+                var codePreview = GetPreviewCode(entitieName, suffixName, extendName, _caviarConfig.ViewModelOptions);
+                codePreview = PreviewCodeReplace(entityData, fieldsData, codePreview, producer);
                 list.Add(codePreview);
             }
             return list;
@@ -144,24 +145,24 @@ namespace Caviar.Core.Services
         /// <param name="codePreview">预览的代码</param>
         /// <param name="producer">生成者</param>
         /// <returns></returns>
-        protected PreviewCode PreviewCodeReplace(FieldsView entityData,List<FieldsView> fieldsData,CaviarConfig caviarConfig, PreviewCode codePreview, string producer)
+        protected PreviewCode PreviewCodeReplace(FieldsView entityData,List<FieldsView> fieldsData, PreviewCode codePreview, string producer)
         {
             StringBuilder txt = new StringBuilder(codePreview.Content);
             txt = txt.Replace("{GenerationTime}", CommonHelper.GetSysDateTimeNow().ToString("yyyy-MM-dd HH:mm:ss"));
             txt = txt.Replace("{Producer}", producer);
             txt = txt.Replace("{EntityNamespace}", codePreview.Options.NameSpace);
-            if (caviarConfig.ViewModelOptions.NameSpace == "Caviar.SharedKernel.Entities.View")
+            if (_caviarConfig.ViewModelOptions.NameSpace == "Caviar.SharedKernel.Entities.View")
             {
                 txt = txt.Replace("{usingEntityViewNamespace}", "");
             }
             else
             {
-                txt = txt.Replace("{usingEntityViewNamespace}", $"using {caviarConfig.ViewModelOptions.NameSpace};");
+                txt = txt.Replace("{usingEntityViewNamespace}", $"using {_caviarConfig.ViewModelOptions.NameSpace};");
             }
             var entityNameSpace = entityData.Entity.FullName.Replace($".{entityData.Entity.FieldName}", "");
             txt = txt.Replace("{usingEntityNamespace}", $"using {entityNameSpace};");
-            txt = txt.Replace("{EntityViewNamespace}", caviarConfig.ViewModelOptions.NameSpace);
-            txt = txt.Replace("{ControllerNamespace}", caviarConfig.ControllerOptions.NameSpace);
+            txt = txt.Replace("{EntityViewNamespace}", _caviarConfig.ViewModelOptions.NameSpace);
+            txt = txt.Replace("{ControllerNamespace}", _caviarConfig.ControllerOptions.NameSpace);
             txt = txt.Replace("{EntityName}", entityData.Entity.FieldName);
             txt = txt.Replace("{FormItem}", CreateFormItem(fieldsData));
             codePreview.Content = txt.ToString();

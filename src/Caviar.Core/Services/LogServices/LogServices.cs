@@ -15,23 +15,28 @@ namespace Caviar.Core.Services
     public class LogServices<T>: DbServices
     {
         public ILogger<T> Logger { get; set; }
-        Interactor Interactor { get; set; }
-        public LogServices(IAppDbContext dbContext,ILogger<T> logger,Interactor interactor) : base(dbContext)
+        private readonly Interactor _interactor;
+        private CaviarConfig _caviarConfig;
+        public LogServices(IAppDbContext dbContext,ILogger<T> logger,Interactor interactor, CaviarConfig config) : base(dbContext)
         {
             Logger = logger;
-            Interactor = interactor;
+            _interactor = interactor;
+            _caviarConfig = config;
         }
         /// <summary>
-        /// 最总保存日志处理，可以写道数据库也可以写道文件
+        /// 最总保存日志处理，可以写到数据库也可以写到文件
         /// 当日志量过大，建议采用消息队列的方式控制
         /// </summary>
         /// <param name="log"></param>
         public SysLog LogSave(SysLog log)
         {
-            //日志不执行权限操作，所以使用set
-            var set = AppDbContext.DbContext.Set<SysLog>();
-            set.Add(log);
-            AppDbContext.DbContext.SaveChanges();
+            if (!_caviarConfig.DemonstrationMode) // 演示模式不进行日志记录
+            {
+                //日志不执行权限操作，所以使用set
+                var set = AppDbContext.DbContext.Set<SysLog>();
+                set.Add(log);
+                AppDbContext.DbContext.SaveChanges();
+            }
             return log;
         }
 
@@ -45,18 +50,18 @@ namespace Caviar.Core.Services
         {
             return new SysLog() 
             {
-                TraceId = Interactor.TraceId.ToString(),
-                UserName = Interactor.UserName,
+                TraceId = _interactor.TraceId.ToString(),
+                UserName = _interactor.UserName,
                 ControllerName = typeof(T).Name,
-                UserId = Interactor.UserInfo?.Id,
-                AbsoluteUri = Interactor.Current_AbsoluteUri,
-                Ipaddress = Interactor.Current_Ipaddress,
+                UserId = _interactor.UserInfo?.Id,
+                AbsoluteUri = _interactor.Current_AbsoluteUri,
+                Ipaddress = _interactor.Current_Ipaddress,
                 Elapsed = elapsed,
                 Status = status,
                 Msg = message,
-                Browser = Interactor.Browser,
+                Browser = _interactor.Browser,
                 LogLevel = logLevel,
-                Method = Interactor.Method,
+                Method = _interactor.Method,
                 PostData = postData
             };
         }
