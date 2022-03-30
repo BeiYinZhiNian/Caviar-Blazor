@@ -42,6 +42,24 @@ namespace Caviar.AntDesignUI.Pages.Permission
             }
         }
 
+        private void CheckedChanged(bool check,SysMenuView menu)
+        {
+            List<SysMenuView> menus = new List<SysMenuView>();
+            Menus.TreeToList(menus);
+            if (string.IsNullOrEmpty(menu.Entity.Url))
+            {
+                menus = menus.Where(u => u.Entity.Id == menu.Entity.Id).ToList();
+            }
+            else
+            {
+                menus = menus.Where(u => u.Entity.Url == menu.Entity.Url).ToList();
+            }
+            foreach (var item in menus)
+            {
+                item.IsPermission = check;
+            }
+        }
+
         public async Task<bool> Validate()
         {
             List<SysMenuView> menus = new List<SysMenuView>();

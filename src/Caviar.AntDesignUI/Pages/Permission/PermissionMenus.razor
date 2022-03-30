@@ -13,6 +13,6 @@
       IsLeafExpression="x => x.DataItem.Children?.Count == 0"
       KeyExpression="x => x.DataItem.Id.ToString()">
     <TitleIconTemplate Context="node">
-        <Checkbox @bind-Checked="node.DataItem.IsPermission"></Checkbox>
+        <Checkbox @bind-Checked="node.DataItem.IsPermission" OnChange="(u)=>CheckedChanged(u,node.DataItem)"></Checkbox>
     </TitleIconTemplate>
 </Tree>
