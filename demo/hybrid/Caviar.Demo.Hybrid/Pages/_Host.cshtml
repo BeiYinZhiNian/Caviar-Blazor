@@ -23,7 +23,7 @@
 
 <body>
 
-    @if(IsServer)
+    @if (IsServer)
     {
         <app>
             <component type="typeof(Caviar.AntDesignUI.App)" render-mode="ServerPrerendered" />
@@ -38,7 +38,9 @@
         <app id="wasm_app" style="display: none;">
             <component type="typeof(Caviar.AntDesignUI.App)" render-mode="WebAssemblyPrerendered">
         </app>
-        <script src="_framework/blazor.webassembly.js" defer="defer"></script>
+        <script>
+            setTimeout('loadJS("_framework/blazor.webassembly.js")', 10000)
+        </script>
     }
 
     <link href="_content/AntDesign/css/ant-design-blazor.css" rel="stylesheet" id="uiCss" media="screen">
