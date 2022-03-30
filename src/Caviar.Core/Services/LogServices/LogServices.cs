@@ -17,13 +17,11 @@ namespace Caviar.Core.Services
     {
         public ILogger<T> Logger { get; set; }
         private readonly Interactor _interactor;
-        private CaviarConfig _caviarConfig;
         private IAppDbContext _appDbContext;
-        public LogServices(ILogger<T> logger,Interactor interactor, CaviarConfig config, IServiceProvider serviceProvider)
+        public LogServices(ILogger<T> logger,Interactor interactor, IServiceProvider serviceProvider)
         {
             Logger = logger;
             _interactor = interactor;
-            _caviarConfig = config;
             _appDbContext = serviceProvider.CreateScope().ServiceProvider.GetRequiredService<IAppDbContext>();
         }
         /// <summary>
