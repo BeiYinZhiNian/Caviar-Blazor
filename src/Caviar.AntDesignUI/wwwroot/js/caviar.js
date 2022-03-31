@@ -139,15 +139,16 @@ function loadJS(url, callback) {
 		script.onreadystatechange = function () {
 			if (script.readyState == 'loaded' || script.readyState == 'complete') {
 				script.onreadystatechange = null;
-				console.log("加载成功")
+				console.log("wasm加载成功")
 			}
 		};
 	} else {
 		//其他浏览器
 		script.onload = function () {
-			console.log("加载成功")
+			console.log("wasm加载成功")
 		};
 	}
 	script.src = url;
+	script.defer = 'defer';
 	document.getElementsByTagName('head')[0].appendChild(script);
 }
