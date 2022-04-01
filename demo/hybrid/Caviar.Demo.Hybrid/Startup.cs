@@ -87,10 +87,6 @@ namespace Caviar.Demo.Hybrid
                 app.UseDeveloperExceptionPage();
                 app.UseWebAssemblyDebugging();
             }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-            }
 
             app.UseBlazorFrameworkFiles();
             
