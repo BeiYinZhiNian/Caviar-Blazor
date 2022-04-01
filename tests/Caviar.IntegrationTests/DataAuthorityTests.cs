@@ -24,11 +24,13 @@ namespace Caviar.IntegrationTests
         int _randomRange = 10;
         Random _random = new Random();
         readonly ILanguageService _languageService = new InAssemblyLanguageService();
+        
         public DataAuthorityTests()
         {
+            CaviarConfig CaviarConfig = new CaviarConfig();
             var builder = new DbContextOptionsBuilder<IdentityDbContext<ApplicationUser, ApplicationRole, int>>()
                .UseInMemoryDatabase("ApplicationDbContext");
-            SysDbContext = new SysDbContext<ApplicationUser, ApplicationRole, int>(builder.Options);
+            SysDbContext = new SysDbContext<ApplicationUser, ApplicationRole, int>(builder.Options, CaviarConfig);
             SetTestData();
         }
 

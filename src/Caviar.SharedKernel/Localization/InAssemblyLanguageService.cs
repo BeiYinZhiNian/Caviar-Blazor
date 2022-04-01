@@ -103,17 +103,24 @@ namespace Caviar.SharedKernel.Entities
             {
                 string path = $"{AppDomain.CurrentDomain.BaseDirectory}{UrlConfig.LanguageFilePaht}/{name}.json";
                 var content = "";
-                if (File.Exists(path))
-                {
-                    content = File.ReadAllText(path);
-                }
-                else
+                JObject jobject = new JObject();
+                if (!string.IsNullOrEmpty(resourceName))
                 {
                     using var fileStream = _resourcesAssembly.GetManifestResourceStream(resourceName);
                     using var streamReader = new StreamReader(fileStream);
                     content = streamReader.ReadToEnd();
+                    jobject.Merge(JObject.Parse(content));
                 }
-                return JObject.Parse(content);
+                if (File.Exists(path))
+                {
+                    content = File.ReadAllText(path);
+                    jobject.Merge(JObject.Parse(content));
+                }
+                if(jobject.Count == 0)
+                {
+                    throw new FileNotFoundException($"没有语言文件 '{name}'");
+                }
+                return jobject;
             }
             catch
             {

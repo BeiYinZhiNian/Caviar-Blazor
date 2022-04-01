@@ -22,4 +22,10 @@
     <ProjectReference Include="..\..\Src\Caviar.Infrastructure\Caviar.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Resources\Language\zh-CN.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
