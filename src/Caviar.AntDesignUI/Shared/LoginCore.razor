@@ -3,8 +3,7 @@
 <Card Bordered="true" Title="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.UserLogin}"]" Style="width:400px" Hoverable="true">
     <Body>
         <Form Model="@ApplicationUser" @ref="Form"
-              ValidateMode="@FormValidateMode.Rules"
-              ValidateOnChange="true">
+              ValidateMode="@FormValidateMode.Rules">
             <CavFormItem Label="" FieldName="UserName" FieldRules="@context">
                 <AntDesign.Input Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.InputUserName}"]" Size="large" @bind-Value="@context.UserName">
                     <Prefix><Icon Type="user" /></Prefix>

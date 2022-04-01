@@ -11,17 +11,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace Caviar.AntDesignUI.Pages.User
+namespace Caviar.AntDesignUI.Shared
 {
     public partial class LoginCore
     {
         [Inject]
         UserConfig UserConfig { get; set; }
 
-        public UserLogin ApplicationUser { get; set; } = new UserLogin();
-
-        [CascadingParameter]
-        public EventCallback LayoutStyleCallBack { get; set; }
+        [Parameter]
+        public UserLogin ApplicationUser { get; set; }
 
         [Inject]
         HostAuthenticationStateProvider AuthStateProvider { get; set; }
@@ -39,16 +37,6 @@ namespace Caviar.AntDesignUI.Pages.User
 
         Form<UserLogin> Form;
 
-        protected override Task OnInitializedAsync()
-        {
-            if (Config.IsDebug)
-            {
-                ApplicationUser.RememberMe = true;
-                ApplicationUser.UserName = "admin";
-                ApplicationUser.Password = "123456";
-            }
-            return base.OnInitializedAsync();
-        }
         public async void SubmitLogin()
         {
             if (!Form.Validate()) return;

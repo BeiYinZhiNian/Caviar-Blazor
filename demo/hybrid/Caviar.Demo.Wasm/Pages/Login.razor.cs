@@ -7,16 +7,23 @@ using Microsoft.JSInterop;
 using System;
 using System.Web;
 
-namespace Caviar.AntDesignUI.Pages.User
+namespace Caviar.Demo.Wasm.Pages
 {
     public partial class Login
     {
-        public string Style { get; set; }
+        public UserLogin ApplicationUser { get; set; } = new UserLogin()
+        {
+            UserName = "admin",
+            Password = "123456",
+            RememberMe = true,
+        };
+
+        string? style;
 
         protected override void OnInitialized()
         {
             string backgroundImage = "_content/Caviar.AntDesignUI/Images/grov.jpg";
-            Style = $"min-height:100vh;background-image: url({backgroundImage});";
+            style = $"min-height:100vh;background-image: url({backgroundImage});";
             base.OnInitialized();
         }
     }

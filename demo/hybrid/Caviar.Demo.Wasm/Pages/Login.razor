@@ -1,10 +1,11 @@
 ﻿@page "/ApplicationUser/Login"
+@*暂不支持登录地址更换，后续会尽快推出*@
 
-<Layout Style="@Style" Class="site-layout-background-img">
+<Layout Style="@style" Class="site-layout-background-img">
     <Content>
         <div class="login-NavLogin">
             <div style="padding:30px">
-                <LoginCore></LoginCore>
+                <LoginCore ApplicationUser="ApplicationUser"></LoginCore>
             </div>
         </div>
     </Content>

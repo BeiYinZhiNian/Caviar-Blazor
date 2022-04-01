@@ -17,7 +17,7 @@
                     <ReuseTabsRouteView RouteData="@routeData" DefaultLayout="@typeof(CavMainLayout)" />
                 </Authorized>
                 <NotAuthorized>
-                    <Caviar.AntDesignUI.Pages.User.Login></Caviar.AntDesignUI.Pages.User.Login>
+                    @LoginRender()
                 </NotAuthorized>
             </AuthorizeView>
         </Found>
@@ -38,6 +38,13 @@
 
     [Inject]
     IJSRuntime JSRuntime{ get; set; }
+    [Inject]
+    CavModal CavModal{ get; set; }
+
+    RenderFragment LoginRender()
+    {
+        return CavModal.Render(UrlConfig.Login, "µÇÂ¼Ò³Ãæ", null);
+    }
 
     protected override void OnParametersSet()
     {
