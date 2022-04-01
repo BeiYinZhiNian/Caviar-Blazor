@@ -160,7 +160,14 @@ namespace Caviar.Core.Services
                 txt = txt.Replace("{usingEntityViewNamespace}", $"using {_caviarConfig.ViewModelOptions.NameSpace};");
             }
             var entityNameSpace = entityData.Entity.FullName.Replace($".{entityData.Entity.FieldName}", "");
-            txt = txt.Replace("{usingEntityNamespace}", $"using {entityNameSpace};");
+            if(entityNameSpace == "Caviar.SharedKernel.Entities")
+            {
+                txt = txt.Replace("{usingEntityNamespace}", "");
+            }
+            else
+            {
+                txt = txt.Replace("{usingEntityNamespace}", $"using {entityNameSpace};");
+            }
             txt = txt.Replace("{EntityViewNamespace}", _caviarConfig.ViewModelOptions.NameSpace);
             txt = txt.Replace("{ControllerNamespace}", _caviarConfig.ControllerOptions.NameSpace);
             txt = txt.Replace("{EntityName}", entityData.Entity.FieldName);

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using Caviar.SharedKernel.Entities;
+{usingEntityNamespace}
 
 /// <summary>
 /// 生成者：{Producer}
