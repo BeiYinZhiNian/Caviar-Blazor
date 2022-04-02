@@ -2,9 +2,11 @@
     @if (UserConfig.IsTourist)
     {
         <SpaceItem>
-            <Button Type="@ButtonType.Text" OnClick="ModelUserLogin">
-                @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.UserLogin}"]
-            </Button>
+            <Popover ContentTemplate="@_popoverMenu" Placement="@Placement.BottomRight">
+                <Button Type="@ButtonType.Text" OnClick="ModelUserLogin">
+                    @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.UserLogin}"]
+                </Button>
+            </Popover>
         </SpaceItem>
     }
     else if(IsSmallScreen)

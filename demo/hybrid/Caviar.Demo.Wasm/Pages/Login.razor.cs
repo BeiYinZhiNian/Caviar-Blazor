@@ -22,7 +22,7 @@ namespace Caviar.Demo.Wasm.Pages
 
         protected override void OnInitialized()
         {
-            string backgroundImage = "_content/Caviar.AntDesignUI/Images/grov.jpg";
+            string backgroundImage = "_content/Caviar.AntDesignUI/images/grov.jpg";
             style = $"min-height:100vh;background-image: url({backgroundImage});";
             base.OnInitialized();
         }

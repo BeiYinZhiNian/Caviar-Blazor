@@ -19,7 +19,7 @@ namespace Caviar.AntDesignUI.Shared
         UserConfig UserConfig { get; set; }
 
         [Parameter]
-        public UserLogin ApplicationUser { get; set; }
+        public UserLogin ApplicationUser { get; set; } = new UserLogin();
 
         [Inject]
         HostAuthenticationStateProvider AuthStateProvider { get; set; }
