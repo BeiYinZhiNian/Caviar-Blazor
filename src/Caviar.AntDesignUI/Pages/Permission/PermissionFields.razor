@@ -36,7 +36,7 @@
                 }
                 else
                 {
-                    <Table TItem="FieldsView" DataSource="@Fields" RowClassName="@(_=>"editable-row")" Bordered>
+                    <Table TItem="FieldsView" DataSource="@Fields" @bind-PageIndex="PageIndex" RowClassName="@(_=>"editable-row")" Bordered>
                     <Column Title="@LanguageService[$"{CurrencyConstant.EntitysName}.DisplayName"]" TData="string">
                         <Text>@context.DisplayName</Text>
                     </Column>

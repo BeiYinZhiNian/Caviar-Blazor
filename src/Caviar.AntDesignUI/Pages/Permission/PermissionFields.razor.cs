@@ -34,6 +34,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
         List<FieldsView> Fields { get; set; }
         FieldsView CurrentModel { get; set; }
         string FieldName { get; set; } = "";
+        int PageIndex = 1;
 
         ApplicationRoleView Role { get; set; }
 
@@ -61,6 +62,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
         {
             var result = await HttpService.GetJson<List<FieldsView>>($"{UrlConfig.GetFields}?name={model.Entity.FieldName}&fullName={model.Entity.FullName}&roleName={Role.Entity.Name}");
             if (result.Status != System.Net.HttpStatusCode.OK) return;
+            PageIndex = 1;
             CurrentModel = model;
             FieldName = model.DisplayName + "-" + LanguageService[$"{CurrencyConstant.EntitysName}.DataField"];
             Fields = result.Data;
