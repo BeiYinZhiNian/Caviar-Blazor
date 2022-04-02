@@ -17,10 +17,6 @@ namespace Caviar.Demo.Hybrid
 
         public void ConfigureServices(IServiceCollection services)
         {
-#if DEBUG
-            // 此处为开启server模式的调试状态
-            Config.IsDebug = true;
-#endif
             //身份验证配置
             services.Configure<IdentityOptions>(options =>
             {
@@ -54,6 +50,7 @@ namespace Caviar.Demo.Hybrid
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
+            Wasm.Program.PublicInit();
             //客户端配置
             services.AddCaviarServer();
             services.AddAdminCaviar(new Type[] { typeof(Program),typeof(Wasm.Program) });

@@ -17,12 +17,19 @@ namespace Caviar.Demo.Wasm
             });
             builder.AddCavWasm();
             builder.Services.AddAdminCaviar(new Type[] { typeof(Program) });
+            PublicInit();
+            var host = builder.Build();
+            await host.RunAsync();
+        }
+        /// <summary>
+        /// server模式和wasm模式公共初始化
+        /// </summary>
+        public static void PublicInit()
+        {
 #if DEBUG
             // 此处为开启wasm模式的调试状态
             Config.IsDebug = true;
 #endif
-            var host = builder.Build();
-            await host.RunAsync();
         }
     }
 }
