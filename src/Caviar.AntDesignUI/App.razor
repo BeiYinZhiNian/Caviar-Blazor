@@ -27,6 +27,7 @@
     </Router>
     <AntContainer />
 </CascadingAuthenticationState>
+
 @code {
     [Inject]
     UserConfig UserConfig { get; set; }
@@ -45,34 +46,28 @@
     {
         return CavModal.Render(UrlConfig.Login, "登录页面", null);
     }
-
-    protected override void OnParametersSet()
-    {
-        if (!Config.IsServer)
-        {
-            //在wasm中注册事件
-            //wasm模式初始化完成，接收事件
-            IframeMessage.SwitchWasm += SwitchWasm_RefChanged;
-        }  
-        else
-        {
-            var uri = new Uri(NavigationManager.Uri);
-            var collection = HttpUtility.ParseQueryString(uri.Query);
-            //是否自动切换为wasm
-            if (!string.IsNullOrEmpty(collection["IsAutomaticSwitchWasm"]))
-            {
-                UserConfig.IsAutomaticSwitchWasm = bool.Parse(collection["IsAutomaticSwitchWasm"]);
-            }
-        }
-        base.OnParametersSet();
-    }
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             try
             {
+                if (!Config.IsServer)
+                {
+                    //在wasm中注册事件
+                    //wasm模式初始化完成，接收事件
+                    IframeMessage.SwitchWasm += SwitchWasm_RefChanged;
+                }
+                else
+                {
+                    var uri = new Uri(NavigationManager.Uri);
+                    var collection = HttpUtility.ParseQueryString(uri.Query);
+                    //是否自动切换为wasm
+                    if (!string.IsNullOrEmpty(collection["IsAutomaticSwitchWasm"]))
+                    {
+                        UserConfig.IsAutomaticSwitchWasm = bool.Parse(collection["IsAutomaticSwitchWasm"]);
+                    }
+                }
                 var language = await JSRuntime.InvokeAsync<string>("getCookie", CurrencyConstant.LanguageHeader);
                 UserConfig.LanguageService.SetLanguage(language);
             }

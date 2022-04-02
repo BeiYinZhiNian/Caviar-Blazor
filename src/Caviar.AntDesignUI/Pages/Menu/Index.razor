@@ -24,14 +24,7 @@
         {
             case "MenuName":
                 render =@<Column Title="@fields.DisplayName" TData="string" Width="@fields.Entity.TableWidth">
-                    @{
-                        var obj = context.GetObjValue("Entity").GetObjValue(fields.Entity.FieldName);
-                        if (obj != null)
-                        {
-                            var value = (string)obj;
-                            @LanguageService[$"{CurrencyConstant.Menu}.{value}"]
-                        }
-                    }
+                    @context.DisplayName
                 </Column>;
                 return render;
             default:
