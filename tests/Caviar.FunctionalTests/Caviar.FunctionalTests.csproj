@@ -1,10 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Language\en-US.json" />
+    <None Remove="Resources\Language\zh-CN.json" />
+    <None Remove="Resources\Language\zh-SG.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Language\en-US.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Language\zh-SG.json" />
+    <EmbeddedResource Include="Resources\Language\zh-CN.json" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
@@ -20,12 +34,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Src\Caviar.Core\Caviar.Core.csproj" />
     <ProjectReference Include="..\..\Src\Caviar.Infrastructure\Caviar.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Resources\Language\zh-CN.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

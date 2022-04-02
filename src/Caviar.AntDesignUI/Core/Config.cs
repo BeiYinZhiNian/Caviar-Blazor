@@ -25,7 +25,9 @@ namespace Caviar.AntDesignUI
         /// 是否处理过iframeMessage
         /// </summary>
         public static bool IsHandleIframeMessage { get; set; }
-
+        /// <summary>
+        /// 前端所有Assembly
+        /// </summary>
         public static List<Assembly> AdditionalAssemblies;
 
         public static WebAssemblyHostBuilder AddCavWasm(this WebAssemblyHostBuilder builder)

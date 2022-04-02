@@ -12,7 +12,8 @@ namespace Caviar.SharedKernel.Entities
     public class InAssemblyLanguageService:ILanguageService
     {
         private readonly Assembly _resourcesAssembly;
-
+        public static Func<string, string> UserLanguage { get; set; }
+        public static Func<List<(string CultureName, string ResourceName)>> GetUserLanguageList { get; set; }
         private static Dictionary<string, JObject> _resourcesCache { get; set; } = new Dictionary<string, JObject>();
 
         private static object _resourceLock = new object();
@@ -33,6 +34,7 @@ namespace Caviar.SharedKernel.Entities
         public CultureInfo CurrentCulture { get; private set; }
 
         public JObject Resources { get; private set; }
+        
 
         public string this[string name] 
         { 
@@ -97,13 +99,13 @@ namespace Caviar.SharedKernel.Entities
 
         private JObject GetKeysFromCulture(string name)
         {
-            var availableResources = GetLanguageList();
-            var (_, resourceName) = availableResources.FirstOrDefault(x => x.CultureName.Equals(name, StringComparison.OrdinalIgnoreCase));
+            
             try
             {
-                string path = $"{AppDomain.CurrentDomain.BaseDirectory}{UrlConfig.LanguageFilePaht}/{name}.json";
                 var content = "";
                 JObject jobject = new JObject();
+                var availableResources = GetAssemblyLanguageList();
+                var (_, resourceName) = availableResources.FirstOrDefault(x => x.CultureName.Equals(name, StringComparison.OrdinalIgnoreCase));
                 if (!string.IsNullOrEmpty(resourceName))
                 {
                     using var fileStream = _resourcesAssembly.GetManifestResourceStream(resourceName);
@@ -111,9 +113,9 @@ namespace Caviar.SharedKernel.Entities
                     content = streamReader.ReadToEnd();
                     jobject.Merge(JObject.Parse(content));
                 }
-                if (File.Exists(path))
+                content = UserLanguage?.Invoke(name);
+                if (!string.IsNullOrEmpty(content))
                 {
-                    content = File.ReadAllText(path);
                     jobject.Merge(JObject.Parse(content));
                 }
                 if(jobject.Count == 0)
@@ -128,7 +130,7 @@ namespace Caviar.SharedKernel.Entities
             }
         }
 
-        public List<(string CultureName,string ResourceName)> GetLanguageList()
+        private List<(string CultureName, string ResourceName)> GetAssemblyLanguageList()
         {
             var availableResources = _resourcesAssembly
                 .GetManifestResourceNames()
@@ -137,6 +139,13 @@ namespace Caviar.SharedKernel.Entities
                 .Select(x => (CultureName: x.Groups[1].Value, ResourceName: x.Value))
                 .ToList();
             return availableResources;
+        }
+
+        public List<(string CultureName,string ResourceName)> GetLanguageList()
+        {
+            var list = GetUserLanguageList?.Invoke();
+            if (list != null) return list;
+            return GetAssemblyLanguageList();
         }
 
         public void SetLanguage(string cultureName)
