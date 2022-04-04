@@ -118,7 +118,8 @@ namespace Caviar.Infrastructure.API.BaseApi
 
         protected virtual void UrlUnauthorized(ActionExecutingContext context)
         {
-            if (User.Identity.IsAuthenticated)
+            // 未登录或者是游客身份
+            if (User.Identity.IsAuthenticated || _caviarConfig.TouristVisit)
             {
                 var msg = LanguageService[$"{CurrencyConstant.ExceptionMessage}.{CurrencyConstant.Unauthorized}"];
                 context.Result = Ok(HttpStatusCode.Unauthorized, Interactor.Current_Action + msg);
