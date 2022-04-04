@@ -12,10 +12,6 @@
     <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Include="wwwroot\images\bg2.jpg" />
-  </ItemGroup>
-
   
   <ItemGroup>
     <SupportedPlatform Include="browser" />

@@ -4,11 +4,11 @@
 @using Caviar.Infrastructure
 @using Caviar.SharedKernel.Entities
 @using Microsoft.Extensions.Options
+@inject CaviarConfig CaviarConfig;
 
 @{
     var IsServer = Request.Query.ContainsKey(CurrencyConstant.ServerName);
-    var host = Request.Host;
-    var serverHost = $"{Request.Scheme}://{host}?{CurrencyConstant.ServerName}";
+    var serverHost = $"{CaviarConfig.Urls}?{CurrencyConstant.ServerName}";
 }
 
 <!DOCTYPE html>
