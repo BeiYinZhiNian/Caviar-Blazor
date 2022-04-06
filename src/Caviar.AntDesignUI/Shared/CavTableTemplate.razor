@@ -107,12 +107,12 @@
                             if (obj != null)
                             {
                                 var value = (string)obj;
-                                if (value.Count() >= TableOptions.EllipsisLen)
+                                if (value.Count() >= TableOptions.EllipsisMaxLen)
                                 {
-                                    var txt = value.Substring(0, TableOptions.DisplayCount) + "...";
+                                    var txt = value.Substring(0, TableOptions.DisplayLen) + "...";
                                     if (value.Length >= 35)
                                     {
-                                        value = value.Substring(0, 100) + "...";
+                                        value = value.Substring(0, TableOptions.TooltipMaxLen) + "...";
                                     }
                                     <Tooltip Title="@value">
                                         <span>@txt</span>

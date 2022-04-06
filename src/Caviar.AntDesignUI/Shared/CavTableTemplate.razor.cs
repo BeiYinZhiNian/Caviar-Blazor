@@ -204,11 +204,15 @@ namespace Caviar.AntDesignUI.Shared
         /// 当字符超过n个自动忽略显示，并且使用Tooltip文字提示
         /// 默认20个字符
         /// </summary>
-        public int EllipsisLen { get; set; } = 20;
+        public int EllipsisMaxLen { get; set; } = 20;
+        /// <summary>
+        /// Tooltip显示最大长度
+        /// </summary>
+        public int TooltipMaxLen { get; set; } = 100;
         /// <summary>
         /// 当发生忽略时显示的长度
         /// </summary>
-        public int DisplayCount { get; set; } = 7;
+        public int DisplayLen { get; set; } = 7;
         /// <summary>
         /// 操作按钮列所占最大宽度
         /// </summary>
