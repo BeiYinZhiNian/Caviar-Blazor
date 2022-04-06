@@ -48,7 +48,7 @@ namespace Caviar.Core.Services
                 Directory.CreateDirectory(dir);
             }
             var path = dir + guidName;
-            enclosure.FilePath = _caviarConfig.EnclosureConfig.Path + guidName;
+            enclosure.FilePath = "/" + _caviarConfig.EnclosureConfig.Path + guidName; //绝对路径
             using (var stream = File.Create(path))
             {
                 await formFile.CopyToAsync(stream);

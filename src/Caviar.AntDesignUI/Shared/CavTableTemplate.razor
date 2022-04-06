@@ -110,7 +110,7 @@
                                 if (value.Count() >= TableOptions.EllipsisMaxLen)
                                 {
                                     var txt = value.Substring(0, TableOptions.DisplayLen) + "...";
-                                    if (value.Length >= 35)
+                                    if (value.Length >= TableOptions.TooltipMaxLen)
                                     {
                                         value = value.Substring(0, TableOptions.TooltipMaxLen) + "...";
                                     }

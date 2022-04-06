@@ -64,6 +64,9 @@ function switch_server(url) {
 
 }
 
+function open_blank(url) {
+	window.open(url, "_blank")
+}
 
 
 //iframe内发送消息

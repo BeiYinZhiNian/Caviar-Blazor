@@ -3,6 +3,7 @@ using Caviar.AntDesignUI.Core;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,8 @@ namespace Caviar.AntDesignUI.Pages.Enclosure
         HttpService HttpService { get; set; }
         [Inject]
         MessageService MessageService { get; set; }
+        [Inject]
+        IJSRuntime JSRuntime { get; set; }
         protected override Task OnInitializedAsync()
         {
             TableOptions.CreateButtons = CreateButtons;
@@ -31,7 +34,7 @@ namespace Caviar.AntDesignUI.Pages.Enclosure
                     var result = await HttpService.PostJson<SysEnclosureView, string>(UrlConfig.Download, row.Data);
                     if(result.Status == System.Net.HttpStatusCode.OK)
                     {
-                        NavigationManager.NavigateTo(result.Data, true);
+                        _ = JSRuntime.InvokeVoidAsync("open_blank", result.Data);
                     }
                     break;
             }
