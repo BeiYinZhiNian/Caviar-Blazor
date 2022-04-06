@@ -110,9 +110,9 @@
                                 if (value.Count() >= TableOptions.EllipsisLen)
                                 {
                                     var txt = value.Substring(0, TableOptions.DisplayCount) + "...";
-                                    if (txt.Length >= 35)
+                                    if (value.Length >= 35)
                                     {
-                                        txt = txt.Substring(0, 35) + "...";
+                                        value = value.Substring(0, 100) + "...";
                                     }
                                     <Tooltip Title="@value">
                                         <span>@txt</span>
