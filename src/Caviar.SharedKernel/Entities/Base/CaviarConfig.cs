@@ -36,7 +36,7 @@ namespace Caviar.SharedKernel.Entities
         public EnclosureConfig EnclosureConfig { get; set; } = new EnclosureConfig()
         {
             LimitSize = 3, //限制3M大小文件
-            Path = "Enclosure/", //文件储存路径
+            Path = "caviar-data/", //文件储存路径
             CurrentDirectory = Directory.GetCurrentDirectory() + "/wwwroot/",
         };
         /// <summary>
