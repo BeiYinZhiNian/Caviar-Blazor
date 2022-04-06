@@ -47,8 +47,8 @@ namespace Caviar.AntDesignUI.Shared
         protected override async Task OnInitializedAsync()
         {
             UserConfig.LayoutPage = Refresh;
-            LogoImg = "_content/Caviar.AntDesignUI/Images/logo.png";
-            LogoImgIco = "_content/Caviar.AntDesignUI/Images/logo-Ico.png";
+            LogoImg = "_content/Caviar.AntDesignUI/images/logo.png";
+            LogoImgIco = "_content/Caviar.AntDesignUI/images/logo-Ico.png";
             LogoImgSrc = LogoImg;
             await base.OnInitializedAsync();
         }

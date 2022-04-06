@@ -5,14 +5,14 @@
         <Form Model="@ApplicationUser" @ref="Form"
               ValidateMode="@FormValidateMode.Rules">
             <CavFormItem Label="" FieldName="UserName" FieldRules="@context">
-                <AntDesign.Input Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.InputUserName}"]" Size="large" @bind-Value="@context.UserName">
+                <Input Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.InputUserName}"]" Size="large" @bind-Value="@context.UserName">
                     <Prefix><Icon Type="user" /></Prefix>
-                </AntDesign.Input>
+                </Input>
             </CavFormItem>
-            <CavFormItem Label="" FieldName="Password" FieldRules="@context">
-                <AntDesign.Input Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.InputUserName}"]" Size="large" @bind-Value="@context.Password" Type="password">
+            <CavFormItem Label="" FieldName="Password" FieldRules='@context'>
+                <InputPassword @bind-Value='@context.Password' Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.InputUserName}"]" Size="large">
                     <Prefix><Icon Type="lock" /></Prefix>
-                </AntDesign.Input>
+                </InputPassword>
             </CavFormItem>
             <Space Direction="DirectionVHType.Vertical" Style="width:100%">
                 <SpaceItem>
