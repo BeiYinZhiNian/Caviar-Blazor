@@ -13,7 +13,7 @@ using System.Web;
 
 namespace Caviar.AntDesignUI.Shared
 {
-    public partial class LoginCore
+    public partial class CavLoginCore
     {
         [Inject]
         UserConfig UserConfig { get; set; }

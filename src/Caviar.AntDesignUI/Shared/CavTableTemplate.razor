@@ -321,7 +321,7 @@
     MessageService MessageService { get; set; }
 
     QueryView QueryView { get; set; } = new QueryView();
-    AdvancedQuery advancedQuery;
+    CavAdvancedQuery advancedQuery;
     async Task ClickAdvancedQuery()
     {
         var options = new CavModalOptions()
@@ -331,7 +331,7 @@
                 FuncValidate = Validate,
             };
         RenderFragment render =
-    @<AdvancedQuery @ref="advancedQuery" QueryView="QueryView" Fields="TableOptions.ViewFields" QueryCallback="QueryStart"></AdvancedQuery>
+    @<CavAdvancedQuery @ref="advancedQuery" QueryView="QueryView" Fields="TableOptions.ViewFields" QueryCallback="QueryStart"></CavAdvancedQuery>
     ;
         options.Render = render;
         await CavModal.Create(options);

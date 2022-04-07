@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Caviar.AntDesignUI.Shared
 {
-    public partial class AdvancedQuery: ITableTemplate
+    public partial class CavAdvancedQuery: ITableTemplate
     {
         [Parameter]
         public string CurrentUrl { get; set; }
