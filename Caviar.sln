@@ -7,27 +7,27 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3CE2E1D7-92D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demo", "demo", "{9DAECA53-D4A1-40A2-8BBF-BE7F9DE08406}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.Infrastructure", "Src\Caviar.Infrastructure\Caviar.Infrastructure.csproj", "{473768FF-C356-4016-A7D5-6A7F67078A8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.Infrastructure", "src\Caviar.Infrastructure\Caviar.Infrastructure.csproj", "{473768FF-C356-4016-A7D5-6A7F67078A8C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.SharedKernel", "Src\Caviar.SharedKernel\Caviar.SharedKernel.csproj", "{5952F161-F634-4413-95BF-C5F8D9A5D1F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.SharedKernel", "src\Caviar.SharedKernel\Caviar.SharedKernel.csproj", "{5952F161-F634-4413-95BF-C5F8D9A5D1F4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.AntDesignUI", "Src\Caviar.AntDesignUI\Caviar.AntDesignUI.csproj", "{A9C10F8A-0B28-4657-AC1C-A9AA5CE8C2F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.AntDesignUI", "src\Caviar.AntDesignUI\Caviar.AntDesignUI.csproj", "{A9C10F8A-0B28-4657-AC1C-A9AA5CE8C2F4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.Core", "Src\Caviar.Core\Caviar.Core.csproj", "{96C78FE3-C85E-4B81-8E0E-7BF613EDC5E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.Core", "src\Caviar.Core\Caviar.Core.csproj", "{96C78FE3-C85E-4B81-8E0E-7BF613EDC5E6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{652A3E8E-BDEF-4641-BF19-8E4F5113677A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.UnitTest", "Tests\Caviar.UnitTest\Caviar.UnitTest.csproj", "{4ABC3EB6-5C45-47E7-B45A-C57C00193AB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.UnitTest", "tests\Caviar.UnitTest\Caviar.UnitTest.csproj", "{4ABC3EB6-5C45-47E7-B45A-C57C00193AB3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.FunctionalTests", "Tests\Caviar.FunctionalTests\Caviar.FunctionalTests.csproj", "{8533BAFD-67A0-4500-935E-D3855C3F5A74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.FunctionalTests", "tests\Caviar.FunctionalTests\Caviar.FunctionalTests.csproj", "{8533BAFD-67A0-4500-935E-D3855C3F5A74}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.IntegrationTests", "Tests\Caviar.IntegrationTests\Caviar.IntegrationTests.csproj", "{2DC3E55C-89A7-40CA-A9E3-16175DA5D8E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.IntegrationTests", "tests\Caviar.IntegrationTests\Caviar.IntegrationTests.csproj", "{2DC3E55C-89A7-40CA-A9E3-16175DA5D8E3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.Demo.Hybrid", "Demo\Hybrid\Caviar.Demo.Hybrid\Caviar.Demo.Hybrid.csproj", "{1EAC67E5-4543-4629-9C7F-66D6E5E3CDED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.Demo.Hybrid", "demo\Hybrid\Caviar.Demo.Hybrid\Caviar.Demo.Hybrid.csproj", "{1EAC67E5-4543-4629-9C7F-66D6E5E3CDED}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "hybrid", "hybrid", "{6A0F5183-CC78-4044-8F03-4AB61F0BF013}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.Demo.Wasm", "Demo\Hybrid\Caviar.Demo.Wasm\Caviar.Demo.Wasm.csproj", "{572A177F-D57B-4023-B478-0913D1EC9981}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caviar.Demo.Wasm", "demo\Hybrid\Caviar.Demo.Wasm\Caviar.Demo.Wasm.csproj", "{572A177F-D57B-4023-B478-0913D1EC9981}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

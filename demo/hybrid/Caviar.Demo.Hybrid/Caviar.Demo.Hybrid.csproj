@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -29,12 +29,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Src\Caviar.Infrastructure\Caviar.Infrastructure.csproj" />
-    <ProjectReference Include="..\Caviar.Demo.Wasm\Caviar.Demo.Wasm.csproj" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <ProjectReference Include="..\..\..\src\Caviar.Infrastructure\Caviar.Infrastructure.csproj" />
+    <ProjectReference Include="..\Caviar.Demo.Wasm\Caviar.Demo.Wasm.csproj" />
   </ItemGroup>
 
 </Project>

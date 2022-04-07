@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Src\Caviar.AntDesignUI\Caviar.AntDesignUI.csproj" />
-    <ProjectReference Include="..\..\..\Src\Caviar.SharedKernel\Caviar.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\..\src\Caviar.AntDesignUI\Caviar.AntDesignUI.csproj" />
+    <ProjectReference Include="..\..\..\src\Caviar.SharedKernel\Caviar.SharedKernel.csproj" />
   </ItemGroup>
 
 </Project>

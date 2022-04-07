@@ -32,8 +32,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Src\Caviar.Core\Caviar.Core.csproj" />
-    <ProjectReference Include="..\..\Src\Caviar.Infrastructure\Caviar.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Caviar.Core\Caviar.Core.csproj" />
+    <ProjectReference Include="..\..\src\Caviar.Infrastructure\Caviar.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
