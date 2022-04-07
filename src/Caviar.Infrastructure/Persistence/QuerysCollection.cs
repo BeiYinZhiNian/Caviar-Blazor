@@ -19,7 +19,23 @@ namespace Caviar.Infrastructure
                 var property = typeInfo.GetProperty(item.Key);
                 Type propertyType = property.PropertyType;
                 if(item.IsEnum) propertyType = typeof(int);
-                var value = Convert.ChangeType(item.Value, propertyType);
+                object value;
+                //当目标可以为null需要特殊判断
+                if(propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                {
+                    if (string.IsNullOrEmpty(item.Value))
+                    {
+                        value = null;
+                    }
+                    else
+                    {
+                        value = Convert.ChangeType(item.Value, propertyType.GetGenericArguments()[0]);
+                    }
+                }
+                else
+                {
+                    value = Convert.ChangeType(item.Value, propertyType);
+                }
                 Expression<Func<object>> valueLamba = () => value;
                 switch (item.QuerTypes)
                 {
