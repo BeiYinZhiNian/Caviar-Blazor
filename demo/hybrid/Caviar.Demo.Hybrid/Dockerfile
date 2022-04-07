@@ -7,15 +7,15 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Demo/Hybrid/Caviar.Demo.Hybrid/Caviar.Demo.Hybrid.csproj", "Demo/Hybrid/Caviar.Demo.Hybrid/"]
-COPY ["Demo/Hybrid/Caviar.Demo.Wasm/Caviar.Demo.Wasm.csproj", "Demo/Hybrid/Caviar.Demo.Wasm/"]
-COPY ["Src/Caviar.SharedKernel/Caviar.SharedKernel.csproj", "Src/Caviar.SharedKernel/"]
-COPY ["Src/Caviar.AntDesignUI/Caviar.AntDesignUI.csproj", "Src/Caviar.AntDesignUI/"]
-COPY ["Src/Caviar.Infrastructure/Caviar.Infrastructure.csproj", "Src/Caviar.Infrastructure/"]
-COPY ["Src/Caviar.Core/Caviar.Core.csproj", "Src/Caviar.Core/"]
-RUN dotnet restore "Demo/Hybrid/Caviar.Demo.Hybrid/Caviar.Demo.Hybrid.csproj"
+COPY ["demo/hybrid/Caviar.Demo.Hybrid/Caviar.Demo.Hybrid.csproj", "demo/hybrid/Caviar.Demo.Hybrid/"]
+COPY ["demo/hybrid/Caviar.Demo.Wasm/Caviar.Demo.Wasm.csproj", "demo/hybrid/Caviar.Demo.Wasm/"]
+COPY ["src/Caviar.SharedKernel/Caviar.SharedKernel.csproj", "src/Caviar.SharedKernel/"]
+COPY ["src/Caviar.AntDesignUI/Caviar.AntDesignUI.csproj", "src/Caviar.AntDesignUI/"]
+COPY ["src/Caviar.Infrastructure/Caviar.Infrastructure.csproj", "src/Caviar.Infrastructure/"]
+COPY ["src/Caviar.Core/Caviar.Core.csproj", "src/Caviar.Core/"]
+RUN dotnet restore "demo/hybrid/Caviar.Demo.Hybrid/Caviar.Demo.Hybrid.csproj"
 COPY . .
-WORKDIR "/src/Demo/Hybrid/Caviar.Demo.Hybrid"
+WORKDIR "/src/demo/Hybrid/Caviar.Demo.Hybrid"
 RUN dotnet build "Caviar.Demo.Hybrid.csproj" -c Release -o /app/build
 
 FROM build AS publish
