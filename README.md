@@ -1,6 +1,6 @@
 <div align="center">
 
-  ![logo](docs/images/235619_37006555_1456276.webp)
+  ![logo](docs/images/2b4e7364-234e-4776-8c5b-7dfe08337c64.png)
 
 </div>
 <h1 align="center">Caviar Blazor</h1>
