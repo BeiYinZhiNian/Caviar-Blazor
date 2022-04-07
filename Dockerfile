@@ -15,7 +15,7 @@ COPY ["src/Caviar.Infrastructure/Caviar.Infrastructure.csproj", "src/Caviar.Infr
 COPY ["src/Caviar.Core/Caviar.Core.csproj", "src/Caviar.Core/"]
 RUN dotnet restore "demo/hybrid/Caviar.Demo.Hybrid/Caviar.Demo.Hybrid.csproj"
 COPY . .
-WORKDIR "/src/demo/Hybrid/Caviar.Demo.Hybrid"
+WORKDIR "/src/demo/hybrid/Caviar.Demo.Hybrid"
 RUN dotnet build "Caviar.Demo.Hybrid.csproj" -c Release -o /app/build
 
 FROM build AS publish
