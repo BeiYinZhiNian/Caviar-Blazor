@@ -13,7 +13,6 @@ namespace Caviar.Core.Services
 {
     public class SysEnclosureServices : DbServices
     {
-        private string wwwroot = "wwwroot/";
         private readonly CaviarConfig _caviarConfig;
         public SysEnclosureServices(IAppDbContext dbContext,CaviarConfig caviarConfig) : base(dbContext)
         {
