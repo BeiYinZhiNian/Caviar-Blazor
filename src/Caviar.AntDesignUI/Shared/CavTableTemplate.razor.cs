@@ -155,12 +155,15 @@ namespace Caviar.AntDesignUI.Shared
         {
             if (QueryCallback.HasDelegate)
             {
-                //开始数据备份
-                _dataSourceCopy = TableOptions.DataSource;
-                _totalCopy = TableOptions.Total;
-                _pageIndexCopy = TableOptions.PageIndex;
-                _pageSizeCopy = TableOptions.PageSize;
-                IsQueryState = true;
+                if (!IsQueryState)
+                {
+                    IsQueryState = true;
+                    //开始数据备份
+                    _dataSourceCopy = TableOptions.DataSource;
+                    _totalCopy = TableOptions.Total;
+                    _pageIndexCopy = TableOptions.PageIndex;
+                    _pageSizeCopy = TableOptions.PageSize;
+                }
                 await QueryCallback.InvokeAsync(query);
             }
         }
