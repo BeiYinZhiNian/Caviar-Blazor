@@ -20,7 +20,7 @@
 
 
     <Layout Style="@HeaderStyle">
-        <Header Style="@UserConfig.HeaderStyle">
+        <Header Style="@Layout.HeaderStyle">
             @if (Collapsed)
             {
                 <Icon Type="menu-unfold" Theme="outline" Class="trigger" OnClick="Toggle" />
@@ -33,9 +33,9 @@
                 <CavPopover></CavPopover>
             </div>
         </Header>
-        @if(UserConfig.IsTable)
+        @if(Layout.IsTable)
         {
-            <Content Style="@UserConfig.ContentStyle">
+            <Content Style="@Layout.ContentStyle">
                 <ReuseTabs Class="top-row px-4" TabPaneClass="content px-4" />
             </Content>
         }
@@ -43,7 +43,7 @@
             <div style="margin: 12px 16px;">
                 <CavBreadcrumb BreadcrumbItemArr="@BreadcrumbItemArr"></CavBreadcrumb>
             </div>
-            <Content Style="@UserConfig.ContentStyle">
+            <Content Style="@Layout.ContentStyle">
                 @Body
             </Content>
         }

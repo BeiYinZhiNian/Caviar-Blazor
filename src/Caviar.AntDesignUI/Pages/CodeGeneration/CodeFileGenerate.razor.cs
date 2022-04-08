@@ -17,6 +17,8 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
         [Inject]
         UserConfig UserConfig { get; set; }
         [Inject]
+        CavLayout Layout { get; set; }
+        [Inject]
         MessageService MessageService { get; set; }
         [Inject]
         HttpService HttpService { get; set; }

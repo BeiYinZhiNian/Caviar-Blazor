@@ -32,7 +32,8 @@ namespace Caviar.AntDesignUI.Shared
         public string[] BreadcrumbItemArr { get; set; }
         [Parameter]
         public MenuTheme Theme { get; set; } = MenuTheme.Dark;
-
+        [Inject]
+        CavLayout Layout { get; set; }
         public Menu AntDesignMenu { get; set; }
 
         [Parameter]

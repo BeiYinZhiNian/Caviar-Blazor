@@ -53,6 +53,7 @@ namespace Caviar.AntDesignUI
             services.AddScoped<HostAuthenticationStateProvider>();
             services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<HostAuthenticationStateProvider>());
             services.AddScoped<IPrismHighlighter, PrismHighlighter>();
+            services.AddScoped<CavLayout>();
             if (assemblies != null)
             {
                 AdditionalAssemblies = new List<Assembly>();

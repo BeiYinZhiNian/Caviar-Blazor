@@ -33,6 +33,8 @@ namespace Caviar.AntDesignUI.Shared
         [Inject]
         UserConfig UserConfig { get; set; }
         [Inject]
+        CavLayout Layout { get; set; }
+        [Inject]
         IJSRuntime JSRuntime { get; set; }
 
         /// <summary>

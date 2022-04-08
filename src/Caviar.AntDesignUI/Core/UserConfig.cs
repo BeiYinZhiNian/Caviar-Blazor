@@ -14,17 +14,14 @@ namespace Caviar.AntDesignUI.Core
 {
     public class UserConfig
     {
-        public string White = "#F8F8FF";
+        public CavLayout Layout { get; set; }
 
-
-        public UserConfig(IJSRuntime jSRuntime, ILanguageService languageService)
+        public UserConfig(IJSRuntime jSRuntime, ILanguageService languageService,CavLayout layoutEntity)
         {
             JSRuntime = jSRuntime;
-            Background = $"background:{White};";
-            ContentStyle = $"margin: 6px 16px;padding: 24px;min-height: 280px;{Background}";
-            HeaderStyle = $"padding:0;{Background}";
+            Layout = layoutEntity;
             LanguageService = languageService;
-
+            Layout.ThemeChanged += SetTheme;
         }
         /// <summary>
         /// 是否自动切换为wasm模式
@@ -55,35 +52,9 @@ namespace Caviar.AntDesignUI.Core
             }
             return _routes;
         }
-        /// <summary>
-        /// 手风琴模式
-        /// </summary>
-        public bool Accordion { get; set; }
-        /// <summary>
-        /// 主题
-        /// </summary>
-        public string Theme { 
-            get { return _theme; } 
-            set {
-                SetTheme(_theme, value);
-                _theme = value; 
-            } 
-        }
-
         public ILanguageService LanguageService { get; set; }
 
         public string CurrentLanguage => LanguageService.CurrentCulture.Name;
-
-        public string Background { get; set; }
-
-        public string ContentStyle { get; set; }
-
-        public string HeaderStyle { get; set; }
-
-        /// <summary>
-        /// 是否table页
-        /// </summary>
-        public bool IsTable { get; set; } = true;
         /// <summary>
         /// 是否为游客
         /// </summary>
@@ -93,8 +64,6 @@ namespace Caviar.AntDesignUI.Core
         /// </summary>
         public Action LayoutPage { get; set; }
 
-        private string _theme = "ant-design-blazor.css";
-
         public List<SysMenuView> Menus { get; set; } = new List<SysMenuView>();
 
         public async void SetTheme(string oldThemeName,string newThemeName)
@@ -103,15 +72,15 @@ namespace Caviar.AntDesignUI.Core
             switch (newThemeName)
             {
                 case "ant-design-blazor.dark.css":
-                    White = "#2E2E2E";
+                    Layout.White = "#2E2E2E";
                     break;
                 default:
-                    White = "#F8F8FF";
+                    Layout.White = "#F8F8FF";
                     break;
             }
-            Background = $"background:{White};";
-            ContentStyle = $"margin: 6px 16px;padding: 24px;min-height: 280px;{Background}";
-            HeaderStyle = $"padding:0;{Background}";
+            Layout.Background = $"background:{Layout.White};";
+            Layout.ContentStyle = $"margin: 6px 16px;padding: 24px;min-height: 280px;{Layout.Background}";
+            Layout.HeaderStyle = $"padding:0;{Layout.Background}";
             LayoutPage?.Invoke();
         }
     }
