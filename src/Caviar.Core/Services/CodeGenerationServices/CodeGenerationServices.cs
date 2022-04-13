@@ -241,15 +241,11 @@ namespace Caviar.Core.Services
             {
                 return CreateEnumAssembly(item, ref txt);
             }
-            var modelType = item.Entity.FullName.ToLower();
+            var modelType = item.Entity.FieldName.ToLower();
             switch (modelType)
             {
-                case "dataid"://数据权限
-                    txt += @"<CavUserGroup DataSource='ViewUserGroups'
-                                    UserGroupName='@UserGroupName'
-                                    OnSelect='OnUserGroupSelect'
-                                    OnCancel='OnUserGroupCancel'>
-                                 </CavUserGroup>";
+                case "remark":
+                    txt += @"<TextArea Placeholder='@UserConfig.LanguageService[$'{CurrencyConstant.Page}.{CurrencyConstant.InputRemark}']'  AllowClear='true' @bind-Value='@context.Entity.Remark' />";
                     break;
                 default:
                     return false;

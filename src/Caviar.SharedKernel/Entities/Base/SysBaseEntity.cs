@@ -47,11 +47,6 @@ namespace Caviar.SharedKernel.Entities
         [StringLength(256, ErrorMessage = "LengthErrorMsg")]
         public virtual string OperatorUp { get; set; }
         /// <summary>
-        /// 备注
-        /// </summary>
-        [StringLength(300, ErrorMessage = "LengthErrorMsg")]
-        public virtual string Remark { get; set; }
-        /// <summary>
         /// 是否禁用
         /// </summary>
         public virtual bool IsDisable { get; set; }
@@ -64,5 +59,10 @@ namespace Caviar.SharedKernel.Entities
         /// 数据权限
         /// </summary>
         public virtual int DataId { get; set; }
+        /// <summary>
+        /// 备注
+        /// </summary>
+        [StringLength(300, ErrorMessage = "LengthErrorMsg")]
+        public virtual string Remark { get; set; }
     }
 }
