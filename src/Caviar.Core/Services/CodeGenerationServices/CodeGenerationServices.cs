@@ -265,13 +265,7 @@ namespace Caviar.Core.Services
         protected virtual bool CreateEnumAssembly(FieldsView item, ref string txt)
         {
             if (!item.IsEnum) return false;
-            txt += $"<RadioGroup @bind-Value='@context.Entity.{item.Entity.FieldName}'>";
-            foreach (var keyValue in item.EnumValueName)
-            {
-                txt += $"<Radio RadioButton Value='({item.Entity.FieldName}){keyValue.Key}'>{keyValue.Value}</Radio>";
-            }
-
-            txt += $"</RadioGroup>";
+            txt += $"<EnumRadioGroup TEnum='{item.EntityType}' @bind-Value='@context.Entity.{item.Entity.FieldName}' Options='GetRadioOptions<{item.EntityType}>()'/>";
             return true;
         }
 
