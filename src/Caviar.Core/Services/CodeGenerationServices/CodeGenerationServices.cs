@@ -245,7 +245,7 @@ namespace Caviar.Core.Services
             switch (modelType)
             {
                 case "remark":
-                    txt += @"<TextArea Placeholder='@UserConfig.LanguageService[$'{CurrencyConstant.Page}.{CurrencyConstant.InputRemark}']'  AllowClear='true' @bind-Value='@context.Entity.Remark' />";
+                    txt += "<TextArea Placeholder='@UserConfig.LanguageService[$\"{CurrencyConstant.Page}.{CurrencyConstant.InputRemark}\"]'  AllowClear='true' @bind-Value='@context.Entity.Remark' />";
                     break;
                 default:
                     return false;
