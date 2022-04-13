@@ -15,8 +15,8 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 用户组名称
         /// </summary>
-        [Required(ErrorMessage = "RequiredErrorMsg")]
-        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        [Required]
+        [StringLength(50)]
         public string Name { get; set; }
         /// <summary>
         /// 父id

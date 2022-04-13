@@ -56,7 +56,7 @@ namespace Caviar.Core.Services
                     skipCount++;
                 }
             }
-            return _languageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.ResultMsg}"].Replace("{count}", count.ToString()).Replace("{writeCount}", writeCount.ToString()).Replace("{skipCount}", skipCount.ToString()).Replace("{coverCount}", coverCount.ToString());
+            return _languageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.GenerateMsg}"].Replace("{count}", count.ToString()).Replace("{writeCount}", writeCount.ToString()).Replace("{skipCount}", skipCount.ToString()).Replace("{coverCount}", coverCount.ToString());
         }
 
         /// <summary>

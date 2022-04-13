@@ -39,12 +39,12 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 创建操作员的名称
         /// </summary>
-        [StringLength(256, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(256)]
         public virtual string OperatorCare { get; set; }
         /// <summary>
         /// 创建操作员的名称
         /// </summary>
-        [StringLength(256, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(256)]
         public virtual string OperatorUp { get; set; }
         /// <summary>
         /// 是否禁用
@@ -53,7 +53,7 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 编号
         /// </summary>
-        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(50)]
         public virtual string Number { get; set; } = "999";
         /// <summary>
         /// 数据权限
@@ -62,7 +62,7 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 备注
         /// </summary>
-        [StringLength(300, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(300)]
         public virtual string Remark { get; set; }
     }
 }

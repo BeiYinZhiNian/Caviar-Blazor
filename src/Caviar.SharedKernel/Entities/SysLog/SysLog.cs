@@ -15,17 +15,17 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 日志跟踪id
         /// </summary>
-        [StringLength(256, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(256)]
         public string TraceId { get; set; }
         /// <summary>
         /// 用户名
         /// </summary>
-        [StringLength(256, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(256)]
         public string UserName { get; set; }
         /// <summary>
         /// 请求的控制器
         /// </summary>
-        [StringLength(256, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(256)]
         public string ControllerName { get; set; }
         /// <summary>
         /// 用户id
@@ -34,12 +34,12 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 请求的完整地址
         /// </summary>
-        [StringLength(1024, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(1024)]
         public string AbsoluteUri { get; set; }
         /// <summary>
         /// 请求ip
         /// </summary>
-        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(50)]
         public string Ipaddress { get; set; }
         /// <summary>
         /// 执行时间
@@ -53,7 +53,7 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 浏览器信息
         /// </summary>
-        [StringLength(1024, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(1024)]
         public string Browser { get; set; }
         /// <summary>
         /// 日志等级
@@ -62,7 +62,7 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 请求方法
         /// </summary>
-        [StringLength(10, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(10)]
         public string Method { get; set; }
         /// <summary>
         /// post所提交的数据

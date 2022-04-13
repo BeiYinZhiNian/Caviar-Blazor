@@ -9,12 +9,12 @@ namespace Caviar.SharedKernel.Entities
 {
     public class SysPermission : SysBaseEntity
     {
-        [StringLength(200, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(200)]
         public string Permission { get; set; }
         /// <summary>
         /// 实体id
         /// </summary>
-        [StringLength(200, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(200)]
         public int Entity { get; set; }
         [Key]
         public PermissionType PermissionType { get; set; }

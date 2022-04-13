@@ -5,18 +5,18 @@ namespace Caviar.SharedKernel.Entities
     public partial class SysMenu : SysUseEntity
     {
 
-        [Required(ErrorMessage = "RequiredErrorMsg")]
-        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        [Required]
+        [StringLength(50)]
         public string MenuName { get; set; }
 
         public MenuType MenuType { get; set; }
 
         public TargetType TargetType { get; set; }
 
-        [StringLength(1024, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(1024)]
         public string Url { get; set; }
 
-        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(50)]
         public string Icon { get; set; }
 
         public int ParentId { get; set; }
@@ -25,7 +25,7 @@ namespace Caviar.SharedKernel.Entities
 
         public bool IsDoubleTrue { get; set; }
 
-        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(50)]
         public string HttpMethods { get; set; }
     }
 

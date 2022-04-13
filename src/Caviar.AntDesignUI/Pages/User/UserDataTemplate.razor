@@ -23,10 +23,10 @@ Caviar ©2021 Created by 北音执念
     <CavFormItem  FieldName='AccountName' FieldRules='@context.Entity'>
         <Input @bind-Value='@context.Entity.AccountName' />
     </CavFormItem>
-    <CavFormItem  FieldName='Email' FieldRules='@context.Entity' Rules='EmailRule'>
+    <CavFormItem  FieldName='Email' FieldRules='@context.Entity'>
         <Input @bind-Value='@context.Entity.Email' />
     </CavFormItem>
-    <CavFormItem FieldName="UserGroup" Rules='UserGroupRule'>
+    <CavFormItem Label="@LanguageService[$"{CurrencyConstant.EntitysName}.UserGroup"]"  FieldName="UserGroupId" FieldRules='@context.Entity'>
         <Input @bind-Value='@context.Entity.UserGroupId' Style="display:none;"/>
         <Dropdown>
             <Overlay>
@@ -44,7 +44,7 @@ Caviar ©2021 Created by 北音执念
             </ChildContent>
         </Dropdown>
     </CavFormItem>
-    <CavFormItem  FieldName='PhoneNumber' FieldRules='@context.Entity' Rules='PhoneNumberRule'>
+    <CavFormItem  FieldName='PhoneNumber' FieldRules='@context.Entity'>
         <Input @bind-Value='@context.Entity.PhoneNumber' />
     </CavFormItem>
     <CavFormItem  FieldName='IsDisable' FieldRules='@context.Entity'>

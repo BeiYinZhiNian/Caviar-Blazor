@@ -9,11 +9,11 @@ namespace Caviar.SharedKernel.Entities
 {
     public class UserDetails
     {
-        [Required(ErrorMessage = "RequiredErrorMsg")]
+        [Required]
         public string UserName { get; set; }
-        [Required(ErrorMessage = "RequiredErrorMsg")]
+        [Required]
         public string Email { get; set; }
-        [Required(ErrorMessage = "RequiredErrorMsg")]
+        [Required]
         public string AccountName { get; set; }
         public string PhoneNumber { get; set; }
 
@@ -22,14 +22,14 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 头像
         /// </summary>
-        [StringLength(300, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(300)]
         public string HeadPortrait { get; set; }
 
         public IList<string> Roles { get; set; }
         /// <summary>
         /// 个性签名
         /// </summary>
-        [StringLength(300, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(300)]
         public string Remark { get; set; }
     }
 }

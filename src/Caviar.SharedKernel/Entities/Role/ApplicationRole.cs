@@ -8,8 +8,8 @@ namespace Caviar.SharedKernel.Entities
 {
     public class ApplicationRole : IdentityRole<int>, IUseEntity
     {
-        [Required(ErrorMessage = "RequiredErrorMsg")]
-        [StringLength(256, ErrorMessage = "LengthErrorMsg")]
+        [Required]
+        [StringLength(256)]
         public override string Name { get; set; }
         /// <summary>
         /// 创建时间
@@ -26,17 +26,17 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 创建操作员的名称
         /// </summary>
-        [StringLength(256, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(256)]
         public string OperatorCare { get; set; }
         /// <summary>
         /// 创建操作员的名称
         /// </summary>
-        [StringLength(256, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(256)]
         public string OperatorUp { get; set; }
         /// <summary>
         /// 备注
         /// </summary>
-        [StringLength(300, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(300)]
         public string Remark { get; set; }
         /// <summary>
         /// 是否禁用
@@ -45,7 +45,7 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 编号
         /// </summary>
-        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(50)]
         public string Number { get; set; } = "999";
         /// <summary>
         /// 数据权限

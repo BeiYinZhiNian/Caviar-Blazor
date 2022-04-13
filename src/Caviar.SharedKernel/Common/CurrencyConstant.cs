@@ -232,6 +232,7 @@ namespace Caviar.SharedKernel.Entities
         public const string Page = "SharedKernel.Page";
         public const string AppNull = "app.null";
         public const string Admin = "admin";
+        public const string InconsistentPasswords = "Inconsistent passwords";
         /// <summary>
         /// 模板角色
         /// </summary>
@@ -504,7 +505,7 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 共{count}个文件，写出文件{writeCount}个，跳过文件{skipCount}个，覆盖文件{coverCount}个
         /// </summary>
-        public const string ResultMsg = "ResultMsg";
+        public const string GenerateMsg = "GenerateMsg";
         /// <summary>
         /// 当前密码
         /// </summary>

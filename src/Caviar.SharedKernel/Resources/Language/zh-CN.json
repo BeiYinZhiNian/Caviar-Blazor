@@ -104,8 +104,14 @@
       "LockoutEnd": "锁定到期时间"
     },
     "ErrorMessage": {
-      "LengthErrorMsg": "{fieldName}输入长度不能超过{length}字符",
-      "RequiredErrorMsg": "{fieldName}为必填项"
+      "PhoneNumberRuleErrorMsg": "请输入正确的手机号",
+      "EmailRuleErrorMsg": "请输入正确的邮箱",
+      "UserGroupRuleErrorMsg": "请为用户分配部门",
+      "LengthErrorMsg": "{0}输入长度不能超过{1}字符",
+      "RequiredErrorMsg": "{0}为必填项",
+      "RegularErrorMsg": "{0}验证失败",
+      "MinErrorMsg": "{0}最小值为{1}",
+      "MaxErrorMsg": "{0}不能超过{1}"
     },
     "Menu": {
       "Home": "首页",
@@ -163,7 +169,8 @@
       "Lockedout": "账号已被锁定",
       "Registration succeeded": "账号注册成功",
       "Succeeded": "操作成功",
-      "Validation failed": "验证失败"
+      "Validation failed": "验证失败",
+      "Inconsistent passwords": "两次密码输入不一致"
     },
     "Enum": {
       "Catalog": "目录",
@@ -228,9 +235,6 @@
       "ApplicationRole": "角色",
       "UserGroupName": "部门",
       "ForgetPassword": "忘记密码",
-      "UserGroupRuleErrorMsg": "请为用户分配部门",
-      "PhoneNumberRuleErrorMsg": "请输入正确的手机号",
-      "EmailRuleErrorMsg": "请输入正确的邮箱",
       "AllocationDepartment": "请分配部门",
       "Back": "上一步",
       "Next": "下一步",
@@ -254,7 +258,7 @@
       "IsCover": "是否覆盖",
       "RouteErrorMsg": "代码生成文件未找到，请确认路径是否正确：",
       "FolderErrorMsg": "文件夹为空则不进行任何替换",
-      "ResultMsg": "共{count}个文件，写出文件{writeCount}个，跳过文件{skipCount}个，覆盖文件{coverCount}个",
+      "GenerateMsg": "共{count}个文件，写出文件{writeCount}个，跳过文件{skipCount}个，覆盖文件{coverCount}个",
       "AdvancedSearch": "高级搜索",
       "Search": "搜索",
       "CancelSearch": "关闭搜索",

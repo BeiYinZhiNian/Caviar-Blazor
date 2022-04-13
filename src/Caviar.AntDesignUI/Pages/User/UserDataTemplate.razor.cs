@@ -17,24 +17,9 @@ namespace Caviar.AntDesignUI.Pages.User
         [Inject]
         HttpService HttpService { get; set; }
 
-        private FormValidationRule[] UserGroupRule;
-        private FormValidationRule[] PhoneNumberRule;
-        private FormValidationRule[] EmailRule;
 
         protected override async Task OnInitializedAsync()
         {
-            UserGroupRule = new FormValidationRule[]
-            {
-                new FormValidationRule() { Type = FormFieldType.Number, Min = 1, Message = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.UserGroupRuleErrorMsg}"]},
-            };
-            PhoneNumberRule = new FormValidationRule[]
-            {
-                new FormValidationRule() { Pattern = @"^1[3456789]\d{9}$", Message = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.PhoneNumberRuleErrorMsg}"] },
-             };
-            EmailRule = new FormValidationRule[]
-            {
-                new FormValidationRule() { Type = FormFieldType.Email, Required = true, Message = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.EmailRuleErrorMsg}"] },
-             };
             ParentMenuName = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.AllocationDepartment}"];
             await base.OnInitializedAsync();
             UserGroupViews = await GetUserGroups();

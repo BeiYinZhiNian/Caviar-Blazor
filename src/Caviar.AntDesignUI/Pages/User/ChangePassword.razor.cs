@@ -38,7 +38,7 @@ namespace Caviar.AntDesignUI.Pages.User
         {
             if(ChangePasswordModel.ConfirmPassword != ChangePasswordModel.NewPassword)
             {
-                _ = MessageService.Error("两次密码输入不一致");
+                _ = MessageService.Error(UserConfig.LanguageService[$"{CurrencyConstant.ResuleMsg}.{CurrencyConstant.InconsistentPasswords}"]);
                 return false;
             }
             ChangePasswordModel.NewPassword = CommonHelper.SHA256EncryptString(ChangePasswordModel.NewPassword);

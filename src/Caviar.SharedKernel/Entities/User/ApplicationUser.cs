@@ -8,14 +8,23 @@ namespace Caviar.SharedKernel.Entities
     public class ApplicationUser: IdentityUser<int>, IUseEntity
     {
         
-        [Required(ErrorMessage = "RequiredErrorMsg")]
+        [Required]
         public override string UserName { get => base.UserName; set => base.UserName = value; }
 
-        [Required(ErrorMessage = "RequiredErrorMsg")]
+        [Required]
         public string AccountName { get; set; }
 
-        [Required(ErrorMessage = "RequiredErrorMsg")]
+        [Required]
+        [RegularExpression(@"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", ErrorMessage = CurrencyConstant.EmailRuleErrorMsg)]
         public override string Email { get => base.Email; set => base.Email = value; }
+        [RegularExpression(@"^1[3456789]\d{9}$", ErrorMessage = CurrencyConstant.PhoneNumberRuleErrorMsg)]
+        public override string PhoneNumber { get => base.PhoneNumber; set => base.PhoneNumber = value; }
+        /// <summary>
+        /// 所在用户组
+        /// </summary>
+        [Required]
+        [MinLength(1, ErrorMessage = CurrencyConstant.UserGroupRuleErrorMsg)]
+        public int UserGroupId { get; set; }
         /// <summary>
         /// 创建时间
         /// </summary>
@@ -31,19 +40,13 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 创建操作员的名称
         /// </summary>
-        [StringLength(256, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(256)]
         public string OperatorCare { get; set; }
         /// <summary>
         /// 创建操作员的名称
         /// </summary>
-        [StringLength(256, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(256)]
         public string OperatorUp { get; set; }
-        /// <summary>
-        /// 备注
-        /// </summary>
-        [StringLength(300, ErrorMessage = "LengthErrorMsg")]
-        public string Remark { get; set; }
-
         /// <summary>
         /// 是否禁用
         /// </summary>
@@ -66,7 +69,7 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 编号
         /// </summary>
-        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(50)]
         public string Number { get; set; } = "999";
         /// <summary>
         /// 数据权限
@@ -75,12 +78,12 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 头像
         /// </summary>
-        [StringLength(300, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(300)]
         public string HeadPortrait { get; set; }
         /// <summary>
-        /// 所在用户组
+        /// 备注
         /// </summary>
-        [Required(ErrorMessage = "RequiredErrorMsg")]
-        public int UserGroupId { get; set; }
+        [StringLength(300)]
+        public string Remark { get; set; }
     }
 }

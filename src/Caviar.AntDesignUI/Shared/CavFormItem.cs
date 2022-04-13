@@ -3,6 +3,7 @@ using Caviar.AntDesignUI.Core;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace Caviar.AntDesignUI.Shared
                 {
                     customRules.AddRange(Rules);
                 }
-                Rules = customRules.ToArray();
+                Rules = customRules?.ToArray();
             }
 
         }
@@ -51,18 +52,21 @@ namespace Caviar.AntDesignUI.Shared
             var lenAttribute = property.GetCustomAttributes<StringLengthAttribute>()?.SingleOrDefault();
             if (lenAttribute != null)
             {
+                var errorMeg = lenAttribute.ErrorMessage ?? "LengthErrorMsg";
                 formValidationRules.Add(new FormValidationRule()
                 {
                     Len = lenAttribute.MaximumLength,
-                    Message = LanguageService[$"{CurrencyConstant.ErrorMessage}.LengthErrorMsg"].Replace("{fieldName}", LanguageService[$"{CurrencyConstant.EntitysName}.{fieldName}"]).Replace("{length}", lenAttribute.MaximumLength.ToString()),
+                    Message = LanguageService[$"{CurrencyConstant.ErrorMessage}.{errorMeg}"].Replace("{0}", Label).Replace("{1}", lenAttribute.MaximumLength.ToString()),
                 });
             }
             var maxAttribute = property.GetCustomAttributes<MaxLengthAttribute>()?.SingleOrDefault();
             if (maxAttribute != null)
             {
-                var message = LanguageService[$"{CurrencyConstant.ErrorMessage}.MaxErrorMsg"].Replace("{fieldName}", LanguageService[$"{CurrencyConstant.EntitysName}.{fieldName}"]).Replace("{length}", maxAttribute.Length.ToString());
+                var errorMeg = maxAttribute.ErrorMessage ?? "MaxErrorMsg";
+                var message = LanguageService[$"{CurrencyConstant.ErrorMessage}.{errorMeg}"].Replace("{0}", Label).Replace("{1}", maxAttribute.Length.ToString());
                 formValidationRules.Add(new FormValidationRule()
                 {
+                    Type = FormFieldType.Number,
                     Max = maxAttribute.Length,
                     Message = message,
                 });
@@ -70,20 +74,60 @@ namespace Caviar.AntDesignUI.Shared
             var minAttribute = property.GetCustomAttributes<MinLengthAttribute>()?.SingleOrDefault();
             if (minAttribute != null)
             {
+                var errorMeg = minAttribute.ErrorMessage ?? "MinErrorMsg";
                 formValidationRules.Add(new FormValidationRule()
                 {
+                    Type = FormFieldType.Number,
                     Min = minAttribute.Length,
-                    Message = LanguageService[$"{CurrencyConstant.ErrorMessage}.MinErrorMsg"].Replace("{fieldName}", LanguageService[$"{CurrencyConstant.EntitysName}.{fieldName}"]).Replace("{length}", minAttribute.Length.ToString()),
+                    Message = LanguageService[$"{CurrencyConstant.ErrorMessage}.{errorMeg}"].Replace("{0}", Label).Replace("{1}", minAttribute.Length.ToString()),
                 });
             }
             var requiredAttribute = property.GetCustomAttributes<RequiredAttribute>()?.SingleOrDefault();
             if (requiredAttribute != null)
             {
+                var formField = FormFieldType.String;
+                if (property.PropertyType == typeof(bool))
+                {
+                    formField = FormFieldType.Boolean;
+                }
+                else if (property.PropertyType == typeof(Enum))
+                {
+                    formField = FormFieldType.Enum;
+                }
+                else if (property.PropertyType == typeof(DateTime))
+                {
+                    formField = FormFieldType.Date;
+                }
+                else if (property.PropertyType == typeof(IEnumerable<>))
+                {
+                    formField = FormFieldType.Array;
+                }
+                else if (property.PropertyType == typeof(int) || property.PropertyType == typeof(uint))
+                {
+                    formField = FormFieldType.Number;
+                }
+                else if (property.PropertyType == typeof(float) || property.PropertyType == typeof(double))
+                {
+                    formField = FormFieldType.Float;
+                }
                 Required = true;
+                var errorMeg = requiredAttribute.ErrorMessage ?? "RequiredErrorMsg";
                 formValidationRules.Add(new FormValidationRule()
                 {
+                    Type = formField,
                     Required = true,
-                    Message = LanguageService[$"{CurrencyConstant.ErrorMessage}.RequiredErrorMsg"].Replace("{fieldName}", LanguageService[$"{CurrencyConstant.EntitysName}.{fieldName}"]),
+                    Message = LanguageService[$"{CurrencyConstant.ErrorMessage}.{errorMeg}"].Replace("{0}", Label),
+                });
+            }
+            var regularExpression = property.GetCustomAttributes<RegularExpressionAttribute>()?.SingleOrDefault();
+            if (regularExpression!= null)
+            {
+                var errorMeg = regularExpression.ErrorMessage ?? "RegularErrorMsg";
+                formValidationRules.Add(new FormValidationRule()
+                {
+                    Type = FormFieldType.Regexp,
+                    Pattern = regularExpression.Pattern,
+                    Message = LanguageService[$"{CurrencyConstant.ErrorMessage}.{errorMeg}"].Replace("{0}", Label),
                 });
             }
             return formValidationRules;

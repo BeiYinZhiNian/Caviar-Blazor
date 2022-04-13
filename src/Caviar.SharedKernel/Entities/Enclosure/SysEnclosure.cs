@@ -10,16 +10,16 @@ namespace Caviar.SharedKernel.Entities
 {
     public partial class SysEnclosure: SysUseEntity
     {
-        [Required(ErrorMessage = "RequiredErrorMsg")]
-        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        [Required]
+        [StringLength(50)]
         public string FileName { get; set; }
-        [StringLength(50, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(50)]
         public string FileExtend { get; set; }
         /// <summary>
         /// M为单位
         /// </summary>
         public double FileSize { get; set; }
-        [StringLength(1024, ErrorMessage = "LengthErrorMsg")]
+        [StringLength(1024)]
         public string FilePath { get; set; }
     }
 }

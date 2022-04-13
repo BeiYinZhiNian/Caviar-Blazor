@@ -9,11 +9,11 @@ namespace Caviar.SharedKernel.Entities
 {
     public class ChangePasswordModel
     {
-        [Required(ErrorMessage = "RequiredErrorMsg")]
+        [Required]
         public string OldPassword { get; set; }
-        [Required(ErrorMessage = "RequiredErrorMsg")]
+        [Required]
         public string NewPassword { get; set; }
-        [Required(ErrorMessage = "RequiredErrorMsg")]
+        [Required]
         public string ConfirmPassword { get; set; }
     }
 }
