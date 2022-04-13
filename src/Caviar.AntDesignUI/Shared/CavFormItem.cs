@@ -22,6 +22,8 @@ namespace Caviar.AntDesignUI.Shared
         [Parameter]
         public object FieldRules { get; set; }
 
+        private string _displayName;
+
         private ILanguageService LanguageService => UserConfig.LanguageService;
 
         protected override void OnInitialized()
@@ -30,6 +32,14 @@ namespace Caviar.AntDesignUI.Shared
             if (Label == null && !string.IsNullOrEmpty(FieldName))
             {
                 Label = LanguageService[$"{CurrencyConstant.EntitysName}.{FieldName}"];
+            }
+            if (string.IsNullOrEmpty(Label))
+            {
+                _displayName = LanguageService[$"{CurrencyConstant.EntitysName}.{FieldName}"];
+            }
+            else
+            {
+                _displayName = Label;
             }
             if (FieldRules != null)
             {
@@ -56,14 +66,14 @@ namespace Caviar.AntDesignUI.Shared
                 formValidationRules.Add(new FormValidationRule()
                 {
                     Len = lenAttribute.MaximumLength,
-                    Message = LanguageService[$"{CurrencyConstant.ErrorMessage}.{errorMeg}"].Replace("{0}", Label).Replace("{1}", lenAttribute.MaximumLength.ToString()),
+                    Message = LanguageService[$"{CurrencyConstant.ErrorMessage}.{errorMeg}"].Replace("{0}", _displayName).Replace("{1}", lenAttribute.MaximumLength.ToString()),
                 });
             }
             var maxAttribute = property.GetCustomAttributes<MaxLengthAttribute>()?.SingleOrDefault();
             if (maxAttribute != null)
             {
                 var errorMeg = maxAttribute.ErrorMessage ?? "MaxErrorMsg";
-                var message = LanguageService[$"{CurrencyConstant.ErrorMessage}.{errorMeg}"].Replace("{0}", Label).Replace("{1}", maxAttribute.Length.ToString());
+                var message = LanguageService[$"{CurrencyConstant.ErrorMessage}.{errorMeg}"].Replace("{0}", _displayName).Replace("{1}", maxAttribute.Length.ToString());
                 formValidationRules.Add(new FormValidationRule()
                 {
                     Type = FormFieldType.Number,
@@ -79,7 +89,7 @@ namespace Caviar.AntDesignUI.Shared
                 {
                     Type = FormFieldType.Number,
                     Min = minAttribute.Length,
-                    Message = LanguageService[$"{CurrencyConstant.ErrorMessage}.{errorMeg}"].Replace("{0}", Label).Replace("{1}", minAttribute.Length.ToString()),
+                    Message = LanguageService[$"{CurrencyConstant.ErrorMessage}.{errorMeg}"].Replace("{0}", _displayName).Replace("{1}", minAttribute.Length.ToString()),
                 });
             }
             var requiredAttribute = property.GetCustomAttributes<RequiredAttribute>()?.SingleOrDefault();
@@ -116,7 +126,7 @@ namespace Caviar.AntDesignUI.Shared
                 {
                     Type = formField,
                     Required = true,
-                    Message = LanguageService[$"{CurrencyConstant.ErrorMessage}.{errorMeg}"].Replace("{0}", Label),
+                    Message = LanguageService[$"{CurrencyConstant.ErrorMessage}.{errorMeg}"].Replace("{0}", _displayName),
                 });
             }
             var regularExpression = property.GetCustomAttributes<RegularExpressionAttribute>()?.SingleOrDefault();
@@ -127,7 +137,7 @@ namespace Caviar.AntDesignUI.Shared
                 {
                     Type = FormFieldType.Regexp,
                     Pattern = regularExpression.Pattern,
-                    Message = LanguageService[$"{CurrencyConstant.ErrorMessage}.{errorMeg}"].Replace("{0}", Label),
+                    Message = LanguageService[$"{CurrencyConstant.ErrorMessage}.{errorMeg}"].Replace("{0}", _displayName),
                 });
             }
             return formValidationRules;

@@ -13,8 +13,6 @@ namespace Caviar.AntDesignUI.Pages.MyUserDetails
 {
     public partial class UpdateDetails
     {
-        private FormValidationRule[] PhoneNumberRule;
-        private FormValidationRule[] EmailRule;
         bool loading = false;
         [Parameter]
         public UserDetails UserDetails { get; set; }
@@ -31,14 +29,6 @@ namespace Caviar.AntDesignUI.Pages.MyUserDetails
 
         protected override Task OnInitializedAsync()
         {
-            PhoneNumberRule = new FormValidationRule[]
-            {
-                new FormValidationRule() { Pattern = @"^1[3456789]\d{9}$", Message = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.PhoneNumberRuleErrorMsg}"] },
-             };
-            EmailRule = new FormValidationRule[]
-            {
-                new FormValidationRule() { Type = FormFieldType.Email, Required = true, Message = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.EmailRuleErrorMsg}"] },
-             };
             return base.OnInitializedAsync();
         }
         bool BeforeUpload(UploadFileItem file)

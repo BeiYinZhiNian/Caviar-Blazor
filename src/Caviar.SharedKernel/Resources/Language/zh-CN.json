@@ -51,6 +51,7 @@
       "SysRoleUser": "用户角色映射表",
       "SysLog": "日志表",
       "UserName": "用户账号",
+      "Password": "密码",
       "AccountName": "账号名称",
       "ControllerName": "控制器名称",
       "UserId": "用户id",
