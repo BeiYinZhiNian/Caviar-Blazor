@@ -100,7 +100,7 @@ namespace Caviar.AntDesignUI.Shared
                 {
                     formField = FormFieldType.Boolean;
                 }
-                else if (property.PropertyType == typeof(Enum))
+                else if (property.PropertyType.IsEnum)
                 {
                     formField = FormFieldType.Enum;
                 }
@@ -108,7 +108,7 @@ namespace Caviar.AntDesignUI.Shared
                 {
                     formField = FormFieldType.Date;
                 }
-                else if (property.PropertyType == typeof(IEnumerable<>))
+                else if (property.PropertyType.IsArray)
                 {
                     formField = FormFieldType.Array;
                 }
