@@ -23,7 +23,7 @@ namespace Caviar.SharedKernel.Entities
         /// 所在用户组
         /// </summary>
         [Required]
-        [MinLength(1, ErrorMessage = CurrencyConstant.UserGroupRuleErrorMsg)]
+        [Range(1,int.MaxValue, ErrorMessage = CurrencyConstant.UserGroupRuleErrorMsg)]
         public int UserGroupId { get; set; }
         /// <summary>
         /// 创建时间

@@ -65,6 +65,7 @@ namespace Caviar.AntDesignUI.Shared
                 var errorMeg = lenAttribute.ErrorMessage ?? "LengthErrorMsg";
                 formValidationRules.Add(new FormValidationRule()
                 {
+                    Type = FormFieldType.String,
                     Len = lenAttribute.MaximumLength,
                     Message = LanguageService[$"{CurrencyConstant.ErrorMessage}.{errorMeg}"].Replace("{0}", _displayName).Replace("{1}", lenAttribute.MaximumLength.ToString()),
                 });
@@ -76,7 +77,7 @@ namespace Caviar.AntDesignUI.Shared
                 var message = LanguageService[$"{CurrencyConstant.ErrorMessage}.{errorMeg}"].Replace("{0}", _displayName).Replace("{1}", maxAttribute.Length.ToString());
                 formValidationRules.Add(new FormValidationRule()
                 {
-                    Type = FormFieldType.Number,
+                    Type = FormFieldType.String,
                     Max = maxAttribute.Length,
                     Message = message,
                 });
@@ -87,10 +88,26 @@ namespace Caviar.AntDesignUI.Shared
                 var errorMeg = minAttribute.ErrorMessage ?? "MinErrorMsg";
                 formValidationRules.Add(new FormValidationRule()
                 {
-                    Type = FormFieldType.Number,
+                    Type = FormFieldType.String,
                     Min = minAttribute.Length,
                     Message = LanguageService[$"{CurrencyConstant.ErrorMessage}.{errorMeg}"].Replace("{0}", _displayName).Replace("{1}", minAttribute.Length.ToString()),
                 });
+            }
+            var rangeAttribute = property.GetCustomAttributes<RangeAttribute>()?.SingleOrDefault();
+            if (rangeAttribute != null)
+            {
+                var errorMeg = rangeAttribute.ErrorMessage ?? "RangeErrorMsg";
+                formValidationRules.Add(new FormValidationRule()
+                {
+                    Type = FormFieldType.Number,
+                    Min = decimal.Parse(rangeAttribute?.Minimum.ToString()),
+                    Max = decimal.Parse(rangeAttribute?.Maximum.ToString()),
+                    Message = LanguageService[$"{CurrencyConstant.ErrorMessage}.{errorMeg}"]
+                    .Replace("{0}", _displayName)
+                    .Replace("{1}", rangeAttribute?.Minimum.ToString())
+                    .Replace("{2}", rangeAttribute?.Maximum.ToString()),
+                });
+
             }
             var requiredAttribute = property.GetCustomAttributes<RequiredAttribute>()?.SingleOrDefault();
             if (requiredAttribute != null)
