@@ -26,11 +26,10 @@ Caviar(鱼子酱)框架采用了：Blazor + Ant Design + .NET6 本框架使用�
 
 ## 🔗 链接
 
-- <a target='_blank' href='http://81.70.80.113/'>演示地址</a>  
+- <a target='_blank' href='http://www.caviar.wang'>演示地址</a>  
   用户名：admin  
   密码：123456  
-  由于刚搭建好，很多功能没有限制，大家想测试可以自行创建数据进行测试，就不要删除原先的数据了，感谢！  
-- 项目文档正在编写，敬请期待
+- <a target='_blank' href='http://docs.caviar.wang'>项目文档</a>
 - [Ant Design](https://ant-design-blazor.gitee.io/zh-CN/)
 
 ## ☀️ 第一次点亮
