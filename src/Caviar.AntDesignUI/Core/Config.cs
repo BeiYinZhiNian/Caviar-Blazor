@@ -15,6 +15,7 @@ namespace Caviar.AntDesignUI
 {
     public static class Config
     {
+        public static Structure Structure { get; set; }
         /// <summary>
         /// 是否为server模式
         /// </summary>
