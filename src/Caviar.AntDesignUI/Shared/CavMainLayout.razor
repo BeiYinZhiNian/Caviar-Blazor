@@ -10,11 +10,11 @@
     {
         <Sider Collapsible CollapsedWidth="CollapsedWidth" Collapsed=@Collapsed
            OnCollapse=@OnCollapse NoTrigger Breakpoint="@BreakpointType.Lg"
-           Style="overflow: auto; height: 100vh; position: fixed; left: 0;">
+           Style="overflow: auto; height: 100vh; position: fixed; left: 0;" Theme="Layout.SiderTheme">
             <div class="logo" align="center">
                 <img src="@LogoImgSrc" height="32" />
             </div>
-            <CavMenu InlineCollapsed="@Collapsed" @bind-BreadcrumbItemArr="BreadcrumbItemArr"></CavMenu>
+            <CavMenu Theme="Layout.MenuTheme" InlineCollapsed="@Collapsed" @bind-BreadcrumbItemArr="BreadcrumbItemArr"></CavMenu>
         </Sider>
     }
 

@@ -222,7 +222,22 @@ namespace Caviar.SharedKernel.Entities
         public const string JsIframeMessage = "iframeMessage";
 
         public const string LanguageHeader = "Current-Language";
-
+        /// <summary>
+        /// 设置cookie
+        /// </summary>
+        public const string SetCookie = "setCookie";
+        /// <summary>
+        /// 获取cookies
+        /// </summary>
+        public const string GetCookie = "getCookie";
+        /// <summary>
+        /// 删除cookie
+        /// </summary>
+        public const string DelCookie = "delCookie";
+        /// <summary>
+        /// 布局主题
+        /// </summary>
+        public const string LayoutTheme = "layoutTheme";
         public const string EntitysName = "SharedKernel.EntitysName";
         public const string Menu = "SharedKernel.Menu";
         public const string ResuleMsg = "SharedKernel.ResuleMsg";
@@ -233,6 +248,10 @@ namespace Caviar.SharedKernel.Entities
         public const string AppNull = "app.null";
         public const string Admin = "admin";
         public const string InconsistentPasswords = "Inconsistent passwords";
+        /// <summary>
+        /// 保存
+        /// </summary>
+        public const string Preservation = "Preservation";
         /// <summary>
         /// 模板角色
         /// </summary>

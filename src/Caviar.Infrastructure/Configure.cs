@@ -38,7 +38,14 @@ namespace Caviar.Infrastructure
                 var domain = uri == null ? httpContext.Request.Host.Host : uri.Host;
                 foreach (var c in cookies)
                 {
-                    cookieContainer.Add(new System.Net.Cookie(c.Key, c.Value) { Domain = "localhost" });
+                    try
+                    {
+                        cookieContainer.Add(new System.Net.Cookie(c.Key, c.Value) { Domain = "localhost" });
+                    }
+                    catch
+                    {
+                        //无效cookies过滤
+                    }
                 }
                 
                 var handler = new HttpClientHandler { CookieContainer = cookieContainer };

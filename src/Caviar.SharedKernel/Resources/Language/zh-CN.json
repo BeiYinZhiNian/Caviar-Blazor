@@ -222,6 +222,7 @@
       "More": "更多",
       "Confirm": "确认",
       "Cancel": "取消",
+      "Preservation": "保存",
       "DeleteTitle": "确认{menu.DisplayName}该数据吗",
       "FieldSearch": "{field.DisplayName}搜索",
       "ComponentErrorMsg": "未找到{title}组件，请检查url地址：{url}",

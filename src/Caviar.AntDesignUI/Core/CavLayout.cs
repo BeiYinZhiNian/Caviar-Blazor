@@ -1,4 +1,5 @@
-﻿using Caviar.SharedKernel.Entities;
+﻿using AntDesign;
+using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
@@ -14,6 +15,11 @@ namespace Caviar.AntDesignUI.Core
     /// </summary>
     public class CavLayout
     {
+        public CavLayout(MessageService messageService)
+        {
+            _messageService = messageService;
+        }
+        MessageService _messageService { get; set; }
         /// <summary>
         /// 背景颜色
         /// </summary>
@@ -46,14 +52,89 @@ namespace Caviar.AntDesignUI.Core
         public string Theme { 
             get { return _theme; } 
             set {
+                ThemeSwitch(value);
                 ThemeChanged?.Invoke(_theme, value);
                 _theme = value;
             } 
         }
+
+        private void ThemeSwitch(string theme)
+        {
+            switch (theme)
+            {
+                case "ant-design-blazor.dark.css":
+                    if (_leftMenuTheme != LeftMenuThemeEnum.Dark)
+                    {
+                        _messageService.Warning("黑暗主题不能使用明亮菜单，已为您自动切换");
+                    }
+                    _leftMenuTheme = LeftMenuThemeEnum.Dark;
+                    break;
+                default:
+                    break;
+            }
+        }
+
         /// <summary>
         /// 是否table页
         /// </summary>
         public bool IsTable { get; set; } = true;
 
+        private LeftMenuThemeEnum _leftMenuTheme = LeftMenuThemeEnum.Dark;
+        public LeftMenuThemeEnum LeftMenuTheme 
+        {
+            get { return _leftMenuTheme; }
+            set 
+            {
+                _leftMenuTheme = value; // 先赋值，如果黑暗主题选择了明亮菜单，在回调里自动改回来
+                ThemeSwitch(_theme);
+                ThemeChanged?.Invoke(_theme, _theme);
+            }
+        }
+        public SiderTheme SiderTheme 
+        {
+            get
+            {
+                switch (LeftMenuTheme)
+                {
+                    case LeftMenuThemeEnum.Light:
+                        SiderTheme.Light.Value = 1;
+                        SiderTheme.Light.Name = "Light".ToLowerInvariant();
+                        return SiderTheme.Light;
+                    case LeftMenuThemeEnum.Dark:
+                        SiderTheme.Dark.Value = 2;
+                        SiderTheme.Dark.Name = "Dark".ToLowerInvariant();
+                        return SiderTheme.Dark;
+                    default:
+                        return SiderTheme.Dark;
+
+                }
+            }
+        }
+        public MenuTheme MenuTheme 
+        {
+            get
+            {
+                switch (LeftMenuTheme)
+                {
+                    case LeftMenuThemeEnum.Light:
+                        MenuTheme.Light.Value = 1;
+                        MenuTheme.Light.Name = "Light".ToLowerInvariant();
+                        return MenuTheme.Light;
+                    case LeftMenuThemeEnum.Dark:
+                        MenuTheme.Dark.Value = 2;
+                        MenuTheme.Dark.Name = "Dark".ToLowerInvariant();
+                        return MenuTheme.Dark;
+                    default:
+                        return MenuTheme.Dark;
+
+                }
+            }
+        }
+
+        public enum LeftMenuThemeEnum
+        {
+            Light,
+            Dark
+        }
     }
 }

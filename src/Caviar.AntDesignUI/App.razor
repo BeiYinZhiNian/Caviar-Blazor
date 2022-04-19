@@ -31,6 +31,8 @@
 @code {
     [Inject]
     UserConfig UserConfig { get; set; }
+    [Inject]
+    CavLayout Layout{ get; set; }
 
     [Inject]
     NavigationManager NavigationManager { get; set; }
@@ -68,8 +70,12 @@
                         UserConfig.IsAutomaticSwitchWasm = bool.Parse(collection["IsAutomaticSwitchWasm"]);
                     }
                 }
-                var language = await JSRuntime.InvokeAsync<string>("getCookie", CurrencyConstant.LanguageHeader);
+                var language = await JSRuntime.InvokeAsync<string>(CurrencyConstant.GetCookie, CurrencyConstant.LanguageHeader);
                 UserConfig.LanguageService.SetLanguage(language);
+                var layoutTheme = await JSRuntime.InvokeAsync<string>(CurrencyConstant.GetCookie, CurrencyConstant.LayoutTheme);
+                layoutTheme = HttpUtility.UrlDecode(layoutTheme);
+                JsonConvert.PopulateObject(layoutTheme,Layout);
+                StateHasChanged();
             }
             catch
             {
