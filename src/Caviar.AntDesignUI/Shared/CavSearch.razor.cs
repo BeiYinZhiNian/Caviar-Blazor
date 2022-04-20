@@ -23,6 +23,8 @@ namespace Caviar.AntDesignUI.Shared
         MessageService MessageService { get; set; }
         [Inject]
         UserConfig UserConfig { get; set; }
+        [Inject]
+        ILanguageService LanguageService { get; set; }
         [Parameter]
         public EventCallback<QueryView> QueryCallback { get; set; }
         [Parameter]
@@ -38,7 +40,7 @@ namespace Caviar.AntDesignUI.Shared
         {
             if (string.IsNullOrEmpty(QueryModel.Key))
             {
-                _ = MessageService.Error(UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SelectQueryFields}"]);
+                _ = MessageService.Error(LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SelectQueryFields}"]);
                 return;
             }
             Loading = true;

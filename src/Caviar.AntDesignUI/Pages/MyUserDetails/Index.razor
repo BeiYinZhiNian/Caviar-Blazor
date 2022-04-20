@@ -11,22 +11,22 @@
                         <CardMeta AvatarTemplate="@GetHeadPortrait()" TitleTemplate="@GetTitleRender()" Description="@_user.Remark" />
                         <body>
                             <p style="margin-top:10px">
-                                <Text>@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.UserName}"]：</Text><Text>@_user.UserName</Text>
+                                <Text>@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.UserName}"]：</Text><Text>@_user.UserName</Text>
                             </p>
                             <p>
-                                <Text>@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Password}"]：</Text><Text>@_user.Email</Text>
+                                <Text>@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Password}"]：</Text><Text>@_user.Email</Text>
                             </p>
                             <p>
-                                <Text>@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.PhoneNumber}"]：</Text><Text>@_user.PhoneNumber</Text>
+                                <Text>@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.PhoneNumber}"]：</Text><Text>@_user.PhoneNumber</Text>
                             </p>
                             <p>
-                                <Text>@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ApplicationRoleKey}"]：</Text><Text>@Roles</Text>
+                                <Text>@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ApplicationRoleKey}"]：</Text><Text>@Roles</Text>
                             </p>
                             <p>
-                                <Text>@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.UserGroupName}"]：</Text><Text>@_user.UserGroupName</Text>
+                                <Text>@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.UserGroupName}"]：</Text><Text>@_user.UserGroupName</Text>
                             </p>
                             <p>
-                                <Text>@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.PersonalSignature}"]：</Text><Text>@_user.Remark</Text>
+                                <Text>@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.PersonalSignature}"]：</Text><Text>@_user.Remark</Text>
                             </p>
                         </body>
                     </ChildContent>
@@ -59,6 +59,6 @@
 
     public RenderFragment GetPageTitle()=>
        @<div>
-           @UserConfig.LanguageService[$"{CurrencyConstant.Menu}.{CurrencyConstant.MyUserDetails}"]
+           @LanguageService[$"{CurrencyConstant.Menu}.{CurrencyConstant.MyUserDetails}"]
        </div>;
 }

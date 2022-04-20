@@ -13,10 +13,10 @@ namespace Caviar.AntDesignUI.Shared
     public class CavEnumSelect<TEnum> : EnumSelect<TEnum>
     {
         [Inject]
-        public UserConfig UserConfig { get; set; }
+        ILanguageService LanguageService { get; set; }
         protected override string GetLabel(TEnum item)
         {
-            return UserConfig.LanguageService[$"{CurrencyConstant.Enum}.{item}"];
+            return LanguageService[$"{CurrencyConstant.Enum}.{item}"];
         }
     }
 }

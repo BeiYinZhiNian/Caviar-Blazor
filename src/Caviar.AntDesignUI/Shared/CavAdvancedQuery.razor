@@ -6,11 +6,11 @@
         <Space>
             <SpaceItem>
                 <AntDesign.Input TValue="uint" @bind-Value="QueryView.Number" Style="width:100px">
-                    <AddOnBefore>@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SearchNumber}"]</AddOnBefore>
+                    <AddOnBefore>@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SearchNumber}"]</AddOnBefore>
                 </AntDesign.Input>
             </SpaceItem>
             <SpaceItem>
-                <Button Type="@ButtonType.Primary" OnClick="AddCondition">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.AddCondition}"]</Button>
+                <Button Type="@ButtonType.Primary" OnClick="AddCondition">@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.AddCondition}"]</Button>
             </SpaceItem>
         </Space>
 
@@ -27,13 +27,13 @@
             @if (i > 0)
             {
                 <SpaceItem>
-                    <Switch @bind-Value="component.AndOr" OnChange="u=>AndOr(QueryModel,u)" Style="width:50px" CheckedChildren="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.And}"]" UnCheckedChildren="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Or}"]" />
+                    <Switch @bind-Value="component.AndOr" OnChange="u=>AndOr(QueryModel,u)" Style="width:50px" CheckedChildren="@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.And}"]" UnCheckedChildren="@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Or}"]" />
                 </SpaceItem>
             }
             <SpaceItem>
                 <Space>
                     <SpaceItem>
-                        <SimpleSelect Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SelectQueryFields}"]" @bind-Value="QueryModel.Key"
+                        <SimpleSelect Placeholder="@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SelectQueryFields}"]" @bind-Value="QueryModel.Key"
                               OnSelectedItemChanged="u=>OnSelectItem(item.Key,u)"
                               Style="width:120px">
                             <SelectOptions>
@@ -59,7 +59,7 @@
                         if (component.Field != null && component.Field.IsEnum)
                         {
                             <SpaceItem>
-                                <SimpleSelect Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SelectType}"]"
+                                <SimpleSelect Placeholder="@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SelectType}"]"
                                 OnSelectedItemChanged="u=>OnValueChange(QueryModel,u)"
                                 @bind-Value="QueryModel.Value"
                                 Style="width:120px">
@@ -90,7 +90,7 @@
                                     }
                                     catch { }
                                     <SpaceItem>
-                                        <Input TValue="int" Value="intValue" OnChange="u=>OnValueChange(QueryModel,u)" Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SearchData}"]" />
+                                        <Input TValue="int" Value="intValue" OnChange="u=>OnValueChange(QueryModel,u)" Placeholder="@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SearchData}"]" />
                                     </SpaceItem>
                                     break;
                                 case "boolean":
@@ -109,12 +109,12 @@
 
                                     <SpaceItem>
                                         <Switch @bind-Value="component.IsCompleted" Style="width:50px" OnChange="u=>{
-                                        OnValueChange(QueryModel,u);}" CheckedChildren="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Yes}"]" UnCheckedChildren="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.No}"]" />
+                                        OnValueChange(QueryModel,u);}" CheckedChildren="@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Yes}"]" UnCheckedChildren="@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.No}"]" />
                                     </SpaceItem>
                                     break;
                                 case "guid":
                                     <SpaceItem>
-                                        <Input TValue="Guid" OnChange="u=>OnValueChange(QueryModel,u)" Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SearchData}"]" />
+                                        <Input TValue="Guid" OnChange="u=>OnValueChange(QueryModel,u)" Placeholder="@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SearchData}"]" />
                                     </SpaceItem>
                                     break;
                                 case "datetime":
@@ -133,7 +133,7 @@
                                     break;
                                 default:
                                     <SpaceItem>
-                                        <Input TValue="string" @bind-Value="QueryModel.Value" Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SearchData}"]" />
+                                        <Input TValue="string" @bind-Value="QueryModel.Value" Placeholder="@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SearchData}"]" />
                                     </SpaceItem>
                                     break;
                             }
@@ -141,7 +141,7 @@
                         if (i > 0)
                         {
                             <SpaceItem>
-                                <Button Type="@ButtonType.Dashed" OnClick="()=>RemoveCondition(item.Key)">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Remove}"]</Button>
+                                <Button Type="@ButtonType.Dashed" OnClick="()=>RemoveCondition(item.Key)">@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Remove}"]</Button>
                             </SpaceItem>
                         }
                     }

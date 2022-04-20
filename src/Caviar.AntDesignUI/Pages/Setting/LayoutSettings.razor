@@ -1,7 +1,7 @@
 ﻿@page "/WebConfig/LayoutSettings"
 @implements IReuseTabsPage
 
-﻿<Card Title=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.LayoutSettings}"] Bordered Hoverable>
+﻿<Card Title=@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.LayoutSettings}"] Bordered Hoverable>
     <ChildContent>
         <Row>
             <Space>
@@ -58,12 +58,12 @@
     </ChildContent>
 </Card>
 
-<Button Style="margin-top:20px" Type="@ButtonType.Primary" OnClick="Preservation">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Preservation}"]</Button>
+<Button Style="margin-top:20px" Type="@ButtonType.Primary" OnClick="Preservation">@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Preservation}"]</Button>
 
 
 @code{
     public RenderFragment GetPageTitle() =>
     @<div>
-        @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.LayoutSettings}"]
+        @LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.LayoutSettings}"]
     </div>;
 }

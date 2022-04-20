@@ -42,10 +42,11 @@ namespace Caviar.AntDesignUI.Core
         [Inject]
         protected MessageService MessageService { get; set; }
         [Inject]
-        public UserConfig UserConfig { get; set; }
+        protected UserConfig UserConfig { get; set; }
         [Inject]
-        public NavigationManager NavigationManager { get; set; }
-        public ILanguageService LanguageService => UserConfig.LanguageService;
+        protected ILanguageService LanguageService { get; set; }
+        [Inject]
+        protected NavigationManager NavigationManager { get; set; }
         #endregion
 
         protected override async Task OnInitializedAsync()

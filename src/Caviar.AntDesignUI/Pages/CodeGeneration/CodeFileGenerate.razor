@@ -12,20 +12,20 @@
             <SpaceItem>
                 @if (current > 0 && current < steps.Length - 1)
                 {
-                    <Button Type="@ButtonType.Primary" OnClick="OnPreClick">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Back}"]</Button>
+                    <Button Type="@ButtonType.Primary" OnClick="OnPreClick">@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Back}"]</Button>
                 }
             </SpaceItem>
             <SpaceItem>
                 @if (current < steps.Length - 2 && current > 0)
                 {
-                    <Button Type="@ButtonType.Primary" OnClick="OnNextClick">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Next}"]</Button>
+                    <Button Type="@ButtonType.Primary" OnClick="OnNextClick">@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Next}"]</Button>
                 }
             </SpaceItem>
             <SpaceItem>
                 @if (current == steps.Length - 2)
                 {
                     <Button Type="@ButtonType.Primary" Danger OnClick=@(() => { OnGenerateClick(); })>
-                        @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Generate}"]
+                        @LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Generate}"]
                     </Button>
                 }
 
@@ -53,13 +53,13 @@
                                     @context.EntitieName
                                 </Text>
                             </FormItem>
-                            <FormItem Label="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.GenerateContent}"]">
-                                <Checkbox @bind-Value="@context.IsGenerateController">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Controller}"]</Checkbox>
-                                <Checkbox @bind-Value="@context.IsGenerateIndex">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ListPage}"]</Checkbox>
-                                <Checkbox @bind-Value="@context.IsGenerateDataTemplate">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.DataTemplatePage}"]</Checkbox>
-                                <Checkbox @bind-Value="@context.IsGenerateViewModel">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.PageModel}"]</Checkbox>
+                            <FormItem Label="@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.GenerateContent}"]">
+                                <Checkbox @bind-Value="@context.IsGenerateController">@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Controller}"]</Checkbox>
+                                <Checkbox @bind-Value="@context.IsGenerateIndex">@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ListPage}"]</Checkbox>
+                                <Checkbox @bind-Value="@context.IsGenerateDataTemplate">@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.DataTemplatePage}"]</Checkbox>
+                                <Checkbox @bind-Value="@context.IsGenerateViewModel">@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.PageModel}"]</Checkbox>
                             </FormItem>
-                            <FormItem Label="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.IsCover}"]">
+                            <FormItem Label="@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.IsCover}"]">
                                 <Switch @bind-Value="@context.IsCover" />
                             </FormItem>
                         </Space>
@@ -84,8 +84,8 @@
                         Title="@ReusltTitle"
                         SubTitle="@ResultSubTitle">
                     <Extra>
-                        <Button Type="@ButtonType.Primary" OnClick='()=> { NavigationManager.NavigateTo("/"); }'>@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ReturnHome}"]</Button>
-                        <Button OnClick='()=> { current = 0; }'>@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ContinueGeneration}"]</Button>
+                        <Button Type="@ButtonType.Primary" OnClick='()=> { NavigationManager.NavigateTo("/"); }'>@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ReturnHome}"]</Button>
+                        <Button OnClick='()=> { current = 0; }'>@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ContinueGeneration}"]</Button>
                     </Extra>
 
                 </Result>

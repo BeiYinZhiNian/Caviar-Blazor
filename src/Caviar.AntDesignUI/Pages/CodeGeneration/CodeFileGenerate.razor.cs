@@ -27,10 +27,10 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
         {
             steps = new StepItem[]
             {
-                new StepItem { Title = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.SelectGenerationModule}"], Content = "" },
-                new StepItem { Title = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.FunctionConfiguration}"], Content = "" },
-                new StepItem { Title = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.ViewCode}"], Content = "" },
-                new StepItem { Title = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.GenerateResults}"], Content = "" }
+                new StepItem { Title = LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.SelectGenerationModule}"], Content = "" },
+                new StepItem { Title = LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.FunctionConfiguration}"], Content = "" },
+                new StepItem { Title = LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.ViewCode}"], Content = "" },
+                new StepItem { Title = LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.GenerateResults}"], Content = "" }
             };
             if (Config.IsDebug)
             {
@@ -38,7 +38,7 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
             }
             else
             {
-                await MessageService.Error(UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.DebugErrorMsg}"]);
+                await MessageService.Error(LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.DebugErrorMsg}"]);
             }
         }
 
@@ -101,7 +101,7 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
             {
                 ResultStatus = "success";
                 ReusltTitle = result.Title;
-                ResultSubTitle = UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ResultSubTitle}"];
+                ResultSubTitle = LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ResultSubTitle}"];
             }
             else
             {

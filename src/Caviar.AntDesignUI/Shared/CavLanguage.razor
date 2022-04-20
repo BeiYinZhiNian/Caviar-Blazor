@@ -1,4 +1,4 @@
-﻿<Menu OnMenuItemClicked="SelectLanguage" SelectedKeys="new string[1] { UserConfig.CurrentLanguage}">
+﻿<Menu OnMenuItemClicked="SelectLanguage" SelectedKeys="new string[1] { LanguageService.CurrentCulture.Name}">
     @foreach(var item in LanguageList)
     {
         if(!CurrencyConstant.LanguageDic.TryGetValue(item.CultureName,out string value))

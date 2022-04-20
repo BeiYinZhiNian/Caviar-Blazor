@@ -17,11 +17,10 @@ namespace Caviar.AntDesignUI.Core
     {
         public CavLayout Layout { get; set; }
 
-        public UserConfig(IJSRuntime jSRuntime, ILanguageService languageService,CavLayout layoutEntity)
+        public UserConfig(IJSRuntime jSRuntime,CavLayout layoutEntity)
         {
             JSRuntime = jSRuntime;
             Layout = layoutEntity;
-            LanguageService = languageService;
             Layout.ThemeChanged += SetTheme;
         }
         /// <summary>
@@ -32,7 +31,7 @@ namespace Caviar.AntDesignUI.Core
         /// <summary>
         /// 路由
         /// </summary>
-        public Router Router;
+        public static Router Router;
         /// <summary>
         /// 更新菜单数据
         /// </summary>
@@ -43,8 +42,8 @@ namespace Caviar.AntDesignUI.Core
         /// </summary>
         public Action RefreshCurrentPage { get; set; }
 
-        IEnumerable _routes;
-        public IEnumerable Routes()
+        static IEnumerable _routes;
+        public static IEnumerable Routes()
         {
             if (_routes == null)
             {
@@ -53,9 +52,6 @@ namespace Caviar.AntDesignUI.Core
             }
             return _routes;
         }
-        public ILanguageService LanguageService { get; set; }
-
-        public string CurrentLanguage => LanguageService.CurrentCulture.Name;
         /// <summary>
         /// 是否为游客
         /// </summary>

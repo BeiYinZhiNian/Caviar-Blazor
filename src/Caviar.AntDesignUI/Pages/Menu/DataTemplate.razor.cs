@@ -16,7 +16,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
         HttpService HttpService { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            ParentMenuName = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.NoUpperLevel}"];
+            ParentMenuName = LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.NoUpperLevel}"];
             await base.OnInitializedAsync();
             _sysMenus = await GetMenus();
             _listMenus = TreeToList(_sysMenus);
@@ -61,7 +61,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
 
         void RemoveRecord()
         {
-            ParentMenuName = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.NoUpperLevel}"];
+            ParentMenuName = LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.NoUpperLevel}"];
             DataSource.Entity.ParentId = 0;
         }
     }

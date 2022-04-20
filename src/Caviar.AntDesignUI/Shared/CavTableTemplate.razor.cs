@@ -71,6 +71,8 @@ namespace Caviar.AntDesignUI.Shared
         NavigationManager Navigation { get; set; }
         [Inject]
         CavModal CavModal { get; set; }
+        [Inject]
+        ILanguageService LanguageService { get; set; }
         RowCallbackData<TData> CurrRow { get; set; }
         async void ButtonClick(SysMenuView menu, TData data)
         {
@@ -128,7 +130,7 @@ namespace Caviar.AntDesignUI.Shared
         Func<PaginationTotalContext, string> showTotal;
         protected override Task OnInitializedAsync()
         {
-            showTotal = ctx => $"{ctx.Range.Item1}-{ctx.Range.Item2} {UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Total}"]} {ctx.Total} {UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Record}"]}";
+            showTotal = ctx => $"{ctx.Range.Item1}-{ctx.Range.Item2} {LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Total}"]} {ctx.Total} {LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Record}"]}";
             return base.OnInitializedAsync();
         }
 

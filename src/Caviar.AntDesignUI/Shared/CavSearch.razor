@@ -1,7 +1,7 @@
 ﻿
 
 <InputGroup Compact>
-    <SimpleSelect Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SelectQueryFields}"]" Style="width: 50%;" @bind-Value="QueryModel.Key">
+    <SimpleSelect Placeholder="@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SelectQueryFields}"]" Style="width: 50%;" @bind-Value="QueryModel.Key">
         <SelectOptions>
             @if (Fields != null)
             {
@@ -15,6 +15,6 @@
             }
         </SelectOptions>
     </SimpleSelect>
-    <Input TValue="string" @bind-Value="QueryModel.Value" Placeholder="@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SearchData}"]"/>
-    <Button OnClick="OnSearch" Type="@ButtonType.Primary" Loading="Loading">@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Search}"]</Button>
+    <Input TValue="string" @bind-Value="QueryModel.Value" Placeholder="@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SearchData}"]"/>
+    <Button OnClick="OnSearch" Type="@ButtonType.Primary" Loading="Loading">@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Search}"]</Button>
 </InputGroup>

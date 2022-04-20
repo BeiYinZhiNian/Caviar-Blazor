@@ -13,19 +13,14 @@ namespace Caviar.AntDesignUI.Shared
 {
     public class CavFormItem: FormItem
     {
-        [Inject]
-        UserConfig UserConfig { get; set; }
-
         [Parameter]
         public string FieldName { get; set; }
 
         [Parameter]
         public object FieldRules { get; set; }
-
+        [Inject]
+        ILanguageService LanguageService { get; set; }
         private string _displayName;
-
-        private ILanguageService LanguageService => UserConfig.LanguageService;
-
         protected override void OnInitialized()
         {
             base.OnInitialized();

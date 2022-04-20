@@ -1,7 +1,7 @@
 ﻿<Modal Visible="@Visible"
        OnOk="HandleOk"
        OnCancel="HandleCancel"
-       Title=@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SelectIcon}"]
+       Title=@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SelectIcon}"]
        Draggable="true"
        DragInViewport="true">
     <CavIconPanel @bind-RadioValue="IconValue" OnChange="IconValueChanged"></CavIconPanel>
@@ -10,7 +10,7 @@
 
 @code{
     [Inject]
-    UserConfig UserConfig{ get; set; }
+    ILanguageService LanguageService{ get; set; }
     [Parameter]
     public bool Visible { get; set; }
     [Parameter]

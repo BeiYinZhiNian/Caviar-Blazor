@@ -15,17 +15,16 @@ namespace Caviar.AntDesignUI.Shared
     public partial class CavLanguage
     {
         [Inject]
-        UserConfig UserConfig { get; set; }
-        [Inject]
         NavigationManager NavigationManager { get; set; }
-        NavLinkMatch RouterMatch { get; set; } = NavLinkMatch.Prefix;
-        List<(string CultureName, string ResourceName)> LanguageList { get; set; }
         [Inject]
         IJSRuntime JSRuntime { get; set; }
-
+        [Inject]
+        ILanguageService LanguageService { get; set; }
+        NavLinkMatch RouterMatch { get; set; } = NavLinkMatch.Prefix;
+        List<(string CultureName, string ResourceName)> LanguageList { get; set; }
         protected override Task OnInitializedAsync()
         {
-            LanguageList = UserConfig.LanguageService.GetLanguageList();
+            LanguageList = LanguageService.GetLanguageList();
             return base.OnInitializedAsync();
         }
 

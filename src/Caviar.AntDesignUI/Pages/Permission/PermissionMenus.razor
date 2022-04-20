@@ -1,7 +1,7 @@
 ﻿@page "/Permission/RoleMenus"
 
 
-<Text>@UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SelectAccessibleMenu}"].Replace("{DataSource.Entity.Name}",UserConfig.LanguageService[$"{CurrencyConstant.EntitysName}.{DataSource.Entity.Name}"])</Text>
+<Text>@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SelectAccessibleMenu}"].Replace("{DataSource.Entity.Name}",LanguageService[$"{CurrencyConstant.EntitysName}.{DataSource.Entity.Name}"])</Text>
 <Tree
       Style="margin-top:20px"
       TItem="SysMenuView"

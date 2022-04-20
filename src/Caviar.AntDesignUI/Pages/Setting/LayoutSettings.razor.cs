@@ -22,6 +22,8 @@ namespace Caviar.AntDesignUI.Pages.Setting
         [Inject]
         IJSRuntime JSRuntime { get; set; }
         [Inject]
+        ILanguageService LanguageService { get; set; }
+        [Inject]
         MessageService MessageService { get; set; }
         private async void Preservation()
         {

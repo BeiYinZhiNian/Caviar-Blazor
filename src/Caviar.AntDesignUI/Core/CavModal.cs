@@ -17,24 +17,24 @@ namespace Caviar.AntDesignUI.Core
     public class CavModal
     {
         ModalService Modal;
-        UserConfig UserConfig;
+        ILanguageService LanguageService;
         MessageService MessageService;
-        public CavModal(UserConfig userConfig,ModalService modalService, MessageService messageService)
+        public CavModal(ILanguageService languageService,ModalService modalService, MessageService messageService)
         {
-            UserConfig = userConfig;
+            LanguageService = languageService;
             Modal = modalService;
             MessageService = messageService;
         }
 
         public async Task<ModalRef> Create(CavModalOptions modalOptions)
         {
-            var modelHandle = new ModalHandle(UserConfig, Modal, MessageService);
+            var modelHandle = new ModalHandle(LanguageService, Modal, MessageService);
             return await modelHandle.Create(modalOptions);
         }
 
         public RenderFragment Render(string url, string title, IEnumerable<KeyValuePair<string, object>> paramenter)
         {
-            var modelHandle = new ModalHandle(UserConfig, Modal, MessageService);
+            var modelHandle = new ModalHandle(LanguageService, Modal, MessageService);
             return modelHandle.Render(url, title, paramenter);
         }
 
@@ -42,16 +42,16 @@ namespace Caviar.AntDesignUI.Core
         protected class ModalHandle
         {
             ModalService Modal;
-            UserConfig UserConfig;
+            ILanguageService LanguageService;
             MessageService MessageService;
             ModalRef modalRef;
             Action OnOK;
             Func<Task<bool>> FuncValidate;
             ITableTemplate TableTemplate;
 
-            public ModalHandle(UserConfig userConfig, ModalService modalService, MessageService messageService)
+            public ModalHandle(ILanguageService languageService, ModalService modalService, MessageService messageService)
             {
-                UserConfig = userConfig;
+                LanguageService = languageService;
                 Modal = modalService;
                 MessageService = messageService;
             }
@@ -82,8 +82,8 @@ namespace Caviar.AntDesignUI.Core
                     Title = modalOptions.Title,
                     BodyStyle = modalOptions.BodyStyle,
                     Visible = true,
-                    OkText = @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Confirm}"],
-                    CancelText = @UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Cancel}"],
+                    OkText = LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Confirm}"],
+                    CancelText = LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Cancel}"],
                     DestroyOnClose = true,
                     Footer = modalOptions.Footer
                 };
@@ -120,7 +120,7 @@ namespace Caviar.AntDesignUI.Core
                         return;
                     }
                 }
-                MessageService.Error(UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ComponentErrorMsg}"].Replace("{title}", title).Replace("{url}", url));
+                MessageService.Error(LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ComponentErrorMsg}"].Replace("{title}", title).Replace("{url}", url));
             };
 
             

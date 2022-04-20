@@ -18,6 +18,8 @@ namespace Caviar.AntDesignUI.Shared
         UserConfig UserConfig { get; set; }
         [Inject]
         CavModal CavModal { get; set; }
+        [Inject]
+        ILanguageService LanguageService { get; set; }
 
         private string Runtime => System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier;
         bool IsSmallScreen = true;

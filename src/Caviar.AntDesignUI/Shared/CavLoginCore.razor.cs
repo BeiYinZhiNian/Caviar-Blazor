@@ -32,6 +32,8 @@ namespace Caviar.AntDesignUI.Shared
 
         [Inject]
         MessageService MessageService { get; set; }
+        [Inject]
+        ILanguageService LanguageService { get; set; }
 
         bool Loading { get; set; } = true;
 

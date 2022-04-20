@@ -20,7 +20,7 @@ namespace Caviar.AntDesignUI.Pages.User
 
         protected override async Task OnInitializedAsync()
         {
-            ParentMenuName = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.AllocationDepartment}"];
+            ParentMenuName = LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.AllocationDepartment}"];
             await base.OnInitializedAsync();
             UserGroupViews = await GetUserGroups();
         }

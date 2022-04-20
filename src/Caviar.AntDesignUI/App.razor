@@ -33,6 +33,8 @@
     UserConfig UserConfig { get; set; }
     [Inject]
     CavLayout Layout{ get; set; }
+    [Inject]
+    ILanguageService LanguageService { get; set; }
 
     [Inject]
     NavigationManager NavigationManager { get; set; }
@@ -71,7 +73,7 @@
                     }
                 }
                 var language = await JSRuntime.InvokeAsync<string>(CurrencyConstant.GetCookie, CurrencyConstant.LanguageHeader);
-                UserConfig.LanguageService.SetLanguage(language);
+                LanguageService.SetLanguage(language);
                 var layoutTheme = await JSRuntime.InvokeAsync<string>(CurrencyConstant.GetCookie, CurrencyConstant.LayoutTheme);
                 layoutTheme = HttpUtility.UrlDecode(layoutTheme);
                 JsonConvert.PopulateObject(layoutTheme,Layout);

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Version>0.1.2.4</Version>
+    <Version>0.1.2.5</Version>
     <Authors>北音执念</Authors>
     <Copyright>Apache-2.0</Copyright>
     <PackageProjectUrl>https://gitee.com/Cherryblossoms/caviar.git</PackageProjectUrl>

@@ -22,6 +22,8 @@ namespace Caviar.AntDesignUI.Pages.Permission
         [Inject]
         UserConfig UserConfig { get; set; }
         [Inject]
+        ILanguageService LanguageService { get; set; }
+        [Inject]
         HttpService HttpService { get; set; }
         [Inject]
         MessageService MessageService { get; set; }

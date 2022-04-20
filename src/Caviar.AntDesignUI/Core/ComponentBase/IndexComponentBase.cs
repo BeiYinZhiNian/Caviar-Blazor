@@ -28,8 +28,9 @@ namespace Caviar.AntDesignUI.Core
         [Inject]
         private MessageService MessageService { get; set; }
         [Inject]
-        public NavigationManager NavigationManager { get; set; }
-        public ILanguageService LanguageService => UserConfig.LanguageService;
+        protected NavigationManager NavigationManager { get; set; }
+        [Inject]
+        protected ILanguageService LanguageService { get; set; }
         /// <summary>
         /// 当前Api列表
         /// </summary>

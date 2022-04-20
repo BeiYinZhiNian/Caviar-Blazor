@@ -16,13 +16,15 @@ namespace Caviar.AntDesignUI.Pages.User
         [Parameter]
         public string CurrentUrl { get; set; }
         Form<ChangePasswordModel> _Form;
-        public ChangePasswordModel ChangePasswordModel { get; set; } = new ChangePasswordModel();
+        ChangePasswordModel ChangePasswordModel { get; set; } = new ChangePasswordModel();
         [Inject]
-        public HttpService HttpService { get; set; }
+        HttpService HttpService { get; set; }
         [Inject]
-        public MessageService MessageService { get; set; }
+        MessageService MessageService { get; set; }
         [Inject]
-        public UserConfig UserConfig { get; set; }
+        UserConfig UserConfig { get; set; }
+        [Inject]
+        ILanguageService LanguageService { get; set; }
         public Task<bool> Validate()
         {
             if (_Form.Validate())
@@ -38,7 +40,7 @@ namespace Caviar.AntDesignUI.Pages.User
         {
             if(ChangePasswordModel.ConfirmPassword != ChangePasswordModel.NewPassword)
             {
-                _ = MessageService.Error(UserConfig.LanguageService[$"{CurrencyConstant.ResuleMsg}.{CurrencyConstant.InconsistentPasswords}"]);
+                _ = MessageService.Error(LanguageService[$"{CurrencyConstant.ResuleMsg}.{CurrencyConstant.InconsistentPasswords}"]);
                 return false;
             }
             ChangePasswordModel.NewPassword = CommonHelper.SHA256EncryptString(ChangePasswordModel.NewPassword);

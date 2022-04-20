@@ -18,7 +18,7 @@ namespace Caviar.AntDesignUI.Pages.UserGroup
         HttpService HttpService { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            ParentMenuName = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.NoUpperLevel}"];
+            ParentMenuName = LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.NoUpperLevel}"];
             await base.OnInitializedAsync();
             UserGroups = await GetMenus();
         }
@@ -53,7 +53,7 @@ namespace Caviar.AntDesignUI.Pages.UserGroup
 
         void RemoveRecord()
         {
-            ParentMenuName = UserConfig.LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.NoUpperLevel}"];
+            ParentMenuName = LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.NoUpperLevel}"];
             DataSource.Entity.ParentId = 0;
         }
     }

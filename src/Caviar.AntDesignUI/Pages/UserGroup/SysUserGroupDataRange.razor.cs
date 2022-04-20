@@ -17,7 +17,7 @@ namespace Caviar.AntDesignUI.Pages.UserGroup
         [Parameter]
         public ApplicationRoleView DataSource { get; set; }
         [Inject]
-        UserConfig UserConfig { get; set; }
+        ILanguageService LanguageService { get; set; }
         [Inject]
         HttpService HttpService { get; set; }
         [Parameter]

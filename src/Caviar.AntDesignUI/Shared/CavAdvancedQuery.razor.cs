@@ -21,14 +21,16 @@ namespace Caviar.AntDesignUI.Shared
         /// </summary>
         [Parameter]
         public List<FieldsView> Fields { get; set; }
-        [Inject]
-        MessageService MessageService { get; set; }
-        [Inject]
-        UserConfig UserConfig { get; set; }
         [Parameter]
         public EventCallback<QueryView> QueryCallback { get; set; }
         [Parameter]
         public QueryView QueryView { get; set; }
+        [Inject]
+        MessageService MessageService { get; set; }
+        [Inject]
+        UserConfig UserConfig { get; set; }
+        [Inject]
+        ILanguageService LanguageService { get; set; }
 
 
         void OnSelectItem(Guid trackId,string item)
@@ -112,7 +114,7 @@ namespace Caviar.AntDesignUI.Shared
             {
                 if (string.IsNullOrEmpty(item.Value.Key))
                 {
-                    _ = MessageService.Error(UserConfig.LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SelectQueryFields}"]);
+                    _ = MessageService.Error(LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SelectQueryFields}"]);
                     return false;
                 }
             }

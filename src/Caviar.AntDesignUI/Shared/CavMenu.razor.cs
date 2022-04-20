@@ -52,6 +52,9 @@ namespace Caviar.AntDesignUI.Shared
 
         [Inject] 
         NavigationManager NavigationManager { get; set; }
+        [Inject]
+
+        ILanguageService LanguageService { get; set; }
 
         [Inject]
         IJSRuntime JSRuntime { get; set; }
@@ -66,11 +69,11 @@ namespace Caviar.AntDesignUI.Shared
             var parent = menuItem.ParentMenu;
             while (parent != null)
             {
-                var name = UserConfig.LanguageService[$"{CurrencyConstant.Menu}.{parent.Key}"];
+                var name = LanguageService[$"{CurrencyConstant.Menu}.{parent.Key}"];
                 breadcrumbItemArr.Insert(0, name);
                 parent = parent.Parent;
             }
-            var menuName = UserConfig.LanguageService[$"{CurrencyConstant.Menu}.{menuItem.Key}"];
+            var menuName = LanguageService[$"{CurrencyConstant.Menu}.{menuItem.Key}"];
             breadcrumbItemArr.Add(menuName);
             return breadcrumbItemArr;
         }
