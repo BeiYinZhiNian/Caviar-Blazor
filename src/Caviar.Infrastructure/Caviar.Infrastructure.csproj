@@ -7,7 +7,7 @@
     <PackageProjectUrl>https://gitee.com/Cherryblossoms/caviar.git</PackageProjectUrl>
     <RepositoryUrl>https://gitee.com/Cherryblossoms/caviar.git</RepositoryUrl>
     <PackageTags>caviar;Ant-Design;blazor;</PackageTags>
-    <Version>0.1.2.3</Version>
+    <Version>0.1.2.4</Version>
     <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="6.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="6.0.4" />
   </ItemGroup>
 
   <ItemGroup>

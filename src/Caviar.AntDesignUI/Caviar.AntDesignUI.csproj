@@ -8,7 +8,7 @@
     <PackageProjectUrl>https://gitee.com/Cherryblossoms/caviar.git</PackageProjectUrl>
     <RepositoryUrl>https://gitee.com/Cherryblossoms/caviar.git</RepositoryUrl>
     <PackageTags>caviar;Ant-Design;blazor;</PackageTags>
-    <Version>0.1.2.3</Version>
+    <Version>0.1.2.4</Version>
     <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
@@ -19,9 +19,9 @@
 
   <ItemGroup>
     <PackageReference Include="AntDesign" Version="0.10.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
   </ItemGroup>
