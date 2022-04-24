@@ -42,7 +42,7 @@
         OnChange="EventCallback.Factory.Create<MenuType>(this, CheckMenuType)"
             Options="GetRadioOptions<MenuType>()"></EnumRadioGroup>
     </CavFormItem>
-    <CavFormItem FieldName="ButtonPosition" FieldRules="@context.Entity">
+    <CavFormItem Style="@buttonStrle" FieldName="ButtonPosition" FieldRules="@context.Entity">
         <EnumRadioGroup TEnum="ButtonPosition" @bind-Value="context.Entity.ButtonPosition" Options="GetRadioOptions<ButtonPosition>()"></EnumRadioGroup>
     </CavFormItem>
     <CavFormItem Style="@visibility" FieldName="Url" FieldRules="@context.Entity">
@@ -94,18 +94,15 @@
                 DataSource.Entity.ButtonPosition = ButtonPosition.Default;
                 DataSource.Entity.TargetType = TargetType.CurrentPage;
                 break;
-            case MenuType.Menu:
-            case MenuType.API:
-                buttonStrle = "display:none;";
-                visibility = "";
-                DataSource.Entity.ButtonPosition = ButtonPosition.Default;
-                DataSource.Entity.TargetType = TargetType.CurrentPage;
-                break;
             case MenuType.Button:
                 visibility = "";
                 buttonStrle = "";
                 break;
             default:
+                buttonStrle = "display:none;";
+                visibility = "";
+                DataSource.Entity.ButtonPosition = ButtonPosition.Default;
+                DataSource.Entity.TargetType = TargetType.CurrentPage;
                 break;
         }
     }
