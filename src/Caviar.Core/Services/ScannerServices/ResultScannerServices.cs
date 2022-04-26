@@ -32,7 +32,7 @@ namespace Caviar.Infrastructure
             }
             if (value != null && IsDataFilter)
             {
-                ArgumentsModel(value.GetType(),ref value);
+                //value = ArgumentsModel(value.GetType(), value);
             }
             var code = StatusCode == null ? HttpStatusCode.OK : (HttpStatusCode)StatusCode;
             if (value is ResultMsg)
@@ -57,33 +57,36 @@ namespace Caviar.Infrastructure
         /// <param name="data">需要检测的字段,过滤后将未授权字段的值设置为default</param>
         /// <param name="fields">用户拥有的字段权限</param>
         /// <
-        public void ArgumentsModel(Type type,ref object data)
+        public object ArgumentsModel(Type type,object data)
         {
-            if (data == null) return;
+            if (data == null) return data;
             if (!type.IsClass)//排除非类
             {
-                return;
+                return data;
             }
             else if (type == typeof(string))//排除字符串（特殊类）
             {
-                return;
+                return data;
             }
+            var copyObj = Activator.CreateInstance(type);
             bool isBaseModel;
             isBaseModel = type.GetInterfaces().Contains(typeof(IUseEntity));
             if (isBaseModel)
             {
-                if (data == null) return;
+                if (data == null) return data;
                 //进行非法字段检测
-                ArgumentsFields(type,ref data);
+                return ArgumentsFields(type,data);
             }
             else if (type.GetInterfaces().Contains(typeof(System.Collections.IEnumerable)))
             {
                 var list = (System.Collections.IEnumerable)data;
-                foreach (var dataItem in list)
+                var resultList = new List<object>();
+                foreach (var item in list)
                 {
-                    var item = dataItem;
-                    ArgumentsModel(dataItem.GetType(),ref item);
+                    var result = ArgumentsModel(item.GetType(), item);
+                    resultList.Add(result);
                 }
+                return resultList;
             }
             else
             {
@@ -91,8 +94,17 @@ namespace Caviar.Infrastructure
                 {
                     var properType = sp.PropertyType;
                     var value = sp.GetValue(data, null);
-                    ArgumentsModel(properType,ref value);
+                    value = ArgumentsModel(properType, value);
+                    try
+                    {
+                        sp.SetValue(copyObj, value, null);
+                    }
+                    catch
+                    {
+                        // 没有set方法的忽略
+                    }
                 }
+                return copyObj;
             }
 
         }
@@ -105,11 +117,11 @@ namespace Caviar.Infrastructure
         /// </summary>
         /// <param name="type"></param>
         /// <param name="data"></param>
-        public void ArgumentsFields(Type type,ref object data)
+        public object ArgumentsFields(Type type,object data)
         {
             var baseType = type.GetInterfaces().FirstOrDefault(u=>u == typeof(IUseEntity));
-            if (baseType == null) return;
-
+            if (baseType == null) return null;
+            var copyObj = Activator.CreateInstance(type);
             foreach (PropertyInfo sp in type.GetProperties())//获得类型的属性字段
             {
                 bool assignment = true;
@@ -118,11 +130,11 @@ namespace Caviar.Infrastructure
                     var permissions = PermissionFieldss?.FirstOrDefault(u => u.Permission == (type.FullName + sp.Name));
                     assignment = permissions != null;
                 }
-                if (!assignment)//如果为null则标名没有字段权限
+                if (assignment)//如果为null则标名没有字段权限
                 {
                     try
                     {
-                        sp.SetValue(data, default, null);//设置为默认字段
+                        sp.SetValue(copyObj, sp.GetValue(data), null);//设置为默认字段
                     }
                     catch
                     {
@@ -131,6 +143,7 @@ namespace Caviar.Infrastructure
                 }
 
             }
+            return copyObj;
         }
 
         public ResultMsg<object> ResultCheck(HttpStatusCode statusCode,object value)
