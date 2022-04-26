@@ -109,7 +109,7 @@ namespace Caviar.Infrastructure
         {
             var baseType = type.GetInterfaces().FirstOrDefault(u=>u == typeof(IUseEntity));
             if (baseType == null) return;
-            var copyObj = Activator.CreateInstance(type);
+
             foreach (PropertyInfo sp in type.GetProperties())//获得类型的属性字段
             {
                 bool assignment = true;
@@ -118,11 +118,11 @@ namespace Caviar.Infrastructure
                     var permissions = PermissionFieldss?.FirstOrDefault(u => u.Permission == (type.FullName + sp.Name));
                     assignment = permissions != null;
                 }
-                if (assignment)//如果为null则标名没有字段权限
+                if (!assignment)//如果为null则标名没有字段权限
                 {
                     try
                     {
-                        sp.SetValue(copyObj, sp.GetValue(data), null);//设置为默认字段
+                        sp.SetValue(data, default, null);//设置为默认字段
                     }
                     catch
                     {
@@ -131,7 +131,6 @@ namespace Caviar.Infrastructure
                 }
 
             }
-            data = copyObj;
         }
 
         public ResultMsg<object> ResultCheck(HttpStatusCode statusCode,object value)
