@@ -76,7 +76,14 @@
                 LanguageService.SetLanguage(language);
                 var layoutTheme = await JSRuntime.InvokeAsync<string>(CurrencyConstant.GetCookie, CurrencyConstant.LayoutTheme);
                 layoutTheme = HttpUtility.UrlDecode(layoutTheme);
-                JsonConvert.PopulateObject(layoutTheme,Layout);
+                try
+                {
+                    JsonConvert.PopulateObject(layoutTheme,Layout);
+                }
+                catch
+                {
+                    //·ÀÖ¹´íÎóÊý¾Ý
+                }
                 StateHasChanged();
             }
             catch
