@@ -135,5 +135,11 @@ namespace Caviar.Core.Services
             }
             return await base.DeleteEntityAsync(menus);
         }
+
+        public override Task<int> AddEntityAsync(SysMenu entity)
+        {
+            entity.DataId = CurrencyConstant.PublicData; // 创建菜单默认为公共数据
+            return base.AddEntityAsync(entity);
+        }
     }
 }

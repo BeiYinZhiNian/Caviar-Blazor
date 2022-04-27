@@ -57,7 +57,13 @@ namespace Caviar.Infrastructure.API.SysMenuController
             return Ok(apiList);
         }
 
-        
+        [HttpPost]
+        public override async Task<IActionResult> CreateEntity(SysMenuView vm)
+        {
+            await _sysMenuServices.AddEntityAsync(vm.Entity);
+            return Ok();
+        }
+
 
     }
 }
