@@ -57,6 +57,7 @@ namespace Caviar.Core.Services
             var sysFields = await _appDbContext.GetEntityAsync<SysFields>(u => u.FullName == fullName).ToListAsync();
             foreach (var item in fields)
             {
+                if(item.Entity == null) continue;
                 item.Entity = sysFields.SingleOrDefault(u => u.FieldName == item.Entity.FieldName);
                 var set = _appDbContext.DbContext.Set<SysPermission>();
                 var permission = set.FirstOrDefault(u => u.Permission == (item.Entity.FullName + item.Entity.FieldName) && roleIds.Contains(u.Entity) && u.PermissionType == PermissionType.RoleFields);

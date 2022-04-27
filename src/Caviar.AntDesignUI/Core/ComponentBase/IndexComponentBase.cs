@@ -131,7 +131,7 @@ namespace Caviar.AntDesignUI.Core
                     builder.AddMultipleAttributes(index++, paramenter);
                     builder.CloseComponent();
                 }
-                builder.AddMarkupContent(index++, LanguageService[$"{CurrencyConstant.Menu}.{menu.Entity.MenuName}"]);
+                builder.AddMarkupContent(index++, menu.DisplayName);
                 builder.CloseElement();
             }
             else

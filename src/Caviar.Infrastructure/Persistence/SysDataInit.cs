@@ -101,6 +101,7 @@ namespace Caviar.Infrastructure.Persistence
                     {
                         item.ParentId = parent.Id;
                     }
+                    item.DataId = CurrencyConstant.PublicData;
                     _dbContext.Add(item);
                 }
             }
@@ -140,6 +141,7 @@ namespace Caviar.Infrastructure.Persistence
             var dataBaseFields = set.AsNoTracking().ToList();
             foreach (var sysField in fields)
             {
+                sysField.DataId = CurrencyConstant.PublicData;
                 foreach (var dataBaseField in dataBaseFields)
                 {
                     if (dataBaseField.FieldName == sysField.FieldName && dataBaseField.FullName == sysField.FullName && dataBaseField.BaseFullName == sysField.BaseFullName)
@@ -293,6 +295,7 @@ namespace Caviar.Infrastructure.Persistence
                     {
                         MenuName = CurrencyConstant.SysManagementKey,
                         Icon = "windows",
+                        DataId = CurrencyConstant.PublicData
                     }
                     
                 },
@@ -305,6 +308,7 @@ namespace Caviar.Infrastructure.Persistence
                         MenuType = MenuType.Menu,
                         Url = UrlConfig.Home,
                         Number = "10",
+                        DataId = CurrencyConstant.PublicData
                     }
                     
                 },
@@ -316,6 +320,7 @@ namespace Caviar.Infrastructure.Persistence
                         MenuType = MenuType.Menu,
                         Icon = "code",
                         Url = $"{CurrencyConstant.CodeGenerationKey}/{CurrencyConstant.Index}",
+                        DataId = CurrencyConstant.PublicData
                     },
                     Children = new List<SysMenuView>()
                     {
@@ -327,6 +332,7 @@ namespace Caviar.Infrastructure.Persistence
                                 MenuType = MenuType.Button,
                                 TargetType = TargetType.Callback,
                                 ButtonPosition = ButtonPosition.Row,
+                                DataId = CurrencyConstant.PublicData
                             }
                         }
                     }
@@ -338,6 +344,7 @@ namespace Caviar.Infrastructure.Persistence
                     {
                         MenuName =  CurrencyConstant.PermissionKey,
                         MenuType = MenuType.API,
+                        DataId = CurrencyConstant.PublicData
                     }
                 },
                 new SysMenuView()
@@ -347,6 +354,7 @@ namespace Caviar.Infrastructure.Persistence
                         MenuName = CurrencyConstant.WebConfig,
                         MenuType = MenuType.Settings,
                         Icon = "tool",
+                        DataId = CurrencyConstant.PublicData
                     },
                     Children= new List<SysMenuView>()
                     {
@@ -358,6 +366,7 @@ namespace Caviar.Infrastructure.Persistence
                                 MenuType = MenuType.Settings,
                                 Url = UrlConfig.MyDetails,
                                 TargetType = TargetType.CurrentPage,
+                                DataId = CurrencyConstant.PublicData
                             }
                         },
                         new SysMenuView()
@@ -367,7 +376,8 @@ namespace Caviar.Infrastructure.Persistence
                                 MenuName = CurrencyConstant.LayoutSettings,
                                 MenuType = MenuType.Settings,
                                 TargetType = TargetType.CurrentPage,
-                                Url = UrlConfig.LayoutSettings
+                                Url = UrlConfig.LayoutSettings,
+                                DataId = CurrencyConstant.PublicData
                             }
                         },
                         new SysMenuView()
@@ -378,6 +388,7 @@ namespace Caviar.Infrastructure.Persistence
                                 MenuType = MenuType.Settings,
                                 TargetType = TargetType.EjectPage,
                                 Url = UrlConfig.ChangePassword,
+                                DataId = CurrencyConstant.PublicData
                             }
                         },
                         new SysMenuView()
@@ -387,6 +398,7 @@ namespace Caviar.Infrastructure.Persistence
                                 MenuName = CurrencyConstant.Logout,
                                 MenuType = MenuType.Settings,
                                 TargetType = TargetType.Callback,
+                                DataId = CurrencyConstant.PublicData
                             }
                         },
                     }
@@ -480,6 +492,7 @@ namespace Caviar.Infrastructure.Persistence
                         default:
                             break;
                     }
+                    menu_item.DataId = CurrencyConstant.PublicData;
                     catalogueList.Add(menu_item);
                 }
             }
@@ -506,6 +519,7 @@ namespace Caviar.Infrastructure.Persistence
                             ParentId = sysMenu.Id,
                             Number = "996",
                             MenuType = MenuType.Button,
+                            DataId = CurrencyConstant.PublicData,
                         },
                         new SysMenu()
                         {
@@ -516,6 +530,7 @@ namespace Caviar.Infrastructure.Persistence
                             ParentId = sysMenu.Id,
                             Number = "996",
                             MenuType = MenuType.Button,
+                            DataId = CurrencyConstant.PublicData,
                         }
                     };
                     break;
@@ -531,6 +546,7 @@ namespace Caviar.Infrastructure.Persistence
                             ParentId = sysMenu.Id,
                             Number = "996",
                             MenuType = MenuType.Button,
+                            DataId = CurrencyConstant.PublicData,
                         },
                     };
                     

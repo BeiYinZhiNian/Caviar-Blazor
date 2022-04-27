@@ -1,4 +1,5 @@
 ﻿using Caviar.Core.Interface;
+using Caviar.Core.Services;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Identity;
@@ -17,9 +18,16 @@ namespace Caviar.Infrastructure.Persistence
         where TKey : IEquatable<TKey>
     {
         private readonly CaviarConfig _caviarConfig;
-        public SysDbContext(DbContextOptions options,CaviarConfig caviarConfig) : base(options)
+        private readonly Interactor _interactor;
+        private readonly ILanguageService _languageService;
+        public SysDbContext(DbContextOptions options,
+            CaviarConfig caviarConfig, 
+            Interactor interactor, 
+            ILanguageService languageService) : base(options)
         {
             _caviarConfig = caviarConfig;
+            _interactor = interactor;
+            _languageService = languageService;
         }
 
         public SysDbContext() : base()
@@ -29,6 +37,8 @@ namespace Caviar.Infrastructure.Persistence
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
+            //检测是否为初始化
+            if (Configure.HasDataInit) { return base.SaveChangesAsync(cancellationToken); }
             if (_caviarConfig.DemonstrationMode)
             {
                 throw new ResultException(new ResultMsg()
@@ -37,6 +47,62 @@ namespace Caviar.Infrastructure.Persistence
                     Url = "https://gitee.com/Cherryblossoms/caviar",
                     Status = System.Net.HttpStatusCode.BadRequest
                 });
+            }
+            ChangeTracker.DetectChanges(); // Important!
+            var entries = ChangeTracker.Entries();
+            foreach (var item in entries)
+            {
+                IUseEntity baseEntity;
+                var entity = item.Entity;
+                if (entity == null) continue;
+                if (entity is not IUseEntity) continue;
+                baseEntity = entity as IUseEntity;
+                switch (item.State)
+                {
+                    case EntityState.Detached:
+                        break;
+                    case EntityState.Unchanged:
+                        break;
+                    case EntityState.Deleted:
+                        break;
+                    case EntityState.Modified:
+                        baseEntity.OperatorUp = _interactor.UserInfo?.UserName;
+                        baseEntity.UpdateTime = CommonHelper.GetSysDateTimeNow();
+                        var entityType = entity.GetType();
+                        var baseType = typeof(IUseEntity);
+                        var fields = FieldScannerServices.GetClassFields(baseType, _languageService);
+                        foreach (var fieldItem in fields)
+                        {
+                            switch (fieldItem.Entity.FieldName.ToLower())
+                            {
+                                //不可更新字段
+                                case "id":
+                                case "uid":
+                                    item.Property(fieldItem.Entity.FieldName).IsModified = false;
+                                    continue;
+                                //系统更新字段
+                                case "creattime":
+                                case "updatetime":
+                                case "operatorup":
+                                case "isdelete":
+                                    item.Property(fieldItem.Entity.FieldName).IsModified = true;
+                                    continue;
+                                default:
+                                    break;
+                            }
+                        }
+                        break;
+                    case EntityState.Added:
+                        baseEntity.CreatTime = CommonHelper.GetSysDateTimeNow();
+                        baseEntity.OperatorCare = _interactor.UserInfo?.UserName;
+                        if (baseEntity.DataId != CurrencyConstant.PublicData) //当不为公共数据时，必须为当前用户组
+                        {
+                            baseEntity.DataId = _interactor.UserInfo?.UserGroupId ?? CurrencyConstant.PublicData;
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
             return base.SaveChangesAsync(cancellationToken);
         }

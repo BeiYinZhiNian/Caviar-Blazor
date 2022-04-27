@@ -63,6 +63,10 @@ namespace Caviar.SharedKernel.Entities
         /// <returns></returns>
         public static string GetUserIp(HttpContext context)
         {
+            if (context == null)
+            {
+                return null;
+            }
             var ip = context.Request.Headers[CurrencyConstant.XForwardedFor].FirstOrDefault();
             if (string.IsNullOrEmpty(ip))
             {

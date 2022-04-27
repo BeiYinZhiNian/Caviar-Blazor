@@ -16,15 +16,15 @@ namespace Caviar.SharedKernel.Entities
             //获取ip地址
             Current_Ipaddress = CommonHelper.GetUserIp(context.HttpContext);
             //获取完整Url
-            Current_AbsoluteUri = GetAbsoluteUri(context.HttpContext.Request);
+            Current_AbsoluteUri = GetAbsoluteUri(context.HttpContext?.Request);
             //获取请求路径
-            Current_Action = context.HttpContext.Request.Path.Value;
+            Current_Action = context.HttpContext?.Request.Path.Value;
             //请求上下文
             HttpContext = context.HttpContext;
             //浏览器信息
-            Browser = context.HttpContext.Request.Headers[CurrencyConstant.UserAgent];
+            Browser = context.HttpContext?.Request.Headers[CurrencyConstant.UserAgent];
             //请求方式
-            Method = context.HttpContext.Request.Method;
+            Method = context.HttpContext?.Request.Method;
         }
 
         public Interactor()
@@ -39,6 +39,7 @@ namespace Caviar.SharedKernel.Entities
         /// <returns></returns>
         protected string GetAbsoluteUri(HttpRequest request)
         {
+            if(request == null) return null;
             return new StringBuilder()
                 .Append(request.Scheme)
                 .Append("://")

@@ -286,65 +286,9 @@ namespace Caviar.Infrastructure.Persistence
         /// </summary>
         /// <param name="IsFieldCheck">确保为系统内部更改时</param>
         /// <returns></returns>
-        public virtual async Task<int> SaveChangesAsync()
+        public virtual Task<int> SaveChangesAsync()
         {
-            DbContext.ChangeTracker.DetectChanges(); // Important!
-            var entries = DbContext.ChangeTracker.Entries();
-            foreach (var item in entries)
-            {
-                IUseEntity baseEntity;
-                var entity = item.Entity;
-                if (entity == null) continue;
-                if (entity is not IUseEntity) continue;
-                baseEntity = entity as IUseEntity;
-                switch (item.State)
-                {
-                    case EntityState.Detached:
-                        break;
-                    case EntityState.Unchanged:
-                        break;
-                    case EntityState.Deleted:
-                        break;
-                    case EntityState.Modified:
-                        baseEntity.OperatorUp = _interactor.UserInfo.UserName;
-                        baseEntity.UpdateTime = CommonHelper.GetSysDateTimeNow();
-                        var entityType = entity.GetType();
-                        var baseType = typeof(SysUseEntity);
-                        var fields = FieldScannerServices.GetClassFields(baseType, _languageService);
-                        foreach (var fieldItem in fields)
-                        {
-                            switch (fieldItem.Entity.FieldName.ToLower())
-                            {
-                                //不可更新字段
-                                case "id":
-                                case "uid":
-                                    item.Property(fieldItem.Entity.FieldName).IsModified = false;
-                                    continue;
-                                    //系统更新字段
-                                case "creattime":
-                                case "updatetime":
-                                case "operatorup":
-                                case "isdelete":
-                                    item.Property(fieldItem.Entity.FieldName).IsModified = true;
-                                    continue;
-                                default:
-                                    break;
-                            }
-                        }
-                        break;
-                    case EntityState.Added:
-                        baseEntity.CreatTime = CommonHelper.GetSysDateTimeNow();
-                        baseEntity.OperatorCare = _interactor.UserInfo.UserName;
-                        if(baseEntity.DataId != 0) //当不为公共数据时，必须为当前用户组
-                        {
-                            baseEntity.DataId = _interactor.UserInfo.UserGroupId;
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
-            return await DbContext.SaveChangesAsync();
+            return DbContext.SaveChangesAsync();
         }
 
         /// <summary>
@@ -379,7 +323,7 @@ namespace Caviar.Infrastructure.Persistence
             var set = DbContext.Set<T>();
             var roleRange = GetRoleDataRange(_interactor.ApplicationRoles);
             var dataRange = GetDataRange(roleRange).Result;
-            dataRange.Add(0);//公共访问数据
+            dataRange.Add(CurrencyConstant.PublicData);//公共访问数据
             IQueryable<T> query = set.Where(u=> dataRange.Contains(u.DataId));
             if (isNoTracking)
             {

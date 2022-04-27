@@ -52,7 +52,13 @@
     </SpaceItem>
 </Space>
 
-<Table DataSource="TableOptions.DataSource"
+@if(TableOptions.ViewFields == null)
+{
+    
+}
+else
+{
+    <Table DataSource="TableOptions.DataSource"
        @ref="TableOptions.Table"
        ScrollX="@TableOptions.ScrollX"
        Bordered="TableOptions.Bordered"
@@ -248,6 +254,8 @@
     }
 
 </Table>
+}
+
 
 
 <div style="float:right;margin-top:20px">

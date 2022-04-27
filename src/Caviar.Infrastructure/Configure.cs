@@ -106,7 +106,9 @@ namespace Caviar.Infrastructure
             ServerAddressesFeature = app.ServerFeatures.Get<IServerAddressesFeature>();
             ServiceProvider = app.ApplicationServices;
             var caviarConfig = ServiceProvider.GetService<CaviarConfig>();
+            HasDataInit = true;
             new SysDataInit(app.ApplicationServices).StartInit().Wait(); // 先进行数据初始化，然后获取配置文件
+            HasDataInit = false;
             ReadConfig("appsettings.json", caviarConfig);
             app.UseAuthentication();
             app.UseAuthorization();

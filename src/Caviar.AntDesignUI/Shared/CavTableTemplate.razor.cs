@@ -140,7 +140,14 @@ namespace Caviar.AntDesignUI.Shared
             if (string.IsNullOrEmpty(TableOptions.ScrollX) && TableOptions.ViewFields?.Count != 0)
             {
                 var count = TableOptions.ViewFields?.Count(u => u.Entity.IsPanel && u.IsPermission);
-                TableOptions.ScrollX = (count.Value * 200).ToString();
+                if (count == null)
+                {
+                    TableOptions.ScrollX = null;
+                }
+                else
+                {
+                    TableOptions.ScrollX = (count.Value * 200).ToString();
+                }
             }
         }
 

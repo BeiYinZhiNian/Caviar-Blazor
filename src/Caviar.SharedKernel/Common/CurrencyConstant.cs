@@ -10,6 +10,10 @@ namespace Caviar.SharedKernel.Entities
     public static partial class CurrencyConstant
     {
         /// <summary>
+        /// 公共数据id
+        /// </summary>
+        public const int PublicData = -1;
+        /// <summary>
         /// 数据源
         /// </summary>
         public const string DataSource = "DataSource";

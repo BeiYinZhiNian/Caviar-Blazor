@@ -30,7 +30,8 @@ namespace Caviar.IntegrationTests
             CaviarConfig CaviarConfig = new CaviarConfig();
             var builder = new DbContextOptionsBuilder<IdentityDbContext<ApplicationUser, ApplicationRole, int>>()
                .UseInMemoryDatabase("ApplicationDbContext");
-            SysDbContext = new SysDbContext<ApplicationUser, ApplicationRole, int>(builder.Options, CaviarConfig);
+            Interactor interactor = new Interactor();
+            SysDbContext = new SysDbContext<ApplicationUser, ApplicationRole, int>(builder.Options, CaviarConfig, interactor,_languageService);
             SetTestData();
         }
 
