@@ -137,6 +137,9 @@ namespace Caviar.Infrastructure.API.BaseApi
 
         public override void OnActionExecuted(ActionExecutedContext context)
         {
+            var dbContext = CreateService<IDbContext>();
+            // 取消所有实体跟踪
+            dbContext.DetachAll();
             var result = context.Result;
             var resultScanner = CreateService<ResultScannerServices>();
             var roleIds = UserServices.GetRoleIdsAsync(Interactor.UserInfo).Result;
