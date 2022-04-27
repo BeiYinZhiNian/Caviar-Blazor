@@ -335,7 +335,10 @@ namespace Caviar.Infrastructure.Persistence
                     case EntityState.Added:
                         baseEntity.CreatTime = CommonHelper.GetSysDateTimeNow();
                         baseEntity.OperatorCare = _interactor.UserInfo.UserName;
-                        baseEntity.DataId = _interactor.UserInfo.UserGroupId;
+                        if(baseEntity.DataId != 0) //当不为公共数据时，必须为当前用户组
+                        {
+                            baseEntity.DataId = _interactor.UserInfo.UserGroupId;
+                        }
                         break;
                     default:
                         break;
