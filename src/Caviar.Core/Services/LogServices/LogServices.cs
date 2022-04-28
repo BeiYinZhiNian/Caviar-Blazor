@@ -61,7 +61,8 @@ namespace Caviar.Core.Services
                 Browser = _interactor.Browser,
                 LogLevel = logLevel,
                 Method = _interactor.Method,
-                PostData = postData
+                PostData = postData,
+                DataId = _interactor.UserInfo?.UserGroupId ?? -1,
             };
         }
 
