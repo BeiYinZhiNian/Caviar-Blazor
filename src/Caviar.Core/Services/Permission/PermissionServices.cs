@@ -59,12 +59,12 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public async Task<int> SavePermissionMenusAsync(int roleId, List<string> urls)
         {
-            var permissionMenus = await GetPermissionsAsync(new List<int>() { roleId }, u => u.PermissionType == PermissionType.RoleMenus);
+            var permissionMenus = await GetPermissionsAsync(new List<int>() { roleId }, u => u.PermissionType == (int)PermissionType.RoleMenus);
             var menuUrls = GetPermissionsAsync(permissionMenus);
             var reomveMenus = permissionMenus.Where(u => !urls.Contains(u.Permission)).ToList();
             AppDbContext.DbContext.RemoveRange(reomveMenus);
             var addUrls = urls.Where(u => !menuUrls.Contains(u)).Select(u => u).ToHashSet();
-            var addMenus = addUrls.Select(u => new SysPermission() { Permission = u, PermissionType = PermissionType.RoleMenus, Entity = roleId }).ToList();
+            var addMenus = addUrls.Select(u => new SysPermission() { Permission = u, PermissionType = (int)PermissionType.RoleMenus, Entity = roleId }).ToList();
             AppDbContext.DbContext.AddRange(addMenus);
             return await AppDbContext.DbContext.SaveChangesAsync();
         }

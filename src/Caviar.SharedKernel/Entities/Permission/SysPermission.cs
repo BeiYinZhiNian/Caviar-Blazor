@@ -16,7 +16,9 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         [StringLength(200)]
         public int Entity { get; set; }
-        [Key]
-        public PermissionType PermissionType { get; set; }
+        /// <summary>
+        /// 权限类型
+        /// </summary>
+        public int PermissionType { get; set; }
     }
 }

@@ -94,7 +94,7 @@ namespace Caviar.Infrastructure.API.Permission
         public async Task<IActionResult> GetPermissionMenus(string roleName)
         {
             var role = await _roleManager.FindByNameAsync(roleName);
-            var permissions = await _permissionServices.GetPermissionsAsync(new List<int>() { role.Id }, u => u.PermissionType == PermissionType.RoleMenus);
+            var permissions = await _permissionServices.GetPermissionsAsync(new List<int>() { role.Id }, u => u.PermissionType == (int)PermissionType.RoleMenus);
             var permissionUrls = _permissionServices.GetPermissionsAsync(permissions);
             var menus = await _permissionServices.GetPermissionMenus(permissionUrls);
             return Ok(menus);

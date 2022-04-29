@@ -168,7 +168,7 @@ namespace Caviar.Infrastructure.Persistence
                 {
                     Entity = AdminRole.Id,
                     Permission = permission,
-                    PermissionType = PermissionType.RoleFields
+                    PermissionType = (int)PermissionType.RoleFields
                 });
                 if (TemplateRoleFildes.Contains(permission))
                 {
@@ -176,7 +176,7 @@ namespace Caviar.Infrastructure.Persistence
                     {
                         Entity = TemplateRole.Id,
                         Permission = permission,
-                        PermissionType = PermissionType.RoleFields
+                        PermissionType = (int)PermissionType.RoleFields
                     });
                 }
                 if (TouristRoleFildes.Contains(permission))
@@ -185,7 +185,7 @@ namespace Caviar.Infrastructure.Persistence
                     {
                         Entity = TouristRole.Id,
                         Permission = permission,
-                        PermissionType = PermissionType.RoleFields
+                        PermissionType = (int)PermissionType.RoleFields
                     });
                 }
             }
@@ -231,16 +231,16 @@ namespace Caviar.Infrastructure.Persistence
             {
                 // 当没有url时，使用id进行授权
                 var permission = string.IsNullOrEmpty(item.Url) ? item.Id.ToString() : item.Url;
-                var adminPermission = await set.FirstOrDefaultAsync(u=>u.Permission == permission && u.Entity == AdminRole.Id && u.PermissionType == PermissionType.RoleMenus);
+                var adminPermission = await set.FirstOrDefaultAsync(u=>u.Permission == permission && u.Entity == AdminRole.Id && u.PermissionType == (int)PermissionType.RoleMenus);
                 if (adminPermission != null) continue;
-                set.Add(new SysPermission() { Permission = permission, Entity = AdminRole.Id, PermissionType = PermissionType.RoleMenus });
+                set.Add(new SysPermission() { Permission = permission, Entity = AdminRole.Id, PermissionType = (int)PermissionType.RoleMenus });
                 if (TemplateRoleUrls.Contains(item.Url))
                 {
-                    set.Add(new SysPermission() { Permission = permission, Entity = TemplateRole.Id, PermissionType = PermissionType.RoleMenus });
+                    set.Add(new SysPermission() { Permission = permission, Entity = TemplateRole.Id, PermissionType = (int)PermissionType.RoleMenus });
                 }
                 if (TouristRoleUrls.Contains(item.Url))
                 {
-                    set.Add(new SysPermission() { Permission = permission, Entity = TouristRole.Id, PermissionType = PermissionType.RoleMenus });
+                    set.Add(new SysPermission() { Permission = permission, Entity = TouristRole.Id, PermissionType = (int)PermissionType.RoleMenus });
                 }
             }
             await _dbContext.SaveChangesAsync();

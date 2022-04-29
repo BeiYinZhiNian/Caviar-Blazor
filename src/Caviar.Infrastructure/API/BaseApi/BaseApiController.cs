@@ -109,7 +109,7 @@ namespace Caviar.Infrastructure.API.BaseApi
         {
             //设置url权限
             var roleIds = UserServices.GetRoleIdsAsync(Interactor.UserInfo).Result;
-            var menuPermission = PermissionServices.GetPermissionsAsync(roleIds, u => u.PermissionType == PermissionType.RoleMenus).Result;
+            var menuPermission = PermissionServices.GetPermissionsAsync(roleIds, u => u.PermissionType == (int)PermissionType.RoleMenus).Result;
             Interactor.PermissionUrls = PermissionServices.GetPermissionsAsync(menuPermission);
             var url = Interactor.Current_Action.Remove(0, CurrencyConstant.Api.Length + 1);
             if (IgnoreUrl.Contains(url)) return true;
@@ -144,7 +144,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             var resultScanner = CreateService<ResultScannerServices>();
             var roleIds = UserServices.GetRoleIdsAsync(Interactor.UserInfo).Result;
             //赋值字段权限
-            resultScanner.PermissionFieldss = PermissionServices.GetPermissionsAsync(roleIds,u => u.PermissionType == PermissionType.RoleFields).Result;
+            resultScanner.PermissionFieldss = PermissionServices.GetPermissionsAsync(roleIds,u => u.PermissionType == (int)PermissionType.RoleFields).Result;
             var resultMsg = resultScanner.ResultHandle(result);
             if (resultMsg != null)
             {

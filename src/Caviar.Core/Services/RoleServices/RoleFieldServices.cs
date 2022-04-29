@@ -36,10 +36,10 @@ namespace Caviar.Core.Services
                 var type = PermissionType.RoleFields.ToString();
                 var value = CommonHelper.GetClaimValue(item.Entity);
                 var set = _appDbContext.DbContext.Set<SysPermission>();
-                var permission = set.SingleOrDefault(u => u.Permission == (item.Entity.FullName + item.Entity.FieldName) && u.Entity == role.Id && u.PermissionType == PermissionType.RoleFields);
+                var permission = set.SingleOrDefault(u => u.Permission == (item.Entity.FullName + item.Entity.FieldName) && u.Entity == role.Id && u.PermissionType == (int)PermissionType.RoleFields);
                 if (item.IsPermission && permission == null)
                 {
-                    permission = new SysPermission() { Entity = role.Id, Permission = (item.Entity.FullName + item.Entity.FieldName), PermissionType = PermissionType.RoleFields };
+                    permission = new SysPermission() { Entity = role.Id, Permission = (item.Entity.FullName + item.Entity.FieldName), PermissionType = (int)PermissionType.RoleFields };
                     set.Add(permission);
                 }
                 else if(!item.IsPermission && permission != null)
@@ -60,7 +60,7 @@ namespace Caviar.Core.Services
                 if(item.Entity == null) continue;
                 item.Entity = sysFields.SingleOrDefault(u => u.FieldName == item.Entity.FieldName);
                 var set = _appDbContext.DbContext.Set<SysPermission>();
-                var permission = set.FirstOrDefault(u => u.Permission == (item.Entity.FullName + item.Entity.FieldName) && roleIds.Contains(u.Entity) && u.PermissionType == PermissionType.RoleFields);
+                var permission = set.FirstOrDefault(u => u.Permission == (item.Entity.FullName + item.Entity.FieldName) && roleIds.Contains(u.Entity) && u.PermissionType == (int)PermissionType.RoleFields);
                 item.IsPermission = permission != null;
             }
             fields = fields.OrderBy(u => u.Entity.Number).ToList();
