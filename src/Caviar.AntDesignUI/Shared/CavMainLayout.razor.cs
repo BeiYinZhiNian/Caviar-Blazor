@@ -90,7 +90,7 @@ namespace Caviar.AntDesignUI.Shared
                 var userInfo = await HostAuthenticationStateProvider.GetCurrentUser();
                 _ = NotificationService.Open(new NotificationConfig()
                 {
-                    Message = $"{slot} {userInfo.UserName}",
+                    Message = $"{slot} {userInfo.Claims.SingleOrDefault(u => u.Type == CurrencyConstant.AccountName)?.Value}",
                     Description = description,
                     NotificationType = NotificationType.Success
                 });
