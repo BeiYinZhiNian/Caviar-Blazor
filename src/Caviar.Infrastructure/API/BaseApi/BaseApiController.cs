@@ -142,7 +142,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             dbContext.DetachAll();
             var result = context.Result;
             var resultScanner = CreateService<ResultScannerServices>();
-            var roleIds = UserServices.GetRoleIdsAsync(Interactor.UserInfo).Result;
+            var roleIds = Interactor.ApplicationRoles.Select(u => u.Id).ToList();
             //赋值字段权限
             resultScanner.PermissionFieldss = PermissionServices.GetPermissionsAsync(roleIds,u => u.PermissionType == (int)PermissionType.RoleFields).Result;
             var resultMsg = resultScanner.ResultHandle(result);
