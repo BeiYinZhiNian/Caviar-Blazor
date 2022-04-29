@@ -107,8 +107,8 @@ namespace Caviar.Infrastructure.API.BaseApi
         /// <returns></returns>
         protected virtual bool UrlCheck()
         {
-            //设置url权限
-            var roleIds = UserServices.GetRoleIdsAsync(Interactor.UserInfo).Result;
+            //获取所有角色id
+            var roleIds = Interactor.ApplicationRoles.Select(u=>u.Id).ToList();
             var menuPermission = PermissionServices.GetPermissionsAsync(roleIds, u => u.PermissionType == (int)PermissionType.RoleMenus).Result;
             Interactor.PermissionUrls = PermissionServices.GetPermissionsAsync(menuPermission);
             var url = Interactor.Current_Action.Remove(0, CurrencyConstant.Api.Length + 1);
