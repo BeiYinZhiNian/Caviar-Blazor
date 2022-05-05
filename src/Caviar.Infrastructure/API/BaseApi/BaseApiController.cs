@@ -26,7 +26,7 @@ namespace Caviar.Infrastructure.API.BaseApi
         /// <summary>
         /// 数据互动
         /// </summary>
-        protected Interactor _interactor;
+        private Interactor _interactor;
         /// <summary>
         /// 语言服务
         /// </summary>

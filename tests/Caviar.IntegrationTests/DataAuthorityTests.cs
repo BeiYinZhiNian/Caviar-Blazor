@@ -47,7 +47,7 @@ namespace Caviar.IntegrationTests
                 menuList.Add(new SysMenu()
                 {
                     MenuName = "test",
-                    DataId = _random.Next(_randomRange),
+                    DataId = _random.Next(1,_randomRange),
                 });
             }
             var userGroupList = new List<SysUserGroup>();
@@ -56,7 +56,7 @@ namespace Caviar.IntegrationTests
                 userGroupList.Add(new SysUserGroup()
                 {
                     Name = "test",
-                    ParentId = _random.Next(_randomRange),
+                    ParentId = _random.Next(1,_randomRange),
                 });
             }
             var menuSet = SysDbContext.Set<SysMenu>();
