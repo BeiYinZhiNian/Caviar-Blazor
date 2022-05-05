@@ -10,7 +10,7 @@ namespace Caviar.Infrastructure.API
 {
     public partial class SysUserGroupController
     {
-        private UserGroupServices _userGroupServices;
+        private readonly UserGroupServices _userGroupServices;
         public SysUserGroupController(UserGroupServices userGroupServices)
         {
             _userGroupServices = userGroupServices; 

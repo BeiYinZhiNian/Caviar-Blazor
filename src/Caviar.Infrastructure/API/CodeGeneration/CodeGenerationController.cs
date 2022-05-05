@@ -13,13 +13,18 @@ namespace Caviar.Infrastructure.API.CodeGeneration
     /// </summary>
     public class CodeGenerationController : BaseApiController
     {
+        private readonly ILanguageService _languageService;
+        public CodeGenerationController(ILanguageService languageService)
+        {
+            _languageService = languageService;
+        }
         [HttpPost]
         public async Task<IActionResult> CodeFileGenerate(CodeGenerateOptions codeGenerateOptions,bool isPerview)
         {
             CodeGenerationServices CodeService = CreateService<CodeGenerationServices>();
             //获取该类的所有字段
-            var fieldsData = FieldScannerServices.GetClassFields(codeGenerateOptions.EntitieName, codeGenerateOptions.FullName, LanguageService);//类信息
-            var entityData = FieldScannerServices.GetEntity(codeGenerateOptions.EntitieName, codeGenerateOptions.FullName,LanguageService);//类下字段信息
+            var fieldsData = FieldScannerServices.GetClassFields(codeGenerateOptions.EntitieName, codeGenerateOptions.FullName, _languageService);//类信息
+            var entityData = FieldScannerServices.GetEntity(codeGenerateOptions.EntitieName, codeGenerateOptions.FullName,_languageService);//类下字段信息
             var result = CodeService.CodePreview(entityData,fieldsData, codeGenerateOptions,""); //生成预览代码
             if (!isPerview)
             {

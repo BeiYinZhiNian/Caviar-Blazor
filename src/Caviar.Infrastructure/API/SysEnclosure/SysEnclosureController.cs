@@ -14,7 +14,7 @@ namespace Caviar.Infrastructure.API
     /// </summary>
     public partial class SysEnclosureController
     {
-        SysEnclosureServices _sysEnclosureServices;
+        private readonly SysEnclosureServices _sysEnclosureServices;
         public SysEnclosureController(SysEnclosureServices enclosureServices)
         {
             _sysEnclosureServices = enclosureServices;

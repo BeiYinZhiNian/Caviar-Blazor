@@ -18,8 +18,8 @@ namespace Caviar.Infrastructure.Persistence
     public class ApplicationDbContext : IAppDbContext
     {
         public IDbContext DbContext { get;private set; }
-        private Interactor _interactor;
-        private ILanguageService _languageService;
+        private readonly Interactor _interactor;
+        private readonly ILanguageService _languageService;
 
         public ApplicationDbContext(IDbContext identityDbContext, 
             Interactor interactor, 

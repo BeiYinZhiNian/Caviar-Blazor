@@ -28,7 +28,7 @@ namespace Caviar.Infrastructure.API
         [HttpPost]
         public override async Task<IActionResult> UpdateEntity(ApplicationUserView vm)
         {
-            var result = await UserServices.UpdateUserAsync(User.Identity.Name, vm);
+            var result = await _userServices.UpdateUserAsync(User.Identity.Name, vm);
             if (result.Succeeded) return Ok();
             return Error("修改用户失败", result);
         }
@@ -36,7 +36,7 @@ namespace Caviar.Infrastructure.API
         [HttpPost]
         public override async Task<IActionResult> DeleteEntity(ApplicationUserView vm)
         {
-            var result = await UserServices.DeleteUserAsync(vm);
+            var result = await _userServices.DeleteUserAsync(vm);
             if (result.Succeeded) return Ok();
             return Error("删除用户失败", result);
         }
@@ -48,7 +48,7 @@ namespace Caviar.Infrastructure.API
             {
                 throw new ArgumentNullException("请选择用户");
             }
-            var result = await UserServices.AssignRolesAsync(userName,roles);
+            var result = await _userServices.AssignRolesAsync(userName,roles);
             if (result.Succeeded) return Ok();
             return Error("角色分配失败", result);
         }
@@ -60,8 +60,8 @@ namespace Caviar.Infrastructure.API
             {
                 throw new ArgumentNullException("请选择用户");
             }
-            var user = await UserServices.GetUserInfoAsync(userName);
-            var roles = await UserServices.GetRolesAsync(user);
+            var user = await _userServices.GetUserInfoAsync(userName);
+            var roles = await _userServices.GetRolesAsync(user);
             return Ok(roles);
         }
         /// <summary>
@@ -71,7 +71,7 @@ namespace Caviar.Infrastructure.API
         [HttpGet]
         public async Task<IActionResult> MyUserDetails()
         {
-            var user = await UserServices.GetUserDetailsAsync();
+            var user = await _userServices.GetUserDetailsAsync();
             return Ok(user);
         }
         /// <summary>
@@ -82,7 +82,7 @@ namespace Caviar.Infrastructure.API
         [HttpPost]
         public async Task<IActionResult> UpdateDetails(UserDetails userDetails)
         {
-            var result = await UserServices.UpdateUserDetailsAsync(userDetails);
+            var result = await _userServices.UpdateUserDetailsAsync(userDetails);
             if (result.Succeeded) return Ok();
             return Error("修改基础信息失败", result);
         }

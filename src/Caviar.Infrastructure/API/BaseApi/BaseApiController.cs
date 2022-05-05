@@ -23,19 +23,30 @@ namespace Caviar.Infrastructure.API.BaseApi
     [ApiController]
     public class BaseApiController: Controller
     {
-        protected Interactor Interactor;
-
-        protected ILanguageService LanguageService { get; set; }
+        /// <summary>
+        /// 数据互动
+        /// </summary>
+        protected Interactor _interactor;
+        /// <summary>
+        /// 语言服务
+        /// </summary>
+        private ILanguageService _languageService;
         /// <summary>
         /// 用户服务
         /// </summary>
-        protected UserServices UserServices { get; set; }
+        private UserServices _userServices;
         /// <summary>
         /// 权限服务
         /// </summary>
-        private PermissionServices PermissionServices { get; set; }
-        protected RoleServices RoleServices { get; set; }
-        private LogServices<BaseApiController> LogServices { get; set; }
+        private PermissionServices _permissionServices;
+        /// <summary>
+        /// 角色服务
+        /// </summary>
+        private RoleServices _roleServices;
+        private LogServices<BaseApiController> _logServices { get; set; }
+        /// <summary>
+        /// 服务配置
+        /// </summary>
         private CaviarConfig _caviarConfig;
         /// <summary>
         /// 忽略url权限
@@ -52,41 +63,41 @@ namespace Caviar.Infrastructure.API.BaseApi
         {
             if (string.IsNullOrEmpty(acceptLanguage)) acceptLanguage = CurrencyConstant.DefaultLanguage;
             var culture = CultureInfo.GetCultureInfo(acceptLanguage);
-            LanguageService = CreateService<ILanguageService>();
-            LanguageService.SetLanguage(culture);
+            _languageService = CreateService<ILanguageService>();
+            _languageService.SetLanguage(culture);
         }
 
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            Interactor = CreateService<Interactor>();
-            UserServices = CreateService<UserServices>();
-            RoleServices = CreateService<RoleServices>();
-            LogServices = CreateService<LogServices<BaseApiController>>();
-            PermissionServices = CreateService<PermissionServices>();
+            _interactor = CreateService<Interactor>();
+            _userServices = CreateService<UserServices>();
+            _roleServices = CreateService<RoleServices>();
+            _logServices = CreateService<LogServices<BaseApiController>>();
+            _permissionServices = CreateService<PermissionServices>();
             _caviarConfig = CreateService<CaviarConfig>();
-            Interactor.Stopwatch.Start();
+            _interactor.Stopwatch.Start();
             if (!User.Identity.IsAuthenticated && _caviarConfig.TouristVisit)
             {
-                Interactor.UserInfo = await UserServices.GetUserInfoAsync(CurrencyConstant.TouristUser);
+                _interactor.UserInfo = await _userServices.GetUserInfoAsync(CurrencyConstant.TouristUser);
             }
             else
             {
                 if(User.Identity.IsAuthenticated)
                 {
-                    Interactor.UserInfo = await UserServices.GetUserInfoAsync(User.Identity.Name);
+                    _interactor.UserInfo = await _userServices.GetUserInfoAsync(User.Identity.Name);
                 }
             }
-            var roles = await UserServices.GetRolesAsync(Interactor.UserInfo);
-            Interactor.ApplicationRoles = await RoleServices.GetRoles(roles);
+            var roles = await _userServices.GetRolesAsync(_interactor.UserInfo);
+            _interactor.ApplicationRoles = await _roleServices.GetRoles(roles);
             //请求参数
-            Interactor.ActionArguments = context.ActionArguments;
-            LogServices.Infro("请求开始");
-            if(Interactor.Method == "POST")
+            _interactor.ActionArguments = context.ActionArguments;
+            _logServices.Infro("请求开始");
+            if(_interactor.Method == "POST")
             {
                 var actionArguments = context.ActionArguments;
                 var postData = JsonConvert.SerializeObject(actionArguments);
-                var log = LogServices.CreateLog("post请求数据",LogLevel.Information, postData);
-                LogServices.Log(log);
+                var log = _logServices.CreateLog("post请求数据",LogLevel.Information, postData);
+                _logServices.Log(log);
             }
             //设置语言信息
             var acceptLanguage = context.HttpContext.Request.Cookies.SingleOrDefault(c => c.Key == CurrencyConstant.LanguageHeader).Value;
@@ -108,12 +119,12 @@ namespace Caviar.Infrastructure.API.BaseApi
         protected virtual bool UrlCheck()
         {
             //获取所有角色id
-            var roleIds = Interactor.ApplicationRoles.Select(u=>u.Id).ToList();
-            var menuPermission = PermissionServices.GetPermissionsAsync(roleIds, u => u.PermissionType == (int)PermissionType.RoleMenus).Result;
-            Interactor.PermissionUrls = PermissionServices.GetPermissionsAsync(menuPermission);
-            var url = Interactor.Current_Action.Remove(0, CurrencyConstant.Api.Length + 1);
+            var roleIds = _interactor.ApplicationRoles.Select(u=>u.Id).ToList();
+            var menuPermission = _permissionServices.GetPermissionsAsync(roleIds, u => u.PermissionType == (int)PermissionType.RoleMenus).Result;
+            _interactor.PermissionUrls = _permissionServices.GetPermissionsAsync(menuPermission);
+            var url = _interactor.Current_Action.Remove(0, CurrencyConstant.Api.Length + 1);
             if (IgnoreUrl.Contains(url)) return true;
-            return Interactor.PermissionUrls.Contains(url);
+            return _interactor.PermissionUrls.Contains(url);
         }
 
         protected virtual void UrlUnauthorized(ActionExecutingContext context)
@@ -121,15 +132,15 @@ namespace Caviar.Infrastructure.API.BaseApi
             // 未登录或者是游客身份
             if (User.Identity.IsAuthenticated || _caviarConfig.TouristVisit)
             {
-                var msg = LanguageService[$"{CurrencyConstant.ExceptionMessage}.{CurrencyConstant.Unauthorized}"];
-                context.Result = Ok(HttpStatusCode.Unauthorized, Interactor.Current_Action + msg);
-                LogServices.Infro("url访问未授权");
+                var msg = _languageService[$"{CurrencyConstant.ExceptionMessage}.{CurrencyConstant.Unauthorized}"];
+                context.Result = Ok(HttpStatusCode.Unauthorized, _interactor.Current_Action + msg);
+                _logServices.Infro("url访问未授权");
             }
             else
             {
-                var msg = LanguageService[$"{CurrencyConstant.ExceptionMessage}.{CurrencyConstant.LoginExpiration}"];
+                var msg = _languageService[$"{CurrencyConstant.ExceptionMessage}.{CurrencyConstant.LoginExpiration}"];
                 context.Result = Ok(HttpStatusCode.RedirectMethod, msg,UrlConfig.Login);
-                LogServices.Infro("用户登录过期");
+                _logServices.Infro("用户登录过期");
             }
         }
 
@@ -142,34 +153,34 @@ namespace Caviar.Infrastructure.API.BaseApi
             dbContext.DetachAll();
             var result = context.Result;
             var resultScanner = CreateService<ResultScannerServices>();
-            var roleIds = Interactor.ApplicationRoles.Select(u => u.Id).ToList();
+            var roleIds = _interactor.ApplicationRoles.Select(u => u.Id).ToList();
             //赋值字段权限
-            resultScanner.PermissionFieldss = PermissionServices.GetPermissionsAsync(roleIds,u => u.PermissionType == (int)PermissionType.RoleFields).Result;
+            resultScanner.PermissionFieldss = _permissionServices.GetPermissionsAsync(roleIds,u => u.PermissionType == (int)PermissionType.RoleFields).Result;
             var resultMsg = resultScanner.ResultHandle(result);
             if (resultMsg != null)
             {
-                resultMsg.TraceId = Interactor.TraceId.ToString();
-                resultMsg.Title = LanguageService[$"{CurrencyConstant.ResuleMsg}.{resultMsg.Title}"];
+                resultMsg.TraceId = _interactor.TraceId.ToString();
+                resultMsg.Title = _languageService[$"{CurrencyConstant.ResuleMsg}.{resultMsg.Title}"];
                 ModificationTips(resultMsg);
                 context.Result = base.Ok(resultMsg);
             }
             base.OnActionExecuted(context);
-            Interactor.Stopwatch.Stop();
-            var timeSpan = Interactor.Stopwatch.Elapsed;
+            _interactor.Stopwatch.Stop();
+            var timeSpan = _interactor.Stopwatch.Elapsed;
             if (resultMsg != null)
             {
-                var log = LogServices.CreateLog(resultMsg.Title, LogLevel.Information, elapsed: timeSpan.TotalMilliseconds, status: resultMsg.Status);
-                LogServices.Log(log);
+                var log = _logServices.CreateLog(resultMsg.Title, LogLevel.Information, elapsed: timeSpan.TotalMilliseconds, status: resultMsg.Status);
+                _logServices.Log(log);
             }
             else
             {
                 //自定义返回
                 var StatusCode = result.GetObjValue("StatusCode");
                 var code = StatusCode == null ? HttpStatusCode.OK : (HttpStatusCode)StatusCode;
-                var log = LogServices.CreateLog("自定义返回", LogLevel.Information, elapsed: timeSpan.TotalMilliseconds,status: code);
-                LogServices.Log(log);
+                var log = _logServices.CreateLog("自定义返回", LogLevel.Information, elapsed: timeSpan.TotalMilliseconds,status: code);
+                _logServices.Log(log);
             }
-            LogServices.Infro("请求结束");
+            _logServices.Infro("请求结束");
         }
 
         protected virtual IActionResult Ok(HttpStatusCode status = HttpStatusCode.OK,string title = "Succeeded",string url = null,Dictionary<string,string> detail = null,object data = null)
@@ -187,7 +198,7 @@ namespace Caviar.Infrastructure.API.BaseApi
 
         protected virtual void ModificationTips(ResultMsg resultMsg)
         {
-            resultMsg.Title = LanguageService[$"{CurrencyConstant.ResuleMsg}.Title.{resultMsg.Title}"];
+            resultMsg.Title = _languageService[$"{CurrencyConstant.ResuleMsg}.Title.{resultMsg.Title}"];
         }
 
         protected virtual T CreateService<T>()
@@ -207,9 +218,9 @@ namespace Caviar.Infrastructure.API.BaseApi
             var permissionServices = CreateService<RoleFieldServices>();
             var fieldName = typeof(T).Name;
             var fullName = typeof(T).FullName;
-            var fields = FieldScannerServices.GetClassFields(fieldName, fullName, LanguageService);
-            var user = await UserServices.GetCurrentUserInfoAsync();
-            var roles = await UserServices.GetRoleIdsAsync(user);
+            var fields = FieldScannerServices.GetClassFields(fieldName, fullName, _languageService);
+            var user = await _userServices.GetCurrentUserInfoAsync();
+            var roles = await _userServices.GetRoleIdsAsync(user);
             fields = await permissionServices.GetRoleFields(fields, fullName, roles);
             fields = fields.OrderBy(u => u.Entity.Number).ToList();
             return fields;

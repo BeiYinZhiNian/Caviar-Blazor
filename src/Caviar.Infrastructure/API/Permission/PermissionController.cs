@@ -18,18 +18,19 @@ namespace Caviar.Infrastructure.API.Permission
     public partial class PermissionController : BaseApiController
     {
         private readonly RoleFieldServices _roleFieldServices;
-        private readonly UserServices _userServices;
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly PermissionServices _permissionServices;
+        private readonly ILanguageService _languageService;
         public PermissionController(RoleManager<ApplicationRole> roleManager, 
             RoleFieldServices roleFieldServices,
             PermissionServices permissionServices,
-            UserServices userServices)
+            UserServices userServices,
+            ILanguageService languageService)
         {
             _roleFieldServices = roleFieldServices;
-            _userServices = userServices;
             _roleManager = roleManager;
             _permissionServices = permissionServices;
+            _languageService = languageService;
         }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
@@ -39,7 +40,7 @@ namespace Caviar.Infrastructure.API.Permission
         [HttpGet]
         public IActionResult GetEntitys()
         {
-            var entitys = FieldScannerServices.GetEntitys(LanguageService);
+            var entitys = FieldScannerServices.GetEntitys(_languageService);
             return Ok(entitys);
         }
         /// <summary>
@@ -54,7 +55,7 @@ namespace Caviar.Infrastructure.API.Permission
         {
             if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("类名不能为空");
             if (string.IsNullOrEmpty(fullName)) throw new ArgumentNullException("命名空间不能为空");
-            var fields = FieldScannerServices.GetClassFields(name, fullName, LanguageService);
+            var fields = FieldScannerServices.GetClassFields(name, fullName, _languageService);
             var role = await _roleManager.FindByNameAsync(roleName);
             fields = await _roleFieldServices.GetRoleFields(fields, fullName, new List<int> { role.Id });
             return Ok(fields);

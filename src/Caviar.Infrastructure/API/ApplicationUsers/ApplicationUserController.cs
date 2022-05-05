@@ -14,16 +14,16 @@ namespace Caviar.Infrastructure.API
 {
     public partial class ApplicationUserController : EasyBaseApiController<ApplicationUserView,ApplicationUser>
     {
-        protected readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        protected readonly LogServices<ApplicationRoleController> _logServices;
+        private readonly UserServices _userServices;
         public ApplicationUserController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            LogServices<ApplicationRoleController> logServices)
+            UserServices userServices)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _logServices = logServices;
+            _userServices = userServices;
         }
 
 
@@ -80,7 +80,7 @@ namespace Caviar.Infrastructure.API
         [HttpGet]
         public async Task<IActionResult> CurrentUserInfo()
         {
-            var currentUser = await UserServices.GetCurrentUserInfoAsync(User);
+            var currentUser = await _userServices.GetCurrentUserInfoAsync(User);
             return Ok(currentUser);
         }
 

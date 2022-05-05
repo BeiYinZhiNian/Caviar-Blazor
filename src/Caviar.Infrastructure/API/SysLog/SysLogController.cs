@@ -14,7 +14,7 @@ namespace Caviar.Infrastructure.API
     public class SysLogController : BaseApiController
     {
 
-        LogDataServices _logDataServices;
+        private readonly LogDataServices _logDataServices;
         public SysLogController(LogDataServices services)
         {
             _logDataServices = services;

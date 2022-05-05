@@ -10,7 +10,7 @@ namespace Caviar.Infrastructure.API.SysMenuController
 {
     public partial class SysMenuController
     {
-        SysMenuServices _sysMenuServices;
+        private readonly SysMenuServices _sysMenuServices;
 
         public SysMenuController(SysMenuServices sysMenuServices)
         {
