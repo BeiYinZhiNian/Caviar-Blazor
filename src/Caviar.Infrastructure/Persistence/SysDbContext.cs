@@ -78,13 +78,15 @@ namespace Caviar.Infrastructure.Persistence
                                 //不可更新字段
                                 case "id":
                                 case "uid":
+                                case "creattime": // 创建时间
+                                case "operatorcare": // 创建者
+                                case "dataid": // 数据权限
+                                case "isdelete": // 是否删除
                                     item.Property(fieldItem.Entity.FieldName).IsModified = false;
                                     continue;
                                 //系统更新字段
-                                case "creattime":
                                 case "updatetime":
                                 case "operatorup":
-                                case "isdelete":
                                     item.Property(fieldItem.Entity.FieldName).IsModified = true;
                                     continue;
                                 default:
