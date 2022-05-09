@@ -56,13 +56,7 @@
         {
             try
             {
-                if (!Config.IsServer)
-                {
-                    //在wasm中注册事件
-                    //wasm模式初始化完成，接收事件
-                    IframeMessage.SwitchWasm += SwitchWasm_RefChanged;
-                }
-                else
+                if(Config.IsServer)
                 {
                     var uri = new Uri(NavigationManager.Uri);
                     var collection = HttpUtility.ParseQueryString(uri.Query);
@@ -93,16 +87,4 @@
         }
         await base.OnAfterRenderAsync(firstRender);
     }
-
-
-    private void SwitchWasm_RefChanged(IframeMessage message)
-    {
-        var data = message.ExchangeData;
-        var json = JsonConvert.SerializeObject(data);
-        var parameter = HttpUtility.UrlEncode(json);
-        var url = $"{message.Url}?{CurrencyConstant.JsIframeMessage}={parameter}";
-        NavigationManager.NavigateTo(url);
-        JSRuntime.InvokeVoidAsync("switch_wasm");
-    }
-
 }

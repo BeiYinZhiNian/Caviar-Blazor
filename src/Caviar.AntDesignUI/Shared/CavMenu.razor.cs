@@ -61,7 +61,11 @@ namespace Caviar.AntDesignUI.Shared
 
 
 
-
+        /// <summary>
+        /// 创建面包屑信息
+        /// </summary>
+        /// <param name="menuItem"></param>
+        /// <returns></returns>
         List<string> CreatBreadcrumbItemCav(MenuItem menuItem)
         {
             if (menuItem == null) return null;
@@ -123,22 +127,6 @@ namespace Caviar.AntDesignUI.Shared
         {
             UserConfig.RefreshMenuAction = Refresh;
             base.OnParametersSet();
-            if (!Config.IsServer && !Config.IsHandleIframeMessage)
-            {
-                var uri = new Uri(NavigationManager.Uri);
-                var query = HttpUtility.ParseQueryString(uri.Query);
-                if (!string.IsNullOrEmpty(query[CurrencyConstant.JsIframeMessage]))
-                {
-                    Config.IsHandleIframeMessage = true;
-                    var iframeMessage = JsonConvert.DeserializeObject<ServerToWasmExchange>(query[CurrencyConstant.JsIframeMessage]);
-                    OpenKeysNav = iframeMessage.OpenKeysNav;//打开nav
-                    SelectedKeys = iframeMessage.SelectedKeys;//选择key
-                    if (BreadcrumbItemArrChanged.HasDelegate)
-                    {
-                        _ = BreadcrumbItemArrChanged.InvokeAsync(iframeMessage.BreadcrumbItemArr);
-                    }
-                }
-            }
         }
 
         protected override async Task OnInitializedAsync()
@@ -151,6 +139,36 @@ namespace Caviar.AntDesignUI.Shared
         protected override void OnAfterRender(bool firstRender)
         {            
             base.OnAfterRender(firstRender);
+            if (!Config.IsServer && firstRender)
+            {
+                //在wasm中注册事件
+                //wasm模式初始化完成，接收事件
+                IframeMessage.SwitchWasm += SwitchWasm_RefChanged;
+            }
+        }
+        /// <summary>
+        /// 切换wasm模式，并保持相同状态
+        /// </summary>
+        /// <param name="message"></param>
+        private void SwitchWasm_RefChanged(IframeMessage message)
+        {
+            OpenKeysNav = message.ExchangeData.OpenKeysNav;//打开nav
+            SelectedKeys = message.ExchangeData.SelectedKeys;//选择key
+            if (BreadcrumbItemArrChanged.HasDelegate)
+            {
+                //面包屑更新
+                _ = BreadcrumbItemArrChanged.InvokeAsync(message.ExchangeData.BreadcrumbItemArr);
+            }
+            try
+            {
+                JsonConvert.PopulateObject(message.ExchangeData.Layout, Layout);
+            }
+            catch
+            {
+                //防止错误数据
+            }
+            NavigationManager.NavigateTo(message.Url);
+            JSRuntime.InvokeVoidAsync("switch_wasm");
         }
 
         private List<SysMenuView> SysMenus;

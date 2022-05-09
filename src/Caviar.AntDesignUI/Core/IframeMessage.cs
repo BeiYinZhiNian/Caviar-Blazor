@@ -55,8 +55,21 @@ namespace Caviar.AntDesignUI.Core
 
     public class ServerToWasmExchange
     {
+        /// <summary>
+        /// 选择的菜单key
+        /// </summary>
         public string[] SelectedKeys { get; set; }
+        /// <summary>
+        /// 打开的目录
+        /// </summary>
         public string[] OpenKeysNav { get; set; }
+        /// <summary>
+        /// 面包屑内容
+        /// </summary>
         public string[] BreadcrumbItemArr { get; set; }
+        /// <summary>
+        /// 布局
+        /// </summary>
+        public string Layout { get; set; }
     }
 }
