@@ -19,6 +19,13 @@ namespace Caviar.Infrastructure.API
             _roleServices = roleServices;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> RoleFindById(int id)
+        {
+            var result = await _roleServices.RoleFindById(id);
+            return Ok(result);
+        }
+
         [HttpPost]
         public override async Task<IActionResult> CreateEntity(ApplicationRoleView vm)
         {

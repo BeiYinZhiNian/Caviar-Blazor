@@ -81,16 +81,21 @@ namespace Caviar.AntDesignUI.Shared
                 Menu = menu,
                 Data = data,
             };
-            var DataSourceName = CurrencyConstant.DataSource;
             switch (menu.Entity.TargetType)
             {
                 case TargetType.CurrentPage:
-                    var parameter = "";
-                    if (menu.Entity.ButtonPosition == ButtonPosition.Row)
+                    var suffix = "";
+                    var entity = CurrRow.Data.GetObjValue("entity");
+                    if (entity == null)
                     {
-                        parameter = $"?{DataSourceName}={HttpUtility.UrlEncode(JsonSerializer.Serialize(CurrRow.Data))}"; 
+                        entity = CurrRow.Data;
                     }
-                    Navigation.NavigateTo(menu.Entity.Url + parameter);
+                    var id = entity.GetObjValue("Id");
+                    if (id != null)
+                    {
+                        suffix = "/" + id.ToString();
+                    }
+                    Navigation.NavigateTo(menu.Entity.Url + suffix);
                     break;
                 case TargetType.EjectPage:
                     Dictionary<string,object> paramenter = new Dictionary<string, object>();
@@ -99,7 +104,7 @@ namespace Caviar.AntDesignUI.Shared
                         //因为引用类型，这里进行一次转换，相当于深度复制
                         //否则更改内容然后取消，列表会发生改变
                         CurrRow.Data.AToB(out TData dataSource);
-                        paramenter.Add(DataSourceName, dataSource);
+                        paramenter.Add(CurrencyConstant.DataSource, dataSource);
                     }
                     paramenter.Add(CurrencyConstant.CurrentUrl, menu.Entity.Url);//不提供url时候默认url一致
                     var options = new CavModalOptions() 

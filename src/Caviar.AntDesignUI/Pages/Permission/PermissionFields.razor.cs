@@ -15,6 +15,8 @@ namespace Caviar.AntDesignUI.Pages.Permission
 {
     public partial class PermissionFields
     {
+        [Parameter]
+        public int RoleId { get; set; }
         [Inject]
         NavigationManager NavigationManager { get; set; }
 
@@ -41,10 +43,10 @@ namespace Caviar.AntDesignUI.Pages.Permission
 
         protected override async Task OnInitializedAsync()
         {
-            var query = new Uri(NavigationManager.Uri).Query;
-            if (QueryHelpers.ParseQuery(query).TryGetValue(CurrencyConstant.DataSource, out var Parameter))
+            var result = await HttpService.GetJson<ApplicationRoleView>(UrlConfig.RoleFindById + $"?id={RoleId}");
+            if(result.Status == System.Net.HttpStatusCode.OK)
             {
-                Role = JsonConvert.DeserializeObject<ApplicationRoleView>(Parameter);
+                Role = result.Data;
             }
             await base.OnInitializedAsync();
             await GetModels();

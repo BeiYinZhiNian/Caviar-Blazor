@@ -1,9 +1,9 @@
-﻿@page "/Permission/RoleFields"
+﻿@page "/Permission/RoleFields/{RoleId:int}"
 @implements IReuseTabsPage
 
 <Row Gutter="@gutter">
     <AntDesign.Col Flex="2">
-        <Card Bordered="false" Title=@(Role.Entity.Name + "-" + LanguageService[$"{CurrencyConstant.EntitysName}.Model"])>
+        <Card Bordered="false" Title=@(Role?.Entity.Name + "-" + LanguageService[$"{CurrencyConstant.EntitysName}.Model"])>
             <Body>
                 <Table TItem="FieldsView" DataSource="@Models">
                         <Column @bind-Field="@context.DisplayName" Title="@LanguageService[$"{CurrencyConstant.EntitysName}.Model"]">
@@ -118,6 +118,6 @@
     };
        public RenderFragment GetPageTitle() =>
        @<div>
-           @Role.Entity.Name@LanguageService[$"{CurrencyConstant.Menu}.{CurrencyConstant.FieldPermissionsKey}"]
+           @Role?.Entity.Name@LanguageService[$"{CurrencyConstant.Menu}.{CurrencyConstant.FieldPermissionsKey}"]
        </div>;
 }

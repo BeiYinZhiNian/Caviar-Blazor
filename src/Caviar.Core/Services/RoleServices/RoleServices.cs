@@ -19,7 +19,7 @@ namespace Caviar.Core.Services
             CurrencyConstant.TouristRole,
         };
 
-        private RoleManager<ApplicationRole> _roleManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
         public RoleServices(RoleManager<ApplicationRole> roleManager,IAppDbContext appDbContext) : base(appDbContext)
         {
             _roleManager = roleManager;
@@ -34,6 +34,12 @@ namespace Caviar.Core.Services
                 rolesList.Add(role);
             }
             return rolesList;
+        }
+
+        public async Task<ApplicationRoleView> RoleFindById(int id)
+        {
+            var role = await _roleManager.FindByIdAsync(id.ToString());
+            return new ApplicationRoleView() { Entity = role };
         }
 
         public async Task<IdentityResult> CreateUserAsync(ApplicationRoleView vm)
