@@ -10,6 +10,26 @@ namespace Caviar.SharedKernel.Entities
     public static partial class CurrencyConstant
     {
         /// <summary>
+        /// 不存在的指令
+        /// </summary>
+        public const string NonexistentInstruction = "Nonexistent instruction";
+        /// <summary>
+        /// 成功
+        /// </summary>
+        public const string Success = "success";
+        /// <summary>
+        /// 未就绪
+        /// </summary>
+        public const string NotReady = "not ready";
+        /// <summary>
+        /// 切换为wasm名称
+        /// </summary>
+        public const string SwitchWasm = "switch_wasm";
+        /// <summary>
+        /// 切换为server模式js名称
+        /// </summary>
+        public const string SwitchServer = "switch_server";
+        /// <summary>
         /// 公共数据id
         /// </summary>
         public const int PublicData = -1;

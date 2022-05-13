@@ -1,4 +1,5 @@
 ﻿using AntDesign;
+using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
@@ -38,12 +39,16 @@ namespace Caviar.AntDesignUI.Core
             switch (message.Pattern)
             {
                 case Pattern.Wasm:
+                    if(SwitchWasm == null)
+                    {
+                        return Task.FromResult(CurrencyConstant.NotReady);
+                    }
                     SwitchWasm?.Invoke(message);
                     break;
                 default:
-                    break;
+                    return Task.FromResult(CurrencyConstant.NonexistentInstruction);
             }
-            return Task.FromResult("ok");
+            return Task.FromResult(CurrencyConstant.Success);
         }
     }
 

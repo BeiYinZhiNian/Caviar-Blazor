@@ -91,11 +91,12 @@ namespace Caviar.AntDesignUI.Shared
                 var iframeMessage = new IframeMessage();
                 iframeMessage.Pattern = Pattern.Wasm;
                 iframeMessage.Url = menuItem.RouterLink;
-                iframeMessage.ExchangeData = new ServerToWasmExchange() 
-                { 
+                iframeMessage.ExchangeData = new ServerToWasmExchange()
+                {
                     OpenKeysNav = OpenKeysNav,
                     SelectedKeys = new string[] { menuItem.Key },
-                    BreadcrumbItemArr = BreadcrumbItemArr
+                    BreadcrumbItemArr = BreadcrumbItemArr,
+                    Layout = JsonConvert.SerializeObject(Layout)
                 };
                 _ = JSRuntime.InvokeVoidAsync(CurrencyConstant.JsIframeMessage, iframeMessage);
                 return;
@@ -168,7 +169,7 @@ namespace Caviar.AntDesignUI.Shared
                 //防止错误数据
             }
             NavigationManager.NavigateTo(message.Url);
-            JSRuntime.InvokeVoidAsync("switch_wasm");
+            JSRuntime.InvokeVoidAsync(CurrencyConstant.SwitchWasm);
         }
 
         private List<SysMenuView> SysMenus;
