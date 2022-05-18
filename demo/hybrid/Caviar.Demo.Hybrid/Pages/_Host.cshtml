@@ -8,7 +8,16 @@
 @{
     var IsServer = Request.Query.ContainsKey(CurrencyConstant.ServerName);
     var host = Request.Host;
-    var serverHost = $"{Request.Scheme}://{host}?{CurrencyConstant.ServerName}";
+    string query = "";
+    if (Request.QueryString.HasValue)
+    {
+        query = Request.QueryString.Value + "&" + CurrencyConstant.ServerName;
+    }
+    else
+    {
+        query =  "?" + CurrencyConstant.ServerName;
+    }
+    var serverHost = $"{Request.Scheme}://{host}{Request.Path}{query}";
 }
 
 <!DOCTYPE html>
