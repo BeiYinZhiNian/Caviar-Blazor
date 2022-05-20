@@ -52,6 +52,10 @@ namespace Caviar.SharedKernel.Entities
         /// 是否处于演示模式
         /// </summary>
         public bool DemonstrationMode { get; set; }
+        /// <summary>
+        /// 用户配置的启动地址
+        /// </summary>
+        public string Urls { get; set; }
     }
 
     public class CodeGeneration

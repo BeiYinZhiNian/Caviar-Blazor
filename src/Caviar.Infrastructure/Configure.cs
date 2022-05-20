@@ -56,6 +56,7 @@ namespace Caviar.Infrastructure
                 var handler = sp.GetService<HttpClientHandler>();
                 HttpClient client = new HttpClient(handler);
                 var httpContextAccessor = sp.GetService<IHttpContextAccessor>();
+                var config = sp.GetService<CaviarConfig>();
                 var httpContext = httpContextAccessor?.HttpContext;
                 var ip = CommonHelper.GetUserIp(httpContext);
                 client.DefaultRequestHeaders.Add(CurrencyConstant.UserAgent, CurrencyConstant.DefaultUserAgent);
@@ -63,7 +64,7 @@ namespace Caviar.Infrastructure
                 var uri = GetServerUri();
                 if (uri != null)
                 {
-                    client.BaseAddress = new Uri($"{uri.Scheme}://localhost:{uri.Port}/{CurrencyConstant.Api}");
+                    client.BaseAddress = new Uri($"{config.Urls}/{CurrencyConstant.Api}");
                 }
                 return client;
             });
