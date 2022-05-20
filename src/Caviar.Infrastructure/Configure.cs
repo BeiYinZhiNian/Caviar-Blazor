@@ -64,7 +64,7 @@ namespace Caviar.Infrastructure
                 var uri = GetServerUri();
                 if (uri != null)
                 {
-                    client.BaseAddress = new Uri($"{config.Urls}/{CurrencyConstant.Api}");
+                    client.BaseAddress = new Uri($"{config.Urls.Replace("0.0.0.0","localhost")}/{CurrencyConstant.Api}");
                 }
                 return client;
             });
