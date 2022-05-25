@@ -153,7 +153,7 @@ namespace Caviar.AntDesignUI.Shared
         /// <param name="message"></param>
         private void SwitchWasm_RefChanged(IframeMessage message)
         {
-            OpenKeysNav = message.ExchangeData.OpenKeysNav;//打开nav
+            OpenKeysNav = message.ExchangeData.OpenKeysNav ?? Array.Empty<string>();//打开nav
             SelectedKeys = message.ExchangeData.SelectedKeys;//选择key
             if (BreadcrumbItemArrChanged.HasDelegate)
             {
