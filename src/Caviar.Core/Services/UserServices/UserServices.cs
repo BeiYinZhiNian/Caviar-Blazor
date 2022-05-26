@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using CacheManager.Core;
 using Caviar.Core.Interface;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.User;
@@ -25,15 +26,18 @@ namespace Caviar.Core.Services
         private readonly Interactor _interactor;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly CaviarConfig _caviarConfig;
+        private readonly ICacheManager<object> _cacheManager;
         public UserServices(
             Interactor interactor,
             UserManager<ApplicationUser> userManager,
             IAppDbContext appDbContext,
-            CaviarConfig caviarConfig) : base(appDbContext)
+            CaviarConfig caviarConfig,
+            ICacheManager<object> cacheManager) : base(appDbContext)
         {
             _interactor = interactor;
             _userManager = userManager;
             _caviarConfig = caviarConfig;
+            _cacheManager = cacheManager;
         }
 
         public async Task<IdentityResult> AssignRolesAsync(string userName, IList<string> roles)
@@ -67,7 +71,11 @@ namespace Caviar.Core.Services
         public async Task<IList<string>> GetRolesAsync(ApplicationUser user)
         {
             if (user == null) return new List<string>();
+            var cacheName = $"roles_{user.Id}";
+            var cache = _cacheManager.Get<IList<string>>(cacheName);
+            if (cache != null) return cache;
             var roles = await _userManager.GetRolesAsync(user);
+            _cacheManager.Add(cacheName, roles);
             return roles;
         }
 
@@ -126,6 +134,7 @@ namespace Caviar.Core.Services
             user.UpdateTime = CommonHelper.GetSysDateTimeNow();
             user.OperatorUp = operatorUp;
             var result = await _userManager.UpdateAsync(user);
+            _cacheManager.Clear();
             return result;
         }
 
@@ -149,7 +158,7 @@ namespace Caviar.Core.Services
             List<CaviarClaim> claims = null;
             if (user.Identity.IsAuthenticated)
             {
-                var applicationUser = await _userManager.FindByNameAsync(user.Identity.Name);
+                var applicationUser = await GetUserInfoAsync(user.Identity.Name);
                 if (applicationUser == null)
                 {
                     return new CurrentUser() { IsAuthenticated = false };
@@ -170,7 +179,7 @@ namespace Caviar.Core.Services
             }
             else if (_caviarConfig.TouristVisit)
             {
-                var applicationUser = await _userManager.FindByNameAsync(CurrencyConstant.TouristUser);
+                var applicationUser = await GetUserInfoAsync(CurrencyConstant.TouristUser);
                 if (applicationUser == null)
                 {
                     return new CurrentUser() { IsAuthenticated = false };
@@ -210,8 +219,12 @@ namespace Caviar.Core.Services
 
         public async Task<ApplicationUser> GetUserInfoAsync(string userName)
         {
-            var user = await _userManager.FindByNameAsync(userName);
-            return user;
+            var cacheName = $"userInfo_{userName}";
+            var cache = _cacheManager.Get<ApplicationUser>(cacheName);
+            if (cache != null) return cache;
+            cache = await _userManager.FindByNameAsync(userName);
+            _cacheManager.Add(cacheName, cache);
+            return cache;
         }
 
     }

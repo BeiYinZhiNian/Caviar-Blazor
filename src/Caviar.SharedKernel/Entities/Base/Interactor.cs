@@ -60,10 +60,6 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public Stopwatch Stopwatch { get; set; } = new Stopwatch();
         /// <summary>
-        /// 当前访问菜单
-        /// </summary>
-        public SysMenuView CurrentMenu { get; set; }
-        /// <summary>
         /// 当前请求路径
         /// </summary>
         public string Current_Action { get; set; }
@@ -77,17 +73,6 @@ namespace Caviar.SharedKernel.Entities
         public string Current_AbsoluteUri { get; set; }
 
         public HttpContext HttpContext { get; set; }
-        /// <summary>
-        /// 全局缓存
-        /// 字段列表
-        /// </summary>
-        public List<FieldsView> SysModelFields { get; set; }
-        /// <summary>
-        /// 全局缓存
-        /// 菜单列表
-        /// </summary>
-        public List<SysMenuView> SysMenus { get; set; }
-
         /// <summary>
         /// 请求参数
         /// </summary>

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using CacheManager.Core;
 using Caviar.Core.Interface;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
@@ -18,20 +19,29 @@ namespace Caviar.Core.Services
     {
         private readonly ILanguageService _languageService;
         private readonly Interactor _interactor;
-        public PermissionServices(IAppDbContext dbContext, ILanguageService languageService, Interactor interactor) : base(dbContext)
+        private readonly ICacheManager<object> _cacheManager;
+        public PermissionServices(IAppDbContext dbContext,
+            ILanguageService languageService,
+            Interactor interactor,
+            ICacheManager<object> cacheManager) : base(dbContext)
         {
             _languageService = languageService;
             _interactor = interactor;
+            _cacheManager = cacheManager;
         }
 
         /// <summary>
         /// 获取指定角色所有权限
         /// </summary>
         /// <returns></returns>
-        public Task<List<SysPermission>> GetPermissionsAsync(List<int> roleIds, Expression<Func<SysPermission, bool>> whereLambda)
+        public async Task<List<SysPermission>> GetPermissionsAsync(List<int> roleIds, Expression<Func<SysPermission, bool>> whereLambda)
         {
+            var cacheName = $"permissions_{string.Join(",", roleIds)}_{whereLambda.Body}";
+            var cache = _cacheManager.Get<List<SysPermission>>(cacheName);
+            if (cache != null) return cache;
             var permissionsSet = AppDbContext.DbContext.Set<SysPermission>();
-            return permissionsSet.Where(u => roleIds.Contains(u.Entity)).Where(whereLambda).ToListAsync();
+            cache = await permissionsSet.Where(u => roleIds.Contains(u.Entity)).Where(whereLambda).ToListAsync();
+            return cache;
         }
 
         /// <summary>
@@ -69,7 +79,9 @@ namespace Caviar.Core.Services
             var addUrls = urls.Where(u => !menuUrls.Contains(u)).Select(u => u).ToHashSet();
             var addMenus = addUrls.Select(u => new SysPermission() { Permission = u, PermissionType = (int)PermissionType.RoleMenus, Entity = roleId }).ToList();
             AppDbContext.DbContext.AddRange(addMenus);
-            return await AppDbContext.DbContext.SaveChangesAsync();
+            var result = await AppDbContext.DbContext.SaveChangesAsync(); // 更新数据
+            _cacheManager.Clear(); // 清除缓存
+            return result;
         }
 
 
