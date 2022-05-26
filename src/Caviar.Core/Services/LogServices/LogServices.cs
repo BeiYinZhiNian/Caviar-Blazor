@@ -1,24 +1,22 @@
-﻿using Caviar.Core.Interface;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
+using System;
+using System.Net;
+using Caviar.Core.Interface;
 using Caviar.SharedKernel.Entities;
-using Caviar.SharedKernel.Entities.View;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Caviar.Core.Services
 {
-    public class LogServices<T>: BaseServices
+    public class LogServices<T> : BaseServices
     {
         public ILogger<T> Logger { get; set; }
         private readonly Interactor _interactor;
         private IAppDbContext _appDbContext;
-        public LogServices(ILogger<T> logger,Interactor interactor, IServiceProvider serviceProvider)
+        public LogServices(ILogger<T> logger, Interactor interactor, IServiceProvider serviceProvider)
         {
             Logger = logger;
             _interactor = interactor;
@@ -45,9 +43,9 @@ namespace Caviar.Core.Services
             return LogSave(log);
         }
 
-        public SysLog CreateLog(string message, LogLevel logLevel,string postData = null, double elapsed = 0, HttpStatusCode status = HttpStatusCode.OK)
+        public SysLog CreateLog(string message, LogLevel logLevel, string postData = null, double elapsed = 0, HttpStatusCode status = HttpStatusCode.OK)
         {
-            return new SysLog() 
+            return new SysLog()
             {
                 TraceId = _interactor.TraceId.ToString(),
                 UserName = _interactor.UserName,
@@ -79,7 +77,7 @@ namespace Caviar.Core.Services
         public SysLog Infro(string message)
         {
             Logger.LogInformation(message);
-            var log = CreateLog(message,LogLevel.Information);
+            var log = CreateLog(message, LogLevel.Information);
             return LogSave(log);
         }
 

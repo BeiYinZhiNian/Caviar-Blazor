@@ -1,12 +1,8 @@
-﻿using AntDesign;
-using Caviar.SharedKernel.Entities;
-using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
+using AntDesign;
 
 namespace Caviar.AntDesignUI.Core
 {
@@ -49,13 +45,15 @@ namespace Caviar.AntDesignUI.Core
         /// <summary>
         /// 主题
         /// </summary>
-        public string Theme { 
-            get { return _theme; } 
-            set {
+        public string Theme
+        {
+            get { return _theme; }
+            set
+            {
                 ThemeSwitch(value);
                 ThemeChanged?.Invoke(_theme, value);
                 _theme = value;
-            } 
+            }
         }
 
         private void ThemeSwitch(string theme)
@@ -80,17 +78,17 @@ namespace Caviar.AntDesignUI.Core
         public bool IsTable { get; set; } = true;
 
         private LeftMenuThemeEnum _leftMenuTheme = LeftMenuThemeEnum.Dark;
-        public LeftMenuThemeEnum LeftMenuTheme 
+        public LeftMenuThemeEnum LeftMenuTheme
         {
             get { return _leftMenuTheme; }
-            set 
+            set
             {
                 _leftMenuTheme = value; // 先赋值，如果黑暗主题选择了明亮菜单，在回调里自动改回来
                 ThemeSwitch(_theme);
                 ThemeChanged?.Invoke(_theme, _theme);
             }
         }
-        public SiderTheme SiderTheme 
+        public SiderTheme SiderTheme
         {
             get
             {
@@ -110,7 +108,7 @@ namespace Caviar.AntDesignUI.Core
                 }
             }
         }
-        public MenuTheme MenuTheme 
+        public MenuTheme MenuTheme
         {
             get
             {

@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using System.Web;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
+using AntDesign;
+using Caviar.AntDesignUI.Core;
+using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using Caviar.AntDesignUI.Core;
-using AntDesign;
-using Caviar.SharedKernel.Entities;
+using Newtonsoft.Json;
 
 namespace Caviar.AntDesignUI.Pages.Setting
 {

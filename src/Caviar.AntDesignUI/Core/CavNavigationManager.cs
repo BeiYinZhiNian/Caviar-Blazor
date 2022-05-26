@@ -1,5 +1,8 @@
-﻿using Caviar.SharedKernel.Entities;
-using Caviar.SharedKernel.Entities.View;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
+using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -7,7 +10,7 @@ namespace Caviar.AntDesignUI.Core
 {
     public static class CavNavigationManager
     {
-        public static void NavigateTo(this NavigationManager navigationManager,IJSRuntime jSRuntime,string uri, bool replace = false)
+        public static void NavigateTo(this NavigationManager navigationManager, IJSRuntime jSRuntime, string uri, bool replace = false)
         {
             if (Config.IsServer)
             {

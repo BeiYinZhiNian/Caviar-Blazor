@@ -1,7 +1,7 @@
-using Caviar.SharedKernel.Entities;
-using Caviar.SharedKernel.Entities.View;
+// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,6 +9,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Caviar.SharedKernel.Entities;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Xunit.Sdk;
 
 namespace Caviar.FunctionalTests
@@ -72,7 +74,7 @@ namespace Caviar.FunctionalTests
                 var culture = CultureInfo.GetCultureInfo(name);
                 ILanguageService languageService = new InAssemblyLanguageService(culture);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Assert.AreEqual($"没有语言文件 '{name}'", ex.Message);
             }

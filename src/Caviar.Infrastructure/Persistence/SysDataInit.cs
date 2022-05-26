@@ -1,16 +1,20 @@
-﻿using Caviar.SharedKernel.Entities.View;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using Caviar.Infrastructure.API.BaseApi;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Caviar.SharedKernel.Entities;
 using Caviar.Core.Interface;
 using Caviar.Core.Services;
+using Caviar.Infrastructure.API.BaseApi;
+using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Caviar.Infrastructure.Persistence
 {
@@ -96,7 +100,7 @@ namespace Caviar.Infrastructure.Persistence
                 if (menu == null)
                 {
                     var array = item.Url.Split('/');
-                    var parent = await set.FirstOrDefaultAsync(u=>u.MenuName == array[0]);
+                    var parent = await set.FirstOrDefaultAsync(u => u.MenuName == array[0]);
                     if (parent != null)
                     {
                         item.ParentId = parent.Id;
@@ -127,8 +131,8 @@ namespace Caviar.Infrastructure.Persistence
             await CreateData(isDatabaseInit);
             await FieldsInit(fields);
             await PermissionFields(fields, isDatabaseInit);
-            
-            
+
+
         }
         /// <summary>
         /// 初始化系统字段
@@ -158,7 +162,7 @@ namespace Caviar.Infrastructure.Persistence
             await _dbContext.SaveChangesAsync();
         }
 
-        protected virtual async Task PermissionFields(IEnumerable<SysFields> fields,bool isDatabaseInit)
+        protected virtual async Task PermissionFields(IEnumerable<SysFields> fields, bool isDatabaseInit)
         {
             if (!isDatabaseInit) return;
             foreach (var item in fields)
@@ -218,7 +222,7 @@ namespace Caviar.Infrastructure.Persistence
             await CreateInitRole();
             await CreateInitUserGroup();
             await CreateInitUser();
-            
+
             var createMenus = await CreateMenu();
             await CreatePermissionMenu(sysMenus);
             await CreatePermissionMenu(createMenus);
@@ -231,7 +235,7 @@ namespace Caviar.Infrastructure.Persistence
             {
                 // 当没有url时，使用id进行授权
                 var permission = string.IsNullOrEmpty(item.Url) ? item.Id.ToString() : item.Url;
-                var adminPermission = await set.FirstOrDefaultAsync(u=>u.Permission == permission && u.Entity == AdminRole.Id && u.PermissionType == (int)PermissionType.RoleMenus);
+                var adminPermission = await set.FirstOrDefaultAsync(u => u.Permission == permission && u.Entity == AdminRole.Id && u.PermissionType == (int)PermissionType.RoleMenus);
                 if (adminPermission != null) continue;
                 set.Add(new SysPermission() { Permission = permission, Entity = AdminRole.Id, PermissionType = (int)PermissionType.RoleMenus });
                 if (TemplateRoleUrls.Contains(item.Url))
@@ -246,18 +250,18 @@ namespace Caviar.Infrastructure.Persistence
             await _dbContext.SaveChangesAsync();
         }
 
-       
+
 
         protected virtual async Task CreateInitUserGroup()
         {
             var set = _dbContext.Set<SysUserGroup>();
-            set.Add(new SysUserGroup() { Name = "总部",DataId = DataId });
+            set.Add(new SysUserGroup() { Name = "总部", DataId = DataId });
             await _dbContext.SaveChangesAsync();
         }
         protected virtual async Task CreateInitUser()
         {
             var userManager = _serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            var user = new ApplicationUser { Email = "1031622947@qq.com", AccountName = "北音执念", UserName = CurrencyConstant.Admin, Remark = "生活的意义就是折腾！",UserGroupId = DataId,DataId = DataId};
+            var user = new ApplicationUser { Email = "1031622947@qq.com", AccountName = "北音执念", UserName = CurrencyConstant.Admin, Remark = "生活的意义就是折腾！", UserGroupId = DataId, DataId = DataId };
             var result = await userManager.CreateAsync(user, CommonHelper.SHA256EncryptString(CurrencyConstant.DefaultPassword));
             if (!result.Succeeded) throw new Exception("创建管理员账号失败，数据初始化停止");
             await userManager.AddToRoleAsync(user, CurrencyConstant.Admin);
@@ -270,7 +274,7 @@ namespace Caviar.Infrastructure.Persistence
         protected virtual async Task CreateInitRole()
         {
             var roleManager = _serviceScope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
-            var role = new ApplicationRole { Name = CurrencyConstant.Admin ,DataId = DataId ,DataRange = DataRange.All,Remark="超级管理员" };
+            var role = new ApplicationRole { Name = CurrencyConstant.Admin, DataId = DataId, DataRange = DataRange.All, Remark = "超级管理员" };
             var result = await roleManager.CreateAsync(role);
             AdminRole = role;
             if (!result.Succeeded) throw new Exception("创建角色数据失败，数据初始化停止");
@@ -297,7 +301,7 @@ namespace Caviar.Infrastructure.Persistence
                         Icon = "windows",
                         DataId = CurrencyConstant.PublicData
                     }
-                    
+
                 },
                 new SysMenuView()
                 {
@@ -310,7 +314,7 @@ namespace Caviar.Infrastructure.Persistence
                         Number = "10",
                         DataId = CurrencyConstant.PublicData
                     }
-                    
+
                 },
                 new SysMenuView()
                 {
@@ -348,7 +352,7 @@ namespace Caviar.Infrastructure.Persistence
                     }
                 },
                 new SysMenuView()
-                { 
+                {
                     Entity = new SysMenu()
                     {
                         MenuName = CurrencyConstant.WebConfig,
@@ -406,7 +410,7 @@ namespace Caviar.Infrastructure.Persistence
             };
             List<SysMenuView> allMenu = new List<SysMenuView>();
             await AddMenus(menus, allMenu);
-            permissionMenu.AddRange(allMenu.Select(u=>u.Entity));
+            permissionMenu.AddRange(allMenu.Select(u => u.Entity));
             var buttons = await UpdateApi(allMenu);
             permissionMenu.AddRange(buttons);
             return permissionMenu;
@@ -446,7 +450,7 @@ namespace Caviar.Infrastructure.Persistence
                 addButtons.AddRange(buttons);
                 foreach (var menu_item in item)
                 {
-                    if(menu_item.ParentId == 0)
+                    if (menu_item.ParentId == 0)
                     {
                         menu_item.ParentId = id;
                     }
@@ -549,7 +553,7 @@ namespace Caviar.Infrastructure.Persistence
                             DataId = CurrencyConstant.PublicData,
                         },
                     };
-                    
+
                     break;
                 default:
                     break;
@@ -564,7 +568,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <param name="sysMenuViews"></param>
         /// <param name="parentId"></param>
         /// <returns></returns>
-        private async Task AddMenus(List<SysMenuView> sysMenuViews,List<SysMenuView> allMenu,int parentId = 0)
+        private async Task AddMenus(List<SysMenuView> sysMenuViews, List<SysMenuView> allMenu, int parentId = 0)
         {
             foreach (var item in sysMenuViews)
             {
@@ -580,7 +584,7 @@ namespace Caviar.Infrastructure.Persistence
             await _dbContext.SaveChangesAsync();
         }
 
-        public Dictionary<string,string> MenuIconDic { get; set; } =  new Dictionary<string, string>()
+        public Dictionary<string, string> MenuIconDic { get; set; } = new Dictionary<string, string>()
         {
             {CurrencyConstant.SysMenuKey,"profile"} ,
             {CurrencyConstant.ApplicationUserKey,"user" },

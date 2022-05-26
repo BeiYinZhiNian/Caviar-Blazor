@@ -1,21 +1,25 @@
-﻿using Caviar.Core.Interface;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
+using System;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using CacheManager.Core;
+using Caviar.Core.Interface;
+using Caviar.Core.Services;
+using Caviar.Infrastructure.API;
 using Caviar.Infrastructure.Persistence;
+using Caviar.SharedKernel.Entities;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.IO;
-using System.Linq;
-using System.Text;
 using Newtonsoft.Json;
-using Microsoft.AspNetCore.Builder;
-using Caviar.Core.Services;
-using Microsoft.AspNetCore.Hosting.Server.Features;
-using Caviar.Infrastructure.API;
-using Microsoft.AspNetCore.Hosting;
-using System.Net.Http;
-using Caviar.SharedKernel.Entities;
 
 namespace Caviar.Infrastructure
 {
@@ -47,11 +51,11 @@ namespace Caviar.Infrastructure
                         //无效cookies过滤
                     }
                 }
-                
+
                 var handler = new HttpClientHandler { CookieContainer = cookieContainer };
                 return handler;
             });
-            services.AddTransient(sp =>
+            _ = services.AddTransient(sp =>
             {
                 var handler = sp.GetService<HttpClientHandler>();
                 HttpClient client = new HttpClient(handler);
@@ -64,7 +68,7 @@ namespace Caviar.Infrastructure
                 var uri = GetServerUri();
                 if (uri != null)
                 {
-                    client.BaseAddress = new Uri($"{config.Urls.Replace("0.0.0.0","localhost")}/{CurrencyConstant.Api}");
+                    client.BaseAddress = new Uri($"{config.Urls.Replace("0.0.0.0", "localhost")}/{CurrencyConstant.Api}");
                 }
                 return client;
             });
@@ -90,13 +94,20 @@ namespace Caviar.Infrastructure
 
         public static IServiceCollection AddCaviar(this IServiceCollection services)
         {
+            var cacheManager = CacheFactory.Build("StartedCache", settings =>
+            {
+                settings.
+                WithMicrosoftMemoryCacheHandle("caviar")
+                .WithExpiration(ExpirationMode.Sliding, TimeSpan.FromMinutes(3));
+            });
+            services.AddSingleton(cacheManager);
             services.AddSingleton<CaviarConfig>(); // 配置文件
             services.AddScoped<IAuthService, ServerAuthService>();
             services.AddScoped<ILanguageService, InAssemblyLanguageService>();
             services.AddScoped<Interactor>();
             services.AddScoped<IAppDbContext, ApplicationDbContext>();
-            services.AddScoped(typeof(IEasyBaseServices<,>),typeof(EasyBaseServices<,>));
-            AutomaticInjection injection = new AutomaticInjection();
+            services.AddScoped(typeof(IEasyBaseServices<,>), typeof(EasyBaseServices<,>));
+            var injection = new AutomaticInjection();
             injection.AddIBaseModel(services);
             injection.AddInject(services);
             return services;
@@ -117,7 +128,7 @@ namespace Caviar.Infrastructure
             return app;
         }
 
-        public static void ReadConfig<T>(string appsettingPath,T anonymousTypeObject)
+        public static void ReadConfig<T>(string appsettingPath, T anonymousTypeObject)
         {
             string appsettings = "{}";
             if (File.Exists(appsettingPath))

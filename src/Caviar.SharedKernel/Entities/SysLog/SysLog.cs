@@ -1,16 +1,14 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Caviar.SharedKernel.Entities
 {
-    public partial class SysLog: SysUseEntity
+    public partial class SysLog : SysUseEntity
     {
         /// <summary>
         /// 日志跟踪id

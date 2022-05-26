@@ -1,14 +1,14 @@
-﻿using AntDesign;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
+using System.Threading.Tasks;
+using AntDesign;
 using Caviar.AntDesignUI.Core;
 using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Caviar.AntDesignUI.Shared
 {
@@ -56,7 +56,7 @@ namespace Caviar.AntDesignUI.Shared
                 Task.Delay(500).Wait();
                 MessageService.Warning("wasm未准备就绪，请稍后在试");
             });
-            
+
         }
 
         private void SwithServer()

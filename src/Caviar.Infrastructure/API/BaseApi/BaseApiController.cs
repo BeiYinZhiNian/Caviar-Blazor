@@ -1,19 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using Caviar.Core.Services;
-using Caviar.Core.Interface;
-using Caviar.SharedKernel.Entities.View;
-using Caviar.Core;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Microsoft.AspNetCore.Http;
-using Caviar.SharedKernel.Entities;
 using System.Net;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+using System.Threading.Tasks;
+using Caviar.Core.Interface;
+using Caviar.Core.Services;
+using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -21,7 +22,7 @@ namespace Caviar.Infrastructure.API.BaseApi
 {
     [Route($"{CurrencyConstant.Api}[controller]/[action]")]
     [ApiController]
-    public class BaseApiController: Controller
+    public class BaseApiController : Controller
     {
         /// <summary>
         /// 数据互动
@@ -43,7 +44,7 @@ namespace Caviar.Infrastructure.API.BaseApi
         /// 角色服务
         /// </summary>
         private RoleServices _roleServices;
-        private LogServices<BaseApiController> _logServices { get; set; }
+        private LogServices<BaseApiController> _logServices;
         /// <summary>
         /// 服务配置
         /// </summary>
@@ -51,7 +52,7 @@ namespace Caviar.Infrastructure.API.BaseApi
         /// <summary>
         /// 忽略url权限
         /// </summary>
-        protected List<string> IgnoreUrl => new List<string>() { 
+        protected List<string> IgnoreUrl => new List<string>() {
             UrlConfig.CurrentUserInfo,
             UrlConfig.SignInActual,
             UrlConfig.Logout,
@@ -82,7 +83,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             }
             else
             {
-                if(User.Identity.IsAuthenticated)
+                if (User.Identity.IsAuthenticated)
                 {
                     _interactor.UserInfo = await _userServices.GetUserInfoAsync(User.Identity.Name);
                 }
@@ -92,11 +93,11 @@ namespace Caviar.Infrastructure.API.BaseApi
             //请求参数
             _interactor.ActionArguments = context.ActionArguments;
             _logServices.Infro("请求开始");
-            if(_interactor.Method == "POST")
+            if (_interactor.Method == "POST")
             {
                 var actionArguments = context.ActionArguments;
                 var postData = JsonConvert.SerializeObject(actionArguments);
-                var log = _logServices.CreateLog("post请求数据",LogLevel.Information, postData);
+                var log = _logServices.CreateLog("post请求数据", LogLevel.Information, postData);
                 _logServices.Log(log);
             }
             //设置语言信息
@@ -119,7 +120,7 @@ namespace Caviar.Infrastructure.API.BaseApi
         protected virtual bool UrlCheck()
         {
             //获取所有角色id
-            var roleIds = _interactor.ApplicationRoles.Select(u=>u.Id).ToList();
+            var roleIds = _interactor.ApplicationRoles.Select(u => u.Id).ToList();
             var menuPermission = _permissionServices.GetPermissionsAsync(roleIds, u => u.PermissionType == (int)PermissionType.RoleMenus).Result;
             _interactor.PermissionUrls = _permissionServices.GetPermissionsAsync(menuPermission);
             var url = _interactor.Current_Action.Remove(0, CurrencyConstant.Api.Length + 1);
@@ -139,7 +140,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             else
             {
                 var msg = _languageService[$"{CurrencyConstant.ExceptionMessage}.{CurrencyConstant.LoginExpiration}"];
-                context.Result = Ok(HttpStatusCode.RedirectMethod, msg,UrlConfig.Login);
+                context.Result = Ok(HttpStatusCode.RedirectMethod, msg, UrlConfig.Login);
                 _logServices.Infro("用户登录过期");
             }
         }
@@ -155,7 +156,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             var resultScanner = CreateService<ResultScannerServices>();
             var roleIds = _interactor.ApplicationRoles.Select(u => u.Id).ToList();
             //赋值字段权限
-            resultScanner.PermissionFieldss = _permissionServices.GetPermissionsAsync(roleIds,u => u.PermissionType == (int)PermissionType.RoleFields).Result;
+            resultScanner.PermissionFieldss = _permissionServices.GetPermissionsAsync(roleIds, u => u.PermissionType == (int)PermissionType.RoleFields).Result;
             var resultMsg = resultScanner.ResultHandle(result);
             if (resultMsg != null)
             {
@@ -175,15 +176,15 @@ namespace Caviar.Infrastructure.API.BaseApi
             else
             {
                 //自定义返回
-                var StatusCode = result.GetObjValue("StatusCode");
-                var code = StatusCode == null ? HttpStatusCode.OK : (HttpStatusCode)StatusCode;
-                var log = _logServices.CreateLog("自定义返回", LogLevel.Information, elapsed: timeSpan.TotalMilliseconds,status: code);
+                var statusCode = result.GetObjValue("StatusCode");
+                var code = statusCode == null ? HttpStatusCode.OK : (HttpStatusCode)statusCode;
+                var log = _logServices.CreateLog("自定义返回", LogLevel.Information, elapsed: timeSpan.TotalMilliseconds, status: code);
                 _logServices.Log(log);
             }
             _logServices.Infro("请求结束");
         }
 
-        protected virtual IActionResult Ok(HttpStatusCode status = HttpStatusCode.OK,string title = "Succeeded",string url = null,Dictionary<string,string> detail = null,object data = null)
+        protected virtual IActionResult Ok(HttpStatusCode status = HttpStatusCode.OK, string title = "Succeeded", string url = null, Dictionary<string, string> detail = null, object data = null)
         {
             var resultMst = new ResultMsg<object>
             {
@@ -213,7 +214,7 @@ namespace Caviar.Infrastructure.API.BaseApi
         /// </summary>
         /// <param name="modelName"></param>
         /// <returns></returns>
-        protected virtual async Task<List<FieldsView>> GetFields<T>() where T:IUseEntity
+        protected virtual async Task<List<FieldsView>> GetFields<T>() where T : IUseEntity
         {
             var permissionServices = CreateService<RoleFieldServices>();
             var fieldName = typeof(T).Name;
@@ -229,9 +230,9 @@ namespace Caviar.Infrastructure.API.BaseApi
     }
 
 
-    public class EasyBaseApiController<Vm, T>: BaseApiController where T : class, IUseEntity, new() where Vm : class,IView<T>,new()
+    public class EasyBaseApiController<Vm, T> : BaseApiController where T : class, IUseEntity, new() where Vm : class, IView<T>, new()
     {
-        IEasyBaseServices<T,Vm> _service;
+        IEasyBaseServices<T, Vm> _service;
         protected IEasyBaseServices<T, Vm> Service
         {
             get
@@ -280,7 +281,7 @@ namespace Caviar.Infrastructure.API.BaseApi
             await Service.DeleteEntityAsync(vm.Entity);
             return Ok();
         }
-        
+
         [HttpPost]
         public virtual async Task<IActionResult> Query(QueryView query)
         {

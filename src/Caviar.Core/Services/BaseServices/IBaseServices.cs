@@ -1,11 +1,14 @@
-﻿using Caviar.Core.Interface;
-using Caviar.SharedKernel.Entities;
-using Caviar.SharedKernel.Entities.View;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
 
 namespace Caviar.Core.Services
 {
@@ -13,7 +16,7 @@ namespace Caviar.Core.Services
     /// 基础sdk封装
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IEasyBaseServices<T,Vm> : IDIinjectAtteribute where T : class, IUseEntity, new() where Vm : class,IView<T>,new()
+    public interface IEasyBaseServices<T, Vm> : IDIinjectAtteribute where T : class, IUseEntity, new() where Vm : class, IView<T>, new()
     {
         /// <summary>
         /// 添加实体

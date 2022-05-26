@@ -1,14 +1,15 @@
-﻿using AntDesign;
-using Microsoft.AspNetCore.Components;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Text.Json;
 using System.Net;
-using Caviar.SharedKernel.Entities.View;
-using Caviar.SharedKernel.Entities;
+using System.Threading.Tasks;
+using AntDesign;
 using Caviar.AntDesignUI.Core;
+using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
+using Microsoft.AspNetCore.Components;
 
 namespace Caviar.AntDesignUI.Pages.CodeGeneration
 {
@@ -38,7 +39,7 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
             }
             else
             {
-                await MessageService.Error(LanguageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.DebugErrorMsg}"]);
+                await MessageService.Error(LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.DebugErrorMsg}"]);
             }
         }
 
@@ -81,7 +82,7 @@ namespace Caviar.AntDesignUI.Pages.CodeGeneration
                 {
                     return;
                 }
-                var result = await HttpService.PostJson<CodeGenerateOptions,List<PreviewCode>>($"{UrlConfig.CodeFileGenerate}?isPerview=true", GenerateData);
+                var result = await HttpService.PostJson<CodeGenerateOptions, List<PreviewCode>>($"{UrlConfig.CodeFileGenerate}?isPerview=true", GenerateData);
                 if (result.Status == HttpStatusCode.OK)
                 {
                     lstTabs = result.Data;

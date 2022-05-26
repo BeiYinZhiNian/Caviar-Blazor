@@ -1,16 +1,17 @@
-﻿using AntDesign;
-using Caviar.SharedKernel.Entities.View;
-using Caviar.SharedKernel.Entities.User;
-using Microsoft.AspNetCore.Components.Authorization;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
+using AntDesign;
 using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.User;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Caviar.AntDesignUI.Core
 {
@@ -63,7 +64,7 @@ namespace Caviar.AntDesignUI.Core
         public async Task<ResultMsg> Login(UserLogin loginParameters, string returnUrl)
         {
             var result = await api.Login(loginParameters, returnUrl);
-            if(result.Status != HttpStatusCode.OK)
+            if (result.Status != HttpStatusCode.OK)
             {
                 _ = _message.Error(result.Title);
             }

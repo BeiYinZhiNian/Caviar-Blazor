@@ -1,15 +1,14 @@
-﻿using AntDesign;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using AntDesign;
 using Caviar.AntDesignUI.Core;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.WebUtilities;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Caviar.AntDesignUI.Pages.Permission
 {
@@ -44,7 +43,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
         protected override async Task OnInitializedAsync()
         {
             var result = await HttpService.GetJson<ApplicationRoleView>(UrlConfig.RoleFindById + $"?id={RoleId}");
-            if(result.Status == System.Net.HttpStatusCode.OK)
+            if (result.Status == System.Net.HttpStatusCode.OK)
             {
                 Role = result.Data;
             }

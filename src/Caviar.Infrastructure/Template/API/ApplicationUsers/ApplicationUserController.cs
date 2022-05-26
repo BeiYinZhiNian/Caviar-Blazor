@@ -1,7 +1,10 @@
+// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
 using Caviar.Infrastructure.API.BaseApi;
-using System.ComponentModel;
-using Caviar.SharedKernel.Entities.View;
 using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
 
 /// <summary>
 /// 生成者：
@@ -15,8 +18,8 @@ namespace Caviar.Infrastructure.API
     /// <summary>
     /// 用户管理控制器
     /// </summary>
-    public partial class ApplicationUserController : EasyBaseApiController<ApplicationUserView,ApplicationUser>
+    public partial class ApplicationUserController : EasyBaseApiController<ApplicationUserView, ApplicationUser>
     {
-        
+
     }
 }

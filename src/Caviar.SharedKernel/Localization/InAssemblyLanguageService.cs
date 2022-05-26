@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -9,7 +13,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 namespace Caviar.SharedKernel.Entities
 {
-    public class InAssemblyLanguageService:ILanguageService
+    public class InAssemblyLanguageService : ILanguageService
     {
         private readonly Assembly _resourcesAssembly;
         public static Func<string, string> UserLanguage { get; set; }
@@ -34,18 +38,18 @@ namespace Caviar.SharedKernel.Entities
         public CultureInfo CurrentCulture { get; private set; }
 
         public JObject Resources { get; private set; }
-        
 
-        public string this[string name] 
-        { 
-            get 
+
+        public string this[string name]
+        {
+            get
             {
                 if (string.IsNullOrEmpty(name)) return "";
                 var arr = name.Split(".");
                 JToken jtoken = null;
                 foreach (var item in arr)
                 {
-                    if(jtoken == null)
+                    if (jtoken == null)
                     {
                         jtoken = Resources[item];
                     }
@@ -53,11 +57,11 @@ namespace Caviar.SharedKernel.Entities
                     {
                         jtoken = jtoken[item];
                     }
-                    
+
                 }
                 if (jtoken == null) return arr[arr.Length - 1];
                 return jtoken.ToString();
-            } 
+            }
         }
 
         public event EventHandler<CultureInfo> LanguageChanged;
@@ -99,7 +103,7 @@ namespace Caviar.SharedKernel.Entities
 
         private JObject GetKeysFromCulture(string name)
         {
-            
+
             try
             {
                 var content = "";
@@ -118,7 +122,7 @@ namespace Caviar.SharedKernel.Entities
                 {
                     jobject.Merge(JObject.Parse(content));
                 }
-                if(jobject.Count == 0)
+                if (jobject.Count == 0)
                 {
                     throw new FileNotFoundException($"没有语言文件 '{name}'");
                 }
@@ -141,7 +145,7 @@ namespace Caviar.SharedKernel.Entities
             return availableResources;
         }
 
-        public List<(string CultureName,string ResourceName)> GetLanguageList()
+        public List<(string CultureName, string ResourceName)> GetLanguageList()
         {
             var list = GetUserLanguageList?.Invoke();
             if (list != null) return list;
@@ -157,7 +161,7 @@ namespace Caviar.SharedKernel.Entities
 
         public async void SetLanguage(ValueTask<string> taskCultureName)
         {
-            var cultureName =  await taskCultureName;
+            var cultureName = await taskCultureName;
             if (string.IsNullOrEmpty(cultureName)) return;
             var culture = CultureInfo.GetCultureInfo(cultureName);
             SetLanguage(culture);

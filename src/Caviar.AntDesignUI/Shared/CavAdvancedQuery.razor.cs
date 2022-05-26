@@ -1,18 +1,20 @@
-﻿using AntDesign;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AntDesign;
 using Caviar.AntDesignUI.Core;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Caviar.AntDesignUI.Shared
 {
-    public partial class CavAdvancedQuery: ITableTemplate
+    public partial class CavAdvancedQuery : ITableTemplate
     {
         [Parameter]
         public string CurrentUrl { get; set; }
@@ -33,7 +35,7 @@ namespace Caviar.AntDesignUI.Shared
         ILanguageService LanguageService { get; set; }
 
 
-        void OnSelectItem(Guid trackId,string item)
+        void OnSelectItem(Guid trackId, string item)
         {
             var field = Fields.Single(u => u.Entity.FieldName == item);
             var model = QueryView.QueryModels[trackId];
@@ -44,9 +46,9 @@ namespace Caviar.AntDesignUI.Shared
 
         void AddCondition()
         {
-            var model = new QueryModel() { ComponentStatus = new ComponentStatus()};
-            QueryView.QueryModels.Add(Guid.NewGuid(),model);
-            
+            var model = new QueryModel() { ComponentStatus = new ComponentStatus() };
+            QueryView.QueryModels.Add(Guid.NewGuid(), model);
+
         }
 
         void RemoveCondition(Guid trackId)
@@ -54,7 +56,7 @@ namespace Caviar.AntDesignUI.Shared
             QueryView.QueryModels.Remove(trackId);
         }
 
-        void OnValueChange<T>(QueryModel queryModel,T value)
+        void OnValueChange<T>(QueryModel queryModel, T value)
         {
             queryModel.Value = value.ToString();
             Console.WriteLine(queryModel.Value);
@@ -77,7 +79,7 @@ namespace Caviar.AntDesignUI.Shared
                 queryModel.QuerySplicings = QueryModel.QuerySplicing.Or;
             }
         }
-        
+
 
         /// <summary>
         /// 开始搜索
@@ -93,15 +95,15 @@ namespace Caviar.AntDesignUI.Shared
 
         protected override void OnInitialized()
         {
-            if(QueryView == null)
+            if (QueryView == null)
             {
                 QueryView = new QueryView();
             }
-            if(QueryView.QueryModels == null)
+            if (QueryView.QueryModels == null)
             {
                 QueryView.QueryModels = new Dictionary<Guid, QueryModel>();
             }
-            if(QueryView.QueryModels.Count == 0)
+            if (QueryView.QueryModels.Count == 0)
             {
                 AddCondition();
             }
@@ -123,5 +125,5 @@ namespace Caviar.AntDesignUI.Shared
         }
     }
 
-    
+
 }

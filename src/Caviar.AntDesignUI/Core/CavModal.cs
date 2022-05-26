@@ -1,16 +1,17 @@
-﻿using AntDesign;
-using Caviar.SharedKernel.Entities;
-using Caviar.SharedKernel.Entities.View;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AntDesign;
+using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 using OneOf;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Caviar.AntDesignUI.Core
 {
@@ -19,7 +20,7 @@ namespace Caviar.AntDesignUI.Core
         ModalService Modal;
         ILanguageService LanguageService;
         MessageService MessageService;
-        public CavModal(ILanguageService languageService,ModalService modalService, MessageService messageService)
+        public CavModal(ILanguageService languageService, ModalService modalService, MessageService messageService)
         {
             LanguageService = languageService;
             Modal = modalService;
@@ -67,7 +68,7 @@ namespace Caviar.AntDesignUI.Core
                 modalOptions.BodyStyle += $"height:{modalOptions.Height}px;";
                 if (modalOptions.IsOverflow) modalOptions.BodyStyle += "overflow-y: auto;";
                 RenderFragment render = modalOptions.Render;
-                if(render == null)
+                if (render == null)
                 {
                     render = Render(modalOptions.Url, modalOptions.Title, modalOptions.Paramenter);
                 }
@@ -123,10 +124,10 @@ namespace Caviar.AntDesignUI.Core
                 MessageService.Error(LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ComponentErrorMsg}"].Replace("{title}", title).Replace("{url}", url));
             };
 
-            
+
             void SetComponent(object e)
             {
-                if(e is ITableTemplate)
+                if (e is ITableTemplate)
                 {
                     TableTemplate = (ITableTemplate)e;
                 }
@@ -140,7 +141,7 @@ namespace Caviar.AntDesignUI.Core
                 {
                     res = await TableTemplate.Validate();
                 }
-                if(FuncValidate != null)
+                if (FuncValidate != null)
                 {
                     res = await FuncValidate.Invoke();
                 }
@@ -159,7 +160,7 @@ namespace Caviar.AntDesignUI.Core
             }
         }
 
-        
+
     }
 
     public class CavModalOptions

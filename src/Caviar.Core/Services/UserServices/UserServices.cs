@@ -1,22 +1,24 @@
-﻿using Caviar.Core.Interface;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Caviar.Core.Interface;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.User;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Caviar.Core.Services
 {
-    public class UserServices:DbServices
+    public class UserServices : DbServices
     {
-        private string[] SpecialUsers = new string[]
+        private readonly string[] _specialUsers = new string[]
         {
             CurrencyConstant.TouristUser,
         };
@@ -27,14 +29,14 @@ namespace Caviar.Core.Services
             Interactor interactor,
             UserManager<ApplicationUser> userManager,
             IAppDbContext appDbContext,
-            CaviarConfig caviarConfig) :base(appDbContext)
+            CaviarConfig caviarConfig) : base(appDbContext)
         {
             _interactor = interactor;
             _userManager = userManager;
             _caviarConfig = caviarConfig;
         }
 
-        public async Task<IdentityResult> AssignRolesAsync(string userName,IList<string> roles)
+        public async Task<IdentityResult> AssignRolesAsync(string userName, IList<string> roles)
         {
             var user = await GetUserInfoAsync(userName);
             var currentRoles = await GetRolesAsync(user);
@@ -53,7 +55,7 @@ namespace Caviar.Core.Services
                 {
                     dic.Add(item.Code, item.Description);
                 }
-                throw new ResultException(new ResultMsg() { Title="移除角色时发生错误",Status = System.Net.HttpStatusCode.BadRequest ,Detail = dic });
+                throw new ResultException(new ResultMsg() { Title = "移除角色时发生错误", Status = System.Net.HttpStatusCode.BadRequest, Detail = dic });
             }
             return result;
         }
@@ -73,7 +75,7 @@ namespace Caviar.Core.Services
         {
             if (user == null) return new List<int>();
             var roleSet = AppDbContext.DbContext.Set<IdentityUserRole<int>>();
-            var roleIds = await roleSet.Where(u => u.UserId == user.Id).Select(u=>u.RoleId).ToListAsync();
+            var roleIds = await roleSet.Where(u => u.UserId == user.Id).Select(u => u.RoleId).ToListAsync();
             return roleIds;
         }
 
@@ -81,8 +83,8 @@ namespace Caviar.Core.Services
         {
             var user = await GetCurrentUserInfoAsync();
             var useerGroup = await AppDbContext.SingleOrDefaultAsync<SysUserGroup>(u => u.Id == user.UserGroupId);
-            UserDetails useerDetails = new UserDetails() 
-            { 
+            UserDetails useerDetails = new UserDetails()
+            {
                 UserName = user.UserName,
                 AccountName = user.AccountName,
                 Email = user.Email,
@@ -105,9 +107,9 @@ namespace Caviar.Core.Services
             return await _userManager.UpdateAsync(user);
         }
 
-        public async Task<IdentityResult> UpdateUserAsync(string operatorUp,ApplicationUserView vm)
+        public async Task<IdentityResult> UpdateUserAsync(string operatorUp, ApplicationUserView vm)
         {
-            if (SpecialUsers.Contains(vm.Entity.UserName))
+            if (_specialUsers.Contains(vm.Entity.UserName))
             {
                 throw new Exception("特殊用户，禁止修改");
             }
@@ -129,7 +131,7 @@ namespace Caviar.Core.Services
 
         public Task<IdentityResult> DeleteUserAsync(ApplicationUserView vm)
         {
-            if (SpecialUsers.Contains(vm.Entity.UserName))
+            if (_specialUsers.Contains(vm.Entity.UserName))
             {
                 throw new Exception("特殊用户，禁止删除");
             }
@@ -140,28 +142,28 @@ namespace Caviar.Core.Services
             var result = _userManager.DeleteAsync(vm.Entity);
             return result;
         }
-        
 
-        public async Task<CurrentUser> GetCurrentUserInfoAsync(ClaimsPrincipal User)
+
+        public async Task<CurrentUser> GetCurrentUserInfoAsync(ClaimsPrincipal user)
         {
             List<CaviarClaim> claims = null;
-            if (User.Identity.IsAuthenticated)
+            if (user.Identity.IsAuthenticated)
             {
-                var applicationUser = await _userManager.FindByNameAsync(User.Identity.Name);
-                if(applicationUser == null)
+                var applicationUser = await _userManager.FindByNameAsync(user.Identity.Name);
+                if (applicationUser == null)
                 {
                     return new CurrentUser() { IsAuthenticated = false };
                 }
-                claims = new List<CaviarClaim>() 
-                { 
+                claims = new List<CaviarClaim>()
+                {
                     new CaviarClaim(CurrencyConstant.HeadPortrait, applicationUser.HeadPortrait ?? ""),
                     new CaviarClaim(CurrencyConstant.AccountName,applicationUser.AccountName),
                 };
-                claims.AddRange(User.Claims.Select(u => new CaviarClaim(u)));
+                claims.AddRange(user.Claims.Select(u => new CaviarClaim(u)));
                 var currentUser = new CurrentUser
                 {
-                    IsAuthenticated = User.Identity.IsAuthenticated,
-                    UserName = User.Identity.Name,
+                    IsAuthenticated = user.Identity.IsAuthenticated,
+                    UserName = user.Identity.Name,
                     Claims = claims
                 };
                 return await Task.FromResult(currentUser);
@@ -179,7 +181,7 @@ namespace Caviar.Core.Services
                     new CaviarClaim(CurrencyConstant.AccountName,applicationUser.AccountName),
                     new CaviarClaim(CurrencyConstant.TouristVisit,true.ToString())
                 };
-                claims.AddRange(User.Claims.Select(u => new CaviarClaim(u)));
+                claims.AddRange(user.Claims.Select(u => new CaviarClaim(u)));
                 var currentUser = new CurrentUser
                 {
                     IsAuthenticated = true,
@@ -192,13 +194,13 @@ namespace Caviar.Core.Services
             {
                 var currentUser = new CurrentUser
                 {
-                    IsAuthenticated = User.Identity.IsAuthenticated,
-                    UserName = User.Identity.Name,
+                    IsAuthenticated = user.Identity.IsAuthenticated,
+                    UserName = user.Identity.Name,
                     Claims = claims
                 };
                 return await Task.FromResult(currentUser);
             }
-            
+
         }
 
         public Task<ApplicationUser> GetCurrentUserInfoAsync()

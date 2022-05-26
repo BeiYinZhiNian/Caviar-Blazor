@@ -1,14 +1,17 @@
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
+using System;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using System;
 using AntDesign;
+using Caviar.SharedKernel.Entities;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
-using System.Net;
-using Caviar.SharedKernel.Entities.View;
-using Caviar.SharedKernel.Entities;
 
 namespace Caviar.AntDesignUI.Core
 {
@@ -18,35 +21,35 @@ namespace Caviar.AntDesignUI.Core
         NavigationManager _navigationManager;
         MessageService _message;
         IJSRuntime _jSRuntime;
-        public HttpService(HttpClient http, 
-            NotificationService _notice,
-            NavigationManager navigationManager, 
+        public HttpService(HttpClient http,
+            NotificationService notice,
+            NavigationManager navigationManager,
             MessageService message,
-            IJSRuntime JsRuntime)
+            IJSRuntime jsRuntime)
         {
             HttpClient = http;
-            _notificationService = _notice;
+            _notificationService = notice;
             _navigationManager = navigationManager;
             _message = message;
-            _jSRuntime = JsRuntime;
+            _jSRuntime = jsRuntime;
         }
 
         public HttpClient HttpClient { get; }
         public async Task<ResultMsg<T>> GetJson<T>(string address)
         {
-            var result = await HttpRequest<T,T>(address,"get",default);
+            var result = await HttpRequest<T, T>(address, "get", default);
             return result;
         }
 
         public async Task<ResultMsg> GetJson(string address)
         {
-            var result = await HttpRequest<object,object>(address, "get", default);
+            var result = await HttpRequest<object, object>(address, "get", default);
             return result;
         }
 
-        public async Task<ResultMsg<T>> PostJson<K, T>(string address,K data)
+        public async Task<ResultMsg<T>> PostJson<K, T>(string address, K data)
         {
-            var result = await HttpRequest<K,T>(address, "post", data);
+            var result = await HttpRequest<K, T>(address, "post", data);
             return result;
         }
 
@@ -56,7 +59,7 @@ namespace Caviar.AntDesignUI.Core
             return result;
         }
 
-        async Task<ResultMsg<T>> HttpRequest<K,T>(string address,string model, K data)
+        async Task<ResultMsg<T>> HttpRequest<K, T>(string address, string model, K data)
         {
             ResultMsg<T> result;
             try
@@ -66,7 +69,7 @@ namespace Caviar.AntDesignUI.Core
                 {
                     responseMessage = await HttpClient.GetAsync(address);
                 }
-                else if(model.ToLower() == "post")
+                else if (model.ToLower() == "post")
                 {
                     responseMessage = await HttpClient.PostAsJsonAsync(address, data);
                 }
@@ -89,7 +92,7 @@ namespace Caviar.AntDesignUI.Core
                     };
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 result = new ResultMsg<T>()
                 {
@@ -104,7 +107,7 @@ namespace Caviar.AntDesignUI.Core
             Response(result);
             return result;
         }
-        
+
         public void Response(ResultMsg result)
         {
             switch (result.Status)
@@ -117,13 +120,13 @@ namespace Caviar.AntDesignUI.Core
                     break;
                 case HttpStatusCode.RedirectMethod://强制重定向
                     _ = _message.Warning(result.Title);
-                    _navigationManager.NavigateTo(_jSRuntime,result.Url);
+                    _navigationManager.NavigateTo(_jSRuntime, result.Url);
                     break;
                 case HttpStatusCode.Unauthorized://权限不足
                 case HttpStatusCode.InternalServerError://发生严重错误
                 default:
                     string msg = "";
-                    if (result.Detail!=null && result.Detail.Count>0)
+                    if (result.Detail != null && result.Detail.Count > 0)
                     {
                         foreach (var item in result.Detail)
                         {

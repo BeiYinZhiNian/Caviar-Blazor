@@ -1,16 +1,14 @@
-﻿
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Net;
-using Caviar.SharedKernel.Entities;
-using System.Security.Claims;
+using System.Reflection;
 using Caviar.Core.Services;
-using Caviar.Core.Interface;
-using Microsoft.EntityFrameworkCore;
+using Caviar.SharedKernel.Entities;
 
 namespace Caviar.Infrastructure
 {
@@ -25,17 +23,17 @@ namespace Caviar.Infrastructure
 
         public ResultMsg ResultHandle(object result)
         {
-            var StatusCode = result.GetObjValue("StatusCode");
+            var statusCode = result.GetObjValue("StatusCode");
             var value = result.GetObjValue("Value");
-            if (value == null && StatusCode == null)
+            if (value == null && statusCode == null)
             {
                 return null;
             }
             if (value != null && IsDataFilter)
             {
-                ArgumentsModel(value.GetType(),value);
+                ArgumentsModel(value.GetType(), value);
             }
-            var code = StatusCode == null ? HttpStatusCode.OK : (HttpStatusCode)StatusCode;
+            var code = statusCode == null ? HttpStatusCode.OK : (HttpStatusCode)statusCode;
             if (value is ResultMsg)
             {
                 var msg = (ResultMsg)value;
@@ -58,7 +56,7 @@ namespace Caviar.Infrastructure
         /// <param name="data">需要检测的字段,过滤后将未授权字段的值设置为default</param>
         /// <param name="fields">用户拥有的字段权限</param>
         /// <
-        public void ArgumentsModel(Type type,object data)
+        public void ArgumentsModel(Type type, object data)
         {
             if (data == null) return;
             if (!type.IsClass)//排除非类
@@ -75,7 +73,7 @@ namespace Caviar.Infrastructure
             {
                 if (data == null) return;
                 //进行非法字段检测
-                ArgumentsFields(type,data);
+                ArgumentsFields(type, data);
             }
             else if (type.GetInterfaces().Contains(typeof(System.Collections.IEnumerable)))
             {
@@ -106,7 +104,7 @@ namespace Caviar.Infrastructure
         /// </summary>
         /// <param name="type"></param>
         /// <param name="data"></param>
-        public void ArgumentsFields(Type type,object data)
+        public void ArgumentsFields(Type type, object data)
         {
             var baseType = type.GetInterfaces().FirstOrDefault(u => u == typeof(IUseEntity));
             if (baseType == null) return;

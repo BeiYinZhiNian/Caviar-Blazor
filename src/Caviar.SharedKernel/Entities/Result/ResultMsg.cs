@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
 using System.Collections.Generic;
 using System.Net;
 
@@ -25,7 +28,7 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 此问题特定的可读说明。
         /// </summary>
-        public Dictionary<string,string> Detail { get; set; }
+        public Dictionary<string, string> Detail { get; set; }
     }
 
     public class ResultMsg<T> : ResultMsg

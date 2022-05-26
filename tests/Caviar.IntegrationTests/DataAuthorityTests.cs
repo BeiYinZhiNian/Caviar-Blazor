@@ -1,19 +1,16 @@
-﻿using Caviar.Core.Interface;
-using Caviar.Infrastructure.Persistence;
-using Caviar.SharedKernel.Entities;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features.Authentication;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using Caviar.Infrastructure.Persistence;
+using Caviar.SharedKernel.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Caviar.IntegrationTests
 {
@@ -24,14 +21,14 @@ namespace Caviar.IntegrationTests
         int _randomRange = 10;
         Random _random = new Random();
         readonly ILanguageService _languageService = new InAssemblyLanguageService();
-        
+
         public DataAuthorityTests()
         {
             CaviarConfig CaviarConfig = new CaviarConfig();
             var builder = new DbContextOptionsBuilder<IdentityDbContext<ApplicationUser, ApplicationRole, int>>()
                .UseInMemoryDatabase("ApplicationDbContext");
             Interactor interactor = new Interactor();
-            SysDbContext = new SysDbContext<ApplicationUser, ApplicationRole, int>(builder.Options, CaviarConfig, interactor,_languageService);
+            SysDbContext = new SysDbContext<ApplicationUser, ApplicationRole, int>(builder.Options, CaviarConfig, interactor, _languageService);
             SetTestData();
         }
 
@@ -47,7 +44,7 @@ namespace Caviar.IntegrationTests
                 menuList.Add(new SysMenu()
                 {
                     MenuName = "test",
-                    DataId = _random.Next(1,_randomRange),
+                    DataId = _random.Next(1, _randomRange),
                 });
             }
             var userGroupList = new List<SysUserGroup>();
@@ -56,7 +53,7 @@ namespace Caviar.IntegrationTests
                 userGroupList.Add(new SysUserGroup()
                 {
                     Name = "test",
-                    ParentId = _random.Next(1,_randomRange),
+                    ParentId = _random.Next(1, _randomRange),
                 });
             }
             var menuSet = SysDbContext.Set<SysMenu>();
@@ -75,8 +72,8 @@ namespace Caviar.IntegrationTests
             var testData = SysDbContext.Set<SysMenu>().ToList();
             var userGroupId = _random.Next(_randomRange); //所在用户组
             Interactor interactor = new Interactor();
-            interactor.ApplicationRoles = new List<ApplicationRole>() 
-            { 
+            interactor.ApplicationRoles = new List<ApplicationRole>()
+            {
                 new ApplicationRole() { DataRange = DataRange.Level },
             };
             interactor.UserInfo = new ApplicationUser()
@@ -85,7 +82,7 @@ namespace Caviar.IntegrationTests
             };
             var appDbContext = new ApplicationDbContext(SysDbContext, interactor, _languageService);
             var menus = appDbContext.GetAllAsync<SysMenu>().ToList();
-            var userGroupList = new List<int>() { 0,userGroupId};
+            var userGroupList = new List<int>() { 0, userGroupId };
             var userGroupData = testData.Where(u => userGroupList.Contains(u.DataId)).ToList();//获取本级数据
             Assert.AreEqual(menus.Count, userGroupData.Count); // 判断读取数量是否相等
             var exceptList = menus.Except(userGroupData).ToList();
@@ -112,7 +109,7 @@ namespace Caviar.IntegrationTests
             var appDbContext = new ApplicationDbContext(SysDbContext, interactor, _languageService);
             var menus = appDbContext.GetAllAsync<SysMenu>().ToList();
             var childrenSet = SysDbContext.Set<SysUserGroup>();
-            var childrenIds = childrenSet.Where(u => u.ParentId == userGroupId).Select(u=>u.Id).ToList();
+            var childrenIds = childrenSet.Where(u => u.ParentId == userGroupId).Select(u => u.Id).ToList();
             var userGroupList = new List<int>() { 0, userGroupId };
             userGroupList.AddRange(childrenIds);
             var userGroupData = testData.Where(u => userGroupList.Contains(u.DataId)).ToList();//获取本级和下级数据

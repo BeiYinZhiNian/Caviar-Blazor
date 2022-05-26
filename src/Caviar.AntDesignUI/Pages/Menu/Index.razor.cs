@@ -1,10 +1,14 @@
-﻿using AntDesign;
-using Microsoft.AspNetCore.Components;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Net;
-using Caviar.SharedKernel.Entities.View;
+using System.Threading.Tasks;
+using AntDesign;
 using Caviar.AntDesignUI.Core;
+using Caviar.SharedKernel.Entities.View;
+using Microsoft.AspNetCore.Components;
 
 namespace Caviar.AntDesignUI.Pages.Menu
 {
@@ -45,14 +49,14 @@ namespace Caviar.AntDesignUI.Pages.Menu
 
         async Task ConfirmDelete(string url, SysMenuView data)
         {
-            if (data.Children!=null && data.Children.Count > 0)
+            if (data.Children != null && data.Children.Count > 0)
             {
                 var confirm = await ShowConfirm(data.Entity.MenuName, data.Children.Count);
                 if (confirm == ConfirmResult.Abort)//全部删除
                 {
                     data.IsDeleteAll = true;
                 }
-                else if(confirm == ConfirmResult.Ignore)
+                else if (confirm == ConfirmResult.Ignore)
                 {
                     return;
                 }
@@ -67,7 +71,7 @@ namespace Caviar.AntDesignUI.Pages.Menu
 
         [Inject]
         ConfirmService Confirm { get; set; }
-        private async Task<ConfirmResult> ShowConfirm(string menuName,int count)
+        private async Task<ConfirmResult> ShowConfirm(string menuName, int count)
         {
             return await Confirm.Show(
                 $"检测到{menuName}菜单下,还有{count}条数据，请问如何处理？",

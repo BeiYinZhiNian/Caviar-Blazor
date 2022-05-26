@@ -1,28 +1,30 @@
-﻿using Caviar.Core;
-using Caviar.Core.Interface;
-using Caviar.Core.Services;
-using Caviar.SharedKernel.Entities;
-using Caviar.SharedKernel.Entities.View;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Threading.Tasks;
+using Caviar.Core;
+using Caviar.Core.Interface;
+using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Caviar.Infrastructure.Persistence
 {
     public class ApplicationDbContext : IAppDbContext
     {
-        public IDbContext DbContext { get;private set; }
+        public IDbContext DbContext { get; private set; }
         private readonly Interactor _interactor;
         private readonly ILanguageService _languageService;
 
-        public ApplicationDbContext(IDbContext identityDbContext, 
-            Interactor interactor, 
+        public ApplicationDbContext(IDbContext identityDbContext,
+            Interactor interactor,
             ILanguageService languageService)
         {
             DbContext = identityDbContext;
@@ -88,7 +90,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <param name="entity"></param>
         /// <param name="isSaveChange">默认为立刻保存</param>
         /// <returns></returns>
-        public virtual async Task<T> UpdateEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IUseEntity,new()
+        public virtual async Task<T> UpdateEntityAsync<T>(T entity, bool isSaveChange = true) where T : class, IUseEntity, new()
         {
             IsEntityNull(entity);
             //var dbEntity = await SingleOrDefaultAsync<T>(u => u.Id == entity.Id,false);
@@ -108,7 +110,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <param name="fieldExp"></param>
         /// <param name="isSaveChange">默认为立刻保存</param>
         /// <returns></returns>
-        public virtual async Task<T> UpdateEntityAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class, IUseEntity,new()
+        public virtual async Task<T> UpdateEntityAsync<T>(T entity, Expression<Func<T, object>> fieldExp, bool isSaveChange = true) where T : class, IUseEntity, new()
         {
             IsEntityNull(entity);
             //var dbEntity = await SingleOrDefaultAsync<T>(u => u.Id == entity.Id,false);
@@ -129,7 +131,7 @@ namespace Caviar.Infrastructure.Persistence
         /// <param name="fieldExp"></param>
         /// <param name="isSaveChange"></param>
         /// <returns></returns>
-        public virtual async Task<int> UpdateEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true) where T : class, IUseEntity,new()
+        public virtual async Task<int> UpdateEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true) where T : class, IUseEntity, new()
         {
             IsEntityNull(entity);
             //var dbEntity = GetEntityAsync<T>(u => entity.Contains(u),false);
@@ -149,9 +151,9 @@ namespace Caviar.Infrastructure.Persistence
         /// <typeparam name="T"></typeparam>
         /// <param name="entity"></param>
         /// <param name="isSaveChange">默认立刻保存</param>
-        /// <param name="IsDelete">是否立刻删除，默认不删除，只修改IsDelete,设为true则立刻删除</param>
+        /// <param name="isDelete">是否立刻删除，默认不删除，只修改IsDelete,设为true则立刻删除</param>
         /// <returns>返回代表是否真正删除了实体，如果为true则是物理删除，如果为false则是逻辑删除</returns>
-        public virtual async Task<bool> DeleteEntityAsync<T>(T entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IUseEntity, new()
+        public virtual async Task<bool> DeleteEntityAsync<T>(T entity, bool isSaveChange = true, bool isDelete = false) where T : class, IUseEntity, new()
         {
             IsEntityNull(entity);
             //var dbEntity = await SingleOrDefaultAsync<T>(u=>u.Id == entity.Id,false);
@@ -169,9 +171,9 @@ namespace Caviar.Infrastructure.Persistence
         /// <typeparam name="T"></typeparam>
         /// <param name="entity"></param>
         /// <param name="isSaveChange"></param>
-        /// <param name="IsDelete"></param>
+        /// <param name="isDelete"></param>
         /// <returns></returns>
-        public virtual async Task<int> DeleteEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true, bool IsDelete = false) where T : class, IUseEntity, new()
+        public virtual async Task<int> DeleteEntityAsync<T>(IEnumerable<T> entity, bool isSaveChange = true, bool isDelete = false) where T : class, IUseEntity, new()
         {
             IsEntityNull(entity);
             //var dbEntity = GetEntityAsync<T>(u => entity.Contains(u),false);
@@ -210,7 +212,7 @@ namespace Caviar.Infrastructure.Persistence
             data = isOrder ?
                 data.OrderBy(orderBy).OrderByDescending(u => u.CreatTime) :
                 data.OrderByDescending(orderBy).OrderByDescending(u => u.CreatTime);
-            if(whereLambda != null)
+            if (whereLambda != null)
             {
                 data = data.Where(whereLambda);
             }
@@ -324,7 +326,7 @@ namespace Caviar.Infrastructure.Persistence
             var roleRange = GetRoleDataRange(_interactor.ApplicationRoles);
             var dataRange = GetDataRange(roleRange).Result;
             dataRange.Add(CurrencyConstant.PublicData);//公共访问数据
-            IQueryable<T> query = set.Where(u=> dataRange.Contains(u.DataId));
+            IQueryable<T> query = set.Where(u => dataRange.Contains(u.DataId));
             if (isNoTracking)
             {
                 query = query.AsNoTracking();
@@ -342,7 +344,7 @@ namespace Caviar.Infrastructure.Persistence
                     int[] data = null;
                     data = item.DataList.Split(CurrencyConstant.CustomDataSeparator).Where(u => !string.IsNullOrEmpty(u)).Select(u => int.Parse(u)).ToArray();
                     roleRange.TryAdd(item.DataRange, null);
-                    if(roleRange[item.DataRange] == null)
+                    if (roleRange[item.DataRange] == null)
                     {
                         roleRange[item.DataRange] = data;
                     }
@@ -362,7 +364,7 @@ namespace Caviar.Infrastructure.Persistence
             return roleRange;
         }
 
-        private async Task<List<int>> GetDataRange(Dictionary<DataRange,int[]> dataRanges)
+        private async Task<List<int>> GetDataRange(Dictionary<DataRange, int[]> dataRanges)
         {
             List<int> ranges = new List<int>();
             var set = DbContext.Set<SysUserGroup>();
@@ -384,7 +386,7 @@ namespace Caviar.Infrastructure.Persistence
                         ranges.AddRange(dataRange.Value);
                         break;
                     case DataRange.All:
-                        return await set.Select(u=>u.Id).ToListAsync();
+                        return await set.Select(u => u.Id).ToListAsync();
                 }
             }
             return ranges.ToList();

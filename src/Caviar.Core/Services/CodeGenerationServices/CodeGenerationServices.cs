@@ -1,14 +1,15 @@
-﻿using Caviar.SharedKernel.Entities.View;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Caviar.SharedKernel.Entities;
-using Microsoft.EntityFrameworkCore;
-using Caviar.Core.Interface;
 using System.Reflection;
+using System.Text;
+using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
 
 namespace Caviar.Core.Services
 {
@@ -19,13 +20,13 @@ namespace Caviar.Core.Services
     {
         private readonly ILanguageService _languageService;
         private readonly CaviarConfig _caviarConfig;
-        public CodeGenerationServices( ILanguageService languageService, CaviarConfig caviarConfig) : base()
+        public CodeGenerationServices(ILanguageService languageService, CaviarConfig caviarConfig) : base()
         {
             _languageService = languageService;
             _caviarConfig = caviarConfig;
         }
 
-        public string WriteCodeFile(List<PreviewCode> previewCodes,CodeGenerateOptions codeGenerateOptions)
+        public string WriteCodeFile(List<PreviewCode> previewCodes, CodeGenerateOptions codeGenerateOptions)
         {
             int count = 0;
             int writeCount = 0;
@@ -43,7 +44,7 @@ namespace Caviar.Core.Services
                 if (!File.Exists(outName) || codeGenerateOptions.IsCover)
                 {
                     if (File.Exists(outName)) coverCount++;
-                    string fileData = _languageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.FolderErrorMsg}"];
+                    string fileData = _languageService[$"{CurrencyConstant.Page}.{CurrencyConstant.FolderErrorMsg}"];
                     if (File.Exists(outName)) fileData = File.ReadAllText(outName);
                     if (!string.IsNullOrEmpty(fileData))
                     {
@@ -56,7 +57,7 @@ namespace Caviar.Core.Services
                     skipCount++;
                 }
             }
-            return _languageService[$"{ CurrencyConstant.Page }.{ CurrencyConstant.GenerateMsg}"].Replace("{count}", count.ToString()).Replace("{writeCount}", writeCount.ToString()).Replace("{skipCount}", skipCount.ToString()).Replace("{coverCount}", coverCount.ToString());
+            return _languageService[$"{CurrencyConstant.Page}.{CurrencyConstant.GenerateMsg}"].Replace("{count}", count.ToString()).Replace("{writeCount}", writeCount.ToString()).Replace("{skipCount}", skipCount.ToString()).Replace("{coverCount}", coverCount.ToString());
         }
 
         /// <summary>
@@ -66,7 +67,7 @@ namespace Caviar.Core.Services
         /// <param name="fieldsData">实体字段信息</param>
         /// <param name="codeGenerateOptions">代码生成配置信息</param>
         /// <returns></returns>
-        public List<PreviewCode> CodePreview(FieldsView entityData, List<FieldsView> fieldsData, CodeGenerateOptions codeGenerateOptions,string producer)
+        public List<PreviewCode> CodePreview(FieldsView entityData, List<FieldsView> fieldsData, CodeGenerateOptions codeGenerateOptions, string producer)
         {
             List<PreviewCode> list = new List<PreviewCode>();
             var entitieName = codeGenerateOptions.EntitieName;
@@ -111,12 +112,12 @@ namespace Caviar.Core.Services
         /// <param name="suffixName">后缀名</param>
         /// <param name="extendName">扩展名</param>
         /// <returns></returns>
-        protected PreviewCode GetPreviewCode(string entityName,string suffixName,string extendName, CodeGeneration options)
+        protected PreviewCode GetPreviewCode(string entityName, string suffixName, string extendName, CodeGeneration options)
         {
             string path = $"{AppDomain.CurrentDomain.BaseDirectory}{UrlConfig.CodeGenerateFilePath}/{suffixName}.txt";
             var txt = "";
             if (!File.Exists(path))
-            { 
+            {
                 var resourcesAssembly = Assembly.GetExecutingAssembly();
                 using var fileStream = resourcesAssembly.GetManifestResourceStream($"Caviar.Core.TemplateFile.{suffixName}.txt");
                 using var streamReader = new StreamReader(fileStream);
@@ -145,7 +146,7 @@ namespace Caviar.Core.Services
         /// <param name="codePreview">预览的代码</param>
         /// <param name="producer">生成者</param>
         /// <returns></returns>
-        protected PreviewCode PreviewCodeReplace(FieldsView entityData,List<FieldsView> fieldsData, PreviewCode codePreview, string producer)
+        protected PreviewCode PreviewCodeReplace(FieldsView entityData, List<FieldsView> fieldsData, PreviewCode codePreview, string producer)
         {
             StringBuilder txt = new StringBuilder(codePreview.Content);
             txt = txt.Replace("{GenerationTime}", CommonHelper.GetSysDateTimeNow().ToString("yyyy-MM-dd HH:mm:ss"));
@@ -160,7 +161,7 @@ namespace Caviar.Core.Services
                 txt = txt.Replace("{usingEntityViewNamespace}", $"using {_caviarConfig.ViewModelOptions.NameSpace};");
             }
             var entityNameSpace = entityData.Entity.FullName.Replace($".{entityData.Entity.FieldName}", "");
-            if(entityNameSpace == "Caviar.SharedKernel.Entities")
+            if (entityNameSpace == "Caviar.SharedKernel.Entities")
             {
                 txt = txt.Replace("{usingEntityNamespace}", "");
             }
@@ -189,9 +190,9 @@ namespace Caviar.Core.Services
             {
                 var txt = "";
                 txt += $"<CavFormItem  FieldName='{item.Entity.FieldName}' FieldRules='@context.Entity'>";
-                var IsWrite = CreateCurrencyAssembly(item, ref txt);
+                var isWrite = CreateCurrencyAssembly(item, ref txt);
                 txt += "</CavFormItem>";
-                if (IsWrite) html += txt;
+                if (isWrite) html += txt;
             }
             html = FormatHtml(html);
             return html;
@@ -207,9 +208,8 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         protected virtual bool CreateCurrencyAssembly(FieldsView item, ref string txt)
         {
-            var IsWrite = true;
-            IsWrite = CreateSpecialAssembly(item, ref txt);
-            if (IsWrite) return IsWrite;
+            var isWrite = CreateSpecialAssembly(item, ref txt);
+            if (isWrite) return isWrite;
             var modelType = item.EntityType.ToLower();
             switch (modelType)
             {
@@ -273,7 +273,7 @@ namespace Caviar.Core.Services
         protected virtual List<FieldsView> CreateOrUpFilterField(List<FieldsView> headers)
         {
             if (headers == null) return null;
-            string[] violation = new string[] { "id", "Uid", "CreatTime", "UpdateTime", "IsDelete", "OperatorCare", "OperatorUp", "ParentId","DataId" };
+            string[] violation = new string[] { "id", "Uid", "CreatTime", "UpdateTime", "IsDelete", "OperatorCare", "OperatorUp", "ParentId", "DataId" };
             var result = new List<FieldsView>();
             foreach (var item in headers)
             {

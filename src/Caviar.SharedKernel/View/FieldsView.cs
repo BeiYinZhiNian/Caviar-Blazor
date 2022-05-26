@@ -1,12 +1,8 @@
-﻿using Caviar.SharedKernel.Entities.View;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel.Entities.View
 {
@@ -35,7 +31,7 @@ namespace Caviar.SharedKernel.Entities.View
         /// <summary>
         /// 枚举 值-名称
         /// </summary>
-        public Dictionary<int,string> EnumValueName { get; set; }
+        public Dictionary<int, string> EnumValueName { get; set; }
         /// <summary>
         /// 是否授权
         /// </summary>

@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,6 +9,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Caviar.Core.Interface
 {
@@ -89,7 +93,7 @@ namespace Caviar.Core.Interface
         //     The Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry`1 for the entity.
         //     The entry provides access to change tracking information and operations for the
         //     entity.
-        public  EntityEntry<TEntity> Add<TEntity>([NotNullAttribute] TEntity entity) where TEntity : class;
+        public EntityEntry<TEntity> Add<TEntity>([NotNullAttribute] TEntity entity) where TEntity : class;
         //
         // 摘要:
         //     Begins tracking the given entity, and any other reachable entities that are not
@@ -116,7 +120,7 @@ namespace Caviar.Core.Interface
         //     the Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry for the entity.
         //     The entry provides access to change tracking information and operations for the
         //     entity.
-        public  ValueTask<EntityEntry> AddAsync([NotNullAttribute] object entity, CancellationToken cancellationToken = default);
+        public ValueTask<EntityEntry> AddAsync([NotNullAttribute] object entity, CancellationToken cancellationToken = default);
         //
         // 摘要:
         //     Begins tracking the given entity, and any other reachable entities that are not
@@ -145,7 +149,7 @@ namespace Caviar.Core.Interface
         //     the Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry`1 for the entity.
         //     The entry provides access to change tracking information and operations for the
         //     entity.
-        public  ValueTask<EntityEntry<TEntity>> AddAsync<TEntity>([NotNullAttribute] TEntity entity, CancellationToken cancellationToken = default) where TEntity : class;
+        public ValueTask<EntityEntry<TEntity>> AddAsync<TEntity>([NotNullAttribute] TEntity entity, CancellationToken cancellationToken = default) where TEntity : class;
         //
         // 摘要:
         //     Begins tracking the given entities, and any other reachable entities that are
@@ -156,7 +160,7 @@ namespace Caviar.Core.Interface
         // 参数:
         //   entities:
         //     The entities to add.
-        public  void AddRange([NotNullAttribute] IEnumerable<object> entities);
+        public void AddRange([NotNullAttribute] IEnumerable<object> entities);
         //
         // 摘要:
         //     Begins tracking the given entities, and any other reachable entities that are
@@ -167,7 +171,7 @@ namespace Caviar.Core.Interface
         // 参数:
         //   entities:
         //     The entities to add.
-        public  void AddRange([NotNullAttribute] params object[] entities);
+        public void AddRange([NotNullAttribute] params object[] entities);
         //
         // 摘要:
         //     Begins tracking the given entity, and any other reachable entities that are not
@@ -189,7 +193,7 @@ namespace Caviar.Core.Interface
         //
         // 返回结果:
         //     A task that represents the asynchronous operation.
-        public  Task AddRangeAsync([NotNullAttribute] IEnumerable<object> entities, CancellationToken cancellationToken = default);
+        public Task AddRangeAsync([NotNullAttribute] IEnumerable<object> entities, CancellationToken cancellationToken = default);
         //
         // 摘要:
         //     Begins tracking the given entity, and any other reachable entities that are not
@@ -207,7 +211,7 @@ namespace Caviar.Core.Interface
         //
         // 返回结果:
         //     A task that represents the asynchronous operation.
-        public  Task AddRangeAsync([NotNullAttribute] params object[] entities);
+        public Task AddRangeAsync([NotNullAttribute] params object[] entities);
         //
         // 摘要:
         //     Begins tracking the given entity and entries reachable from the given entity
@@ -240,7 +244,7 @@ namespace Caviar.Core.Interface
         //     The Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry`1 for the entity.
         //     The entry provides access to change tracking information and operations for the
         //     entity.
-        public  EntityEntry<TEntity> Attach<TEntity>([NotNullAttribute] TEntity entity) where TEntity : class;
+        public EntityEntry<TEntity> Attach<TEntity>([NotNullAttribute] TEntity entity) where TEntity : class;
         //
         // 摘要:
         //     Begins tracking the given entity and entries reachable from the given entity
@@ -269,7 +273,7 @@ namespace Caviar.Core.Interface
         //     The Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry for the entity.
         //     The entry provides access to change tracking information and operations for the
         //     entity.
-        public  EntityEntry Attach([NotNullAttribute] object entity);
+        public EntityEntry Attach([NotNullAttribute] object entity);
         //
         // 摘要:
         //     Begins tracking the given entities and entries reachable from the given entities
@@ -293,7 +297,7 @@ namespace Caviar.Core.Interface
         // 参数:
         //   entities:
         //     The entities to attach.
-        public  void AttachRange([NotNullAttribute] params object[] entities);
+        public void AttachRange([NotNullAttribute] params object[] entities);
         //
         // 摘要:
         //     Begins tracking the given entities and entries reachable from the given entities
@@ -317,15 +321,15 @@ namespace Caviar.Core.Interface
         // 参数:
         //   entities:
         //     The entities to attach.
-        public  void AttachRange([NotNullAttribute] IEnumerable<object> entities);
+        public void AttachRange([NotNullAttribute] IEnumerable<object> entities);
         //
         // 摘要:
         //     Releases the allocated resources for this context.
-        public  void Dispose();
+        public void Dispose();
         //
         // 摘要:
         //     Releases the allocated resources for this context.
-        public  ValueTask DisposeAsync();
+        public ValueTask DisposeAsync();
         //
         // 摘要:
         //     Gets an Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry for the given
@@ -342,7 +346,7 @@ namespace Caviar.Core.Interface
         //
         // 返回结果:
         //     The entry for the given entity.
-        public  EntityEntry Entry([NotNullAttribute] object entity);
+        public EntityEntry Entry([NotNullAttribute] object entity);
         //
         // 摘要:
         //     Gets an Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry`1 for the given
@@ -359,7 +363,7 @@ namespace Caviar.Core.Interface
         //
         // 返回结果:
         //     The entry for the given entity.
-        public  EntityEntry<TEntity> Entry<TEntity>([NotNullAttribute] TEntity entity) where TEntity : class;
+        public EntityEntry<TEntity> Entry<TEntity>([NotNullAttribute] TEntity entity) where TEntity : class;
         //
         // 摘要:
         //     Finds an entity with the given primary key values. If an entity with the given
@@ -378,7 +382,7 @@ namespace Caviar.Core.Interface
         //
         // 返回结果:
         //     The entity found, or null.
-        public  TEntity Find<TEntity>(params object[] keyValues) where TEntity : class;
+        public TEntity Find<TEntity>(params object[] keyValues) where TEntity : class;
         //
         // 摘要:
         //     Finds an entity with the given primary key values. If an entity with the given
@@ -396,7 +400,7 @@ namespace Caviar.Core.Interface
         //
         // 返回结果:
         //     The entity found, or null.
-        public  object Find([NotNullAttribute] Type entityType,  params object[] keyValues);
+        public object Find([NotNullAttribute] Type entityType, params object[] keyValues);
         //
         // 摘要:
         //     Finds an entity with the given primary key values. If an entity with the given
@@ -419,7 +423,7 @@ namespace Caviar.Core.Interface
         //
         // 返回结果:
         //     The entity found, or null.
-        public  ValueTask<TEntity> FindAsync<TEntity>( object[] keyValues, CancellationToken cancellationToken) where TEntity : class;
+        public ValueTask<TEntity> FindAsync<TEntity>(object[] keyValues, CancellationToken cancellationToken) where TEntity : class;
         //
         // 摘要:
         //     Finds an entity with the given primary key values. If an entity with the given
@@ -441,7 +445,7 @@ namespace Caviar.Core.Interface
         //
         // 返回结果:
         //     The entity found, or null.
-        public  ValueTask<object> FindAsync([NotNullAttribute] Type entityType,  object[] keyValues, CancellationToken cancellationToken);
+        public ValueTask<object> FindAsync([NotNullAttribute] Type entityType, object[] keyValues, CancellationToken cancellationToken);
         //
         // 摘要:
         //     Finds an entity with the given primary key values. If an entity with the given
@@ -460,7 +464,7 @@ namespace Caviar.Core.Interface
         //
         // 返回结果:
         //     The entity found, or null.
-        public  ValueTask<TEntity> FindAsync<TEntity>( params object[] keyValues) where TEntity : class;
+        public ValueTask<TEntity> FindAsync<TEntity>(params object[] keyValues) where TEntity : class;
         //
         // 摘要:
         //     Finds an entity with the given primary key values. If an entity with the given
@@ -478,7 +482,7 @@ namespace Caviar.Core.Interface
         //
         // 返回结果:
         //     The entity found, or null.
-        public  ValueTask<object> FindAsync([NotNullAttribute] Type entityType,  params object[] keyValues);
+        public ValueTask<object> FindAsync([NotNullAttribute] Type entityType, params object[] keyValues);
         //
         // 摘要:
         //     Creates a queryable for given query expression.
@@ -493,7 +497,7 @@ namespace Caviar.Core.Interface
         //
         // 返回结果:
         //     An System.Linq.IQueryable`1 representing the query.
-        public  IQueryable<TResult> FromExpression<TResult>([NotNullAttribute] Expression<Func<IQueryable<TResult>>> expression);
+        public IQueryable<TResult> FromExpression<TResult>([NotNullAttribute] Expression<Func<IQueryable<TResult>>> expression);
         //
         // 摘要:
         //     Begins tracking the given entity in the Microsoft.EntityFrameworkCore.EntityState.Deleted
@@ -520,7 +524,7 @@ namespace Caviar.Core.Interface
         //     applied when Microsoft.EntityFrameworkCore.DbContext.SaveChanges is called.
         //     Use Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry.State to set the
         //     state of only a single entity.
-        public  EntityEntry Remove([NotNullAttribute] object entity);
+        public EntityEntry Remove([NotNullAttribute] object entity);
         //
         // 摘要:
         //     Begins tracking the given entity in the Microsoft.EntityFrameworkCore.EntityState.Deleted
@@ -551,7 +555,7 @@ namespace Caviar.Core.Interface
         //     applied when Microsoft.EntityFrameworkCore.DbContext.SaveChanges is called.
         //     Use Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry.State to set the
         //     state of only a single entity.
-        public  EntityEntry<TEntity> Remove<TEntity>([NotNullAttribute] TEntity entity) where TEntity : class;
+        public EntityEntry<TEntity> Remove<TEntity>([NotNullAttribute] TEntity entity) where TEntity : class;
         //
         // 摘要:
         //     Begins tracking the given entity in the Microsoft.EntityFrameworkCore.EntityState.Deleted
@@ -571,7 +575,7 @@ namespace Caviar.Core.Interface
         //     in the same way that they would be if Microsoft.EntityFrameworkCore.DbContext.AttachRange(System.Object[])
         //     was called before calling this method. This allows any cascading actions to be
         //     applied when Microsoft.EntityFrameworkCore.DbContext.SaveChanges is called.
-        public  void RemoveRange([NotNullAttribute] params object[] entities);
+        public void RemoveRange([NotNullAttribute] params object[] entities);
         //
         // 摘要:
         //     Begins tracking the given entity in the Microsoft.EntityFrameworkCore.EntityState.Deleted
@@ -591,7 +595,7 @@ namespace Caviar.Core.Interface
         //     in the same way that they would be if Microsoft.EntityFrameworkCore.DbContext.AttachRange(System.Collections.Generic.IEnumerable{System.Object})
         //     was called before calling this method. This allows any cascading actions to be
         //     applied when Microsoft.EntityFrameworkCore.DbContext.SaveChanges is called.
-        public  void RemoveRange([NotNullAttribute] IEnumerable<object> entities);
+        public void RemoveRange([NotNullAttribute] IEnumerable<object> entities);
         //
         // 摘要:
         //     Saves all changes made in this context to the database.
@@ -616,7 +620,7 @@ namespace Caviar.Core.Interface
         //     violation occurs when an unexpected number of rows are affected during save.
         //     This is usually because the data in the database has been modified since it was
         //     loaded into memory.
-        public  int SaveChanges(bool acceptAllChangesOnSuccess);
+        public int SaveChanges(bool acceptAllChangesOnSuccess);
         //
         // 摘要:
         //     Saves all changes made in this context to the database.
@@ -636,7 +640,7 @@ namespace Caviar.Core.Interface
         //     violation occurs when an unexpected number of rows are affected during save.
         //     This is usually because the data in the database has been modified since it was
         //     loaded into memory.
-        public  int SaveChanges();
+        public int SaveChanges();
         //
         // 摘要:
         //     Saves all changes made in this context to the database.
@@ -669,7 +673,7 @@ namespace Caviar.Core.Interface
         //     violation occurs when an unexpected number of rows are affected during save.
         //     This is usually because the data in the database has been modified since it was
         //     loaded into memory.
-        public  Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default);
+        public Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default);
         //
         // 摘要:
         //     Saves all changes made in this context to the database.
@@ -698,7 +702,7 @@ namespace Caviar.Core.Interface
         //     violation occurs when an unexpected number of rows are affected during save.
         //     This is usually because the data in the database has been modified since it was
         //     loaded into memory.
-        public  Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+        public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
         //
         // 摘要:
         //     Creates a Microsoft.EntityFrameworkCore.DbSet`1 that can be used to query and
@@ -710,7 +714,7 @@ namespace Caviar.Core.Interface
         //
         // 返回结果:
         //     A set for the given entity type.
-        public  DbSet<TEntity> Set<TEntity>([NotNullAttribute] string name) where TEntity : class;
+        public DbSet<TEntity> Set<TEntity>([NotNullAttribute] string name) where TEntity : class;
         //
         // 摘要:
         //     Creates a Microsoft.EntityFrameworkCore.DbSet`1 that can be used to query and
@@ -722,7 +726,7 @@ namespace Caviar.Core.Interface
         //
         // 返回结果:
         //     A set for the given entity type.
-        public  DbSet<TEntity> Set<TEntity>() where TEntity : class;
+        public DbSet<TEntity> Set<TEntity>() where TEntity : class;
         //
         // 摘要:
         //     Begins tracking the given entity and entries reachable from the given entity
@@ -752,7 +756,7 @@ namespace Caviar.Core.Interface
         //     The Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry for the entity.
         //     The entry provides access to change tracking information and operations for the
         //     entity.
-        public  EntityEntry Update([NotNullAttribute] object entity);
+        public EntityEntry Update([NotNullAttribute] object entity);
         //
         // 摘要:
         //     Begins tracking the given entity and entries reachable from the given entity
@@ -786,7 +790,7 @@ namespace Caviar.Core.Interface
         //     The Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry`1 for the entity.
         //     The entry provides access to change tracking information and operations for the
         //     entity.
-        public  EntityEntry<TEntity> Update<TEntity>([NotNullAttribute] TEntity entity) where TEntity : class;
+        public EntityEntry<TEntity> Update<TEntity>([NotNullAttribute] TEntity entity) where TEntity : class;
         //
         // 摘要:
         //     Begins tracking the given entities and entries reachable from the given entities
@@ -811,7 +815,7 @@ namespace Caviar.Core.Interface
         // 参数:
         //   entities:
         //     The entities to update.
-        public  void UpdateRange([NotNullAttribute] params object[] entities);
+        public void UpdateRange([NotNullAttribute] params object[] entities);
         //
         // 摘要:
         //     Begins tracking the given entities and entries reachable from the given entities
@@ -836,6 +840,6 @@ namespace Caviar.Core.Interface
         // 参数:
         //   entities:
         //     The entities to update.
-        public  void UpdateRange([NotNullAttribute] IEnumerable<object> entities);
+        public void UpdateRange([NotNullAttribute] IEnumerable<object> entities);
     }
 }

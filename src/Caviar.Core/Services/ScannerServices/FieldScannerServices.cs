@@ -1,14 +1,14 @@
-﻿using Caviar.SharedKernel.Entities;
-using Caviar.SharedKernel.Entities.View;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
 
 namespace Caviar.Core.Services
 {
@@ -24,8 +24,8 @@ namespace Caviar.Core.Services
             var fields = new List<FieldsView>();
             foreach (var item in entityList)
             {
-                var _field = GetClassFields(item.Name,item.FullName, languageService);
-                fields.AddRange(_field);
+                var field = GetClassFields(item.Name, item.FullName, languageService);
+                fields.AddRange(field);
             }
             return fields;
         }
@@ -40,8 +40,8 @@ namespace Caviar.Core.Services
             var fields = new List<FieldsView>();
             foreach (var item in entityList)
             {
-                
-                fields.Add(new FieldsView() { 
+                fields.Add(new FieldsView()
+                {
                     DisplayName = languageService[$"{CurrencyConstant.EntitysName}.{item.Name}"],
                     Entity = new SysFields()
                     {
@@ -61,7 +61,7 @@ namespace Caviar.Core.Services
             var listFields = GetEntitys(languageService);
             foreach (var item in listFields)
             {
-                if(item.Entity.FieldName == name && item.Entity.FullName == fullName)
+                if (item.Entity.FieldName == name && item.Entity.FullName == fullName)
                 {
                     return item;
                 }
@@ -74,7 +74,7 @@ namespace Caviar.Core.Services
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static List<FieldsView> GetClassFields(string name,string fullName, ILanguageService languageService)
+        public static List<FieldsView> GetClassFields(string name, string fullName, ILanguageService languageService)
         {
             if (string.IsNullOrEmpty(name)) return null;
             if (string.IsNullOrEmpty(fullName)) return null;
@@ -90,7 +90,7 @@ namespace Caviar.Core.Services
         /// <param name="type"></param>
         /// <param name="isFieldTurnMeaning">是否开启转义，默认开启</param>
         /// <returns></returns>
-        public static List<FieldsView> GetClassFields(Type type,ILanguageService languageService,bool isFieldTurnMeaning = true)
+        public static List<FieldsView> GetClassFields(Type type, ILanguageService languageService, bool isFieldTurnMeaning = true)
         {
             List<FieldsView> fields = new List<FieldsView>();
             if (type != null)
@@ -100,10 +100,10 @@ namespace Caviar.Core.Services
                     var typeName = item.PropertyType.Name;
                     if (typeName == "Nullable`1")//可为null的字段
                     {
-                        var Arguments = item.PropertyType.GenericTypeArguments;
-                        if (Arguments.Length > 0)
+                        var arguments = item.PropertyType.GenericTypeArguments;
+                        if (arguments.Length > 0)
                         {
-                            typeName = Arguments[0].Name;
+                            typeName = arguments[0].Name;
                         }
                     }
                     var baseType = typeof(SysUseEntity);
@@ -128,7 +128,7 @@ namespace Caviar.Core.Services
                     {
                         field.EnumValueName = CommonHelper.GetEnumModelHeader<int>(item.PropertyType, languageService);
                     }
-                    if(isFieldTurnMeaning) field = FieldTurnMeaning(field);
+                    if (isFieldTurnMeaning) field = FieldTurnMeaning(field);
                     fields.Add(field);
                 }
             }
@@ -146,11 +146,11 @@ namespace Caviar.Core.Services
         public static FieldsView FieldTurnMeaning(FieldsView headers)
         {
             if (TurnMeaningDic == null) return headers;
-            if(!TurnMeaningDic.ContainsKey(headers.Entity.FieldName)) return headers;
-            var EntityType = TurnMeaningDic[headers.Entity.FieldName];
-            if (EntityType != null)
+            if (!TurnMeaningDic.ContainsKey(headers.Entity.FieldName)) return headers;
+            var entityType = TurnMeaningDic[headers.Entity.FieldName];
+            if (entityType != null)
             {
-                headers.EntityType = EntityType;
+                headers.EntityType = entityType;
                 return headers;
             }
             return headers;

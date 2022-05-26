@@ -1,12 +1,14 @@
-﻿using Caviar.SharedKernel.Entities;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Caviar.Infrastructure.API
 {
@@ -20,7 +22,7 @@ namespace Caviar.Infrastructure.API
             {
                 vm.Entity.PasswordHash = CommonHelper.SHA256EncryptString(CurrencyConstant.DefaultPassword);
             }
-            var result = await _userManager.CreateAsync(vm.Entity,vm.Entity.PasswordHash);
+            var result = await _userManager.CreateAsync(vm.Entity, vm.Entity.PasswordHash);
             if (result.Succeeded) return Ok(title: "创建用户成功，初始密码：" + CurrencyConstant.DefaultPassword);
             return Error("创建用户失败", result);
         }
@@ -42,13 +44,13 @@ namespace Caviar.Infrastructure.API
         }
 
         [HttpPost]
-        public async Task<IActionResult> AssignRoles(string userName,IList<string> roles)
+        public async Task<IActionResult> AssignRoles(string userName, IList<string> roles)
         {
             if (string.IsNullOrEmpty(userName))
             {
                 throw new ArgumentNullException("请选择用户");
             }
-            var result = await _userServices.AssignRolesAsync(userName,roles);
+            var result = await _userServices.AssignRolesAsync(userName, roles);
             if (result.Succeeded) return Ok();
             return Error("角色分配失败", result);
         }

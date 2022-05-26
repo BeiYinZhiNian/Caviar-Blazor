@@ -1,18 +1,19 @@
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
+using System.Threading.Tasks;
+using Caviar.Core.Services;
 using Caviar.Infrastructure.API.BaseApi;
+using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.User;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using System.Linq;
-using Caviar.SharedKernel.Entities.User;
-using Caviar.SharedKernel.Entities;
-using Caviar.Core.Services;
-using System.Security.Claims;
-using System.Collections.Generic;
 
 namespace Caviar.Infrastructure.API
 {
-    public partial class ApplicationUserController : EasyBaseApiController<ApplicationUserView,ApplicationUser>
+    public partial class ApplicationUserController : EasyBaseApiController<ApplicationUserView, ApplicationUser>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -31,11 +32,11 @@ namespace Caviar.Infrastructure.API
         public virtual async Task<IActionResult> Login(UserLogin login, string returnUrl)
         {
             var user = await _userManager.FindByNameAsync(login.UserName);
-            if (user == null) return Ok(System.Net.HttpStatusCode.BadRequest,"Failed");
+            if (user == null) return Ok(System.Net.HttpStatusCode.BadRequest, "Failed");
             var singInResult = await _signInManager.CheckPasswordSignInAsync(user, login.Password, true);
             if (!singInResult.Succeeded) return Ok(System.Net.HttpStatusCode.BadRequest, "Failed");
             await _signInManager.SignInAsync(user, login.RememberMe);
-            return Ok(title: "Login Succeeded",url:returnUrl);
+            return Ok(title: "Login Succeeded", url: returnUrl);
         }
 
         [HttpGet]
@@ -74,7 +75,7 @@ namespace Caviar.Infrastructure.API
         public async Task<IActionResult> LogoutServer()
         {
             await _signInManager.SignOutAsync();
-            return Redirect("/"+UrlConfig.Login);
+            return Redirect("/" + UrlConfig.Login);
         }
 
         [HttpGet]

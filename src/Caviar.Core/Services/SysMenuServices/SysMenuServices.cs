@@ -1,24 +1,33 @@
-﻿using Caviar.Core.Interface;
-using Caviar.SharedKernel.Entities;
-using Caviar.SharedKernel.Entities.View;
-using Microsoft.EntityFrameworkCore;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
+using CacheManager.Core;
+using Caviar.Core.Interface;
+using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
+using Microsoft.EntityFrameworkCore;
 
 namespace Caviar.Core.Services
 {
-    public partial class SysMenuServices: EasyBaseServices<SysMenu,SysMenuView>
+    public partial class SysMenuServices : EasyBaseServices<SysMenu, SysMenuView>
     {
 
         private readonly Expression<Func<SysMenu, bool>> _menuWhere;
         private readonly ILanguageService _languageService;
         private readonly Interactor _interactor;
-        public SysMenuServices(IAppDbContext appDbContext,ILanguageService languageService,Interactor interactor):base(appDbContext)
+        private readonly ICacheManager<object> _cacheManager;
+        public SysMenuServices(IAppDbContext appDbContext,
+            ILanguageService languageService,
+            Interactor interactor,
+            ICacheManager<object> cacheManager) : base(appDbContext)
         {
+            _cacheManager = cacheManager;
             _languageService = languageService;
             _interactor = interactor;
             _menuWhere = u => _interactor.PermissionUrls.Contains(u.Url) || (_interactor.PermissionUrls.Contains(u.Id.ToString()) && string.IsNullOrEmpty(u.Url));
@@ -84,9 +93,14 @@ namespace Caviar.Core.Services
         /// <returns></returns>
         public async Task<List<SysMenuView>> GetMenuBar()
         {
+            var cacheName = $"menuBar_{string.Join(",", _interactor.ApplicationRoles.Select(u => u.Name))}";
+            var cache = _cacheManager.Get<List<SysMenuView>>(cacheName);
+            if (cache != null) return cache;
             if (_interactor.PermissionUrls == null) return new List<SysMenuView>();
-            var menus = await GetAllAsync().Where(u=>u.MenuType == MenuType.Menu || u.MenuType == MenuType.Catalog || u.MenuType == MenuType.Settings).ToListAsync();
-            return ToView(menus).ListToTree();
+            var menus = await GetAllAsync().Where(u => u.MenuType == MenuType.Menu || u.MenuType == MenuType.Catalog || u.MenuType == MenuType.Settings).ToListAsync();
+            cache = ToView(menus).ListToTree();
+            _cacheManager.Add(cacheName, cache);
+            return cache;
         }
         /// <summary>
         /// 获取当前url下可用api
@@ -97,11 +111,16 @@ namespace Caviar.Core.Services
         /// <exception cref="NotificationException"></exception>
         public async Task<List<SysMenuView>> GetApis(string indexUrl)
         {
-            var menu = await SingleOrDefaultAsync(u=>u.Url == indexUrl);
+            var cacheName = $"apis_{indexUrl}_{string.Join(",", _interactor.ApplicationRoles.Select(u => u.Name))}";
+            var cache = _cacheManager.Get<List<SysMenuView>>(cacheName);
+            if (cache != null) return cache;
+            var menu = await SingleOrDefaultAsync(u => u.Url == indexUrl);
             if (menu == null) throw new ArgumentException("未获得该页面权限");
             var apiList = await GetEntityAsync(u => u.ParentId == menu.Id).ToListAsync();
             apiList.Add(menu);
-            return ToView(apiList);
+            cache = ToView(apiList);
+            _cacheManager.Add(cacheName, cache);
+            return cache;
         }
         /// <summary>
         /// 删除所有菜单数

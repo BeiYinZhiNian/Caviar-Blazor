@@ -1,18 +1,20 @@
-﻿using AntDesign;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using AntDesign;
 using Caviar.AntDesignUI.Core;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Caviar.AntDesignUI.Pages.Permission
 {
-    public partial class PermissionMenus: ITableTemplate
+    public partial class PermissionMenus : ITableTemplate
     {
         [Parameter]
         public string CurrentUrl { get; set; }
@@ -44,7 +46,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
             }
         }
 
-        private void CheckedChanged(bool check,SysMenuView menu)
+        private void CheckedChanged(bool check, SysMenuView menu)
         {
             List<SysMenuView> menus = new List<SysMenuView>();
             Menus.TreeToList(menus);

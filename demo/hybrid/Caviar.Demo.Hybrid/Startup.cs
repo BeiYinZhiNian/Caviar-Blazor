@@ -1,4 +1,8 @@
-﻿using Caviar.AntDesignUI;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
+using Caviar.AntDesignUI;
 using Caviar.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -53,7 +57,7 @@ namespace Caviar.Demo.Hybrid
             Wasm.Program.PublicInit();
             //客户端配置
             services.AddCaviarServer();
-            services.AddAdminCaviar(new Type[] { typeof(Program),typeof(Wasm.Program) });
+            services.AddAdminCaviar(new Type[] { typeof(Program), typeof(Wasm.Program) });
 
             //服务端配置
             services.AddCaviar();
@@ -86,7 +90,7 @@ namespace Caviar.Demo.Hybrid
             }
 
             app.UseBlazorFrameworkFiles();
-            
+
             app.UseStaticFiles();
             app.UseRouting();
             app.UseCaviar();

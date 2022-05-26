@@ -1,9 +1,8 @@
-﻿using Caviar.SharedKernel.Entities.View;
-using System;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Caviar.SharedKernel.Entities
 {
@@ -229,7 +228,7 @@ namespace Caviar.SharedKernel.Entities
         /// 基础实体名称
         /// </summary>
         public static string BaseEntityName = typeof(SysUseEntity).Name;
-       
+
 
         public const string ServerName = "server";
         /// <summary>
@@ -237,7 +236,7 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         public const string DefaultLanguage = "zh-CN";
 
-        public static Dictionary<string, string> LanguageDic = new Dictionary<string, string>() 
+        public static Dictionary<string, string> LanguageDic = new Dictionary<string, string>()
         {
             {"zh-CN","中文" },
             {"en-US","English" },

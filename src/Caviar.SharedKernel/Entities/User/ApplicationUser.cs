@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
 using System;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace Caviar.SharedKernel.Entities
 {
-    public class ApplicationUser: IdentityUser<int>, IUseEntity
+    public class ApplicationUser : IdentityUser<int>, IUseEntity
     {
-        
+
         [Required]
         public override string UserName { get => base.UserName; set => base.UserName = value; }
 
@@ -23,7 +26,7 @@ namespace Caviar.SharedKernel.Entities
         /// 所在用户组
         /// </summary>
         [Required]
-        [Range(1,int.MaxValue, ErrorMessage = CurrencyConstant.UserGroupRuleErrorMsg)]
+        [Range(1, int.MaxValue, ErrorMessage = CurrencyConstant.UserGroupRuleErrorMsg)]
         public int UserGroupId { get; set; }
         /// <summary>
         /// 创建时间
@@ -50,10 +53,10 @@ namespace Caviar.SharedKernel.Entities
         /// <summary>
         /// 是否禁用
         /// </summary>
-        public bool IsDisable 
-        { 
+        public bool IsDisable
+        {
             get => LockoutEnabled;
-            set 
+            set
             {
                 LockoutEnabled = value;
                 if (value)

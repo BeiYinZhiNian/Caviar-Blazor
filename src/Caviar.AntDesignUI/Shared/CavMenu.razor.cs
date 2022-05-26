@@ -1,15 +1,18 @@
-﻿using AntDesign;
-using Microsoft.AspNetCore.Components;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.JSInterop;
 using System.Net;
+using System.Threading.Tasks;
+using AntDesign;
 using Caviar.AntDesignUI.Core;
-using Caviar.SharedKernel.Entities.View;
 using Caviar.SharedKernel.Entities;
-using System.Web;
+using Caviar.SharedKernel.Entities.View;
+using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Newtonsoft.Json;
 
 namespace Caviar.AntDesignUI.Shared
@@ -50,7 +53,7 @@ namespace Caviar.AntDesignUI.Shared
         [Inject]
         UserConfig UserConfig { get; set; }
 
-        [Inject] 
+        [Inject]
         NavigationManager NavigationManager { get; set; }
         [Inject]
 
@@ -138,7 +141,7 @@ namespace Caviar.AntDesignUI.Shared
         }
 
         protected override void OnAfterRender(bool firstRender)
-        {            
+        {
             base.OnAfterRender(firstRender);
             if (!Config.IsServer && firstRender)
             {
@@ -180,17 +183,17 @@ namespace Caviar.AntDesignUI.Shared
             StateHasChanged();
             foreach (var item in AntDesignMenu.MenuItems)
             {
-                if(item.Key == AntDesignMenu.SelectedKeys.FirstOrDefault())
+                if (item.Key == AntDesignMenu.SelectedKeys.FirstOrDefault())
                 {
                     OnMenuItemClickedNav(item);
                 }
             }
-            
+
         }
 
         async Task<List<SysMenuView>> GetMenus()
         {
-            var result = await Http.GetJson<List<SysMenuView>> (UrlConfig.GetMenuBar);
+            var result = await Http.GetJson<List<SysMenuView>>(UrlConfig.GetMenuBar);
             if (result.Status != HttpStatusCode.OK) return new List<SysMenuView>();
             return result.Data;
         }

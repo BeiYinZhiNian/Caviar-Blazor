@@ -1,26 +1,29 @@
-﻿using Caviar.Core.Interface;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Caviar.Core.Interface;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Caviar.Core.Services
 {
-    public class RoleServices:DbServices
+    public class RoleServices : DbServices
     {
-        private string[] SpecialRoles = new string[]
+        private readonly string[] _specialRoles = new string[]
         {
             CurrencyConstant.TemplateRole,
             CurrencyConstant.TouristRole,
         };
 
         private readonly RoleManager<ApplicationRole> _roleManager;
-        public RoleServices(RoleManager<ApplicationRole> roleManager,IAppDbContext appDbContext) : base(appDbContext)
+        public RoleServices(RoleManager<ApplicationRole> roleManager, IAppDbContext appDbContext) : base(appDbContext)
         {
             _roleManager = roleManager;
         }
@@ -48,11 +51,11 @@ namespace Caviar.Core.Services
             if (result.Succeeded)
             {
                 var templateRole = await _roleManager.FindByNameAsync(CurrencyConstant.TemplateRole);
-                if(templateRole != null)
+                if (templateRole != null)
                 {
                     var set = AppDbContext.DbContext.Set<SysPermission>();
                     var tempPermission = await set.Where(u => u.Entity == templateRole.Id).ToListAsync();
-                    tempPermission = tempPermission.Select(u => new SysPermission() { Permission = u.Permission,PermissionType = u.PermissionType,Entity = vm.Entity.Id }).ToList();
+                    tempPermission = tempPermission.Select(u => new SysPermission() { Permission = u.Permission, PermissionType = u.PermissionType, Entity = vm.Entity.Id }).ToList();
                     set.AddRange(tempPermission);
                     await AppDbContext.DbContext.SaveChangesAsync();
                 }
@@ -62,11 +65,11 @@ namespace Caviar.Core.Services
 
         public async Task<IdentityResult> DeleteUserAsync(ApplicationRoleView vm)
         {
-            if(SpecialRoles.Contains(vm.Entity.Name))
+            if (_specialRoles.Contains(vm.Entity.Name))
             {
                 throw new Exception("特殊角色，禁止删除");
             }
-            if(vm.Entity.Id == 1)
+            if (vm.Entity.Id == 1)
             {
                 throw new Exception("非法操作，无法删除超级管理员角色");
             }
@@ -83,7 +86,7 @@ namespace Caviar.Core.Services
 
         public async Task<IdentityResult> UpdateUserAsync(ApplicationRoleView vm)
         {
-            if (SpecialRoles.Contains(vm.Entity.Name))
+            if (_specialRoles.Contains(vm.Entity.Name))
             {
                 throw new Exception("特殊角色，禁止修改信息");
             }
@@ -101,6 +104,5 @@ namespace Caviar.Core.Services
             return result;
         }
 
-        
     }
 }

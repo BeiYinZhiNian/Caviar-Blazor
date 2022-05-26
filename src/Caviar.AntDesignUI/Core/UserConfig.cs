@@ -1,15 +1,14 @@
-﻿using AntDesign;
-using Caviar.SharedKernel.Entities;
-using Caviar.SharedKernel.Entities.View;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Routing;
-using Microsoft.AspNetCore.Http;
-using Microsoft.JSInterop;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
+using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.JSInterop;
 
 namespace Caviar.AntDesignUI.Core
 {
@@ -17,7 +16,7 @@ namespace Caviar.AntDesignUI.Core
     {
         public CavLayout Layout { get; set; }
 
-        public UserConfig(IJSRuntime jSRuntime,CavLayout layoutEntity)
+        public UserConfig(IJSRuntime jSRuntime, CavLayout layoutEntity)
         {
             JSRuntime = jSRuntime;
             Layout = layoutEntity;
@@ -63,7 +62,7 @@ namespace Caviar.AntDesignUI.Core
 
         public List<SysMenuView> Menus { get; set; } = new List<SysMenuView>();
 
-        public async void SetTheme(string oldThemeName,string newThemeName)
+        public async void SetTheme(string oldThemeName, string newThemeName)
         {
             await JSRuntime.InvokeVoidAsync("loadCss", oldThemeName, newThemeName);
             switch (newThemeName)

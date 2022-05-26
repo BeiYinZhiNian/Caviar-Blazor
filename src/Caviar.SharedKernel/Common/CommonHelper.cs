@@ -1,18 +1,18 @@
-﻿using System;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Web;
 using Microsoft.AspNetCore.Http;
 using NodaTime;
-using Caviar.SharedKernel.Entities.View;
-using System.Linq.Expressions;
 
 namespace Caviar.SharedKernel.Entities
 {
@@ -109,7 +109,7 @@ namespace Caviar.SharedKernel.Entities
         /// <param name="index"></param>
         /// <param name="IsLastIndex"></param>
         /// <returns></returns>
-        public static string GetRightText(this string text, string contrastText, int index = 0,bool IsLastIndex = false)
+        public static string GetRightText(this string text, string contrastText, int index = 0, bool IsLastIndex = false)
         {
             if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(contrastText)) return "";
             if (IsLastIndex)
@@ -186,7 +186,7 @@ namespace Caviar.SharedKernel.Entities
         /// <typeparam name="A"></typeparam>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static void AToB<B, A>(this A value,out B obj)
+        public static void AToB<B, A>(this A value, out B obj)
         {
             var json = JsonSerializer.Serialize(value);
             obj = JsonSerializer.Deserialize<B>(json);
@@ -199,7 +199,7 @@ namespace Caviar.SharedKernel.Entities
         /// <param name="example"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static object GetObjValue<T>(this T example,string name)
+        public static object GetObjValue<T>(this T example, string name)
         {
             if (example == null) return null;
             var exampleType = example.GetType();//获得类型
@@ -223,7 +223,7 @@ namespace Caviar.SharedKernel.Entities
         static Type[] _types;
         public static Type[] GetAllTypes()
         {
-            if(_types != null) return _types;
+            if (_types != null) return _types;
             List<Type> types = new List<Type>();
             var assmblies = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(u => !u.FullName.Contains("Microsoft"))//排除微软类库
@@ -275,7 +275,7 @@ namespace Caviar.SharedKernel.Entities
         /// <typeparam name="T"></typeparam>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static List<T> ListToTree<T>(this List<T> data) where T: class,ITree<T>
+        public static List<T> ListToTree<T>(this List<T> data) where T : class, ITree<T>
         {
             List<T> Tree = new List<T>();
             if (data == null) return Tree;
@@ -288,7 +288,7 @@ namespace Caviar.SharedKernel.Entities
                 else
                 {
                     var ParentNode = data.SingleOrDefault(u => u.Id == item.ParentId);
-                    if(ParentNode == null)
+                    if (ParentNode == null)
                     {
                         Tree.Add(item);//没有找到父节点，所以直接加入最上层节点
                     }
@@ -307,14 +307,14 @@ namespace Caviar.SharedKernel.Entities
         /// <typeparam name="T"></typeparam>
         /// <param name="data"></param>
         /// <param name="list"></param>
-        public static void TreeToList<T>(this IList<T> data,IList<T> list) where T : class, ITree<T>
+        public static void TreeToList<T>(this IList<T> data, IList<T> list) where T : class, ITree<T>
         {
             foreach (var item in data)
             {
                 list.Add(item);
-                if (item.Children!=null && item.Children.Count > 0)
+                if (item.Children != null && item.Children.Count > 0)
                 {
-                    TreeToList(item.Children,list);
+                    TreeToList(item.Children, list);
                 }
             }
         }
@@ -325,7 +325,7 @@ namespace Caviar.SharedKernel.Entities
         /// <param name="data"></param>
         /// <param name="list"></param>
         /// <param name="needParent">是否需要加入根节点，默认将根节点加入列表</param>
-        public static void TreeToList<T>(this T data, IList<T> list,bool needParent = true) where T : class, ITree<T>
+        public static void TreeToList<T>(this T data, IList<T> list, bool needParent = true) where T : class, ITree<T>
         {
             if (list == null)
             {
@@ -349,9 +349,9 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static Dictionary<T, string> GetEnumModelHeader<T>(Type type,ILanguageService languageService)
+        public static Dictionary<T, string> GetEnumModelHeader<T>(Type type, ILanguageService languageService)
         {
-            if(!type.IsEnum) return null;
+            if (!type.IsEnum) return null;
             var enumFields = type.GetFields();
             Dictionary<T, string> dic = null;
             if (enumFields != null && enumFields.Length >= 2)//枚举有一个隐藏的int所以要从下一位置开始
@@ -376,7 +376,7 @@ namespace Caviar.SharedKernel.Entities
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static Type ContainBaseClass(this Type type,Type contrast)
+        public static Type ContainBaseClass(this Type type, Type contrast)
         {
             var baseType = type.BaseType;
             if (baseType == null)
@@ -407,11 +407,11 @@ namespace Caviar.SharedKernel.Entities
         /// <param name="instance">object</param>
         /// <param name="propertyName">需要判断的属性</param>
         /// <returns>是否包含</returns>
-        public static PropertyInfo ContainProperty(this object instance, string propertyName,Type returnType)
+        public static PropertyInfo ContainProperty(this object instance, string propertyName, Type returnType)
         {
             if (instance != null && !string.IsNullOrEmpty(propertyName))
             {
-                PropertyInfo _findedPropertyInfo = instance.GetType().GetProperty(propertyName,returnType);
+                PropertyInfo _findedPropertyInfo = instance.GetType().GetProperty(propertyName, returnType);
                 return _findedPropertyInfo;
             }
             return null;

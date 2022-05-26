@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
 using System.Threading.Tasks;
-using Caviar.Infrastructure.API.BaseApi;
-using Caviar.SharedKernel.Entities.View;
-using Caviar.SharedKernel.Entities;
-using Caviar.Core.Services;
 using Caviar.Core.Interface;
+using Caviar.Core.Services;
+using Caviar.Infrastructure.API.BaseApi;
+using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Caviar.Infrastructure.API.CodeGeneration
 {
@@ -19,13 +23,13 @@ namespace Caviar.Infrastructure.API.CodeGeneration
             _languageService = languageService;
         }
         [HttpPost]
-        public async Task<IActionResult> CodeFileGenerate(CodeGenerateOptions codeGenerateOptions,bool isPerview)
+        public async Task<IActionResult> CodeFileGenerate(CodeGenerateOptions codeGenerateOptions, bool isPerview)
         {
-            CodeGenerationServices CodeService = CreateService<CodeGenerationServices>();
+            CodeGenerationServices codeService = CreateService<CodeGenerationServices>();
             //获取该类的所有字段
             var fieldsData = FieldScannerServices.GetClassFields(codeGenerateOptions.EntitieName, codeGenerateOptions.FullName, _languageService);//类信息
-            var entityData = FieldScannerServices.GetEntity(codeGenerateOptions.EntitieName, codeGenerateOptions.FullName,_languageService);//类下字段信息
-            var result = CodeService.CodePreview(entityData,fieldsData, codeGenerateOptions,""); //生成预览代码
+            var entityData = FieldScannerServices.GetEntity(codeGenerateOptions.EntitieName, codeGenerateOptions.FullName, _languageService);//类下字段信息
+            var result = codeService.CodePreview(entityData, fieldsData, codeGenerateOptions, ""); //生成预览代码
             if (!isPerview)
             {
                 var apiCount = 0;
@@ -36,7 +40,7 @@ namespace Caviar.Infrastructure.API.CodeGeneration
                     apiCount = await ApiScannerServices.CreateInitApi(dbContext.DbContext, codeGenerateOptions);
                 }
                 //将生成的代码输出
-                var msg = CodeService.WriteCodeFile(result, codeGenerateOptions);
+                var msg = codeService.WriteCodeFile(result, codeGenerateOptions);
                 msg = $"生成api {apiCount}个，" + msg;
                 return Ok(msg);
             }

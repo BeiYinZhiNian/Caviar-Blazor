@@ -1,21 +1,14 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
 using AntDesign;
-
-using System.Text;
-using System.Web;
-using System.Text.Json;
-using AntDesign.JsInterop;
-using Microsoft.JSInterop;
-using Microsoft.AspNetCore.Components.Authorization;
 using Caviar.AntDesignUI.Core;
 using Caviar.SharedKernel.Entities;
+using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace Caviar.AntDesignUI.Shared
 {
@@ -54,7 +47,7 @@ namespace Caviar.AntDesignUI.Shared
             LogoImgSrc = LogoImg;
             await base.OnInitializedAsync();
         }
-        
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender && Config.IsServer)
@@ -163,7 +156,7 @@ namespace Caviar.AntDesignUI.Shared
             }
             else
             {
-                if(!IsDrawer)//是否使用遮罩
+                if (!IsDrawer)//是否使用遮罩
                     HeaderStyle = "margin-left: 200px";
                 LogoImgSrc = LogoImg;
             }

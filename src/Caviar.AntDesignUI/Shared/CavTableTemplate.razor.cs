@@ -1,15 +1,16 @@
-﻿using AntDesign;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
 
-using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
-using System.Web;
 using System.Threading.Tasks;
+using AntDesign;
 using Caviar.AntDesignUI.Core;
-using Caviar.SharedKernel.Entities.View;
 using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
+using Microsoft.AspNetCore.Components;
 
 namespace Caviar.AntDesignUI.Shared
 {
@@ -25,13 +26,13 @@ namespace Caviar.AntDesignUI.Shared
         [Parameter]
         public EventCallback<IEnumerable<TData>> SelectedRowsChanged { get; set; }
 
-        
+
 
         [Parameter]
-        public IEnumerable<TData> SelectedRows 
-        { 
-            get { return _selectedRows; } 
-            set 
+        public IEnumerable<TData> SelectedRows
+        {
+            get { return _selectedRows; }
+            set
             {
                 if (_selectedRows == value) return;
                 _selectedRows = value;
@@ -39,7 +40,7 @@ namespace Caviar.AntDesignUI.Shared
                 {
                     SelectedRowsChanged.InvokeAsync(value);
                 }
-            } 
+            }
         }
 
         IEnumerable<TData> _selectedRows;
@@ -48,7 +49,7 @@ namespace Caviar.AntDesignUI.Shared
         /// </summary>
         [Parameter]
         public EventCallback<PaginationEventArgs> PageIndexChanged { get; set; }
-        
+
 
         [Parameter]
         public EventCallback<RowCallbackData<TData>> RowCallback { get; set; }
@@ -65,7 +66,7 @@ namespace Caviar.AntDesignUI.Shared
             {
                 await RowCallback.InvokeAsync(data);
             }
-            
+
         }
         [Inject]
         NavigationManager Navigation { get; set; }
@@ -98,7 +99,7 @@ namespace Caviar.AntDesignUI.Shared
                     Navigation.NavigateTo(menu.Entity.Url + suffix);
                     break;
                 case TargetType.EjectPage:
-                    Dictionary<string,object> paramenter = new Dictionary<string, object>();
+                    Dictionary<string, object> paramenter = new Dictionary<string, object>();
                     if (menu.Entity.ButtonPosition == ButtonPosition.Row)
                     {
                         //因为引用类型，这里进行一次转换，相当于深度复制
@@ -107,8 +108,8 @@ namespace Caviar.AntDesignUI.Shared
                         paramenter.Add(CurrencyConstant.DataSource, dataSource);
                     }
                     paramenter.Add(CurrencyConstant.CurrentUrl, menu.Entity.Url);//不提供url时候默认url一致
-                    var options = new CavModalOptions() 
-                    { 
+                    var options = new CavModalOptions()
+                    {
                         Url = menu.Entity.Url,
                         Paramenter = paramenter,
                         ActionOK = HandleOk,
@@ -281,7 +282,7 @@ namespace Caviar.AntDesignUI.Shared
         /// <summary>
         /// 获取列表组件
         /// </summary>
-        public Func<FieldsView,TData, RenderFragment> GetTableItems { get; set; }
+        public Func<FieldsView, TData, RenderFragment> GetTableItems { get; set; }
         /// <summary>
         /// 创建按钮回调
         /// </summary>

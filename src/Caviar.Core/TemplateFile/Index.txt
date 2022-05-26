@@ -1,9 +1,9 @@
 ﻿﻿@*
-生成者：{Producer}
-生成时间：{GenerationTime}
-代码由代码生成器自动生成，更改的代码可能被进行替换
-界面如需更改，建议直接将内容剪切到自己的文件内，保留此空白文件
-Caviar ©2021 Created by 北音执念
+// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+// 生成者：{Producer}
+// 生成时间：{GenerationTime}
 *@
 @page "/{EntityName}/Index"
 @inherits IndexComponentBase<{EntityName}View>

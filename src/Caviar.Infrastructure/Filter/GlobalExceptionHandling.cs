@@ -1,14 +1,16 @@
-﻿using Caviar.Core.Services;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
+using System;
+using System.Collections.Generic;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Caviar.Core.Services;
 using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Caviar.Infrastructure
 {
@@ -59,9 +61,9 @@ namespace Caviar.Infrastructure
                 {
                     sysLog = logServices.Error(ex.Message);
                 }
-                
+
             }
-            
+
             //todo
             ResultMsg resultMsg = new ResultMsg()
             {

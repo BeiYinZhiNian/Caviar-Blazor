@@ -1,18 +1,18 @@
-﻿using AntDesign;
-using Microsoft.AspNetCore.Components;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Net;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection;
-using Caviar.SharedKernel.Entities.View;
-using Caviar.SharedKernel.Entities;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
 using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
+using AntDesign;
+using Caviar.SharedKernel.Entities;
+using Microsoft.AspNetCore.Components;
 
 namespace Caviar.AntDesignUI.Core
 {
-    public partial class DataComponentBase<ViewT,T> : ComponentBase,ITableTemplate where ViewT:IView<T>,new() where T: IUseEntity,new()
+    public partial class DataComponentBase<ViewT, T> : ComponentBase, ITableTemplate where ViewT : IView<T>, new() where T : IUseEntity, new()
     {
         #region 参数
         /// <summary>

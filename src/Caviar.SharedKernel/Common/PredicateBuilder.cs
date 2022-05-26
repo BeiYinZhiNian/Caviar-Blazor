@@ -1,7 +1,10 @@
-﻿using System;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
+using System;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Collections.Generic;
 
 
 namespace Caviar.SharedKernel.Entities
@@ -22,7 +25,7 @@ namespace Caviar.SharedKernel.Entities
         public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> expr1,
                                                              Expression<Func<T, bool>> expr2)
         {
-            if(expr2 == null || expr1 == null)
+            if (expr2 == null || expr1 == null)
             {
                 return expr1 ?? expr2;
             }

@@ -1,16 +1,17 @@
-﻿using Caviar.Core;
-using Microsoft.AspNetCore.Mvc;
-using Caviar.Infrastructure.API.BaseApi;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Caviar.SharedKernel.Entities.View;
-using Caviar.SharedKernel.Entities;
-using Microsoft.AspNetCore.Http;
 using Caviar.Core.Services;
+using Caviar.Infrastructure.API.BaseApi;
+using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Caviar.Infrastructure.API.Permission
@@ -21,7 +22,7 @@ namespace Caviar.Infrastructure.API.Permission
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly PermissionServices _permissionServices;
         private readonly ILanguageService _languageService;
-        public PermissionController(RoleManager<ApplicationRole> roleManager, 
+        public PermissionController(RoleManager<ApplicationRole> roleManager,
             RoleFieldServices roleFieldServices,
             PermissionServices permissionServices,
             UserServices userServices,
@@ -51,7 +52,7 @@ namespace Caviar.Infrastructure.API.Permission
         /// <param name="roleName">角色id</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetFields(string name,string fullName,string roleName)
+        public async Task<IActionResult> GetFields(string name, string fullName, string roleName)
         {
             if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("类名不能为空");
             if (string.IsNullOrEmpty(fullName)) throw new ArgumentNullException("命名空间不能为空");
@@ -102,11 +103,11 @@ namespace Caviar.Infrastructure.API.Permission
         }
 
         [HttpPost]
-        public async Task<IActionResult> SavePermissionMenus(string roleName,List<string> urls)
+        public async Task<IActionResult> SavePermissionMenus(string roleName, List<string> urls)
         {
             var role = await _roleManager.FindByNameAsync(roleName);
             var count = await _permissionServices.SavePermissionMenusAsync(role.Id, urls);
-            return Ok(title:$"成功修改{count}条权限");
+            return Ok(title: $"成功修改{count}条权限");
         }
     }
 }

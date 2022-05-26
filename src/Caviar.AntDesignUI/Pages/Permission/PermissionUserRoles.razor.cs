@@ -1,15 +1,16 @@
-﻿using AntDesign;
-using Caviar.AntDesignUI.Core;
-using Caviar.AntDesignUI.Shared;
-using Caviar.SharedKernel.Entities;
-using Caviar.SharedKernel.Entities.View;
-using Microsoft.AspNetCore.Components;
-using System;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
+using AntDesign;
+using Caviar.AntDesignUI.Core;
+using Caviar.SharedKernel.Entities;
+using Caviar.SharedKernel.Entities.View;
+using Microsoft.AspNetCore.Components;
 
 namespace Caviar.AntDesignUI.Pages.Permission
 {
@@ -21,7 +22,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
         HttpService HttpService { get; set; }
         [Inject]
         MessageService MessageService { get; set; }
-        IEnumerable<ApplicationRoleView> RoleSelectedRows {get;set;}
+        IEnumerable<ApplicationRoleView> RoleSelectedRows { get; set; }
         protected override async Task OnInitializedAsync()
         {
             IndexUrl = UrlConfig.RoleIndex;
@@ -30,7 +31,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
             StateHasChanged();
         }
 
-        
+
 
         /// <summary>
         /// 初始角色选择
@@ -52,7 +53,7 @@ namespace Caviar.AntDesignUI.Pages.Permission
         protected async Task<List<string>> GetUserRoles(string userName)
         {
             var result = await HttpService.GetJson<List<string>>($"{UrlConfig.GetUserRoles}?userName={userName}");
-            if(result.Status == HttpStatusCode.OK)
+            if (result.Status == HttpStatusCode.OK)
             {
                 return result.Data;
             }

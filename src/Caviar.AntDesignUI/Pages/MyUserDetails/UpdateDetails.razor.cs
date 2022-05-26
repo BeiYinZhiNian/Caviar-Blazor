@@ -1,13 +1,13 @@
-﻿using AntDesign;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
+using System.Threading.Tasks;
+using AntDesign;
 using Caviar.AntDesignUI.Core;
 using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Caviar.AntDesignUI.Pages.MyUserDetails
 {
@@ -51,7 +51,7 @@ namespace Caviar.AntDesignUI.Pages.MyUserDetails
             if (fileinfo.File.State == UploadState.Success)
             {
                 var result = fileinfo.File.GetResponse<ResultMsg<SysEnclosure>>();
-                if(result.Status == System.Net.HttpStatusCode.OK)
+                if (result.Status == System.Net.HttpStatusCode.OK)
                 {
                     UserDetails.HeadPortrait = result.Data.FilePath;
                 }
@@ -65,10 +65,10 @@ namespace Caviar.AntDesignUI.Pages.MyUserDetails
         async Task FormSubmit()
         {
             var result = await HttpService.PostJson(UrlConfig.UpdateDetails, UserDetails);
-            if(result.Status == System.Net.HttpStatusCode.OK)
+            if (result.Status == System.Net.HttpStatusCode.OK)
             {
                 _ = _message.Success(result.Title);
-                NavigationManager.NavigateTo(JSRuntime, UrlConfig.Home,true);
+                NavigationManager.NavigateTo(JSRuntime, UrlConfig.Home, true);
             }
         }
     }

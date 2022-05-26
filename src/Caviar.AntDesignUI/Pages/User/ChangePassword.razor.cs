@@ -1,17 +1,16 @@
-﻿using AntDesign;
+﻿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
+
+using System.Threading.Tasks;
+using AntDesign;
 using Caviar.AntDesignUI.Core;
 using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Caviar.AntDesignUI.Pages.User
 {
-    public partial class ChangePassword: ITableTemplate
+    public partial class ChangePassword : ITableTemplate
     {
         [Parameter]
         public string CurrentUrl { get; set; }
@@ -38,7 +37,7 @@ namespace Caviar.AntDesignUI.Pages.User
 
         private async Task<bool> FormSubmit()
         {
-            if(ChangePasswordModel.ConfirmPassword != ChangePasswordModel.NewPassword)
+            if (ChangePasswordModel.ConfirmPassword != ChangePasswordModel.NewPassword)
             {
                 _ = MessageService.Error(LanguageService[$"{CurrencyConstant.ResuleMsg}.{CurrencyConstant.InconsistentPasswords}"]);
                 return false;
@@ -47,7 +46,7 @@ namespace Caviar.AntDesignUI.Pages.User
             ChangePasswordModel.ConfirmPassword = CommonHelper.SHA256EncryptString(ChangePasswordModel.ConfirmPassword);
             ChangePasswordModel.OldPassword = CommonHelper.SHA256EncryptString(ChangePasswordModel.OldPassword);
             var result = await HttpService.PostJson(UrlConfig.ChangePassword, ChangePasswordModel);
-            if(result.Status == System.Net.HttpStatusCode.OK)
+            if (result.Status == System.Net.HttpStatusCode.OK)
             {
                 _ = MessageService.Success(result.Title);
                 return true;
