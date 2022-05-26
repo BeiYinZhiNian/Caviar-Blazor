@@ -17,44 +17,44 @@ namespace Caviar.AntDesignUI.Core
 {
     public class CavModal
     {
-        ModalService Modal;
-        ILanguageService LanguageService;
-        MessageService MessageService;
+        readonly ModalService _modal;
+        readonly ILanguageService _languageService;
+        readonly MessageService _messageService;
         public CavModal(ILanguageService languageService, ModalService modalService, MessageService messageService)
         {
-            LanguageService = languageService;
-            Modal = modalService;
-            MessageService = messageService;
+            _languageService = languageService;
+            _modal = modalService;
+            _messageService = messageService;
         }
 
         public async Task<ModalRef> Create(CavModalOptions modalOptions)
         {
-            var modelHandle = new ModalHandle(LanguageService, Modal, MessageService);
+            var modelHandle = new ModalHandle(_languageService, _modal, _messageService);
             return await modelHandle.Create(modalOptions);
         }
 
         public RenderFragment Render(string url, string title, IEnumerable<KeyValuePair<string, object>> paramenter)
         {
-            var modelHandle = new ModalHandle(LanguageService, Modal, MessageService);
+            var modelHandle = new ModalHandle(_languageService, _modal, _messageService);
             return modelHandle.Render(url, title, paramenter);
         }
 
 
         protected class ModalHandle
         {
-            ModalService Modal;
-            ILanguageService LanguageService;
-            MessageService MessageService;
-            ModalRef modalRef;
-            Action OnOK;
-            Func<Task<bool>> FuncValidate;
-            ITableTemplate TableTemplate;
+            readonly ModalService _modal;
+            readonly ILanguageService _languageService;
+            readonly MessageService _messageService;
+            ModalRef _modalRef;
+            Action _onOK;
+            Func<Task<bool>> _funcValidate;
+            ITableTemplate _tableTemplate;
 
             public ModalHandle(ILanguageService languageService, ModalService modalService, MessageService messageService)
             {
-                LanguageService = languageService;
-                Modal = modalService;
-                MessageService = messageService;
+                _languageService = languageService;
+                _modal = modalService;
+                _messageService = messageService;
             }
 
             /// <summary>
@@ -83,8 +83,8 @@ namespace Caviar.AntDesignUI.Core
                     Title = modalOptions.Title,
                     BodyStyle = modalOptions.BodyStyle,
                     Visible = true,
-                    OkText = LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Confirm}"],
-                    CancelText = LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Cancel}"],
+                    OkText = _languageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Confirm}"],
+                    CancelText = _languageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Cancel}"],
                     DestroyOnClose = true,
                     Footer = modalOptions.Footer
                 };
@@ -92,10 +92,10 @@ namespace Caviar.AntDesignUI.Core
                 {
                     options.Draggable = true;
                 }
-                OnOK = modalOptions.ActionOK;
-                FuncValidate = modalOptions.FuncValidate;
-                modalRef = await Modal.CreateModalAsync(options);
-                return modalRef;
+                _onOK = modalOptions.ActionOK;
+                _funcValidate = modalOptions.FuncValidate;
+                _modalRef = await _modal.CreateModalAsync(options);
+                return _modalRef;
             }
 
             public RenderFragment Render(string url, string title, IEnumerable<KeyValuePair<string, object>> paramenter) => builder =>
@@ -107,10 +107,10 @@ namespace Caviar.AntDesignUI.Core
                     var page = (string)item.GetObjValue("Template").GetObjValue("TemplateText");
                     if (page.ToLower() == url.ToLower())
                     {
-                        var ComponentType = (Type)item.GetObjValue("Handler");
+                        var componentType = (Type)item.GetObjValue("Handler");
                         var index = 0;
                         builder.OpenElement(index++, "div");
-                        builder.OpenComponent(index++, ComponentType);
+                        builder.OpenComponent(index++, componentType);
                         if (paramenter != null && paramenter.Any())
                         {
                             builder.AddMultipleAttributes(index++, paramenter);
@@ -121,7 +121,7 @@ namespace Caviar.AntDesignUI.Core
                         return;
                     }
                 }
-                MessageService.Error(LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ComponentErrorMsg}"].Replace("{title}", title).Replace("{url}", url));
+                _messageService.Error(_languageService[$"{CurrencyConstant.Page}.{CurrencyConstant.ComponentErrorMsg}"].Replace("{title}", title).Replace("{url}", url));
             };
 
 
@@ -129,33 +129,33 @@ namespace Caviar.AntDesignUI.Core
             {
                 if (e is ITableTemplate)
                 {
-                    TableTemplate = (ITableTemplate)e;
+                    _tableTemplate = (ITableTemplate)e;
                 }
             }
 
             private async Task HandleOk(MouseEventArgs e)
             {
-                modalRef.Config.ConfirmLoading = true;
+                _modalRef.Config.ConfirmLoading = true;
                 var res = true;
-                if (TableTemplate != null)
+                if (_tableTemplate != null)
                 {
-                    res = await TableTemplate.Validate();
+                    res = await _tableTemplate.Validate();
                 }
-                if (FuncValidate != null)
+                if (_funcValidate != null)
                 {
-                    res = await FuncValidate.Invoke();
+                    res = await _funcValidate.Invoke();
                 }
-                modalRef.Config.ConfirmLoading = false;
-                modalRef.Config.Visible = !res;
+                _modalRef.Config.ConfirmLoading = false;
+                _modalRef.Config.Visible = !res;
                 if (res)
                 {
-                    OnOK?.Invoke();
+                    _onOK?.Invoke();
                 }
             }
 
             private Task HandleCancel(MouseEventArgs e)
             {
-                modalRef.Config.Visible = false;
+                _modalRef.Config.Visible = false;
                 return Task.CompletedTask;
             }
         }
