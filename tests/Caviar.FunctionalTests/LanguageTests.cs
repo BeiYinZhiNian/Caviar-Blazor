@@ -1,4 +1,4 @@
-// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
+ï»¿// Copyright (c) BeiYinZhiNian (1031622947@qq.com). All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 // Website: http://www.caviar.wang/ or https://gitee.com/Cherryblossoms/caviar.
 
@@ -38,25 +38,25 @@ namespace Caviar.FunctionalTests
             InAssemblyLanguageService.GetUserLanguageList = LanguageList;
             ILanguageService languageService = new InAssemblyLanguageService(culture);
             var text = languageService.Resources["LanguageTest"].ToString();
-            Assert.AreEqual("ÓÃ»§¶àÓïÑÔ¹¦ÄÜ²âÊÔ", text);
+            Assert.AreEqual("ç”¨æˆ·å¤šè¯­è¨€åŠŸèƒ½æµ‹è¯•", text);
             UserSGLanguage();
         }
 
         string UserLanguage(string name)
         {
-            var _resourcesAssembly = Assembly.GetExecutingAssembly();
+            var resourcesAssembly = Assembly.GetExecutingAssembly();
             var availableResources = LanguageList();
             Assert.AreEqual(availableResources.Count, 3);
             var (_, resourceName) = availableResources.FirstOrDefault(x => x.CultureName.Equals(name, StringComparison.OrdinalIgnoreCase));
-            using var fileStream = _resourcesAssembly.GetManifestResourceStream(resourceName);
+            using var fileStream = resourcesAssembly.GetManifestResourceStream(resourceName);
             using var streamReader = new StreamReader(fileStream);
             return streamReader.ReadToEnd();
         }
 
         List<(string CultureName, string ResourceName)> LanguageList()
         {
-            var _resourcesAssembly = Assembly.GetExecutingAssembly();
-            var availableResources = _resourcesAssembly
+            var resourcesAssembly = Assembly.GetExecutingAssembly();
+            var availableResources = resourcesAssembly
                     .GetManifestResourceNames()
                     .Select(x => Regex.Match(x, @"^.*Resources.Language\.(.+)\.json"))
                     .Where(x => x.Success)
@@ -76,7 +76,7 @@ namespace Caviar.FunctionalTests
             }
             catch (Exception ex)
             {
-                Assert.AreEqual($"Ã»ÓÐÓïÑÔÎÄ¼þ '{name}'", ex.Message);
+                Assert.AreEqual($"æ²¡æœ‰è¯­è¨€æ–‡ä»¶ '{name}'", ex.Message);
             }
         }
 
@@ -86,7 +86,7 @@ namespace Caviar.FunctionalTests
             var culture = CultureInfo.GetCultureInfo(name);
             ILanguageService languageService = new InAssemblyLanguageService(culture);
             var text = languageService.Resources["LanguageTest"].ToString();
-            Assert.AreEqual("ÓÃ»§ÐÂÔö¶àÓïÑÔ¹¦ÄÜ²âÊÔ", text);
+            Assert.AreEqual("ç”¨æˆ·æ–°å¢žå¤šè¯­è¨€åŠŸèƒ½æµ‹è¯•", text);
         }
     }
 }
