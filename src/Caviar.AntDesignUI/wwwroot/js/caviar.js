@@ -3,6 +3,8 @@ window.AntDesign.Prism.highlight = function (code, language) {
 	return Prism.highlight(code, Prism.languages[language], language);
 }
 
+
+
 window.AntDesign.Prism.highlightAll = function () {
 	Prism.highlightAll();
 }
@@ -136,10 +138,32 @@ function onbeforeunload_handler() {
 
 function loadJS(url, callback) {
 	var script = document.createElement('script'),
-		fn = callback || function () { console.log("wasm加载成功"); };
-	script.type = 'text/javascript';
+        fn = callback || function () {
+            console.log("wasm加载完毕");
+        };
+    script.type = 'text/javascript';
+    script.autostart = false;
 	if (script.readyState) {
-		script.onreadystatechange = function () {
+        script.onreadystatechange = function () {
+            Blazor.start({
+                loadBootResource: function (type, name, defaultUri, integrity) {
+                    if (type !== 'dotnetjs' && location.hostname !== 'localhost') {
+                        return (async function () {
+                            const response = await fetch(defaultUri + '.br', { cache: 'no-cache' });
+                            if (!response.ok) {
+                                throw new Error(response.statusText);
+                            }
+                            const originalResponseBuffer = await response.arrayBuffer();
+                            const originalResponseArray = new Int8Array(originalResponseBuffer);
+                            const decompressedResponseArray = BrotliDecode(originalResponseArray);
+                            const contentType = type ===
+                                'dotnetwasm' ? 'application/wasm' : 'application/octet-stream';
+                            return new Response(decompressedResponseArray,
+                                { headers: { 'content-type': contentType } });
+                        })();
+                    }
+                }
+            });
 			if (script.readyState == 'loaded' || script.readyState == 'complete') {
 				script.onreadystatechange = null;
 				fn();
@@ -153,5 +177,5 @@ function loadJS(url, callback) {
 	}
 	script.src = url;
 	script.async = 'async';
-	document.getElementsByTagName('head')[0].appendChild(script);
+    document.getElementsByTagName('head')[0].appendChild(script);
 }
