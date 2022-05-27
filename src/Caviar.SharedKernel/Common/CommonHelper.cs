@@ -32,21 +32,21 @@ namespace Caviar.SharedKernel.Entities
         {
             DateTime time1 = Convert.ToDateTime("0:00:00");
             DateTime time2 = Convert.ToDateTime(GetSysDateTimeNow().ToString());
-            TimeSpan TS = new TimeSpan(time2.Ticks - time1.Ticks);
-            int Time = (int)TS.TotalHours;
-            if (Time < 5) // 0 - 5
+            TimeSpan tS = new TimeSpan(time2.Ticks - time1.Ticks);
+            int time = (int)tS.TotalHours;
+            if (time < 5) // 0 - 5
             {
                 return TimeSlot.Midnight;
             }
-            else if (Time >= 5 && Time < 11)// 5 - 11
+            else if (time >= 5 && time < 11)// 5 - 11
             {
                 return TimeSlot.Morning;
             }
-            else if (Time >= 11 && Time < 14)// 11 - 14
+            else if (time >= 11 && time < 14)// 11 - 14
             {
                 return TimeSlot.Noon;
             }
-            else if (Time >= 14 && Time < 18)// 14 - 18
+            else if (time >= 14 && time < 18)// 14 - 18
             {
                 return TimeSlot.Afternoon;
             }
@@ -107,12 +107,12 @@ namespace Caviar.SharedKernel.Entities
         /// <param name="text"></param>
         /// <param name="contrastText"></param>
         /// <param name="index"></param>
-        /// <param name="IsLastIndex"></param>
+        /// <param name="isLastIndex"></param>
         /// <returns></returns>
-        public static string GetRightText(this string text, string contrastText, int index = 0, bool IsLastIndex = false)
+        public static string GetRightText(this string text, string contrastText, int index = 0, bool isLastIndex = false)
         {
             if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(contrastText)) return "";
-            if (IsLastIndex)
+            if (isLastIndex)
             {
                 index = text.LastIndexOf(contrastText, index);
             }
@@ -129,12 +129,12 @@ namespace Caviar.SharedKernel.Entities
         /// <param name="text"></param>
         /// <param name="contrastText"></param>
         /// <param name="index"></param>
-        /// <param name="IsLastIndex"></param>
+        /// <param name="isLastIndex"></param>
         /// <returns></returns>
-        public static string GetLeftText(this string text, string contrastText, int index = 0, bool IsLastIndex = false)
+        public static string GetLeftText(this string text, string contrastText, int index = 0, bool isLastIndex = false)
         {
             if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(contrastText)) return "";
-            if (IsLastIndex)
+            if (isLastIndex)
             {
                 index = text.LastIndexOf(contrastText, index);
             }
@@ -277,28 +277,28 @@ namespace Caviar.SharedKernel.Entities
         /// <returns></returns>
         public static List<T> ListToTree<T>(this List<T> data) where T : class, ITree<T>
         {
-            List<T> Tree = new List<T>();
-            if (data == null) return Tree;
+            List<T> tree = new List<T>();
+            if (data == null) return tree;
             foreach (var item in data)
             {
                 if (item.ParentId == 0)
                 {
-                    Tree.Add(item);
+                    tree.Add(item);
                 }
                 else
                 {
-                    var ParentNode = data.SingleOrDefault(u => u.Id == item.ParentId);
-                    if (ParentNode == null)
+                    var parentNode = data.SingleOrDefault(u => u.Id == item.ParentId);
+                    if (parentNode == null)
                     {
-                        Tree.Add(item);//没有找到父节点，所以直接加入最上层节点
+                        tree.Add(item);//没有找到父节点，所以直接加入最上层节点
                     }
                     else
                     {
-                        ParentNode.Children.Add(item);//加入父节点
+                        parentNode.Children.Add(item);//加入父节点
                     }
                 }
             }
-            return Tree;
+            return tree;
         }
 
         /// <summary>
@@ -411,8 +411,8 @@ namespace Caviar.SharedKernel.Entities
         {
             if (instance != null && !string.IsNullOrEmpty(propertyName))
             {
-                PropertyInfo _findedPropertyInfo = instance.GetType().GetProperty(propertyName, returnType);
-                return _findedPropertyInfo;
+                PropertyInfo findedPropertyInfo = instance.GetType().GetProperty(propertyName, returnType);
+                return findedPropertyInfo;
             }
             return null;
         }
