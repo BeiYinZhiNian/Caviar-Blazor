@@ -17,12 +17,12 @@ namespace Caviar.AntDesignUI.Core
 {
     public class HostAuthenticationStateProvider : AuthenticationStateProvider
     {
-        private readonly IAuthService api;
+        private readonly IAuthService _api;
         private CurrentUser _currentUser;
         MessageService _message;
         public HostAuthenticationStateProvider(IAuthService api, MessageService messageService)
         {
-            this.api = api;
+            _api = api;
             _message = messageService;
         }
 
@@ -50,24 +50,26 @@ namespace Caviar.AntDesignUI.Core
         public async Task<CurrentUser> GetCurrentUser()
         {
             if (_currentUser != null && _currentUser.IsAuthenticated) return _currentUser;
-            _currentUser = await api.CurrentUserInfo();
+            _currentUser = await _api.CurrentUserInfo();
             return _currentUser;
         }
 
         public async Task<string> Logout()
         {
-            var result = await api.Logout();
+            var result = await _api.Logout();
             _currentUser = null;
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
             return result;
         }
 
         public async Task<ResultMsg> Login(UserLogin loginParameters, string returnUrl)
         {
-            var result = await api.Login(loginParameters, returnUrl);
+            var result = await _api.Login(loginParameters, returnUrl);
             if (result.Status != HttpStatusCode.OK)
             {
                 _ = _message.Error(result.Title);
             }
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
             return result;
         }
     }

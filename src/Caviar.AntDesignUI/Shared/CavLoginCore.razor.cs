@@ -37,11 +37,11 @@ namespace Caviar.AntDesignUI.Shared
 
         bool Loading { get; set; } = true;
 
-        Form<UserLogin> Form;
+        Form<UserLogin> _form;
 
         public async void SubmitLogin()
         {
-            if (!Form.Validate()) return;
+            if (!_form.Validate()) return;
             Loading = true;
             var returnUrl = HttpUtility.ParseQueryString(new Uri(NavigationManager.Uri).Query)["returnUrl"];
             if (returnUrl == null) returnUrl = "/";
@@ -51,8 +51,10 @@ namespace Caviar.AntDesignUI.Shared
             if (result.Status == System.Net.HttpStatusCode.OK)
             {
                 _ = MessageService.Success(result.Title);
-                NavigationManager.NavigateTo(JSRuntime, result.Url);
-                return;
+                if (Config.IsServer)
+                {
+                    NavigationManager.NavigateTo(JSRuntime, result.Url);
+                }
             }
             ApplicationUser.Password = "";
             StateHasChanged();

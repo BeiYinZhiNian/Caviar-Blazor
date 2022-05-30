@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CacheManager.Core;
 using Caviar.Core.Services;
 using Caviar.Infrastructure.API.BaseApi;
 using Caviar.SharedKernel.Entities;
@@ -22,16 +23,18 @@ namespace Caviar.Infrastructure.API.Permission
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly PermissionServices _permissionServices;
         private readonly ILanguageService _languageService;
+        private readonly ICacheManager<object> _cacheManager;
         public PermissionController(RoleManager<ApplicationRole> roleManager,
             RoleFieldServices roleFieldServices,
             PermissionServices permissionServices,
-            UserServices userServices,
-            ILanguageService languageService)
+            ILanguageService languageService,
+            ICacheManager<object> cacheManager)
         {
             _roleFieldServices = roleFieldServices;
             _roleManager = roleManager;
             _permissionServices = permissionServices;
             _languageService = languageService;
+            _cacheManager = cacheManager;
         }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
@@ -78,6 +81,7 @@ namespace Caviar.Infrastructure.API.Permission
                 key: idCookiaName,
                 value: acceptLanguage,
                 options: idCookieOptions);
+            _cacheManager.Clear();
             return Redirect(returnUrl);
         }
         /// <summary>

@@ -38,8 +38,6 @@
 
     [Inject]
     NavigationManager NavigationManager { get; set; }
-    [Inject]
-    HostAuthenticationStateProvider HostAuthenticationStateProvider{ get; set; }
 
     [Inject]
     IJSRuntime JSRuntime{ get; set; }
@@ -50,6 +48,7 @@
     {
         return CavModal.Render(UrlConfig.Login, "µÇÂ¼Ò³Ãæ", null);
     }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)

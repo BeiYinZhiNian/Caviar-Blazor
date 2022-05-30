@@ -2,7 +2,7 @@
 
 <Card Bordered="true" Title="@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.UserLogin}"]" Style="width:400px" Hoverable="true">
     <Body>
-        <Form Model="@ApplicationUser" @ref="Form"
+        <Form Model="@ApplicationUser" @ref="_form"
               ValidateMode="@FormValidateMode.Rules">
             <CavFormItem Label="" FieldName="UserName" FieldRules="@context">
                 <Input Placeholder="@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.InputUserName}"]" Size="large" @bind-Value="@context.UserName">

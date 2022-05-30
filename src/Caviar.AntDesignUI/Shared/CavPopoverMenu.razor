@@ -68,7 +68,8 @@
                         <a>
                            @menu.DisplayName
                         </a>
-                     </MenuItem>;
+            </MenuItem>
+        ;
                     break;
                 default:
                     return render;
@@ -83,7 +84,10 @@
         {
             case CurrencyConstant.Logout:
                 var result = await AuthStateProvider.Logout();
-                NavigationManager.NavigateTo(JSRuntime, result);
+                if (Config.IsServer)
+                {
+                    NavigationManager.NavigateTo(JSRuntime, result);
+                }
                 break;
             default:
                 break;

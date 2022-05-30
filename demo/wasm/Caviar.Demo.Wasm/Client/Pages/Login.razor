@@ -1,0 +1,28 @@
+﻿@page "/ApplicationUser/Login"
+@*暂不支持登录地址更换，后续会尽快推出💕*@
+
+<Layout Style="@_style" Class="site-layout-background-img">
+    <Content>
+        <div class="login-NavLogin">
+            <div style="padding:30px">
+                <CavLoginCore ApplicationUser="ApplicationUser"></CavLoginCore>
+            </div>
+        </div>
+    </Content>
+    <CavFooter Style="background:rgb(0 0 0 / 0.00);text-align: center;"></CavFooter>
+</Layout>
+
+
+<style>
+    .login-NavLogin {
+        position: absolute;
+        left: 50%;
+        top: 40%;
+        transform: translate(-50%, -50%);
+    }
+
+    .site-layout-background-img {
+        background-repeat: no-repeat !important;
+        background-size: 100% 100% !important;
+    }
+</style>

@@ -10,7 +10,7 @@ namespace Caviar.AntDesignUI.Core
 {
     public static class CavNavigationManager
     {
-        public static void NavigateTo(this NavigationManager navigationManager, IJSRuntime jSRuntime, string uri, bool replace = false)
+        public static void NavigateTo(this NavigationManager navigationManager, IJSRuntime jSRuntime, string uri, bool forceLoad = false, bool replace = false)
         {
             if (Config.IsServer)
             {
@@ -21,7 +21,7 @@ namespace Caviar.AntDesignUI.Core
             }
             else
             {
-                navigationManager.NavigateTo(uri, true, replace);
+                navigationManager.NavigateTo(uri, forceLoad, replace);
             }
         }
     }
