@@ -57,7 +57,13 @@ namespace Caviar.Core.Services
             _cacheManager.Clear();
             return fields;
         }
-
+        /// <summary>
+        /// 读取指定表，将表中所有数据进行缓存(无过期)
+        /// 适用于不常更新，经常需要查找的表
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="cacheName"></param>
+        /// <returns></returns>
         private async Task<List<T>> ReadPermanentCache<T>(string cacheName) where T : class
         {
             var sysPermissions = _cacheManager.Get<List<T>>(cacheName);
