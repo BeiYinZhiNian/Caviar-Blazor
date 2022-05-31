@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CacheManager.Core;
 using Caviar.Core.Interface;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
@@ -17,10 +18,14 @@ namespace Caviar.Core.Services
     {
         private readonly IAppDbContext _appDbContext;
         private readonly RoleManager<ApplicationRole> _roleManager;
-        public RoleFieldServices(IAppDbContext dbContext, RoleManager<ApplicationRole> roleManager)
+        private readonly ICacheManager<object> _cacheManager;
+        public RoleFieldServices(IAppDbContext dbContext,
+            RoleManager<ApplicationRole> roleManager,
+            ICacheManager<object> cacheManager)
         {
             _appDbContext = dbContext;
             _roleManager = roleManager;
+            _cacheManager = cacheManager;
         }
 
         /// <summary>
@@ -49,6 +54,7 @@ namespace Caviar.Core.Services
                 }
                 await _appDbContext.SaveChangesAsync();
             }
+            _cacheManager.Clear();
             return fields;
         }
 
@@ -56,12 +62,21 @@ namespace Caviar.Core.Services
         public async Task<List<FieldsView>> GetRoleFields(List<FieldsView> fields, string fullName, IList<int> roleIds)
         {
             var sysFields = await _appDbContext.GetEntityAsync<SysFields>(u => u.FullName == fullName).ToListAsync();
+            var cacheName = "sysPermissions";
+            var sysPermissions = _cacheManager.Get<List<SysPermission>>(cacheName);
+            if (sysPermissions == null)
+            {
+                var set = _appDbContext.DbContext.Set<SysPermission>();
+                sysPermissions = set.ToList();
+                _cacheManager.Add(cacheName, sysPermissions);
+                // 在未更新字段权限时，无需更新权限表
+                _cacheManager.Expire(cacheName, ExpirationMode.None, default);
+            }
             foreach (var item in fields)
             {
                 if (item.Entity == null) continue;
                 item.Entity = sysFields.SingleOrDefault(u => u.FieldName == item.Entity.FieldName);
-                var set = _appDbContext.DbContext.Set<SysPermission>();
-                var permission = set.FirstOrDefault(u => u.Permission == (item.Entity.FullName + item.Entity.FieldName) && roleIds.Contains(u.Entity) && u.PermissionType == (int)PermissionType.RoleFields);
+                var permission = sysPermissions.FirstOrDefault(u => u.Permission == (item.Entity.FullName + item.Entity.FieldName) && roleIds.Contains(u.Entity) && u.PermissionType == (int)PermissionType.RoleFields);
                 item.IsPermission = permission != null;
             }
             fields = fields.OrderBy(u => u.Entity.Number).ToList();
