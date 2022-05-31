@@ -7,7 +7,7 @@
     <PackageProjectUrl>https://gitee.com/Cherryblossoms/caviar.git</PackageProjectUrl>
     <RepositoryUrl>https://gitee.com/Cherryblossoms/caviar.git</RepositoryUrl>
     <PackageTags>caviar;Ant-Design;blazor;</PackageTags>
-    <Version>1.0.2-202205231-1</Version>
+    <Version>1.0.2</Version>
     <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
