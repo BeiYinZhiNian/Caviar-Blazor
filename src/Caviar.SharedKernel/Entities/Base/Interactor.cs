@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
-using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Http;
 
 namespace Caviar.SharedKernel.Entities
