@@ -58,20 +58,25 @@ namespace Caviar.Core.Services
             return fields;
         }
 
-
-        public async Task<List<FieldsView>> GetRoleFields(List<FieldsView> fields, string fullName, IList<int> roleIds)
+        private async Task<List<T>> ReadPermanentCache<T>(string cacheName) where T : class
         {
-            var sysFields = await _appDbContext.GetEntityAsync<SysFields>(u => u.FullName == fullName).ToListAsync();
-            var cacheName = "sysPermissions";
-            var sysPermissions = _cacheManager.Get<List<SysPermission>>(cacheName);
+            var sysPermissions = _cacheManager.Get<List<T>>(cacheName);
             if (sysPermissions == null)
             {
-                var set = _appDbContext.DbContext.Set<SysPermission>();
-                sysPermissions = set.ToList();
+                var set = _appDbContext.DbContext.Set<T>();
+                sysPermissions = await set.ToListAsync();
                 _cacheManager.Add(cacheName, sysPermissions);
                 // 在未更新字段权限时，无需更新权限表
                 _cacheManager.Expire(cacheName, ExpirationMode.None, default);
             }
+            return sysPermissions;
+        }
+
+        public async Task<List<FieldsView>> GetRoleFields(List<FieldsView> fields, string fullName, IList<int> roleIds)
+        {
+            var sysFields = await ReadPermanentCache<SysFields>("field_service_sysFields");
+            sysFields = sysFields.Where(u => u.FullName == fullName).ToList();
+            var sysPermissions = await ReadPermanentCache<SysPermission>("field_service_sysPermissions");
             foreach (var item in fields)
             {
                 if (item.Entity == null) continue;
