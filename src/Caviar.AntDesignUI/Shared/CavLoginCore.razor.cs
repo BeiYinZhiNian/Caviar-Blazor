@@ -43,21 +43,32 @@ namespace Caviar.AntDesignUI.Shared
         {
             if (!_form.Validate()) return;
             Loading = true;
-            var returnUrl = HttpUtility.ParseQueryString(new Uri(NavigationManager.Uri).Query)["returnUrl"];
-            if (returnUrl == null) returnUrl = "/";
-            ApplicationUser.Password = CommonHelper.SHA256EncryptString(ApplicationUser.Password);
-            var result = await AuthStateProvider.Login(ApplicationUser, returnUrl);
-            Loading = false;
-            if (result.Status == System.Net.HttpStatusCode.OK)
+            try
             {
-                _ = MessageService.Success(result.Title);
-                if (Config.IsServer)
+                var returnUrl = HttpUtility.ParseQueryString(new Uri(NavigationManager.Uri).Query)["returnUrl"];
+                if (returnUrl == null) returnUrl = "/";
+                ApplicationUser.Password = CommonHelper.SHA256EncryptString(ApplicationUser.Password);
+                var result = await AuthStateProvider.Login(ApplicationUser, returnUrl);
+                if (result.Status == System.Net.HttpStatusCode.OK)
                 {
-                    NavigationManager.NavigateTo(JSRuntime, result.Url);
+                    _ = MessageService.Success(result.Title);
+                    if (Config.IsServer)
+                    {
+                        NavigationManager.NavigateTo(JSRuntime, result.Url);
+                    }
+                    return;
+                }
+                else
+                {
+                    throw new Exception("login error:" + result.Title);
                 }
             }
-            ApplicationUser.Password = "";
-            StateHasChanged();
+            catch
+            {
+                Loading = false;
+                ApplicationUser.Password = "";
+                StateHasChanged();
+            }
         }
         protected override void OnAfterRender(bool firstRender)
         {
