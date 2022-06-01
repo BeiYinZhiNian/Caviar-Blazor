@@ -5,12 +5,12 @@
         <Form Model="@ApplicationUser" @ref="_form"
               ValidateMode="@FormValidateMode.Rules">
             <CavFormItem Label="" FieldName="UserName" FieldRules="@context">
-                <Input Placeholder="@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.InputUserName}"]" Size="large" @bind-Value="@context.UserName">
+                <Input DebounceMilliseconds="-1" Placeholder="@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.InputUserName}"]" Size="large" @bind-Value="@context.UserName">
                     <Prefix><Icon Type="user" /></Prefix>
                 </Input>
             </CavFormItem>
             <CavFormItem Label="" FieldName="Password" FieldRules='@context'>
-                <InputPassword @bind-Value='@context.Password' Placeholder="@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.InputUserName}"]" Size="large">
+                <InputPassword DebounceMilliseconds="-1" @bind-Value='@context.Password' Placeholder="@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.InputUserName}"]" Size="large">
                     <Prefix><Icon Type="lock" /></Prefix>
                 </InputPassword>
             </CavFormItem>
