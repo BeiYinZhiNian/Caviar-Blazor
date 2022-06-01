@@ -67,12 +67,13 @@ namespace Caviar.Infrastructure
             //todo
             ResultMsg resultMsg = new ResultMsg()
             {
+                TraceId = sysLog.TraceId,
                 Status = System.Net.HttpStatusCode.InternalServerError,
                 Title = CurrencyConstant.InternalServerError,
                 Detail = new Dictionary<string, string>()
                 {
-                    { "异常信息",ex.Message },
-                    { "异常已记录","异常id：" + sysLog?.Id},
+                    { "Id", sysLog?.Id.ToString() },
+                    { "Message",ex.Message },
                 }
             };
             context.Response.ContentType = "application/json";
