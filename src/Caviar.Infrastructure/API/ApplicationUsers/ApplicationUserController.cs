@@ -68,14 +68,14 @@ namespace Caviar.Infrastructure.API
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return Ok(url: "/" + UrlConfig.Login);
+            return Ok(url: "/");
         }
 
         [HttpGet]
         public async Task<IActionResult> LogoutServer()
         {
             await _signInManager.SignOutAsync();
-            return Redirect("/" + UrlConfig.Login);
+            return Redirect("/");
         }
 
         [HttpGet]
