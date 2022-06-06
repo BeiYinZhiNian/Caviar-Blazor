@@ -58,18 +58,24 @@ namespace Caviar.AntDesignUI.Core
         {
             var result = await _api.Logout();
             _currentUser = null;
-            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+            if (!Config.IsServer)
+            {
+                NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+            }
             return result;
         }
 
         public async Task<ResultMsg> Login(UserLogin loginParameters, string returnUrl)
         {
             var result = await _api.Login(loginParameters, returnUrl);
-            if (result.Status != HttpStatusCode.OK)
+            if (Config.IsServer && result.Status != HttpStatusCode.OK)
             {
                 _ = _message.Error(result.Title);
             }
-            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+            if (!Config.IsServer && result.Status == HttpStatusCode.OK)
+            {
+                NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+            }
             return result;
         }
     }
