@@ -214,10 +214,10 @@ namespace Caviar.Core.Services
             switch (modelType)
             {
                 case "string":
-                    txt += $"<Input @bind-Value='@context.Entity.{item.Entity.FieldName}' />";
+                    txt += $"<Input DebounceMilliseconds='-1' @bind-Value='@context.Entity.{item.Entity.FieldName}' />";
                     break;
                 case "int32":
-                    txt += $"<AntDesign.InputNumber @bind-Value='@context.Entity.{item.Entity.FieldName}' Style='width:50%'/>";
+                    txt += $"<InputNumber DebounceMilliseconds='-1' @bind-Value='@context.Entity.{item.Entity.FieldName}' Style='width:50%'/>";
                     break;
                 case "boolean":
                     txt += $"<Switch @bind-Value='@context.Entity.{item.Entity.FieldName}'/>";
