@@ -45,7 +45,7 @@
                             var _editid = context.Entity.FieldName + "-Number";
                             if (editId == _editid)
                             {
-                                <Input Type="text" @bind-Value="context.Entity.Number" OnBlur="()=>stopEdit(context)" AutoFocus />
+                                <Input DebounceMilliseconds="-1"Type="text" @bind-Value="context.Entity.Number" OnBlur="()=>stopEdit(context)" AutoFocus />
                             }
                             else
                             {
@@ -60,7 +60,7 @@
                             var _editId = context.Entity.FieldName + "-Width";
                             if (editId == _editId)
                             {
-                                <Input Type="text" @bind-Value="context.Entity.TableWidth" OnBlur="()=>stopEdit(context)" AutoFocus />
+                                <Input DebounceMilliseconds="-1"Type="text" @bind-Value="context.Entity.TableWidth" OnBlur="()=>stopEdit(context)" AutoFocus />
                             }
                             else
                             {

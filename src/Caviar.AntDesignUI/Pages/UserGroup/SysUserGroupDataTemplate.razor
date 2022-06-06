@@ -18,7 +18,7 @@ Caviar ©2021 Created by 北音执念
     ValidateMode="@FormValidateMode.Rules" 
     ValidateOnChange="true">
     <CavFormItem  FieldName='Name' FieldRules='@context.Entity'>
-        <Input @bind-Value='@context.Entity.Name' />
+        <Input DebounceMilliseconds="-1"@bind-Value='@context.Entity.Name' />
     </CavFormItem>
     <CavFormItem FieldName="Upper directory">
         <Dropdown>
@@ -41,10 +41,7 @@ Caviar ©2021 Created by 北音执念
         <Switch @bind-Value='@context.Entity.IsDisable'/>
     </CavFormItem>
     <CavFormItem  FieldName='Number' FieldRules='@context.Entity'>
-        <Input @bind-Value='@context.Entity.Number' />
-    </CavFormItem>
-    <CavFormItem  FieldName='DataId' FieldRules='@context.Entity'>
-        <AntDesign.InputNumber @bind-Value='@context.Entity.DataId' Style='width:50%'/>
+        <Input DebounceMilliseconds="-1" @bind-Value='@context.Entity.Number' />
     </CavFormItem>
     <CavFormItem  FieldName='Remark' FieldRules='@context.Entity'>
         <TextArea Placeholder="@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.InputRemark}"]"  AllowClear="true" @bind-Value="@context.Entity.Remark" />

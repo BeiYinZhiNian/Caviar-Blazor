@@ -15,6 +15,6 @@
             }
         </SelectOptions>
     </SimpleSelect>
-    <Input TValue="string" @bind-Value="QueryModel.Value" Placeholder="@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SearchData}"]"/>
+    <Input DebounceMilliseconds="-1"TValue="string" @bind-Value="QueryModel.Value" Placeholder="@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.SearchData}"]"/>
     <Button OnClick="OnSearch" Type="@ButtonType.Primary" Loading="Loading">@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.Search}"]</Button>
 </InputGroup>

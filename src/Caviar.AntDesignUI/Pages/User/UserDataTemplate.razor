@@ -18,16 +18,16 @@ Caviar ©2021 Created by 北音执念
     ValidateMode="@FormValidateMode.Rules" 
     ValidateOnChange="true">
     <CavFormItem  FieldName='UserName' FieldRules='@context.Entity'>
-        <Input @bind-Value='@context.Entity.UserName' />
+        <Input DebounceMilliseconds="-1"@bind-Value='@context.Entity.UserName' />
     </CavFormItem>
     <CavFormItem  FieldName='AccountName' FieldRules='@context.Entity'>
-        <Input @bind-Value='@context.Entity.AccountName' />
+        <Input DebounceMilliseconds="-1"@bind-Value='@context.Entity.AccountName' />
     </CavFormItem>
     <CavFormItem  FieldName='Email' FieldRules='@context.Entity'>
-        <Input @bind-Value='@context.Entity.Email' />
+        <Input DebounceMilliseconds="-1"@bind-Value='@context.Entity.Email' />
     </CavFormItem>
     <CavFormItem Label="@LanguageService[$"{CurrencyConstant.EntitysName}.UserGroup"]"  FieldName="UserGroupId" FieldRules='@context.Entity'>
-        <Input @bind-Value='@context.Entity.UserGroupId' Style="display:none;"/>
+        <Input DebounceMilliseconds="-1"@bind-Value='@context.Entity.UserGroupId' Style="display:none;"/>
         <Dropdown>
             <Overlay>
                 <Tree ShowIcon DataSource="UserGroupViews"
@@ -45,13 +45,13 @@ Caviar ©2021 Created by 北音执念
         </Dropdown>
     </CavFormItem>
     <CavFormItem  FieldName='PhoneNumber' FieldRules='@context.Entity'>
-        <Input @bind-Value='@context.Entity.PhoneNumber' />
+        <Input DebounceMilliseconds="-1"@bind-Value='@context.Entity.PhoneNumber' />
     </CavFormItem>
     <CavFormItem  FieldName='IsDisable' FieldRules='@context.Entity'>
         <Switch @bind-Value='@context.Entity.IsDisable'/>
     </CavFormItem>
     <CavFormItem  FieldName='Number' FieldRules='@context.Entity'>
-        <Input @bind-Value='@context.Entity.Number' />
+        <Input DebounceMilliseconds="-1"@bind-Value='@context.Entity.Number' />
     </CavFormItem>
     <CavFormItem  FieldName='Remark' FieldRules='@context.Entity'>
         <TextArea Placeholder="@LanguageService[$"{CurrencyConstant.Page}.{CurrencyConstant.InputRemark}"]"  AllowClear="true" @bind-Value="@context.Entity.Remark" />

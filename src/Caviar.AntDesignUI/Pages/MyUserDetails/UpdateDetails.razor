@@ -8,7 +8,7 @@
                 ValidateMode="@FormValidateMode.Rules" 
                 ValidateOnChange="true">
             <CavFormItem FieldName="HeadPortrait" FieldRules="@context">
-                <Input @bind-Value="context.HeadPortrait" Style="display:none;" />
+                <Input DebounceMilliseconds="-1"@bind-Value="context.HeadPortrait" Style="display:none;" />
                 <Upload Action="@(CurrencyConstant.Api + UrlConfig.UploadHeadPortrait)"
                         Name="HeadPortrait"
                         ListType="picture-card"
@@ -32,14 +32,14 @@
             <CavFormItem FieldName="AccountName" FieldRules="@context">
                 <Space>
                     <SpaceItem>
-                        <Input @bind-Value="@context.AccountName" />
+                        <Input DebounceMilliseconds="-1"@bind-Value="@context.AccountName" />
                     </SpaceItem>
                 </Space>
             </CavFormItem>
             <CavFormItem FieldName="Email" FieldRules="@context">
                 <Space>
                     <SpaceItem>
-                        <Input @bind-Value="@context.Email" />
+                        <Input DebounceMilliseconds="-1"@bind-Value="@context.Email" />
                     </SpaceItem>
                     <SpaceItem>
                         <Button Disabled>发送验证码</Button>
@@ -49,7 +49,7 @@
             <CavFormItem FieldName="PhoneNumber" FieldRules="@context">
                 <Space>
                     <SpaceItem>
-                        <Input @bind-Value="context.PhoneNumber" />
+                        <Input DebounceMilliseconds="-1"@bind-Value="context.PhoneNumber" />
                     </SpaceItem>
                     <SpaceItem>
                         <Button Disabled>发送验证码</Button>
@@ -57,7 +57,7 @@
                 </Space>
             </CavFormItem>
             <CavFormItem FieldName="Remark" FieldRules="@context">
-                <Input @bind-Value="context.Remark" />
+                <Input DebounceMilliseconds="-1"@bind-Value="context.Remark" />
             </CavFormItem>
             <FormItem WrapperColOffset="8" WrapperColSpan="16">
                 <Button Type="@ButtonType.Primary" HtmlType="submit">
