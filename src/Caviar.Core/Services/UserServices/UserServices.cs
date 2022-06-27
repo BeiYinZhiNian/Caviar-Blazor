@@ -42,7 +42,7 @@ namespace Caviar.Core.Services
 
         public async Task<IdentityResult> AssignRolesAsync(string userName, IList<string> roles)
         {
-            var user = await GetUserInfoAsync(userName);
+            var user = await _userManager.FindByNameAsync(userName);
             var currentRoles = await GetRolesAsync(user);
             var addRoles = roles.Where(u => !currentRoles.Contains(u));
             var removeRoles = currentRoles.Where(u => !roles.Contains(u));
@@ -61,6 +61,7 @@ namespace Caviar.Core.Services
                 }
                 throw new ResultException(new ResultMsg() { Title = "移除角色时发生错误", Status = System.Net.HttpStatusCode.BadRequest, Detail = dic });
             }
+            _cacheManager.Clear();
             return result;
         }
 
