@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Caviar.Core.Interface;
 using Caviar.Core.Services;
+using Caviar.SharedKernel.Common;
 using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -21,11 +22,11 @@ namespace Caviar.Infrastructure.Persistence
         where TKey : IEquatable<TKey>
     {
         private readonly CaviarConfig _caviarConfig;
-        private readonly Interactor _interactor;
+        private readonly IInteractor _interactor;
         private readonly ILanguageService _languageService;
         public SysDbContext(DbContextOptions options,
             CaviarConfig caviarConfig,
-            Interactor interactor,
+            IInteractor interactor,
             ILanguageService languageService) : base(options)
         {
             _caviarConfig = caviarConfig;

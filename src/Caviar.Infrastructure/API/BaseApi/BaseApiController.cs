@@ -9,6 +9,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Caviar.Core.Interface;
 using Caviar.Core.Services;
+using Caviar.SharedKernel.Common;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.AspNetCore.Http;
@@ -27,7 +28,7 @@ namespace Caviar.Infrastructure.API.BaseApi
         /// <summary>
         /// 数据互动
         /// </summary>
-        private Interactor _interactor;
+        private IInteractor _interactor;
         /// <summary>
         /// 语言服务
         /// </summary>
@@ -70,7 +71,7 @@ namespace Caviar.Infrastructure.API.BaseApi
 
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            _interactor = CreateService<Interactor>();
+            _interactor = CreateService<IInteractor>();
             _userServices = CreateService<UserServices>();
             _roleServices = CreateService<RoleServices>();
             _logServices = CreateService<LogServices<BaseApiController>>();

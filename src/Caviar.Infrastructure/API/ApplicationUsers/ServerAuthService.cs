@@ -5,6 +5,7 @@
 using System;
 using System.Threading.Tasks;
 using Caviar.Core.Services;
+using Caviar.SharedKernel.Common;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.User;
 using Microsoft.AspNetCore.Http;
@@ -18,14 +19,14 @@ namespace Caviar.Infrastructure.API
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILanguageService _languageService;
         private readonly LogServices<ServerAuthService> _logServices;
-        private readonly Interactor _interactor;
+        private readonly IInteractor _interactor;
         private readonly UserServices _userServices;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
         public ServerAuthService(IHttpContextAccessor httpContextAccessor,
             UserManager<ApplicationUser> userManager, ILanguageService languageService,
             LogServices<ServerAuthService> logServices,
-            Interactor interactor, UserServices userServices, SignInManager<ApplicationUser> signInManager)
+            IInteractor interactor, UserServices userServices, SignInManager<ApplicationUser> signInManager)
         {
             _httpContextAccessor = httpContextAccessor;
             _userManager = userManager;

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Caviar.Infrastructure;
 using Caviar.Infrastructure.Persistence;
 using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -24,11 +25,11 @@ namespace Caviar.IntegrationTests
 
         public DataAuthorityTests()
         {
-            CaviarConfig CaviarConfig = new CaviarConfig();
+            CaviarConfig caviarConfig = new CaviarConfig();
             var builder = new DbContextOptionsBuilder<IdentityDbContext<ApplicationUser, ApplicationRole, int>>()
                .UseInMemoryDatabase("ApplicationDbContext");
             Interactor interactor = new Interactor();
-            SysDbContext = new SysDbContext<ApplicationUser, ApplicationRole, int>(builder.Options, CaviarConfig, interactor, _languageService);
+            SysDbContext = new SysDbContext<ApplicationUser, ApplicationRole, int>(builder.Options, caviarConfig, interactor, _languageService);
             SetTestData();
         }
 

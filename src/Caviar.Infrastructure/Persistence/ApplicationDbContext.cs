@@ -10,6 +10,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Caviar.Core;
 using Caviar.Core.Interface;
+using Caviar.SharedKernel.Common;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.EntityFrameworkCore;
@@ -20,11 +21,11 @@ namespace Caviar.Infrastructure.Persistence
     public class ApplicationDbContext : IAppDbContext
     {
         public IDbContext DbContext { get; private set; }
-        private readonly Interactor _interactor;
+        private readonly IInteractor _interactor;
         private readonly ILanguageService _languageService;
 
         public ApplicationDbContext(IDbContext identityDbContext,
-            Interactor interactor,
+            IInteractor interactor,
             ILanguageService languageService)
         {
             DbContext = identityDbContext;

@@ -62,7 +62,7 @@ namespace Caviar.SharedKernel.Common
         /// </summary>
         public string UserName { get; }
 
-        public ApplicationUser UserInfo { get; }
+        public ApplicationUser UserInfo { get; set; }
 
         /// <summary>
         /// 当前用户所有角色
