@@ -60,12 +60,9 @@ namespace Caviar.SharedKernel.Common
         /// 当前用户信息不为null时，取自User
         /// 当未登录用户进行操作时，需要自定义用户名称,可以自主指定
         /// </summary>
-        public string UserName => UserInfo?.UserName;
+        public string UserName { get; }
 
-        /// <summary>
-        /// 当前用户详细信息
-        /// </summary>
-        public ApplicationUser UserInfo { get; set; }
+        public ApplicationUser UserInfo { get; }
 
         /// <summary>
         /// 当前用户所有角色

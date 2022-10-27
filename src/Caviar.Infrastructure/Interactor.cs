@@ -135,8 +135,5 @@ namespace Caviar.Infrastructure
         /// 当前用户所有可用url集合
         /// </summary>
         public List<string> PermissionUrls { get; set; }
-
-        ApplicationUser IInteractor.UserInfo { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        IList<ApplicationRole> IInteractor.ApplicationRoles { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }
