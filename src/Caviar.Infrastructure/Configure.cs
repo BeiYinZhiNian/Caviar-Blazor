@@ -11,6 +11,7 @@ using Caviar.Core.Interface;
 using Caviar.Core.Services;
 using Caviar.Infrastructure.API;
 using Caviar.Infrastructure.Persistence;
+using Caviar.SharedKernel.Common;
 using Caviar.SharedKernel.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +29,7 @@ namespace Caviar.Infrastructure
         public static bool HasDataInit { get; set; }
         public static IServiceProvider ServiceProvider { get; set; }
         private static IServerAddressesFeature ServerAddressesFeature { get; set; }
+
         public static IServiceCollection AddCaviarServer(this IServiceCollection services)
         {
             services.AddHttpContextAccessor();
@@ -72,10 +74,12 @@ namespace Caviar.Infrastructure
                 }
                 return client;
             });
+
+            services.AddScoped<IInteractor, Interactor>();
             return services;
         }
 
-        static Uri GetServerUri()
+        private static Uri GetServerUri()
         {
             if (ServerAddressesFeature?.Addresses == null
                  || ServerAddressesFeature.Addresses.Count == 0)
@@ -170,12 +174,10 @@ namespace Caviar.Infrastructure
             var identityBuilder = services.AddCaviarDbContext<ApplicationUser, ApplicationRole>(optionsAction, contextLifetime, optionsLifetime);
             return identityBuilder;
         }
-
     }
 
-    class AutomaticInjection
+    internal class AutomaticInjection
     {
-
         /// <summary>
         /// 遍历所有的类，筛选实现IService接口的类，并过判断是否是类,并按照注解方式自动注入类
         /// 自动注入所有继承IDIinjectAtteribute接口的类
@@ -195,8 +197,8 @@ namespace Caviar.Infrastructure
             {
                 services.AddTransient(t);
             });
-
         }
+
         /// <summary>
         /// 自动注入所有带有Inject特性类
         /// </summary>
@@ -220,9 +222,11 @@ namespace Caviar.Infrastructure
                     case InjectType.SINGLETON:
                         services.AddSingleton(t);
                         break;
+
                     case InjectType.SCOPED:
                         services.AddScoped(t);
                         break;
+
                     case InjectType.TRANSIENT:
                         services.AddTransient(t);
                         break;

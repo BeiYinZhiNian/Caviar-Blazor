@@ -9,6 +9,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using CacheManager.Core;
 using Caviar.Core.Interface;
+using Caviar.SharedKernel.Common;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.EntityFrameworkCore;
@@ -18,11 +19,12 @@ namespace Caviar.Core.Services
     public class PermissionServices : DbServices
     {
         private readonly ILanguageService _languageService;
-        private readonly Interactor _interactor;
+        private readonly IInteractor _interactor;
         private readonly ICacheManager<object> _cacheManager;
+
         public PermissionServices(IAppDbContext dbContext,
             ILanguageService languageService,
-            Interactor interactor,
+            IInteractor interactor,
             ICacheManager<object> cacheManager) : base(dbContext)
         {
             _languageService = languageService;
@@ -84,7 +86,6 @@ namespace Caviar.Core.Services
             return result;
         }
 
-
         /// <summary>
         /// 获取当前用户所有权限或者指定权限
         /// </summary>
@@ -106,6 +107,7 @@ namespace Caviar.Core.Services
             var permissionsSet = AppDbContext.DbContext.Set<SysPermission>();
             return permissionsSet.Where(u => roles.Contains(u.Entity)).ToListAsync();
         }
+
         /// <summary>
         /// 获取权限实体
         /// </summary>
@@ -115,6 +117,5 @@ namespace Caviar.Core.Services
         {
             return sysPermissions.Select(u => u.Permission).ToHashSet().ToList();
         }
-
     }
 }

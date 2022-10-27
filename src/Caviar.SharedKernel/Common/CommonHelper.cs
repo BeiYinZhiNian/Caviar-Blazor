@@ -11,7 +11,6 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Web;
-using Microsoft.AspNetCore.Http;
 using NodaTime;
 
 namespace Caviar.SharedKernel.Entities
@@ -28,6 +27,7 @@ namespace Caviar.SharedKernel.Entities
             var shanghaiZone = DateTimeZoneProviders.Tzdb[CurrencyConstant.TimeZone];
             return now.InZone(shanghaiZone).ToDateTimeUnspecified();
         }
+
         public static TimeSlot GetTimeSlot()
         {
             DateTime time1 = Convert.ToDateTime("0:00:00");
@@ -57,24 +57,6 @@ namespace Caviar.SharedKernel.Entities
         }
 
         /// <summary>
-        /// 获取用户的ip地址
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        public static string GetUserIp(HttpContext context)
-        {
-            if (context == null)
-            {
-                return null;
-            }
-            var ip = context.Request.Headers[CurrencyConstant.XForwardedFor].FirstOrDefault();
-            if (string.IsNullOrEmpty(ip))
-            {
-                ip = context.Connection.RemoteIpAddress.ToString();
-            }
-            return ip;
-        }
-        /// <summary>
         /// SHA256加密
         /// </summary>
         /// <param name="data"></param>
@@ -101,6 +83,7 @@ namespace Caviar.SharedKernel.Entities
         {
             return Regex.IsMatch(number, @"^[1][3-9]\\d{9}");
         }
+
         /// <summary>
         /// 获取字符串右边的字符串
         /// </summary>
@@ -123,6 +106,7 @@ namespace Caviar.SharedKernel.Entities
             if (index == -1) return "";
             return text.Substring(index + contrastText.Length, text.Length - index - contrastText.Length);
         }
+
         /// <summary>
         /// 获取字符串左边的字符串
         /// </summary>
@@ -145,7 +129,6 @@ namespace Caviar.SharedKernel.Entities
             if (index == -1) return "";
             return text.Substring(0, index);
         }
-
 
         /// <summary>
         /// 拷贝目标属性
@@ -220,7 +203,8 @@ namespace Caviar.SharedKernel.Entities
             return null;
         }
 
-        static Type[] _types;
+        private static Type[] _types;
+
         public static Type[] GetAllTypes()
         {
             if (_types != null) return _types;
@@ -243,6 +227,7 @@ namespace Caviar.SharedKernel.Entities
             _types = types.ToArray();
             return _types;
         }
+
         /// <summary>
         /// 反射获取所有继承IBaseEntity的类
         /// 排除BaseEntity基类
@@ -318,6 +303,7 @@ namespace Caviar.SharedKernel.Entities
                 }
             }
         }
+
         /// <summary>
         /// 单个树转为列表
         /// </summary>
@@ -344,6 +330,7 @@ namespace Caviar.SharedKernel.Entities
                 }
             }
         }
+
         /// <summary>
         /// 获取枚举的名称和值
         /// </summary>
@@ -400,7 +387,6 @@ namespace Caviar.SharedKernel.Entities
             return base64;
         }
 
-
         /// <summary>
         /// 利用反射来判断对象是否包含某个属性
         /// </summary>
@@ -416,7 +402,6 @@ namespace Caviar.SharedKernel.Entities
             }
             return null;
         }
-
 
         public static string GetClaimValue(SysFields fields)
         {

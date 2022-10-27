@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using CacheManager.Core;
 using Caviar.Core.Interface;
+using Caviar.SharedKernel.Common;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.User;
 using Caviar.SharedKernel.Entities.View;
@@ -23,12 +24,14 @@ namespace Caviar.Core.Services
         {
             CurrencyConstant.TouristUser,
         };
-        private readonly Interactor _interactor;
+
+        private readonly IInteractor _interactor;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly CaviarConfig _caviarConfig;
         private readonly ICacheManager<object> _cacheManager;
+
         public UserServices(
-            Interactor interactor,
+            IInteractor interactor,
             UserManager<ApplicationUser> userManager,
             IAppDbContext appDbContext,
             CaviarConfig caviarConfig,
@@ -105,6 +108,7 @@ namespace Caviar.Core.Services
             };
             return useerDetails;
         }
+
         public async Task<IdentityResult> UpdateUserDetailsAsync(UserDetails userDetails)
         {
             var user = await GetCurrentUserInfoAsync();
@@ -152,7 +156,6 @@ namespace Caviar.Core.Services
             var result = _userManager.DeleteAsync(vm.Entity);
             return result;
         }
-
 
         public async Task<CurrentUser> GetCurrentUserInfoAsync(ClaimsPrincipal user)
         {
@@ -210,7 +213,6 @@ namespace Caviar.Core.Services
                 };
                 return await Task.FromResult(currentUser);
             }
-
         }
 
         public Task<ApplicationUser> GetCurrentUserInfoAsync()
@@ -227,6 +229,5 @@ namespace Caviar.Core.Services
             _cacheManager.Add(cacheName, cache);
             return cache;
         }
-
     }
 }
