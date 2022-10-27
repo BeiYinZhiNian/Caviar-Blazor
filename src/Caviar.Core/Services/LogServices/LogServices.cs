@@ -5,6 +5,7 @@
 using System;
 using System.Net;
 using Caviar.Core.Interface;
+using Caviar.SharedKernel.Common;
 using Caviar.SharedKernel.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -14,14 +15,16 @@ namespace Caviar.Core.Services
     public class LogServices<T> : BaseServices
     {
         public ILogger<T> Logger { get; set; }
-        private readonly Interactor _interactor;
+        private readonly IInteractor _interactor;
         private IAppDbContext _appDbContext;
-        public LogServices(ILogger<T> logger, Interactor interactor, IServiceProvider serviceProvider)
+
+        public LogServices(ILogger<T> logger, IInteractor interactor, IServiceProvider serviceProvider)
         {
             Logger = logger;
             _interactor = interactor;
             _appDbContext = serviceProvider.CreateScope().ServiceProvider.GetRequiredService<IAppDbContext>();
         }
+
         /// <summary>
         /// 最总保存日志处理，可以写到数据库也可以写到文件
         /// 当日志量过大，建议采用消息队列的方式控制

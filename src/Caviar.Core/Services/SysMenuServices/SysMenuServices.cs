@@ -9,6 +9,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using CacheManager.Core;
 using Caviar.Core.Interface;
+using Caviar.SharedKernel.Common;
 using Caviar.SharedKernel.Entities;
 using Caviar.SharedKernel.Entities.View;
 using Microsoft.EntityFrameworkCore;
@@ -17,14 +18,14 @@ namespace Caviar.Core.Services
 {
     public partial class SysMenuServices : EasyBaseServices<SysMenu, SysMenuView>
     {
-
         private readonly Expression<Func<SysMenu, bool>> _menuWhere;
         private readonly ILanguageService _languageService;
-        private readonly Interactor _interactor;
+        private readonly IInteractor _interactor;
         private readonly ICacheManager<object> _cacheManager;
+
         public SysMenuServices(IAppDbContext appDbContext,
             ILanguageService languageService,
-            Interactor interactor,
+            IInteractor interactor,
             ICacheManager<object> cacheManager) : base(appDbContext)
         {
             _cacheManager = cacheManager;
@@ -37,6 +38,7 @@ namespace Caviar.Core.Services
         {
             return base.GetEntityAsync(where).Where(_menuWhere);
         }
+
         /// <summary>
         /// 获取所有权限url
         /// </summary>
@@ -45,8 +47,6 @@ namespace Caviar.Core.Services
         {
             return base.GetEntityAsync(_menuWhere);
         }
-
-
 
         public override async Task<SysMenu> SingleOrDefaultAsync(Expression<Func<SysMenu, bool>> where)
         {
@@ -102,6 +102,7 @@ namespace Caviar.Core.Services
             _cacheManager.Add(cacheName, cache);
             return cache;
         }
+
         /// <summary>
         /// 获取当前url下可用api
         /// </summary>
@@ -122,6 +123,7 @@ namespace Caviar.Core.Services
             _cacheManager.Add(cacheName, cache);
             return cache;
         }
+
         /// <summary>
         /// 删除所有菜单数
         /// </summary>
@@ -133,6 +135,7 @@ namespace Caviar.Core.Services
             var count = await base.DeleteEntityAsync(menus);
             return count;
         }
+
         /// <summary>
         /// 删除菜单
         /// </summary>
